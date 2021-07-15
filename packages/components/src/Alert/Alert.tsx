@@ -181,7 +181,7 @@ const AlertBase = (props: AlertProps, ref: React.ForwardedRef<HTMLElement>) => {
     <MuiSnackbar
       className={clsx(className, 'AruiAlert-root')}
       ref={ref}
-      ClickAwayListenerProps={{ onClickAway: undefined }}
+      ClickAwayListenerProps={{ onClickAway: () => {} }}
       ContentProps={{
         className: clsx(
           defaultClasses.content,

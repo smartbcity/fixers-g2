@@ -6,7 +6,7 @@ import React, {
 import { Stepper as AruiStepper, StepperProps } from './Stepper'
 import { Meta } from '@storybook/react'
 import { Story } from '@storybook/react/types-6-0'
-import { ArgsTable, PRIMARY_STORY } from '@storybook/addon-docs/blocks'
+import { ArgsTable, PRIMARY_STORY } from '@storybook/addon-docs'
 import { OnNextHandles, StepDetails } from './MuiStepperWrapper'
 import { MuiStepperWrapper } from './MuiStepperWrapper'
 import { MuiStepperWrapperLabel } from './types'

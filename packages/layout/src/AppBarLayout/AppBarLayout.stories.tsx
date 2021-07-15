@@ -6,7 +6,7 @@ import {
 import { Meta } from '@storybook/react'
 import { Story } from '@storybook/react/types-6-0'
 import { styles, classes } from './types'
-import { ArgsTable, PRIMARY_STORY } from '@storybook/addon-docs/blocks'
+import { ArgsTable, PRIMARY_STORY } from '@storybook/addon-docs'
 
 export default {
   title: 'Layout/AppBarLayout',

@@ -3,7 +3,6 @@ import { AlertHub as AruiAlertHub, AlertHubProps } from './AlertHub'
 import { Meta } from '@storybook/react'
 import { Story } from '@storybook/react/types-6-0'
 import { withDesign } from 'storybook-addon-designs'
-import { Box } from '@material-ui/core'
 import { useAlertHub } from './useAlertHub'
 import { Button } from '../Buttons'
 

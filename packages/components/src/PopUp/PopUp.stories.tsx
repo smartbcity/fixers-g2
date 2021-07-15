@@ -11,12 +11,7 @@ import {
 import { Meta } from '@storybook/react'
 import { Story } from '@storybook/react/types-6-0'
 import { action } from '@storybook/addon-actions'
-import {
-  ArgsTable,
-  Title,
-  Primary,
-  Stories
-} from '@storybook/addon-docs/blocks'
+import { ArgsTable, Title, Primary, Stories } from '@storybook/addon-docs'
 import { styles, classes, Action } from './types'
 import { Box, Typography } from '@material-ui/core'
 import imageHolder from '../assets/imageHolder.jpg'
@@ -26,24 +21,26 @@ import { withDesign } from 'storybook-addon-designs'
 export default {
   title: 'Components/PopUp',
   component: AruiPopUp,
-  decorators:[withDesign],
-  subcomponents: {ConfirmationPopUp: AruiConfirmationPopUp },
+  decorators: [withDesign],
+  subcomponents: { ConfirmationPopUp: AruiConfirmationPopUp },
   parameters: {
     docs: {
       page: () => (
         <>
           <Title>PopUp</Title>
           <Primary />
-          <ArgsTable  components={{AruiPopUp: AruiPopUp}}  />
+          <ArgsTable components={{ AruiPopUp: AruiPopUp }} />
           <Stories />
-          <ArgsTable  components={{ConfirmationPopUp: AruiConfirmationPopUp }} />
+          <ArgsTable
+            components={{ ConfirmationPopUp: AruiConfirmationPopUp }}
+          />
         </>
       )
     },
     design: {
       type: 'figma',
-      url: 'https://www.figma.com/file/4Nl4422AUGHNVClZOHzPg8/SmartB-UI-kit?node-id=212%3A396',
-    },
+      url: 'https://www.figma.com/file/4Nl4422AUGHNVClZOHzPg8/SmartB-UI-kit?node-id=212%3A396'
+    }
   }
 } as Meta
 
@@ -104,12 +101,18 @@ export const alternativePopUp: Story = () => {
   )
 }
 
-export const ConfirmationPopUp: Story<ConfirmationPopUpBasicProps> = (args: ConfirmationPopUpBasicProps) => {
+export const ConfirmationPopUp: Story<ConfirmationPopUpBasicProps> = (
+  args: ConfirmationPopUpBasicProps
+) => {
   const [open, setOpen] = useState(false)
   return (
     <>
       <Button onClick={() => setOpen(!open)}>Open the popup</Button>
-      <AruiConfirmationPopUp {...args} open={open} onClose={() => setOpen(!open)} />
+      <AruiConfirmationPopUp
+        {...args}
+        open={open}
+        onClose={() => setOpen(!open)}
+      />
     </>
   )
 }

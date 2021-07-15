@@ -9,11 +9,7 @@ import {
   Settings
 } from '@material-ui/icons'
 import { Box, Typography } from '@material-ui/core'
-import {
-  ArgsTable,
-  PRIMARY_STORY,
-  Subtitle
-} from '@storybook/addon-docs/blocks'
+import { ArgsTable, PRIMARY_STORY, Subtitle } from '@storybook/addon-docs'
 import { styles, classes, Menu } from './types'
 import LinkTo from '@storybook/addon-links/react'
 

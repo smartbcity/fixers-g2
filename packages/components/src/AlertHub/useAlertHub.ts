@@ -9,6 +9,7 @@ export const useAlertHub = () => {
     //@ts-ignore
     (alertProps: AlertProps & { persist?: boolean; key?: string }) =>
       enqueueSnackbar(alertProps.message ?? '', {
+        //@ts-ignore
         variant: 'alert',
         ...alertProps
       }),
