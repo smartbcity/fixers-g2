@@ -1,8 +1,9 @@
-import React, { useMemo } from 'react'
+import React, { forwardRef, useMemo } from 'react'
 import {
   Box,
   Snackbar as MuiSnackbar,
-  SnackbarProps as MuiSnackbarProps
+  SnackbarProps as MuiSnackbarProps,
+  Typography
 } from '@material-ui/core'
 import {
   BasicProps,
@@ -91,19 +92,33 @@ interface AlertStyles {
 
 export interface AlertBasicProps extends BasicProps {
   /**
-   * The content displayed in the alert
+   * The content displayed in the alert. It overrides the prop `message` if procided
    */
-  children: React.ReactNode
+  children?: React.ReactNode
+  /**
+   * Use this props if you only want to pass a string to the alert
+   */
+  message?: React.ReactNode
   /**
    * The event called when the user wants to close the alert
    */
   onClose?: () => void
   /**
+   * Define wether or not the alert is visible
+   *
+   * @default true
+   */
+  open?: boolean
+  /**
    * The severity of the alert
+   *
+   * @default 'info'
    */
   severity?: 'info' | 'warning' | 'success' | 'error'
   /**
    * The base color brightness of the alert
+   *
+   * @default 'dark'
    */
   colorBase?: 'light' | 'dark'
   /**
@@ -118,13 +133,15 @@ export interface AlertBasicProps extends BasicProps {
 
 export type AlertProps = MergeMuiElementProps<MuiSnackbarProps, AlertBasicProps>
 
-export const Alert = (props: AlertProps) => {
+const AlertBase = (props: AlertProps, ref: React.ForwardedRef<HTMLElement>) => {
   const {
     children,
     onClose,
     severity = 'info',
     colorBase = 'dark',
     className,
+    open = true,
+    message,
     classes,
     styles,
     ...other
@@ -163,6 +180,8 @@ export const Alert = (props: AlertProps) => {
   return (
     <MuiSnackbar
       className={clsx(className, 'AruiAlert-root')}
+      ref={ref}
+      ClickAwayListenerProps={{ onClickAway: undefined }}
       ContentProps={{
         className: clsx(
           defaultClasses.content,
@@ -187,7 +206,7 @@ export const Alert = (props: AlertProps) => {
           >
             {severityIcon}
           </Box>
-          {children}
+          {children ? children : <Typography>{message}</Typography>}
           {onClose && (
             <Close
               className={clsx(
@@ -202,8 +221,11 @@ export const Alert = (props: AlertProps) => {
           )}
         </>
       }
+      open
       onClose={onClose}
       {...other}
     />
   )
 }
+
+export const Alert = forwardRef(AlertBase) as typeof AlertBase

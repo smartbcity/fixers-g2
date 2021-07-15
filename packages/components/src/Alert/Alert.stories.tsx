@@ -58,7 +58,6 @@ export const AlertSeverity: Story<AlertBasicProps> = () => {
           bottom: 0,
           margin: 10
         }}
-        open
         severity='info'
         children='info'
       />
@@ -70,7 +69,6 @@ export const AlertSeverity: Story<AlertBasicProps> = () => {
           bottom: 0,
           margin: 10
         }}
-        open
         severity='warning'
         children='warning'
       />
@@ -82,7 +80,6 @@ export const AlertSeverity: Story<AlertBasicProps> = () => {
           bottom: 0,
           margin: 10
         }}
-        open
         severity='success'
         children='success'
       />
@@ -94,7 +91,6 @@ export const AlertSeverity: Story<AlertBasicProps> = () => {
           bottom: 0,
           margin: 10
         }}
-        open
         severity='error'
         children='error'
       />
@@ -113,7 +109,6 @@ export const AlertColorBase: Story<AlertBasicProps> = () => {
           bottom: 0,
           margin: 10
         }}
-        open
         colorBase='light'
         onClose={() => {}}
         children='light'
@@ -126,7 +121,6 @@ export const AlertColorBase: Story<AlertBasicProps> = () => {
           bottom: 0,
           margin: 10
         }}
-        open
         colorBase='dark'
         onClose={() => {}}
         children='dark'
@@ -137,8 +131,6 @@ export const AlertColorBase: Story<AlertBasicProps> = () => {
 
 Alert.args = {
   children: 'Hello',
-  //@ts-ignore
-  open: true,
   onClose: () => {}
 }
 

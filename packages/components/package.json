@@ -37,6 +37,7 @@
   "dependencies": {
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.57",
+    "notistack": "2.0.1-alpha.2",
     "@smartb/archetypes-ui-forms": "^0.1.46",
     "@smartb/archetypes-ui-themes": "^0.1.46",
     "clsx": "^1.1.1",
