@@ -28,7 +28,7 @@ export const DescriptedCode = (props: DescriptedCodeProps) => {
       <Box
         className={'AruiDescriptedCode-leftContainer'}
         width='60%'
-        padding='0px 10px'
+        paddingRight='10px'
         boxSizing='border-box'
       >
         {leftElement}
