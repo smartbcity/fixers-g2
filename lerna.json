@@ -6,7 +6,8 @@
     "packages/layout",
     "packages/providers",
     "packages/s2",
-    "packages/themes"
+    "packages/themes",
+    "packages/webpack-components"
   ],
   "npmClient": "yarn",
   "tagVersionPrefix": "",
