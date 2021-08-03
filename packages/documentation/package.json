@@ -31,7 +31,6 @@
   },
   "dependencies": {
     "@smartb/archetypes-ui-themes": "^0.1.47",
-    "@storybook/addon-docs": "^6.3.6",
     "clsx": "^1.1.1",
     "github-markdown-css": "^4.0.0",
     "react-markdown": "^6.0.2",

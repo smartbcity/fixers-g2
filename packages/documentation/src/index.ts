@@ -4,5 +4,3 @@ export {
   MarkdownHighlighterProps
 } from './MarkdownHighlighter'
 export { DescriptedCode, DescriptedCodeProps } from './DescriptedCode'
-export { Color, ColorProps } from './ColorOverview'
-export { StorybookCanvas } from './StorybookCanvas'
