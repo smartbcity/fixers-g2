@@ -4,7 +4,7 @@
   "author": "Adrien Poupard <adrien@smartb.city>",
   "license": "Apache-2.0",
   "description": "React layout components library",
-  "version": "0.1.47",
+  "version": "0.1.48",
   "private": false,
   "main": "dist/index.js",
   "source": "src/index.ts",
@@ -33,8 +33,8 @@
   "dependencies": {
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.57",
-    "@smartb/archetypes-ui-components": "^0.1.47",
-    "@smartb/archetypes-ui-themes": "^0.1.47",
+    "@smartb/archetypes-ui-components": "^0.1.48",
+    "@smartb/archetypes-ui-themes": "^0.1.48",
     "clsx": "^1.1.1",
     "use-debounce": "^3.4.2"
   },
