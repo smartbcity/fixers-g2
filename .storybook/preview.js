@@ -1,5 +1,6 @@
 import React from "react";
 import { ThemeContextProvider } from "@smartb/archetypes-ui-themes";
+import { StorybookCanvas } from "@smartb/archetypes-ui-documentation";
 import { getTheme, muiTheme } from "../docs/Theme/Theme";
 
 import font from "./preview.css";
@@ -15,6 +16,9 @@ export const parameters = {
         "Layout",
       ],
     },
+  },
+  docs: {
+    container: StorybookCanvas,
   },
 };
 

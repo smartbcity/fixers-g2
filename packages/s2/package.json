@@ -3,7 +3,7 @@
   "repository": "https://gitlab.smartb.city/app/archetypes-ui.git",
   "author": "Adrien Poupard <adrien@smartb.city>",
   "license": "Apache-2.0",
-  "version": "0.1.46",
+  "version": "0.1.48",
   "description": "React components library",
   "private": false,
   "main": "dist/index.js",
@@ -25,16 +25,16 @@
     "dist"
   ],
   "peerDependencies": {
-    "@material-ui/core": "^4.11.3",
-    "@types/react": "^16.9.27",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1"
+    "@material-ui/core": "^4.12.1",
+    "@types/react": "^17.0.14",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
   },
   "devDependencies": {
     "@types/mermaid": "^8.2.4"
   },
   "dependencies": {
-    "@smartb/archetypes-ui-themes": "^0.1.46",
+    "@smartb/archetypes-ui-themes": "^0.1.48",
     "clsx": "^1.1.1",
     "mermaid": "^8.9.2",
     "vis-data": "^7.1.2",

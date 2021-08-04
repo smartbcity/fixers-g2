@@ -11,11 +11,7 @@ import {
 } from '@material-ui/icons'
 import defaultLogo from '../assets/impactcity-logo-2.png'
 import { Box, Button, Typography } from '@material-ui/core'
-import {
-  ArgsTable,
-  PRIMARY_STORY,
-  Subtitle
-} from '@storybook/addon-docs/blocks'
+import { ArgsTable, PRIMARY_STORY, Subtitle } from '@storybook/addon-docs'
 import { styles, classes, StyleProps, MenuItem } from './types'
 import LinkTo from '@storybook/addon-links/react'
 

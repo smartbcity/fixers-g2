@@ -3,11 +3,7 @@ import { AppLayout as AruiAppLayout, AppLayoutProps } from './AppLayout'
 import { Meta } from '@storybook/react'
 import { Story } from '@storybook/react/types-6-0'
 import { Box, Link, Typography } from '@material-ui/core'
-import {
-  ArgsTable,
-  PRIMARY_STORY,
-  Subtitle
-} from '@storybook/addon-docs/blocks'
+import { ArgsTable, PRIMARY_STORY, Subtitle } from '@storybook/addon-docs'
 import { styles, classes, StyleProps } from './types'
 import LinkTo from '@storybook/addon-links/react'
 

@@ -6,7 +6,9 @@
     "packages/layout",
     "packages/providers",
     "packages/s2",
-    "packages/themes"
+    "packages/themes",
+    "packages/webpack-components",
+    "packages/storybook-documentation"
   ],
   "npmClient": "yarn",
   "tagVersionPrefix": "",
