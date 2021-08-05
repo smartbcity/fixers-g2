@@ -1,14 +1,11 @@
 import { Box, InputLabel } from '@material-ui/core'
 import React, { useMemo } from 'react'
-import { Select, SelectBasicProps, SelectProps, SelectClasses, SelectStyles } from '../Select'
-import { TextField, TextFieldBasicProps, TextFieldProps, TextFieldClasses, TextFieldStyles } from '../TextField'
+import { Select, SelectProps, SelectClasses, SelectStyles } from '../Select'
+import { TextField, TextFieldProps, TextFieldClasses, TextFieldStyles } from '../TextField'
+import { DatePicker, DatePickerProps } from '../DatePicker'
 import { useInputStyles } from '../style'
-import { BasicProps,useTheme } from '@smartb/archetypes-ui-themes'
+import { BasicProps, useTheme } from '@smartb/archetypes-ui-themes'
 import clsx from 'clsx'
-
-type TextFieldBasic = Omit<TextFieldBasicProps, keyof SelectBasicProps | "disabled">
-
-type CommonBasic = Omit<TextFieldBasicProps, keyof TextFieldBasic | "disabled">
 
 interface InputFormClasses {
   label?: string
@@ -20,7 +17,7 @@ interface InputFormStyles {
   input?: React.CSSProperties
 }
 
-export interface InputFormBasicProps<T extends 'select' | 'textField' = 'textField'> extends BasicProps, CommonBasic {
+export interface InputFormBasicProps<T extends 'select' | 'textField' | 'datePicker' = 'textField'> extends BasicProps {
   /**
    * The label of the input
    */
@@ -29,9 +26,9 @@ export interface InputFormBasicProps<T extends 'select' | 'textField' = 'textFie
    * The type of the input
    * @default "textField"
    */
-  inputType: 'select' | 'textField'
+  inputType: 'select' | 'textField' | 'datePicker'
   /**
-   * If true the autocomplete will be disabled
+   * If true the input will be disabled and forced on type 'textfield'
    * @default false
    */
   readonly?: boolean
@@ -49,20 +46,23 @@ export interface InputFormBasicProps<T extends 'select' | 'textField' = 'textFie
  * The type will be equal to the classes type of the input selected:
  * **See the reference below** ⬇️
  */
-  inputClasses?: [T] extends ['select'] ? SelectClasses : TextFieldClasses
+  inputClasses?: [T] extends ['textField'] ? TextFieldClasses : [T] extends ['select'] ? SelectClasses : {}
   /**
    * The styles applied to the different part of the input
    * 
    * The type will be equal to the classes type of the input selected:
    * **See the reference below** ⬇️
    */
-  inputStyles?: [T] extends ['select'] ? SelectStyles : TextFieldStyles
+  inputStyles?: [T] extends ['textField'] ? TextFieldStyles : [T] extends ['select'] ? SelectStyles : {}
 }
 
-type InputFormComponentProps<T extends 'select' | 'textField' = never, R extends Boolean = false> = InputFormBasicProps & ([T] extends ['select'] ? [R] extends [true] ? TextFieldProps : SelectProps : [T] extends ['textField'] ? TextFieldProps : {})
+type RemoveMainProps<T> = Omit<T, keyof InputFormBasicProps>
+
+type InputFormComponentProps<T extends 'select' | 'textField' | 'datePicker' = never, R extends Boolean = false> =
+  InputFormBasicProps & ([R] extends [true] ? RemoveMainProps<TextFieldProps> : [T] extends ['select'] ? RemoveMainProps<SelectProps> : [T] extends ['datePicker'] ? RemoveMainProps<DatePickerProps> : RemoveMainProps<TextFieldProps>);
 
 interface InputFormComponent {
-  <T extends 'select' | 'textField', R extends Boolean = false>(
+  <T extends 'select' | 'textField' | 'datePicker', R extends Boolean = false>(
     props: {
       inputType: T
       readonly?: R
@@ -71,7 +71,7 @@ interface InputFormComponent {
   ): JSX.Element;
 }
 
-export type InputFormProps = InputFormBasicProps & Omit<TextFieldProps, keyof InputFormBasicProps> & Omit<SelectProps, keyof InputFormBasicProps> & {
+export type InputFormProps = InputFormBasicProps & Omit<TextFieldProps, keyof InputFormBasicProps> & Omit<SelectProps, keyof InputFormBasicProps> & Omit<DatePickerProps, keyof InputFormBasicProps> & {
   inputClasses?: SelectClasses | TextFieldClasses
   inputStyles?: SelectStyles | TextFieldStyles
 }
@@ -124,13 +124,21 @@ export const InputForm: InputFormComponent = React.forwardRef((props: Partial<In
         ref={ref}
         id={id}
       />
-    ) : (
+    ) : inputType === 'select' ? (
       <Select
         {...other}
         className={classes?.input}
         style={styles?.input}
         classes={inputClasses}
         styles={inputStyles}
+        ref={ref}
+        id={id}
+      />
+    ) : (
+      <DatePicker
+        {...other}
+        className={classes?.input}
+        style={styles?.input}
         ref={ref}
         id={id}
       />

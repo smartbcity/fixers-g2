@@ -47,6 +47,12 @@ export default {
               TextField
             </LinkTo>
           </Typography>
+          <Typography variant='body2' style={{ marginBottom: '5px' }}>
+            -{' '}
+            <LinkTo kind='Forms' story='DatePicker'>
+              DatePicker
+            </LinkTo>
+          </Typography>
           <Stories />
         </>
       )
@@ -93,13 +99,13 @@ export const InputFormStory: Story<InputFormBasicProps> = (
 }
 
 export const FormExample: Story<InputFormBasicProps> = () => {
-  const [form, setform] = useState({ email: '', password: '', gender: '' })
+  const [form, setform] = useState({ email: '', password: '', gender: '', birthday: undefined })
   return (
     <Box display='flex' flexDirection='column' alignItems='center'>
       <InputForm
         label='email:'
         value={form.email}
-        onChange={(value) => setform({ ...form, email: value })}
+        onChange={(e, value) => setform({ ...form, email: value })}
         onRemove={() => setform({ ...form, email: '' })}
         id='FormExampleEmail'
         inputType='textField'
@@ -116,7 +122,7 @@ export const FormExample: Story<InputFormBasicProps> = () => {
       />
       <InputForm
         value={form.password}
-        onChange={(value) => setform({ ...form, password: value })}
+        onChange={(e, value) => setform({ ...form, password: value })}
         onRemove={() => setform({ ...form, password: '' })}
         label='password:'
         id='FormExamplePassword'
@@ -135,12 +141,27 @@ export const FormExample: Story<InputFormBasicProps> = () => {
         value={form.gender}
         label='gender:'
         inputType='select'
-        onChangeValue={(value) => setform({ ...form, gender: value })}
+        onChangeValue={(e, value) => setform({ ...form, gender: value })}
         options={[
           { key: 'male', label: 'Male' },
           { key: 'female', label: 'Female' }
         ]}
         placeholder='chosse your gender'
+        style={{
+          width: '400px',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          margin: '20px'
+        }}
+        styles={{ label: { marginBottom: '0px' }, input: { width: '60%' } }}
+      />
+      <InputForm
+        value={form.birthday}
+        label='birthday:'
+        inputType='datePicker'
+        onChangeDate={(date) => setform({ ...form, birthday: date })}
+        placeholder='Choose your birthday'
         style={{
           width: '400px',
           display: 'flex',
