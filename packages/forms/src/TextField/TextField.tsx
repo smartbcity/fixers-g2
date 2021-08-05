@@ -85,7 +85,7 @@ export interface TextFieldBasicProps extends BasicProps {
   /**
    * The event called when the value of the input change
    */
-  onChange?: (value: string) => void
+  onChange?: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, value: string) => void
 
   /**
    * The text to display as place holder
@@ -180,7 +180,7 @@ export const TextField = React.forwardRef((props: TextFieldProps, ref: React.For
   const classesLocal = useStyles()
 
   const onChangeMemoized = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => onChange && onChange(e.target.value),
+    (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => onChange && onChange(e, e.target.value),
     [onChange],
   )
 

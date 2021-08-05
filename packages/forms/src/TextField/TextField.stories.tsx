@@ -108,7 +108,7 @@ export const SerchTextField: Story<TextFieldProps> = () => {
       <TextField
         placeholder="search something here"
         value={value}
-        onChange={(value) => setValue(value)}
+        onChange={(e, value) => setValue(value)}
         onSearch={() => setSearch(value)}
         onRemove={() => setValue('')}
         id="searchTextField"
