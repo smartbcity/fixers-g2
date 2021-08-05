@@ -1,0 +1,144 @@
+import React, { useState } from 'react'
+import { Form, FormBasicProps, Action, Field } from './Form'
+import { Option } from '../Select'
+import { Meta } from '@storybook/react'
+import { Story } from '@storybook/react/types-6-0'
+import {
+  ArgsTable,
+  PRIMARY_STORY,
+  Subtitle,
+  Primary,
+  Description,
+  Stories
+} from '@storybook/addon-docs'
+import LinkTo from '@storybook/addon-links/react'
+import { Box, Typography } from '@material-ui/core'
+import { ActionDoc, FieldDoc, FormClasses, FormStyles } from './docs'
+
+export default {
+  title: 'Forms/Form',
+  component: Form,
+  parameters: {
+    docs: {
+      page: () => (
+        <>
+          <Primary />
+          <Description>
+            This components is made to display a simple form using [Formik](https://formik.org/).
+          </Description>
+          <Description>
+            If you want a complexe form you will have to create it by your self. We recommand using [Formik](https://formik.org/) even for complexe form.
+          </Description>
+          <ArgsTable story={PRIMARY_STORY} />
+          <Subtitle>References</Subtitle>
+          <Typography variant='body2' style={{ marginBottom: '5px' }}>
+            -{' '}
+            <LinkTo kind='Forms' story='Select'>
+              Select
+            </LinkTo>
+          </Typography>
+          <Typography variant='body2' style={{ marginBottom: '5px' }}>
+            -{' '}
+            <LinkTo kind='Forms' story='TextField'>
+              TextField
+            </LinkTo>
+          </Typography>
+          <Typography variant='body2' style={{ marginBottom: '5px' }}>
+            -{' '}
+            <LinkTo kind='Forms' story='DatePicker'>
+              DatePicker
+            </LinkTo>
+          </Typography>
+          <Typography variant='body2' style={{ marginBottom: '5px' }}>
+            -{' '}
+            <LinkTo kind='Forms' story='CheckBox'>
+              CheckBox
+            </LinkTo>
+          </Typography>
+          <Stories />
+        </>
+      )
+    }
+  },
+  argTypes: {
+    fields: {
+      table: {
+        type: {
+          summary: 'Field[]',
+          detail: FieldDoc
+        }
+      }
+    },
+    actions: {
+      table: {
+        type: {
+          summary: 'Action[]',
+          detail: ActionDoc
+        }
+      }
+    },
+    classes: {
+      table: {
+        type: {
+          summary: 'FormClasses',
+          detail: FormClasses
+        }
+      }
+    },
+    styles: {
+      table: {
+        type: {
+          summary: 'FormStyles',
+          detail: FormStyles
+        }
+      }
+    }
+  }
+} as Meta
+
+export const FormStory: Story<FormBasicProps> = (
+  args: FormBasicProps
+) => {
+  return <Form {...args} style={{ width: '500px' }} />
+}
+
+const fields: Field[] = [
+  {
+    key: "storybook-form-field-name",
+    name: "name",
+    label: "Name",
+    type: "textfield",
+    validator: (value) => value === undefined || value === '' ? 'The name is required' : undefined
+  },
+  {
+    key: "storybook-form-field-gender",
+    name: "gender",
+    label: "Gender",
+    type: "select",
+    defaultValue: '',
+    validator: (value) => value === undefined || value === '' ? 'The gender is required' : undefined,
+    selectProps: {options: [{key: "male", label: 'male'}, {key: "female", label: 'female'}]}
+  },
+  {
+    key: "storybook-form-field-terms",
+    name: "terms",
+    label: "I agree to the terms and conditions",
+    type: "checkbox",
+    defaultValue: false,
+    validator: (value) => value !== true ? 'You have to agree' : undefined
+  }
+]
+
+FormStory.args = {
+  fields: fields,
+  actions: [
+    {
+      label: 'validate',
+      key: 'validateFormButton',
+      type: "submit"
+    }
+  ],
+  onSubmit: (values) => console.log(values)
+}
+
+FormStory.storyName = 'Form'

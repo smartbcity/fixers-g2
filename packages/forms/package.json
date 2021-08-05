@@ -35,8 +35,10 @@
     "@material-ui/icons": "^4.11.2",
     "@material-ui/pickers": "^3.3.10",
     "@smartb/archetypes-ui-themes": "^0.1.48",
+    "@smartb/archetypes-ui-components": "^0.1.48",
     "clsx": "^1.1.1",
     "date-fns": "^2.21.3",
-    "react-device-detect": "^1.17.0"
+    "react-device-detect": "^1.17.0",
+    "formik": "^2.2.9"
   }
 }

@@ -1,4 +1,4 @@
-// export {AutoCompleteProps, AutoComplete} from './AutoComplete'
+export {AutoCompleteProps, AutoComplete} from './AutoComplete'
 export { CheckBoxProps, CheckBox } from './CheckBox'
 export { DatePickerProps, DatePicker } from './DatePicker'
 export { InputFormProps, InputForm } from './InputForm'
