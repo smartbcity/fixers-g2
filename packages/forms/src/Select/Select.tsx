@@ -43,6 +43,9 @@ export interface SelectStyles {
 }
 
 const useStyles = lowLevelStyles()({
+  formcontrol: {
+    width: "100%",
+  },
   root: {
     '& .MuiFilledInput-input': {
       margin: '0px 5px'
@@ -112,12 +115,12 @@ export interface SelectBasicProps extends BasicProps {
   /**
    * The event called when the value of the slect change
    */
-  onChangeValue?: (value: string) => void
+  onChangeValue?: (e: React.ChangeEvent<{ name?: string | undefined; value: unknown }>, value: string) => void
 
   /**
    * The event called when the values of the multiple select change
    */
-  onChangeValues?: (values: string[]) => void
+  onChangeValues?: (e: React.ChangeEvent<{ name?: string | undefined; value: unknown }>, values: string[]) => void
 
   /**
    * The size of the input
@@ -178,7 +181,7 @@ export const Select = React.forwardRef((props: SelectProps, ref: React.Forwarded
     values = [],
     onChangeValue,
     onChangeValues,
-    label = '',
+    name,
     options = [],
     className,
     placeholder = "",
@@ -203,9 +206,9 @@ export const Select = React.forwardRef((props: SelectProps, ref: React.Forwarded
     (e: React.ChangeEvent<{ name?: string | undefined; value: unknown }>) => {
       const eventValue = e.target.value
       if (Array.isArray(eventValue)) {
-        onChangeValues && onChangeValues(eventValue as string[])
+        onChangeValues && onChangeValues(e, eventValue as string[])
       }
-      onChangeValue && onChangeValue(eventValue as string)
+      onChangeValue && onChangeValue(e, eventValue as string)
     },
     [onChangeValue, onChangeValues],
   )
@@ -249,11 +252,12 @@ export const Select = React.forwardRef((props: SelectProps, ref: React.Forwarded
 
   const inputProp: InputBaseComponentProps = useMemo(() => {
     return {
-      name: label,
+      name: name,
       className: clsx(classes?.input, "AruiSelect-select"),
-      style: styles?.input
+      style: styles?.input,
+      id: id
     }
-  }, [label, onRemove, value, classes?.input, styles?.input])
+  }, [name, onRemove, value, classes?.input, styles?.input, id])
 
   return (
     <FormControl
@@ -266,6 +270,7 @@ export const Select = React.forwardRef((props: SelectProps, ref: React.Forwarded
         size === "small" && defaultClasses.inputSmall,
         disabled && defaultClasses.inputDisabled,
         error && defaultClasses.inputError,
+        classesLocal.formcontrol,
         "AruiSelect-root"
       )}
       style={style}
@@ -281,7 +286,6 @@ export const Select = React.forwardRef((props: SelectProps, ref: React.Forwarded
            onRemove ? classesLocal.selectPaddingWithClear : classesLocal.selectPadding,
            "AruiSelect-select"
            )}
-        id={id}
         variant={'filled'}
         value={multiple ? values : value}
         multiple={multiple}
