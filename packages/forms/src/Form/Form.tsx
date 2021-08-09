@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo } from 'react'
-import { Formik, FormikHelpers, useFormik } from "formik"
+import { FormikHelpers, useFormik } from "formik"
 import { ButtonProps, Button } from "@smartb/archetypes-ui-components"
 import { InputForm } from '../InputForm'
 import { SelectProps } from '../Select'
@@ -153,6 +153,7 @@ export const Form = (props: FormProps) => {
             style: styles?.field,
         }
         const textField = (
+            //@ts-ignore
             <InputForm
                 {...commonProps}
                 inputType="textField"
@@ -176,6 +177,7 @@ export const Form = (props: FormProps) => {
                 )
             case "select":
                 return field.selectProps?.multiple === true ? (
+                    //@ts-ignore
                     <InputForm
                         {...commonProps}
                         inputType="select"
@@ -184,6 +186,7 @@ export const Form = (props: FormProps) => {
                         {...field.selectProps}
                     />
                 ) : (
+                    //@ts-ignore
                     <InputForm
                         {...commonProps}
                         inputType="select"
