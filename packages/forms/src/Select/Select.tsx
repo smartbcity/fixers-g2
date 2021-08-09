@@ -115,12 +115,12 @@ export interface SelectBasicProps extends BasicProps {
   /**
    * The event called when the value of the slect change
    */
-  onChangeValue?: (e: React.ChangeEvent<{ name?: string | undefined; value: unknown }>, value: string) => void
+  onChangeValue?: (value: string) => void
 
   /**
    * The event called when the values of the multiple select change
    */
-  onChangeValues?: (e: React.ChangeEvent<{ name?: string | undefined; value: unknown }>, values: string[]) => void
+  onChangeValues?: (values: string[]) => void
 
   /**
    * The size of the input
@@ -206,9 +206,9 @@ export const Select = React.forwardRef((props: SelectProps, ref: React.Forwarded
     (e: React.ChangeEvent<{ name?: string | undefined; value: unknown }>) => {
       const eventValue = e.target.value
       if (Array.isArray(eventValue)) {
-        onChangeValues && onChangeValues(e, eventValue as string[])
+        onChangeValues && onChangeValues(eventValue as string[])
       }
-      onChangeValue && onChangeValue(e, eventValue as string)
+      onChangeValue && onChangeValue(eventValue as string)
     },
     [onChangeValue, onChangeValues],
   )

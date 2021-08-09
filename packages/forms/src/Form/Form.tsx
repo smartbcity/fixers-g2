@@ -150,14 +150,14 @@ export const Form = (props: FormProps) => {
                 field.textFieldProps?.className,
                 "AruiForm-field"
             ),
-            style: styles?.field
+            style: styles?.field,
         }
         const textField = (
             <InputForm
                 {...commonProps}
                 inputType="textField"
                 value={formik.values[field.name]}
-                onChange={formik.handleChange}
+                onChange={(value) => formik.setFieldValue(field.name, value, false)}
                 {...field.textFieldProps}
             />
         )
@@ -180,7 +180,7 @@ export const Form = (props: FormProps) => {
                         {...commonProps}
                         inputType="select"
                         values={formik.values[field.name]}
-                        onChangeValues={formik.handleChange}
+                        onChangeValues={(values) => formik.setFieldValue(field.name, values, false)}
                         {...field.selectProps}
                     />
                 ) : (
@@ -188,7 +188,7 @@ export const Form = (props: FormProps) => {
                         {...commonProps}
                         inputType="select"
                         value={formik.values[field.name]}
-                        onChangeValue={formik.handleChange}
+                        onChangeValue={(value) => formik.setFieldValue(field.name, value, false)}
                         {...field.selectProps}
                     />
                 )

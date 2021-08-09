@@ -163,7 +163,7 @@ const DatePickerBase = (
   )
 
   const onMobileChange = useCallback(
-    (e, value: string) => {
+    (value: string) => {
       onChangeDate && onChangeDate(new Date(value))
     },
     [onChangeDate]

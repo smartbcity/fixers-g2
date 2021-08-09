@@ -145,14 +145,13 @@ const CheckBoxBase = (props: CheckBoxProps, ref: React.ForwardedRef<HTMLElement>
   const {
     checked = false,
     label = '',
-    disabled = false,
-    onChange,
     className,
     style,
     id,
     classes,
     styles,
     error,
+    disabled,
     errorMessage,
     ...other
   } = props
@@ -174,7 +173,6 @@ const CheckBoxBase = (props: CheckBoxProps, ref: React.ForwardedRef<HTMLElement>
             checked={checked}
             disabled={disabled}
             id={id}
-            onChange={onChange}
             className={clsx(defaultClasses.root, classes?.checkbox, "AruiCheckBox-checkbox")}
             style={styles?.checkbox}
             disableRipple

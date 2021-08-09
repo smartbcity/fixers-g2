@@ -105,7 +105,7 @@ export const FormExample: Story<InputFormBasicProps> = () => {
       <InputForm
         label='email:'
         value={form.email}
-        onChange={(e, value) => setform({ ...form, email: value })}
+        onChange={(value) => setform({ ...form, email: value })}
         onRemove={() => setform({ ...form, email: '' })}
         id='FormExampleEmail'
         inputType='textField'
@@ -122,7 +122,7 @@ export const FormExample: Story<InputFormBasicProps> = () => {
       />
       <InputForm
         value={form.password}
-        onChange={(e, value) => setform({ ...form, password: value })}
+        onChange={(value) => setform({ ...form, password: value })}
         onRemove={() => setform({ ...form, password: '' })}
         label='password:'
         id='FormExamplePassword'
@@ -141,7 +141,7 @@ export const FormExample: Story<InputFormBasicProps> = () => {
         value={form.gender}
         label='gender:'
         inputType='select'
-        onChangeValue={(e, value) => setform({ ...form, gender: value })}
+        onChangeValue={(value) => setform({ ...form, gender: value })}
         options={[
           { key: 'male', label: 'Male' },
           { key: 'female', label: 'Female' }
