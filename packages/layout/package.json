@@ -34,6 +34,7 @@
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.57",
     "@smartb/archetypes-ui-components": "^0.1.48",
+    "@smartb/archetypes-ui-forms": "^0.1.48",
     "@smartb/archetypes-ui-themes": "^0.1.48",
     "clsx": "^1.1.1",
     "use-debounce": "^3.4.2"

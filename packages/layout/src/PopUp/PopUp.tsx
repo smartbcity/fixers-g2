@@ -5,7 +5,7 @@ import {
   DialogContent,
   DialogProps
 } from '@material-ui/core'
-import { Button, ButtonProps } from '../Buttons'
+import { Button, ButtonProps } from '@smartb/archetypes-ui-components'
 import {
   MergeMuiElementProps,
   BasicProps,
