@@ -3,7 +3,7 @@
   "repository": "https://gitlab.smartb.city/app/archetypes-ui.git",
   "author": "Adrien Poupard <adrien@smartb.city>",
   "license": "Apache-2.0",
-  "version": "0.1.49",
+  "version": "0.1.50",
   "description": "React components library for webpack",
   "private": false,
   "main": "dist/index.js",

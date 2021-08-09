@@ -3,7 +3,7 @@
   "repository": "https://gitlab.smartb.city/app/archetypes-ui.git",
   "author": "Adrien Poupard <adrien@smartb.city>",
   "license": "Apache-2.0",
-  "version": "0.1.49",
+  "version": "0.1.50",
   "description": "React components library",
   "private": false,
   "main": "dist/index.js",
@@ -34,7 +34,7 @@
     "@types/mermaid": "^8.2.4"
   },
   "dependencies": {
-    "@smartb/archetypes-ui-themes": "^0.1.49",
+    "@smartb/archetypes-ui-themes": "^0.1.50",
     "clsx": "^1.1.1",
     "mermaid": "^8.9.2",
     "vis-data": "^7.1.2",
