@@ -66,3 +66,8 @@ interface FormStyles {
     field?: React.CSSProperties
 }
 `
+
+export const FormState = `
+export type FormState = ReturnType<typeof useFormik>
+`
+

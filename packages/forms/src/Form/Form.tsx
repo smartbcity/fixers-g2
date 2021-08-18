@@ -1,5 +1,4 @@
-import React, { useCallback, useMemo } from 'react'
-import { FormikHelpers, useFormik } from "formik"
+import React, { useMemo } from 'react'
 import { ButtonProps, Button } from "@smartb/archetypes-ui-components"
 import { InputForm } from '../InputForm'
 import { SelectProps } from '../Select'
@@ -9,6 +8,7 @@ import { CheckBox, CheckBoxProps } from '../CheckBox'
 import { BasicProps, lowLevelStyles, MergeReactElementProps } from '@smartb/archetypes-ui-themes'
 import { Box } from '@material-ui/core'
 import clsx from 'clsx'
+import { FormState } from './useForm'
 
 export type Action = {
     label: React.ReactNode
@@ -76,15 +76,19 @@ export interface FormBasicProps extends BasicProps {
      */
     fields: Field[]
     /**
-     * the callback called when the form is being validated by the user
-     * please use the `setSubmitting` in the formikHelpers object to inform about any asynchronous task 
-     * before the end of the submission
+     * the state of the form provided by the hook `useForm`
      */
-    onSubmit: (values: { [key: string]: any }, formikHelpers: FormikHelpers<any>) => void | Promise<any>
+    formState: FormState
     /**
      * the actions displayed at the bottom of the component. To make a validation button you have to add an action with `type="submit"`
      */
     actions: Action[]
+    /**
+     * Determine wether the actions are placed above or below the content of the form
+     * 
+     * @default "below"
+     */
+    actionsPosition?: "above" | "below"
     /**
      * The classes applied to the different part of the component
      */
@@ -104,34 +108,8 @@ const useStyles = lowLevelStyles()({
 export type FormProps = MergeReactElementProps<"form", FormBasicProps>
 
 export const Form = (props: FormProps) => {
-    const { actions, fields, onSubmit, className, classes, styles, ...other } = props
+    const { actions, fields, onSubmit, className, classes, styles, formState, actionsPosition = "below", ...other } = props
     const defaultClasses = useStyles()
-
-    const initialValues = useMemo(() => {
-        const obj = {}
-        fields.forEach((field) => {
-            obj[field.name] = field.defaultValue
-        })
-        return obj
-    }, [])
-
-    const validate = useCallback(
-        (values) => {
-            const errors = {}
-            fields.forEach((field) => {
-                const error = field.validator(values[field.name])
-                if (error) errors[field.name] = error
-            })
-            return errors
-        },
-        [fields],
-    )
-
-    const formik = useFormik({
-        initialValues: initialValues,
-        onSubmit: onSubmit,
-        validate
-    });
 
     const fieldsMemoized = useMemo(() => fields.map((field) => {
         const commonProps = {
@@ -139,11 +117,11 @@ export const Form = (props: FormProps) => {
             id: field.key,
             label: field.label,
             name: field.name,
-            error: !!formik.errors[field.name],
-            errorMessage: formik.errors[field.name] as string,
+            error: !!formState.errors[field.name],
+            errorMessage: formState.errors[field.name] as string,
             className: clsx(
-                classes?.field, 
-                defaultClasses.field, 
+                classes?.field,
+                defaultClasses.field,
                 field.checkBoxProps?.className,
                 field.datePickerProps?.className,
                 field.selectProps?.className,
@@ -157,8 +135,8 @@ export const Form = (props: FormProps) => {
             <InputForm
                 {...commonProps}
                 inputType="textField"
-                value={formik.values[field.name]}
-                onChange={(value) => formik.setFieldValue(field.name, value, false)}
+                value={formState.values[field.name]}
+                onChange={(value) => formState.setFieldValue(field.name, value, false)}
                 {...field.textFieldProps}
             />
         )
@@ -170,8 +148,8 @@ export const Form = (props: FormProps) => {
                     <InputForm
                         {...commonProps}
                         inputType="datePicker"
-                        value={formik.values[field.name]}
-                        onChangeDate={(date) => formik.setFieldValue(field.name, date, false)}
+                        value={formState.values[field.name]}
+                        onChangeDate={(date) => formState.setFieldValue(field.name, date, false)}
                         {...field.datePickerProps}
                     />
                 )
@@ -181,8 +159,8 @@ export const Form = (props: FormProps) => {
                     <InputForm
                         {...commonProps}
                         inputType="select"
-                        values={formik.values[field.name]}
-                        onChangeValues={(values) => formik.setFieldValue(field.name, values, false)}
+                        values={formState.values[field.name]}
+                        onChangeValues={(values) => formState.setFieldValue(field.name, values, false)}
                         {...field.selectProps}
                     />
                 ) : (
@@ -190,8 +168,8 @@ export const Form = (props: FormProps) => {
                     <InputForm
                         {...commonProps}
                         inputType="select"
-                        value={formik.values[field.name]}
-                        onChangeValue={(value) => formik.setFieldValue(field.name, value, false)}
+                        value={formState.values[field.name]}
+                        onChangeValue={(value) => formState.setFieldValue(field.name, value, false)}
                         {...field.selectProps}
                     />
                 )
@@ -199,15 +177,15 @@ export const Form = (props: FormProps) => {
                 return (
                     <CheckBox
                         {...commonProps}
-                        checked={formik.values[field.name]}
-                        onChange={formik.handleChange}
+                        checked={formState.values[field.name]}
+                        onChange={formState.handleChange}
                         {...field.checkBoxProps}
                     />
                 )
             default:
                 return textField
         }
-    }), [fields, formik.values, formik.handleChange, formik.errors, classes?.field, styles?.field])
+    }), [fields, formState.values, formState.handleChange, formState.errors, classes?.field, styles?.field])
 
     const actionsDisplay = useMemo(() => {
         if (actions.length === 0) return undefined
@@ -232,12 +210,11 @@ export const Form = (props: FormProps) => {
 
     return (
         <form
-            onSubmit={formik.handleSubmit}
+            onSubmit={formState.handleSubmit}
             className={clsx(className, 'AruiForm-root')}
             {...other}
         >
-            {fieldsMemoized}
-            <Box
+            {actionsPosition === "above" && <Box
                 className={clsx(
                     'AruiForm-actions',
                     classes?.actions
@@ -245,7 +222,17 @@ export const Form = (props: FormProps) => {
                 style={styles?.actions}
             >
                 {actionsDisplay}
-            </Box>
+            </Box>}
+            {fieldsMemoized}
+            {actionsPosition === "below" && <Box
+                className={clsx(
+                    'AruiForm-actions',
+                    classes?.actions
+                )}
+                style={styles?.actions}
+            >
+                {actionsDisplay}
+            </Box>}
         </form>
     )
 }

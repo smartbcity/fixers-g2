@@ -1,6 +1,5 @@
-import React, { useState } from 'react'
-import { Form, FormBasicProps, Action, Field } from './Form'
-import { Option } from '../Select'
+import React from 'react'
+import { Form, FormBasicProps, Field } from './Form'
 import { Meta } from '@storybook/react'
 import { Story } from '@storybook/react/types-6-0'
 import {
@@ -12,8 +11,9 @@ import {
   Stories
 } from '@storybook/addon-docs'
 import LinkTo from '@storybook/addon-links/react'
-import { Box, Typography } from '@material-ui/core'
-import { ActionDoc, FieldDoc, FormClasses, FormStyles } from './docs'
+import { Typography } from '@material-ui/core'
+import { ActionDoc, FieldDoc, FormClasses, FormStyles, FormState } from './docs'
+import { useForm } from './useForm'
 
 export default {
   title: 'Forms/Form',
@@ -55,6 +55,10 @@ export default {
               CheckBox
             </LinkTo>
           </Typography>
+          <Description>
+            You have to use the hook `useForm` that will intialise the formState and return it to you. The `FormState` equal to the return type of the hook
+            useFormik.
+          </Description>
           <Stories />
         </>
       )
@@ -74,6 +78,14 @@ export default {
         type: {
           summary: 'Action[]',
           detail: ActionDoc
+        }
+      }
+    },
+    formState: {
+      table: {
+        type: {
+          summary: 'FormState',
+          detail: FormState
         }
       }
     },
@@ -99,7 +111,12 @@ export default {
 export const FormStory: Story<FormBasicProps> = (
   args: FormBasicProps
 ) => {
-  return <Form {...args} style={{ width: '500px' }} />
+
+  const formState = useForm({
+    fields: args.fields,
+    onSubmit: (values) => console.log(values)
+  })
+  return <Form {...args} formState={formState} style={{ width: '500px' }} />
 }
 
 const fields: Field[] = [
@@ -117,7 +134,7 @@ const fields: Field[] = [
     type: "select",
     defaultValue: '',
     validator: (value) => value === undefined || value === '' ? 'The gender is required' : undefined,
-    selectProps: {options: [{key: "male", label: 'male'}, {key: "female", label: 'female'}]}
+    selectProps: { options: [{ key: "male", label: 'male' }, { key: "female", label: 'female' }] }
   },
   {
     key: "storybook-form-field-terms",
@@ -137,8 +154,7 @@ FormStory.args = {
       key: 'validateFormButton',
       type: "submit"
     }
-  ],
-  onSubmit: (values) => console.log(values)
+  ]
 }
 
 FormStory.storyName = 'Form'
