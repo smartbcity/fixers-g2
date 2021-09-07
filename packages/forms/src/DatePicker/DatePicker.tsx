@@ -85,6 +85,10 @@ export interface DatePickerProps extends BasicProps {
    */
   native?: boolean
   /**
+   * The reference of the input
+   */
+  ref?: React.ForwardedRef<HTMLDivElement>
+  /**
    * The props passed to the native datePicker
    */
   nativeDatePickerProps?: Partial<TextFieldProps>
@@ -92,6 +96,7 @@ export interface DatePickerProps extends BasicProps {
    * The props passed to the material-ui datePicker
    */
   muiDatePickerProps?: Partial<MuiDatePickerProps>
+  name?: string
 }
 
 const DatePickerBase = (
@@ -112,6 +117,7 @@ const DatePickerBase = (
     size = 'medium',
     locale = 'fr',
     native,
+    name,
     muiDatePickerProps,
     nativeDatePickerProps,
     onRemove
@@ -214,7 +220,6 @@ const DatePickerBase = (
           openTo={dateType.openTo}
           variant='inline'
           format={format}
-          id={id}
           minDate={minDate}
           maxDate={maxDate}
           placeholder={placeholder}
@@ -229,7 +234,9 @@ const DatePickerBase = (
           )}
           InputProps={{
             disableUnderline: true,
-            ref: ref
+            ref: ref,
+            id: id,
+            name: name
           }}
           disabled={disabled}
           value={value ? value : null}

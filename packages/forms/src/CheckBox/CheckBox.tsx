@@ -1,11 +1,15 @@
 import React, { ChangeEvent, forwardRef } from 'react'
 
-import { Checkbox, FormControlLabel, CheckboxProps } from '@material-ui/core'
+import { Checkbox, FormControlLabel, CheckboxProps, FormHelperText } from '@material-ui/core'
 import { BasicProps, lowLevelStyles, MergeMuiElementProps, Theme, useTheme } from '@smartb/archetypes-ui-themes'
 import clsx from 'clsx'
 import { CheckIcon, UnCheckIcon } from '../assets/icons'
 
 const useStyles = lowLevelStyles<Theme>()({
+  base: {
+    position: "relative",
+    width: "fit-content"
+  },
   root: {
     borderRadius: 20,
     padding: '5px 10px'
@@ -50,10 +54,10 @@ const useStyles = lowLevelStyles<Theme>()({
       stroke: "#E6E9EF",
     },
     "& .AruiCheckBox-checkIcon rect": {
-      fill: () => "#E6E9EF"
+      fill: "#E6E9EF"
     },
     "&:hover .AruiCheckBox-checkIcon rect": {
-      fill: () => "#E6E9EF"
+      fill: "#E6E9EF"
     },
     "& .AruiCheckBox-checkIcon path": {
       fill: "#676879"
@@ -62,19 +66,31 @@ const useStyles = lowLevelStyles<Theme>()({
   iconSize: {
     width: '20px',
     height: '20px',
+  },
+  helperText: {
+    position: 'absolute',
+    top: '100%',
+    marginTop: '-2px',
+    marginLeft: '14px',
+    color: theme => theme.colors.error,
+    width: "max-content"
   }
 })
 
 export interface CheckBoxClasses {
+  formControl?: string
   checkbox?: string
   checkIcon?: string
   unCheckIcon?: string
+  helperText?: string
 }
 
 export interface CheckBoxStyles {
+  formControl?: React.CSSProperties
   checkbox?: React.CSSProperties
   checkIcon?: React.CSSProperties
   unCheckIcon?: React.CSSProperties
+  helperText?: React.CSSProperties
 }
 
 export interface CheckBoxBasicProps extends BasicProps {
@@ -98,9 +114,21 @@ export interface CheckBoxBasicProps extends BasicProps {
   disabled?: boolean
 
   /**
+   * Define if the value of the input is valid or not
+   * 
+   * @default false
+   */
+  error?: boolean
+
+  /**
+   * The message displayed when the input value is wrong
+   */
+  errorMessage?: string
+
+  /**
    * Callback fired when the state is changed
    */
-  onChange?: (event: ChangeEvent<HTMLInputElement>) => void
+  onChange?: (event: ChangeEvent<HTMLInputElement>, checked: boolean) => void
   /**
    * The classes applied to the different part of the component
    */
@@ -117,50 +145,60 @@ const CheckBoxBase = (props: CheckBoxProps, ref: React.ForwardedRef<HTMLElement>
   const {
     checked = false,
     label = '',
-    disabled = false,
-    onChange,
     className,
     style,
     id,
     classes,
     styles,
+    error,
+    disabled,
+    errorMessage,
     ...other
   } = props
   const theme = useTheme()
   const defaultClasses = useStyles(theme)
 
   return (
-    <FormControlLabel
-      ref={ref}
-      className={clsx(defaultClasses.container, className, disabled && defaultClasses.containerDisabled, "AruiCheckBox-root")}
+    <div
+      className={clsx(className, defaultClasses.base, "AruiTextfield-root")}
       style={style}
-      id={id}
-      control={
-        <Checkbox
-          {...other}
-          checked={checked}
-          disabled={disabled}
-          onChange={onChange}
-          className={clsx(defaultClasses.root, classes?.checkbox, "AruiCheckBox-checkbox")}
-          style={styles?.checkbox}
-          disableRipple
-          icon={
-            <UnCheckIcon
-              className={clsx(classes?.checkIcon, defaultClasses.iconSize, "AruiCheckBox-unCheckIcon")}
-              style={styles?.checkIcon}
-            />
-          }
-          checkedIcon={
-            <CheckIcon
-              className={clsx(defaultClasses.iconSize, classes?.unCheckIcon, "AruiCheckBox-checkIcon")}
-              style={styles?.unCheckIcon}
-            />
-          }
-        />
-      }
-      label={label}
-      labelPlacement='end'
-    />
+    >
+      <FormControlLabel
+        ref={ref}
+        className={clsx(defaultClasses.container, classes?.formControl, disabled && defaultClasses.containerDisabled, "AruiCheckBox-root")}
+        style={styles?.formControl}
+        control={
+          <Checkbox
+            {...other}
+            checked={checked}
+            disabled={disabled}
+            id={id}
+            className={clsx(defaultClasses.root, classes?.checkbox, "AruiCheckBox-checkbox")}
+            style={styles?.checkbox}
+            disableRipple
+            icon={
+              <UnCheckIcon
+                className={clsx(classes?.checkIcon, defaultClasses.iconSize, "AruiCheckBox-unCheckIcon")}
+                style={styles?.checkIcon}
+              />
+            }
+            checkedIcon={
+              <CheckIcon
+                className={clsx(defaultClasses.iconSize, classes?.unCheckIcon, "AruiCheckBox-checkIcon")}
+                style={styles?.unCheckIcon}
+              />
+            }
+          />
+        }
+        label={label}
+        labelPlacement='end'
+      />
+      {errorMessage !== '' && error && (
+        <FormHelperText className={clsx(defaultClasses.helperText, classes?.helperText, "AruiCheckBox-helperText")} style={styles?.helperText}>
+          {errorMessage}
+        </FormHelperText>
+      )}
+    </div>
   )
 }
 

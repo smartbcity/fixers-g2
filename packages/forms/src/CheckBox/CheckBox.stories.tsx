@@ -62,6 +62,13 @@ export const CheckBoxStates: Story<CheckBoxBasicProps> = () => {
         onChange={()=> setChecked(!checked)}
         disabled
       />
+      <CheckBox
+        label="Unvalid"
+        checked={checked}
+        onChange={()=> setChecked(!checked)}
+        error
+        errorMessage="there is an error"
+      />
     </Box>
   )
 }

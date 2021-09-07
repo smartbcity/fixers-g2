@@ -47,7 +47,7 @@ export const SelectStory: Story<SelectBasicProps> = (args: SelectBasicProps) => 
       value={args.multiple ? undefined : value}
       values={args.multiple ? values : undefined}
       onChangeValue={(value) => setvalue(value)}
-      onChangeValues={(values) => setvalues(values)}
+      onChangeValues={(value) => setvalues(values)}
       onRemove={() => { setvalue(""); setvalues([]) }}
       style={{ width: 350 }}
     />

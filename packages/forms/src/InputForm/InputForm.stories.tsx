@@ -47,6 +47,12 @@ export default {
               TextField
             </LinkTo>
           </Typography>
+          <Typography variant='body2' style={{ marginBottom: '5px' }}>
+            -{' '}
+            <LinkTo kind='Forms' story='DatePicker'>
+              DatePicker
+            </LinkTo>
+          </Typography>
           <Stories />
         </>
       )
@@ -93,7 +99,7 @@ export const InputFormStory: Story<InputFormBasicProps> = (
 }
 
 export const FormExample: Story<InputFormBasicProps> = () => {
-  const [form, setform] = useState({ email: '', password: '', gender: '' })
+  const [form, setform] = useState({ email: '', password: '', gender: '', birthday: undefined })
   return (
     <Box display='flex' flexDirection='column' alignItems='center'>
       <InputForm
@@ -141,6 +147,21 @@ export const FormExample: Story<InputFormBasicProps> = () => {
           { key: 'female', label: 'Female' }
         ]}
         placeholder='chosse your gender'
+        style={{
+          width: '400px',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          margin: '20px'
+        }}
+        styles={{ label: { marginBottom: '0px' }, input: { width: '60%' } }}
+      />
+      <InputForm
+        value={form.birthday}
+        label='birthday:'
+        inputType='datePicker'
+        onChangeDate={(date) => setform({ ...form, birthday: date })}
+        placeholder='Choose your birthday'
         style={{
           width: '400px',
           display: 'flex',

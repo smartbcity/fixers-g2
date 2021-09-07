@@ -1,11 +1,17 @@
 import React from "react";
 import { ThemeContextProvider } from "@smartb/archetypes-ui-themes";
-import { StorybookCanvas } from "@smartb/archetypes-ui-documentation";
+import { StorybookCanvas } from "../packages/storybook-documentation/src/StorybookCanvas";
 import { getTheme, muiTheme } from "../docs/Theme/Theme";
 
-import font from "./preview.css";
+import "./preview.css";
 
 export const parameters = {
+  docs: {
+    container: StorybookCanvas,
+    components: {
+      Canvas: StorybookCanvas,
+    },
+  },
   options: {
     storySort: {
       order: [
@@ -16,9 +22,6 @@ export const parameters = {
         "Layout",
       ],
     },
-  },
-  docs: {
-    container: StorybookCanvas,
   },
 };
 
