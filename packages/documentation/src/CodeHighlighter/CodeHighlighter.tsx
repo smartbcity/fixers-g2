@@ -14,7 +14,7 @@ import {
 } from 'react-syntax-highlighter/dist/esm/styles/hljs'
 import stringifyObject from 'stringify-object'
 import { useMemo } from 'react'
-import { BasicProps, lowLevelStyles } from '@smartb/archetypes-ui-themes'
+import { BasicProps, lowLevelStyles } from '@smartb/g2-themes'
 import { Box, Typography } from '@material-ui/core'
 import clsx from 'clsx'
 

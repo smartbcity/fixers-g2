@@ -1,5 +1,5 @@
 import React from 'react'
-import { highLevelStyles } from '@smartb/archetypes-ui-themes'
+import { highLevelStyles } from '@smartb/g2-themes'
 import { DocsContainer } from '@storybook/addon-docs'
 import "./font.css"
 

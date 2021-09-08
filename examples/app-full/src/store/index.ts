@@ -1,4 +1,4 @@
-import { initRedux } from "@smartb/archetypes-ui-providers";
+import { initRedux } from "@smartb/g2-providers";
 
 const reducers = {
 }

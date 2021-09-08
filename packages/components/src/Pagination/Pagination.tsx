@@ -7,7 +7,7 @@ import {
 import {
   BasicProps,
   MergeMuiElementProps
-} from '@smartb/archetypes-ui-themes'
+} from '@smartb/g2-themes'
 import clsx from 'clsx'
 
 interface PaginationClasses {

@@ -1,5 +1,5 @@
 import React from 'react'
-import { MenuItems } from '@smartb/archetypes-ui-components'
+import { MenuItems } from '@smartb/g2-components'
 import {
   MenuItem as MuiMenuItem,
   Typography,
@@ -10,7 +10,7 @@ import {
   MergeReactElementProps,
   BasicProps,
   lowLevelStyles
-} from '@smartb/archetypes-ui-themes'
+} from '@smartb/g2-themes'
 import clsx from 'clsx'
 
 const useStyles = lowLevelStyles()({

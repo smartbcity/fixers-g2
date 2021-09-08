@@ -6,7 +6,7 @@ import {
 } from '@material-ui/core'
 import { Check, Clear } from '@material-ui/icons'
 import { useInputStyles } from '../style'
-import { BasicProps, lowLevelStyles, MergeMuiElementProps, useTheme } from '@smartb/archetypes-ui-themes'
+import { BasicProps, lowLevelStyles, MergeMuiElementProps, useTheme } from '@smartb/g2-themes'
 import clsx from 'clsx'
 import { SearchIcon } from '../assets/icons'
 

@@ -1,7 +1,7 @@
 import React from 'react'
 import { makeStyles, Box, Typography } from '@material-ui/core'
 import { Folder as MuiFolder } from '@material-ui/icons'
-import { BasicProps } from '@smartb/archetypes-ui-themes'
+import { BasicProps } from '@smartb/g2-themes'
 
 const useStyles = makeStyles(() => ({
   folder: {

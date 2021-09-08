@@ -1,7 +1,7 @@
 import { Box, List, ListItem, ListItemText } from '@material-ui/core'
 import clsx from 'clsx'
 import React from 'react'
-import { BasicProps, lowLevelStyles } from '@smartb/archetypes-ui-themes'
+import { BasicProps, lowLevelStyles } from '@smartb/g2-themes'
 
 const useStyles = lowLevelStyles()({
   drawerSpacer: {

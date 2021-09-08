@@ -10,7 +10,7 @@ import MuiStepLabel, {
 import Button, { ButtonProps } from '@material-ui/core/Button'
 import { Paper, PaperProps } from '@material-ui/core'
 import clsx from 'clsx'
-import { BasicProps, lowLevelStyles } from '@smartb/archetypes-ui-themes'
+import { BasicProps, lowLevelStyles } from '@smartb/g2-themes'
 
 const useStyles = lowLevelStyles()((theme: Theme) => ({
   root: {

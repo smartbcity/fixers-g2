@@ -11,7 +11,7 @@ import {
 import { Clear } from '@material-ui/icons'
 import { SelectIcon } from '../assets/icons'
 import { useInputStyles } from '../style'
-import { BasicProps, lowLevelStyles, MergeMuiElementProps, useTheme } from '@smartb/archetypes-ui-themes'
+import { BasicProps, lowLevelStyles, MergeMuiElementProps, useTheme } from '@smartb/g2-themes'
 import clsx from 'clsx'
 import { CheckBox } from '../CheckBox'
 

@@ -7,7 +7,7 @@ import {
   Theme as SBTheme,
   useTheme,
   lowLevelStyles
-} from '@smartb/archetypes-ui-themes'
+} from '@smartb/g2-themes'
 import { AppBarLayout, AppBarLayoutProps } from '../AppBarLayout'
 
 const useStyles = lowLevelStyles<

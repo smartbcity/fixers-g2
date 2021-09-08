@@ -15,7 +15,7 @@ import { ArgsTable, Title, Primary, Stories } from '@storybook/addon-docs'
 import { styles, classes, Action } from './types'
 import { Box, Typography } from '@material-ui/core'
 import imageHolder from '../assets/imageHolder.jpg'
-import { Button } from '@smartb/archetypes-ui-components'
+import { Button } from '@smartb/g2-components'
 import { withDesign } from 'storybook-addon-designs'
 
 export default {

@@ -6,12 +6,12 @@ import {
   CheckboxProps as MuiCheckboxProps
 } from '@material-ui/core'
 import { RadioButtonUnchecked, CheckCircle } from '@material-ui/icons'
-import { Theme, useTheme } from '@smartb/archetypes-ui-themes'
+import { Theme, useTheme } from '@smartb/g2-themes'
 import {
   BasicProps,
   MergeMuiElementProps,
   lowLevelStyles
-} from '@smartb/archetypes-ui-themes'
+} from '@smartb/g2-themes'
 
 /**
  * @deprecated

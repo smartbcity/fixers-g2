@@ -1,7 +1,7 @@
 import { Chip } from '@material-ui/core'
 import { Autocomplete as MuiAutocomplete, AutocompleteProps as MuiAutocompleteProps, AutocompleteGetTagProps, AutocompleteRenderInputParams } from '@material-ui/lab'
 import React, { forwardRef, useCallback } from 'react'
-import { BasicProps, lowLevelStyles, MergeMuiElementProps } from '@smartb/archetypes-ui-themes'
+import { BasicProps, lowLevelStyles, MergeMuiElementProps } from '@smartb/g2-themes'
 import { TextField, TextFieldProps } from '../TextField'
 import clsx from 'clsx'
 

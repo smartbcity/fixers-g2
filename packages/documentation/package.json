@@ -1,5 +1,5 @@
 {
-  "name": "@smartb/archetypes-ui-documentation",
+  "name": "@smartb/g2-documentation",
   "version": "0.1.51",
   "description": "Components for documentation",
   "author": "SmartB",
@@ -30,7 +30,7 @@
     "react-dom": "^17.0.2"
   },
   "dependencies": {
-    "@smartb/archetypes-ui-themes": "^0.1.51",
+    "@smartb/g2-themes": "^0.1.51",
     "clsx": "^1.1.1",
     "github-markdown-css": "^4.0.0",
     "react-markdown": "^6.0.2",

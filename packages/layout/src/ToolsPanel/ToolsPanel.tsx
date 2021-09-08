@@ -1,5 +1,5 @@
 import React from 'react'
-import { MenuItems } from '@smartb/archetypes-ui-components'
+import { MenuItems } from '@smartb/g2-components'
 import { ExpandMore } from '@material-ui/icons'
 import {
   ExpansionPanel,
@@ -10,7 +10,7 @@ import {
   ListItem,
   List
 } from '@material-ui/core'
-import { BasicProps, lowLevelStyles } from '@smartb/archetypes-ui-themes'
+import { BasicProps, lowLevelStyles } from '@smartb/g2-themes'
 import clsx from 'clsx'
 
 const useStyles = lowLevelStyles()({

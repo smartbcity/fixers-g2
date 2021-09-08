@@ -1,7 +1,7 @@
 import React from 'react'
 import { Grid, Hidden } from '@material-ui/core'
 import clsx from 'clsx'
-import { lowLevelStyles } from '@smartb/archetypes-ui-themes'
+import { lowLevelStyles } from '@smartb/g2-themes'
 
 const useStyles = lowLevelStyles()({
   img: {

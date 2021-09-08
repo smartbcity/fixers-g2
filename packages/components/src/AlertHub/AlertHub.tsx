@@ -2,7 +2,7 @@ import React, { forwardRef, useCallback } from 'react'
 import { SnackbarProvider, useSnackbar, SnackbarProviderProps } from 'notistack'
 import { Alert, AlertProps } from '../Alert/Alert'
 import Grow from '@material-ui/core/Grow'
-import { lowLevelStyles } from '@smartb/archetypes-ui-themes'
+import { lowLevelStyles } from '@smartb/g2-themes'
 import clsx from 'clsx'
 
 const useSytles = lowLevelStyles()({

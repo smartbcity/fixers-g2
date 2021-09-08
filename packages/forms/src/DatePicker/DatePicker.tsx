@@ -10,7 +10,7 @@ import {
   BasicProps,
   lowLevelStyles,
   useTheme
-} from '@smartb/archetypes-ui-themes'
+} from '@smartb/g2-themes'
 import { isMobile } from 'react-device-detect'
 import { TextField, TextFieldProps } from '../TextField'
 import DateFnsUtils from '@date-io/date-fns'

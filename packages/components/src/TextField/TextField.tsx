@@ -9,7 +9,7 @@ import {
   BasicProps,
   MergeMuiElementProps,
   lowLevelStyles
-} from '@smartb/archetypes-ui-themes'
+} from '@smartb/g2-themes'
 import clsx from 'clsx'
 
 /**

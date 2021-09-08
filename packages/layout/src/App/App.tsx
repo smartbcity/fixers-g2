@@ -9,8 +9,8 @@ import {
   Theme as SBTheme,
   useTheme,
   lowLevelStyles
-} from '@smartb/archetypes-ui-themes'
-import { Menu, MenuItem } from '@smartb/archetypes-ui-components'
+} from '@smartb/g2-themes'
+import { Menu, MenuItem } from '@smartb/g2-components'
 import { ToolsPanel } from '../ToolsPanel'
 import { AppBarLayout, AppBarLayoutProps } from '../AppBarLayout'
 import { TitleContainer } from './TitleContainer'

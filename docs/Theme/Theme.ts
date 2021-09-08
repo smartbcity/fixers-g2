@@ -1,5 +1,5 @@
 import { createMuiTheme } from "@material-ui/core/styles";
-import { Theme } from "@smartb/archetypes-ui-Themes";
+import { Theme } from "@smartb/g2-themes";
 
 const round = (value: number) => {
   return Math.round(value * 100) / 100;

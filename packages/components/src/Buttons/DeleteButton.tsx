@@ -1,6 +1,6 @@
 import React, { forwardRef } from 'react'
 import { Delete } from '../icons'
-import { lowLevelStyles } from '@smartb/archetypes-ui-themes'
+import { lowLevelStyles } from '@smartb/g2-themes'
 import { Button, ButtonProps } from './Button'
 
 const useStyles = lowLevelStyles()({

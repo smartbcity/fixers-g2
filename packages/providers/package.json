@@ -1,6 +1,6 @@
 {
-  "name": "@smartb/archetypes-ui-providers",
-  "repository": "https://gitlab.smartb.city/app/archetypes-ui.git",
+  "name": "@smartb/g2-providers",
+  "repository": "https://gitlab.smartb.city/fixers/g2.git",
   "author": "Adrien Poupard <adrien@smartb.city>",
   "license": "Apache-2.0",
   "version": "0.1.51",
@@ -36,8 +36,8 @@
   "dependencies": {
     "@react-keycloak/ssr": "^3.3.0",
     "@react-keycloak/web": "^3.4.0",
-    "@smartb/archetypes-ui-components": "^0.1.51",
-    "@smartb/archetypes-ui-themes": "^0.1.51",
+    "@smartb/g2-components": "^0.1.51",
+    "@smartb/g2-themes": "^0.1.51",
     "clsx": "^1.1.1",
     "connected-react-router": "^6.9.1",
     "history": "^4.10.1",

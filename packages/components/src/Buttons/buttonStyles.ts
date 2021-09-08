@@ -1,5 +1,5 @@
-import { Theme } from '@smartb/archetypes-ui-themes'
-import { lowLevelStyles } from '@smartb/archetypes-ui-themes'
+import { Theme } from '@smartb/g2-themes'
+import { lowLevelStyles } from '@smartb/g2-themes'
 
 export const containedUseStyles = lowLevelStyles<Theme>()({
     root: {

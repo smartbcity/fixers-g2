@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
-import { MenuItems } from '@smartb/archetypes-ui-components'
+import { MenuItems } from '@smartb/g2-components'
 import { IconButton, Menu as MuiMenu } from '@material-ui/core'
 import { ItemsLayout, Display, ItemsLayoutBasicProps } from '../ItemsLayout'
 import { TabsMenuProps } from '../TabsMenu'
 import { TabsMenu } from '../TabsMenu'
 import clsx from 'clsx'
-import { BasicProps, lowLevelStyles } from '@smartb/archetypes-ui-themes'
+import { BasicProps, lowLevelStyles } from '@smartb/g2-themes'
 
 const useStyles = lowLevelStyles()({
   menu: {
