@@ -7,8 +7,8 @@ import {
   MuiStepperWrapperProps,
   MuiStepperWrapperLabel
 } from './MuiStepperWrapper'
-import { Theme, useTheme } from '@smartb/archetypes-ui-themes'
-import { lowLevelStyles } from '@smartb/archetypes-ui-themes'
+import { Theme, useTheme } from '@smartb/g2-themes'
+import { lowLevelStyles } from '@smartb/g2-themes'
 
 const useStyles = lowLevelStyles<Theme>()({
     transparent: {

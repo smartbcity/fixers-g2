@@ -11,12 +11,12 @@ import {
 import React, { forwardRef, useMemo } from 'react'
 import { Typography } from '@material-ui/core'
 import clsx from 'clsx'
-import { Theme, useTheme } from '@smartb/archetypes-ui-themes'
+import { Theme, useTheme } from '@smartb/g2-themes'
 import {
   MergeMuiElementProps,
   lowLevelStyles,
   BasicProps
-} from '@smartb/archetypes-ui-themes'
+} from '@smartb/g2-themes'
 import { FilledArrow } from '../icons'
 
 const useStyles = lowLevelStyles<Theme>()({

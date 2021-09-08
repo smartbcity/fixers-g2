@@ -1,5 +1,5 @@
 import React from "react";
-import { useTheme } from "@smartb/archetypes-ui-components";
+import { useTheme } from "@smartb/g2-components";
 import { highLevelStyles } from "utils";
 import { useTranslation } from "react-i18next";
 

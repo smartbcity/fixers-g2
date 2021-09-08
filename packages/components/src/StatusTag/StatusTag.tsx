@@ -1,5 +1,5 @@
 import { Chip, ChipProps } from '@material-ui/core'
-import { BasicProps, lowLevelStyles, MergeMuiElementProps, useTheme } from '@smartb/archetypes-ui-themes'
+import { BasicProps, lowLevelStyles, MergeMuiElementProps, useTheme } from '@smartb/g2-themes'
 import clsx from 'clsx'
 import React, { forwardRef, useMemo } from 'react'
 

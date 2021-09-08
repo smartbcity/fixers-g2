@@ -1,6 +1,6 @@
 import React from 'react'
 import { ReactComponent } from './checkIcon.svg'
-import { MergeReactElementProps } from '@smartb/archetypes-ui-themes'
+import { MergeReactElementProps } from '@smartb/g2-themes'
 
 interface CheckIconProps {
 }

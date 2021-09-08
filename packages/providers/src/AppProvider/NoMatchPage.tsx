@@ -5,8 +5,8 @@ import {
   BasicProps,
   lowLevelStyles,
   MergeMuiElementProps
-} from '@smartb/archetypes-ui-themes'
-import { Button } from '@smartb/archetypes-ui-components'
+} from '@smartb/g2-themes'
+import { Button } from '@smartb/g2-components'
 import { Link, LinkProps } from 'react-router-dom'
 import clsx from 'clsx'
 

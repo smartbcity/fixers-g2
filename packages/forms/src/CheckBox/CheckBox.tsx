@@ -1,7 +1,7 @@
 import React, { ChangeEvent, forwardRef } from 'react'
 
 import { Checkbox, FormControlLabel, CheckboxProps, FormHelperText } from '@material-ui/core'
-import { BasicProps, lowLevelStyles, MergeMuiElementProps, Theme, useTheme } from '@smartb/archetypes-ui-themes'
+import { BasicProps, lowLevelStyles, MergeMuiElementProps, Theme, useTheme } from '@smartb/g2-themes'
 import clsx from 'clsx'
 import { CheckIcon, UnCheckIcon } from '../assets/icons'
 

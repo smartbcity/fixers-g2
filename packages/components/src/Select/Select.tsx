@@ -9,7 +9,7 @@ import {
   MergeMuiElementProps,
   BasicProps,
   lowLevelStyles
-} from '@smartb/archetypes-ui-themes'
+} from '@smartb/g2-themes'
 import clsx from 'clsx'
 
 const useStyles = lowLevelStyles()({

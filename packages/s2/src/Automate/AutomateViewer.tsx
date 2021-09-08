@@ -4,9 +4,9 @@ import {
   BasicProps,
   MergeReactElementProps,
   lowLevelStyles
-} from '@smartb/archetypes-ui-themes'
+} from '@smartb/g2-themes'
 import clsx from 'clsx'
-import { useTheme } from '@smartb/archetypes-ui-themes'
+import { useTheme } from '@smartb/g2-themes'
 
 const useStyles = lowLevelStyles()({
   container: {

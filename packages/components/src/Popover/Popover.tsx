@@ -4,7 +4,7 @@ import {
   MergeMuiElementProps,
   Theme,
   useTheme
-} from '@smartb/archetypes-ui-themes'
+} from '@smartb/g2-themes'
 import { ClickAwayListener, Popper, PopperProps } from '@material-ui/core'
 import React, { forwardRef, useCallback } from 'react'
 import { Close } from '@material-ui/icons'

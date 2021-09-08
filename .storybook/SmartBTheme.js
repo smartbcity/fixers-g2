@@ -3,7 +3,7 @@ import logo from "../docs/public/smartb.png";
 
 export default create({
   base: "light",
-  brandTitle: "SmartB E2",
-  brandUrl: "https://storybook.smartb.city",
+  brandTitle: "SmartB G2",
+  brandUrl: "https://docs.smartb.city/g2",
   brandImage: logo,
 });

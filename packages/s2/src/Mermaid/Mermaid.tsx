@@ -3,7 +3,7 @@ import mermaid from 'mermaid'
 import {
   MergeReactElementProps,
   BasicProps
-} from '@smartb/archetypes-ui-themes'
+} from '@smartb/g2-themes'
 import clsx from 'clsx'
 
 export interface MermaidBasicProps extends BasicProps {

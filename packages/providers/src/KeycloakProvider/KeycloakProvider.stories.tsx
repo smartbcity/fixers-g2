@@ -3,7 +3,7 @@ import { KeycloakProvider as AruiKeycloakProvider } from './KeycloakProvider'
 import { Meta } from '@storybook/react'
 import { Story } from '@storybook/react/types-6-0'
 import { useAuth, KeycloackService } from './useAuth'
-import { Button } from '@smartb/archetypes-ui-components'
+import { Button } from '@smartb/g2-components'
 import { Link, Typography } from '@material-ui/core'
 import {
   ArgsTable,
@@ -12,7 +12,7 @@ import {
   Primary,
   Description
 } from '@storybook/addon-docs'
-import { CodeHighlighter } from '@smartb/archetypes-ui-components'
+import { CodeHighlighter } from '@smartb/g2-components'
 import {
   localUseAuth,
   staticUseAuth,

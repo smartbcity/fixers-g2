@@ -4,7 +4,7 @@ import { Select, SelectProps, SelectClasses, SelectStyles } from '../Select'
 import { TextField, TextFieldProps, TextFieldClasses, TextFieldStyles } from '../TextField'
 import { DatePicker, DatePickerProps } from '../DatePicker'
 import { useInputStyles } from '../style'
-import { BasicProps, useTheme } from '@smartb/archetypes-ui-themes'
+import { BasicProps, useTheme } from '@smartb/g2-themes'
 import clsx from 'clsx'
 
 interface InputFormClasses {

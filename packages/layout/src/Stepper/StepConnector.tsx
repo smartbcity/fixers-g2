@@ -2,7 +2,7 @@ import {
   StepConnector as MuiStepConnector,
   withStyles
 } from '@material-ui/core'
-import { Theme } from '@smartb/archetypes-ui-themes'
+import { Theme } from '@smartb/g2-themes'
 
 export const StepConnector = (theme: Theme) =>
   withStyles({

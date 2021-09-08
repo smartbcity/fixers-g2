@@ -1,6 +1,6 @@
 {
-  "name": "@smartb/archetypes-ui-themes",
-  "repository": "https://gitlab.smartb.city/app/archetypes-ui.git",
+  "name": "@smartb/g2-themes",
+  "repository": "https://gitlab.smartb.city/fixers/g2.git",
   "author": "Adrien Poupard <adrien@smartb.city>",
   "license": "Apache-2.0",
   "version": "0.1.51",

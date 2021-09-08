@@ -1,4 +1,4 @@
-import { lowLevelStyles, Theme } from '@smartb/archetypes-ui-themes'
+import { lowLevelStyles, Theme } from '@smartb/g2-themes'
 
 const darkGrey = '#323338'
 const textFieldGrey = '#C5C7D0'

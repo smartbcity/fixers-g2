@@ -6,7 +6,7 @@ import { Box, Typography } from '@material-ui/core'
 import { Button } from '../Buttons'
 import { withDesign } from 'storybook-addon-designs'
 import { classes, styles } from './docs'
-import { InputForm } from '@smartb/archetypes-ui-forms'
+import { InputForm } from '@smartb/g2-forms'
 
 export default {
   title: 'Components/Popover',

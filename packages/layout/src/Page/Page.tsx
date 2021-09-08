@@ -1,7 +1,7 @@
 import { Box, BoxProps } from '@material-ui/core'
-import { BackButton } from '@smartb/archetypes-ui-components'
+import { BackButton } from '@smartb/g2-components'
 import React, { useEffect, useState } from 'react'
-import { BasicProps, MergeMuiElementProps } from '@smartb/archetypes-ui-themes'
+import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 
 interface PageClasses {
   header: string

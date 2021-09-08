@@ -1,11 +1,11 @@
 import React, { useMemo } from 'react'
-import { ButtonProps, Button } from "@smartb/archetypes-ui-components"
+import { ButtonProps, Button } from "@smartb/g2-components"
 import { InputForm } from '../InputForm'
 import { SelectProps } from '../Select'
 import { TextFieldProps } from '../TextField'
 import { DatePickerProps } from '../DatePicker'
 import { CheckBox, CheckBoxProps } from '../CheckBox'
-import { BasicProps, lowLevelStyles, MergeReactElementProps } from '@smartb/archetypes-ui-themes'
+import { BasicProps, lowLevelStyles, MergeReactElementProps } from '@smartb/g2-themes'
 import { Box } from '@material-ui/core'
 import clsx from 'clsx'
 import { FormState } from './useForm'

@@ -6,7 +6,7 @@ import {
   BasicProps,
   MergeMuiElementProps,
   lowLevelStyles
-} from '@smartb/archetypes-ui-themes'
+} from '@smartb/g2-themes'
 import { Tooltip } from '../Tooltip'
 import clsx from 'clsx'
 

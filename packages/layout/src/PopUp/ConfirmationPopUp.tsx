@@ -1,8 +1,8 @@
 import React, { useCallback, useMemo, useState } from 'react'
 import { Typography } from '@material-ui/core'
 import { PopUp, PopUpProps, Action } from './PopUp'
-import { BasicProps, lowLevelStyles, MergeMuiElementProps } from '@smartb/archetypes-ui-themes'
-import { TextField } from '@smartb/archetypes-ui-forms'
+import { BasicProps, lowLevelStyles, MergeMuiElementProps } from '@smartb/g2-themes'
+import { TextField } from '@smartb/g2-forms'
 import clsx from 'clsx'
 
 const useStyles = lowLevelStyles()({

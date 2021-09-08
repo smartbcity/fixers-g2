@@ -1,6 +1,6 @@
 import { createMuiTheme } from '@material-ui/core'
-import { Theme as AruiTheme } from '@smartb/archetypes-ui-themes'
-import { StyleProps } from '@smartb/archetypes-ui-layout'
+import { Theme as AruiTheme } from '@smartb/g2-themes'
+import { StyleProps } from '@smartb/g2-layout'
 
 
 export const appLayoutStyleProps: StyleProps = {

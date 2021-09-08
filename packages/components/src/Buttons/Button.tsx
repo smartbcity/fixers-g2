@@ -4,8 +4,8 @@ import {
   ButtonProps as MuiButtonProps,
   CircularProgress
 } from '@material-ui/core'
-import { BasicProps, MergeMuiElementProps } from '@smartb/archetypes-ui-themes'
-import { useTheme } from '@smartb/archetypes-ui-themes'
+import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
+import { useTheme } from '@smartb/g2-themes'
 import { Check, Close, ReportProblemOutlined } from '@material-ui/icons'
 import {
   containedUseStyles,

@@ -1,4 +1,4 @@
-import { MergeMuiElementProps } from '@smartb/archetypes-ui-themes'
+import { MergeMuiElementProps } from '@smartb/g2-themes'
 import React from 'react'
 import { Route, Switch, SwitchProps } from 'react-router'
 import { NoMatchPage, NoMatchPageProps } from './NoMatchPage'

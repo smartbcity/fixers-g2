@@ -4,7 +4,7 @@ import { Typography } from "@material-ui/core";
 import { SBButton, Panel, Card } from "../../packages/components/src";
 import { getShadows } from "./Theme";
 import ThemeGetter from "./ThemeGetter";
-import { ThemeColors, useThemeContext } from "@smartb/archetypes-ui-themes";
+import { ThemeColors, useThemeContext } from "@smartb/g2-themes";
 
 const useStyles = makeStyles(() =>
   createStyles({

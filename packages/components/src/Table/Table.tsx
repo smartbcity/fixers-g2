@@ -9,8 +9,8 @@ import {
   BasicProps,
   lowLevelStyles,
   MergeMuiElementProps
-} from '@smartb/archetypes-ui-themes'
-import { useTheme, Theme } from '@smartb/archetypes-ui-themes'
+} from '@smartb/g2-themes'
+import { useTheme, Theme } from '@smartb/g2-themes'
 import { Pagination } from '../Pagination'
 
 const useStyles = lowLevelStyles()({

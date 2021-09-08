@@ -1,5 +1,5 @@
 import { Box } from '@material-ui/core'
-import { BasicProps } from '@smartb/archetypes-ui-themes'
+import { BasicProps } from '@smartb/g2-themes'
 import clsx from 'clsx'
 import React from 'react'
 

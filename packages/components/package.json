@@ -1,6 +1,6 @@
 {
-  "name": "@smartb/archetypes-ui-components",
-  "repository": "https://gitlab.smartb.city/app/archetypes-ui.git",
+  "name": "@smartb/g2-components",
+  "repository": "https://gitlab.smartb.city/fixers/g2.git",
   "author": "Adrien Poupard <adrien@smartb.city>",
   "license": "Apache-2.0",
   "version": "0.1.51",
@@ -25,7 +25,7 @@
     "dist"
   ],
   "devDependencies": {
-    "@smartb/archetypes-ui-forms": "^0.1.51",
+    "@smartb/g2-forms": "^0.1.51",
     "@types/react-dropzone": "^5.1.0",
     "@types/stringify-object": "^3.3.0"
   },
@@ -38,7 +38,7 @@
   "dependencies": {
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.57",
-    "@smartb/archetypes-ui-themes": "^0.1.51",
+    "@smartb/g2-themes": "^0.1.51",
     "clsx": "^1.1.1",
     "notistack": "2.0.1-alpha.2",
     "react-data-table-component": "^6.9.7",

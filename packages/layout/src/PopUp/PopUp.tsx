@@ -5,12 +5,12 @@ import {
   DialogContent,
   DialogProps
 } from '@material-ui/core'
-import { Button, ButtonProps } from '@smartb/archetypes-ui-components'
+import { Button, ButtonProps } from '@smartb/g2-components'
 import {
   MergeMuiElementProps,
   BasicProps,
   lowLevelStyles
-} from '@smartb/archetypes-ui-themes'
+} from '@smartb/g2-themes'
 import clsx from 'clsx'
 import { Close } from '@material-ui/icons'
 

@@ -1,5 +1,5 @@
 import React from "react";
-import { ThemeContextProvider } from "@smartb/archetypes-ui-themes";
+import { ThemeContextProvider } from "@smartb/g2-themes";
 import { StorybookCanvas } from "../packages/storybook-documentation/src/StorybookCanvas";
 import { getTheme, muiTheme } from "../docs/Theme/Theme";
 

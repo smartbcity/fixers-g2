@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react'
 import { Box, Typography, makeStyles } from '@material-ui/core'
 import { PictureAsPdf, Clear } from '@material-ui/icons'
 import pdfLogo from '../assets/pdf.png'
-import { BasicProps } from '@smartb/archetypes-ui-themes'
+import { BasicProps } from '@smartb/g2-themes'
 import { ClipLoader } from 'react-spinners'
 import { CheckBox } from '../Checkbox'
-import { useTheme } from '@smartb/archetypes-ui-themes'
+import { useTheme } from '@smartb/g2-themes'
 
 const useStyles = makeStyles(() => ({
   iframe: {
