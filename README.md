@@ -11,6 +11,7 @@
 npm install @smartb/g2-components
 npm install @smartb/g2-documentation
 npm install @smartb/g2-layout
+npm install @smartb/g2-notifications
 npm install @smartb/g2-forms
 npm install @smartb/g2-providers
 npm install @smartb/g2-themes
@@ -21,6 +22,7 @@ npm install @smartb/g2-s2
 yarn add @smartb/g2-components
 yarn add @smartb/g2-documentation
 yarn add @smartb/g2-layout
+yarn add @smartb/g2-notifications
 yarn add @smartb/g2-forms
 yarn add @smartb/g2-themes
 yarn add @smartb/g2-providers
@@ -38,6 +40,8 @@ Almost every components are based on [Material-ui](https://material-ui.com/).
 - @smartb/g2-forms regroups the components to build a complete form like text-fields, select etc...
 
 - @smartb/g2-layout regroups complexe layouts to structure an application like nav-bar, steppers, tools-menu etc...
+
+- @smartb/g2-notifications regroups the components to notify the user of an application.
 
 - @smartb/g2-providers regroups provider to make a standard modern react app like i18n, redux etc...
 
@@ -78,12 +82,20 @@ yarn workspaces run build
 yarn storybook
 ```
 
-- Release Version
+- Release Version on npm from master
 
 ```
 lerna version 0.0.1 --no-git-tag-version
 
 lerna publish from-package
+```
+
+- Release experimental Version on gitlab from develop
+
+```
+lerna version 0.1.0-alpha.1 --no-git-tag-version
+
+yarn publishWorkspaces:experimental
 ```
 
 - Create new package

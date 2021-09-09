@@ -4,7 +4,7 @@
   "author": "Adrien Poupard <adrien@smartb.city>",
   "license": "Apache-2.0",
   "description": "React layout components library",
-  "version": "0.1.51",
+  "version": "0.1.0-alpha.1",
   "private": false,
   "main": "dist/index.js",
   "source": "src/index.ts",
@@ -15,14 +15,12 @@
   },
   "scripts": {
     "build": "rollup -c",
-    "prepublish": "run-s build",
     "test": "run-s test:unit test:lint test:build",
     "test:build": "run-s build",
     "test:lint": "eslint .",
     "test:unit": "cross-env CI=1 react-scripts test --env=jsdom",
     "test:watch": "react-scripts test --env=jsdom",
-    "predeploy": "cd example && yarn install && yarn run build",
-    "deploy": "gh-pages -d example/build"
+    "publish:experimental": "npm publish --tag experimental"
   },
   "peerDependencies": {
     "@material-ui/core": "^4.12.1",
@@ -33,14 +31,15 @@
   "dependencies": {
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.57",
-    "@smartb/g2-components": "^0.1.51",
-    "@smartb/g2-forms": "^0.1.51",
-    "@smartb/g2-themes": "^0.1.51",
+    "@smartb/g2-components": "^0.1.0-alpha.1",
+    "@smartb/g2-forms": "^0.1.0-alpha.1",
+    "@smartb/g2-themes": "^0.1.0-alpha.1",
     "clsx": "^1.1.1",
     "use-debounce": "^3.4.2"
   },
   "files": [
     "dist"
   ],
-  "gitHead": "01582f4b620c1e44cab5a65394e29d95f66ddabb"
+  "gitHead": "01582f4b620c1e44cab5a65394e29d95f66ddabb",
+  "publishConfig": { "@smartb:registry":"https://gitlab.smartb.city/api/v4/projects/52/packages/npm/" }
 }
