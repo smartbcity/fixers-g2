@@ -4,7 +4,7 @@ import {
   TextField as MuiTextField,
   TextFieldProps as MuiTextFieldProps,
 } from '@material-ui/core'
-import { Check, Clear } from '@material-ui/icons'
+import { CheckRounded, Clear } from '@material-ui/icons'
 import { useInputStyles } from '../style'
 import { BasicProps, lowLevelStyles, MergeMuiElementProps, useTheme } from '@smartb/g2-themes'
 import clsx from 'clsx'
@@ -244,7 +244,7 @@ export const TextField = React.forwardRef((props: TextFieldProps, ref: React.For
 
   const rightIcon = useMemo(() => {
     if (validated) return (
-      <Check className={clsx(defaultClasses.validated, classes?.validIcon, "AruiTextfield-validIcon")} style={{ ...styles?.validIcon, right: inputAdornment.endAdornment ? "32px" : "" }} />
+      <CheckRounded className={clsx(defaultClasses.validated, classes?.validIcon, "AruiTextfield-validIcon")} style={{ ...styles?.validIcon, right: inputAdornment.endAdornment ? "32px" : "" }} />
     )
     if (!value || value === "") return undefined
     if ((onRemove || error) && !disabled) return (

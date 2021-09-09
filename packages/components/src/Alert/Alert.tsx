@@ -14,8 +14,8 @@ import {
 } from '@smartb/g2-themes'
 import clsx from 'clsx'
 import {
-  Check,
-  Close,
+  CheckRounded,
+  CloseRounded,
   InfoOutlined,
   ReportProblemOutlined
 } from '@material-ui/icons'
@@ -92,7 +92,7 @@ interface AlertStyles {
 
 export interface AlertBasicProps extends BasicProps {
   /**
-   * The content displayed in the alert. It overrides the prop `message` if procided
+   * The content displayed in the alert. It overrides the prop `message` if provided
    */
   children?: React.ReactNode
   /**
@@ -158,14 +158,14 @@ const AlertBase = (props: AlertProps, ref: React.ForwardedRef<HTMLElement>) => {
       )
     if (severity === 'success')
       return (
-        <Check
+        <CheckRounded
           className={clsx(defaultClasses.severityIcon, classes?.severityIcon)}
           style={styles?.severityIcon}
         />
       )
     if (severity === 'error')
       return (
-        <Close
+        <CloseRounded
           className={clsx(defaultClasses.severityIcon, classes?.severityIcon)}
           style={styles?.severityIcon}
         />
@@ -206,9 +206,9 @@ const AlertBase = (props: AlertProps, ref: React.ForwardedRef<HTMLElement>) => {
           >
             {severityIcon}
           </Box>
-          {children ? children : <Typography>{message}</Typography>}
+          {children ? children : <Typography variant="subtitle2">{message}</Typography>}
           {onClose && (
-            <Close
+            <CloseRounded
               className={clsx(
                 classes?.closeIcon,
                 'AruiAlert-closeIcon',

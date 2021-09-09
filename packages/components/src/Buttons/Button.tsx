@@ -6,7 +6,7 @@ import {
 } from '@material-ui/core'
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 import { useTheme } from '@smartb/g2-themes'
-import { Check, Close, ReportProblemOutlined } from '@material-ui/icons'
+import { CheckRounded, CloseRounded, ReportProblemOutlined } from '@material-ui/icons'
 import {
   containedUseStyles,
   outlinedUseStyles,
@@ -166,9 +166,9 @@ export const ButtonBase = function <T = {}>(props: ButtonProps<T>, ref: refType<
               className={classes.buttonProgress}
             />
           ) : success ? (
-            <Check className={classes.icon} />
+            <CheckRounded className={classes.icon} />
           ) : fail ? (
-            <Close className={classes.icon} />
+            <CloseRounded className={classes.icon} />
           ) : warning ? (
             <ReportProblemOutlined className={classes.icon} />
           ) : icon ? (
@@ -201,9 +201,9 @@ export const ButtonBase = function <T = {}>(props: ButtonProps<T>, ref: refType<
             className={classes.buttonProgress}
           />
         ) : success ? (
-          <Check className={classes.icon} />
+          <CheckRounded className={classes.icon} />
         ) : fail ? (
-          <Close className={classes.icon} />
+          <CloseRounded className={classes.icon} />
         ) : warning ? (
           <ReportProblemOutlined className={classes.icon} />
         ) : icon ? (

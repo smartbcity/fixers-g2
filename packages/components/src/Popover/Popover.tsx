@@ -7,7 +7,7 @@ import {
 } from '@smartb/g2-themes'
 import { ClickAwayListener, Popper, PopperProps } from '@material-ui/core'
 import React, { forwardRef, useCallback } from 'react'
-import { Close } from '@material-ui/icons'
+import { CloseRounded } from '@material-ui/icons'
 import clsx from 'clsx'
 
 const useStyles = lowLevelStyles<Theme>()({
@@ -170,7 +170,7 @@ const PopoverBase = (
         style={styles?.arrow}
       />
       {onClose && (
-        <Close
+        <CloseRounded
           className={clsx(
             classes?.closeIcon,
             'AruiPopover-closeIcon',

@@ -10,7 +10,7 @@ type AuthService<Additionnals extends AuthServiceAdditionnal = {}, Roles extends
    */
   getUserId: () => string | undefined
    /**
-   * Check if the current user has one of the roles given in parameter
+   * CheckRounded if the current user has one of the roles given in parameter
    * @param {Roles | string}  roles - The roles that you want to check if the user has them
    * @return {boolean} Return true if the user has one of the roles of if no roles are provided
    */

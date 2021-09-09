@@ -55,7 +55,7 @@ const useStyles = highLevelStyles()({
         "& .sbdocs-content": {
             maxWidth: "1500px"
         },
-        "& .sbdocs, .MuiTypography-root": {
+        "& .sbdocs": {
             fontFamily: "'Atkinson Hyperlegible', sans-serif"
         },
         "& code": {

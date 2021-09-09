@@ -12,7 +12,7 @@ import {
   lowLevelStyles
 } from '@smartb/g2-themes'
 import clsx from 'clsx'
-import { Close } from '@material-ui/icons'
+import { CloseRounded } from '@material-ui/icons'
 
 const useStyles = lowLevelStyles()({
   paper: {
@@ -138,7 +138,7 @@ const PopUpBase = (props: PopUpProps, ref: React.ForwardedRef<HTMLElement>) => {
       className={clsx(className, 'AruiPopUp-root')}
       {...other}
     >
-      <Close
+      <CloseRounded
         className={clsx(
           classes?.closeIcon,
           'AruiPopUp-closeIcon',

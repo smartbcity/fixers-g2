@@ -45,7 +45,7 @@ export const Popover: Story<PopoverBasicProps> = (args: PopoverBasicProps) => {
   return (
     <Box display='flex' justifyContent='center' alignItems='center'>
       <Button ref={anchor} onClick={() => setOpen(!open)}>
-        Open the popper
+        Open the popover
       </Button>
       <AruiPopover
         open={open}
@@ -198,4 +198,4 @@ export const PopoverScenario: Story<PopoverBasicProps> = () => {
   )
 }
 
-PopoverScenario.storyName = 'An example of a popper scenario'
+PopoverScenario.storyName = 'An example of a popover scenario'

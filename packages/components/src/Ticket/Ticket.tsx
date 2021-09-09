@@ -21,14 +21,13 @@ const useStyles = lowLevelStyles()({
         borderRadius: "9px"
     },
     content: {
-        fontWeight: 600,
+        fontWeight: 700,
         fontSize: "18px",
         lineHeight: "25px",
         color: "#808A9D",
     },
     title: {
         color: "#808A9D",
-        fontSize: "14px",
         lineHeight: "19px"
     }
 })
@@ -109,12 +108,14 @@ const TicketBase = (props: TicketProps, ref: React.ForwardedRef<HTMLDivElement>)
                     <Typography
                         className={clsx(!reversed ? defaultClasses.title : defaultClasses.content, classes?.title, "AruiTicket-title")}
                         style={styles?.title}
+                        variant={!reversed ? "body2" : "subtitle1"}
                     >
                         {title}
                     </Typography>
                     <Typography
                         className={clsx(!reversed ? defaultClasses.content : defaultClasses.title, classes?.content, "AruiTicket-content")}
                         style={styles?.content}
+                        variant={!reversed ? "subtitle1" : "body2"}
                     >
                         {content}
                     </Typography>

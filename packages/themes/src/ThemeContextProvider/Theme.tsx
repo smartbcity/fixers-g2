@@ -1,4 +1,4 @@
-import { createMuiTheme, Theme as MuiTheme } from '@material-ui/core'
+import { createTheme as createMuiTheme, ThemeOptions, Theme as MuiTheme } from '@material-ui/core'
 
 export interface Theme {
   name?: string
@@ -48,7 +48,7 @@ export const defaultMaterialUiTheme = (
   theme: Theme,
   customMuiTheme?: Partial<MuiTheme>
 ) => {
-  const themeOverride = {
+  const themeOverride: ThemeOptions = {
     overrides: {
       MuiPaper: {
         elevation1: {
@@ -87,9 +87,35 @@ export const defaultMaterialUiTheme = (
         elevation12: {
           boxShadow: theme.shadows[12]
         }
+      },
+      MuiTab: {
+        root: {
+          fontWeight: 600
+        }
       }
-    }
+    },
+    palette: {
+      primary: {
+        main: '#EDBA27',
+      },
+      secondary: {
+        main: '#353945',
+      },
+    },
+    typography: {
+      fontFamily: "'Montserrat', roboto",
+      allVariants: {
+        fontWeight: 500,
+      },
+      subtitle2: {
+        fontWeight: 600
+      }, 
+      subtitle1: {
+        fontWeight: 600
+      }
+    },
   }
+
   return customMuiTheme
     ? createMuiTheme(themeOverride, customMuiTheme)
     : createMuiTheme(themeOverride)
