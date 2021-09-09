@@ -4,10 +4,10 @@ import { Meta } from '@storybook/react'
 import { Story } from '@storybook/react/types-6-0'
 import { withDesign } from 'storybook-addon-designs'
 import { useAlertHub } from './useAlertHub'
-import { Button } from '../Buttons'
+import { Button } from '@smartb/g2-components'
 
 export default {
-  title: 'Components/AlertHub',
+  title: 'Notifications/AlertHub',
   component: AruiAlertHub,
   decorators: [withDesign],
   parameters: {

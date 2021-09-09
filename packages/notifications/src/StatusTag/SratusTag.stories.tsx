@@ -9,7 +9,7 @@ import { withDesign } from 'storybook-addon-designs'
 import { Box } from '@material-ui/core'
 
 export default {
-  title: 'Components/StatusTag',
+  title: 'Notifications/StatusTag',
   component: AruiStatusTag,
   decorators:[withDesign],
   parameters: {

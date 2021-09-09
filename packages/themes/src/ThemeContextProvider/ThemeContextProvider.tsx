@@ -2,6 +2,8 @@ import React, { createContext, useCallback, useContext } from 'react'
 import { ThemeProvider, Theme as MuiTheme } from '@material-ui/core'
 import { defaultMaterialUiTheme, defaultTheme, Theme } from './Theme'
 
+import "./default.css"
+
 export interface ThemeContextProps {
   theme: Theme
   changeTheme: (theme: Partial<Theme>) => void

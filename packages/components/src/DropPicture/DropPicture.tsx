@@ -7,7 +7,7 @@ import {
   MergeMuiElementProps,
   lowLevelStyles
 } from '@smartb/g2-themes'
-import { Tooltip } from '../Tooltip'
+import { Tooltip } from '@smartb/g2-notifications'
 import clsx from 'clsx'
 
 const useStyles = lowLevelStyles<{ width: number }>()({

@@ -7,7 +7,7 @@ import { Box } from '@material-ui/core'
 import { classes, styles } from './types'
 
 export default {
-  title: 'Components/Alert',
+  title: 'Notifications/Alert',
   component: AruiAlert,
   decorators: [withDesign],
   parameters: {
@@ -59,7 +59,7 @@ export const AlertSeverity: Story<AlertBasicProps> = () => {
           margin: 10
         }}
         severity='info'
-        children='info'
+        message='info'
       />
       <AruiAlert
         style={{
@@ -70,7 +70,7 @@ export const AlertSeverity: Story<AlertBasicProps> = () => {
           margin: 10
         }}
         severity='warning'
-        children='warning'
+        message='warning'
       />
       <AruiAlert
         style={{
@@ -81,7 +81,7 @@ export const AlertSeverity: Story<AlertBasicProps> = () => {
           margin: 10
         }}
         severity='success'
-        children='success'
+        message='success'
       />
       <AruiAlert
         style={{
@@ -92,7 +92,7 @@ export const AlertSeverity: Story<AlertBasicProps> = () => {
           margin: 10
         }}
         severity='error'
-        children='error'
+        message='error'
       />
     </Box>
   )
@@ -111,7 +111,7 @@ export const AlertColorBase: Story<AlertBasicProps> = () => {
         }}
         colorBase='light'
         onClose={() => {}}
-        children='light'
+        message='light'
       />
       <AruiAlert
         style={{
@@ -123,7 +123,7 @@ export const AlertColorBase: Story<AlertBasicProps> = () => {
         }}
         colorBase='dark'
         onClose={() => {}}
-        children='dark'
+        message='dark'
       />
     </Box>
   )

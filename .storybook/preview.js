@@ -1,9 +1,7 @@
 import React from "react";
 import { ThemeContextProvider } from "@smartb/g2-themes";
 import { StorybookCanvas } from "../packages/storybook-documentation/src/StorybookCanvas";
-import { getTheme, muiTheme } from "../docs/Theme/Theme";
-
-import "./preview.css";
+import { getTheme } from "../docs/Theme/Theme";
 
 export const parameters = {
   docs: {
@@ -27,7 +25,7 @@ export const parameters = {
 
 export const withThemeProvider = (Story) => {
   return (
-    <ThemeContextProvider customMuiTheme={muiTheme} theme={getTheme()}>
+    <ThemeContextProvider theme={getTheme()}>
       <Story />
     </ThemeContextProvider>
   );

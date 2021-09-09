@@ -31,7 +31,6 @@ const useStyles = lowLevelStyles<Theme>()({
   label: {
     color: (theme) => theme.colors.secondary,
     marginRight: '5px',
-    fontWeight: 600
   }
 })
 
@@ -83,7 +82,7 @@ export const ProgressIndicator = (props: ProgressIndicatorProps) => {
       id={id}
     >
       <Typography
-        variant='body1'
+        variant='subtitle1'
         className={clsx(
           defaultClasses.label,
           classes?.label,

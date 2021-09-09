@@ -11,6 +11,7 @@ export const useAlertHub = () => {
       enqueueSnackbar(alertProps.message ?? '', {
         //@ts-ignore
         variant: 'alert',
+        persist: true,
         ...alertProps
       }),
     [enqueueSnackbar]

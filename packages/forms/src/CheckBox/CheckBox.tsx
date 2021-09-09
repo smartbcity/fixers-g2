@@ -54,10 +54,10 @@ const useStyles = lowLevelStyles<Theme>()({
       stroke: "#E6E9EF",
     },
     "& .AruiCheckBox-checkIcon rect": {
-      fill: "#E6E9EF"
+      fill: () =>  "#E6E9EF"
     },
     "&:hover .AruiCheckBox-checkIcon rect": {
-      fill: "#E6E9EF"
+      fill: () =>  "#E6E9EF"
     },
     "& .AruiCheckBox-checkIcon path": {
       fill: "#676879"

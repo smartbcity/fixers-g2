@@ -52,12 +52,12 @@ export const useInputStyles = lowLevelStyles<Theme>()({
     },
     '& .MuiInputBase-root:focus': {
       margin: `0px`,
-      border: theme => `1px solid ${theme.colors.secondary}`,
+      border: theme => `1px solid ${theme.colors.primary}`,
       borderRadius: '4px'
     },
     '& .MuiInputBase-root.Mui-focused': {
       margin: `0px`,
-      border: theme => `1px solid ${theme.colors.secondary}`,
+      border: theme => `1px solid ${theme.colors.primary}`,
       borderRadius: '4px'
     },
     '& .MuiFormLabel-root.Mui-error': {

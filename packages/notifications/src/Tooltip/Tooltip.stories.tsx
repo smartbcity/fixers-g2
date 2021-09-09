@@ -6,7 +6,7 @@ import { Typography } from '@material-ui/core'
 import { withDesign } from 'storybook-addon-designs'
 
 export default {
-  title: 'Components/Tooltip',
+  title: 'Notifications/Tooltip',
   component: AruiTooltip,
   decorators:[withDesign],
   parameters: {
