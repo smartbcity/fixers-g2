@@ -5,6 +5,7 @@ module.exports = {
     "../packages/documentation/src/**/*.stories.@(ts|tsx|mdx)",
     "../packages/forms/src/**/*.stories.@(ts|tsx|mdx)",
     "../packages/layout/src/**/*.stories.@(ts|tsx|mdx)",
+    "../packages/notifications/src/**/*.stories.@(ts|tsx|mdx)",
     "../packages/s2/src/**/*.stories.@(ts|tsx|mdx)",
     "../packages/providers/src/**/*.stories.@(ts|tsx|mdx)",
     "../packages/webpack-components/src/**/*.stories.@(ts|tsx|mdx)",

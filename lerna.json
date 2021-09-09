@@ -4,6 +4,7 @@
     "packages/documentation",
     "packages/forms",
     "packages/layout",
+    "packages/notifications",
     "packages/providers",
     "packages/s2",
     "packages/themes",

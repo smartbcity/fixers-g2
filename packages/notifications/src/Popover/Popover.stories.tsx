@@ -3,13 +3,13 @@ import { Popover as AruiPopover, PopoverBasicProps } from './Popover'
 import { Meta } from '@storybook/react'
 import { Story } from '@storybook/react/types-6-0'
 import { Box, Typography } from '@material-ui/core'
-import { Button } from '../Buttons'
+import { Button } from '@smartb/g2-components'
 import { withDesign } from 'storybook-addon-designs'
 import { classes, styles } from './docs'
 import { InputForm } from '@smartb/g2-forms'
 
 export default {
-  title: 'Components/Popover',
+  title: 'Notifications/Popover',
   component: AruiPopover,
   decorators: [withDesign],
   parameters: {

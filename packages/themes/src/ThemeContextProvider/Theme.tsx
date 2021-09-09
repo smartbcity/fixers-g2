@@ -92,6 +92,11 @@ export const defaultMaterialUiTheme = (
         root: {
           fontWeight: 600
         }
+      },
+      MuiChip: {
+        label: {
+          fontWeight: 500
+        }
       }
     },
     palette: {

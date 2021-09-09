@@ -15,6 +15,7 @@ push-latest: push-latest-storybook
 package-libs:
 	@yarn install
 	@yarn workspace @smartb/g2-themes run build
+	@yarn workspace @smartb/g2-notifications run build
 	@yarn workspace @smartb/g2-components run build
 	@yarn workspace @smartb/g2-forms run build
 	@yarn workspace @smartb/g2-documentation run build

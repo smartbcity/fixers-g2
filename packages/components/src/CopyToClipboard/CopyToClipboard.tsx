@@ -10,7 +10,7 @@ import {
 import clsx from 'clsx'
 import React, { forwardRef, useCallback, useState } from 'react'
 import { Clipboard } from '../icons'
-import { Tooltip } from '../Tooltip'
+import { Tooltip } from '@smartb/g2-notifications'
 
 const useStyles = lowLevelStyles<Theme>()({
   clipboardIcon: {

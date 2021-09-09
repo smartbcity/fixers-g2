@@ -7,7 +7,7 @@ import { Box } from '@material-ui/core'
 import { classes, styles } from './types'
 
 export default {
-  title: 'Components/Alert',
+  title: 'Notifications/Alert',
   component: AruiAlert,
   decorators: [withDesign],
   parameters: {

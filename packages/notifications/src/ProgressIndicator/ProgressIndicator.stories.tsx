@@ -9,7 +9,7 @@ import { withDesign } from 'storybook-addon-designs'
 import { classes, styles } from './docs'
 
 export default {
-  title: 'Components/ProgressIndicator',
+  title: 'Notifications/ProgressIndicator',
   component: AruiProgressIndicator,
   decorators: [withDesign],
   parameters: {
