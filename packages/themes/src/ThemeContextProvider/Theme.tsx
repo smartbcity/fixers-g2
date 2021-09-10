@@ -1,4 +1,4 @@
-import { createTheme as createMuiTheme, ThemeOptions, Theme as MuiTheme } from '@material-ui/core'
+import { createTheme as createMuiTheme, ThemeOptions } from '@material-ui/core'
 
 export interface Theme {
   name?: string
@@ -46,7 +46,7 @@ export const defaultTheme: Theme = {
 
 export const defaultMaterialUiTheme = (
   theme: Theme,
-  customMuiTheme?: Partial<MuiTheme>
+  customMuiTheme?: Partial<ThemeOptions>
 ) => {
   const themeOverride: ThemeOptions = {
     overrides: {
@@ -121,7 +121,5 @@ export const defaultMaterialUiTheme = (
     },
   }
 
-  return customMuiTheme
-    ? createMuiTheme(themeOverride, customMuiTheme)
-    : createMuiTheme(themeOverride)
+  return createMuiTheme(Object.assign(themeOverride, customMuiTheme))
 }
