@@ -3,7 +3,7 @@
   "repository": "https://gitlab.smartb.city/fixers/g2.git",
   "author": "Adrien Poupard <adrien@smartb.city>",
   "license": "Apache-2.0",
-  "version": "0.1.0-alpha.1",
+  "version": "0.1.0-alpha.2",
   "description": "React components library",
   "private": false,
   "main": "dist/index.js",
@@ -35,12 +35,14 @@
     "@types/mermaid": "^8.2.4"
   },
   "dependencies": {
-    "@smartb/g2-themes": "^0.1.0-alpha.1",
+    "@smartb/g2-themes": "^0.1.0-alpha.2",
     "clsx": "^1.1.1",
     "mermaid": "^8.9.2",
     "vis-data": "^7.1.2",
     "vis-network": "^9.0.0"
   },
   "gitHead": "01582f4b620c1e44cab5a65394e29d95f66ddabb",
-  "publishConfig": { "@smartb:registry":"https://gitlab.smartb.city/api/v4/projects/52/packages/npm/" }
+  "publishConfig": {
+    "@smartb:registry": "https://gitlab.smartb.city/api/v4/projects/52/packages/npm/"
+  }
 }

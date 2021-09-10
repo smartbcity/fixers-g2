@@ -3,7 +3,7 @@
   "repository": "https://gitlab.smartb.city/fixers/g2.git",
   "author": "Adrien Poupard <adrien@smartb.city>",
   "license": "Apache-2.0",
-  "version": "0.1.0-alpha.1",
+  "version": "0.1.0-alpha.2",
   "description": "React components library",
   "private": false,
   "engines": {
@@ -28,15 +28,17 @@
     "react-dom": "^17.0.2"
   },
   "dependencies": {
-    "@smartb/g2-themes": "^0.1.0-alpha.1",
-    "@smartb/g2-components": "^0.1.0-alpha.1",
-    "@smartb/g2-documentation": "^0.1.0-alpha.1",
-    "@smartb/g2-forms": "^0.1.0-alpha.1",
-    "@smartb/g2-layout": "^0.1.0-alpha.1",
-    "@smartb/g2-notifications": "^0.1.0-alpha.1",
-    "@smartb/g2-providers": "^0.1.0-alpha.1",
-    "@smartb/g2-s2": "^0.1.0-alpha.1"
+    "@smartb/g2-components": "^0.1.0-alpha.2",
+    "@smartb/g2-documentation": "^0.1.0-alpha.2",
+    "@smartb/g2-forms": "^0.1.0-alpha.2",
+    "@smartb/g2-layout": "^0.1.0-alpha.2",
+    "@smartb/g2-notifications": "^0.1.0-alpha.2",
+    "@smartb/g2-providers": "^0.1.0-alpha.2",
+    "@smartb/g2-s2": "^0.1.0-alpha.2",
+    "@smartb/g2-themes": "^0.1.0-alpha.2"
   },
   "gitHead": "01582f4b620c1e44cab5a65394e29d95f66ddabb",
-  "publishConfig": { "@smartb:registry":"https://gitlab.smartb.city/api/v4/projects/52/packages/npm/" }
+  "publishConfig": {
+    "@smartb:registry": "https://gitlab.smartb.city/api/v4/projects/52/packages/npm/"
+  }
 }

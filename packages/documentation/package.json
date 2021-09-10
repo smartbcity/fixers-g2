@@ -1,6 +1,6 @@
 {
   "name": "@smartb/g2-documentation",
-  "version": "0.1.0-alpha.1",
+  "version": "0.1.0-alpha.2",
   "description": "Components for documentation",
   "author": "SmartB",
   "license": "Apache-2.0",
@@ -31,7 +31,7 @@
     "react-dom": "^17.0.2"
   },
   "dependencies": {
-    "@smartb/g2-themes": "^0.1.0-alpha.1",
+    "@smartb/g2-themes": "^0.1.0-alpha.2",
     "clsx": "^1.1.1",
     "github-markdown-css": "^4.0.0",
     "react-markdown": "^6.0.2",
@@ -40,5 +40,7 @@
     "rehype-sanitize": "^4.0.0",
     "remark-gfm": "^1.0.0"
   },
-  "publishConfig": { "@smartb:registry":"https://gitlab.smartb.city/api/v4/projects/52/packages/npm/" }
+  "publishConfig": {
+    "@smartb:registry": "https://gitlab.smartb.city/api/v4/projects/52/packages/npm/"
+  }
 }
