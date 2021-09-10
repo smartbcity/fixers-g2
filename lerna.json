@@ -3,6 +3,7 @@
     "packages/components",
     "packages/documentation",
     "packages/forms",
+    "packages/g2",
     "packages/layout",
     "packages/notifications",
     "packages/providers",
