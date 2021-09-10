@@ -12,7 +12,7 @@ import {
   Primary,
   Description
 } from '@storybook/addon-docs'
-import { CodeHighlighter } from '@smartb/g2-components'
+import { CodeHighlighter } from '@smartb/g2-documentation'
 import {
   localUseAuth,
   staticUseAuth,
@@ -79,7 +79,7 @@ export default {
   }
 } as Meta
 
-const Template: Story = () => {
+export const KeycloakProvider: Story = () => {
   return (
     <AruiKeycloakProvider
       config={{
@@ -129,7 +129,4 @@ const ConnectButton = () => {
   return <Button onClick={() => keycloak.login()}>Connect with Smartb</Button>
 }
 
-export const KeycloakProvider = Template.bind({})
-
 KeycloakProvider.storyName = 'KeycloakProvider'
-KeycloakProvider.id = 'KeycloakProvider'
