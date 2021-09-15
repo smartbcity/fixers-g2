@@ -5,11 +5,6 @@ const textFieldGrey = '#C5C7D0'
 const disabledColor = "#E6E9EF"
 
 export const useInputStyles = lowLevelStyles<Theme>()({
-  label: {
-    marginBottom: '15px',
-    fontSize: 16,
-    color: `${darkGrey}`
-  },
   input: {
     '& .MuiInputBase-input': {
       padding: "6px 7px"
@@ -39,26 +34,16 @@ export const useInputStyles = lowLevelStyles<Theme>()({
       backgroundColor: "white"
     },
     '& .MuiInputBase-root.Mui-error': {
-      margin: `0px`,
       border: theme => `1px solid ${theme.colors.error}`,
-      boxShadow: '0px 0px 0px 1px  transparent',
-      borderRadius: '4px',
-      backgroundColor: "white"
     },
     '& .MuiInputBase-root:hover': {
-      margin: `0px`,
-      border:`1px solid ${darkGrey}`,
-      borderRadius: '4px'
+      border:`1px solid ${darkGrey}`
     },
     '& .MuiInputBase-root:focus': {
-      margin: `0px`,
-      border: theme => `1px solid ${theme.colors.primary}`,
-      borderRadius: '4px'
+      border: theme => `1px solid ${theme.colors.primary}`
     },
     '& .MuiInputBase-root.Mui-focused': {
-      margin: `0px`,
-      border: theme => `1px solid ${theme.colors.primary}`,
-      borderRadius: '4px'
+      border: theme => `1px solid ${theme.colors.primary}`
     },
     '& .MuiFormLabel-root.Mui-error': {
       color: theme => theme.colors.error
