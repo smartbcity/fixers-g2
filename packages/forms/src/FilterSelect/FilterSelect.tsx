@@ -26,8 +26,7 @@ export interface FilterSelectClasses {
   label?: string
   select?: string
   input?: string
-  helperText?: string
-  selectIcon?: string
+  chip?: string
   clearIcon?: string
   option?: string
   menu?: string
@@ -37,8 +36,7 @@ export interface FilterSelectStyles {
   label?: React.CSSProperties
   select?: React.CSSProperties
   input?: React.CSSProperties
-  helperText?: React.CSSProperties
-  selectIcon?: React.CSSProperties
+  chip?: React.CSSProperties
   clearIcon?: React.CSSProperties
   option?: React.CSSProperties
   menu?: React.CSSProperties
@@ -248,12 +246,12 @@ export const FilterSelect = React.forwardRef((props: FilterSelectProps, ref: Rea
       const count = Array.isArray(selected) ? selected.length : selected === "" ? 0 : 1
       return (
         <Box display="flex" alignItems="center">
-          <InputLabel style={colorStyle} className={clsx(defaultClasses?.label)}>{label}</InputLabel>
-          <Chip className={clsx(classesLocal.chip)} label={count} variant="outlined" color={color} />
+          <InputLabel className={clsx(classes?.label, defaultClasses?.label, "AruiFilterSelect-label")} style={{...styles?.label, ...colorStyle}}>{label}</InputLabel>
+          <Chip className={clsx(classes?.chip, classesLocal.chip, "AruiFilterSelect-chip")} label={count} variant="outlined" color={color} style={styles?.chip} />
         </Box>
       )
     },
-    [placeholder, variant, color, colorStyle],
+    [placeholder, variant, color, colorStyle, classes?.label, classes?.chip, styles?.label, styles?.chip],
   )
 
   const optionsMemoized = useMemo(() => {
@@ -320,7 +318,7 @@ export const FilterSelect = React.forwardRef((props: FilterSelectProps, ref: Rea
       )}
       style={style}
     >
-      {variant === "outlined" && <InputLabel className={clsx(defaultClasses?.label)}>{label}</InputLabel>}
+      {variant === "outlined" && <InputLabel className={clsx(classes?.label, defaultClasses?.label, "AruiFilterSelect-label")} style={styles?.label}>{label}</InputLabel>}
       <MuiSelect
         {...other}
         ref={ref}
