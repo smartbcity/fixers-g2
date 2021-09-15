@@ -202,6 +202,6 @@ FilterSelectStory.args = {
 }
 
 FilterSelectStory.storyName = "FilterSelect"
-FilterSelectSizes.storyName = "All size of the select"
+FilterSelectSizes.storyName = "All the select variants"
 FilterSelectStates.storyName = "The select states"
 MultipleFilterSelect.storyName = "Multiple select"

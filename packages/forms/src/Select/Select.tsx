@@ -64,10 +64,10 @@ const useStyles = lowLevelStyles()({
     color: 'rgba(0, 0, 0, 0.54)'
   },
   selectIcon: {
-    width: '20px',
-    height: '20px',
+    width: '12px',
+    height: '12px',
     right: '10px',
-    top: 'calc(50% - 9px)'
+    top: 'calc(50% - 5px)'
   },
   list: {
     padding: "0px"
