@@ -22,6 +22,9 @@
     "test:watch": "react-scripts test --env=jsdom",
     "publish:experimental": "npm publish --tag experimental"
   },
+  "devDependencies": {
+    "@smartb/g2-forms": "^0.1.0-alpha.2"
+  },
   "peerDependencies": {
     "@material-ui/core": "^4.12.1",
     "@types/react": "^17.0.14",

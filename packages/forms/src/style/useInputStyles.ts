@@ -5,6 +5,11 @@ const textFieldGrey = '#C5C7D0'
 const disabledColor = "#E6E9EF"
 
 export const useInputStyles = lowLevelStyles<Theme>()({
+  label: {
+    marginBottom: '15px',
+    fontSize: 16,
+    color: `${darkGrey}`
+  },
   input: {
     '& .MuiInputBase-input': {
       padding: "6px 7px"
