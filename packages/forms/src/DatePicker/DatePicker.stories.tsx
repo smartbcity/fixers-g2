@@ -67,7 +67,7 @@ export const DatePickerStatus: Story<DatePickerProps> = () => {
       <Box display="flex" flexDirection="column">
         <AruiDatePicker
           value={date}
-          placeholder="mui-picker normal"
+          placeholder="native-picker normal"
           native
           onChangeDate={(date) => setSelectedDate(date)}
           onRemove={() => setSelectedDate(undefined)}
@@ -75,7 +75,7 @@ export const DatePickerStatus: Story<DatePickerProps> = () => {
         />
         <AruiDatePicker
           value={date}
-          placeholder="mui-picker disabled"
+          placeholder="native-picker disabled"
           disabled
           native
           onChangeDate={(date) => setSelectedDate(date)}

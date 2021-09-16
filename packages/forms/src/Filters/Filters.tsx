@@ -1,14 +1,12 @@
 import React, { useMemo } from 'react'
 import { ButtonProps, Button } from "@smartb/g2-components"
-import { InputForm } from '../InputForm'
-import { SelectProps } from '../Select'
-import { TextFieldProps } from '../TextField'
-import { DatePickerProps } from '../DatePicker'
-import { CheckBox, CheckBoxProps } from '../CheckBox'
+import { FilterSelectProps, FilterSelect } from '../FilterSelect'
+import { FilterTextFieldProps, FilterTextField } from '../FilterTextField'
+import { FilterDatePickerProps, FilterDatePicker } from '../FilterDatePicker'
 import { BasicProps, lowLevelStyles, MergeReactElementProps } from '@smartb/g2-themes'
 import { Box } from '@material-ui/core'
 import clsx from 'clsx'
-import { FormState } from './useForm'
+import { FiltersState } from './useFilters'
 
 export type Action = {
     label: React.ReactNode
@@ -35,50 +33,44 @@ export type Field = {
     /**
      * the type of the field
      */
-    type: "textfield" | "select" | "datepicker" | "checkbox"
-    /**
-     * the validator that takes the value of the input and return an error or undefined/nothing if the value is valid
-     */
-    validator: (value: any) => string | undefined | void
+    type: "textfield" | "select" | "datepicker"
     /**
      * the props of the textfield if you choosed it
      */
-    textFieldProps?: Partial<Omit<TextFieldProps, "value" | "onChange">>
+    textFieldProps?: Partial<Omit<FilterTextFieldProps, "value" | "onChange">>
     /**
      * the props of the select if you choosed it
      */
-    selectProps?: Partial<Omit<SelectProps, "value" | "onChangeValue" | "onChangeValues">>
+    selectProps?: Partial<Omit<FilterSelectProps, "value" | "onChangeValue" | "onChangeValues">>
     /**
      * the props of the datepicker if you choosed it
      */
-    datePickerProps?: Partial<Omit<DatePickerProps, "value" | "onChangeDate">>
-    /**
-     * the props of the checkbox if you choosed it
-     */
-    checkBoxProps?: Partial<Omit<CheckBoxProps, "checked" | "onChange">>
+    datePickerProps?: Partial<Omit<FilterDatePickerProps, "value" | "onChangeDate">>
 }
 
-interface FormClasses {
+interface FiltersClasses {
     actions?: string
+    fieldsContainer?: string
     button?: string
     field?: string
 }
 
-interface FormStyles {
+interface FiltersStyles {
     actions?: React.CSSProperties
+    fieldsContainer?: React.CSSProperties
     button?: React.CSSProperties
     field?: React.CSSProperties
 }
 
-export interface FormBasicProps extends BasicProps {
+export interface FiltersBasicProps extends BasicProps {
     /**
      * the fields of the form
      */
     fields: Field[]
     /**
-     * the state of the form provided by the hook `useForm`
+     * the state of the form provided by the hook `useFilters`
      */
-    formState: FormState
+    formState: FiltersState
     /**
      * the actions displayed at the bottom of the component. To make a validation button you have to add an action with `type="submit"`
      */
@@ -86,29 +78,58 @@ export interface FormBasicProps extends BasicProps {
     /**
      * Determine wether the actions are placed above or below the content of the form
      * 
-     * @default "below"
+     * @default left
      */
-    actionsPosition?: "above" | "below"
+    actionsPosition?: "left" | "right"
+    /**
+     * Determine wether the default submit behavior describe below will be activated or not.
+     * By default:
+     * - the `onChange` event of the datepicker trigger the submit
+     * - the `onClose` event of the select trigger the submit
+     * - the `onSearch` event of the textfield trigger the submit
+     * 
+     * @default true
+     */
+    defaultSubmitBehavior?: boolean
     /**
      * The classes applied to the different part of the component
      */
-    classes?: FormClasses
+    classes?: FiltersClasses
     /**
      * The styles applied to the different part of the component
      */
-    styles?: FormStyles
+    styles?: FiltersStyles
 }
 
 const useStyles = lowLevelStyles()({
     field: {
-        margin: "20px 0",
+        margin: "8px",
+    },
+    form: {
+        display: "flex",
+        justifyContent: "flex-end",
+        alignItems: "center"
+    },
+    actionContainer: {
+        display: "inline-flex",
+        "& .AruiFilters-button": {
+            padding: "3px"
+        }
+    },
+    fieldsContainer: {
+        display: "flex",
+        justifyContent: "flex-end",
+        flexWrap: "wrap"
+    },
+    button: {
+        margin: "8px"
     }
 })
 
-export type FormProps = MergeReactElementProps<"form", FormBasicProps>
+export type FiltersProps = MergeReactElementProps<"form", FiltersBasicProps>
 
-export const Form = (props: FormProps) => {
-    const { actions, fields, onSubmit, className, classes, styles, formState, actionsPosition = "below", ...other } = props
+export const Filters = (props: FiltersProps) => {
+    const { actions, fields, onSubmit, className, classes, styles, formState, actionsPosition = "left", defaultSubmitBehavior = true, ...other } = props
     const defaultClasses = useStyles()
 
     const fieldsMemoized = useMemo(() => fields.map((field) => {
@@ -117,26 +138,24 @@ export const Form = (props: FormProps) => {
             id: field.key,
             label: field.label,
             name: field.name,
-            error: !!formState.errors[field.name],
-            errorMessage: formState.errors[field.name] as string,
             className: clsx(
                 classes?.field,
                 defaultClasses.field,
-                field.checkBoxProps?.className,
                 field.datePickerProps?.className,
                 field.selectProps?.className,
                 field.textFieldProps?.className,
-                "AruiForm-field"
+                "AruiFilters-field"
             ),
             style: styles?.field,
         }
         const textField = (
-            //@ts-ignore
-            <InputForm
+            <FilterTextField
                 {...commonProps}
-                inputType="textField"
                 value={formState.values[field.name] ?? ""}
                 onChange={(value) => formState.setFieldValue(field.name, value, false)}
+                onRemove={() => formState.setFieldValue(field.name, "", false)}
+                textFieldType="search"
+                onSearch={() => defaultSubmitBehavior && formState.submitForm()}
                 {...field.textFieldProps}
             />
         )
@@ -145,47 +164,38 @@ export const Form = (props: FormProps) => {
                 return textField
             case "datepicker":
                 return (
-                    <InputForm
+                    <FilterDatePicker
                         {...commonProps}
-                        inputType="datePicker"
                         value={formState.values[field.name] ?? ""}
-                        onChangeDate={(date) => formState.setFieldValue(field.name, date, false)}
+                        onChangeDate={(date) => {formState.setFieldValue(field.name, date, false); defaultSubmitBehavior && formState.submitForm()}}
+                        onRemove={() => formState.setFieldValue(field.name, "", false)}
                         {...field.datePickerProps}
                     />
                 )
             case "select":
                 return field.selectProps?.multiple === true ? (
-                    //@ts-ignore
-                    <InputForm
+                    <FilterSelect
                         {...commonProps}
-                        inputType="select"
                         values={formState.values[field.name] ?? []}
                         onChangeValues={(values) => formState.setFieldValue(field.name, values, false)}
+                        onRemove={() => formState.setFieldValue(field.name, [], false)}
+                        onClose={() => defaultSubmitBehavior && formState.submitForm()}
                         {...field.selectProps}
                     />
                 ) : (
-                    //@ts-ignore
-                    <InputForm
+                    <FilterSelect
                         {...commonProps}
-                        inputType="select"
                         value={formState.values[field.name] ?? ""}
-                        onChangeValue={(value) => formState.setFieldValue(field.name, value, false)}
+                        onChangeValue={(value) => {formState.setFieldValue(field.name, value, false); formState.submitForm()}}
+                        onRemove={() => formState.setFieldValue(field.name, "", false)}
+                        onClose={() => defaultSubmitBehavior && formState.submitForm()}
                         {...field.selectProps}
-                    />
-                )
-            case "checkbox":
-                return (
-                    <CheckBox
-                        {...commonProps}
-                        checked={formState.values[field.name]}
-                        onChange={formState.handleChange}
-                        {...field.checkBoxProps}
                     />
                 )
             default:
                 return textField
         }
-    }), [fields, formState.values, formState.handleChange, formState.errors, classes?.field, styles?.field])
+    }), [fields, formState.values, formState.handleChange, formState.errors, classes?.field, styles?.field, defaultSubmitBehavior])
 
     const actionsDisplay = useMemo(() => {
         if (actions.length === 0) return undefined
@@ -195,8 +205,9 @@ export const Form = (props: FormProps) => {
                 <Button
                     key={key}
                     className={clsx(
-                        'AruiForm-button',
+                        'AruiFilters-button',
                         classes?.button,
+                        defaultClasses.button,
                         className
                     )}
                     style={styles?.button}
@@ -211,23 +222,34 @@ export const Form = (props: FormProps) => {
     return (
         <form
             onSubmit={formState.handleSubmit}
-            className={clsx(className, 'AruiForm-root')}
+            className={clsx(className, 'AruiFilters-root', defaultClasses?.form)}
             {...other}
         >
-            {actionsPosition === "above" && <Box
+            {actionsPosition === "left" && <Box
                 className={clsx(
-                    'AruiForm-actions',
-                    classes?.actions
+                    'AruiFilters-actions',
+                    classes?.actions,
+                    defaultClasses.actionContainer
                 )}
                 style={styles?.actions}
             >
                 {actionsDisplay}
             </Box>}
-            {fieldsMemoized}
-            {actionsPosition === "below" && <Box
+            <Box
+            className={clsx(
+                'AruiFilters-fieldsContainer',
+                classes?.fieldsContainer,
+                defaultClasses.fieldsContainer
+            )}
+            style={styles?.fieldsContainer}
+            >
+                {fieldsMemoized}
+            </Box>
+            {actionsPosition === "right" && <Box
                 className={clsx(
-                    'AruiForm-actions',
-                    classes?.actions
+                    'AruiFilters-actions',
+                    classes?.actions,
+                    defaultClasses.actionContainer
                 )}
                 style={styles?.actions}
             >

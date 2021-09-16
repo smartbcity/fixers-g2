@@ -52,6 +52,7 @@ export const Popover: Story<PopoverBasicProps> = (args: PopoverBasicProps) => {
         onClose={() => setOpen(!open)}
         anchorEl={anchor.current}
         placement='left'
+        {...args}
       >
         <Box display='flex' flexDirection='column' maxWidth='300px'>
           <Typography variant='h6' style={{ marginBottom: '15px' }}>

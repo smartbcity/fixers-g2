@@ -8,7 +8,7 @@ import {
   Select as MuiSelect,
   SelectProps as MuiSelectProps
 } from '@material-ui/core'
-import { Clear } from '@material-ui/icons'
+import { ClearRounded } from '@material-ui/icons'
 import { SelectIcon } from '../assets/icons'
 import { useInputStyles } from '../style'
 import { BasicProps, lowLevelStyles, MergeMuiElementProps, useTheme } from '@smartb/g2-themes'
@@ -21,7 +21,6 @@ export type Option = {
 }
 
 export interface SelectClasses {
-  label?: string
   select?: string
   input?: string
   helperText?: string
@@ -32,7 +31,6 @@ export interface SelectClasses {
 }
 
 export interface SelectStyles {
-  label?: React.CSSProperties
   select?: React.CSSProperties
   input?: React.CSSProperties
   helperText?: React.CSSProperties
@@ -66,10 +64,10 @@ const useStyles = lowLevelStyles()({
     color: 'rgba(0, 0, 0, 0.54)'
   },
   selectIcon: {
-    width: '20px',
-    height: '20px',
+    width: '12px',
+    height: '12px',
     right: '10px',
-    top: 'calc(50% - 9px)'
+    top: 'calc(50% - 5px)'
   },
   list: {
     padding: "0px"
@@ -243,9 +241,9 @@ export const Select = React.forwardRef((props: SelectProps, ref: React.Forwarded
 
   const optionsMemoized = useMemo(() => {
     return options.map((option) => (
-      <MenuItem className={clsx(classes?.option, "AruiSelect-option")} style={styles?.option} key={option.key} value={option.label}>
-        <CheckBox checked={values.indexOf(option.label) > -1 || value === option.label} />
-        <ListItemText primary={option.label as string} />
+      <MenuItem data-value={option.label} className={clsx(classes?.option, "AruiSelect-option")} style={styles?.option} key={option.key} value={option.label}>
+        <CheckBox data-value={option.label} checked={values.indexOf(option.label) > -1 || value === option.label} />
+        <ListItemText data-value={option.label} primary={option.label as string} />
       </MenuItem>
     ))
   }, [options, values, value, classes?.option, styles?.option])
@@ -258,6 +256,17 @@ export const Select = React.forwardRef((props: SelectProps, ref: React.Forwarded
       id: id
     }
   }, [name, onRemove, value, classes?.input, styles?.input, id])
+
+  const onClose = useCallback(
+    (event: React.ChangeEvent<{}>) => {
+      //@ts-ignore
+      const valueClicked = event.currentTarget.dataset.value
+      onRemove && value === valueClicked && onRemove()
+    },
+    [value, onRemove],
+  )
+
+  const canRemove = (value !== '' || values.length > 0) && onRemove && !disabled
 
   return (
     <FormControl
@@ -283,11 +292,12 @@ export const Select = React.forwardRef((props: SelectProps, ref: React.Forwarded
           classesLocal.root,
             values && value === '' && values.length <= 0 && placeholder ? classesLocal.disabledStyle : '', 
            classes?.select, 
-           onRemove ? classesLocal.selectPaddingWithClear : classesLocal.selectPadding,
+           canRemove ? classesLocal.selectPaddingWithClear : classesLocal.selectPadding,
            "AruiSelect-select"
            )}
         variant={'filled'}
         value={multiple ? values : value}
+        onClose={onClose}
         multiple={multiple}
         IconComponent={selectIcon}
         onChange={onChangeMemoized}
@@ -308,17 +318,13 @@ export const Select = React.forwardRef((props: SelectProps, ref: React.Forwarded
           className:clsx(classesLocal.menu, classes?.menu, "AruiSelect-menu"),
           style: styles?.menu
         }}
-        style={{
-          ...styles?.select,
-          color: '#98A5AE',
-          fontWeight: 500
-        }}
+        style={styles?.select}
         disabled={disabled}
       >
         {optionsMemoized}
       </MuiSelect>
-      {((value !== '' || values.length > 0)) && onRemove && !disabled && (
-        <Clear onClick={onRemove} className={clsx(classesLocal.clear, classes?.clearIcon, "AruiSelect-clearIcon")} style={styles?.clearIcon} />
+      {canRemove && (
+        <ClearRounded onClick={onRemove} className={clsx(classesLocal.clear, classes?.clearIcon, "AruiSelect-clearIcon")} style={styles?.clearIcon} />
       )}
       {errorMessage !== '' && error && (
         <FormHelperText className={clsx(defaultClasses.helperText, classes?.helperText, "AruiSelect-helperText")} style={styles?.helperText}>

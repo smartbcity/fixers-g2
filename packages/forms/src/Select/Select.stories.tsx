@@ -3,25 +3,25 @@ import { Select, Option, SelectBasicProps } from './Select'
 import { Meta } from "@storybook/react";
 import { Story } from "@storybook/react/types-6-0";
 import { Box } from '@material-ui/core';
-import {SelectClasses, SelectStyles} from "./docs"
+import { SelectClasses, SelectStyles } from "./docs"
 import { withDesign } from 'storybook-addon-designs'
 
 export default {
   title: 'Forms/Select',
   component: Select,
-  decorators:[withDesign],
+  decorators: [withDesign],
   parameters: {
     design: {
       type: 'figma',
       url: 'https://www.figma.com/file/4Nl4422AUGHNVClZOHzPg8/SmartB-UI-kit?node-id=418%3A26',
-    },
+    }
   },
   argTypes: {
     classes: {
       table: {
         type: {
           summary: 'SelectClasses',
-          detail:SelectClasses
+          detail: SelectClasses
         }
       }
     },
@@ -47,7 +47,7 @@ export const SelectStory: Story<SelectBasicProps> = (args: SelectBasicProps) => 
       value={args.multiple ? undefined : value}
       values={args.multiple ? values : undefined}
       onChangeValue={(value) => setvalue(value)}
-      onChangeValues={(value) => setvalues(values)}
+      onChangeValues={(values) => setvalues(values)}
       onRemove={() => { setvalue(""); setvalues([]) }}
       style={{ width: 350 }}
     />
@@ -108,6 +108,7 @@ export const SelectStates: Story<SelectBasicProps> = () => {
 }
 
 export const MultipleSelect: Story<SelectBasicProps> = () => {
+  const [values, setvalues] = useState([])
 
   return (
     <Box display="flex" flexDirection="column" alignItems="center">
@@ -116,6 +117,9 @@ export const MultipleSelect: Story<SelectBasicProps> = () => {
         id="multpileSelect"
         multiple
         options={options}
+        values={values}
+        onChangeValues={(values) => setvalues(values)}
+        onRemove={() => { setvalues([]) }}
         style={{ width: 350, margin: 20 }}
       />
     </Box>

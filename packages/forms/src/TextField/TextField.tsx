@@ -4,7 +4,7 @@ import {
   TextField as MuiTextField,
   TextFieldProps as MuiTextFieldProps,
 } from '@material-ui/core'
-import { CheckRounded, Clear } from '@material-ui/icons'
+import { CheckRounded, ClearRounded } from '@material-ui/icons'
 import { useInputStyles } from '../style'
 import { BasicProps, lowLevelStyles, MergeMuiElementProps, useTheme } from '@smartb/g2-themes'
 import clsx from 'clsx'
@@ -28,6 +28,12 @@ const useStyles = lowLevelStyles()({
       paddingLeft: '5px !important'
     }
   },
+  withIconEndOnRemove: {
+    '& .MuiInputBase-input': {
+      paddingLeft: '5px !important',
+      paddingRight: '20px !important'
+    }
+  },
   searchIcon: {
     width: "20px",
     height: "20px",
@@ -36,7 +42,6 @@ const useStyles = lowLevelStyles()({
 })
 
 export interface TextFieldClasses {
-  label?: string
   textfield?: string
   input?: string
   helperText?: string
@@ -46,7 +51,6 @@ export interface TextFieldClasses {
 }
 
 export interface TextFieldStyles {
-  label?: React.CSSProperties
   textfield?: React.CSSProperties
   input?: React.CSSProperties
   helperText?: React.CSSProperties
@@ -244,14 +248,28 @@ export const TextField = React.forwardRef((props: TextFieldProps, ref: React.For
 
   const rightIcon = useMemo(() => {
     if (validated) return (
-      <CheckRounded className={clsx(defaultClasses.validated, classes?.validIcon, "AruiTextfield-validIcon")} style={{ ...styles?.validIcon, right: inputAdornment.endAdornment ? "32px" : "" }} />
+      <CheckRounded className={clsx(defaultClasses.validated, classes?.validIcon, "AruiTextfield-validIcon")} style={{ ...styles?.validIcon, right: inputAdornment.endAdornment ? "30px" : "" }} />
     )
     if (!value || value === "") return undefined
     if ((onRemove || error) && !disabled) return (
-      <Clear onClick={onRemove} className={clsx(defaultClasses.clear, error && defaultClasses.clearError, classes?.clearIcon, "AruiTextfield-clearIcon")} style={{ ...styles?.clearIcon, right: inputAdornment.endAdornment ? "32px" : "" }} />
+      <ClearRounded onClick={onRemove} className={clsx(defaultClasses.clear, error && defaultClasses.clearError, classes?.clearIcon, "AruiTextfield-clearIcon")} style={{ ...styles?.clearIcon, right: inputAdornment.endAdornment ? "30px" : "" }} />
     )
     return undefined
-  }, [value, onRemove, classes, styles, inputAdornment.endAdornment, error, disabled])
+  }, [value, onRemove, classes?.clearIcon, styles?.clearIcon, classes?.validIcon, styles?.validIcon, inputAdornment.endAdornment, error, disabled])
+
+  const inputClasses = () => {
+    if (inputIcon && iconPosition === 'start') {
+      return classesLocal.withIconStart
+    }
+    if (inputIcon && iconPosition === 'end') {
+      if (onRemove) {
+        return classesLocal.withIconEndOnRemove
+      }
+      return classesLocal.withIconEnd
+    }
+    return ''
+  }
+
   return (
     <div
       className={clsx(className, classesLocal.root, "AruiTextfield-root")}
@@ -279,7 +297,7 @@ export const TextField = React.forwardRef((props: TextFieldProps, ref: React.For
           classes?.textfield,
           "AruiTextfield-Textfield"
         )}
-        style={styles?.label}
+        style={styles?.textfield}
         variant='filled'
         error={error}
         disabled={disabled}
@@ -291,11 +309,7 @@ export const TextField = React.forwardRef((props: TextFieldProps, ref: React.For
           onKeyUp: upHandler,
           style: { ...styles?.input, paddingRight: (onRemove || validated) && value && value !== "" && !inputAdornment.endAdornment ? '27px' : '' },
           className: clsx(
-            inputIcon && iconPosition === 'start'
-              ? classesLocal.withIconStart
-              : inputIcon && iconPosition === 'end'
-                ? classesLocal.withIconEnd
-                : '',
+            inputClasses(),
             classes?.input,
             "AruiTextfield-input",
           ),

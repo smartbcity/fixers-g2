@@ -27,7 +27,7 @@ export interface pageBasicProps extends BasicProps {
    */
   goBackLabel?: string
   /**
-   * Indicates if the header is whether relative inside the root component or absolute outside
+   * Indicates if the header is either relative inside the root component or absolute outside
    */
   fixedHeader?: boolean
   /**
