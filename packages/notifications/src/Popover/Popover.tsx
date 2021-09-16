@@ -100,10 +100,14 @@ export interface PopoverBasicProps extends BasicProps {
   children: React.ReactNode
   /**
    * Define ifthe popper is open or not
+   * 
+   * @default false
    */
   open?: boolean
   /**
    * If true the callback `onClose` will be called when the user clickaway from the popper
+   * 
+   * @default false
    */
   closeOnClickAway?: boolean
   /**

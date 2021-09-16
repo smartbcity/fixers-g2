@@ -303,7 +303,6 @@ const FilterDatePickerBase = (
           InputLabelProps={{ className: clsx(defaultClasses.label, "AruiTextfield-label") }}
           inputProps={{ size: "5" }}
           InputProps={{
-            disableUnderline: true,
             endAdornment: (
               <InputAdornment style={variant === "filled" ? colorStyle : undefined} component='div' position='end'>
                 <Calendar className={clsx(classes.calendarIcon, "AruiTextfield-calendarIcon")} />

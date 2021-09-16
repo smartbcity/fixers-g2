@@ -182,7 +182,7 @@ export interface FilterSelectBasicProps extends BasicProps {
   styles?: FilterSelectStyles
 }
 
-export type FilterSelectProps = MergeMuiElementProps<MuiSelectProps, FilterSelectBasicProps>
+export type FilterSelectProps = MergeMuiElementProps<Omit<MuiSelectProps, "ref">, FilterSelectBasicProps>
 
 export const FilterSelect = React.forwardRef((props: FilterSelectProps, ref: React.ForwardedRef<HTMLDivElement>) => {
   const {
@@ -204,6 +204,7 @@ export const FilterSelect = React.forwardRef((props: FilterSelectProps, ref: Rea
     multiple = false,
     color = 'primary',
     variant = 'filled',
+    onClose,
     ...other
   } = props
 
@@ -300,13 +301,14 @@ export const FilterSelect = React.forwardRef((props: FilterSelectProps, ref: Rea
     }
   }
 
-  const onClose = useCallback(
+  const onCloseMemoized = useCallback(
     (event: React.ChangeEvent<{}>) => {
       //@ts-ignore
       const valueClicked = event.currentTarget.dataset.value
       onRemove && value === valueClicked && onRemove()
+      onClose && onClose(event)
     },
-    [value, onRemove],
+    [value, onRemove, onClose],
   )
 
   const canRemove = (value !== '' || values.length > 0) && onRemove && !disabled && variant !== "filled"
@@ -328,7 +330,7 @@ export const FilterSelect = React.forwardRef((props: FilterSelectProps, ref: Rea
         {...other}
         ref={ref}
         label={variant === "outlined" ? label : undefined}
-        onClose={onClose}
+        onClose={onCloseMemoized}
         className={clsx(
           classesLocal.root,
           classes?.select,
