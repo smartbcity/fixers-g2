@@ -10,7 +10,8 @@ export const useFilterInputStyles = lowLevelStyles<Theme>()({
   input: {
     '& .MuiInputBase-input': {
       padding: "5px 7px",
-      fontSize: "14px"
+      fontSize: "14px",
+      color: "inherit"
     },
     '& .MuiSelect-root': {
       borderRadius: '4px',
@@ -28,9 +29,21 @@ export const useFilterInputStyles = lowLevelStyles<Theme>()({
       boxShadow: '0px 0px 0px 1px transparent',
       borderRadius: '4px',
       color: "#323338",
-      minWidth: "60px",
+      minWidth: "100px",
       backgroundColor: "white",
       transition: "background-color 200ms"
+    },
+    "& .MuiOutlinedInput-adornedStart": {
+      paddingLeft: "8px",
+    },
+    "& .MuiInputAdornment-positionStart": {
+      marginRight: "0px"
+    },
+    "& .MuiOutlinedInput-adornedEnd": {
+      paddingRight: "8px",
+    },
+    "& .MuiInputAdornment-positionEnd": {
+      marginLeft: "0px"
     },
     "& .MuiInputBase-root.Mui-disabled": {
       opacity: 0.7
@@ -42,7 +55,7 @@ export const useFilterInputStyles = lowLevelStyles<Theme>()({
       color: "#323338",
     },
     "& .MuiInputLabel-outlined": {
-      transform: "translate(14px, 8px) scale(1)",
+      transform: "translate(14px, 6.5px) scale(1)",
     },
     "& .MuiInputLabel-outlined.MuiInputLabel-shrink": {
       transform: "translate(14px, -6px) scale(0.75)"
@@ -62,8 +75,10 @@ export const useFilterInputStyles = lowLevelStyles<Theme>()({
     "& .MuiFilledInput-inputAdornedEnd": {
       padding: "0px 0px 0px 10px"
     },
-    '& .MuiFilledInput-input::placeholder': {
-      fontSize: '14px'
+    '& .MuiOutlinedInput-input::placeholder': {
+      fontSize: '14px',
+      color: "inherit",
+      opacity: 1
     },
     '& .MuiInputAdornment-filled.MuiInputAdornment-positionStart:not(.MuiInputAdornment-hiddenLabel)': {
       marginTop: '0px !important'
@@ -157,10 +172,12 @@ export const useFilterInputStyles = lowLevelStyles<Theme>()({
   },
   clear: {
     position: 'absolute',
-    right: '10px',
+    right: '4px',
     top: '50%',
-    marginTop: '-12px',
+    marginTop: '-10px',
     cursor: 'pointer',
-    color: darkGrey
+    width: "21px",
+    height: "21px",
+    color: 'inherit'
   }
 })

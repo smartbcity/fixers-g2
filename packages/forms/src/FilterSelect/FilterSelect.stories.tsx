@@ -5,13 +5,6 @@ import { Story } from "@storybook/react/types-6-0";
 import { Box } from '@material-ui/core';
 import { FilterSelectClasses, FilterSelectStyles } from "./docs"
 import { withDesign } from 'storybook-addon-designs'
-import {
-  ArgsTable,
-  PRIMARY_STORY,
-  Primary,
-  Description,
-  Stories
-} from '@storybook/addon-docs'
 
 export default {
   title: 'Forms/FilterSelect',
@@ -21,18 +14,6 @@ export default {
     design: {
       type: 'figma',
       url: 'https://www.figma.com/file/4Nl4422AUGHNVClZOHzPg8/SmartB-UI-kit?node-id=418%3A26',
-    },
-    docs: {
-      page: () => (
-        <>
-          <Description>
-            This component works as the select component but has a different style to be a filter.
-          </Description>
-          <Primary />
-          <ArgsTable story={PRIMARY_STORY} />
-          <Stories />
-        </>
-      )
     }
   },
   argTypes: {
@@ -115,7 +96,7 @@ export const FilterSelectSizes: Story<FilterSelectBasicProps> = () => {
           style={{ margin: 20, width: "180px" }}
         />
         <FilterSelect
-          label="Default outlined"
+          label="Default filled"
           color="default"
           variant="filled"
           options={options}

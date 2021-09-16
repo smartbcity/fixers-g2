@@ -38,9 +38,12 @@ export default {
 } as Meta
 
 export const TextFieldStory: Story<TextFieldProps> = (args: TextFieldProps) => {
-
+  const [value, setValue] = useState("")
   return (
     <TextField
+      value={value}
+      onChange={setValue}
+      onRemove={() => setValue("")}
       {...args}
     />
   )

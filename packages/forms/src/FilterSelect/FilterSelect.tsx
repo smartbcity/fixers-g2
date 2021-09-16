@@ -10,11 +10,11 @@ import {
   Select as MuiSelect,
   SelectProps as MuiSelectProps
 } from '@material-ui/core'
-import { Clear } from '@material-ui/icons'
+import { ClearRounded } from '@material-ui/icons'
 import { BasicProps, lowLevelStyles, MergeMuiElementProps, useTheme } from '@smartb/g2-themes'
 import clsx from 'clsx'
 import { CheckBox } from '../CheckBox'
-import { useFilterInputStyles } from '../style/useFilterInputStyles'
+import { useFilterInputStyles } from '../style'
 import tinycolor from "tinycolor2"
 
 export type Option = {
@@ -102,17 +102,17 @@ const useStyles = lowLevelStyles()({
 
 export interface FilterSelectBasicProps extends BasicProps {
   /**
-   * The value selected
-   * 
-   * @default '''
-   */
-  value?: string | number
-
-  /**
   * The label of the select
   * 
   */
   label?: string
+
+  /**
+   * The value selected
+   * 
+   * @default ''
+   */
+  value?: string | number
 
   /**
    * The values of selected. ⚠️ This prop is used only if `multiple` is true
@@ -149,28 +149,33 @@ export interface FilterSelectBasicProps extends BasicProps {
    * The event called when the value or the values of the input are removed
    */
   onRemove?: () => void
+
   /**
    * If true the input will be disabled
    * 
    * @default false
    */
   disabled?: boolean
+
   /**
   * If true the input will be disabled
   * 
-  * @default false
+  * @default 'primary'
   */
   color?: 'primary' | 'secondary' | 'default'
+
   /**
   * If true the input will be disabled
   * 
-  * @default false
+  * @default 'filled'
   */
-  variant?: 'outlined' | 'filled'
+  variant?: 'filled' | 'outlined'
+
   /**
    * The classes applied to the different part of the component
    */
   classes?: FilterSelectClasses
+
   /**
    * The styles applied to the different part of the component
    */
@@ -208,11 +213,11 @@ export const FilterSelect = React.forwardRef((props: FilterSelectProps, ref: Rea
   const colorStyle = useMemo(() => {
     if (color === "primary") {
       const isPrimaryDark = tinycolor(theme.colors.primary).isDark()
-      if (isPrimaryDark) return {color: "white"}
+      if (isPrimaryDark) return { color: "white" }
     }
     if (color === "secondary") {
       const isSecondaryDark = tinycolor(theme.colors.secondary).isDark()
-      if (isSecondaryDark) return {color: "white"}
+      if (isSecondaryDark) return { color: "white" }
     }
     return {}
   }, [color, theme.colors.primary, theme.colors.secondary])
@@ -246,7 +251,7 @@ export const FilterSelect = React.forwardRef((props: FilterSelectProps, ref: Rea
       const count = Array.isArray(selected) ? selected.length : selected === "" ? 0 : 1
       return (
         <Box display="flex" alignItems="center">
-          <InputLabel className={clsx(classes?.label, defaultClasses?.label, "AruiFilterSelect-label")} style={{...styles?.label, ...colorStyle}}>{label}</InputLabel>
+          <InputLabel className={clsx(classes?.label, defaultClasses?.label, "AruiFilterSelect-label")} style={{ ...styles?.label, ...colorStyle }}>{label}</InputLabel>
           <Chip className={clsx(classes?.chip, classesLocal.chip, "AruiFilterSelect-chip")} label={count} variant="outlined" color={color} style={styles?.chip} />
         </Box>
       )
@@ -258,7 +263,7 @@ export const FilterSelect = React.forwardRef((props: FilterSelectProps, ref: Rea
     return options.map((option) => (
       <MenuItem data-value={option.label} className={clsx(classes?.option, "AruiFilterSelect-option")} style={styles?.option} key={option.key} value={option.label}>
         <CheckBox data-value={option.label} checked={values.indexOf(option.label) > -1 || value === option.label} />
-        <ListItemText data-value={option.label} primary={option.label as string} primaryTypographyProps={{variant: "body2"}} />
+        <ListItemText data-value={option.label} primary={option.label as string} primaryTypographyProps={{ variant: "body2" }} />
       </MenuItem>
     ))
   }, [options, values, value, classes?.option, styles?.option])
@@ -304,7 +309,7 @@ export const FilterSelect = React.forwardRef((props: FilterSelectProps, ref: Rea
     [value, onRemove],
   )
 
-  const canRemove = (value !== '' || values.length > 0) && onRemove && !disabled && variant !== "filled" 
+  const canRemove = (value !== '' || values.length > 0) && onRemove && !disabled && variant !== "filled"
 
   return (
     <FormControl
@@ -350,13 +355,13 @@ export const FilterSelect = React.forwardRef((props: FilterSelectProps, ref: Rea
           className: clsx(classesLocal.menu, classes?.menu, "AruiFilterSelect-menu"),
           style: styles?.menu
         }}
-        style={variant === "filled" ? {...styles?.select, ...colorStyle} : styles?.select}
+        style={variant === "filled" ? { ...styles?.select, ...colorStyle } : styles?.select}
         disabled={disabled}
       >
         {optionsMemoized}
       </MuiSelect>
       { canRemove && (
-        <Clear onClick={onRemove} className={clsx(classesLocal.clear, classes?.clearIcon, "AruiFilterSelect-clearIcon")} style={styles?.clearIcon} />
+        <ClearRounded onClick={onRemove} className={clsx(classesLocal.clear, classes?.clearIcon, "AruiFilterSelect-clearIcon")} style={styles?.clearIcon} />
       )}
     </FormControl>
   )

@@ -8,7 +8,7 @@ import {
   Select as MuiSelect,
   SelectProps as MuiSelectProps
 } from '@material-ui/core'
-import { Clear } from '@material-ui/icons'
+import { ClearRounded } from '@material-ui/icons'
 import { SelectIcon } from '../assets/icons'
 import { useInputStyles } from '../style'
 import { BasicProps, lowLevelStyles, MergeMuiElementProps, useTheme } from '@smartb/g2-themes'
@@ -324,7 +324,7 @@ export const Select = React.forwardRef((props: SelectProps, ref: React.Forwarded
         {optionsMemoized}
       </MuiSelect>
       {canRemove && (
-        <Clear onClick={onRemove} className={clsx(classesLocal.clear, classes?.clearIcon, "AruiSelect-clearIcon")} style={styles?.clearIcon} />
+        <ClearRounded onClick={onRemove} className={clsx(classesLocal.clear, classes?.clearIcon, "AruiSelect-clearIcon")} style={styles?.clearIcon} />
       )}
       {errorMessage !== '' && error && (
         <FormHelperText className={clsx(defaultClasses.helperText, classes?.helperText, "AruiSelect-helperText")} style={styles?.helperText}>

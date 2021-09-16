@@ -1,7 +1,6 @@
 
 export const TextFieldClasses = `
 interface TextFieldClasses {
-    label?: string
     textfield?: string
     input?: string
     inputBase?: string
@@ -14,7 +13,6 @@ interface TextFieldClasses {
 
 export const TextFieldStyles = `
 interface TextFieldStyles {
-    label?: React.CSSProperties
     textfield?: React.CSSProperties
     input?: React.CSSProperties
     inputBase?: React.CSSProperties
