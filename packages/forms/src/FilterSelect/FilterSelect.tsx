@@ -88,6 +88,7 @@ const useStyles = lowLevelStyles()({
     height: "17px",
     display: "flex",
     justifyContent: "center",
+    cursor: "pointer",
     marginLeft: "7px",
     alignItems: "center",
     background: "white",
@@ -97,6 +98,9 @@ const useStyles = lowLevelStyles()({
       fontSize: "12px",
       fontWeight: 600
     }
+  },
+  label: {
+    cursor: "pointer"
   }
 })
 
@@ -252,7 +256,7 @@ export const FilterSelect = React.forwardRef((props: FilterSelectProps, ref: Rea
       const count = Array.isArray(selected) ? selected.length : selected === "" ? 0 : 1
       return (
         <Box display="flex" alignItems="center">
-          <InputLabel className={clsx(classes?.label, defaultClasses?.label, "AruiFilterSelect-label")} style={{ ...styles?.label, ...colorStyle }}>{label}</InputLabel>
+          <InputLabel className={clsx(classes?.label, defaultClasses.label, "AruiFilterSelect-label", classesLocal.label)} style={{ ...styles?.label, ...colorStyle }}>{label}</InputLabel>
           <Chip className={clsx(classes?.chip, classesLocal.chip, "AruiFilterSelect-chip")} label={count} variant="outlined" color={color} style={styles?.chip} />
         </Box>
       )
