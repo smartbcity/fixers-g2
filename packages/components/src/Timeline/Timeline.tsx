@@ -7,7 +7,7 @@ import {
   TimelineDot,
   TimelineConnector,
   TimelineContent
-} from '@material-ui/lab'
+} from '@mui/lab'
 import React, { forwardRef, useMemo } from 'react'
 import { Typography } from  '@mui/material'
 import clsx from 'clsx'

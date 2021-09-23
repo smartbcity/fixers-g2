@@ -73,44 +73,42 @@ const MoreOptionsBase = <T extends object = {}>(
     setAnchorEl(null)
   }, [])
 
-  return (
-    <>
-      <IconButton
-        ref={ref}
-        aria-label='more'
-        aria-controls='long-menu'
-        aria-haspopup='true'
-        onClick={handleClick}
-        className={clsx(className, 'AruiMoreOptions-root')}
-        {...other}
-      >
-        <MoreHoriz
-          className={clsx(
-            classes?.moreOptionsIcon,
-            'AruiMoreOptions-moreOptionsIcon'
-          )}
-          style={styles?.moreOptionsIcon}
-        />
-      </IconButton>
-      <MuiMenu
-        anchorEl={anchorEl}
-        keepMounted
-        open={Boolean(anchorEl)}
-        onClose={close}
-        PaperProps={{
-          className: defaultClasses.menu
-        }}
-        className={clsx(classes?.menu, 'AruiMoreOptions-menu')}
-        style={styles?.menu}
-      >
-        <Menu
-          menu={options}
-          {...menuContainerProps}
-          classes={{ item: { root: defaultClasses.listItem } }}
-        />
-      </MuiMenu>
-    </>
-  )
+  return <>
+    <IconButton
+      ref={ref}
+      aria-label='more'
+      aria-controls='long-menu'
+      aria-haspopup='true'
+      onClick={handleClick}
+      className={clsx(className, 'AruiMoreOptions-root')}
+      {...other}
+      size="large">
+      <MoreHoriz
+        className={clsx(
+          classes?.moreOptionsIcon,
+          'AruiMoreOptions-moreOptionsIcon'
+        )}
+        style={styles?.moreOptionsIcon}
+      />
+    </IconButton>
+    <MuiMenu
+      anchorEl={anchorEl}
+      keepMounted
+      open={Boolean(anchorEl)}
+      onClose={close}
+      PaperProps={{
+        className: defaultClasses.menu
+      }}
+      className={clsx(classes?.menu, 'AruiMoreOptions-menu')}
+      style={styles?.menu}
+    >
+      <Menu
+        menu={options}
+        {...menuContainerProps}
+        classes={{ item: { root: defaultClasses.listItem } }}
+      />
+    </MuiMenu>
+  </>;
 }
 
 export const MoreOptions = forwardRef(MoreOptionsBase) as typeof MoreOptionsBase

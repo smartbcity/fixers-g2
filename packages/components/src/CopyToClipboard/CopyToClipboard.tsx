@@ -99,7 +99,7 @@ const CopyToClipboardBase = (
         ref={ref}
         className={clsx(className, 'AruiCopyToClipboard-root')}
         onClick={onCopy}
-      >
+        size="large">
         {done ? (
           <CheckRounded
             className={clsx(
@@ -121,7 +121,7 @@ const CopyToClipboardBase = (
         )}
       </IconButton>
     </Tooltip>
-  )
+  );
 }
 
 export const CopyToClipboard = forwardRef(
