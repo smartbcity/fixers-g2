@@ -1,7 +1,7 @@
 import React from 'react'
 import {AppBar as MuiAppBar} from  '@mui/material'
 import { AppBarProps as MuiAppBarProps, Box, Toolbar } from  '@mui/material'
-import MenuIcon from '@material-ui/icons/Menu'
+import MenuIcon from '@mui/icons-material/Menu'
 import {IconButton} from  '@mui/material'
 import {
   BasicProps,
@@ -72,7 +72,7 @@ export const AppBarLayout = (props: AppBarLayoutProps) => {
             color='inherit'
             aria-label='Open drawer'
             onClick={onDrawerOpen}
-          >
+            size="large">
             <MenuIcon
               className={clsx(classes?.menuIcon, 'AruiAppBar-menuIcon')}
               style={styles?.menuIcon}
@@ -91,7 +91,7 @@ export const AppBarLayout = (props: AppBarLayoutProps) => {
           {children}
         </Box>
       </Box>
-    )
+    );
   return (
     <MuiAppBar
       className={clsx(className, 'AruiAppBar-root')}
@@ -118,7 +118,7 @@ export const AppBarLayout = (props: AppBarLayoutProps) => {
             color='inherit'
             aria-label='Open drawer'
             onClick={onDrawerOpen}
-          >
+            size="large">
             <MenuIcon
               className={clsx(classes?.menuIcon, 'AruiAppBar-menuIcon')}
               style={styles?.menuIcon}
@@ -128,5 +128,5 @@ export const AppBarLayout = (props: AppBarLayoutProps) => {
         {children}
       </Toolbar>
     </MuiAppBar>
-  )
+  );
 }

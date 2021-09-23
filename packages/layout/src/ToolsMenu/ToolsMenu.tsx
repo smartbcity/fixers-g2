@@ -121,7 +121,7 @@ export const ToolsMenu = (props: ToolsMenuProps) => {
         aria-haspopup='true'
         onClick={handleMenu}
         color='inherit'
-      >
+        size="large">
         {menu.icon}
       </IconButton>
       <MuiMenu
@@ -186,5 +186,5 @@ export const ToolsMenu = (props: ToolsMenuProps) => {
         )}
       </MuiMenu>
     </div>
-  )
+  );
 }

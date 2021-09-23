@@ -177,7 +177,7 @@ export const ItemsLayout = React.forwardRef(
                 href={it.href}
                 alignItems='center'
                 direction='column'
-                justify='space-around'
+                justifyContent='space-around'
                 className={clsx(
                   defaultClasses.gridItem,
                   'AruiItemsLayout-gridItem',
@@ -193,6 +193,6 @@ export const ItemsLayout = React.forwardRef(
             ))}
         </Grid>
       </div>
-    )
+    );
   }
 )

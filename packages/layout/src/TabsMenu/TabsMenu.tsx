@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { withStyles } from '@material-ui/core/styles'
+import withStyles from '@mui/styles/withStyles';
 import { AppBar, Tab, Tabs } from  '@mui/material'
 import clsx from 'clsx'
 import { BasicProps, lowLevelStyles } from '@smartb/g2-themes'

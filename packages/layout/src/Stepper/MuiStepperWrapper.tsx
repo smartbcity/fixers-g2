@@ -1,13 +1,13 @@
 import React, { useCallback, useRef } from 'react'
-import { Theme } from '@material-ui/core/styles'
+import { Theme } from '@mui/material/styles'
 import MuiStepper, {
   StepperProps as MuiStepperProps
-} from '@material-ui/core/Stepper'
-import MuiStep, { StepProps as MuiStepProps } from '@material-ui/core/Step'
+} from '@mui/material/Stepper'
+import MuiStep, { StepProps as MuiStepProps } from '@mui/material/Step'
 import MuiStepLabel, {
   StepLabelProps as MuiStepLabelProps
-} from '@material-ui/core/StepLabel'
-import Button, { ButtonProps } from '@material-ui/core/Button'
+} from '@mui/material/StepLabel'
+import Button, { ButtonProps } from '@mui/material/Button'
 import { Paper, PaperProps } from  '@mui/material'
 import clsx from 'clsx'
 import { BasicProps, lowLevelStyles } from '@smartb/g2-themes'
