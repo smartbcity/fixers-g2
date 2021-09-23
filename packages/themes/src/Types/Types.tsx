@@ -1,6 +1,6 @@
 import { makeStyles  } from  '@mui/material'
 import { Styles } from '@mui/styles'
-import { Theme as MuiTheme} from '@material-ui/core/styles'
+import { Theme as MuiTheme} from '@mui/material/styles'
 
 export interface BasicProps {
   /**
