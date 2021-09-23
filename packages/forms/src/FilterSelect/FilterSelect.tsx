@@ -9,8 +9,8 @@ import {
   MenuItem,
   Select as MuiSelect,
   SelectProps as MuiSelectProps
-} from '@material-ui/core'
-import { ClearRounded } from '@material-ui/icons'
+} from  '@mui/material'
+import { ClearRounded } from '@mui/icons-material'
 import { BasicProps, lowLevelStyles, MergeMuiElementProps, useTheme } from '@smartb/g2-themes'
 import clsx from 'clsx'
 import { CheckBox } from '../CheckBox'

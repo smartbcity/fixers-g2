@@ -5,7 +5,7 @@ import { AppProvider, KeycloakProvider } from "@smartb/g2-providers"
 import { languages } from 'i18n';
 import { history, store } from 'store';
 import { ThemeContextProvider } from '@smartb/g2-themes';
-import { Typography } from '@material-ui/core';
+import { Typography } from  '@mui/material';
 import { theme, Muitheme } from 'Themes';
 import App from 'App';
 

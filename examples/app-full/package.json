@@ -14,8 +14,8 @@
     "@testing-library/user-event": "^12.1.10"
   },
   "dependencies": {
-    "@material-ui/core": "^4.11.3",
-    "@material-ui/icons": "^4.11.2",
+    "@mui/material": "^5.0.1",
+    "@mui/icons-material": "^5.0.1",
     "@smartb/g2-components": "^0.1.36",
     "@smartb/g2-layout": "^0.1.36",
     "@smartb/g2-s2": "^0.1.36",

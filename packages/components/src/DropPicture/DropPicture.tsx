@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useMemo, forwardRef } from 'react'
 import { FileRejection, DropzoneProps, useDropzone } from 'react-dropzone'
-import { Paper, Typography } from '@material-ui/core'
-import { Clear, AddPhotoAlternate } from '@material-ui/icons'
+import { Paper, Typography } from  '@mui/material'
+import { Clear, AddPhotoAlternate } from '@mui/icons-material'
 import {
   BasicProps,
   MergeMuiElementProps,

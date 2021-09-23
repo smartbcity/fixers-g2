@@ -1,5 +1,5 @@
 import React, { forwardRef } from 'react'
-import { Link as MuiLink, LinkProps as MuiLinkProps } from '@material-ui/core'
+import { Link as MuiLink, LinkProps as MuiLinkProps } from  '@mui/material'
 import {
   BasicProps,
   lowLevelStyles,

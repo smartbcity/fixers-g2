@@ -1,6 +1,6 @@
 import React from 'react'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
-import { Typography } from '@material-ui/core'
+import { Typography } from  '@mui/material'
 
 const useStyles = makeStyles(() =>
   createStyles({

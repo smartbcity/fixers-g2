@@ -2,7 +2,7 @@ import React from 'react'
 import { Tooltip as AruiTooltip, TooltipBasicProps } from './Tooltip'
 import { Meta } from '@storybook/react'
 import { Story } from '@storybook/react/types-6-0'
-import { Typography } from '@material-ui/core'
+import { Typography } from  '@mui/material'
 import { withDesign } from 'storybook-addon-designs'
 
 export default {

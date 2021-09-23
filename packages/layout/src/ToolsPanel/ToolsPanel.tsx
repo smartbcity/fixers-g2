@@ -1,6 +1,6 @@
 import React from 'react'
 import { MenuItems } from '@smartb/g2-components'
-import { ExpandMore } from '@material-ui/icons'
+import { ExpandMore } from '@mui/icons-material'
 import {
   ExpansionPanel,
   ExpansionPanelSummary,
@@ -9,7 +9,7 @@ import {
   ExpansionPanelDetails,
   ListItem,
   List
-} from '@material-ui/core'
+} from  '@mui/material'
 import { BasicProps, lowLevelStyles } from '@smartb/g2-themes'
 import clsx from 'clsx'
 

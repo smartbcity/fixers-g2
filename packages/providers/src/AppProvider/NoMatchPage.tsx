@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, BoxProps, Typography } from '@material-ui/core'
+import { Box, BoxProps, Typography } from  '@mui/material'
 import { NotFoundIcon } from '../assets/NotFoundIcon'
 import {
   BasicProps,

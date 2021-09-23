@@ -8,7 +8,7 @@ import MuiStepLabel, {
   StepLabelProps as MuiStepLabelProps
 } from '@material-ui/core/StepLabel'
 import Button, { ButtonProps } from '@material-ui/core/Button'
-import { Paper, PaperProps } from '@material-ui/core'
+import { Paper, PaperProps } from  '@mui/material'
 import clsx from 'clsx'
 import { BasicProps, lowLevelStyles } from '@smartb/g2-themes'
 

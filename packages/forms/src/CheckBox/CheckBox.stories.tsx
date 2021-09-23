@@ -3,7 +3,7 @@ import {CheckBox, CheckBoxBasicProps} from './CheckBox'
 import { Meta } from '@storybook/react'
 import {Story} from "@storybook/react/types-6-0";
 import {CheckBoxClasses, CheckBoxStyles} from './docs'
-import { Box } from '@material-ui/core';
+import { Box } from  '@mui/material';
 import { withDesign } from 'storybook-addon-designs'
 
 export default {

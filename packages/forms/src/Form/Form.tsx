@@ -6,7 +6,7 @@ import { TextFieldProps } from '../TextField'
 import { DatePickerProps } from '../DatePicker'
 import { CheckBox, CheckBoxProps } from '../CheckBox'
 import { BasicProps, lowLevelStyles, MergeReactElementProps } from '@smartb/g2-themes'
-import { Box } from '@material-ui/core'
+import { Box } from  '@mui/material'
 import clsx from 'clsx'
 import { FormState } from './useForm'
 

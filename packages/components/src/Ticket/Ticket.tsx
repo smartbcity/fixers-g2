@@ -1,4 +1,4 @@
-import { Box, Paper, PaperProps, Typography } from '@material-ui/core'
+import { Box, Paper, PaperProps, Typography } from  '@mui/material'
 import { BasicProps, lowLevelStyles, MergeMuiElementProps } from '@smartb/g2-themes'
 import clsx from 'clsx'
 import React, { forwardRef } from 'react'

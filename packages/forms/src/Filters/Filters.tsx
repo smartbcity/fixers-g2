@@ -4,7 +4,7 @@ import { FilterSelectProps, FilterSelect } from '../FilterSelect'
 import { FilterTextFieldProps, FilterTextField } from '../FilterTextField'
 import { FilterDatePickerProps, FilterDatePicker } from '../FilterDatePicker'
 import { BasicProps, lowLevelStyles, MergeReactElementProps } from '@smartb/g2-themes'
-import { Box } from '@material-ui/core'
+import { Box } from  '@mui/material'
 import clsx from 'clsx'
 import { FiltersState } from './useFilters'
 

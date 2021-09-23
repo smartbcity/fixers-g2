@@ -7,8 +7,8 @@ import {
   MenuItem,
   Select as MuiSelect,
   SelectProps as MuiSelectProps
-} from '@material-ui/core'
-import { ClearRounded } from '@material-ui/icons'
+} from  '@mui/material'
+import { ClearRounded } from '@mui/icons-material'
 import { SelectIcon } from '../assets/icons'
 import { useInputStyles } from '../style'
 import { BasicProps, lowLevelStyles, MergeMuiElementProps, useTheme } from '@smartb/g2-themes'

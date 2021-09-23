@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { Box, Typography, makeStyles } from '@material-ui/core'
-import { PictureAsPdf, Clear } from '@material-ui/icons'
+import { Box, Typography, makeStyles } from  '@mui/material'
+import { PictureAsPdf, Clear } from '@mui/icons-material'
 import pdfLogo from '../assets/pdf.png'
 import { BasicProps } from '@smartb/g2-themes'
 import { ClipLoader } from 'react-spinners'

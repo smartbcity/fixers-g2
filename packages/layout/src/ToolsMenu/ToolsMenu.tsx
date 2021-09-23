@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { MenuItems } from '@smartb/g2-components'
-import { IconButton, Menu as MuiMenu } from '@material-ui/core'
+import { IconButton, Menu as MuiMenu } from  '@mui/material'
 import { ItemsLayout, Display, ItemsLayoutBasicProps } from '../ItemsLayout'
 import { TabsMenuProps } from '../TabsMenu'
 import { TabsMenu } from '../TabsMenu'

@@ -4,7 +4,7 @@ import {
   MenuItem,
   Select as MuiSelect,
   SelectProps as MuiSelectProps
-} from '@material-ui/core'
+} from  '@mui/material'
 import {
   MergeMuiElementProps,
   BasicProps,

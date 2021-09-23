@@ -5,7 +5,7 @@ import {
   ListItemText,
   ListItemProps,
   ListProps
-} from '@material-ui/core'
+} from  '@mui/material'
 import { MenuItems } from './MenuItem'
 import React, { useCallback, useMemo } from 'react'
 import {

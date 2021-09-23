@@ -4,8 +4,8 @@ import {
   Checkbox,
   FormControlLabel,
   CheckboxProps as MuiCheckboxProps
-} from '@material-ui/core'
-import { RadioButtonUnchecked, CheckCircle } from '@material-ui/icons'
+} from  '@mui/material'
+import { RadioButtonUnchecked, CheckCircle } from '@mui/icons-material'
 import { Theme, useTheme } from '@smartb/g2-themes'
 import {
   BasicProps,

@@ -1,8 +1,8 @@
 import React from 'react'
-import {AppBar as MuiAppBar} from '@material-ui/core'
-import { AppBarProps as MuiAppBarProps, Box, Toolbar } from '@material-ui/core'
+import {AppBar as MuiAppBar} from  '@mui/material'
+import { AppBarProps as MuiAppBarProps, Box, Toolbar } from  '@mui/material'
 import MenuIcon from '@material-ui/icons/Menu'
-import {IconButton} from '@material-ui/core'
+import {IconButton} from  '@mui/material'
 import {
   BasicProps,
   MergeMuiElementProps,

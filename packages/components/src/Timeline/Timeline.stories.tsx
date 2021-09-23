@@ -2,8 +2,8 @@ import React, { useState } from 'react'
 import { Timeline as AruiTimeline, TimelineBasicProps } from './Timeline'
 import { Meta } from '@storybook/react'
 import { Story } from '@storybook/react/types-6-0'
-import { Paper, Typography } from '@material-ui/core'
-import { Fastfood } from '@material-ui/icons'
+import { Paper, Typography } from  '@mui/material'
+import { Fastfood } from '@mui/icons-material'
 import { styles, classes, TimeLineCell } from './types'
 
 export default {

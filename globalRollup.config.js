@@ -15,7 +15,7 @@ const getGlobal = (localPackageJson) => {
     "react-dom": "ReactDOM",
   };
   return {
-    external: [...externalsDependencies, "@material-ui/styles"],
+    external: [...externalsDependencies, "@mui/styles"],
     output: [
       {
         file: localPackageJson.main,

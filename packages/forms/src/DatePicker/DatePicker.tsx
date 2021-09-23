@@ -3,7 +3,7 @@ import {
   DatePickerProps as MuiDatePickerProps,
   DatePickerView,
   MuiPickersUtilsProvider
-} from '@material-ui/pickers'
+} from '@mui/lab'
 import React, { forwardRef, useCallback, useMemo } from 'react'
 import { useInputStyles } from '../style'
 import {
@@ -17,7 +17,7 @@ import DateFnsUtils from '@date-io/date-fns'
 import { format as formatFnc } from 'date-fns'
 import * as dateFnsLocales from 'date-fns/locale'
 import clsx from 'clsx'
-import { Clear } from '@material-ui/icons'
+import { Clear } from '@mui/icons-material'
 
 const useStyles = lowLevelStyles()({
   root: {

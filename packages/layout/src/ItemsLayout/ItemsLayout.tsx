@@ -5,7 +5,7 @@ import {
   Typography,
   ListItemIcon,
   Grid
-} from '@material-ui/core'
+} from  '@mui/material'
 import {
   MergeReactElementProps,
   BasicProps,

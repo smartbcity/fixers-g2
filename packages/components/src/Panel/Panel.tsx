@@ -1,11 +1,11 @@
 import React from 'react'
-import { Card as MuiCard, CardProps } from '@material-ui/core'
+import { Card as MuiCard, CardProps } from  '@mui/material'
 import {
   CardHeader,
   Typography,
   CardContent,
   CardActions
-} from '@material-ui/core'
+} from  '@mui/material'
 import defaultLogo from '../assets/impactcity-logo-2.png'
 import documentLogo from '../assets/docstampt-badge.png'
 import { logoType } from '.'

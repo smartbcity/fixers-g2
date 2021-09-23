@@ -11,7 +11,7 @@ import {
   Stories
 } from '@storybook/addon-docs'
 import LinkTo from '@storybook/addon-links/react'
-import { Typography } from '@material-ui/core'
+import { Typography } from  '@mui/material'
 import { ActionDoc, FieldDoc, FormClasses, FormStyles, FormState } from './docs'
 import { useForm } from './useForm'
 

@@ -3,10 +3,10 @@ import {
   Button as MuiButton,
   ButtonProps as MuiButtonProps,
   CircularProgress
-} from '@material-ui/core'
+} from  '@mui/material'
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 import { useTheme } from '@smartb/g2-themes'
-import { CheckRounded, CloseRounded, ReportProblemOutlined } from '@material-ui/icons'
+import { CheckRounded, CloseRounded, ReportProblemOutlined } from '@mui/icons-material'
 import {
   containedUseStyles,
   outlinedUseStyles,

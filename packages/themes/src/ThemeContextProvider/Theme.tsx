@@ -1,4 +1,4 @@
-import { createTheme as createMuiTheme, ThemeOptions } from '@material-ui/core'
+import { createTheme as createMuiTheme, ThemeOptions } from  '@mui/material'
 import tinycolor from "tinycolor2"
 
 export interface Theme {

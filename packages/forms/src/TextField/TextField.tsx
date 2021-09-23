@@ -3,8 +3,8 @@ import {
   InputAdornment,
   TextField as MuiTextField,
   TextFieldProps as MuiTextFieldProps,
-} from '@material-ui/core'
-import { CheckRounded, ClearRounded } from '@material-ui/icons'
+} from  '@mui/material'
+import { CheckRounded, ClearRounded } from '@mui/icons-material'
 import { useInputStyles } from '../style'
 import { BasicProps, lowLevelStyles, MergeMuiElementProps, useTheme } from '@smartb/g2-themes'
 import clsx from 'clsx'

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Paper, useTheme, PaperProps } from '@material-ui/core'
+import { Paper, useTheme, PaperProps } from  '@mui/material'
 import defaultLogo from '../assets/impactcity-logo-2.png'
 import documentLogo from '../assets/docstampt-badge.png'
 import { logoType } from '../Panel'

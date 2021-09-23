@@ -1,5 +1,5 @@
 import React, { createContext, useCallback, useContext } from 'react'
-import { ThemeProvider, ThemeOptions } from '@material-ui/core'
+import { ThemeProvider, ThemeOptions } from  '@mui/material'
 import { defaultMaterialUiTheme, defaultTheme, Theme } from './Theme'
 
 import "./default.css"

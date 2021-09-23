@@ -3,7 +3,7 @@ import {
   InputLabel,
   TextField as MuiTextField,
   TextFieldProps as MuiTextFieldProps
-} from '@material-ui/core'
+} from  '@mui/material'
 
 import {
   BasicProps,

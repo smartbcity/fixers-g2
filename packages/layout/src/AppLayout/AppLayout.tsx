@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
-import { Drawer, Theme, DrawerProps } from '@material-ui/core'
-import { createStyles } from '@material-ui/core'
+import { Drawer, Theme, DrawerProps } from  '@mui/material'
+import { createStyles } from  '@mui/material'
 import clsx from 'clsx'
 import { StyleProps } from '../StyleProps'
 import {

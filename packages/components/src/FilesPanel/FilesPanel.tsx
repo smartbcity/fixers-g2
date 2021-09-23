@@ -1,6 +1,6 @@
 import React from 'react'
 import { BasicProps } from '@smartb/g2-themes'
-import { Box, makeStyles } from '@material-ui/core'
+import { Box, makeStyles } from  '@mui/material'
 import { FilePreview } from '../FilePreview'
 import { Folder } from './Folder'
 

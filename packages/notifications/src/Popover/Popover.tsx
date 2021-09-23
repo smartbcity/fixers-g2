@@ -5,9 +5,9 @@ import {
   Theme,
   useTheme
 } from '@smartb/g2-themes'
-import { ClickAwayListener, Popper, PopperProps } from '@material-ui/core'
+import { ClickAwayListener, Popper, PopperProps } from  '@mui/material'
 import React, { forwardRef, useCallback } from 'react'
-import { CloseRounded } from '@material-ui/icons'
+import { CloseRounded } from '@mui/icons-material'
 import clsx from 'clsx'
 
 const useStyles = lowLevelStyles<Theme>()({

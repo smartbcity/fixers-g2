@@ -1,4 +1,4 @@
-import { Box } from '@material-ui/core'
+import { Box } from  '@mui/material'
 import React, { useCallback } from 'react'
 import {
   Pagination as MuiPagination,

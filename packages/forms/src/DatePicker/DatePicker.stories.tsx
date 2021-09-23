@@ -3,7 +3,7 @@ import { DatePicker as AruiDatePicker, DatePickerProps } from './DatePicker'
 import { Meta } from "@storybook/react";
 import { Story } from "@storybook/react/types-6-0";
 import { addDays } from "date-fns"
-import { Box } from '@material-ui/core';
+import { Box } from  '@mui/material';
 
 export default {
   title: 'Forms/DatePicker',

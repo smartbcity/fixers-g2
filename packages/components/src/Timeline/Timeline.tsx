@@ -9,7 +9,7 @@ import {
   TimelineContent
 } from '@material-ui/lab'
 import React, { forwardRef, useMemo } from 'react'
-import { Typography } from '@material-ui/core'
+import { Typography } from  '@mui/material'
 import clsx from 'clsx'
 import { Theme, useTheme } from '@smartb/g2-themes'
 import {

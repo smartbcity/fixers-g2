@@ -1,6 +1,6 @@
 import React, { forwardRef, useCallback, useState } from 'react'
-import { Menu as MuiMenu, IconButton, IconButtonProps } from '@material-ui/core'
-import { MoreHoriz } from '@material-ui/icons'
+import { Menu as MuiMenu, IconButton, IconButtonProps } from  '@mui/material'
+import { MoreHoriz } from '@mui/icons-material'
 import { MenuItem, Menu, MenuProps } from '../Menu'
 import {
   BasicProps,

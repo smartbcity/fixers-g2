@@ -4,12 +4,12 @@ import {
   TextField as MuiTextField,
   OutlinedTextFieldProps as MuiOutlinedTextFieldProps,
   InputLabelProps,
-} from '@material-ui/core'
+} from  '@mui/material'
 import { useFilterInputStyles } from '../style'
 import { BasicProps, lowLevelStyles, MergeMuiElementProps, useTheme } from '@smartb/g2-themes'
 import clsx from 'clsx'
 import { SearchIcon } from '../assets/icons'
-import { ClearRounded } from '@material-ui/icons'
+import { ClearRounded } from '@mui/icons-material'
 import tinycolor from "tinycolor2"
 
 const useStyles = lowLevelStyles()({

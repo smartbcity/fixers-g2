@@ -7,8 +7,8 @@ import {
   ContactPhone,
   Payment,
   Settings
-} from '@material-ui/icons'
-import { Box, Typography } from '@material-ui/core'
+} from '@mui/icons-material'
+import { Box, Typography } from  '@mui/material'
 import { ArgsTable, PRIMARY_STORY, Subtitle } from '@storybook/addon-docs'
 import { styles, classes, Menu } from './types'
 import LinkTo from '@storybook/addon-links/react'

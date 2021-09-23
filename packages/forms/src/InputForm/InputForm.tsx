@@ -1,4 +1,4 @@
-import { Box, InputLabel } from '@material-ui/core'
+import { Box, InputLabel } from  '@mui/material'
 import React, { useMemo } from 'react'
 import { Select, SelectProps, SelectClasses, SelectStyles } from '../Select'
 import { TextField, TextFieldProps, TextFieldClasses, TextFieldStyles } from '../TextField'
