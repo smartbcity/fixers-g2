@@ -1,8 +1,15 @@
 import React, { createContext, useCallback, useContext } from 'react'
-import { ThemeProvider, ThemeOptions } from  '@mui/material'
+import { ThemeProvider, StyledEngineProvider, DeprecatedThemeOptions } from '@mui/material';
 import { defaultMaterialUiTheme, defaultTheme, Theme } from './Theme'
 
 import "./default.css"
+
+
+declare module '@mui/styles/defaultTheme' {
+  // eslint-disable-next-line @typescript-eslint/no-empty-interface
+  interface DefaultTheme extends Theme {}
+}
+
 
 export interface ThemeContextProps {
   theme: Theme
@@ -34,9 +41,11 @@ export const ThemeContextProvider = (props: ThemeContextProviderProps) => {
     <ThemeContext.Provider
       value={{ theme: localTheme, changeTheme: setPartialTheme }}
     >
-      <ThemeProvider theme={defaultMuiTheme}>{children}</ThemeProvider>
+      <StyledEngineProvider injectFirst>
+        <ThemeProvider theme={defaultMuiTheme}>{children}</ThemeProvider>
+      </StyledEngineProvider>
     </ThemeContext.Provider>
-  )
+  );
 }
 
 export const useTheme = () => {

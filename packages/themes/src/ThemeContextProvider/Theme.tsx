@@ -1,4 +1,5 @@
-import { createTheme as createMuiTheme, ThemeOptions } from  '@mui/material'
+import { createTheme as createMuiTheme, DeprecatedThemeOptions } from  '@mui/material'
+import { adaptV4Theme } from '@mui/material/styles';
 import tinycolor from "tinycolor2"
 
 export interface Theme {
@@ -50,7 +51,7 @@ export const defaultMaterialUiTheme = (
   customMuiTheme?: Partial<ThemeOptions>
 ) => {
   const isPrymaryTooLight = tinycolor(theme.colors.primary).getLuminance() > 0.6
-  const themeOverride: ThemeOptions = {
+  const themeOverride: DeprecatedThemeOptions = {
     overrides: {
       MuiPaper: {
         elevation1: {
@@ -136,5 +137,5 @@ export const defaultMaterialUiTheme = (
     },
   }
 
-  return createMuiTheme(Object.assign(themeOverride, customMuiTheme))
+  return createMuiTheme(adaptV4Theme(Object.assign(themeOverride, customMuiTheme)));
 }
