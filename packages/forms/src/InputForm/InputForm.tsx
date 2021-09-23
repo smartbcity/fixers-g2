@@ -89,6 +89,7 @@ export const InputForm: InputFormComponent = React.forwardRef((props: Partial<In
     styles,
     inputClasses,
     inputStyles,
+    size,
     ...other
   } = props
   const theme = useTheme()
@@ -96,11 +97,11 @@ export const InputForm: InputFormComponent = React.forwardRef((props: Partial<In
 
   const labelUi = useMemo(() => {
     return label ? (
-      <InputLabel htmlFor={id} className={clsx(defaultClasses.label, classes?.label)} style={styles?.label}>
+      <InputLabel htmlFor={id} className={clsx(defaultClasses.label, classes?.label, size === "small" && defaultClasses.labelSmall)} style={styles?.label}>
         {label}
       </InputLabel>
     ) : null;
-  }, [label, classes?.label, id, styles?.label])
+  }, [label, classes?.label, id, styles?.label, size])
 
   const inputUi = useMemo(() => {
     return readonly ? (

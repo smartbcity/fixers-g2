@@ -31,6 +31,9 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2"
   },
+  "dependencies": {
+    "tinycolor2": "^1.4.2"
+  },
   "gitHead": "01582f4b620c1e44cab5a65394e29d95f66ddabb",
   "publishConfig": {
     "@smartb:registry": "https://gitlab.smartb.city/api/v4/projects/52/packages/npm/"

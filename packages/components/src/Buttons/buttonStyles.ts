@@ -8,43 +8,30 @@ export const containedUseStyles = lowLevelStyles<Theme>()({
       fontSize: '0.85rem',
       borderRadius: '4px',
       textTransform: 'none',
-      boxShadow: theme => theme.shadows[1],
-      color: '#ffffff'
+      boxShadow: theme => theme.shadows[1]
     },
     defaultColor: {
       background: theme => theme.colors.primary,
       '&:hover': {
         background: theme => theme.colors.primary
-      },
-      '&.Mui-disabled': {
-        color: '#ffffff'
       }
     },
     success: {
       background:  theme => theme.colors.success,
       '&:hover': {
         background: theme => theme.colors.success
-      },
-      '&.Mui-disabled': {
-        color: '#ffffff'
       }
     },
     fail: {
       background: theme => theme.colors.error,
       '&:hover': {
         background: theme => theme.colors.error
-      },
-      '&.Mui-disabled': {
-        color: '#ffffff'
       }
     },
     advertissement: {
       background: theme => theme.colors.warning,
       '&:hover': {
         background: theme => theme.colors.warning
-      },
-      '&.Mui-disabled': {
-        color: '#ffffff'
       }
     },
     buttonProgress: {

@@ -1,4 +1,5 @@
 import { createTheme as createMuiTheme, ThemeOptions } from '@material-ui/core'
+import tinycolor from "tinycolor2"
 
 export interface Theme {
   name?: string
@@ -48,6 +49,7 @@ export const defaultMaterialUiTheme = (
   theme: Theme,
   customMuiTheme?: Partial<ThemeOptions>
 ) => {
+  const isPrymaryTooLight = tinycolor(theme.colors.primary).getLuminance() > 0.6
   const themeOverride: ThemeOptions = {
     overrides: {
       MuiPaper: {
@@ -97,14 +99,27 @@ export const defaultMaterialUiTheme = (
         label: {
           fontWeight: 500
         }
+      },
+      MuiButton: {
+        root: {
+          color: isPrymaryTooLight ? "#353945" : "#ffffff",
+          "&$disabled": {
+            "color": isPrymaryTooLight ? "#353945" : "#ffffff",
+          }
+        }
+      },
+      MuiTooltip: {
+        tooltip: {
+          color: isPrymaryTooLight ? "#353945" : "#ffffff",
+        }
       }
     },
     palette: {
       primary: {
-        main: '#EDBA27',
+        main: theme.colors.primary,
       },
       secondary: {
-        main: '#353945',
+        main: theme.colors.secondary,
       },
     },
     typography: {

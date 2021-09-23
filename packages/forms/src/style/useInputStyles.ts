@@ -10,6 +10,9 @@ export const useInputStyles = lowLevelStyles<Theme>()({
     fontSize: 16,
     color: `${darkGrey}`
   },
+  labelSmall: {
+    fontSize: 14,
+  },
   input: {
     '& .MuiInputBase-input': {
       padding: "6px 7px"
@@ -123,7 +126,7 @@ export const useInputStyles = lowLevelStyles<Theme>()({
     '& .MuiSelect-root': {
       height: "40px",
       lineHeight: "40px"
-    }
+    },
   },
   inputSmall: {
     '& .MuiInputBase-root': {
@@ -132,6 +135,12 @@ export const useInputStyles = lowLevelStyles<Theme>()({
     '& .MuiSelect-root': {
       height: "32px",
       lineHeight: "32px"
+    },
+    "& .MuiInputBase-input": {
+      fontSize: "14px"
+    },
+    "& .MuiInputBase-input::placeholder": {
+      fontSize: "14px"
     }
   },
   inputDisabled: {

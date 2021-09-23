@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { InputForm, InputFormBasicProps } from './InputForm'
-import { Option } from '../Select'
 import { Meta } from '@storybook/react'
 import { Story } from '@storybook/react/types-6-0'
 import {
