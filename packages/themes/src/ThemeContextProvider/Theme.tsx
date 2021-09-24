@@ -1,5 +1,5 @@
 import { createTheme as createMuiTheme, DeprecatedThemeOptions } from  '@mui/material'
-import { adaptV4Theme } from '@mui/material/styles';
+import { adaptV4Theme, ThemeOptions } from '@mui/material/styles';
 import tinycolor from "tinycolor2"
 
 export interface Theme {

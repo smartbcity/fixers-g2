@@ -1,10 +1,10 @@
 import React, { createContext, useCallback, useContext } from 'react'
-import { ThemeProvider, StyledEngineProvider, DeprecatedThemeOptions } from '@mui/material';
+import { ThemeProvider, StyledEngineProvider, ThemeOptions } from '@mui/material';
 import { defaultMaterialUiTheme, defaultTheme, Theme } from './Theme'
 
 import "./default.css"
 
-
+//@ts-ignore
 declare module '@mui/styles/defaultTheme' {
   // eslint-disable-next-line @typescript-eslint/no-empty-interface
   interface DefaultTheme extends Theme {}

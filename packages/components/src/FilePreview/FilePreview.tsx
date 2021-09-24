@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { Box, Typography, makeStyles } from  '@mui/material'
+import { Box, Typography } from  '@mui/material'
+import { makeStyles } from "@mui/styles";
 import { PictureAsPdf, Clear } from '@mui/icons-material'
 import pdfLogo from '../assets/pdf.png'
 import { BasicProps } from '@smartb/g2-themes'

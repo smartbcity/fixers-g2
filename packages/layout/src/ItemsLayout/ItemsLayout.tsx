@@ -122,7 +122,6 @@ export const ItemsLayout = React.forwardRef(
           {menu.items &&
             menu.items.map((it) => (
               <MuiMenuItem
-                button
                 component={it.href ? 'a' : 'div'}
                 onClick={() => it.goto && !it.href && it.goto()}
                 href={it.href}

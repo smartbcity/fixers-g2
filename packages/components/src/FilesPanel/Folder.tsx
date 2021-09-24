@@ -1,5 +1,6 @@
 import React from 'react'
-import { makeStyles, Box, Typography } from  '@mui/material'
+import { Box, Typography } from  '@mui/material'
+import { makeStyles } from "@mui/styles";
 import { Folder as MuiFolder } from '@mui/icons-material'
 import { BasicProps } from '@smartb/g2-themes'
 

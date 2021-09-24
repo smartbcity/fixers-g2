@@ -1,5 +1,5 @@
 import React from "react";
-import { createStyles, makeStyles } from "@material-ui/core/styles";
+import { createStyles, makeStyles } from "@mui/styles";
 import { Typography } from  '@mui/material';
 import { SBButton, Panel, Card } from "../../packages/components/src";
 import { getShadows } from "./Theme";

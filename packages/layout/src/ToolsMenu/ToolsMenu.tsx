@@ -133,7 +133,6 @@ export const ToolsMenu = (props: ToolsMenuProps) => {
           }`,
           list: defaultClasses.list
         }}
-        getContentAnchorEl={null}
         anchorOrigin={{
           vertical: 'bottom',
           horizontal: 'center'

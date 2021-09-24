@@ -1,11 +1,10 @@
 import { Chip } from  '@mui/material'
-import { Autocomplete as MuiAutocomplete } from '@mui/material';
-
-import {
+import { 
+  Autocomplete as MuiAutocomplete,
   AutocompleteProps as MuiAutocompleteProps,
   AutocompleteGetTagProps,
   AutocompleteRenderInputParams,
-} from '@mui/lab';
+ } from '@mui/material';
 
 import React, { forwardRef, useCallback } from 'react'
 import { BasicProps, lowLevelStyles, MergeMuiElementProps } from '@smartb/g2-themes'
