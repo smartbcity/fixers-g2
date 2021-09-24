@@ -1,18 +1,16 @@
 import {
   DatePicker as MuiDatePicker,
-  DatePickerProps as MuiDatePickerProps,
-  DatePickerView,
-  MuiPickersUtilsProvider
+  LocalizationProvider,
 } from '@mui/lab'
+import AdapterDateFns from '@mui/lab/AdapterDateFns'
 import React, { forwardRef, useCallback, useMemo } from 'react'
 import { useFilterInputStyles } from '../style'
 import {
   BasicProps,
   lowLevelStyles,
+  MergeMuiElementProps,
   useTheme
 } from '@smartb/g2-themes'
-import { isMobile } from 'react-device-detect'
-import DateFnsUtils from '@date-io/date-fns'
 import { format as formatFnc } from 'date-fns'
 import * as dateFnsLocales from 'date-fns/locale'
 import clsx from 'clsx'
@@ -20,7 +18,7 @@ import { Clear } from '@mui/icons-material'
 import { FilterTextField, FilterTextFieldProps } from '../FilterTextField'
 import tinycolor from "tinycolor2"
 import { Calendar } from '../assets/icons'
-import { InputAdornment } from  '@mui/material'
+import { DatePickerView } from '@mui/lab/DatePicker/shared'
 
 const useStyles = lowLevelStyles()({
   root: {
@@ -51,7 +49,7 @@ const useStyles = lowLevelStyles()({
   }
 })
 
-export interface FilterDatePickerProps extends BasicProps {
+export interface FilterDatePickerBasicProps extends BasicProps {
   /**
   * The label of the input
   */
@@ -97,14 +95,14 @@ export interface FilterDatePickerProps extends BasicProps {
   locale?: keyof typeof dateFnsLocales
 
   /**
-  * If true the input will be disabled
+  * The color of the input
   * 
   * @default 'primary'
   */
   color?: 'primary' | 'secondary' | 'default'
 
   /**
-  * If true the input will be disabled
+  * The variant of the input
   * 
   * @default 'filled'
   */
@@ -119,16 +117,10 @@ export interface FilterDatePickerProps extends BasicProps {
    * The reference of the input
    */
   ref?: React.ForwardedRef<HTMLDivElement>
-  /**
-   * The props passed to the native datePicker
-   */
-  nativeFilterDatePickerProps?: Partial<FilterTextFieldProps>
-  /**
-   * The props passed to the material-ui datePicker
-   */
-  muiFilterDatePickerProps?: Partial<MuiDatePickerProps>
-  name?: string
 }
+
+
+export type FilterDatePickerProps = MergeMuiElementProps<Partial<Omit<FilterTextFieldProps, "ref">>, FilterDatePickerBasicProps>
 
 const FilterDatePickerBase = (
   props: FilterDatePickerProps,
@@ -148,11 +140,10 @@ const FilterDatePickerBase = (
     locale = 'fr',
     native,
     name,
-    muiFilterDatePickerProps,
-    nativeFilterDatePickerProps,
     color = 'primary',
     variant = 'filled',
-    onRemove
+    onRemove,
+    ...other
   } = props
   const theme = useTheme()
   const defaultClasses = useFilterInputStyles(theme)
@@ -189,8 +180,8 @@ const FilterDatePickerBase = (
   } = useMemo(() => {
     if (type === 'date')
       return {
-        views: ['year', 'month', 'date'],
-        openTo: 'date'
+        views: ['year', 'month', 'day'],
+        openTo: 'day'
       }
     return {
       views: ['year', 'month'],
@@ -247,7 +238,7 @@ const FilterDatePickerBase = (
     return undefined
   }, [value, onRemove, defaultClasses.clear, disabled, classes.clear])
 
-  if (native === true || (native !== false && isMobile))
+  if (native)
     return (
       <FilterTextField
         //@ts-ignore
@@ -270,14 +261,14 @@ const FilterDatePickerBase = (
             max: formatedNativeDates.maxDate
           }
         }}
-        {...nativeFilterDatePickerProps}
+        {...other}
       />
     )
 
   return (
-    <MuiPickersUtilsProvider
-      utils={DateFnsUtils}
-      locale={dateFnsLocales[locale]}
+    <LocalizationProvider
+      dateAdapter={AdapterDateFns}
+      locale={locale}
     >
       <div
         className={clsx(classes.root, className, 'AruiFilterDatePicker-root')}
@@ -286,41 +277,43 @@ const FilterDatePickerBase = (
         <MuiDatePicker
           views={dateType.views}
           openTo={dateType.openTo}
-          variant='inline'
-          format={format}
+          inputFormat={format}
           minDate={minDate}
           maxDate={maxDate}
           label={variant === "outlined" ? label : undefined}
-          placeholder={variant === "filled" ? label : undefined}
-          color={color !== 'default' ? color : undefined}
           className={clsx(
             defaultClasses.input,
             onRemove ? classes.inputWithRemove : classes.input,
             getVariantColorClass(),
             'AruiFilterDatePicker-datePicker'
           )}
-          inputVariant="outlined"
-          InputLabelProps={{ className: clsx(defaultClasses.label, "AruiTextfield-label") }}
-          inputProps={{ size: "5" }}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment style={variant === "filled" ? colorStyle : undefined} component='div' position='end'>
-                <Calendar className={clsx(classes.calendarIcon, "AruiTextfield-calendarIcon")} />
-              </InputAdornment>
-            ),
-            style: variant === "filled" ? colorStyle : undefined,
-            ref: ref,
-            id: id,
-            name: name
-          }}
           disabled={disabled}
           value={value ? value : null}
           onChange={onPCChange}
-          {...muiFilterDatePickerProps}
+          renderInput={(props) =>
+            <FilterTextField
+              ref={props.ref}
+              inputProps={{...props.inputProps, size: "5"}}
+              variant={variant}
+              color={color}
+              label={label}
+              disabled={disabled}
+              id={id}
+              onRemove={onRemove}
+              iconPosition="end"
+              inputIcon={<Calendar className={clsx(classes.calendarIcon, "AruiTextfield-calendarIcon")} />}
+              InputProps={{
+                ref: ref,
+                id: id,
+                name: name
+              }}
+              {...other}
+            />
+          }
         />
         {rightIcon}
       </div>
-    </MuiPickersUtilsProvider>
+    </LocalizationProvider>
   )
 }
 

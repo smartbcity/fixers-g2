@@ -1,23 +1,22 @@
 import {
   DatePicker as MuiDatePicker,
-  DatePickerProps as MuiDatePickerProps,
-  DatePickerView,
-  MuiPickersUtilsProvider
+  LocalizationProvider,
 } from '@mui/lab'
+import AdapterDateFns from '@mui/lab/AdapterDateFns'
 import React, { forwardRef, useCallback, useMemo } from 'react'
 import { useInputStyles } from '../style'
 import {
   BasicProps,
   lowLevelStyles,
+  MergeMuiElementProps,
   useTheme
 } from '@smartb/g2-themes'
-import { isMobile } from 'react-device-detect'
 import { TextField, TextFieldProps } from '../TextField'
-import DateFnsUtils from '@date-io/date-fns'
 import { format as formatFnc } from 'date-fns'
 import * as dateFnsLocales from 'date-fns/locale'
 import clsx from 'clsx'
 import { Clear } from '@mui/icons-material'
+import { DatePickerView } from '@mui/lab/DatePicker/shared'
 
 const useStyles = lowLevelStyles()({
   root: {
@@ -28,7 +27,7 @@ const useStyles = lowLevelStyles()({
   }
 })
 
-export interface DatePickerProps extends BasicProps {
+export interface DatePickerBasicProps extends BasicProps {
   /**
    * The Date entered in the input
    */
@@ -88,16 +87,9 @@ export interface DatePickerProps extends BasicProps {
    * The reference of the input
    */
   ref?: React.ForwardedRef<HTMLDivElement>
-  /**
-   * The props passed to the native datePicker
-   */
-  nativeDatePickerProps?: Partial<TextFieldProps>
-  /**
-   * The props passed to the material-ui datePicker
-   */
-  muiDatePickerProps?: Partial<MuiDatePickerProps>
-  name?: string
 }
+
+export type DatePickerProps = MergeMuiElementProps<Partial<Omit<TextFieldProps, "ref">>, DatePickerBasicProps>
 
 const DatePickerBase = (
   props: DatePickerProps,
@@ -118,9 +110,8 @@ const DatePickerBase = (
     locale = 'fr',
     native,
     name,
-    muiDatePickerProps,
-    nativeDatePickerProps,
-    onRemove
+    onRemove,
+    ...other
   } = props
   const theme = useTheme()
   const defaultClasses = useInputStyles(theme)
@@ -146,8 +137,8 @@ const DatePickerBase = (
   } = useMemo(() => {
     if (type === 'date')
       return {
-        views: ['year', 'month', 'date'],
-        openTo: 'date'
+        views: ['year', 'month', 'day'],
+        openTo: 'day'
       }
     return {
       views: ['year', 'month'],
@@ -181,7 +172,7 @@ const DatePickerBase = (
     return undefined
   }, [value, onRemove, defaultClasses.clear, disabled])
 
-  if (native === true || (native !== false && isMobile))
+  if (native)
     return (
       <TextField
         //@ts-ignore
@@ -202,13 +193,13 @@ const DatePickerBase = (
             max: formatedNativeDates.maxDate
           }
         }}
-        {...nativeDatePickerProps}
+        {...other}
       />
     )
 
   return (
-    <MuiPickersUtilsProvider
-      utils={DateFnsUtils}
+    <LocalizationProvider
+      dateAdapter={AdapterDateFns}
       locale={dateFnsLocales[locale]}
     >
       <div
@@ -218,34 +209,38 @@ const DatePickerBase = (
         <MuiDatePicker
           views={dateType.views}
           openTo={dateType.openTo}
-          variant='inline'
-          format={format}
+          inputFormat={format}
           minDate={minDate}
           maxDate={maxDate}
-          placeholder={placeholder}
           className={clsx(
-            defaultClasses.input,
             classes.input,
-            size === 'large' && defaultClasses.inputLarge,
-            size === 'medium' && defaultClasses.inputMedium,
-            size === 'small' && defaultClasses.inputSmall,
-            disabled && defaultClasses.inputDisabled,
             'AruiDatePicker-datePicker'
           )}
-          InputProps={{
-            disableUnderline: true,
-            ref: ref,
-            id: id,
-            name: name
-          }}
           disabled={disabled}
           value={value ? value : null}
           onChange={onPCChange}
-          {...muiDatePickerProps}
+          renderInput={(props) =>
+            <TextField
+              ref={props.ref}
+              inputProps={props.inputProps}
+              placeholder={placeholder}
+              textFieldType="text"
+              disabled={disabled}
+              id={id}
+              onRemove={onRemove}
+              size={size}
+              InputProps={{
+                ref: ref,
+                id: id,
+                name: name
+              }}
+              {...other}
+            />
+          }
         />
         {rightIcon}
       </div>
-    </MuiPickersUtilsProvider>
+    </LocalizationProvider>
   )
 }
 

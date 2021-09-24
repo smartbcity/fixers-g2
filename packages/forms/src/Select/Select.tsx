@@ -6,6 +6,7 @@ import {
   ListItemText,
   MenuItem,
   Select as MuiSelect,
+  SelectChangeEvent,
   SelectProps as MuiSelectProps
 } from  '@mui/material'
 import { ClearRounded } from '@mui/icons-material'
@@ -201,8 +202,8 @@ export const Select = React.forwardRef((props: SelectProps, ref: React.Forwarded
   const classesLocal = useStyles()
 
   const onChangeMemoized = useCallback(
-    (e: React.ChangeEvent<{ name?: string | undefined; value: unknown }>) => {
-      const eventValue = e.target.value
+    (event: SelectChangeEvent<unknown>) => {
+      const eventValue = event.target.value
       if (Array.isArray(eventValue)) {
         onChangeValues && onChangeValues(eventValue as string[])
       }
@@ -258,7 +259,7 @@ export const Select = React.forwardRef((props: SelectProps, ref: React.Forwarded
   }, [name, onRemove, value, classes?.input, styles?.input, id])
 
   const onClose = useCallback(
-    (event: React.ChangeEvent<{}>) => {
+    (event: React.SyntheticEvent<Element, Event>) => {
       //@ts-ignore
       const valueClicked = event.currentTarget.dataset.value
       onRemove && value === valueClicked && onRemove()
@@ -313,7 +314,6 @@ export const Select = React.forwardRef((props: SelectProps, ref: React.Forwarded
             vertical: 'top',
             horizontal: 'center'
           },
-          getContentAnchorEl: null,
           classes:{list: classesLocal.list},
           className:clsx(classesLocal.menu, classes?.menu, "AruiSelect-menu"),
           style: styles?.menu
