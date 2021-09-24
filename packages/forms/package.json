@@ -38,6 +38,7 @@
     "@smartb/g2-themes": "^0.1.0-alpha.3",
     "@types/tinycolor2": "^1.4.3",
     "clsx": "^1.1.1",
+    "date-fns": "^2.21.3",
     "formik": "^2.2.9",
     "tinycolor2": "^1.4.2"
   },
