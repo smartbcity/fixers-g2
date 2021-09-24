@@ -32,6 +32,7 @@ export const AlertHub = (props: AlertHubProps) => {
         horizontal: 'left'
       }}
       Components={{
+        //@ts-ignore
         alert: ClosableAlert
       }}
       maxSnack={3}

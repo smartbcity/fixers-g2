@@ -87,7 +87,7 @@ export interface PopUpBasicProps extends BasicProps {
 
 export type PopUpProps = MergeMuiElementProps<DialogProps, PopUpBasicProps>
 
-const PopUpBase = (props: PopUpProps, ref: React.ForwardedRef<HTMLElement>) => {
+const PopUpBase = (props: PopUpProps, ref: React.ForwardedRef<HTMLDivElement>) => {
   const {
     open,
     onClose,

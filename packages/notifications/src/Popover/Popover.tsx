@@ -156,12 +156,15 @@ const PopoverBase = (
       className={clsx(className, defaultClasses.popper, 'AruiPopover-root')}
       style={style}
       open={open}
-      modifiers={{
-        arrow: {
+      modifiers={[
+        {
+          name: "arrow",
           enabled: true,
-          element: '.AruiPopover-arrow'
+          options: {
+            element: '.AruiPopover-arrow'
+          },
         }
-      }}
+      ]}
       transition
       {...other}
     >

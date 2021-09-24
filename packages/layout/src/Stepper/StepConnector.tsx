@@ -1,7 +1,7 @@
 import {
-  StepConnector as MuiStepConnector,
-  withStyles
+  StepConnector as MuiStepConnector
 } from  '@mui/material'
+import {withStyles} from "@mui/styles"
 import { Theme } from '@smartb/g2-themes'
 
 export const StepConnector = (theme: Theme) =>
