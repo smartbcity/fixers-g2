@@ -1,5 +1,6 @@
 import {
   List,
+  ListItemButton,
   ListItem,
   ListItemIcon,
   ListItemText,
@@ -111,7 +112,6 @@ const Item = (props: ItemProps) => {
     href,
     onClick,
     componentProps,
-    button,
     items,
     component,
     isSelected = false,
@@ -168,8 +168,7 @@ const Item = (props: ItemProps) => {
       </>
     )
   return (
-    <ListItem
-      button
+    <ListItemButton
       component={component ? component : href ? 'a' : 'div'}
       onClick={onItemClick}
       href={href}
@@ -197,6 +196,6 @@ const Item = (props: ItemProps) => {
         //on ajoute le style du text que si les objets le contenant éxiste
         style={styles?.item?.text}
       />
-    </ListItem>
+    </ListItemButton>
   )
 }

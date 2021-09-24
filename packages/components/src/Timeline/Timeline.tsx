@@ -202,7 +202,7 @@ export type TimelineProps = MergeMuiElementProps<
  */
 const TimelineBase = (
   props: TimelineProps,
-  ref: React.ForwardedRef<HTMLElement>
+  ref?: React.ForwardedRef<HTMLUListElement>
 ) => {
   const {
     lines,
@@ -358,6 +358,7 @@ const TimelineBase = (
 
   return (
     <MuiTimeline
+    //@ts-ignore
       ref={ref}
       {...other}
       className={clsx(
