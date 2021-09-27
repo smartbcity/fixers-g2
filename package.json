@@ -13,6 +13,8 @@
     "chromatic": "^5.9.2",
     "@mui/material": "^5.0.1",
     "@mui/styles": "^5.0.1",
+    "@emotion/react": "^11.4.1",
+    "@emotion/styled": "^11.3.0",
     "@rollup/plugin-commonjs": "^19.0.1",
     "@rollup/plugin-image": "^2.0.6",
     "@rollup/plugin-node-resolve": "^13.0.1",
@@ -55,9 +57,7 @@
     "storybook-addon-designs": "^6.1.0",
     "typescript": "^4.3.5",
     "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "@emotion/react":"^11.4.1",
-    "@emotion/styled":"^11.3.0"
+    "react-dom": "^17.0.2"
   },
   "husky": {
     "hooks": {
@@ -70,5 +70,7 @@
     "chromatic": "npx chromatic",
     "publishWorkspaces:experimental": "yarn workspaces run build && yarn workspaces run publish:experimental"
   },
-  "publishConfig": { "@smartb:registry":"https://gitlab.smartb.city/api/v4/projects/52/packages/npm/" }
+  "publishConfig": {
+    "@smartb:registry": "https://gitlab.smartb.city/api/v4/projects/52/packages/npm/"
+  }
 }

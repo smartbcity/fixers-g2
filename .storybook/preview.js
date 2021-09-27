@@ -1,7 +1,11 @@
 import React from "react";
-import { ThemeContextProvider } from "@smartb/g2-themes";
+import {
+  ThemeContextProvider,
+  defaultMaterialUiTheme,
+} from "@smartb/g2-themes";
 import { StorybookCanvas } from "../packages/storybook-documentation/src/StorybookCanvas";
 import { getTheme } from "../docs/Theme/Theme";
+import { ThemeProvider as EmotionThemeProvider } from "emotion-theming";
 
 export const parameters = {
   docs: {
@@ -25,9 +29,11 @@ export const parameters = {
 
 export const withThemeProvider = (Story) => {
   return (
-    <ThemeContextProvider theme={getTheme()}>
-      <Story />
-    </ThemeContextProvider>
+    <EmotionThemeProvider theme={defaultMaterialUiTheme(getTheme())}>
+      <ThemeContextProvider theme={getTheme()}>
+        <Story />
+      </ThemeContextProvider>
+    </EmotionThemeProvider>
   );
 };
 
