@@ -183,6 +183,7 @@ export const InputForm: InputFormComponent = React.forwardRef(
           style={styles?.input}
           classes={inputClasses}
           styles={inputStyles}
+          //@ts-ignore
           ref={ref}
           id={id}
         />
