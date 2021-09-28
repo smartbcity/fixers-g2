@@ -5,7 +5,7 @@ import {
   Typography,
   ListItemIcon,
   Grid
-} from '@material-ui/core'
+} from  '@mui/material'
 import {
   MergeReactElementProps,
   BasicProps,
@@ -122,7 +122,6 @@ export const ItemsLayout = React.forwardRef(
           {menu.items &&
             menu.items.map((it) => (
               <MuiMenuItem
-                button
                 component={it.href ? 'a' : 'div'}
                 onClick={() => it.goto && !it.href && it.goto()}
                 href={it.href}
@@ -177,7 +176,7 @@ export const ItemsLayout = React.forwardRef(
                 href={it.href}
                 alignItems='center'
                 direction='column'
-                justify='space-around'
+                justifyContent='space-around'
                 className={clsx(
                   defaultClasses.gridItem,
                   'AruiItemsLayout-gridItem',
@@ -193,6 +192,6 @@ export const ItemsLayout = React.forwardRef(
             ))}
         </Grid>
       </div>
-    )
+    );
   }
 )

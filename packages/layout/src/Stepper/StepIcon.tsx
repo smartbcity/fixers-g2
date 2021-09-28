@@ -1,4 +1,4 @@
-import { StepIconProps as MuiStepIconProps } from '@material-ui/core'
+import { StepIconProps as MuiStepIconProps } from  '@mui/material'
 import clsx from 'clsx'
 import React from 'react'
 import { Theme, useTheme } from '@smartb/g2-themes'

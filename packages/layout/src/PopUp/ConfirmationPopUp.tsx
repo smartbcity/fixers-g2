@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useState } from 'react'
-import { Typography } from '@material-ui/core'
+import { Typography } from  '@mui/material'
 import { PopUp, PopUpProps, Action } from './PopUp'
 import { BasicProps, lowLevelStyles, MergeMuiElementProps } from '@smartb/g2-themes'
 import { TextField } from '@smartb/g2-forms'

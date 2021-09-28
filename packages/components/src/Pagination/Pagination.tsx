@@ -1,9 +1,7 @@
-import { Box } from '@material-ui/core'
+import { Box } from  '@mui/material'
 import React, { useCallback } from 'react'
-import {
-  Pagination as MuiPagination,
-  PaginationProps as MuiPaginationProps
-} from '@material-ui/lab'
+import { Pagination as MuiPagination } from '@mui/material';
+import { PaginationProps as MuiPaginationProps } from '@mui/lab';
 import {
   BasicProps,
   MergeMuiElementProps

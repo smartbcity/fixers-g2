@@ -5,9 +5,9 @@ import {
   Theme,
   useTheme
 } from '@smartb/g2-themes'
-import { ClickAwayListener, Popper, PopperProps } from '@material-ui/core'
+import { ClickAwayListener, Popper, PopperProps } from '@mui/material'
 import React, { forwardRef, useCallback } from 'react'
-import { CloseRounded } from '@material-ui/icons'
+import { CloseRounded } from '@mui/icons-material'
 import clsx from 'clsx'
 
 const useStyles = lowLevelStyles<Theme>()({
@@ -100,13 +100,13 @@ export interface PopoverBasicProps extends BasicProps {
   children: React.ReactNode
   /**
    * Define ifthe popper is open or not
-   * 
+   *
    * @default false
    */
   open?: boolean
   /**
    * If true the callback `onClose` will be called when the user clickaway from the popper
-   * 
+   *
    * @default false
    */
   closeOnClickAway?: boolean
@@ -156,14 +156,18 @@ const PopoverBase = (
       className={clsx(className, defaultClasses.popper, 'AruiPopover-root')}
       style={style}
       open={open}
-      modifiers={{
-        arrow: {
+      modifiers={[
+        {
+          name: 'arrow',
           enabled: true,
-          element: '.AruiPopover-arrow'
+          options: {
+            element: '.AruiPopover-arrow'
+          }
         }
-      }}
+      ]}
       transition
       {...other}
+      anchorEl={other.anchorEl}
     >
       <div
         className={clsx(

@@ -2,7 +2,7 @@ import React, { forwardRef } from 'react'
 import {
   Tooltip as MuiTooltip,
   TooltipProps as MuiTooltipProps
-} from '@material-ui/core'
+} from  '@mui/material'
 import {
   MergeMuiElementProps,
   BasicProps,

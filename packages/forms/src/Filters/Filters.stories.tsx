@@ -11,7 +11,7 @@ import {
   Stories
 } from '@storybook/addon-docs'
 import LinkTo from '@storybook/addon-links/react'
-import { Typography } from '@material-ui/core'
+import { Typography } from  '@mui/material'
 import { ActionDoc, FieldDoc, FiltersClasses, FiltersStyles, FiltersState } from './docs'
 import { useFilters } from './useFilters'
 

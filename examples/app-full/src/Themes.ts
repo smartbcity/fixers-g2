@@ -1,4 +1,4 @@
-import { createMuiTheme } from '@material-ui/core'
+import { createMuiTheme } from  '@mui/material'
 import { Theme as AruiTheme } from '@smartb/g2-themes'
 import { StyleProps } from '@smartb/g2-layout'
 

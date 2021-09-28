@@ -3,7 +3,7 @@ import { Meta } from '@storybook/react'
 import { Table as AruiTable, TableBasicProps } from './Table'
 import { Story } from '@storybook/react/types-6-0'
 import { IDataTableColumn } from 'react-data-table-component'
-import { Typography } from '@material-ui/core'
+import { Typography } from  '@mui/material'
 import { IDataTableColumn as IDataTableColumnString } from './types'
 
 export default {

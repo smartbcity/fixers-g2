@@ -4,7 +4,7 @@ import {
   DialogActions,
   DialogContent,
   DialogProps
-} from '@material-ui/core'
+} from  '@mui/material'
 import { Button, ButtonProps } from '@smartb/g2-components'
 import {
   MergeMuiElementProps,
@@ -12,7 +12,7 @@ import {
   lowLevelStyles
 } from '@smartb/g2-themes'
 import clsx from 'clsx'
-import { CloseRounded } from '@material-ui/icons'
+import { CloseRounded } from '@mui/icons-material'
 
 const useStyles = lowLevelStyles()({
   paper: {
@@ -87,7 +87,7 @@ export interface PopUpBasicProps extends BasicProps {
 
 export type PopUpProps = MergeMuiElementProps<DialogProps, PopUpBasicProps>
 
-const PopUpBase = (props: PopUpProps, ref: React.ForwardedRef<HTMLElement>) => {
+const PopUpBase = (props: PopUpProps, ref: React.ForwardedRef<HTMLDivElement>) => {
   const {
     open,
     onClose,

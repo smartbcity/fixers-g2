@@ -2,7 +2,7 @@ import React, { useMemo, useRef, useState } from 'react'
 import { Popover as AruiPopover, PopoverBasicProps } from './Popover'
 import { Meta } from '@storybook/react'
 import { Story } from '@storybook/react/types-6-0'
-import { Box, Typography } from '@material-ui/core'
+import { Box, Typography } from '@mui/material'
 import { Button } from '@smartb/g2-components'
 import { withDesign } from 'storybook-addon-designs'
 import { classes, styles } from './docs'
@@ -15,8 +15,7 @@ export default {
   parameters: {
     design: {
       type: 'figma',
-      url:
-        'https://www.figma.com/file/4Nl4422AUGHNVClZOHzPg8/SmartB-UI-kit?node-id=210%3A852'
+      url: 'https://www.figma.com/file/4Nl4422AUGHNVClZOHzPg8/SmartB-UI-kit?node-id=210%3A852'
     }
   },
   argTypes: {
@@ -41,18 +40,18 @@ export default {
 
 export const Popover: Story<PopoverBasicProps> = (args: PopoverBasicProps) => {
   const [open, setOpen] = useState(false)
-  const anchor = useRef<HTMLButtonElement>()
+  const anchor = useRef<HTMLButtonElement>(null)
   return (
     <Box display='flex' justifyContent='center' alignItems='center'>
       <Button ref={anchor} onClick={() => setOpen(!open)}>
         Open the popover
       </Button>
       <AruiPopover
+        {...args}
         open={open}
         onClose={() => setOpen(!open)}
         anchorEl={anchor.current}
         placement='left'
-        {...args}
       >
         <Box display='flex' flexDirection='column' maxWidth='300px'>
           <Typography variant='h6' style={{ marginBottom: '15px' }}>

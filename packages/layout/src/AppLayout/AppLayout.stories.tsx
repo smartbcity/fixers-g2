@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { AppLayout as AruiAppLayout, AppLayoutProps } from './AppLayout'
 import { Meta } from '@storybook/react'
 import { Story } from '@storybook/react/types-6-0'
-import { Box, Link, Typography } from '@material-ui/core'
+import { Box, Link, Typography } from '@mui/material'
 import { ArgsTable, PRIMARY_STORY, Subtitle } from '@storybook/addon-docs'
 import { styles, classes, StyleProps } from './types'
 import LinkTo from '@storybook/addon-links/react'
@@ -25,7 +25,10 @@ export default {
             </Typography>
             <Typography variant='body2' style={{ marginBottom: '5px' }}>
               -{' '}
-              <Link href='https://material-ui.com/api/drawer/#drawer-api'>
+              <Link
+                color='#0000ee'
+                href='https://material-ui.com/api/drawer/#drawer-api'
+              >
                 drawerProps
               </Link>
             </Typography>

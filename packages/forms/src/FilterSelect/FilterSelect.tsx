@@ -8,9 +8,10 @@ import {
   ListItemText,
   MenuItem,
   Select as MuiSelect,
+  SelectChangeEvent,
   SelectProps as MuiSelectProps
-} from '@material-ui/core'
-import { ClearRounded } from '@material-ui/icons'
+} from  '@mui/material'
+import { ClearRounded } from '@mui/icons-material'
 import { BasicProps, lowLevelStyles, MergeMuiElementProps, useTheme } from '@smartb/g2-themes'
 import clsx from 'clsx'
 import { CheckBox } from '../CheckBox'
@@ -162,14 +163,14 @@ export interface FilterSelectBasicProps extends BasicProps {
   disabled?: boolean
 
   /**
-  * If true the input will be disabled
+  * The color of the input
   * 
   * @default 'primary'
   */
   color?: 'primary' | 'secondary' | 'default'
 
   /**
-  * If true the input will be disabled
+  * The variant of the input
   * 
   * @default 'filled'
   */
@@ -229,8 +230,8 @@ export const FilterSelect = React.forwardRef((props: FilterSelectProps, ref: Rea
 
 
   const onChangeMemoized = useCallback(
-    (e: React.ChangeEvent<{ name?: string | undefined; value: unknown }>) => {
-      const eventValue = e.target.value
+    (event: SelectChangeEvent<unknown>) => {
+      const eventValue = event.target.value
       if (Array.isArray(eventValue)) {
         onChangeValues && onChangeValues(eventValue as string[])
       }
@@ -306,7 +307,7 @@ export const FilterSelect = React.forwardRef((props: FilterSelectProps, ref: Rea
   }
 
   const onCloseMemoized = useCallback(
-    (event: React.ChangeEvent<{}>) => {
+    (event: React.SyntheticEvent<Element, Event>) => {
       //@ts-ignore
       const valueClicked = event.currentTarget.dataset.value
       onRemove && value === valueClicked && onRemove()
@@ -356,7 +357,6 @@ export const FilterSelect = React.forwardRef((props: FilterSelectProps, ref: Rea
             vertical: 'top',
             horizontal: 'center'
           },
-          getContentAnchorEl: null,
           classes: { list: classesLocal.list },
           className: clsx(classesLocal.menu, classes?.menu, "AruiFilterSelect-menu"),
           style: styles?.menu

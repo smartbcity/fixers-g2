@@ -3,10 +3,14 @@ import {
   Button as MuiButton,
   ButtonProps as MuiButtonProps,
   CircularProgress
-} from '@material-ui/core'
+} from '@mui/material'
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 import { useTheme } from '@smartb/g2-themes'
-import { CheckRounded, CloseRounded, ReportProblemOutlined } from '@material-ui/icons'
+import {
+  CheckRounded,
+  CloseRounded,
+  ReportProblemOutlined
+} from '@mui/icons-material'
 import {
   containedUseStyles,
   outlinedUseStyles,
@@ -96,9 +100,14 @@ export type ButtonProps<T = {}> = MergeMuiElementProps<
   ButtonBasicProps<T>
 >
 
-type refType<T> = T extends [{}] ? React.ForwardedRef<HTMLElement> : React.ForwardedRef<T>
+type refType<T> = T extends [{}]
+  ? React.ForwardedRef<HTMLAnchorElement>
+  : React.ForwardedRef<T>
 
-export const ButtonBase = function <T = {}>(props: ButtonProps<T>, ref: refType<T>) {
+export const ButtonBase = function <T = {}>(
+  props: ButtonProps<T>,
+  ref: refType<T>
+) {
   const {
     children,
     onClick,
@@ -123,8 +132,8 @@ export const ButtonBase = function <T = {}>(props: ButtonProps<T>, ref: refType<
     variant === 'contained'
       ? containedUseStyles(theme)
       : variant === 'outlined'
-        ? outlinedUseStyles(theme)
-        : textUseStyles(theme)
+      ? outlinedUseStyles(theme)
+      : textUseStyles(theme)
   const forcedLoading = isLoading
   const [loading, setloading] = useState(false)
 
@@ -149,9 +158,11 @@ export const ButtonBase = function <T = {}>(props: ButtonProps<T>, ref: refType<
         ref={ref}
         style={style}
         disabled={loading || disabled || forcedLoading}
-        className={`${classes.root} ${disabled && classes.disabled
-          } AruiButton-root ${className} ${success ? classes.success : ''} ${fail ? classes.fail : ''
-          } ${warning ? classes.advertissement : classes.defaultColor}`}
+        className={`${classes.root} ${
+          disabled && classes.disabled
+        } AruiButton-root ${className} ${success ? classes.success : ''} ${
+          fail ? classes.fail : ''
+        } ${warning ? classes.advertissement : classes.defaultColor}`}
         onClick={(e: any) => !href && onClick && onClickMemoisied(e)}
         component={component}
         href={href}
@@ -181,14 +192,17 @@ export const ButtonBase = function <T = {}>(props: ButtonProps<T>, ref: refType<
     )
 
   return (
-    //@ts-ignore
     <MuiButton
+      component={href ? 'a' : 'button'}
+      //@ts-ignore
       ref={ref}
       style={style}
       disabled={loading || disabled || forcedLoading}
-      className={`${classes.root} ${disabled && classes.disabled
-        } AruiButton-root ${className} ${success ? classes.success : ''} ${fail ? classes.fail : ''
-        } ${warning ? classes.advertissement : classes.defaultColor}`}
+      className={`${classes.root} ${
+        disabled && classes.disabled
+      } AruiButton-root ${className} ${success ? classes.success : ''} ${
+        fail ? classes.fail : ''
+      } ${warning ? classes.advertissement : classes.defaultColor}`}
       onClick={(e) => !href && onClick && onClickMemoisied(e)}
       href={href}
       id={id}

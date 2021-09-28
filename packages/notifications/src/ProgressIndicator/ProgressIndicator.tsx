@@ -3,7 +3,7 @@ import {
   LinearProgress,
   LinearProgressProps,
   Typography
-} from '@material-ui/core'
+} from  '@mui/material'
 import {
   BasicProps,
   lowLevelStyles,

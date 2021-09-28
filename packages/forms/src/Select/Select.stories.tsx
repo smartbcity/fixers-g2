@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Select, Option, SelectBasicProps } from './Select'
 import { Meta } from "@storybook/react";
 import { Story } from "@storybook/react/types-6-0";
-import { Box } from '@material-ui/core';
+import { Box } from  '@mui/material';
 import { SelectClasses, SelectStyles } from "./docs"
 import { withDesign } from 'storybook-addon-designs'
 

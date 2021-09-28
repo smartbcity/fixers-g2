@@ -1,5 +1,5 @@
-import React, { forwardRef } from 'react'
-import { Link as MuiLink, LinkProps as MuiLinkProps } from '@material-ui/core'
+import React from 'react'
+import { Link as MuiLink, LinkProps as MuiLinkProps } from  '@mui/material'
 import {
   BasicProps,
   lowLevelStyles,
@@ -49,9 +49,8 @@ export type LinkProps<T extends object = {}> = MergeMuiElementProps<
   LinkBasicProps<T>
 >
 
-export const LinkBase = <T extends object = {}>(
-  props: LinkProps<T>,
-  ref: React.ForwardedRef<HTMLElement>
+export const Link= <T extends object = {}>(
+  props: LinkProps<T>
 ) => {
   const { href, className, component, componentProps, disabled, ...other } =
     props
@@ -59,7 +58,6 @@ export const LinkBase = <T extends object = {}>(
   if (component)
     return (
       <MuiLink
-        ref={ref}
         href={!disabled ? href : undefined}
         className={clsx(
           className,
@@ -76,7 +74,6 @@ export const LinkBase = <T extends object = {}>(
     )
   return (
     <MuiLink
-      ref={ref}
       href={!disabled ? href : undefined}
       className={clsx(
         className,
@@ -91,4 +88,3 @@ export const LinkBase = <T extends object = {}>(
   )
 }
 
-export const Link = forwardRef(LinkBase) as typeof LinkBase

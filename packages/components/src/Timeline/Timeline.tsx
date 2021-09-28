@@ -7,9 +7,9 @@ import {
   TimelineDot,
   TimelineConnector,
   TimelineContent
-} from '@material-ui/lab'
+} from '@mui/lab'
 import React, { forwardRef, useMemo } from 'react'
-import { Typography } from '@material-ui/core'
+import { Typography } from  '@mui/material'
 import clsx from 'clsx'
 import { Theme, useTheme } from '@smartb/g2-themes'
 import {
@@ -202,7 +202,7 @@ export type TimelineProps = MergeMuiElementProps<
  */
 const TimelineBase = (
   props: TimelineProps,
-  ref: React.ForwardedRef<HTMLElement>
+  ref?: React.ForwardedRef<HTMLUListElement>
 ) => {
   const {
     lines,
@@ -358,6 +358,7 @@ const TimelineBase = (
 
   return (
     <MuiTimeline
+    //@ts-ignore
       ref={ref}
       {...other}
       className={clsx(

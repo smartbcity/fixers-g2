@@ -6,9 +6,9 @@ import {
 import { Meta } from '@storybook/react'
 import { Story } from '@storybook/react/types-6-0'
 import { withDesign } from 'storybook-addon-designs'
-import { Flight } from "@material-ui/icons"
+import { Flight } from '@mui/icons-material'
 import { styles, classes } from './docs'
-import { Box } from '@material-ui/core'
+import { Box } from  '@mui/material'
 
 export default {
   title: 'Components/Ticket',

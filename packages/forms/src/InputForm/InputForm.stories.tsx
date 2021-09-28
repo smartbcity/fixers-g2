@@ -11,7 +11,7 @@ import {
   Stories
 } from '@storybook/addon-docs'
 import LinkTo from '@storybook/addon-links/react'
-import { Box, Typography } from '@material-ui/core'
+import { Box, Typography } from  '@mui/material'
 import { InputFormClasses, InputFormStyles } from './docs'
 
 export default {

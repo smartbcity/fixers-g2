@@ -1,8 +1,18 @@
 import React, { createContext, useCallback, useContext } from 'react'
-import { ThemeProvider, ThemeOptions } from '@material-ui/core'
+import {
+  ThemeProvider,
+  StyledEngineProvider,
+  ThemeOptions
+} from '@mui/material'
 import { defaultMaterialUiTheme, defaultTheme, Theme } from './Theme'
 
-import "./default.css"
+import './default.css'
+
+//@ts-ignore
+declare module '@mui/styles/defaultTheme' {
+  // eslint-disable-next-line @typescript-eslint/no-empty-interface
+  interface DefaultTheme extends Theme {}
+}
 
 export interface ThemeContextProps {
   theme: Theme
@@ -23,7 +33,7 @@ export interface ThemeContextProviderProps {
 export const ThemeContextProvider = (props: ThemeContextProviderProps) => {
   const { children, customMuiTheme, theme } = props
   const [localTheme, setLocalTheme] = React.useState<Theme>({
-    ...{...defaultTheme, ...theme},
+    ...{ ...defaultTheme, ...theme },
     ...props.theme
   })
   const setPartialTheme = useCallback((partialTheme: Partial<Theme>) => {
@@ -34,7 +44,9 @@ export const ThemeContextProvider = (props: ThemeContextProviderProps) => {
     <ThemeContext.Provider
       value={{ theme: localTheme, changeTheme: setPartialTheme }}
     >
-      <ThemeProvider theme={defaultMuiTheme}>{children}</ThemeProvider>
+      <StyledEngineProvider injectFirst>
+        <ThemeProvider theme={defaultMuiTheme}>{children}</ThemeProvider>
+      </StyledEngineProvider>
     </ThemeContext.Provider>
   )
 }

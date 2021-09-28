@@ -1,4 +1,4 @@
-import { Tab, Tabs, TabsProps } from '@material-ui/core'
+import { Tab, Tabs, TabsProps } from  '@mui/material'
 import { BasicProps, lowLevelStyles, MergeMuiElementProps, Theme, useTheme } from '@smartb/g2-themes'
 import clsx from 'clsx'
 import React, { forwardRef, useCallback, useMemo } from 'react'

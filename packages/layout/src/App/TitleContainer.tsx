@@ -1,4 +1,4 @@
-import { Box, List, ListItem, ListItemText } from '@material-ui/core'
+import { Box, List, ListItem, ListItemText } from  '@mui/material'
 import clsx from 'clsx'
 import React from 'react'
 import { BasicProps, lowLevelStyles } from '@smartb/g2-themes'

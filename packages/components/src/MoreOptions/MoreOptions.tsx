@@ -1,6 +1,6 @@
 import React, { forwardRef, useCallback, useState } from 'react'
-import { Menu as MuiMenu, IconButton, IconButtonProps } from '@material-ui/core'
-import { MoreHoriz } from '@material-ui/icons'
+import { Menu as MuiMenu, IconButton, IconButtonProps } from  '@mui/material'
+import { MoreHoriz } from '@mui/icons-material'
 import { MenuItem, Menu, MenuProps } from '../Menu'
 import {
   BasicProps,
@@ -73,44 +73,42 @@ const MoreOptionsBase = <T extends object = {}>(
     setAnchorEl(null)
   }, [])
 
-  return (
-    <>
-      <IconButton
-        ref={ref}
-        aria-label='more'
-        aria-controls='long-menu'
-        aria-haspopup='true'
-        onClick={handleClick}
-        className={clsx(className, 'AruiMoreOptions-root')}
-        {...other}
-      >
-        <MoreHoriz
-          className={clsx(
-            classes?.moreOptionsIcon,
-            'AruiMoreOptions-moreOptionsIcon'
-          )}
-          style={styles?.moreOptionsIcon}
-        />
-      </IconButton>
-      <MuiMenu
-        anchorEl={anchorEl}
-        keepMounted
-        open={Boolean(anchorEl)}
-        onClose={close}
-        PaperProps={{
-          className: defaultClasses.menu
-        }}
-        className={clsx(classes?.menu, 'AruiMoreOptions-menu')}
-        style={styles?.menu}
-      >
-        <Menu
-          menu={options}
-          {...menuContainerProps}
-          classes={{ item: { root: defaultClasses.listItem } }}
-        />
-      </MuiMenu>
-    </>
-  )
+  return <>
+    <IconButton
+      ref={ref}
+      aria-label='more'
+      aria-controls='long-menu'
+      aria-haspopup='true'
+      onClick={handleClick}
+      className={clsx(className, 'AruiMoreOptions-root')}
+      {...other}
+      size="large">
+      <MoreHoriz
+        className={clsx(
+          classes?.moreOptionsIcon,
+          'AruiMoreOptions-moreOptionsIcon'
+        )}
+        style={styles?.moreOptionsIcon}
+      />
+    </IconButton>
+    <MuiMenu
+      anchorEl={anchorEl}
+      keepMounted
+      open={Boolean(anchorEl)}
+      onClose={close}
+      PaperProps={{
+        className: defaultClasses.menu
+      }}
+      className={clsx(classes?.menu, 'AruiMoreOptions-menu')}
+      style={styles?.menu}
+    >
+      <Menu
+        menu={options}
+        {...menuContainerProps}
+        classes={{ item: { root: defaultClasses.listItem } }}
+      />
+    </MuiMenu>
+  </>;
 }
 
 export const MoreOptions = forwardRef(MoreOptionsBase) as typeof MoreOptionsBase

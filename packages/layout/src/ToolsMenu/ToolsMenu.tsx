@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { MenuItems } from '@smartb/g2-components'
-import { IconButton, Menu as MuiMenu } from '@material-ui/core'
+import { IconButton, Menu as MuiMenu } from  '@mui/material'
 import { ItemsLayout, Display, ItemsLayoutBasicProps } from '../ItemsLayout'
 import { TabsMenuProps } from '../TabsMenu'
 import { TabsMenu } from '../TabsMenu'
@@ -121,7 +121,7 @@ export const ToolsMenu = (props: ToolsMenuProps) => {
         aria-haspopup='true'
         onClick={handleMenu}
         color='inherit'
-      >
+        size="large">
         {menu.icon}
       </IconButton>
       <MuiMenu
@@ -133,7 +133,6 @@ export const ToolsMenu = (props: ToolsMenuProps) => {
           }`,
           list: defaultClasses.list
         }}
-        getContentAnchorEl={null}
         anchorOrigin={{
           vertical: 'bottom',
           horizontal: 'center'
@@ -186,5 +185,5 @@ export const ToolsMenu = (props: ToolsMenuProps) => {
         )}
       </MuiMenu>
     </div>
-  )
+  );
 }

@@ -85,7 +85,7 @@ const components = {
       />
     ) : (
       <code className={className} {...props} children={children} />
-    )
+    );
   },
   mark: (object: any) => {
     return (

@@ -1,5 +1,5 @@
-import { IconButton, IconButtonProps } from '@material-ui/core'
-import { CheckRounded } from '@material-ui/icons'
+import { IconButton, IconButtonProps } from  '@mui/material'
+import { CheckRounded } from '@mui/icons-material'
 import {
   BasicProps,
   lowLevelStyles,
@@ -99,7 +99,7 @@ const CopyToClipboardBase = (
         ref={ref}
         className={clsx(className, 'AruiCopyToClipboard-root')}
         onClick={onCopy}
-      >
+        size="large">
         {done ? (
           <CheckRounded
             className={clsx(
@@ -121,7 +121,7 @@ const CopyToClipboardBase = (
         )}
       </IconButton>
     </Tooltip>
-  )
+  );
 }
 
 export const CopyToClipboard = forwardRef(

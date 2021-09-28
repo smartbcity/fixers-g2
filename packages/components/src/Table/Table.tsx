@@ -4,7 +4,7 @@ import DataTable, {
   IDataTableStyles,
   IDataTableProps
 } from 'react-data-table-component'
-import { Typography } from '@material-ui/core'
+import { Typography } from  '@mui/material'
 import {
   BasicProps,
   lowLevelStyles,

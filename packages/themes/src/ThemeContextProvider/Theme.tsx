@@ -1,5 +1,5 @@
-import { createTheme as createMuiTheme, ThemeOptions } from '@material-ui/core'
-import tinycolor from "tinycolor2"
+import { createTheme as createMuiTheme, ThemeOptions } from '@mui/material'
+import tinycolor from 'tinycolor2'
 
 export interface Theme {
   name?: string
@@ -29,7 +29,7 @@ export const defaultTheme: Theme = {
     info: '#3C78D8'
   },
   shadows: [
-    '0 0px 0px 0 rgba(0,0,0,0)',
+    'none',
     '0px 3px 10px 0 rgba(0,0,0,0.1)',
     '0px 3.75px 12.5px 0px rgba(0,0,0,0.12)',
     '0px 4.5px 15px 0px rgba(0,0,0,0.14)',
@@ -51,89 +51,61 @@ export const defaultMaterialUiTheme = (
 ) => {
   const isPrymaryTooLight = tinycolor(theme.colors.primary).getLuminance() > 0.6
   const themeOverride: ThemeOptions = {
-    overrides: {
-      MuiPaper: {
-        elevation1: {
-          boxShadow: theme.shadows[1]
-        },
-        elevation2: {
-          boxShadow: theme.shadows[2]
-        },
-        elevation3: {
-          boxShadow: theme.shadows[3]
-        },
-        elevation4: {
-          boxShadow: theme.shadows[4]
-        },
-        elevation5: {
-          boxShadow: theme.shadows[5]
-        },
-        elevation6: {
-          boxShadow: theme.shadows[6]
-        },
-        elevation7: {
-          boxShadow: theme.shadows[7]
-        },
-        elevation8: {
-          boxShadow: theme.shadows[8]
-        },
-        elevation9: {
-          boxShadow: theme.shadows[9]
-        },
-        elevation10: {
-          boxShadow: theme.shadows[10]
-        },
-        elevation11: {
-          boxShadow: theme.shadows[11]
-        },
-        elevation12: {
-          boxShadow: theme.shadows[12]
-        }
-      },
+    //@ts-ignore
+    shadows: [...theme.shadows, ...Array(12).fill('none')],
+    components: {
       MuiTab: {
-        root: {
-          fontWeight: 600
+        styleOverrides: {
+          root: {
+            fontWeight: 600
+          }
         }
       },
       MuiChip: {
-        label: {
-          fontWeight: 500
+        styleOverrides: {
+          label: {
+            fontWeight: 500
+          }
         }
       },
       MuiButton: {
-        root: {
-          color: isPrymaryTooLight ? "#353945" : "#ffffff",
-          "&$disabled": {
-            "color": isPrymaryTooLight ? "#353945" : "#ffffff",
+        styleOverrides: {
+          root: {
+            color: isPrymaryTooLight ? '#353945' : '#ffffff',
+            '&.Mui-disabled': {
+              color: isPrymaryTooLight ? '#353945' : '#ffffff'
+            }
           }
         }
       },
       MuiTooltip: {
-        tooltip: {
-          color: isPrymaryTooLight ? "#353945" : "#ffffff",
+        styleOverrides: {
+          tooltip: {
+            color: isPrymaryTooLight ? '#353945' : '#ffffff'
+          }
         }
       }
     },
     palette: {
       primary: {
-        main: theme.colors.primary,
+        main: theme.colors.primary
       },
       secondary: {
-        main: theme.colors.secondary,
-      },
+        main: theme.colors.secondary
+      }
     },
     typography: {
       fontFamily: "'Montserrat', roboto",
       allVariants: {
-        fontWeight: 500,
+        fontWeight: 500
       },
       subtitle2: {
         fontWeight: 600
-      }, 
+      },
       subtitle1: {
         fontWeight: 600
       }
-    },
+    }
   }
 
   return createMuiTheme(Object.assign(themeOverride, customMuiTheme))

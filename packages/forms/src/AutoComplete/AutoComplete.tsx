@@ -1,5 +1,11 @@
-import { Chip } from '@material-ui/core'
-import { Autocomplete as MuiAutocomplete, AutocompleteProps as MuiAutocompleteProps, AutocompleteGetTagProps, AutocompleteRenderInputParams } from '@material-ui/lab'
+import { Chip } from  '@mui/material'
+import { 
+  Autocomplete as MuiAutocomplete,
+  AutocompleteProps as MuiAutocompleteProps,
+  AutocompleteGetTagProps,
+  AutocompleteRenderInputParams,
+ } from '@mui/material';
+
 import React, { forwardRef, useCallback } from 'react'
 import { BasicProps, lowLevelStyles, MergeMuiElementProps } from '@smartb/g2-themes'
 import { TextField, TextFieldProps } from '../TextField'

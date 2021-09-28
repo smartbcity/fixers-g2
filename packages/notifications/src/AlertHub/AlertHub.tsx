@@ -1,7 +1,7 @@
 import React, { forwardRef, useCallback } from 'react'
 import { SnackbarProvider, useSnackbar, SnackbarProviderProps } from 'notistack'
 import { Alert, AlertProps } from '../Alert/Alert'
-import Grow from '@material-ui/core/Grow'
+import Grow from '@mui/material/Grow'
 import { lowLevelStyles } from '@smartb/g2-themes'
 import clsx from 'clsx'
 
@@ -32,6 +32,7 @@ export const AlertHub = (props: AlertHubProps) => {
         horizontal: 'left'
       }}
       Components={{
+        //@ts-ignore
         alert: ClosableAlert
       }}
       maxSnack={3}

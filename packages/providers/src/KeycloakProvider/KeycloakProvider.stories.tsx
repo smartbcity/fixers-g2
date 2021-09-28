@@ -4,7 +4,7 @@ import { Meta } from '@storybook/react'
 import { Story } from '@storybook/react/types-6-0'
 import { useAuth, KeycloackService } from './useAuth'
 import { Button } from '@smartb/g2-components'
-import { Link, Typography } from '@material-ui/core'
+import { Link, Typography } from  '@mui/material'
 import {
   ArgsTable,
   PRIMARY_STORY,

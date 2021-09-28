@@ -3,8 +3,8 @@ import React, { useState } from 'react'
 import { TextField, TextFieldProps } from './TextField'
 import { Story } from "@storybook/react/types-6-0";
 import { TextFieldClasses, TextFieldStyles } from './docs'
-import { Box, Typography } from '@material-ui/core';
-import { CreditCard } from '@material-ui/icons';
+import { Box, Typography } from  '@mui/material';
+import { CreditCard } from '@mui/icons-material';
 import { withDesign } from 'storybook-addon-designs'
 
 export default {

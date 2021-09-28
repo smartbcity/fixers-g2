@@ -4,7 +4,7 @@ import {
   Snackbar as MuiSnackbar,
   SnackbarProps as MuiSnackbarProps,
   Typography
-} from '@material-ui/core'
+} from  '@mui/material'
 import {
   BasicProps,
   lowLevelStyles,
@@ -18,7 +18,7 @@ import {
   CloseRounded,
   InfoOutlined,
   ReportProblemOutlined
-} from '@material-ui/icons'
+} from '@mui/icons-material'
 
 const useStyles = lowLevelStyles<Theme>()({
   content: {

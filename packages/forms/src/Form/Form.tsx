@@ -6,7 +6,7 @@ import { TextFieldProps } from '../TextField'
 import { DatePickerProps } from '../DatePicker'
 import { CheckBox, CheckBoxProps } from '../CheckBox'
 import { BasicProps, lowLevelStyles, MergeReactElementProps } from '@smartb/g2-themes'
-import { Box } from '@material-ui/core'
+import { Box } from  '@mui/material'
 import clsx from 'clsx'
 import { FormState } from './useForm'
 
@@ -43,19 +43,19 @@ export type Field = {
     /**
      * the props of the textfield if you choosed it
      */
-    textFieldProps?: Partial<Omit<TextFieldProps, "value" | "onChange">>
+    textFieldProps?: Partial<Omit<TextFieldProps, "value" | "onChange" | "label">>
     /**
      * the props of the select if you choosed it
      */
-    selectProps?: Partial<Omit<SelectProps, "value" | "onChangeValue" | "onChangeValues">>
+    selectProps?: Partial<Omit<SelectProps, "value" | "onChangeValue" | "onChangeValues" | "label">>
     /**
      * the props of the datepicker if you choosed it
      */
-    datePickerProps?: Partial<Omit<DatePickerProps, "value" | "onChangeDate">>
+    datePickerProps?: Partial<Omit<DatePickerProps, "value" | "onChangeDate" | "label">>
     /**
      * the props of the checkbox if you choosed it
      */
-    checkBoxProps?: Partial<Omit<CheckBoxProps, "checked" | "onChange">>
+    checkBoxProps?: Partial<Omit<CheckBoxProps, "checked" | "onChange" | "label">>
 }
 
 interface FormClasses {
@@ -131,12 +131,11 @@ export const Form = (props: FormProps) => {
             style: styles?.field,
         }
         const textField = (
-            //@ts-ignore
             <InputForm
                 {...commonProps}
                 inputType="textField"
                 value={formState.values[field.name] ?? ""}
-                onChange={(value) => formState.setFieldValue(field.name, value, false)}
+                onChange={(value: string) => formState.setFieldValue(field.name, value, false)}
                 {...field.textFieldProps}
             />
         )
@@ -155,7 +154,6 @@ export const Form = (props: FormProps) => {
                 )
             case "select":
                 return field.selectProps?.multiple === true ? (
-                    //@ts-ignore
                     <InputForm
                         {...commonProps}
                         inputType="select"
@@ -164,7 +162,6 @@ export const Form = (props: FormProps) => {
                         {...field.selectProps}
                     />
                 ) : (
-                    //@ts-ignore
                     <InputForm
                         {...commonProps}
                         inputType="select"

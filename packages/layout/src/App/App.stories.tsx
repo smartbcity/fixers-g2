@@ -8,9 +8,9 @@ import {
   Description,
   ExitToApp,
   Settings
-} from '@material-ui/icons'
+} from '@mui/icons-material'
 import defaultLogo from '../assets/impactcity-logo-2.png'
-import { Box, Button, Typography } from '@material-ui/core'
+import { Box, Button, Typography } from  '@mui/material'
 import { ArgsTable, PRIMARY_STORY, Subtitle } from '@storybook/addon-docs'
 import { styles, classes, StyleProps, MenuItem } from './types'
 import LinkTo from '@storybook/addon-links/react'

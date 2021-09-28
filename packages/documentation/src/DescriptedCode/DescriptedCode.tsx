@@ -1,4 +1,4 @@
-import { Box } from '@material-ui/core'
+import { Box } from  '@mui/material'
 import { BasicProps } from '@smartb/g2-themes'
 import clsx from 'clsx'
 import React from 'react'
