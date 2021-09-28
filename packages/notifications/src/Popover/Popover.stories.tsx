@@ -48,7 +48,6 @@ export const Popover: Story<PopoverBasicProps> = (args: PopoverBasicProps) => {
       </Button>
       <AruiPopover
         {...args}
-        id={'dfjqsdmflhsqdfmlqsdmlfn'}
         open={open}
         onClose={() => setOpen(!open)}
         anchorEl={anchor.current}
