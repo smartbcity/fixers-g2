@@ -24,6 +24,7 @@ export const useFilterInputStyles = lowLevelStyles<Theme>()({
       paddingLeft: '10px'
     },
     '& .MuiInputBase-root': {
+      width: '100%',
       margin: `0px`,
       paddingTop: '0px',
       boxShadow: '0px 0px 0px 1px transparent',

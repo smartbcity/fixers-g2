@@ -15,7 +15,8 @@ export const useInputStyles = lowLevelStyles<Theme>()({
   },
   input: {
     '& .MuiInputBase-input': {
-      padding: '6px 7px'
+      padding: '6px 7px',
+      backgroundColor: 'unset'
     },
     '& .MuiSelect-root': {
       backgroundColor: 'white',
@@ -34,6 +35,7 @@ export const useInputStyles = lowLevelStyles<Theme>()({
       backgroundColor: disabledColor
     },
     '& .MuiInputBase-root': {
+      width: '100%',
       margin: `0px`,
       paddingTop: '0px',
       border: `1px solid ${textFieldGrey}`,
@@ -154,7 +156,8 @@ export const useInputStyles = lowLevelStyles<Theme>()({
       background: disabledColor
     },
     '& .MuiInputBase-root:hover': {
-      border: `1px solid ${disabledColor}`
+      border: `1px solid ${disabledColor}`,
+      backgroundColor: disabledColor
     },
     '& .MuiSelect-root': {
       backgroundColor: disabledColor,
