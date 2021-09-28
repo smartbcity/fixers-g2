@@ -12,7 +12,6 @@ import {
   MergeMuiElementProps,
   useTheme
 } from '@smartb/g2-themes'
-import * as dateFnsLocales from 'date-fns/locale'
 import clsx from 'clsx'
 import {
   InputAdornment,
@@ -23,6 +22,8 @@ import {
 import { Calendar } from '../assets/icons'
 import tinycolor from 'tinycolor2'
 import { ClearRounded } from '@mui/icons-material'
+import { fr, enUS } from 'date-fns/locale'
+const dateFnsLocales = [fr, enUS]
 
 const useStyles = makeG2STyles()((theme) => ({
   root: {

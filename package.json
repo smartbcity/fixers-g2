@@ -10,7 +10,6 @@
   "npmClient": "yarn",
   "useWorkspaces": true,
   "devDependencies": {
-    "chromatic": "^5.9.2",
     "@mui/material": "^5.0.1",
     "@mui/styles": "^5.0.1",
     "@emotion/react": "^11.4.1",
@@ -51,7 +50,7 @@
     "pretty-quick": "^2.0.1",
     "raw-loader": "^4.0.2",
     "react-is": "^17.0.2",
-    "rollup": "^2.53.2",
+    "rollup": "^2.57.0",
     "rollup-plugin-json": "^4.0.0",
     "rollup-plugin-typescript2": "^0.30.0",
     "storybook-addon-designs": "^6.1.0",

@@ -15,8 +15,9 @@ import {
   makeG2STyles,
   MergeMuiElementProps
 } from '@smartb/g2-themes'
-import * as dateFnsLocales from 'date-fns/locale'
 import clsx from 'clsx'
+import { fr, enUS } from 'date-fns/locale'
+const dateFnsLocales = [fr, enUS]
 
 const useStyles = makeG2STyles()((theme) => ({
   dialog: {
