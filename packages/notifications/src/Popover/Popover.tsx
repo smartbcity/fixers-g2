@@ -1,22 +1,20 @@
 import {
   BasicProps,
-  lowLevelStyles,
-  MergeMuiElementProps,
-  Theme,
-  useTheme
+  makeG2STyles,
+  MergeMuiElementProps
 } from '@smartb/g2-themes'
 import { ClickAwayListener, Popper, PopperProps } from '@mui/material'
 import React, { forwardRef, useCallback } from 'react'
 import { CloseRounded } from '@mui/icons-material'
 import clsx from 'clsx'
 
-const useStyles = lowLevelStyles<Theme>()({
+const useStyles = makeG2STyles()((theme) => ({
   popper: {
     borderRadius: '8px',
     background: 'white',
     zIndex: 1,
     padding: '20px',
-    boxShadow: (theme) => theme.shadows[3],
+    boxShadow: theme.shadows[3],
     '&[x-placement*="bottom"]': {
       marginTop: '25px',
       '& .AruiPopover-arrow': {
@@ -78,10 +76,10 @@ const useStyles = lowLevelStyles<Theme>()({
       transformOrigin: '0 100%',
       borderRadius: '3px',
       transform: 'rotate(45deg)',
-      boxShadow: (theme) => theme.shadows[1]
+      boxShadow: theme.shadows[1]
     }
   }
-})
+}))
 
 interface PopoverClasses {
   closeIcon?: string
@@ -142,8 +140,8 @@ const PopoverBase = (
     styles,
     ...other
   } = props
-  const theme = useTheme()
-  const defaultClasses = useStyles(theme)
+
+  const defaultStyles = useStyles()
   const handleClickAway = useCallback(() => {
     if (closeOnClickAway && onClose && open) {
       onClose()
@@ -153,7 +151,11 @@ const PopoverBase = (
     <Popper
       ref={ref}
       id={id}
-      className={clsx(className, defaultClasses.popper, 'AruiPopover-root')}
+      className={clsx(
+        className,
+        defaultStyles.classes.popper,
+        'AruiPopover-root'
+      )}
       style={style}
       open={open}
       modifiers={[
@@ -171,7 +173,7 @@ const PopoverBase = (
     >
       <div
         className={clsx(
-          defaultClasses.arrow,
+          defaultStyles.classes.arrow,
           classes?.arrow,
           'AruiPopover-arrow'
         )}
@@ -182,7 +184,7 @@ const PopoverBase = (
           className={clsx(
             classes?.closeIcon,
             'AruiPopover-closeIcon',
-            defaultClasses.closeIcon
+            defaultStyles.classes.closeIcon
           )}
           style={styles?.closeIcon}
           onClick={onClose}

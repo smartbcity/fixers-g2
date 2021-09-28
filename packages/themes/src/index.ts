@@ -10,9 +10,6 @@ export {
 } from './ThemeContextProvider'
 export {
   BasicProps,
-  lowLevelStyles,
-  highLevelStyles,
-  midLevelStyles,
   makeG2STyles,
   MergeMuiElementProps,
   MergeReactElementProps

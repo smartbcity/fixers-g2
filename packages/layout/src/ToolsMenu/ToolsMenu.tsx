@@ -1,13 +1,13 @@
 import React, { useState } from 'react'
 import { MenuItems } from '@smartb/g2-components'
-import { IconButton, Menu as MuiMenu } from  '@mui/material'
+import { IconButton, Menu as MuiMenu } from '@mui/material'
 import { ItemsLayout, Display, ItemsLayoutBasicProps } from '../ItemsLayout'
 import { TabsMenuProps } from '../TabsMenu'
 import { TabsMenu } from '../TabsMenu'
 import clsx from 'clsx'
-import { BasicProps, lowLevelStyles } from '@smartb/g2-themes'
+import { BasicProps, makeG2STyles } from '@smartb/g2-themes'
 
-const useStyles = lowLevelStyles()({
+const useStyles = makeG2STyles()({
   menu: {
     maxWidth: '300px',
     maxHeight: '500px'
@@ -95,7 +95,7 @@ export const ToolsMenu = (props: ToolsMenuProps) => {
   } = props
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
-  const defaultClasses = useStyles()
+  const defaultStyles = useStyles()
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget)
@@ -112,7 +112,7 @@ export const ToolsMenu = (props: ToolsMenuProps) => {
     >
       <IconButton
         className={clsx(
-          { [defaultClasses.menuOpened]: !!open },
+          { [defaultStyles.classes.menuOpened]: !!open },
           'AruiToolsMenu-iconButton',
           classes?.iconButton
         )}
@@ -121,17 +121,18 @@ export const ToolsMenu = (props: ToolsMenuProps) => {
         aria-haspopup='true'
         onClick={handleMenu}
         color='inherit'
-        size="large">
+        size='large'
+      >
         {menu.icon}
       </IconButton>
       <MuiMenu
         className={clsx('AruiToolsMenu-menu', classes?.menu)}
         style={styles?.menu}
         classes={{
-          paper: `${defaultClasses.menu} ${
-            display === 'grid' && defaultClasses.menuGrid
+          paper: `${defaultStyles.classes.menu} ${
+            display === 'grid' && defaultStyles.classes.menuGrid
           }`,
-          list: defaultClasses.list
+          list: defaultStyles.classes.list
         }}
         anchorOrigin={{
           vertical: 'bottom',
@@ -171,9 +172,9 @@ export const ToolsMenu = (props: ToolsMenuProps) => {
                         className={
                           display !== 'list'
                             ? section.items && section.items.length >= 3
-                              ? defaultClasses.gridItemsLayoutMinWidth
-                              : defaultClasses.gridItemsLayout
-                            : defaultClasses.listItemsLayout
+                              ? defaultStyles.classes.gridItemsLayoutMinWidth
+                              : defaultStyles.classes.gridItemsLayout
+                            : defaultStyles.classes.listItemsLayout
                         }
                         {...itemsLayoutProps}
                       />
@@ -185,5 +186,5 @@ export const ToolsMenu = (props: ToolsMenuProps) => {
         )}
       </MuiMenu>
     </div>
-  );
+  )
 }

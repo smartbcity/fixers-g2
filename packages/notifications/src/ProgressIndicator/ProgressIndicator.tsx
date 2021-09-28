@@ -3,18 +3,16 @@ import {
   LinearProgress,
   LinearProgressProps,
   Typography
-} from  '@mui/material'
+} from '@mui/material'
 import {
   BasicProps,
-  lowLevelStyles,
-  MergeMuiElementProps,
-  Theme,
-  useTheme
+  makeG2STyles,
+  MergeMuiElementProps
 } from '@smartb/g2-themes'
 import clsx from 'clsx'
 import React, { useMemo } from 'react'
 
-const useStyles = lowLevelStyles<Theme>()({
+const useStyles = makeG2STyles()((theme) => ({
   root: {
     display: 'flex',
     alignItems: 'center'
@@ -29,10 +27,10 @@ const useStyles = lowLevelStyles<Theme>()({
     borderRadius: 4
   },
   label: {
-    color: (theme) => theme.colors.secondary,
-    marginRight: '5px',
+    color: theme.colors.secondary,
+    marginRight: '5px'
   }
-})
+}))
 
 interface ProgressIndicatorClasses {
   linearProgress?: string
@@ -68,15 +66,15 @@ export type ProgressIndicatorProps = MergeMuiElementProps<
 
 export const ProgressIndicator = (props: ProgressIndicatorProps) => {
   const { value = 0, className, style, id, classes, styles, ...other } = props
-  const theme = useTheme()
-  const defaultClasses = useStyles(theme)
+
+  const defaultStyles = useStyles()
   const roundedValue = useMemo(() => Math.round(value), [value])
   return (
     <Box
       className={clsx(
         className,
         'AruiProgressIndicator-root',
-        defaultClasses.root
+        defaultStyles.classes.root
       )}
       style={style}
       id={id}
@@ -84,7 +82,7 @@ export const ProgressIndicator = (props: ProgressIndicatorProps) => {
       <Typography
         variant='subtitle1'
         className={clsx(
-          defaultClasses.label,
+          defaultStyles.classes.label,
           classes?.label,
           'AruiProgressIndicator-label'
         )}
@@ -94,11 +92,11 @@ export const ProgressIndicator = (props: ProgressIndicatorProps) => {
         variant='determinate'
         color='secondary'
         className={clsx(
-          defaultClasses.progress,
+          defaultStyles.classes.progress,
           'AruiProgressIndicator-LinearProgress',
           classes?.linearProgress
         )}
-        classes={{ bar: defaultClasses.bar }}
+        classes={{ bar: defaultStyles.classes.bar }}
         style={styles?.linearProgress}
         value={value}
         {...other}

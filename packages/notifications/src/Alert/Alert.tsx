@@ -4,13 +4,11 @@ import {
   Snackbar as MuiSnackbar,
   SnackbarProps as MuiSnackbarProps,
   Typography
-} from  '@mui/material'
+} from '@mui/material'
 import {
   BasicProps,
-  lowLevelStyles,
-  MergeMuiElementProps,
-  Theme,
-  useTheme
+  makeG2STyles,
+  MergeMuiElementProps
 } from '@smartb/g2-themes'
 import clsx from 'clsx'
 import {
@@ -20,7 +18,7 @@ import {
   ReportProblemOutlined
 } from '@mui/icons-material'
 
-const useStyles = lowLevelStyles<Theme>()({
+const useStyles = makeG2STyles()((theme) => ({
   content: {
     background: '#595959',
     borderRadius: '5px',
@@ -55,7 +53,7 @@ const useStyles = lowLevelStyles<Theme>()({
     color: 'rgba(255, 255, 255, 0.8)'
   },
   severityIndicator: {
-    backgroundColor: (theme) => theme.colors.info,
+    backgroundColor: theme.colors.info,
     position: 'absolute',
     height: '100%',
     width: '50px',
@@ -66,15 +64,15 @@ const useStyles = lowLevelStyles<Theme>()({
     left: 0
   },
   severityIndicatorError: {
-    backgroundColor: (theme) => theme.colors.error
+    backgroundColor: theme.colors.error
   },
   severityIndicatorWarning: {
-    backgroundColor: (theme) => theme.colors.warning
+    backgroundColor: theme.colors.warning
   },
   severityIndicatorSuccess: {
-    backgroundColor: (theme) => theme.colors.success
+    backgroundColor: theme.colors.success
   }
-})
+}))
 
 interface AlertClasses {
   contentContainer?: string
@@ -146,33 +144,45 @@ const AlertBase = (props: AlertProps, ref: React.ForwardedRef<HTMLElement>) => {
     styles,
     ...other
   } = props
-  const theme = useTheme()
-  const defaultClasses = useStyles(theme)
+
+  const defaultStyles = useStyles()
   const severityIcon = useMemo(() => {
     if (severity === 'warning')
       return (
         <ReportProblemOutlined
-          className={clsx(defaultClasses.severityIcon, classes?.severityIcon)}
+          className={clsx(
+            defaultStyles.classes.severityIcon,
+            classes?.severityIcon
+          )}
           style={styles?.severityIcon}
         />
       )
     if (severity === 'success')
       return (
         <CheckRounded
-          className={clsx(defaultClasses.severityIcon, classes?.severityIcon)}
+          className={clsx(
+            defaultStyles.classes.severityIcon,
+            classes?.severityIcon
+          )}
           style={styles?.severityIcon}
         />
       )
     if (severity === 'error')
       return (
         <CloseRounded
-          className={clsx(defaultClasses.severityIcon, classes?.severityIcon)}
+          className={clsx(
+            defaultStyles.classes.severityIcon,
+            classes?.severityIcon
+          )}
           style={styles?.severityIcon}
         />
       )
     return (
       <InfoOutlined
-        className={clsx(defaultClasses.severityIcon, classes?.severityIcon)}
+        className={clsx(
+          defaultStyles.classes.severityIcon,
+          classes?.severityIcon
+        )}
         style={styles?.severityIcon}
       />
     )
@@ -184,9 +194,9 @@ const AlertBase = (props: AlertProps, ref: React.ForwardedRef<HTMLElement>) => {
       ClickAwayListenerProps={{ onClickAway: () => {} }}
       ContentProps={{
         className: clsx(
-          defaultClasses.content,
-          colorBase === 'light' && defaultClasses.lightRoot,
-          !onClose && defaultClasses.contentWithoutClose,
+          defaultStyles.classes.content,
+          colorBase === 'light' && defaultStyles.classes.lightRoot,
+          !onClose && defaultStyles.classes.contentWithoutClose,
           classes?.contentContainer,
           'AruiAlert-contentContainer'
         ),
@@ -196,24 +206,31 @@ const AlertBase = (props: AlertProps, ref: React.ForwardedRef<HTMLElement>) => {
         <>
           <Box
             className={clsx(
-              defaultClasses.severityIndicator,
-              severity === 'error' && defaultClasses.severityIndicatorError,
-              severity === 'success' && defaultClasses.severityIndicatorSuccess,
-              severity === 'warning' && defaultClasses.severityIndicatorWarning,
+              defaultStyles.classes.severityIndicator,
+              severity === 'error' &&
+                defaultStyles.classes.severityIndicatorError,
+              severity === 'success' &&
+                defaultStyles.classes.severityIndicatorSuccess,
+              severity === 'warning' &&
+                defaultStyles.classes.severityIndicatorWarning,
               classes?.severityIndicator
             )}
             style={styles?.severityIndicator}
           >
             {severityIcon}
           </Box>
-          {children ? children : <Typography variant="subtitle2">{message}</Typography>}
+          {children ? (
+            children
+          ) : (
+            <Typography variant='subtitle2'>{message}</Typography>
+          )}
           {onClose && (
             <CloseRounded
               className={clsx(
                 classes?.closeIcon,
                 'AruiAlert-closeIcon',
-                colorBase === 'light' && defaultClasses.closeIconLight,
-                defaultClasses.closeIcon
+                colorBase === 'light' && defaultStyles.classes.closeIconLight,
+                defaultStyles.classes.closeIcon
               )}
               style={styles?.closeIcon}
               onClick={onClose}

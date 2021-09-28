@@ -7,32 +7,31 @@ import {
   MuiStepperWrapperProps,
   MuiStepperWrapperLabel
 } from './MuiStepperWrapper'
-import { Theme, useTheme } from '@smartb/g2-themes'
-import { lowLevelStyles } from '@smartb/g2-themes'
+import { makeG2STyles, useTheme } from '@smartb/g2-themes'
 
-const useStyles = lowLevelStyles<Theme>()({
-    transparent: {
-      backgroundColor: '#ffffff',
-      justifyContent: 'center'
+const useStyles = makeG2STyles()((theme) => ({
+  transparent: {
+    backgroundColor: '#ffffff',
+    justifyContent: 'center'
+  },
+  stepper: {
+    '& .AruiStepperBase-content': {
+      position: 'relative',
+      margin: 0
     },
-    stepper: {
-      '& .AruiStepperBase-content': {
-        position: 'relative',
-        margin: 0
-      },
-      '& .AruiStepperBase-actions': {
-        position: 'absolute',
-        bottom: 10,
-        right: 10
-      }
-    },
-    button: {
-      backgroundColor: theme => theme.colors.secondary,
-      '&:hover': {
-        backgroundColor: theme => theme.colors.secondary
-      }
+    '& .AruiStepperBase-actions': {
+      position: 'absolute',
+      bottom: 10,
+      right: 10
     }
-  })
+  },
+  button: {
+    backgroundColor: theme.colors.secondary,
+    '&:hover': {
+      backgroundColor: theme.colors.secondary
+    }
+  }
+}))
 
 export interface StepperProps {
   /**
@@ -56,7 +55,7 @@ export const Stepper = (props: StepperProps) => {
     muiStepperWrapperLabel
   } = props
   const theme = useTheme()
-  const classes = useStyles(theme)
+  const { classes } = useStyles()
   const AruiStepConnector = StepConnector(theme)
   return (
     <div className='AruiStepper-root'>
