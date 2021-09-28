@@ -6,42 +6,42 @@ import {
   ListItemText,
   ListItemProps,
   ListProps
-} from  '@mui/material'
+} from '@mui/material'
 import { MenuItems } from './MenuItem'
 import React, { useCallback, useMemo } from 'react'
 import {
   BasicProps,
   MergeMuiElementProps,
-  Theme,
-  lowLevelStyles,
-  useTheme
+  makeG2STyles
 } from '@smartb/g2-themes'
 import clsx from 'clsx'
 
-const useStyles = lowLevelStyles<{ paddingLeft: number; theme: Theme }>()({
-  item: {
-    paddingLeft: ({ paddingLeft }) => `${paddingLeft}px`
-  },
-  selectedItem: {
-    background: ({ theme }) => `${theme.colors.primary}26`
-  },
-  selectedTitle: {
-    '& .MuiTypography-root': {
-      color: ({ theme }) => theme.colors.primary
+const useStyles = makeG2STyles<{ paddingLeft: number }>()(
+  (theme, { paddingLeft }) => ({
+    item: {
+      paddingLeft: `${paddingLeft}px`
+    },
+    selectedItem: {
+      background: `${theme.colors.primary}26`
+    },
+    selectedTitle: {
+      '& .MuiTypography-root': {
+        color: theme.colors.primary
+      }
+    },
+    itemText: {
+      '& .MuiTypography-root': {
+        fontSize: `${17 - paddingLeft / 10}px`,
+        textOverflow: 'ellipsis',
+        whiteSpace: 'nowrap',
+        overflow: 'hidden'
+      }
+    },
+    subList: {
+      padding: '0px'
     }
-  },
-  itemText: {
-    '& .MuiTypography-root': {
-      fontSize: ({ paddingLeft }) => `${17 - paddingLeft / 10}px`,
-      textOverflow: 'ellipsis',
-      whiteSpace: 'nowrap',
-      overflow: 'hidden'
-    }
-  },
-  subList: {
-    padding: '0px'
-  }
-})
+  })
+)
 
 interface MenuClasses {
   item?: ItemClasses
@@ -122,15 +122,14 @@ const Item = (props: ItemProps) => {
     ...other
   } = props
   const onItemClick = useCallback(() => goto && !href && goto(), [goto, href])
-  const theme = useTheme()
+
   const stylesObject = useMemo(
     () => ({
-      paddingLeft: paddingLeft,
-      theme: theme
+      paddingLeft: paddingLeft
     }),
-    [paddingLeft, theme]
+    [paddingLeft]
   )
-  const defaultClasses = useStyles(stylesObject)
+  const defaultStyles = useStyles(stylesObject)
   if (items !== undefined && items.length > 0)
     return (
       <>
@@ -138,7 +137,7 @@ const Item = (props: ItemProps) => {
           style={styles?.item?.root}
           {...componentProps}
           {...other}
-          className={clsx(classes?.item?.root, defaultClasses.item)}
+          className={clsx(classes?.item?.root, defaultStyles.classes.item)}
         >
           {!!icon && (
             <ListItemIcon
@@ -153,15 +152,15 @@ const Item = (props: ItemProps) => {
             primary={label}
             className={clsx(
               classes?.item?.text,
-              defaultClasses.itemText,
-              isSelected && defaultClasses.selectedTitle
+              defaultStyles.classes.itemText,
+              isSelected && defaultStyles.classes.selectedTitle
             )}
             style={styles?.item?.text}
           />
         </ListItem>
         <Menu
           {...subMenuProps}
-          className={clsx(subMenuProps, defaultClasses.subList)}
+          className={clsx(subMenuProps, defaultStyles.classes.subList)}
           paddingLeft={paddingLeft + 10}
           menu={items}
         />
@@ -177,8 +176,8 @@ const Item = (props: ItemProps) => {
       {...other}
       className={clsx(
         classes?.item?.root,
-        defaultClasses.item,
-        isSelected && defaultClasses.selectedItem
+        defaultStyles.classes.item,
+        isSelected && defaultStyles.classes.selectedItem
       )}
     >
       {!!icon && (
@@ -192,7 +191,7 @@ const Item = (props: ItemProps) => {
       <ListItemText
         primaryTypographyProps={{ color: 'inherit' }}
         primary={label}
-        className={clsx(classes?.item?.text, defaultClasses.itemText)}
+        className={clsx(classes?.item?.text, defaultStyles.classes.itemText)}
         //on ajoute le style du text que si les objets le contenant éxiste
         style={styles?.item?.text}
       />

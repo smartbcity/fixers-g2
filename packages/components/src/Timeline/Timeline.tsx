@@ -9,24 +9,24 @@ import {
   TimelineContent
 } from '@mui/lab'
 import React, { forwardRef, useMemo } from 'react'
-import { Typography } from  '@mui/material'
+import { Typography } from '@mui/material'
 import clsx from 'clsx'
-import { Theme, useTheme } from '@smartb/g2-themes'
 import {
   MergeMuiElementProps,
-  lowLevelStyles,
-  BasicProps
+  makeG2STyles,
+  BasicProps,
+  useTheme
 } from '@smartb/g2-themes'
 import { FilledArrow } from '../icons'
 
-const useStyles = lowLevelStyles<Theme>()({
+const useStyles = makeG2STyles()((theme) => ({
   dot: {
-    background: (theme) => theme.colors.secondary,
+    background: theme.colors.secondary,
     position: 'relative',
     alignSelf: 'unset'
   },
   dotPassed: {
-    background: (theme) => theme.colors.tertiary,
+    background: theme.colors.tertiary,
     position: 'relative',
     alignSelf: 'unset'
   },
@@ -53,10 +53,10 @@ const useStyles = lowLevelStyles<Theme>()({
     }
   },
   connector: {
-    background: (theme) => theme.colors.tertiary
+    background: theme.colors.tertiary
   },
   connectorProgress: {
-    background: (theme) => theme.colors.primary,
+    background: theme.colors.primary,
     width: '100%',
     height: '100%'
   },
@@ -87,12 +87,14 @@ const useStyles = lowLevelStyles<Theme>()({
     top: '2px'
   },
   timelineAlternate: {
-    '& .AruiTimeLine-item-ClickableContainer:nth-child(even) .AruiTimeLine-item': {
-      flexDirection: 'row-reverse'
-    },
-    '& .AruiTimeLine-item-ClickableContainer:nth-child(even) .AruiTimeLine-timeContainer': {
-      alignItems: 'end'
-    }
+    '& .AruiTimeLine-item-ClickableContainer:nth-child(even) .AruiTimeLine-item':
+      {
+        flexDirection: 'row-reverse'
+      },
+    '& .AruiTimeLine-item-ClickableContainer:nth-child(even) .AruiTimeLine-timeContainer':
+      {
+        alignItems: 'end'
+      }
   },
   timelineRight: {
     '& .AruiTimeLine-item': {
@@ -100,7 +102,7 @@ const useStyles = lowLevelStyles<Theme>()({
     }
   },
   activeDot: {
-    border: (theme) => `2px solid ${theme.colors.primary}`,
+    border: `2px solid ${theme.colors.primary}`,
     position: 'absolute',
     width: 'calc(100% + 8px)',
     height: 'calc(100% + 8px)',
@@ -123,7 +125,7 @@ const useStyles = lowLevelStyles<Theme>()({
       opacity: 0
     }
   }
-})
+}))
 
 export interface TimeLineCell {
   id: string
@@ -216,7 +218,7 @@ const TimelineBase = (
     ...other
   } = props
   const theme = useTheme()
-  const defaultClasses = useStyles(theme)
+  const defaultStyles = useStyles()
 
   const linesUi = useMemo(
     () =>
@@ -242,19 +244,21 @@ const TimelineBase = (
             key={line.id}
             onClick={() => onSelectCell && !line.disabled && onSelectCell(line)}
             className={clsx(
-              onSelectCell && !line.disabled && defaultClasses.selectableItem,
+              onSelectCell &&
+                !line.disabled &&
+                defaultStyles.classes.selectableItem,
               'AruiTimeLine-item-ClickableContainer'
             )}
           >
             <TimelineItem
               key={line.id}
               className={clsx(
-                line.disabled && defaultClasses.ItemDisabled,
+                line.disabled && defaultStyles.classes.ItemDisabled,
                 !!selectedCellId &&
                   selectedCellId !== line.id &&
-                  defaultClasses.ItemDisabled,
-                isSelected && defaultClasses.itemSelected,
-                defaultClasses.item,
+                  defaultStyles.classes.ItemDisabled,
+                isSelected && defaultStyles.classes.itemSelected,
+                defaultStyles.classes.item,
                 'AruiTimeLine-item',
                 classes?.item
               )}
@@ -263,37 +267,37 @@ const TimelineBase = (
               <FilledArrow
                 color={theme.colors.primary}
                 className={clsx(
-                  defaultClasses.selectorIndicator,
+                  defaultStyles.classes.selectorIndicator,
                   'AruiTimeLine-selectorIndicator'
                 )}
               />
               <TimelineOppositeContent
                 className={clsx(
                   align === 'alternate'
-                    ? defaultClasses.timeContainerAlternate
-                    : defaultClasses.timeContainer,
+                    ? defaultStyles.classes.timeContainerAlternate
+                    : defaultStyles.classes.timeContainer,
                   'AruiTimeLine-timeContainer',
                   classes?.timeContainer
                 )}
                 style={styles?.timeContainer}
               >
                 <Typography variant='body2'>{line.startTime}</Typography>
-                <div className={defaultClasses.flexSeparator} />
+                <div className={defaultStyles.classes.flexSeparator} />
                 <Typography variant='body2'>{line.endTime}</Typography>
               </TimelineOppositeContent>
               <TimelineSeparator
                 className={clsx(
                   'AruiTimeLine-separator',
                   classes?.separator,
-                  defaultClasses.separator
+                  defaultStyles.classes.separator
                 )}
                 style={styles?.separator}
               >
                 <TimelineDot
                   className={clsx(
                     isPassed && !passedTimeLine
-                      ? defaultClasses.dotPassed
-                      : defaultClasses.dot,
+                      ? defaultStyles.classes.dotPassed
+                      : defaultStyles.classes.dot,
                     'AruiTimeLine-startDot',
                     classes?.startDot
                   )}
@@ -301,12 +305,12 @@ const TimelineBase = (
                 >
                   {line.startDot}
                   {isActive && !passedTimeLine && (
-                    <div className={defaultClasses.activeDot} />
+                    <div className={defaultStyles.classes.activeDot} />
                   )}
                 </TimelineDot>
                 <TimelineConnector
                   className={clsx(
-                    defaultClasses.connector,
+                    defaultStyles.classes.connector,
                     'AruiTimeLine-connector',
                     classes?.connector
                   )}
@@ -314,18 +318,18 @@ const TimelineBase = (
                 >
                   {timeLeft && !passedTimeLine && (
                     <div
-                      className={defaultClasses.connectorProgress}
+                      className={defaultStyles.classes.connectorProgress}
                       style={{ height: `${timeLeft}%` }}
                     />
                   )}
                   {((!isPassed && !timeLeft) || passedTimeLine) && (
-                    <div className={defaultClasses.connectorProgress} />
+                    <div className={defaultStyles.classes.connectorProgress} />
                   )}
                 </TimelineConnector>
                 {line.endTime && (
                   <TimelineDot
                     className={clsx(
-                      defaultClasses.dotPassed,
+                      defaultStyles.classes.dotPassed,
                       'AruiTimeLine-endDot',
                       classes?.endDot
                     )}
@@ -350,20 +354,21 @@ const TimelineBase = (
       classes,
       styles,
       align,
+      theme,
       selectedCellId,
       passedTimeLine,
-      defaultClasses
+      defaultStyles.classes
     ]
   )
 
   return (
     <MuiTimeline
-    //@ts-ignore
+      //@ts-ignore
       ref={ref}
       {...other}
       className={clsx(
-        align === 'alternate' && defaultClasses.timelineAlternate,
-        align === 'right' && defaultClasses.timelineRight,
+        align === 'alternate' && defaultStyles.classes.timelineAlternate,
+        align === 'right' && defaultStyles.classes.timelineRight,
         'AruiTimeLine-root',
         className
       )}

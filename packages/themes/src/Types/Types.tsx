@@ -1,6 +1,7 @@
-import { makeStyles, Styles } from '@mui/styles'
+import { makeStyles as MuiMakestyles, Styles } from '@mui/styles'
 import { Theme as MuiTheme } from '@mui/material/styles'
-
+import { createMakeStyles } from 'tss-react'
+import { useTheme } from '../ThemeContextProvider'
 export interface BasicProps {
   /**
    * The id of the root component
@@ -16,11 +17,15 @@ export interface BasicProps {
   className?: string
 }
 
+const { makeStyles } = createMakeStyles({ useTheme })
+
+export const makeG2STyles = makeStyles
+
 export function lowLevelStyles<Props extends object = {}, Theme = MuiTheme>() {
   return function <ClassKey extends string = string>(
     styles: Styles<Theme, Props, ClassKey>
   ) {
-    return makeStyles<Theme, Props, ClassKey>(styles, { index: 1 })
+    return MuiMakestyles<Theme, Props, ClassKey>(styles, { index: 1 })
   }
 }
 
@@ -28,14 +33,14 @@ export function midLevelStyles<Props extends object = {}, Theme = MuiTheme>() {
   return function <ClassKey extends string = string>(
     styles: Styles<Theme, Props, ClassKey>
   ) {
-    return makeStyles<Theme, Props, ClassKey>(styles, { index: 2 })
+    return MuiMakestyles<Theme, Props, ClassKey>(styles, { index: 2 })
   }
 }
 export function highLevelStyles<Props extends object = {}, Theme = MuiTheme>() {
   return function <ClassKey extends string = string>(
     styles: Styles<Theme, Props, ClassKey>
   ) {
-    return makeStyles<Theme, Props, ClassKey>(styles, { index: 3 })
+    return MuiMakestyles<Theme, Props, ClassKey>(styles, { index: 3 })
   }
 }
 

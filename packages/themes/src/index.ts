@@ -13,6 +13,7 @@ export {
   lowLevelStyles,
   highLevelStyles,
   midLevelStyles,
+  makeG2STyles,
   MergeMuiElementProps,
   MergeReactElementProps
 } from './Types'

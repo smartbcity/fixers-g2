@@ -1,13 +1,10 @@
 import React from 'react'
-import { Link as MuiLink, LinkProps as MuiLinkProps } from  '@mui/material'
-import {
-  BasicProps,
-  lowLevelStyles,
-  MergeMuiElementProps
-} from '@smartb/g2-themes'
+import { Link as MuiLink, LinkProps as MuiLinkProps } from '@mui/material'
+import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
+import { makeG2STyles } from '@smartb/g2-themes'
 import clsx from 'clsx'
 
-const useStyles = lowLevelStyles()({
+const useStyles = makeG2STyles()({
   link: {
     opacity: '0.9',
     textDecoration: 'underline',
@@ -49,12 +46,10 @@ export type LinkProps<T extends object = {}> = MergeMuiElementProps<
   LinkBasicProps<T>
 >
 
-export const Link= <T extends object = {}>(
-  props: LinkProps<T>
-) => {
+export const Link = <T extends object = {}>(props: LinkProps<T>) => {
   const { href, className, component, componentProps, disabled, ...other } =
     props
-  const classes = useStyles()
+  const { classes } = useStyles()
   if (component)
     return (
       <MuiLink
@@ -87,4 +82,3 @@ export const Link= <T extends object = {}>(
     />
   )
 }
-

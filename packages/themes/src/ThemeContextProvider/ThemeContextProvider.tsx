@@ -1,10 +1,8 @@
 import React, { createContext, useCallback, useContext } from 'react'
-import {
-  ThemeProvider,
-  StyledEngineProvider,
-  ThemeOptions
-} from '@mui/material'
+import { ThemeProvider, ThemeOptions } from '@mui/material'
 import { defaultMaterialUiTheme, defaultTheme, Theme } from './Theme'
+import { CacheProvider } from '@emotion/react'
+import createCache from '@emotion/cache'
 
 import './default.css'
 
@@ -30,6 +28,11 @@ export interface ThemeContextProviderProps {
   customMuiTheme?: Partial<ThemeOptions>
 }
 
+export const muiCache = createCache({
+  key: 'mui',
+  prepend: true
+})
+
 export const ThemeContextProvider = (props: ThemeContextProviderProps) => {
   const { children, customMuiTheme, theme } = props
   const [localTheme, setLocalTheme] = React.useState<Theme>({
@@ -44,9 +47,9 @@ export const ThemeContextProvider = (props: ThemeContextProviderProps) => {
     <ThemeContext.Provider
       value={{ theme: localTheme, changeTheme: setPartialTheme }}
     >
-      <StyledEngineProvider injectFirst>
+      <CacheProvider value={muiCache}>
         <ThemeProvider theme={defaultMuiTheme}>{children}</ThemeProvider>
-      </StyledEngineProvider>
+      </CacheProvider>
     </ThemeContext.Provider>
   )
 }
