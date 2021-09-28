@@ -1,58 +1,88 @@
 import {
-  DatePicker as MuiDatePicker,
-  LocalizationProvider,
+  MobileDatePicker as MuiMobileDatePicker,
+  DatePickerProps as MuiDatePickerProps,
+  LocalizationProvider
 } from '@mui/lab'
 import AdapterDateFns from '@mui/lab/AdapterDateFns'
-import React, { forwardRef, useCallback, useMemo } from 'react'
+import React, { forwardRef, useCallback, useMemo, useState } from 'react'
 import { useFilterInputStyles } from '../style'
 import {
   BasicProps,
   lowLevelStyles,
   MergeMuiElementProps,
+  Theme,
   useTheme
 } from '@smartb/g2-themes'
-import { format as formatFnc } from 'date-fns'
 import * as dateFnsLocales from 'date-fns/locale'
 import clsx from 'clsx'
-import { Clear } from '@mui/icons-material'
-import { FilterTextField, FilterTextFieldProps } from '../FilterTextField'
-import tinycolor from "tinycolor2"
+import {
+  InputAdornment,
+  InputLabelProps,
+  TextField as MuiTextField,
+  TextFieldProps as MuiTextFieldProps
+} from '@mui/material'
 import { Calendar } from '../assets/icons'
-import { DatePickerView } from '@mui/lab/DatePicker/shared'
+import tinycolor from 'tinycolor2'
+import { ClearRounded } from '@mui/icons-material'
 
-const useStyles = lowLevelStyles()({
+const useStyles = lowLevelStyles<Theme>()({
   root: {
     position: 'relative',
-    width: "fit-content",
+    width: 'fit-content'
   },
   input: {
-    width: "100%",
-    "& .MuiInputBase-root": {
-      minWidth: "115px"
+    width: '100%',
+    '& .MuiInputBase-root': {
+      minWidth: '115px',
+      paddingRight: '8px'
     }
   },
   inputWithRemove: {
-    width: "100%",
-    "& .MuiInputBase-root": {
-      minWidth: "130px"
+    width: '100%',
+    '& .MuiInputBase-root': {
+      minWidth: '130px',
+      paddingRight: '8px'
     }
   },
   calendarIcon: {
-    width: "17px",
-    height: "17px",
-    cursor: "pointer",
-    color: "currentColor",
-    stroke: "currentColor",
+    width: '17px',
+    height: '17px',
+    cursor: 'pointer',
+    color: 'currentColor',
+    stroke: 'currentColor'
+  },
+  dialog: {
+    '& .MuiButton-root': {
+      background: (theme) => theme.colors.primary,
+      padding: '3px 5px',
+      textTransform: 'lowercase'
+    }
   },
   clear: {
-    right: "26px"
+    right: '26px'
   }
 })
 
+export interface FilterDatePickerClasses {
+  input?: string
+  textField?: string
+  label?: string
+  calendarIcon?: string
+  clearIcon?: string
+}
+
+export interface FilterDatePickerStyles {
+  input?: React.CSSProperties
+  textField?: React.CSSProperties
+  label?: React.CSSProperties
+  calendarIcon?: React.CSSProperties
+  clearIcon?: React.CSSProperties
+}
+
 export interface FilterDatePickerBasicProps extends BasicProps {
   /**
-  * The label of the input
-  */
+   * The label of the input
+   */
   label?: string
   /**
    * The Date entered in the input
@@ -80,12 +110,6 @@ export interface FilterDatePickerBasicProps extends BasicProps {
    * @default false
    */
   disabled?: boolean
-  /**
-   * The type of the date picker
-   *
-   * @default 'date'
-   */
-  type?: 'month' | 'date'
 
   /**
    * The locale language use in the date picker
@@ -95,32 +119,46 @@ export interface FilterDatePickerBasicProps extends BasicProps {
   locale?: keyof typeof dateFnsLocales
 
   /**
-  * The color of the input
-  * 
-  * @default 'primary'
-  */
+   * The color of the input
+   *
+   * @default 'primary'
+   */
   color?: 'primary' | 'secondary' | 'default'
 
   /**
-  * The variant of the input
-  * 
-  * @default 'filled'
-  */
+   * The variant of the input
+   *
+   * @default 'filled'
+   */
   variant?: 'filled' | 'outlined'
-
   /**
-   * By default the picker will be native when a mobile browser is detected. You can set this prop to `true`
-   * to have the native picker appearing all the time or you can set it to `false` to always use the material-ui picker even on phone
+   * The props to the textfield element
+   *
    */
-  native?: boolean
+  textFieldProps?: Partial<MuiTextFieldProps>
   /**
-   * The reference of the input
+   * The porps given to the label component
    */
-  ref?: React.ForwardedRef<HTMLDivElement>
+  InputLabelProps?: Partial<InputLabelProps>
+  /**
+   * The name passed tothe input
+   *
+   */
+  name?: string
+  /**
+   * The classes applied to the different part of the component
+   */
+  classes?: FilterDatePickerClasses
+  /**
+   * The styles applied to the different part of the component
+   */
+  styles?: FilterDatePickerStyles
 }
 
-
-export type FilterDatePickerProps = MergeMuiElementProps<Partial<Omit<FilterTextFieldProps, "ref">>, FilterDatePickerBasicProps>
+export type FilterDatePickerProps = MergeMuiElementProps<
+  Omit<MuiDatePickerProps, 'onChange' | 'renderInput'>,
+  FilterDatePickerBasicProps
+>
 
 const FilterDatePickerBase = (
   props: FilterDatePickerProps,
@@ -129,82 +167,59 @@ const FilterDatePickerBase = (
   const {
     value,
     onChangeDate,
+    onRemove,
     className,
     style,
     id,
     minDate,
     maxDate,
     disabled = false,
-    type = 'date',
-    label,
-    locale = 'fr',
-    native,
-    name,
+    label = 'jj/MM/yyyy',
     color = 'primary',
     variant = 'filled',
-    onRemove,
+    locale = 'fr',
+    textFieldProps,
+    name,
+    classes,
+    styles,
+    InputLabelProps,
     ...other
   } = props
   const theme = useTheme()
   const defaultClasses = useFilterInputStyles(theme)
-  const classes = useStyles()
+  const classesLocal = useStyles(theme)
+  const [open, setOpen] = useState(false)
+
   const colorStyle = useMemo(() => {
-    if (color === "primary") {
+    if (color === 'primary') {
       const isPrimaryDark = tinycolor(theme.colors.primary).isDark()
-      if (isPrimaryDark) return { color: "white" }
+      if (isPrimaryDark) return { color: 'white' }
     }
-    if (color === "secondary") {
+    if (color === 'secondary') {
       const isSecondaryDark = tinycolor(theme.colors.secondary).isDark()
-      if (isSecondaryDark) return { color: "white" }
+      if (isSecondaryDark) return { color: 'white' }
     }
     return {}
   }, [color, theme.colors.primary, theme.colors.secondary])
 
+  const onOpen = useCallback(() => setOpen(true), [])
+
+  const onClose = useCallback(() => setOpen(false), [])
+
   const format = useMemo(() => {
-    if (locale === 'fr') return 'dd/MM/yyyy'
-    return 'yyyy/MM/dd'
+    if (locale === 'fr') return { format: 'dd/MM/yyyy', mask: '__/__/____' }
+    return { format: 'yyyy/MM/dd', mask: '____/__/__' }
   }, [locale])
 
-  const formatedNativeDates = useMemo(() => {
-    const formatType = type === 'date' ? 'yyyy-MM-dd' : 'yyyy-MM'
-    return {
-      value: value ? formatFnc(value, formatType) : '',
-      minDate: minDate ? formatFnc(minDate, formatType) : '',
-      maxDate: maxDate ? formatFnc(maxDate, formatType) : ''
-    }
-  }, [value, type, minDate, maxDate])
-
-  const dateType: {
-    views: DatePickerView[]
-    openTo: DatePickerView
-  } = useMemo(() => {
-    if (type === 'date')
-      return {
-        views: ['year', 'month', 'day'],
-        openTo: 'day'
-      }
-    return {
-      views: ['year', 'month'],
-      openTo: 'month'
-    }
-  }, [])
-
-  const onPCChange = useCallback(
+  const onChange = useCallback(
     (date: Date | null) => {
       onChangeDate && onChangeDate(date ? new Date(date) : undefined)
     },
     [onChangeDate]
   )
 
-  const onMobileChange = useCallback(
-    (value: string) => {
-      onChangeDate && onChangeDate(new Date(value))
-    },
-    [onChangeDate]
-  )
-
-  const getVariantColorClass = () => {
-    if (variant === "outlined") {
+  const getVariantColorClass = useCallback(() => {
+    if (variant === 'outlined') {
       switch (color) {
         case 'primary':
           return defaultClasses.inputOutlinedPrimaryColor
@@ -224,97 +239,139 @@ const FilterDatePickerBase = (
       default:
         return defaultClasses.inputFilledGreyColor
     }
-  }
+  }, [variant, color])
 
   const rightIcon = useMemo(() => {
     if (!value) return undefined
     if (onRemove && !disabled)
       return (
-        <Clear
+        <ClearRounded
           onClick={onRemove}
-          className={clsx(defaultClasses.clear, 'AruiFilterDatePicker-clearIcon', classes.clear)}
+          className={clsx(
+            defaultClasses.clear,
+            'AruiFilterDatePicker-clearIcon',
+            classesLocal.clear,
+            classes?.clearIcon
+          )}
+          style={styles?.clearIcon}
         />
       )
     return undefined
-  }, [value, onRemove, defaultClasses.clear, disabled, classes.clear])
+  }, [
+    value,
+    onRemove,
+    defaultClasses.clear,
+    disabled,
+    classesLocal.clear,
+    classes?.clearIcon,
+    styles?.clearIcon
+  ])
 
-  if (native)
+  const renderInput = (props: any) => {
+    const InputProps = {
+      endAdornment: (
+        <InputAdornment
+          style={variant === 'filled' ? colorStyle : undefined}
+          component='div'
+          position='end'
+        >
+          <Calendar
+            onClick={onOpen}
+            className={clsx(
+              classesLocal.calendarIcon,
+              classes?.calendarIcon,
+              'AruiFilterDatePicker-calendarIcon'
+            )}
+            style={styles?.calendarIcon}
+          />
+        </InputAdornment>
+      ),
+      disableUnderline: true,
+      style:
+        variant === 'filled'
+          ? { ...styles?.input, ...colorStyle }
+          : styles?.input,
+      className: clsx(classes?.input, 'AruiDatePicker-input'),
+      ...textFieldProps?.InputProps,
+      ...props.InputProps
+    }
+
+    delete props.inputProps?.placeholder
     return (
-      <FilterTextField
-        //@ts-ignore
-        textFieldType={type}
-        ref={ref}
-        className={clsx(className, 'AruiFilterDatePicker-datePicker')}
-        style={style}
+      <MuiTextField
+        {...textFieldProps}
+        {...props}
         id={id}
-        value={formatedNativeDates.value}
-        onChange={onMobileChange}
-        variant={variant}
-        color={color}
-        label={label}
-        InputLabelProps={{ shrink: true }}
-        disabled={disabled}
-        onRemove={onRemove}
-        InputProps={{
-          inputProps: {
-            min: formatedNativeDates.minDate,
-            max: formatedNativeDates.maxDate
-          }
+        name={name}
+        placeholder={variant === 'filled' ? label : undefined}
+        color={color !== 'default' ? color : undefined}
+        className={clsx(
+          classes?.textField,
+          defaultClasses.input,
+          !!rightIcon ? classesLocal.inputWithRemove : classesLocal.input,
+          getVariantColorClass(),
+          'AruiFilterDatePicker-datePicker'
+        )}
+        style={styles?.textField}
+        variant='outlined'
+        InputProps={InputProps}
+        InputLabelProps={{
+          ...InputLabelProps,
+          className: clsx(
+            defaultClasses.label,
+            'AruiFilterDatePicker-label',
+            classes?.label
+          ),
+          style: styles?.label,
+          shrink: true
         }}
-        {...other}
+        inputProps={{
+          size: '5',
+          ...textFieldProps?.inputProps,
+          ...props.inputProps
+        }}
       />
     )
+  }
 
   return (
     <LocalizationProvider
       dateAdapter={AdapterDateFns}
-      locale={locale}
+      locale={dateFnsLocales[locale]}
     >
       <div
-        className={clsx(classes.root, className, 'AruiFilterDatePicker-root')}
-        style={variant === "filled" ? { ...style, ...colorStyle } : style}
+        className={clsx(
+          classesLocal.root,
+          className,
+          'AruiFilterDatePicker-root'
+        )}
+        style={variant === 'filled' ? { ...style, ...colorStyle } : style}
       >
-        <MuiDatePicker
-          views={dateType.views}
-          openTo={dateType.openTo}
-          inputFormat={format}
+        <MuiMobileDatePicker
+          ref={ref}
+          label={variant === 'outlined' ? label : undefined}
+          views={['day', 'month', 'year']}
+          openTo='day'
+          open={open}
+          onOpen={onOpen}
+          onClose={onClose}
+          inputFormat={format.format}
+          mask={format.mask}
           minDate={minDate}
           maxDate={maxDate}
-          label={variant === "outlined" ? label : undefined}
-          className={clsx(
-            defaultClasses.input,
-            onRemove ? classes.inputWithRemove : classes.input,
-            getVariantColorClass(),
-            'AruiFilterDatePicker-datePicker'
-          )}
+          DialogProps={{ className: classesLocal.dialog }}
+          clearable
           disabled={disabled}
           value={value ? value : null}
-          onChange={onPCChange}
-          renderInput={(props) =>
-            <FilterTextField
-              ref={props.ref}
-              inputProps={{...props.inputProps, size: "5"}}
-              variant={variant}
-              color={color}
-              label={label}
-              disabled={disabled}
-              id={id}
-              onRemove={onRemove}
-              iconPosition="end"
-              inputIcon={<Calendar className={clsx(classes.calendarIcon, "AruiTextfield-calendarIcon")} />}
-              InputProps={{
-                ref: ref,
-                id: id,
-                name: name
-              }}
-              {...other}
-            />
-          }
+          onChange={onChange}
+          renderInput={renderInput}
+          {...other}
         />
         {rightIcon}
       </div>
     </LocalizationProvider>
   )
 }
-
-export const FilterDatePicker = forwardRef(FilterDatePickerBase) as typeof FilterDatePickerBase
+export const FilterDatePicker = forwardRef(
+  FilterDatePickerBase
+) as typeof FilterDatePickerBase

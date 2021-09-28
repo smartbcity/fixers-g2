@@ -2,20 +2,25 @@ import React, { useCallback, useMemo } from 'react'
 import {
   InputAdornment,
   TextField as MuiTextField,
-  TextFieldProps as MuiTextFieldProps,
-} from  '@mui/material'
+  TextFieldProps as MuiTextFieldProps
+} from '@mui/material'
 import { CheckRounded, ClearRounded } from '@mui/icons-material'
 import { useInputStyles } from '../style'
-import { BasicProps, lowLevelStyles, MergeMuiElementProps, useTheme } from '@smartb/g2-themes'
+import {
+  BasicProps,
+  lowLevelStyles,
+  MergeMuiElementProps,
+  useTheme
+} from '@smartb/g2-themes'
 import clsx from 'clsx'
 import { SearchIcon } from '../assets/icons'
 
 const useStyles = lowLevelStyles()({
   root: {
-    position: "relative"
+    position: 'relative'
   },
   input: {
-    width: "100%"
+    width: '100%'
   },
   withIconStart: {
     '& .MuiInputBase-input': {
@@ -35,9 +40,9 @@ const useStyles = lowLevelStyles()({
     }
   },
   searchIcon: {
-    width: "20px",
-    height: "20px",
-    cursor: "pointer"
+    width: '20px',
+    height: '20px',
+    cursor: 'pointer'
   }
 })
 
@@ -67,21 +72,21 @@ export interface TextFieldBasicProps extends BasicProps {
 
   /**
    * The type of the input
-   * 
+   *
    * @default 'text'
    */
   textFieldType?: 'number' | 'text' | 'email' | 'password' | 'search'
 
   /**
    * The size of the input
-   * 
+   *
    * @default 'medium'
    */
-  size?: "large" | "medium" | "small"
+  size?: 'large' | 'medium' | 'small'
 
   /**
    * Define if the value of the input has been validated
-   * 
+   *
    * @default false
    */
   validated?: boolean
@@ -98,7 +103,7 @@ export interface TextFieldBasicProps extends BasicProps {
 
   /**
    * Define if the value of the input is valid or not
-   * 
+   *
    * @default false
    */
   error?: boolean
@@ -115,7 +120,7 @@ export interface TextFieldBasicProps extends BasicProps {
 
   /**
    * Define if the input is disabled or not
-   * 
+   *
    * @default false
    */
   disabled?: boolean
@@ -132,7 +137,7 @@ export interface TextFieldBasicProps extends BasicProps {
 
   /**
    * The position of the icon
-   * 
+   *
    * @default 'start'
    */
   iconPosition?: 'start' | 'end'
@@ -141,10 +146,9 @@ export interface TextFieldBasicProps extends BasicProps {
    * The event called when a search request is send when the `textFieldType` is equal to 'search'
    */
   onSearch?: () => void
-
   /**
-  * The classes applied to the different part of the component
-  */
+   * The classes applied to the different part of the component
+   */
   classes?: TextFieldClasses
   /**
    * The styles applied to the different part of the component
@@ -152,172 +156,253 @@ export interface TextFieldBasicProps extends BasicProps {
   styles?: TextFieldStyles
 }
 
-export type TextFieldProps = MergeMuiElementProps<Omit<MuiTextFieldProps, "ref">, TextFieldBasicProps>
+export type TextFieldProps = MergeMuiElementProps<
+  Omit<MuiTextFieldProps, 'ref'>,
+  TextFieldBasicProps
+>
 
-export const TextField = React.forwardRef((props: TextFieldProps, ref: React.ForwardedRef<HTMLDivElement>) => {
-  const {
-    className,
-    error = false,
-    errorMessage = '',
-    label = '',
-    id = '',
-    onChange,
-    placeholder = '',
-    style,
-    textFieldType = "text",
-    defaultValue,
-    value,
-    disabled = false,
-    inputIcon,
-    onRemove,
-    classes,
-    styles,
-    iconPosition = 'start',
-    size = "medium",
-    validated = false,
-    onSearch,
-    InputProps,
-    ...other
-  } = props
-  const theme = useTheme()
-  const defaultClasses = useInputStyles(theme)
-  const classesLocal = useStyles()
+export const TextField = React.forwardRef(
+  (props: TextFieldProps, ref: React.ForwardedRef<HTMLDivElement>) => {
+    const {
+      className,
+      error = false,
+      errorMessage = '',
+      label = '',
+      id = '',
+      onChange,
+      placeholder = '',
+      style,
+      textFieldType = 'text',
+      defaultValue,
+      value,
+      disabled = false,
+      inputIcon,
+      onRemove,
+      classes,
+      styles,
+      iconPosition = 'start',
+      size = 'medium',
+      validated = false,
+      onSearch,
+      InputProps,
+      ...other
+    } = props
+    const theme = useTheme()
+    const defaultClasses = useInputStyles(theme)
+    const classesLocal = useStyles()
 
-  const onChangeMemoized = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => onChange && onChange(e.target.value),
-    [onChange],
-  )
+    const onChangeMemoized = useCallback(
+      (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
+        onChange && onChange(e.target.value),
+      [onChange]
+    )
 
-  const upHandler = useCallback(
-    (event: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-      if (event.key === 'Enter') {
-        event.currentTarget.blur()
-        onSearch && onSearch()
-      }
-    },
-    [onSearch],
-  )
+    const upHandler = useCallback(
+      (event: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        if (event.key === 'Enter') {
+          event.currentTarget.blur()
+          onSearch && onSearch()
+        }
+      },
+      [onSearch]
+    )
 
-  const inputAdornment = useMemo(() => {
-    if (textFieldType === "search") {
-      if (iconPosition === 'start') {
-        return {
-          startAdornment: (
-            <InputAdornment component='div' position='start'>
-              <SearchIcon color="#323338" onClick={onSearch} className={clsx(classesLocal.searchIcon, classes?.searchIcon, "AruiTextfield-searchIcon")} style={styles?.searchIcon} />
-            </InputAdornment>
-          )
+    const inputAdornment = useMemo(() => {
+      if (textFieldType === 'search') {
+        if (iconPosition === 'start') {
+          return {
+            startAdornment: (
+              <InputAdornment component='div' position='start'>
+                <SearchIcon
+                  color='#323338'
+                  onClick={onSearch}
+                  className={clsx(
+                    classesLocal.searchIcon,
+                    classes?.searchIcon,
+                    'AruiTextfield-searchIcon'
+                  )}
+                  style={styles?.searchIcon}
+                />
+              </InputAdornment>
+            )
+          }
+        } else {
+          return {
+            endAdornment: (
+              <InputAdornment component='div' position='end'>
+                <SearchIcon
+                  color='#323338'
+                  onClick={onSearch}
+                  className={clsx(
+                    classesLocal.searchIcon,
+                    classes?.searchIcon,
+                    'AruiTextfield-searchIcon'
+                  )}
+                  style={styles?.searchIcon}
+                />
+              </InputAdornment>
+            )
+          }
         }
       } else {
-        return {
-          endAdornment: (
-            <InputAdornment component='div' position='end'>
-              <SearchIcon color="#323338" onClick={onSearch} className={clsx(classesLocal.searchIcon, classes?.searchIcon, "AruiTextfield-searchIcon")} style={styles?.searchIcon} />
-            </InputAdornment>
-          )
+        if (inputIcon && iconPosition === 'start') {
+          return {
+            startAdornment: (
+              <InputAdornment component='div' position='start'>
+                {inputIcon}
+              </InputAdornment>
+            )
+          }
+        } else if (inputIcon) {
+          return {
+            endAdornment: (
+              <InputAdornment component='div' position='end'>
+                {inputIcon}
+              </InputAdornment>
+            )
+          }
         }
+        return {}
       }
-    } else {
+    }, [
+      textFieldType,
+      inputIcon,
+      iconPosition,
+      classes?.searchIcon,
+      styles?.searchIcon,
+      onSearch
+    ])
+
+    const formHelperProps = useMemo(() => {
+      return {
+        className: clsx(
+          defaultClasses.helperText,
+          classes?.helperText,
+          'AruiTextfield-helperText'
+        ),
+        style: styles?.helperText
+      }
+    }, [classes?.helperText, styles?.helperText])
+
+    const rightIcon = useMemo(() => {
+      if (validated)
+        return (
+          <CheckRounded
+            className={clsx(
+              defaultClasses.validated,
+              classes?.validIcon,
+              'AruiTextfield-validIcon'
+            )}
+            style={{
+              ...styles?.validIcon,
+              right: inputAdornment.endAdornment ? '30px' : ''
+            }}
+          />
+        )
+      if (!value || value === '') return undefined
+      if ((onRemove || error) && !disabled)
+        return (
+          <ClearRounded
+            onClick={onRemove}
+            className={clsx(
+              defaultClasses.clear,
+              error && defaultClasses.clearError,
+              classes?.clearIcon,
+              'AruiTextfield-clearIcon'
+            )}
+            style={{
+              ...styles?.clearIcon,
+              right: inputAdornment.endAdornment ? '30px' : ''
+            }}
+          />
+        )
+      return undefined
+    }, [
+      value,
+      onRemove,
+      classes?.clearIcon,
+      styles?.clearIcon,
+      classes?.validIcon,
+      styles?.validIcon,
+      inputAdornment.endAdornment,
+      error,
+      disabled
+    ])
+
+    const inputClasses = () => {
       if (inputIcon && iconPosition === 'start') {
-        return {
-          startAdornment: (
-            <InputAdornment component='div' position='start'>
-              {inputIcon}
-            </InputAdornment>
-          )
-        }
-      } else if (inputIcon) {
-        return {
-          endAdornment: (
-            <InputAdornment component='div' position='end'>
-              {inputIcon}
-            </InputAdornment>
-          )
-        }
+        return classesLocal.withIconStart
       }
-      return {}
-    }
-  }, [textFieldType, inputIcon, iconPosition, classes?.searchIcon, styles?.searchIcon, onSearch])
-
-  const formHelperProps = useMemo(() => {
-    return {
-      className: clsx(defaultClasses.helperText, classes?.helperText, "AruiTextfield-helperText"),
-      style: styles?.helperText
-    }
-  }, [classes?.helperText, styles?.helperText])
-
-  const rightIcon = useMemo(() => {
-    if (validated) return (
-      <CheckRounded className={clsx(defaultClasses.validated, classes?.validIcon, "AruiTextfield-validIcon")} style={{ ...styles?.validIcon, right: inputAdornment.endAdornment ? "30px" : "" }} />
-    )
-    if (!value || value === "") return undefined
-    if ((onRemove || error) && !disabled) return (
-      <ClearRounded onClick={onRemove} className={clsx(defaultClasses.clear, error && defaultClasses.clearError, classes?.clearIcon, "AruiTextfield-clearIcon")} style={{ ...styles?.clearIcon, right: inputAdornment.endAdornment ? "30px" : "" }} />
-    )
-    return undefined
-  }, [value, onRemove, classes?.clearIcon, styles?.clearIcon, classes?.validIcon, styles?.validIcon, inputAdornment.endAdornment, error, disabled])
-
-  const inputClasses = () => {
-    if (inputIcon && iconPosition === 'start') {
-      return classesLocal.withIconStart
-    }
-    if (inputIcon && iconPosition === 'end') {
-      if (onRemove) {
-        return classesLocal.withIconEndOnRemove
+      if (inputIcon && iconPosition === 'end') {
+        if (onRemove) {
+          return classesLocal.withIconEndOnRemove
+        }
+        return classesLocal.withIconEnd
       }
-      return classesLocal.withIconEnd
+      return ''
     }
-    return ''
+
+    return (
+      <div
+        className={clsx(className, classesLocal.root, 'AruiTextfield-root')}
+        style={style}
+      >
+        <MuiTextField
+          {...other}
+          ref={ref}
+          id={id}
+          value={value}
+          onChange={onChangeMemoized}
+          placeholder={placeholder}
+          type={textFieldType === 'search' ? 'text' : textFieldType}
+          defaultValue={defaultValue}
+          className={clsx(
+            defaultClasses.input,
+            classesLocal.input,
+            validated && defaultClasses.inputValidated,
+            size === 'large' && defaultClasses.inputLarge,
+            size === 'medium' && defaultClasses.inputMedium,
+            size === 'small' && defaultClasses.inputSmall,
+            disabled && defaultClasses.inputDisabled,
+            error && defaultClasses.inputError,
+            onRemove &&
+              inputAdornment.endAdornment &&
+              textFieldType === 'search' &&
+              defaultClasses.inputWithClear,
+            classes?.textfield,
+            'AruiTextfield-Textfield'
+          )}
+          style={styles?.textfield}
+          variant='filled'
+          error={error}
+          disabled={disabled}
+          helperText={error ? errorMessage : ''}
+          color='primary'
+          InputProps={{
+            ...inputAdornment,
+            disableUnderline: true,
+            onKeyUp: upHandler,
+            style: {
+              ...styles?.input,
+              paddingRight:
+                (onRemove || validated) &&
+                value &&
+                value !== '' &&
+                !inputAdornment.endAdornment
+                  ? '27px'
+                  : ''
+            },
+            className: clsx(
+              inputClasses(),
+              classes?.input,
+              'AruiTextfield-input'
+            ),
+            ...InputProps
+          }}
+          FormHelperTextProps={formHelperProps}
+        />
+        {rightIcon}
+      </div>
+    )
   }
-
-  return (
-    <div
-      className={clsx(className, classesLocal.root, "AruiTextfield-root")}
-      style={style}
-    >
-      <MuiTextField
-        {...other}
-        ref={ref}
-        id={id}
-        value={value}
-        onChange={onChangeMemoized}
-        placeholder={placeholder}
-        type={textFieldType === "search" ? "text" : textFieldType}
-        defaultValue={defaultValue}
-        className={clsx(
-          defaultClasses.input,
-          classesLocal.input,
-          validated && defaultClasses.inputValidated,
-          size === "large" && defaultClasses.inputLarge,
-          size === "medium" && defaultClasses.inputMedium,
-          size === "small" && defaultClasses.inputSmall,
-          disabled && defaultClasses.inputDisabled,
-          error && defaultClasses.inputError,
-          onRemove && inputAdornment.endAdornment && textFieldType === "search" && defaultClasses.inputWithClear,
-          classes?.textfield,
-          "AruiTextfield-Textfield"
-        )}
-        style={styles?.textfield}
-        variant='filled'
-        error={error}
-        disabled={disabled}
-        helperText={error ? errorMessage : ''}
-        color='primary'
-        InputProps={{
-          ...inputAdornment,
-          disableUnderline: true,
-          onKeyUp: upHandler,
-          style: { ...styles?.input, paddingRight: (onRemove || validated) && value && value !== "" && !inputAdornment.endAdornment ? '27px' : '' },
-          className: clsx(
-            inputClasses(),
-            classes?.input,
-            "AruiTextfield-input",
-          ),
-          ...InputProps
-        }}
-        FormHelperTextProps={formHelperProps}
-      />
-      {rightIcon}
-    </div>
-  )
-})
+)
