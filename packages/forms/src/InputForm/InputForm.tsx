@@ -14,7 +14,7 @@ import {
   DatePickerProps
 } from '../DatePicker'
 import { useInputStyles } from '../style'
-import { BasicProps, useTheme } from '@smartb/g2-themes'
+import { BasicProps } from '@smartb/g2-themes'
 import clsx from 'clsx'
 
 interface InputFormClasses {
@@ -125,17 +125,17 @@ export const InputForm: InputFormComponent = React.forwardRef(
       size,
       ...other
     } = props
-    const theme = useTheme()
-    const defaultClasses = useInputStyles(theme)
+
+    const defaultStyles = useInputStyles()
 
     const labelUi = useMemo(() => {
       return label ? (
         <InputLabel
           htmlFor={id}
           className={clsx(
-            defaultClasses.label,
+            defaultStyles.classes.label,
             classes?.label,
-            size === 'small' && defaultClasses.labelSmall
+            size === 'small' && defaultStyles.classes.labelSmall
           )}
           style={styles?.label}
         >

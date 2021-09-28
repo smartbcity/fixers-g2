@@ -8,14 +8,13 @@ import { CheckRounded, ClearRounded } from '@mui/icons-material'
 import { useInputStyles } from '../style'
 import {
   BasicProps,
-  lowLevelStyles,
-  MergeMuiElementProps,
-  useTheme
+  makeG2STyles,
+  MergeMuiElementProps
 } from '@smartb/g2-themes'
 import clsx from 'clsx'
 import { SearchIcon } from '../assets/icons'
 
-const useStyles = lowLevelStyles()({
+const useStyles = makeG2STyles()({
   root: {
     position: 'relative'
   },
@@ -187,9 +186,9 @@ export const TextField = React.forwardRef(
       InputProps,
       ...other
     } = props
-    const theme = useTheme()
-    const defaultClasses = useInputStyles(theme)
-    const classesLocal = useStyles()
+
+    const defaultStyles = useInputStyles()
+    const localStyles = useStyles()
 
     const onChangeMemoized = useCallback(
       (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
@@ -217,7 +216,7 @@ export const TextField = React.forwardRef(
                   color='#323338'
                   onClick={onSearch}
                   className={clsx(
-                    classesLocal.searchIcon,
+                    localStyles.classes.searchIcon,
                     classes?.searchIcon,
                     'AruiTextfield-searchIcon'
                   )}
@@ -234,7 +233,7 @@ export const TextField = React.forwardRef(
                   color='#323338'
                   onClick={onSearch}
                   className={clsx(
-                    classesLocal.searchIcon,
+                    localStyles.classes.searchIcon,
                     classes?.searchIcon,
                     'AruiTextfield-searchIcon'
                   )}
@@ -276,7 +275,7 @@ export const TextField = React.forwardRef(
     const formHelperProps = useMemo(() => {
       return {
         className: clsx(
-          defaultClasses.helperText,
+          defaultStyles.classes.helperText,
           classes?.helperText,
           'AruiTextfield-helperText'
         ),
@@ -289,7 +288,7 @@ export const TextField = React.forwardRef(
         return (
           <CheckRounded
             className={clsx(
-              defaultClasses.validated,
+              defaultStyles.classes.validated,
               classes?.validIcon,
               'AruiTextfield-validIcon'
             )}
@@ -305,8 +304,8 @@ export const TextField = React.forwardRef(
           <ClearRounded
             onClick={onRemove}
             className={clsx(
-              defaultClasses.clear,
-              error && defaultClasses.clearError,
+              defaultStyles.classes.clear,
+              error && defaultStyles.classes.clearError,
               classes?.clearIcon,
               'AruiTextfield-clearIcon'
             )}
@@ -331,20 +330,24 @@ export const TextField = React.forwardRef(
 
     const inputClasses = () => {
       if (inputIcon && iconPosition === 'start') {
-        return classesLocal.withIconStart
+        return localStyles.classes.withIconStart
       }
       if (inputIcon && iconPosition === 'end') {
         if (onRemove) {
-          return classesLocal.withIconEndOnRemove
+          return localStyles.classes.withIconEndOnRemove
         }
-        return classesLocal.withIconEnd
+        return localStyles.classes.withIconEnd
       }
       return ''
     }
 
     return (
       <div
-        className={clsx(className, classesLocal.root, 'AruiTextfield-root')}
+        className={clsx(
+          className,
+          localStyles.classes.root,
+          'AruiTextfield-root'
+        )}
         style={style}
       >
         <MuiTextField
@@ -357,18 +360,18 @@ export const TextField = React.forwardRef(
           type={textFieldType === 'search' ? 'text' : textFieldType}
           defaultValue={defaultValue}
           className={clsx(
-            defaultClasses.input,
-            classesLocal.input,
-            validated && defaultClasses.inputValidated,
-            size === 'large' && defaultClasses.inputLarge,
-            size === 'medium' && defaultClasses.inputMedium,
-            size === 'small' && defaultClasses.inputSmall,
-            disabled && defaultClasses.inputDisabled,
-            error && defaultClasses.inputError,
+            defaultStyles.classes.input,
+            localStyles.classes.input,
+            validated && defaultStyles.classes.inputValidated,
+            size === 'large' && defaultStyles.classes.inputLarge,
+            size === 'medium' && defaultStyles.classes.inputMedium,
+            size === 'small' && defaultStyles.classes.inputSmall,
+            disabled && defaultStyles.classes.inputDisabled,
+            error && defaultStyles.classes.inputError,
             onRemove &&
               inputAdornment.endAdornment &&
               textFieldType === 'search' &&
-              defaultClasses.inputWithClear,
+              defaultStyles.classes.inputWithClear,
             classes?.textfield,
             'AruiTextfield-Textfield'
           )}

@@ -1,8 +1,8 @@
-import { lowLevelStyles, Theme } from '@smartb/g2-themes'
+import { makeG2STyles } from '@smartb/g2-themes'
 
 const darkGrey = '#BDBDBD'
 
-export const useFilterInputStyles = lowLevelStyles<Theme>()({
+export const useFilterInputStyles = makeG2STyles()((theme) => ({
   label: {
     fontSize: '14px',
     color: '#323338'
@@ -110,24 +110,24 @@ export const useFilterInputStyles = lowLevelStyles<Theme>()({
   },
   inputOutlinedPrimaryColor: {
     '& .MuiOutlinedInput-notchedOutline': {
-      border: (theme) => `2px solid ${theme.colors.primary}`
+      border: `2px solid ${theme.colors.primary}`
     },
     '& .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline': {
-      borderColor: (theme) => theme.colors.primary
+      borderColor: theme.colors.primary
     },
     '& .MuiOutlinedInput-root.Mui-disabled .MuiOutlinedInput-notchedOutline': {
-      borderColor: (theme) => theme.colors.primary
+      borderColor: theme.colors.primary
     }
   },
   inputOutlinedSecondaryColor: {
     '& .MuiOutlinedInput-notchedOutline': {
-      border: (theme) => `2px solid ${theme.colors.secondary}`
+      border: `2px solid ${theme.colors.secondary}`
     },
     '& .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline': {
-      borderColor: (theme) => theme.colors.secondary
+      borderColor: theme.colors.secondary
     },
     '& .MuiOutlinedInput-root.Mui-disabled .MuiOutlinedInput-notchedOutline': {
-      borderColor: (theme) => theme.colors.secondary
+      borderColor: theme.colors.secondary
     }
   },
   inputFilledGreyColor: {
@@ -149,30 +149,30 @@ export const useFilterInputStyles = lowLevelStyles<Theme>()({
   },
   inputFilledPrimaryColor: {
     '& .MuiOutlinedInput-notchedOutline': {
-      border: (theme) => `2px solid ${theme.colors.primary}`
+      border: `2px solid ${theme.colors.primary}`
     },
     '& .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline': {
-      borderColor: (theme) => theme.colors.primary
+      borderColor: theme.colors.primary
     },
     '& .MuiInputBase-root': {
-      backgroundColor: (theme) => theme.colors.primary
+      backgroundColor: theme.colors.primary
     },
     '& .MuiOutlinedInput-root.Mui-disabled .MuiOutlinedInput-notchedOutline': {
-      borderColor: (theme) => theme.colors.primary
+      borderColor: theme.colors.primary
     }
   },
   inputFilledSecondaryColor: {
     '& .MuiOutlinedInput-notchedOutline': {
-      border: (theme) => `2px solid ${theme.colors.secondary}`
+      border: `2px solid ${theme.colors.secondary}`
     },
     '& .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline': {
-      borderColor: (theme) => theme.colors.secondary
+      borderColor: theme.colors.secondary
     },
     '& .MuiInputBase-root': {
-      backgroundColor: (theme) => theme.colors.secondary
+      backgroundColor: theme.colors.secondary
     },
     '& .MuiOutlinedInput-root.Mui-disabled .MuiOutlinedInput-notchedOutline': {
-      borderColor: (theme) => theme.colors.secondary
+      borderColor: theme.colors.secondary
     }
   },
   inputWithClear: {
@@ -190,4 +190,4 @@ export const useFilterInputStyles = lowLevelStyles<Theme>()({
     height: '21px',
     color: 'inherit'
   }
-})
+}))

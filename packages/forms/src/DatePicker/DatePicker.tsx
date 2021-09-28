@@ -12,23 +12,21 @@ import {
 } from '@mui/material'
 import {
   BasicProps,
-  lowLevelStyles,
-  MergeMuiElementProps,
-  Theme,
-  useTheme
+  makeG2STyles,
+  MergeMuiElementProps
 } from '@smartb/g2-themes'
 import * as dateFnsLocales from 'date-fns/locale'
 import clsx from 'clsx'
 
-const useStyles = lowLevelStyles<Theme>()({
+const useStyles = makeG2STyles()((theme) => ({
   dialog: {
     '& .MuiButton-root': {
-      background: (theme) => theme.colors.primary,
+      background: theme.colors.primary,
       padding: '3px 5px',
       textTransform: 'lowercase'
     }
   }
-})
+}))
 
 export interface DatePickerClasses {
   input?: string
@@ -146,9 +144,9 @@ const DatePickerBase = (
     styles,
     ...other
   } = props
-  const theme = useTheme()
-  const defaultClasses = useInputStyles(theme)
-  const classesLocal = useStyles(theme)
+
+  const defaultStyles = useInputStyles()
+  const localStyles = useStyles()
 
   const format = useMemo(() => {
     if (locale === 'fr') return { format: 'dd/MM/yyyy', mask: '__/__/____' }
@@ -165,7 +163,7 @@ const DatePickerBase = (
   const formHelperProps = useMemo(() => {
     return {
       className: clsx(
-        defaultClasses.helperText,
+        defaultStyles.classes.helperText,
         classes?.helperText,
         'AruiTextfield-helperText'
       ),
@@ -189,12 +187,12 @@ const DatePickerBase = (
           error={error}
           className={clsx(
             className,
-            defaultClasses.input,
-            size === 'large' && defaultClasses.inputLarge,
-            size === 'medium' && defaultClasses.inputMedium,
-            size === 'small' && defaultClasses.inputSmall,
-            disabled && defaultClasses.inputDisabled,
-            error && defaultClasses.inputError,
+            defaultStyles.classes.input,
+            size === 'large' && defaultStyles.classes.inputLarge,
+            size === 'medium' && defaultStyles.classes.inputMedium,
+            size === 'small' && defaultStyles.classes.inputSmall,
+            disabled && defaultStyles.classes.inputDisabled,
+            error && defaultStyles.classes.inputError,
             'AruiDatePicker-datePicker'
           )}
           style={style}
@@ -239,7 +237,7 @@ const DatePickerBase = (
         minDate={minDate}
         maxDate={maxDate}
         clearable
-        DialogProps={{ className: classesLocal.dialog }}
+        DialogProps={{ className: localStyles.classes.dialog }}
         disabled={disabled}
         value={value ? value : null}
         onChange={onChange}
