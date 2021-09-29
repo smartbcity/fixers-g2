@@ -35,12 +35,11 @@ export const muiCache = createCache({
 
 export const ThemeContextProvider = (props: ThemeContextProviderProps) => {
   const { children, customMuiTheme, theme } = props
-  const [localTheme, setLocalTheme] = React.useState<Theme>({
-    ...{ ...defaultTheme, ...theme },
-    ...props.theme
-  })
+  const [localTheme, setLocalTheme] = React.useState<Theme>(
+    Object.assign(defaultTheme, theme)
+  )
   const setPartialTheme = useCallback((partialTheme: Partial<Theme>) => {
-    setLocalTheme((oldLocalTheme) => ({ ...oldLocalTheme, ...partialTheme }))
+    setLocalTheme((oldLocalTheme) => Object.assign(oldLocalTheme, partialTheme))
   }, [])
   const defaultMuiTheme = defaultMaterialUiTheme(localTheme, customMuiTheme)
   return (
