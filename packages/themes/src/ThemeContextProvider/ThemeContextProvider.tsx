@@ -3,6 +3,7 @@ import { ThemeProvider, ThemeOptions } from '@mui/material'
 import { defaultMaterialUiTheme, defaultTheme, Theme } from './Theme'
 import { CacheProvider } from '@emotion/react'
 import createCache from '@emotion/cache'
+import { TssCacheProvider } from 'tss-react'
 
 //@ts-ignore
 declare module '@mui/styles/defaultTheme' {
@@ -31,6 +32,11 @@ export const muiCache = createCache({
   prepend: true
 })
 
+export const tssCache = createCache({
+  key: 'tss',
+  prepend: false
+})
+
 export const ThemeContextProvider = (props: ThemeContextProviderProps) => {
   const { children, customMuiTheme, theme } = props
   const [localTheme, setLocalTheme] = React.useState<Theme>(
@@ -44,9 +50,11 @@ export const ThemeContextProvider = (props: ThemeContextProviderProps) => {
     <ThemeContext.Provider
       value={{ theme: localTheme, changeTheme: setPartialTheme }}
     >
-      <CacheProvider value={muiCache}>
-        <ThemeProvider theme={defaultMuiTheme}>{children}</ThemeProvider>
-      </CacheProvider>
+      <TssCacheProvider value={tssCache}>
+        <CacheProvider value={muiCache}>
+          <ThemeProvider theme={defaultMuiTheme}>{children}</ThemeProvider>
+        </CacheProvider>
+      </TssCacheProvider>
     </ThemeContext.Provider>
   )
 }

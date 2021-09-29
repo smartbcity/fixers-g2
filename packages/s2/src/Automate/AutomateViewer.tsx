@@ -3,12 +3,12 @@ import { Node, Network, Edge } from 'vis-network'
 import {
   BasicProps,
   MergeReactElementProps,
-  lowLevelStyles
+  makeG2STyles
 } from '@smartb/g2-themes'
 import clsx from 'clsx'
 import { useTheme } from '@smartb/g2-themes'
 
-const useStyles = lowLevelStyles()({
+const useStyles = makeG2STyles()({
   container: {
     width: '100%',
     height: '100%',
@@ -71,7 +71,7 @@ export type AutomateViewerProps = MergeReactElementProps<
 export const AutomateViewer = (props: AutomateViewerProps) => {
   const { transitions, onSelect, className, ...other } = props
   const theme = useTheme()
-  const defaultClasses = useStyles()
+  const defaultStyles = useStyles()
   const [network, setNetwork] = useState<Network | undefined>(undefined)
   const containerRef = useRef<HTMLDivElement>(null)
 
@@ -156,7 +156,7 @@ export const AutomateViewer = (props: AutomateViewerProps) => {
       {...other}
       ref={containerRef}
       className={clsx(
-        defaultClasses.container,
+        defaultStyles.classes.container,
         'AruiAutomateViewer-root',
         className
       )}
