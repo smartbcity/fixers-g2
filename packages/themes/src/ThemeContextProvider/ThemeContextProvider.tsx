@@ -4,8 +4,6 @@ import { defaultMaterialUiTheme, defaultTheme, Theme } from './Theme'
 import { CacheProvider } from '@emotion/react'
 import createCache from '@emotion/cache'
 
-import './default.css'
-
 //@ts-ignore
 declare module '@mui/styles/defaultTheme' {
   // eslint-disable-next-line @typescript-eslint/no-empty-interface
