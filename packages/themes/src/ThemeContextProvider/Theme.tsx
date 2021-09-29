@@ -1,5 +1,10 @@
-import { createTheme as createMuiTheme, ThemeOptions } from '@mui/material'
+import {
+  createTheme as createMuiTheme,
+  ThemeOptions,
+  Theme as MuiTheme
+} from '@mui/material'
 import tinycolor from 'tinycolor2'
+import { mergeDeepRight } from 'ramda'
 
 export interface Theme {
   name?: string
@@ -107,6 +112,10 @@ export const defaultMaterialUiTheme = (
       }
     }
   }
-
-  return createMuiTheme(Object.assign(themeOverride, customMuiTheme))
+  if (customMuiTheme) {
+    return createMuiTheme(
+      mergeDeepRight(themeOverride, customMuiTheme) as MuiTheme
+    )
+  }
+  return createMuiTheme(themeOverride)
 }

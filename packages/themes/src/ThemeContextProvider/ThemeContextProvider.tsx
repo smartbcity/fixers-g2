@@ -4,6 +4,7 @@ import { defaultMaterialUiTheme, defaultTheme, Theme } from './Theme'
 import { CacheProvider } from '@emotion/react'
 import createCache from '@emotion/cache'
 import { TssCacheProvider } from 'tss-react'
+import { mergeDeepRight } from 'ramda'
 
 //@ts-ignore
 declare module '@mui/styles/defaultTheme' {
@@ -40,10 +41,12 @@ export const tssCache = createCache({
 export const ThemeContextProvider = (props: ThemeContextProviderProps) => {
   const { children, customMuiTheme, theme } = props
   const [localTheme, setLocalTheme] = React.useState<Theme>(
-    Object.assign(defaultTheme, theme)
+    mergeDeepRight(defaultTheme, theme)
   )
-  const setPartialTheme = useCallback((partialTheme: Partial<Theme>) => {
-    setLocalTheme((oldLocalTheme) => Object.assign(oldLocalTheme, partialTheme))
+  const setPartialTheme = useCallback((partialTheme: Theme | any) => {
+    setLocalTheme((oldLocalTheme) =>
+      mergeDeepRight(oldLocalTheme, partialTheme)
+    )
   }, [])
   const defaultMuiTheme = defaultMaterialUiTheme(localTheme, customMuiTheme)
   return (

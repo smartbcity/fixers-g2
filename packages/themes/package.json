@@ -25,6 +25,9 @@
   "files": [
     "dist"
   ],
+  "devDependencies": {
+    "@types/ramda": "^0.27.45"
+  },
   "peerDependencies": {
     "@emotion/cache": "^11.4.0",
     "@emotion/react": "^11.4.1",
@@ -36,7 +39,8 @@
   },
   "dependencies": {
     "tinycolor2": "^1.4.2",
-    "tss-react": "^0.9.3"
+    "tss-react": "^0.9.3",
+    "ramda": "^0.27.1"
   },
   "gitHead": "01582f4b620c1e44cab5a65394e29d95f66ddabb",
   "publishConfig": {

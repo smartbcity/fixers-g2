@@ -50,6 +50,12 @@ export interface ProgressIndicatorBasicProps extends BasicProps {
    */
   value?: number
   /**
+   * Label of the progress indicator
+   *
+   * @default '0%''
+   */
+  label?: string
+  /**
    * The classes applied to the different part of the component
    */
   classes?: ProgressIndicatorClasses
@@ -65,7 +71,16 @@ export type ProgressIndicatorProps = MergeMuiElementProps<
 >
 
 export const ProgressIndicator = (props: ProgressIndicatorProps) => {
-  const { value = 0, className, style, id, classes, styles, ...other } = props
+  const {
+    value = 0,
+    className,
+    style,
+    id,
+    classes,
+    styles,
+    label,
+    ...other
+  } = props
 
   const defaultStyles = useStyles()
   const roundedValue = useMemo(() => Math.round(value), [value])
@@ -87,7 +102,9 @@ export const ProgressIndicator = (props: ProgressIndicatorProps) => {
           'AruiProgressIndicator-label'
         )}
         style={styles?.label}
-      >{`${roundedValue}%`}</Typography>
+      >
+        {label ?? `${roundedValue}%`}
+      </Typography>
       <LinearProgress
         variant='determinate'
         color='secondary'

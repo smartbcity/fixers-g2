@@ -16,6 +16,8 @@
   "dependencies": {
     "@mui/material": "^5.0.1",
     "@mui/icons-material": "^5.0.1",
+    "@emotion/react": "^11.4.1",
+    "@emotion/styled": "^11.3.0",
     "@smartb/g2": "^0.1.0-alpha.3",
     "connected-react-router": "^6.9.1",
     "deox": "^3.3.1",
