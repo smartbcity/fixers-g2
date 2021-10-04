@@ -8,7 +8,7 @@ import {
   makeG2STyles,
   MergeReactElementProps
 } from '@smartb/g2-themes'
-import { Box } from '@mui/material'
+import { Stack, StackProps } from '@mui/material'
 import clsx from 'clsx'
 import { FiltersState } from './useFilters'
 
@@ -82,7 +82,7 @@ export interface FiltersBasicProps extends BasicProps {
   /**
    * the actions displayed at the bottom of the component. To make a validation button you have to add an action with `type="submit"`
    */
-  actions: Action[]
+  actions?: Action[]
   /**
    * Determine wether the actions are placed above or below the content of the form
    *
@@ -99,6 +99,14 @@ export interface FiltersBasicProps extends BasicProps {
    * @default true
    */
   defaultSubmitBehavior?: boolean
+  /**
+   * the props given to the actions stack container
+   */
+  actionsStackProps?: StackProps
+  /**
+   * the props given to the fields stack container
+   */
+  fieldsStackProps?: StackProps
   /**
    * The classes applied to the different part of the component
    */
@@ -147,6 +155,8 @@ export const Filters = (props: FiltersProps) => {
     formState,
     actionsPosition = 'left',
     defaultSubmitBehavior = true,
+    actionsStackProps,
+    fieldsStackProps,
     ...other
   } = props
   const defaultStyles = useStyles()
@@ -239,7 +249,7 @@ export const Filters = (props: FiltersProps) => {
   )
 
   const actionsDisplay = useMemo(() => {
-    if (actions.length === 0) return undefined
+    if (!actions || actions.length === 0) return undefined
     return actions.map((action) => {
       const { key, label, className, ...other } = action
       return (
@@ -271,7 +281,8 @@ export const Filters = (props: FiltersProps) => {
       {...other}
     >
       {actionsPosition === 'left' && (
-        <Box
+        <Stack
+          {...actionsStackProps}
           className={clsx(
             'AruiFilters-actions',
             classes?.actions,
@@ -280,9 +291,11 @@ export const Filters = (props: FiltersProps) => {
           style={styles?.actions}
         >
           {actionsDisplay}
-        </Box>
+        </Stack>
       )}
-      <Box
+      <Stack
+        direction='row'
+        {...fieldsStackProps}
         className={clsx(
           'AruiFilters-fieldsContainer',
           classes?.fieldsContainer,
@@ -291,9 +304,10 @@ export const Filters = (props: FiltersProps) => {
         style={styles?.fieldsContainer}
       >
         {fieldsMemoized}
-      </Box>
+      </Stack>
       {actionsPosition === 'right' && (
-        <Box
+        <Stack
+          {...actionsStackProps}
           className={clsx(
             'AruiFilters-actions',
             classes?.actions,
@@ -302,7 +316,7 @@ export const Filters = (props: FiltersProps) => {
           style={styles?.actions}
         >
           {actionsDisplay}
-        </Box>
+        </Stack>
       )}
     </form>
   )

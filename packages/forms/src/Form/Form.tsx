@@ -10,9 +10,10 @@ import {
   makeG2STyles,
   MergeReactElementProps
 } from '@smartb/g2-themes'
-import { Box } from '@mui/material'
+import { StackProps, Stack } from '@mui/material'
 import clsx from 'clsx'
 import { FormState } from './useForm'
+import { RadioChoicesProps } from '../RadioChoices'
 
 export type Action = {
   label: React.ReactNode
@@ -39,43 +40,73 @@ export type Field = {
   /**
    * the type of the field
    */
-  type: 'textfield' | 'select' | 'datepicker' | 'checkbox'
+  type: 'textfield' | 'select' | 'datepicker' | 'radioChoices' | 'checkbox'
   /**
    * the validator that takes the value of the input and return an error or undefined/nothing if the value is valid
    */
   validator: (value: any) => string | undefined | void
   /**
+   * if you want to add other nodes around the input use this function
+   */
+  customDisplay?: (input: React.ReactNode) => React.ReactNode
+  /**
    * the props of the textfield if you choosed it
    */
-  textFieldProps?: Partial<Omit<TextFieldProps, 'value' | 'onChange' | 'label'>>
+  textFieldProps?: Partial<
+    Omit<TextFieldProps, 'value' | 'onChange' | 'label' | 'classes' | 'styles'>
+  >
   /**
    * the props of the select if you choosed it
    */
   selectProps?: Partial<
-    Omit<SelectProps, 'value' | 'onChangeValue' | 'onChangeValues' | 'label'>
+    Omit<
+      SelectProps,
+      | 'value'
+      | 'onChangeValue'
+      | 'onChangeValues'
+      | 'label'
+      | 'classes'
+      | 'styles'
+    >
   >
   /**
    * the props of the datepicker if you choosed it
    */
   datePickerProps?: Partial<
-    Omit<DatePickerProps, 'value' | 'onChangeDate' | 'label'>
+    Omit<
+      DatePickerProps,
+      'value' | 'onChangeDate' | 'label' | 'classes' | 'styles'
+    >
   >
   /**
    * the props of the checkbox if you choosed it
    */
-  checkBoxProps?: Partial<Omit<CheckBoxProps, 'checked' | 'onChange' | 'label'>>
+  checkBoxProps?: Partial<
+    Omit<CheckBoxProps, 'checked' | 'onChange' | 'label' | 'classes' | 'styles'>
+  >
+  /**
+   * the props of the checkbox if you choosed it
+   */
+  radioChoicesProps?: Partial<
+    Omit<
+      RadioChoicesProps,
+      'value' | 'onChange' | 'label' | 'classes' | 'styles'
+    >
+  >
 }
 
 interface FormClasses {
   actions?: string
   button?: string
   field?: string
+  fieldsContainer?: string
 }
 
 interface FormStyles {
   actions?: React.CSSProperties
   button?: React.CSSProperties
   field?: React.CSSProperties
+  fieldsContainer?: React.CSSProperties
 }
 
 export interface FormBasicProps extends BasicProps {
@@ -90,13 +121,21 @@ export interface FormBasicProps extends BasicProps {
   /**
    * the actions displayed at the bottom of the component. To make a validation button you have to add an action with `type="submit"`
    */
-  actions: Action[]
+  actions?: Action[]
   /**
    * Determine wether the actions are placed above or below the content of the form
    *
    * @default "below"
    */
   actionsPosition?: 'above' | 'below'
+  /**
+   * the props given to the actions stack container
+   */
+  actionsStackProps?: StackProps
+  /**
+   * the props given to the fields stack container
+   */
+  fieldsStackProps?: StackProps
   /**
    * The classes applied to the different part of the component
    */
@@ -125,6 +164,8 @@ export const Form = (props: FormProps) => {
     styles,
     formState,
     actionsPosition = 'below',
+    actionsStackProps,
+    fieldsStackProps,
     ...other
   } = props
   const defaultStyles = useStyles()
@@ -150,66 +191,12 @@ export const Form = (props: FormProps) => {
           ),
           style: styles?.field
         }
-        const textField = (
-          <InputForm
-            {...commonProps}
-            inputType='textField'
-            value={formState.values[field.name] ?? ''}
-            onChange={(value: string) =>
-              formState.setFieldValue(field.name, value, false)
-            }
-            {...field.textFieldProps}
-          />
-        )
-        switch (field.type) {
-          case 'textfield':
-            return textField
-          case 'datepicker':
-            return (
-              <InputForm
-                {...commonProps}
-                inputType='datePicker'
-                value={formState.values[field.name] ?? ''}
-                onChangeDate={(date) =>
-                  formState.setFieldValue(field.name, date, false)
-                }
-                {...field.datePickerProps}
-              />
-            )
-          case 'select':
-            return field.selectProps?.multiple === true ? (
-              <InputForm
-                {...commonProps}
-                inputType='select'
-                values={formState.values[field.name] ?? []}
-                onChangeValues={(values) =>
-                  formState.setFieldValue(field.name, values, false)
-                }
-                {...field.selectProps}
-              />
-            ) : (
-              <InputForm
-                {...commonProps}
-                inputType='select'
-                value={formState.values[field.name] ?? ''}
-                onChangeValue={(value) =>
-                  formState.setFieldValue(field.name, value, false)
-                }
-                {...field.selectProps}
-              />
-            )
-          case 'checkbox':
-            return (
-              <CheckBox
-                {...commonProps}
-                checked={formState.values[field.name]}
-                onChange={formState.handleChange}
-                {...field.checkBoxProps}
-              />
-            )
-          default:
-            return textField
+
+        const input = getInput(field, formState, commonProps)
+        if (!!field.customDisplay) {
+          return field.customDisplay(input)
         }
+        return input
       }),
     [
       fields,
@@ -222,7 +209,7 @@ export const Form = (props: FormProps) => {
   )
 
   const actionsDisplay = useMemo(() => {
-    if (actions.length === 0) return undefined
+    if (!actions || actions.length === 0) return undefined
     return actions.map((action) => {
       const { key, label, className, ...other } = action
       return (
@@ -245,22 +232,104 @@ export const Form = (props: FormProps) => {
       {...other}
     >
       {actionsPosition === 'above' && (
-        <Box
+        <Stack
+          direction='row'
+          {...actionsStackProps}
           className={clsx('AruiForm-actions', classes?.actions)}
           style={styles?.actions}
         >
           {actionsDisplay}
-        </Box>
+        </Stack>
       )}
-      {fieldsMemoized}
+      <Stack
+        {...fieldsStackProps}
+        className={clsx('AruiForm-fieldsContainer', classes?.fieldsContainer)}
+        style={styles?.fieldsContainer}
+      >
+        {fieldsMemoized}
+      </Stack>
       {actionsPosition === 'below' && (
-        <Box
+        <Stack
+          {...actionsStackProps}
           className={clsx('AruiForm-actions', classes?.actions)}
           style={styles?.actions}
         >
           {actionsDisplay}
-        </Box>
+        </Stack>
       )}
     </form>
+  )
+}
+
+const getInput = (field: Field, formState: FormState, commonProps: any) => {
+  switch (field.type) {
+    case 'datepicker':
+      return (
+        <InputForm
+          {...commonProps}
+          inputType='datePicker'
+          value={formState.values[field.name] ?? ''}
+          onChangeDate={(date) =>
+            formState.setFieldValue(field.name, date, false)
+          }
+          {...field.datePickerProps}
+        />
+      )
+    case 'select':
+      return field.selectProps?.multiple === true ? (
+        <InputForm
+          {...commonProps}
+          inputType='select'
+          values={formState.values[field.name] ?? []}
+          onChangeValues={(values) =>
+            formState.setFieldValue(field.name, values, false)
+          }
+          {...field.selectProps}
+        />
+      ) : (
+        <InputForm
+          {...commonProps}
+          inputType='select'
+          value={formState.values[field.name] ?? ''}
+          onChangeValue={(value) =>
+            formState.setFieldValue(field.name, value, false)
+          }
+          {...field.selectProps}
+        />
+      )
+    case 'checkbox':
+      return (
+        <CheckBox
+          {...commonProps}
+          checked={formState.values[field.name]}
+          onChange={formState.handleChange}
+          {...field.checkBoxProps}
+        />
+      )
+    case 'radioChoices':
+      return (
+        <InputForm
+          {...commonProps}
+          inputType='radioChoices'
+          value={formState.values[field.name] ?? ''}
+          //@ts-ignore
+          onChange={(
+            event: React.ChangeEvent<HTMLInputElement>,
+            value: string
+          ) => formState.setFieldValue(field.name, value, false)}
+          {...field.radioChoicesProps}
+        />
+      )
+  }
+  return (
+    <InputForm
+      {...commonProps}
+      inputType='textField'
+      value={formState.values[field.name] ?? ''}
+      onChange={(value: string) =>
+        formState.setFieldValue(field.name, value, false)
+      }
+      {...field.textFieldProps}
+    />
   )
 }

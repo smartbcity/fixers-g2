@@ -16,6 +16,12 @@ import {
 import { useInputStyles } from '../style'
 import { BasicProps } from '@smartb/g2-themes'
 import clsx from 'clsx'
+import {
+  RadioChoicesClasses,
+  RadioChoicesProps,
+  RadioChoicesStyles,
+  RadioChoices
+} from '../RadioChoices'
 
 interface InputFormClasses {
   label?: string
@@ -28,7 +34,7 @@ interface InputFormStyles {
 }
 
 export interface InputFormBasicProps<
-  T extends 'select' | 'textField' | 'datePicker' = 'textField'
+  T extends 'select' | 'textField' | 'datePicker' | 'radioChoices' = 'textField'
 > extends BasicProps {
   /**
    * The label of the input
@@ -38,7 +44,7 @@ export interface InputFormBasicProps<
    * The type of the input
    * @default "textField"
    */
-  inputType: 'select' | 'textField' | 'datePicker'
+  inputType: 'select' | 'textField' | 'datePicker' | 'radioChoices'
   /**
    * If true the input will be disabled and forced on type 'textfield'
    * @default false
@@ -62,7 +68,9 @@ export interface InputFormBasicProps<
     ? TextFieldClasses
     : [T] extends ['select']
     ? SelectClasses
-    : DatePickerClasses
+    : [T] extends ['datePicker']
+    ? DatePickerClasses
+    : RadioChoicesClasses
   /**
    * The styles applied to the different part of the input
    *
@@ -73,13 +81,15 @@ export interface InputFormBasicProps<
     ? TextFieldStyles
     : [T] extends ['select']
     ? SelectStyles
-    : DatePickerStyles
+    : [T] extends ['datePicker']
+    ? DatePickerStyles
+    : RadioChoicesStyles
 }
 
 type RemoveMainProps<T> = Omit<T, keyof InputFormBasicProps>
 
 type InputFormComponentProps<
-  T extends 'select' | 'textField' | 'datePicker' = never,
+  T extends 'select' | 'textField' | 'datePicker' | 'radioChoices' = never,
   R extends Boolean = false
 > = InputFormBasicProps &
   ([R] extends [true]
@@ -88,10 +98,15 @@ type InputFormComponentProps<
     ? RemoveMainProps<SelectProps>
     : [T] extends ['datePicker']
     ? RemoveMainProps<DatePickerProps>
+    : [T] extends ['radioChoices']
+    ? RemoveMainProps<RadioChoicesProps>
     : RemoveMainProps<TextFieldProps>)
 
 interface InputFormComponent {
-  <T extends 'select' | 'textField' | 'datePicker', R extends Boolean = false>(
+  <
+    T extends 'select' | 'textField' | 'datePicker' | 'radioChoices',
+    R extends Boolean = false
+  >(
     props: {
       inputType: T
       readonly?: R
@@ -103,7 +118,8 @@ interface InputFormComponent {
 export type InputFormProps = InputFormBasicProps &
   Omit<TextFieldProps, keyof InputFormBasicProps> &
   Omit<SelectProps, keyof InputFormBasicProps> &
-  Omit<DatePickerProps, keyof InputFormBasicProps> & {
+  Omit<DatePickerProps, keyof InputFormBasicProps> &
+  Omit<RadioChoicesProps, keyof InputFormBasicProps> & {
     inputClasses?: SelectClasses | TextFieldClasses | DatePickerClasses
     inputStyles?: SelectStyles | TextFieldStyles | DatePickerStyles
   }
@@ -168,6 +184,16 @@ export const InputForm: InputFormComponent = React.forwardRef(
         />
       ) : inputType === 'select' ? (
         <Select
+          {...other}
+          className={classes?.input}
+          style={styles?.input}
+          classes={inputClasses}
+          styles={inputStyles}
+          ref={ref}
+          id={id}
+        />
+      ) : inputType === 'radioChoices' ? (
+        <RadioChoices
           {...other}
           className={classes?.input}
           style={styles?.input}
