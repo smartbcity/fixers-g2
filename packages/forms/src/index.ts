@@ -10,7 +10,9 @@ export {
   Field as FormField,
   FormProps,
   FormState,
-  useForm
+  useForm,
+  PartialField as FormPartialField,
+  useFormWithPartialFields
 } from './Form'
 export { FilterDatePicker, FilterDatePickerProps } from './FilterDatePicker'
 export { FilterSelect, FilterSelectProps } from './FilterSelect'

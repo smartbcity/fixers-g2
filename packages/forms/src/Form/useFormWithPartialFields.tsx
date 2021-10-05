@@ -1,14 +1,18 @@
 import { FormikConfig, FormikHelpers, useFormik } from 'formik'
 import { useCallback, useMemo } from 'react'
-import { Field } from './Form'
+import { FormState } from './useForm'
 
-export type FormState = ReturnType<typeof useFormik>
+export type PartialField = {
+  name: string
+  defaultValue?: any
+  validator?: (value: any) => string | undefined | void
+}
 
-interface useFormParams {
+interface useFormWithPartialParams {
   /**
-   * the fields of the form
+   * the partial fields of the form
    */
-  fields: Field[]
+  partialfFields: PartialField[]
   /**
    * the callback called when the form is being validated by the user
    * please use the `setSubmitting` in the formikHelpers object to inform about any asynchronous task
@@ -27,11 +31,16 @@ interface useFormParams {
   >
 }
 
-export const useForm = (params: useFormParams): FormState => {
-  const { fields, onSubmit, formikConfig } = params
+/**
+ * the useform with the minimum informations needed to init the useformik state
+ */
+export const useFormWithPartialFields = (
+  params: useFormWithPartialParams
+): FormState => {
+  const { partialfFields, onSubmit, formikConfig } = params
   const initialValues = useMemo(() => {
     const obj = {}
-    fields.forEach((field) => {
+    partialfFields.forEach((field) => {
       obj[field.name] = field.defaultValue
     })
     return obj
@@ -40,7 +49,7 @@ export const useForm = (params: useFormParams): FormState => {
   const validate = useCallback(
     (values) => {
       const errors = {}
-      fields.forEach((field) => {
+      partialfFields.forEach((field) => {
         if (field.validator) {
           const error = field.validator(values[field.name])
           if (error) errors[field.name] = error
@@ -48,7 +57,7 @@ export const useForm = (params: useFormParams): FormState => {
       })
       return errors
     },
-    [fields]
+    [partialfFields]
   )
 
   const formik = useFormik({

@@ -63,6 +63,12 @@ export default {
             and return it to you. The `FormState` equal to the return type of
             the hook useFormik.
           </Description>
+          <Description>
+            If you need the formik state in your fields creation you can use
+            `useFormWithPartialFields` that only requires the minimum
+            informations needed to init the formik states. So you can create
+            your fields with the formState available.
+          </Description>
           <Stories />
         </>
       )

@@ -44,7 +44,7 @@ export type Field = {
   /**
    * the validator that takes the value of the input and return an error or undefined/nothing if the value is valid
    */
-  validator: (value: any) => string | undefined | void
+  validator?: (value: any) => string | undefined | void
   /**
    * if you want to add other nodes around the input use this function
    */
@@ -312,8 +312,8 @@ const getInput = (field: Field, formState: FormState, commonProps: any) => {
           {...commonProps}
           inputType='radioChoices'
           value={formState.values[field.name] ?? ''}
-          //@ts-ignore
           onChange={(
+            //@ts-ignore
             event: React.ChangeEvent<HTMLInputElement>,
             value: string
           ) => formState.setFieldValue(field.name, value, false)}
