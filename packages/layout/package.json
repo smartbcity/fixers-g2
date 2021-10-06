@@ -4,7 +4,7 @@
   "author": "Adrien Poupard <adrien@smartb.city>",
   "license": "Apache-2.0",
   "description": "React layout components library",
-  "version": "1.0.0-alpha.5",
+  "version": "1.0.0-alpha.6",
   "private": false,
   "main": "dist/index.js",
   "source": "src/index.ts",
@@ -34,9 +34,9 @@
   "dependencies": {
     "@mui/icons-material": "^5.0.1",
     "@mui/lab": "^5.0.0-alpha.48",
-    "@smartb/g2-components": "^1.0.0-alpha.5",
-    "@smartb/g2-forms": "^1.0.0-alpha.5",
-    "@smartb/g2-themes": "^1.0.0-alpha.5",
+    "@smartb/g2-components": "^1.0.0-alpha.6",
+    "@smartb/g2-forms": "^1.0.0-alpha.6",
+    "@smartb/g2-themes": "^1.0.0-alpha.6",
     "clsx": "^1.1.1",
     "use-debounce": "^3.4.2"
   },
