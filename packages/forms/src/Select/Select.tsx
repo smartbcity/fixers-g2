@@ -255,20 +255,18 @@ export const Select = React.forwardRef(
     const optionsMemoized = useMemo(() => {
       return options.map((option) => (
         <MenuItem
-          data-value={option.label}
+          data-value={option.key}
           className={clsx(classes?.option, 'AruiSelect-option')}
           style={styles?.option}
           key={option.key}
-          value={option.label}
+          value={option.key}
         >
           <CheckBox
-            data-value={option.label}
-            checked={
-              values.indexOf(option.label) > -1 || value === option.label
-            }
+            data-value={option.key}
+            checked={values.indexOf(option.key) > -1 || value === option.key}
           />
           <ListItemText
-            data-value={option.label}
+            data-value={option.key}
             primary={option.label as string}
           />
         </MenuItem>
