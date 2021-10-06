@@ -216,6 +216,11 @@ export const Select = React.forwardRef(
       [onChangeValue, onChangeValues]
     )
 
+    const optionsMap = useMemo(
+      () => new Map(options.map((el) => [el.key, el.label])),
+      [options]
+    )
+
     const renderValue = useCallback(
       (selected: string | string[]) => {
         if (
@@ -225,14 +230,14 @@ export const Select = React.forwardRef(
           return placeholder
         }
         if (Array.isArray(selected) && selected.length > 0) {
-          return selected.join(', ')
+          return selected.map((el) => optionsMap.get(el)).join(', ')
         }
         if (!Array.isArray(selected)) {
-          return selected
+          return optionsMap.get(selected)
         }
         return ''
       },
-      [placeholder]
+      [placeholder, optionsMap]
     )
 
     const selectIcon = useCallback(

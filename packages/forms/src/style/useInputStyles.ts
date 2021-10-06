@@ -43,6 +43,9 @@ export const useInputStyles = makeG2STyles()((theme) => ({
       borderRadius: '4px',
       backgroundColor: 'white'
     },
+    '& .MuiSelect-select:focus': {
+      background: 'unset'
+    },
     '& .MuiInputBase-root.Mui-error': {
       border: `1px solid ${theme.colors.error}`
     },
