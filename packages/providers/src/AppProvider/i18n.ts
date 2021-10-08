@@ -8,7 +8,6 @@ export const initI18next = <T extends { [key: string]: string } = {}>(
   options?: InitOptions
 ) => {
   let fallbackLng = {}
-  let firstLanguage = 'fr'
   if (!languages) {
     fallbackLng = {
       'fr-FR': ['fr'],
@@ -19,7 +18,6 @@ export const initI18next = <T extends { [key: string]: string } = {}>(
     for (var languageName in languages) {
       fallbackLng[languages[languageName.toString()]] = [languageName]
       if (iteration === 0) {
-        firstLanguage = languageName
         fallbackLng['default'] = [languageName]
       }
       iteration++
