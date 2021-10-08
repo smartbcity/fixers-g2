@@ -44,7 +44,7 @@ export const useFormWithPartialFields = (
       obj[field.name] = field.defaultValue
     })
     return obj
-  }, [])
+  }, [partialfFields])
 
   const validate = useCallback(
     (values) => {

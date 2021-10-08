@@ -302,6 +302,7 @@ export const FilterSelect = React.forwardRef(
         variant,
         color,
         colorStyle,
+        label,
         classes?.label,
         classes?.chip,
         styles?.label,

@@ -104,6 +104,9 @@ export const defaultMaterialUiTheme = (
       allVariants: {
         fontWeight: 500
       },
+      button: {
+        fontWeight: 500
+      },
       subtitle2: {
         fontWeight: 600
       },

@@ -35,7 +35,7 @@ export const useForm = (params: useFormParams): FormState => {
       obj[field.name] = field.defaultValue
     })
     return obj
-  }, [])
+  }, [fields])
 
   const validate = useCallback(
     (values) => {
