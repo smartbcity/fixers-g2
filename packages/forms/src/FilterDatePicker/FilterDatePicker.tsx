@@ -183,6 +183,8 @@ const FilterDatePickerBase = (
     classes,
     styles,
     InputLabelProps,
+    onClose,
+    onOpen,
     ...other
   } = props
   const theme = useTheme()
@@ -202,9 +204,15 @@ const FilterDatePickerBase = (
     return {}
   }, [color, theme.colors.primary, theme.colors.secondary])
 
-  const onOpen = useCallback(() => setOpen(true), [])
+  const onOpenMemoized = useCallback(() => {
+    setOpen(true)
+    onOpen && onOpen()
+  }, [onOpen])
 
-  const onClose = useCallback(() => setOpen(false), [])
+  const onCloseMemoized = useCallback(() => {
+    setOpen(false)
+    onClose && onClose()
+  }, [onClose])
 
   const format = useMemo(() => {
     if (locale === 'fr') return { format: 'dd/MM/yyyy', mask: '__/__/____' }
@@ -276,7 +284,7 @@ const FilterDatePickerBase = (
           position='end'
         >
           <Calendar
-            onClick={onOpen}
+            onClick={onOpenMemoized}
             className={clsx(
               localStyles.classes.calendarIcon,
               classes?.calendarIcon,
@@ -286,7 +294,6 @@ const FilterDatePickerBase = (
           />
         </InputAdornment>
       ),
-      disableUnderline: true,
       style:
         variant === 'filled'
           ? { ...styles?.input, ...colorStyle }
@@ -356,7 +363,7 @@ const FilterDatePickerBase = (
           openTo='day'
           open={open}
           onOpen={onOpen}
-          onClose={onClose}
+          onClose={onCloseMemoized}
           inputFormat={format.format}
           mask={format.mask}
           minDate={minDate}

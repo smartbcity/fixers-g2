@@ -186,7 +186,10 @@ export const Filters = (props: FiltersProps) => {
             onChange={(value) =>
               formState.setFieldValue(field.name, value, false)
             }
-            onRemove={() => formState.setFieldValue(field.name, '', false)}
+            onRemove={() => {
+              formState.setFieldValue(field.name, '', false)
+              defaultSubmitBehavior && formState.submitForm()
+            }}
             textFieldType='search'
             onSearch={() => defaultSubmitBehavior && formState.submitForm()}
             {...field.textFieldProps}
@@ -202,9 +205,14 @@ export const Filters = (props: FiltersProps) => {
                 value={formState.values[field.name] ?? ''}
                 onChangeDate={(date) => {
                   formState.setFieldValue(field.name, date, false)
+                }}
+                onRemove={() => {
+                  formState.setFieldValue(field.name, '', false)
                   defaultSubmitBehavior && formState.submitForm()
                 }}
-                onRemove={() => formState.setFieldValue(field.name, '', false)}
+                onClose={() => {
+                  defaultSubmitBehavior && formState.submitForm()
+                }}
                 {...field.datePickerProps}
               />
             )

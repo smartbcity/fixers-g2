@@ -289,11 +289,12 @@ export const Select = React.forwardRef(
 
     const onClose = useCallback(
       (event: React.SyntheticEvent<Element, Event>) => {
+        if (!multiple) return
         //@ts-ignore
         const valueClicked = event.currentTarget.dataset.value
         onRemove && value === valueClicked && onRemove()
       },
-      [value, onRemove]
+      [value, onRemove, multiple]
     )
 
     const canRemove =

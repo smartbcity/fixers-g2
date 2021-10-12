@@ -366,12 +366,13 @@ export const FilterSelect = React.forwardRef(
 
     const onCloseMemoized = useCallback(
       (event: React.SyntheticEvent<Element, Event>) => {
+        if (!multiple) return
         //@ts-ignore
         const valueClicked = event.currentTarget.dataset.value
         onRemove && value === valueClicked && onRemove()
         onClose && onClose(event)
       },
-      [value, onRemove, onClose]
+      [value, onRemove, onClose, multiple]
     )
 
     const canRemove =
