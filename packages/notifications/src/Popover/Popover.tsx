@@ -174,8 +174,6 @@ const PopoverBase = (
     [arrow]
   )
 
-  console.log(arrow)
-
   const popper = (
     <Popper
       ref={ref}
