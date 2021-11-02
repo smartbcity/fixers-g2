@@ -1,16 +1,16 @@
 import React from 'react'
-import { Box, BoxProps, Typography } from  '@mui/material'
+import { Box, BoxProps, Typography } from '@mui/material'
 import { NotFoundIcon } from '../assets/NotFoundIcon'
 import {
   BasicProps,
-  lowLevelStyles,
+  makeG2STyles,
   MergeMuiElementProps
 } from '@smartb/g2-themes'
 import { Button } from '@smartb/g2-components'
 import { Link, LinkProps } from 'react-router-dom'
 import clsx from 'clsx'
 
-const useStyles = lowLevelStyles()({
+const useStyles = makeG2STyles()({
   notFoundIcon: {
     maxWidth: '400px',
     width: '80vw'
@@ -84,7 +84,7 @@ export const NoMatchPage = (props: NoMatchPageProps) => {
     id,
     ...other
   } = props
-  const defaultClasses = useStyles()
+  const defaultStyles = useStyles()
   return (
     <Box
       className={className}
@@ -99,12 +99,15 @@ export const NoMatchPage = (props: NoMatchPageProps) => {
       {...other}
     >
       <NotFoundIcon
-        className={clsx(defaultClasses.notFoundIcon, classes?.notFoundIcon)}
+        className={clsx(
+          defaultStyles.classes.notFoundIcon,
+          classes?.notFoundIcon
+        )}
         style={styles?.notFoundIcon}
       />
       <Typography
         variant='h3'
-        className={clsx(defaultClasses.title, classes?.title)}
+        className={clsx(defaultStyles.classes.title, classes?.title)}
         style={styles?.title}
       >
         {title}

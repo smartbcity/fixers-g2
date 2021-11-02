@@ -2,25 +2,23 @@ import React, { forwardRef } from 'react'
 import {
   Tooltip as MuiTooltip,
   TooltipProps as MuiTooltipProps
-} from  '@mui/material'
+} from '@mui/material'
 import {
   MergeMuiElementProps,
   BasicProps,
-  lowLevelStyles,
-  Theme,
-  useTheme
+  makeG2STyles
 } from '@smartb/g2-themes'
 import clsx from 'clsx'
 
-const useStyles = lowLevelStyles<Theme>()({
+const useStyles = makeG2STyles()((theme) => ({
   root: {
-    background: (theme) => theme.colors.primary,
+    background: theme.colors.primary,
     fontSize: '13px',
     padding: '8px',
-    boxShadow: (theme) => theme.shadows[1]
+    boxShadow: theme.shadows[1]
   },
   arrow: {
-    color: (theme) => theme.colors.primary,
+    color: theme.colors.primary,
     width: '16px !important',
     height: '12px !important',
     marginTop: '-11px !important',
@@ -28,7 +26,7 @@ const useStyles = lowLevelStyles<Theme>()({
       borderRadius: '2px'
     }
   }
-})
+}))
 
 export interface TooltipBasicProps extends BasicProps {
   /**
@@ -67,8 +65,8 @@ const TooltipBase = (
     open,
     ...other
   } = props
-  const theme = useTheme()
-  const defaultClasses = useStyles(theme)
+
+  const defaultStyles = useStyles()
   return (
     <MuiTooltip
       ref={ref}
@@ -78,8 +76,8 @@ const TooltipBase = (
       arrow
       classes={{
         ...classes,
-        tooltip: defaultClasses.root,
-        arrow: defaultClasses.arrow
+        tooltip: defaultStyles.classes.root,
+        arrow: defaultStyles.classes.arrow
       }}
       {...other}
       open={open}

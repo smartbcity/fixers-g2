@@ -3,32 +3,37 @@ import {
   InputAdornment,
   TextField as MuiTextField,
   OutlinedTextFieldProps as MuiOutlinedTextFieldProps,
-  InputLabelProps,
-} from  '@mui/material'
+  InputLabelProps
+} from '@mui/material'
 import { useFilterInputStyles } from '../style'
-import { BasicProps, lowLevelStyles, MergeMuiElementProps, useTheme } from '@smartb/g2-themes'
+import {
+  BasicProps,
+  makeG2STyles,
+  MergeMuiElementProps,
+  useTheme
+} from '@smartb/g2-themes'
 import clsx from 'clsx'
 import { SearchIcon } from '../assets/icons'
 import { ClearRounded } from '@mui/icons-material'
-import tinycolor from "tinycolor2"
+import tinycolor from 'tinycolor2'
 
-const useStyles = lowLevelStyles()({
+const useStyles = makeG2STyles()({
   root: {
-    position: "relative",
-    width: "fit-content",
-    "& .MuiInputBase-input": {
-      minWidth: "60px"
+    position: 'relative',
+    width: 'fit-content',
+    '& .MuiInputBase-input': {
+      minWidth: '60px'
     }
   },
   searchIcon: {
-    width: "17px",
-    height: "17px",
-    cursor: "pointer",
-    color: "currentColor",
-    fill: "currentColor"
+    width: '17px',
+    height: '17px',
+    cursor: 'pointer',
+    color: 'currentColor',
+    fill: 'currentColor'
   },
   input: {
-    width: "100%",
+    width: '100%'
   },
   withIconEndOnRemove: {
     '& .MuiInputBase-input': {
@@ -61,7 +66,7 @@ export interface FilterTextFieldBasicProps extends BasicProps {
 
   /**
    * The type of the input
-   * 
+   *
    * @default 'text'
    */
   textFieldType?: 'number' | 'text' | 'email' | 'password' | 'search'
@@ -83,23 +88,23 @@ export interface FilterTextFieldBasicProps extends BasicProps {
 
   /**
    * Define if the input is disabled or not
-   * 
+   *
    * @default false
    */
   disabled?: boolean
 
   /**
-  * The color of the input
-  * 
-  * @default 'primary'
-  */
+   * The color of the input
+   *
+   * @default 'primary'
+   */
   color?: 'primary' | 'secondary' | 'default'
 
   /**
-  * The variant of the input
-  * 
-  * @default 'filled'
-  */
+   * The variant of the input
+   *
+   * @default 'filled'
+   */
   variant?: 'filled' | 'outlined'
 
   /**
@@ -114,7 +119,7 @@ export interface FilterTextFieldBasicProps extends BasicProps {
 
   /**
    * The position of the icon
-   * 
+   *
    * @default 'start'
    */
   iconPosition?: 'start' | 'end'
@@ -125,8 +130,8 @@ export interface FilterTextFieldBasicProps extends BasicProps {
   onSearch?: () => void
 
   /**
-  * The classes applied to the different part of the component
-  */
+   * The classes applied to the different part of the component
+   */
   classes?: FilterTextFieldClasses
   /**
    * The styles applied to the different part of the component
@@ -138,180 +143,276 @@ export interface FilterTextFieldBasicProps extends BasicProps {
   InputLabelProps?: Partial<InputLabelProps>
 }
 
-export type FilterTextFieldProps = MergeMuiElementProps<Omit<MuiOutlinedTextFieldProps, "ref">, FilterTextFieldBasicProps>
+export type FilterTextFieldProps = MergeMuiElementProps<
+  Omit<MuiOutlinedTextFieldProps, 'ref'>,
+  FilterTextFieldBasicProps
+>
 
-export const FilterTextField = React.forwardRef((props: FilterTextFieldProps, ref: React.ForwardedRef<HTMLDivElement>) => {
-  const {
-    className,
-    error = false,
-    label = '',
-    id = '',
-    onChange,
-    style,
-    textFieldType = "text",
-    defaultValue,
-    value,
-    disabled = false,
-    inputIcon,
-    onRemove,
-    classes,
-    styles,
-    iconPosition = 'start',
-    onSearch,
-    InputProps,
-    color = 'primary',
-    variant = 'filled',
-    inputProps,
-    InputLabelProps,
-    ...other
-  } = props
-  const theme = useTheme()
-  const defaultClasses = useFilterInputStyles(theme)
-  const classesLocal = useStyles()
-  const colorStyle = useMemo(() => {
-    if (color === "primary") {
-      const isPrimaryDark = tinycolor(theme.colors.primary).isDark()
-      if (isPrimaryDark) return { color: "white" }
-    }
-    if (color === "secondary") {
-      const isSecondaryDark = tinycolor(theme.colors.secondary).isDark()
-      if (isSecondaryDark) return { color: "white" }
-    }
-    return {}
-  }, [color, theme.colors.primary, theme.colors.secondary])
-
-  const onChangeMemoized = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => onChange && onChange(e.target.value),
-    [onChange],
-  )
-
-  const upHandler = useCallback(
-    (event: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-      if (event.key === 'Enter') {
-        event.currentTarget.blur()
-        onSearch && onSearch()
+export const FilterTextField = React.forwardRef(
+  (props: FilterTextFieldProps, ref: React.ForwardedRef<HTMLDivElement>) => {
+    const {
+      className,
+      error = false,
+      label = '',
+      id = '',
+      onChange,
+      style,
+      textFieldType = 'text',
+      defaultValue,
+      value,
+      disabled = false,
+      inputIcon,
+      onRemove,
+      classes,
+      styles,
+      iconPosition = 'start',
+      onSearch,
+      InputProps,
+      color = 'primary',
+      variant = 'filled',
+      inputProps,
+      InputLabelProps,
+      ...other
+    } = props
+    const theme = useTheme()
+    const defaultStyles = useFilterInputStyles()
+    const localStyles = useStyles()
+    const colorStyle = useMemo(() => {
+      if (color === 'primary') {
+        const isPrimaryDark = tinycolor(theme.colors.primary).isDark()
+        if (isPrimaryDark) return { color: 'white' }
       }
-    },
-    [onSearch],
-  )
-
-  const inputAdornment = useMemo(() => {
-    const abordementStyles = variant === "filled" ? colorStyle : undefined
-    if (textFieldType === "search") {
-      if (iconPosition === 'start') {
-        return {
-          startAdornment: (
-            <InputAdornment style={abordementStyles} component='div' position='start'>
-              <SearchIcon onClick={onSearch} className={clsx(classesLocal.searchIcon, classes?.searchIcon, "AruiTextfield-searchIcon")} style={styles?.searchIcon} />
-            </InputAdornment>
-          )
-        }
-      } else {
-        return {
-          endAdornment: (
-            <InputAdornment style={abordementStyles} component='div' position='end'>
-              <SearchIcon onClick={onSearch} className={clsx(classesLocal.searchIcon, classes?.searchIcon, "AruiTextfield-searchIcon")} style={styles?.searchIcon} />
-            </InputAdornment>
-          )
-        }
-      }
-    } else {
-      if (inputIcon && iconPosition === 'start') {
-        return {
-          startAdornment: (
-            <InputAdornment style={abordementStyles} component='div' position='start'>
-              {inputIcon}
-            </InputAdornment>
-          )
-        }
-      } else if (inputIcon) {
-        return {
-          endAdornment: (
-            <InputAdornment style={abordementStyles} component='div' position='end'>
-              {inputIcon}
-            </InputAdornment>
-          )
-        }
+      if (color === 'secondary') {
+        const isSecondaryDark = tinycolor(theme.colors.secondary).isDark()
+        if (isSecondaryDark) return { color: 'white' }
       }
       return {}
-    }
-  }, [textFieldType, inputIcon, iconPosition, classes?.searchIcon, styles?.searchIcon, onSearch, colorStyle, variant])
+    }, [color, theme.colors.primary, theme.colors.secondary])
 
-  const rightIcon = useMemo(() => {
-    if (!value || value === "") return undefined
-    if (onRemove && !disabled) return (
-      <ClearRounded onClick={onRemove} className={clsx(defaultClasses.clear, classes?.clearIcon, "AruiTextfield-clearIcon")} style={{ ...styles?.clearIcon, right: inputAdornment.endAdornment ? "22px" : "" }} />
+    const onChangeMemoized = useCallback(
+      (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
+        onChange && onChange(e.target.value),
+      [onChange]
     )
-    return undefined
-  }, [value, onRemove, classes?.clearIcon, styles?.clearIcon, inputAdornment.endAdornment, disabled])
 
-  const getVariantColorClass = () => {
-    if (variant === "outlined") {
+    const upHandler = useCallback(
+      (event: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        if (event.key === 'Enter') {
+          event.currentTarget.blur()
+          onSearch && onSearch()
+        }
+      },
+      [onSearch]
+    )
+
+    const inputAdornment = useMemo(() => {
+      const abordementStyles = variant === 'filled' ? colorStyle : undefined
+      if (textFieldType === 'search') {
+        if (iconPosition === 'start') {
+          return {
+            startAdornment: (
+              <InputAdornment
+                style={abordementStyles}
+                component='div'
+                position='start'
+              >
+                <SearchIcon
+                  onClick={onSearch}
+                  className={clsx(
+                    localStyles.classes.searchIcon,
+                    classes?.searchIcon,
+                    'AruiTextfield-searchIcon'
+                  )}
+                  style={styles?.searchIcon}
+                />
+              </InputAdornment>
+            )
+          }
+        } else {
+          return {
+            endAdornment: (
+              <InputAdornment
+                style={abordementStyles}
+                component='div'
+                position='end'
+              >
+                <SearchIcon
+                  onClick={onSearch}
+                  className={clsx(
+                    localStyles.classes.searchIcon,
+                    classes?.searchIcon,
+                    'AruiTextfield-searchIcon'
+                  )}
+                  style={styles?.searchIcon}
+                />
+              </InputAdornment>
+            )
+          }
+        }
+      } else {
+        if (inputIcon && iconPosition === 'start') {
+          return {
+            startAdornment: (
+              <InputAdornment
+                style={abordementStyles}
+                component='div'
+                position='start'
+              >
+                {inputIcon}
+              </InputAdornment>
+            )
+          }
+        } else if (inputIcon) {
+          return {
+            endAdornment: (
+              <InputAdornment
+                style={abordementStyles}
+                component='div'
+                position='end'
+              >
+                {inputIcon}
+              </InputAdornment>
+            )
+          }
+        }
+        return {}
+      }
+    }, [
+      textFieldType,
+      inputIcon,
+      iconPosition,
+      classes?.searchIcon,
+      styles?.searchIcon,
+      onSearch,
+      colorStyle,
+      variant
+    ])
+
+    const rightIcon = useMemo(() => {
+      if (!value || value === '') return undefined
+      if (onRemove && !disabled)
+        return (
+          <ClearRounded
+            onClick={onRemove}
+            className={clsx(
+              defaultStyles.classes.clear,
+              classes?.clearIcon,
+              'AruiTextfield-clearIcon'
+            )}
+            style={{
+              ...styles?.clearIcon,
+              right: inputAdornment.endAdornment ? '22px' : ''
+            }}
+          />
+        )
+      return undefined
+    }, [
+      value,
+      onRemove,
+      classes?.clearIcon,
+      styles?.clearIcon,
+      inputAdornment.endAdornment,
+      disabled
+    ])
+
+    const getVariantColorClass = () => {
+      if (variant === 'outlined') {
+        switch (color) {
+          case 'primary':
+            return defaultStyles.classes.inputOutlinedPrimaryColor
+          case 'secondary':
+            return defaultStyles.classes.inputOutlinedSecondaryColor
+          case 'default':
+            return defaultStyles.classes.inputOutlinedGreyColor
+        }
+      }
       switch (color) {
         case 'primary':
-          return defaultClasses.inputOutlinedPrimaryColor
+          return defaultStyles.classes.inputFilledPrimaryColor
         case 'secondary':
-          return defaultClasses.inputOutlinedSecondaryColor
+          return defaultStyles.classes.inputFilledSecondaryColor
         case 'default':
-          return defaultClasses.inputOutlinedGreyColor
+          return defaultStyles.classes.inputFilledGreyColor
+        default:
+          return defaultStyles.classes.inputFilledGreyColor
       }
     }
-    switch (color) {
-      case 'primary':
-        return defaultClasses.inputFilledPrimaryColor
-      case 'secondary':
-        return defaultClasses.inputFilledSecondaryColor
-      case 'default':
-        return defaultClasses.inputFilledGreyColor
-      default:
-        return defaultClasses.inputFilledGreyColor
-    }
-  }
 
-  const inputStyles = useMemo(() => ({ ...styles?.input, paddingRight: onRemove && value && value !== "" && !inputAdornment.endAdornment ? '20px' : '' }), [styles?.input, onRemove, value, inputAdornment.endAdornment])
+    const inputStyles = useMemo(
+      () => ({
+        ...styles?.input,
+        paddingRight:
+          onRemove && value && value !== '' && !inputAdornment.endAdornment
+            ? '20px'
+            : ''
+      }),
+      [styles?.input, onRemove, value, inputAdornment.endAdornment]
+    )
 
-  return (
-    <div
-      className={clsx(className, classesLocal.root, "AruiTextfield-root")}
-      style={variant === "filled" ? { ...style, ...colorStyle } : style}
-    >
-      <MuiTextField
-        {...other}
-        ref={ref}
-        id={id}
-        label={variant === "outlined" ? label : undefined}
-        InputLabelProps={{ ...InputLabelProps, className: clsx(defaultClasses.label, "AruiTextfield-label", classes?.label), style: styles?.label }}
-        placeholder={variant === "filled" ? label : undefined}
-        variant='outlined'
-        color={color !== 'default' ? color : undefined}
-        value={value}
-        onChange={onChangeMemoized}
-        type={textFieldType === "search" ? "text" : textFieldType}
-        defaultValue={defaultValue}
+    return (
+      <div
         className={clsx(
-          defaultClasses.input,
-          classesLocal.input,
-          onRemove && inputAdornment.endAdornment && textFieldType === "search" && defaultClasses.inputWithClear,
-          classes?.textfield,
-          getVariantColorClass(),
-          "AruiTextfield-Textfield"
+          className,
+          localStyles.classes.root,
+          'AruiTextfield-root'
         )}
-        style={styles?.textfield}
-        disabled={disabled}
-        inputProps={{ size: "5", ...inputProps }}
-        InputProps={{
-          ...inputAdornment,
-          onKeyUp: upHandler,
-          style: variant === "filled" ? { ...inputStyles, ...colorStyle } : inputStyles,
-          className: clsx(
-            inputIcon && iconPosition === 'end' && onRemove && classesLocal.withIconEndOnRemove,
-            classes?.input,
-            "AruiTextfield-input",
-          ),
-          ...InputProps
-        }}
-      />
-      {rightIcon}
-    </div>
-  )
-})
+        style={variant === 'filled' ? { ...style, ...colorStyle } : style}
+      >
+        <MuiTextField
+          {...other}
+          ref={ref}
+          id={id}
+          label={variant === 'outlined' ? label : undefined}
+          InputLabelProps={{
+            ...InputLabelProps,
+            className: clsx(
+              defaultStyles.classes.label,
+              'AruiTextfield-label',
+              classes?.label
+            ),
+            style: styles?.label
+          }}
+          placeholder={variant === 'filled' ? label : undefined}
+          variant='outlined'
+          color={color !== 'default' ? color : undefined}
+          value={value}
+          onChange={onChangeMemoized}
+          type={textFieldType === 'search' ? 'text' : textFieldType}
+          defaultValue={defaultValue}
+          className={clsx(
+            defaultStyles.classes.input,
+            localStyles.classes.input,
+            onRemove &&
+              inputAdornment.endAdornment &&
+              textFieldType === 'search' &&
+              defaultStyles.classes.inputWithClear,
+            classes?.textfield,
+            getVariantColorClass(),
+            'AruiTextfield-Textfield'
+          )}
+          style={styles?.textfield}
+          disabled={disabled}
+          inputProps={{ size: '5', ...inputProps }}
+          InputProps={{
+            ...inputAdornment,
+            onKeyUp: upHandler,
+            style:
+              variant === 'filled'
+                ? { ...inputStyles, ...colorStyle }
+                : inputStyles,
+            className: clsx(
+              inputIcon &&
+                iconPosition === 'end' &&
+                onRemove &&
+                localStyles.classes.withIconEndOnRemove,
+              classes?.input,
+              'AruiTextfield-input'
+            ),
+            ...InputProps
+          }}
+        />
+        {rightIcon}
+      </div>
+    )
+  }
+)

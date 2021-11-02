@@ -4,7 +4,7 @@ import typescript from "rollup-plugin-typescript2";
 import image from "@rollup/plugin-image";
 import json from "rollup-plugin-json";
 import svgr from "@svgr/rollup";
-import postcss from 'rollup-plugin-postcss'
+import postcss from "rollup-plugin-postcss";
 
 const getGlobal = (localPackageJson) => {
   const externalsDependencies = Object.keys(
@@ -15,7 +15,7 @@ const getGlobal = (localPackageJson) => {
     "react-dom": "ReactDOM",
   };
   return {
-    external: [...externalsDependencies, "@mui/styles"],
+    external: [...externalsDependencies],
     output: [
       {
         file: localPackageJson.main,
@@ -42,7 +42,7 @@ const getGlobal = (localPackageJson) => {
       image(),
       json(),
       svgr(),
-      postcss()
+      postcss(),
     ],
   };
 };

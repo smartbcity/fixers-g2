@@ -14,11 +14,11 @@ import {
 } from 'react-syntax-highlighter/dist/esm/styles/hljs'
 import stringifyObject from 'stringify-object'
 import { useMemo } from 'react'
-import { BasicProps, lowLevelStyles } from '@smartb/g2-themes'
-import { Box, Typography } from  '@mui/material'
+import { BasicProps, makeG2STyles } from '@smartb/g2-themes'
+import { Box, Typography } from '@mui/material'
 import clsx from 'clsx'
 
-const useStyles = lowLevelStyles()({
+const useStyles = makeG2STyles()({
   root: {
     '& pre': {
       borderRadius: '4px',
@@ -97,7 +97,7 @@ export const CodeHighlighter = (props: CodeHighlighterProps) => {
     id,
     ...other
   } = props
-  const classes = useStyles()
+  const { classes } = useStyles()
   const formatedObject = useMemo(() => {
     if (!object) return
     return stringifyObject(object, {

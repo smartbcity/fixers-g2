@@ -2,12 +2,12 @@ import React from 'react'
 import ReactMarkdown from 'react-markdown'
 import { CodeHighlighter } from '../CodeHighlighter'
 import 'github-markdown-css'
-import { lowLevelStyles } from '@smartb/g2-themes'
+import { makeG2STyles } from '@smartb/g2-themes'
 import clsx from 'clsx'
 import gfm from 'remark-gfm'
 import raw from 'rehype-raw'
 
-const useStyles = lowLevelStyles()({
+const useStyles = makeG2STyles()({
   markdown: {
     fontSize: '14px',
     lineHeight: '22px',
@@ -85,7 +85,7 @@ const components = {
       />
     ) : (
       <code className={className} {...props} children={children} />
-    );
+    )
   },
   mark: (object: any) => {
     return (
@@ -96,7 +96,7 @@ const components = {
 
 export const MarkdownHighlighter = (props: MarkdownHighlighterProps) => {
   const { markdown, className } = props
-  const classes = useStyles()
+  const { classes } = useStyles()
   return (
     <ReactMarkdown
       className={clsx('markdown-body', classes.markdown, className)}

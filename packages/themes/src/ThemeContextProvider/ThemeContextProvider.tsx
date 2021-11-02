@@ -1,12 +1,10 @@
 import React, { createContext, useCallback, useContext } from 'react'
-import {
-  ThemeProvider,
-  StyledEngineProvider,
-  ThemeOptions
-} from '@mui/material'
+import { ThemeProvider, ThemeOptions } from '@mui/material'
 import { defaultMaterialUiTheme, defaultTheme, Theme } from './Theme'
-
-import './default.css'
+import { CacheProvider } from '@emotion/react'
+import createCache from '@emotion/cache'
+import { TssCacheProvider } from 'tss-react'
+import { mergeDeepRight } from 'ramda'
 
 //@ts-ignore
 declare module '@mui/styles/defaultTheme' {
@@ -30,23 +28,36 @@ export interface ThemeContextProviderProps {
   customMuiTheme?: Partial<ThemeOptions>
 }
 
+export const muiCache = createCache({
+  key: 'mui',
+  prepend: true
+})
+
+export const tssCache = createCache({
+  key: 'tss',
+  prepend: false
+})
+
 export const ThemeContextProvider = (props: ThemeContextProviderProps) => {
   const { children, customMuiTheme, theme } = props
-  const [localTheme, setLocalTheme] = React.useState<Theme>({
-    ...{ ...defaultTheme, ...theme },
-    ...props.theme
-  })
-  const setPartialTheme = useCallback((partialTheme: Partial<Theme>) => {
-    setLocalTheme((oldLocalTheme) => ({ ...oldLocalTheme, ...partialTheme }))
+  const [localTheme, setLocalTheme] = React.useState<Theme>(
+    mergeDeepRight(defaultTheme, theme)
+  )
+  const setPartialTheme = useCallback((partialTheme: Theme | any) => {
+    setLocalTheme((oldLocalTheme) =>
+      mergeDeepRight(oldLocalTheme, partialTheme)
+    )
   }, [])
   const defaultMuiTheme = defaultMaterialUiTheme(localTheme, customMuiTheme)
   return (
     <ThemeContext.Provider
       value={{ theme: localTheme, changeTheme: setPartialTheme }}
     >
-      <StyledEngineProvider injectFirst>
-        <ThemeProvider theme={defaultMuiTheme}>{children}</ThemeProvider>
-      </StyledEngineProvider>
+      <TssCacheProvider value={tssCache}>
+        <CacheProvider value={muiCache}>
+          <ThemeProvider theme={defaultMuiTheme}>{children}</ThemeProvider>
+        </CacheProvider>
+      </TssCacheProvider>
     </ThemeContext.Provider>
   )
 }

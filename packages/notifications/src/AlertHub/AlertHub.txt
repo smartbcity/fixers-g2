@@ -2,10 +2,10 @@ import React, { forwardRef, useCallback } from 'react'
 import { SnackbarProvider, useSnackbar, SnackbarProviderProps } from 'notistack'
 import { Alert, AlertProps } from '../Alert/Alert'
 import Grow from '@mui/material/Grow'
-import { lowLevelStyles } from '@smartb/g2-themes'
+import { makeG2STyles } from '@smartb/g2-themes'
 import clsx from 'clsx'
 
-const useSytles = lowLevelStyles()({
+const useSytles = makeG2STyles()({
   alert: {
     position: 'relative',
     left: 0,
@@ -48,7 +48,7 @@ export const AlertHub = (props: AlertHubProps) => {
 const ClosableAlert = forwardRef<HTMLElement, Omit<AlertProps, 'onClose'>>(
   (props, ref) => {
     const { id, className, ...other } = props
-    const classes = useSytles()
+    const { classes } = useSytles()
     const { closeSnackbar } = useSnackbar()
     const handleClose = useCallback(() => closeSnackbar(id), [id])
     return (

@@ -7,6 +7,8 @@ import { StorybookCanvas } from "../packages/storybook-documentation/src/Storybo
 import { getTheme } from "../docs/Theme/Theme";
 import { ThemeProvider as EmotionThemeProvider } from "emotion-theming";
 
+import "./default.css";
+
 export const parameters = {
   docs: {
     container: StorybookCanvas,

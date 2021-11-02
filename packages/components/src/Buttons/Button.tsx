@@ -5,7 +5,6 @@ import {
   CircularProgress
 } from '@mui/material'
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
-import { useTheme } from '@smartb/g2-themes'
 import {
   CheckRounded,
   CloseRounded,
@@ -127,13 +126,12 @@ export const ButtonBase = function <T = {}>(
     componentProps,
     ...other
   } = props
-  const theme = useTheme()
-  const classes =
+  const { classes } =
     variant === 'contained'
-      ? containedUseStyles(theme)
+      ? containedUseStyles()
       : variant === 'outlined'
-      ? outlinedUseStyles(theme)
-      : textUseStyles(theme)
+      ? outlinedUseStyles()
+      : textUseStyles()
   const forcedLoading = isLoading
   const [loading, setloading] = useState(false)
 

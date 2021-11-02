@@ -1,19 +1,20 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import DataTable, {
   IDataTableColumn,
   IDataTableStyles,
   IDataTableProps
 } from 'react-data-table-component'
-import { Typography } from  '@mui/material'
+import { Typography } from '@mui/material'
 import {
   BasicProps,
-  lowLevelStyles,
-  MergeMuiElementProps
+  makeG2STyles,
+  MergeMuiElementProps,
+  Theme,
+  useTheme
 } from '@smartb/g2-themes'
-import { useTheme, Theme } from '@smartb/g2-themes'
 import { Pagination } from '../Pagination'
 
-const useStyles = lowLevelStyles()({
+const useStyles = makeG2STyles()({
   container: {
     '& .rdt_TableRow .rdt_TableCell:last-child': {
       paddingRight: '30px'
@@ -40,7 +41,7 @@ const useStyles = lowLevelStyles()({
   }
 })
 
-const customStyles = (theme: Theme) => ({
+const getCustomStyles = (theme: Theme) => ({
   table: {
     style: {
       backgroundColor: 'transparent'
@@ -211,8 +212,10 @@ export const Table = <Row,>(props: TableProps<Row>) => {
     style,
     ...other
   } = props
-  const classes = useStyles()
   const theme = useTheme()
+  const customStyles = useMemo(() => getCustomStyles(theme), [theme])
+  const { classes } = useStyles()
+
   return (
     <>
       {isLoading ? (
@@ -232,7 +235,7 @@ export const Table = <Row,>(props: TableProps<Row>) => {
           pointerOnHover
           selectableRows={selectableRows}
           onRowClicked={onRowClicked}
-          customStyles={customStyles(theme) as IDataTableStyles}
+          customStyles={customStyles as IDataTableStyles}
           keyField={keyField}
           expandableRows={expandableRows}
           expandableRowsComponent={ExpandableComponents}

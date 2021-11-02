@@ -1,10 +1,10 @@
-import { lowLevelStyles, Theme } from '@smartb/g2-themes'
+import { makeG2STyles } from '@smartb/g2-themes'
 
 const darkGrey = '#323338'
 const textFieldGrey = '#C5C7D0'
 const disabledColor = '#E6E9EF'
 
-export const useInputStyles = lowLevelStyles<Theme>()({
+export const useInputStyles = makeG2STyles()((theme) => ({
   label: {
     marginBottom: '15px',
     fontSize: 16,
@@ -43,21 +43,24 @@ export const useInputStyles = lowLevelStyles<Theme>()({
       borderRadius: '4px',
       backgroundColor: 'white'
     },
+    '& .MuiSelect-select:focus': {
+      background: 'unset'
+    },
     '& .MuiInputBase-root.Mui-error': {
-      border: (theme) => `1px solid ${theme.colors.error}`
+      border: `1px solid ${theme.colors.error}`
     },
     '& .MuiInputBase-root:hover': {
       border: `1px solid ${darkGrey}`,
       backgroundColor: 'white'
     },
     '& .MuiInputBase-root:focus': {
-      border: (theme) => `1px solid ${theme.colors.primary}`
+      border: `1px solid ${theme.colors.primary}`
     },
     '& .MuiInputBase-root.Mui-focused': {
-      border: (theme) => `1px solid ${theme.colors.primary}`
+      border: `1px solid ${theme.colors.primary}`
     },
     '& .MuiFormLabel-root.Mui-error': {
-      color: (theme) => theme.colors.error
+      color: theme.colors.error
     },
     '& .MuiInputLabel-filled .MuiInputLabel-filled.MuiInputLabel-shrink': {
       transform: 'translate(12px, 21px) scale(1)'
@@ -91,30 +94,30 @@ export const useInputStyles = lowLevelStyles<Theme>()({
   },
   inputValidated: {
     '& .MuiInputBase-root': {
-      border: (theme) => `1px solid ${theme.colors.success}`
+      border: `1px solid ${theme.colors.success}`
     },
     '& .MuiInputBase-root:hover': {
-      border: (theme) => `1px solid ${theme.colors.success}`
+      border: `1px solid ${theme.colors.success}`
     },
     '& .MuiInputBase-root.Mui-focused': {
-      border: (theme) => `1px solid ${theme.colors.success}`
+      border: `1px solid ${theme.colors.success}`
     },
     '& .MuiInputBase-root:focus': {
-      border: (theme) => `1px solid ${theme.colors.success}`
+      border: `1px solid ${theme.colors.success}`
     }
   },
   inputError: {
     '& .MuiInputBase-root': {
-      border: (theme) => `1px solid ${theme.colors.error}`
+      border: `1px solid ${theme.colors.error}`
     },
     '& .MuiInputBase-root:hover': {
-      border: (theme) => `1px solid ${theme.colors.error}`
+      border: `1px solid ${theme.colors.error}`
     },
     '& .MuiInputBase-root.Mui-focused': {
-      border: (theme) => `1px solid ${theme.colors.error}`
+      border: `1px solid ${theme.colors.error}`
     },
     '& .MuiInputBase-root:focus': {
-      border: (theme) => `1px solid ${theme.colors.error}`
+      border: `1px solid ${theme.colors.error}`
     }
   },
   inputLarge: {
@@ -172,7 +175,7 @@ export const useInputStyles = lowLevelStyles<Theme>()({
   helperText: {
     position: 'absolute',
     top: '100%',
-    color: (theme) => `${theme.colors.error} !important`
+    color: `${theme.colors.error} !important`
   },
   clear: {
     position: 'absolute',
@@ -183,13 +186,13 @@ export const useInputStyles = lowLevelStyles<Theme>()({
     color: darkGrey
   },
   clearError: {
-    color: (theme) => theme.colors.error
+    color: theme.colors.error
   },
   validated: {
     position: 'absolute',
     right: '10px',
     top: '50%',
     marginTop: '-12px',
-    color: (theme) => theme.colors.success
+    color: theme.colors.success
   }
-})
+}))

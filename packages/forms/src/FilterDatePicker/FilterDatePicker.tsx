@@ -8,12 +8,10 @@ import React, { forwardRef, useCallback, useMemo, useState } from 'react'
 import { useFilterInputStyles } from '../style'
 import {
   BasicProps,
-  lowLevelStyles,
+  makeG2STyles,
   MergeMuiElementProps,
-  Theme,
   useTheme
 } from '@smartb/g2-themes'
-import * as dateFnsLocales from 'date-fns/locale'
 import clsx from 'clsx'
 import {
   InputAdornment,
@@ -24,8 +22,10 @@ import {
 import { Calendar } from '../assets/icons'
 import tinycolor from 'tinycolor2'
 import { ClearRounded } from '@mui/icons-material'
+import { fr, enUS } from 'date-fns/locale'
+const dateFnsLocales = [fr, enUS]
 
-const useStyles = lowLevelStyles<Theme>()({
+const useStyles = makeG2STyles()((theme) => ({
   root: {
     position: 'relative',
     width: 'fit-content'
@@ -53,7 +53,7 @@ const useStyles = lowLevelStyles<Theme>()({
   },
   dialog: {
     '& .MuiButton-root': {
-      background: (theme) => theme.colors.primary,
+      background: theme.colors.primary,
       padding: '3px 5px',
       textTransform: 'lowercase'
     }
@@ -61,7 +61,7 @@ const useStyles = lowLevelStyles<Theme>()({
   clear: {
     right: '26px'
   }
-})
+}))
 
 export interface FilterDatePickerClasses {
   input?: string
@@ -183,11 +183,13 @@ const FilterDatePickerBase = (
     classes,
     styles,
     InputLabelProps,
+    onClose,
+    onOpen,
     ...other
   } = props
   const theme = useTheme()
-  const defaultClasses = useFilterInputStyles(theme)
-  const classesLocal = useStyles(theme)
+  const defaultStyles = useFilterInputStyles()
+  const localStyles = useStyles()
   const [open, setOpen] = useState(false)
 
   const colorStyle = useMemo(() => {
@@ -202,9 +204,15 @@ const FilterDatePickerBase = (
     return {}
   }, [color, theme.colors.primary, theme.colors.secondary])
 
-  const onOpen = useCallback(() => setOpen(true), [])
+  const onOpenMemoized = useCallback(() => {
+    setOpen(true)
+    onOpen && onOpen()
+  }, [onOpen])
 
-  const onClose = useCallback(() => setOpen(false), [])
+  const onCloseMemoized = useCallback(() => {
+    setOpen(false)
+    onClose && onClose()
+  }, [onClose])
 
   const format = useMemo(() => {
     if (locale === 'fr') return { format: 'dd/MM/yyyy', mask: '__/__/____' }
@@ -222,22 +230,22 @@ const FilterDatePickerBase = (
     if (variant === 'outlined') {
       switch (color) {
         case 'primary':
-          return defaultClasses.inputOutlinedPrimaryColor
+          return defaultStyles.classes.inputOutlinedPrimaryColor
         case 'secondary':
-          return defaultClasses.inputOutlinedSecondaryColor
+          return defaultStyles.classes.inputOutlinedSecondaryColor
         case 'default':
-          return defaultClasses.inputOutlinedGreyColor
+          return defaultStyles.classes.inputOutlinedGreyColor
       }
     }
     switch (color) {
       case 'primary':
-        return defaultClasses.inputFilledPrimaryColor
+        return defaultStyles.classes.inputFilledPrimaryColor
       case 'secondary':
-        return defaultClasses.inputFilledSecondaryColor
+        return defaultStyles.classes.inputFilledSecondaryColor
       case 'default':
-        return defaultClasses.inputFilledGreyColor
+        return defaultStyles.classes.inputFilledGreyColor
       default:
-        return defaultClasses.inputFilledGreyColor
+        return defaultStyles.classes.inputFilledGreyColor
     }
   }, [variant, color])
 
@@ -248,9 +256,9 @@ const FilterDatePickerBase = (
         <ClearRounded
           onClick={onRemove}
           className={clsx(
-            defaultClasses.clear,
+            defaultStyles.classes.clear,
             'AruiFilterDatePicker-clearIcon',
-            classesLocal.clear,
+            localStyles.classes.clear,
             classes?.clearIcon
           )}
           style={styles?.clearIcon}
@@ -260,9 +268,9 @@ const FilterDatePickerBase = (
   }, [
     value,
     onRemove,
-    defaultClasses.clear,
+    defaultStyles.classes.clear,
     disabled,
-    classesLocal.clear,
+    localStyles.classes.clear,
     classes?.clearIcon,
     styles?.clearIcon
   ])
@@ -276,9 +284,9 @@ const FilterDatePickerBase = (
           position='end'
         >
           <Calendar
-            onClick={onOpen}
+            onClick={onOpenMemoized}
             className={clsx(
-              classesLocal.calendarIcon,
+              localStyles.classes.calendarIcon,
               classes?.calendarIcon,
               'AruiFilterDatePicker-calendarIcon'
             )}
@@ -286,7 +294,6 @@ const FilterDatePickerBase = (
           />
         </InputAdornment>
       ),
-      disableUnderline: true,
       style:
         variant === 'filled'
           ? { ...styles?.input, ...colorStyle }
@@ -307,8 +314,10 @@ const FilterDatePickerBase = (
         color={color !== 'default' ? color : undefined}
         className={clsx(
           classes?.textField,
-          defaultClasses.input,
-          !!rightIcon ? classesLocal.inputWithRemove : classesLocal.input,
+          defaultStyles.classes.input,
+          !!rightIcon
+            ? localStyles.classes.inputWithRemove
+            : localStyles.classes.input,
           getVariantColorClass(),
           'AruiFilterDatePicker-datePicker'
         )}
@@ -318,7 +327,7 @@ const FilterDatePickerBase = (
         InputLabelProps={{
           ...InputLabelProps,
           className: clsx(
-            defaultClasses.label,
+            defaultStyles.classes.label,
             'AruiFilterDatePicker-label',
             classes?.label
           ),
@@ -341,7 +350,7 @@ const FilterDatePickerBase = (
     >
       <div
         className={clsx(
-          classesLocal.root,
+          localStyles.classes.root,
           className,
           'AruiFilterDatePicker-root'
         )}
@@ -354,12 +363,12 @@ const FilterDatePickerBase = (
           openTo='day'
           open={open}
           onOpen={onOpen}
-          onClose={onClose}
+          onClose={onCloseMemoized}
           inputFormat={format.format}
           mask={format.mask}
           minDate={minDate}
           maxDate={maxDate}
-          DialogProps={{ className: classesLocal.dialog }}
+          DialogProps={{ className: localStyles.classes.dialog }}
           clearable
           disabled={disabled}
           value={value ? value : null}

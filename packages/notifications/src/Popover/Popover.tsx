@@ -1,53 +1,60 @@
 import {
   BasicProps,
-  lowLevelStyles,
-  MergeMuiElementProps,
-  Theme,
-  useTheme
+  makeG2STyles,
+  MergeMuiElementProps
 } from '@smartb/g2-themes'
 import { ClickAwayListener, Popper, PopperProps } from '@mui/material'
-import React, { forwardRef, useCallback } from 'react'
+import React, { forwardRef, useCallback, useMemo, useState } from 'react'
 import { CloseRounded } from '@mui/icons-material'
 import clsx from 'clsx'
 
-const useStyles = lowLevelStyles<Theme>()({
+const useStyles = makeG2STyles()((theme) => ({
   popper: {
     borderRadius: '8px',
     background: 'white',
     zIndex: 1,
     padding: '20px',
-    boxShadow: (theme) => theme.shadows[3],
-    '&[x-placement*="bottom"]': {
-      marginTop: '25px',
-      '& .AruiPopover-arrow': {
+    boxShadow: theme.shadows[3],
+    '&[data-popper-placement="bottom"]': {
+      marginTop: '25px !important',
+      '& .AruiPopover-arrowContainer': {
         top: 0,
         left: 0,
-        marginTop: '-25px'
+        marginTop: '-25px',
+        marginLeft: '-20px'
       }
     },
-    '&[x-placement*="top"]': {
-      marginBottom: '25px',
+    '&[data-popper-placement="top"]': {
+      marginBottom: '25px !important',
       '& .AruiPopover-arrow': {
+        transform: 'rotate(180deg)'
+      },
+      '& .AruiPopover-arrowContainer': {
         bottom: 0,
         left: 0,
-        marginBottom: '-25px',
-        transform: 'rotate(180deg)'
+        marginLeft: '-20px'
       }
     },
-    '&[x-placement*="right"]': {
-      marginLeft: '25px',
+    '&[data-popper-placement="right"]': {
+      marginLeft: '25px !important',
       '& .AruiPopover-arrow': {
+        transform: 'rotate(270deg)'
+      },
+      '& .AruiPopover-arrowContainer': {
         left: 0,
         marginLeft: '-32px',
-        transform: 'rotate(270deg)'
+        marginTop: '-12px'
       }
     },
-    '&[x-placement*="left"]': {
-      marginRight: '25px',
+    '&[data-popper-placement="left"]': {
+      marginRight: '25px !important',
       '& .AruiPopover-arrow': {
-        right: 0,
-        marginRight: '-32px',
         transform: 'rotate(90deg)'
+      },
+      '& .AruiPopover-arrowContainer': {
+        right: 0,
+        marginRight: '8px',
+        marginTop: '-12px'
       }
     }
   },
@@ -78,10 +85,10 @@ const useStyles = lowLevelStyles<Theme>()({
       transformOrigin: '0 100%',
       borderRadius: '3px',
       transform: 'rotate(45deg)',
-      boxShadow: (theme) => theme.shadows[1]
+      boxShadow: theme.shadows[1]
     }
   }
-})
+}))
 
 interface PopoverClasses {
   closeIcon?: string
@@ -142,47 +149,61 @@ const PopoverBase = (
     styles,
     ...other
   } = props
-  const theme = useTheme()
-  const defaultClasses = useStyles(theme)
+
+  const defaultStyles = useStyles()
+  const [arrow, setArrow] = useState<HTMLDivElement | undefined>(undefined)
   const handleClickAway = useCallback(() => {
     if (closeOnClickAway && onClose && open) {
       onClose()
     }
   }, [closeOnClickAway, onClose, open])
+
+  const setArrowRef = useCallback((ref) => setArrow(ref), [])
+
+  const modifiers = useMemo(
+    () => [
+      {
+        name: 'arrow',
+        enabled: true,
+        options: {
+          element: arrow,
+          padding: 10
+        }
+      }
+    ],
+    [arrow]
+  )
+
   const popper = (
     <Popper
       ref={ref}
       id={id}
-      className={clsx(className, defaultClasses.popper, 'AruiPopover-root')}
+      className={clsx(
+        className,
+        defaultStyles.classes.popper,
+        'AruiPopover-root'
+      )}
       style={style}
       open={open}
-      modifiers={[
-        {
-          name: 'arrow',
-          enabled: true,
-          options: {
-            element: '.AruiPopover-arrow'
-          }
-        }
-      ]}
-      transition
+      modifiers={modifiers}
       {...other}
-      anchorEl={other.anchorEl}
     >
-      <div
-        className={clsx(
-          defaultClasses.arrow,
-          classes?.arrow,
-          'AruiPopover-arrow'
-        )}
-        style={styles?.arrow}
-      />
+      <div ref={setArrowRef} className={'AruiPopover-arrowContainer'}>
+        <div
+          className={clsx(
+            defaultStyles.classes.arrow,
+            classes?.arrow,
+            'AruiPopover-arrow'
+          )}
+          style={styles?.arrow}
+        />
+      </div>
       {onClose && (
         <CloseRounded
           className={clsx(
             classes?.closeIcon,
             'AruiPopover-closeIcon',
-            defaultClasses.closeIcon
+            defaultStyles.classes.closeIcon
           )}
           style={styles?.closeIcon}
           onClick={onClose}

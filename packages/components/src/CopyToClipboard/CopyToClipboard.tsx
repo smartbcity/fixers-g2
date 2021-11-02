@@ -1,18 +1,13 @@
-import { IconButton, IconButtonProps } from  '@mui/material'
+import { IconButton, IconButtonProps } from '@mui/material'
 import { CheckRounded } from '@mui/icons-material'
-import {
-  BasicProps,
-  lowLevelStyles,
-  MergeMuiElementProps,
-  Theme,
-  useTheme
-} from '@smartb/g2-themes'
+import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
+import { makeG2STyles } from '@smartb/g2-themes'
 import clsx from 'clsx'
 import React, { forwardRef, useCallback, useState } from 'react'
 import { Clipboard } from '../icons'
 import { Tooltip } from '@smartb/g2-notifications'
 
-const useStyles = lowLevelStyles<Theme>()({
+const useStyles = makeG2STyles()((theme) => ({
   clipboardIcon: {
     width: '20px',
     height: '20px'
@@ -20,9 +15,9 @@ const useStyles = lowLevelStyles<Theme>()({
   successIcon: {
     width: '20px',
     height: '20px',
-    color: (theme) => theme.colors.success
+    color: theme.colors.success
   }
-})
+}))
 
 interface CopyToClipboardClasses {
   tooltip?: string
@@ -82,8 +77,7 @@ const CopyToClipboardBase = (
     ...other
   } = props
   const [done, setDone] = useState(false)
-  const theme = useTheme()
-  const defaultClasses = useStyles(theme)
+  const defaultStyles = useStyles()
   const onCopy = useCallback(() => {
     navigator.clipboard.writeText(value)
     setDone(true)
@@ -99,11 +93,12 @@ const CopyToClipboardBase = (
         ref={ref}
         className={clsx(className, 'AruiCopyToClipboard-root')}
         onClick={onCopy}
-        size="large">
+        size='large'
+      >
         {done ? (
           <CheckRounded
             className={clsx(
-              defaultClasses.successIcon,
+              defaultStyles.classes.successIcon,
               classes?.successIcon,
               'AruiCopyToClipboard-successIcon'
             )}
@@ -112,7 +107,7 @@ const CopyToClipboardBase = (
         ) : (
           <Clipboard
             className={clsx(
-              defaultClasses.clipboardIcon,
+              defaultStyles.classes.clipboardIcon,
               classes?.clipBoardIcon,
               'AruiCopyToClipboard-clipBoardIcon'
             )}
@@ -121,7 +116,7 @@ const CopyToClipboardBase = (
         )}
       </IconButton>
     </Tooltip>
-  );
+  )
 }
 
 export const CopyToClipboard = forwardRef(

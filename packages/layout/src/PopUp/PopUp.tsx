@@ -4,17 +4,17 @@ import {
   DialogActions,
   DialogContent,
   DialogProps
-} from  '@mui/material'
+} from '@mui/material'
 import { Button, ButtonProps } from '@smartb/g2-components'
 import {
   MergeMuiElementProps,
   BasicProps,
-  lowLevelStyles
+  makeG2STyles
 } from '@smartb/g2-themes'
 import clsx from 'clsx'
 import { CloseRounded } from '@mui/icons-material'
 
-const useStyles = lowLevelStyles()({
+const useStyles = makeG2STyles()({
   paper: {
     borderRadius: '16px'
   },
@@ -87,7 +87,10 @@ export interface PopUpBasicProps extends BasicProps {
 
 export type PopUpProps = MergeMuiElementProps<DialogProps, PopUpBasicProps>
 
-const PopUpBase = (props: PopUpProps, ref: React.ForwardedRef<HTMLDivElement>) => {
+const PopUpBase = (
+  props: PopUpProps,
+  ref: React.ForwardedRef<HTMLDivElement>
+) => {
   const {
     open,
     onClose,
@@ -100,7 +103,7 @@ const PopUpBase = (props: PopUpProps, ref: React.ForwardedRef<HTMLDivElement>) =
     styles,
     ...other
   } = props
-  const defaultClasses = useStyles()
+  const defaultStyles = useStyles()
 
   const actionsDisplay = useMemo(() => {
     if (actions.length === 0) return undefined
@@ -113,7 +116,7 @@ const PopUpBase = (props: PopUpProps, ref: React.ForwardedRef<HTMLDivElement>) =
             'AruiPopUp-button',
             classes?.button,
             className,
-            defaultClasses.button
+            defaultStyles.classes.button
           )}
           style={styles?.button}
           {...other}
@@ -133,7 +136,7 @@ const PopUpBase = (props: PopUpProps, ref: React.ForwardedRef<HTMLDivElement>) =
       id={id}
       PaperProps={{
         elevation: 12,
-        className: defaultClasses.paper
+        className: defaultStyles.classes.paper
       }}
       className={clsx(className, 'AruiPopUp-root')}
       {...other}
@@ -142,7 +145,7 @@ const PopUpBase = (props: PopUpProps, ref: React.ForwardedRef<HTMLDivElement>) =
         className={clsx(
           classes?.closeIcon,
           'AruiPopUp-closeIcon',
-          defaultClasses.closeIcon
+          defaultStyles.classes.closeIcon
         )}
         style={styles?.closeIcon}
         onClick={onClose}
@@ -151,7 +154,7 @@ const PopUpBase = (props: PopUpProps, ref: React.ForwardedRef<HTMLDivElement>) =
         className={clsx(
           classes?.content,
           'AruiPopUp-content',
-          defaultClasses.content
+          defaultStyles.classes.content
         )}
         style={styles?.content}
       >
@@ -162,7 +165,7 @@ const PopUpBase = (props: PopUpProps, ref: React.ForwardedRef<HTMLDivElement>) =
           className={clsx(
             'AruiPopUp-actions',
             classes?.actions,
-            defaultClasses.actionsContainer
+            defaultStyles.classes.actionsContainer
           )}
           style={styles?.actions}
         >

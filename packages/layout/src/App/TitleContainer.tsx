@@ -1,9 +1,9 @@
-import { Box, List, ListItem, ListItemText } from  '@mui/material'
+import { Box, List, ListItem, ListItemText } from '@mui/material'
 import clsx from 'clsx'
 import React from 'react'
-import { BasicProps, lowLevelStyles } from '@smartb/g2-themes'
+import { BasicProps, makeG2STyles } from '@smartb/g2-themes'
 
-const useStyles = lowLevelStyles()({
+const useStyles = makeG2STyles()({
   drawerSpacer: {
     '& img': {
       marginTop: '5px',
@@ -38,7 +38,7 @@ export interface TitleContainerProps extends BasicProps {
 
 export const TitleContainer = (props: TitleContainerProps) => {
   const { classes, logo, className, title, styles, ...other } = props
-  const defaultClasses = useStyles()
+  const defaultStyles = useStyles()
   return (
     <Box
       display='flex'
@@ -46,7 +46,7 @@ export const TitleContainer = (props: TitleContainerProps) => {
       className={clsx(
         className,
         'AruiTitleContainer-root',
-        defaultClasses.drawerSpacer
+        defaultStyles.classes.drawerSpacer
       )}
       {...other}
     >

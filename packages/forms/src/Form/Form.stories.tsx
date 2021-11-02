@@ -11,7 +11,7 @@ import {
   Stories
 } from '@storybook/addon-docs'
 import LinkTo from '@storybook/addon-links/react'
-import { Typography } from  '@mui/material'
+import { Typography } from '@mui/material'
 import { ActionDoc, FieldDoc, FormClasses, FormStyles, FormState } from './docs'
 import { useForm } from './useForm'
 
@@ -24,10 +24,13 @@ export default {
         <>
           <Primary />
           <Description>
-            This components is made to display a simple form using [Formik](https://formik.org/).
+            This components is made to display a simple form using
+            [Formik](https://formik.org/).
           </Description>
           <Description>
-            If you want a complexe form you will have to create it by your self. We recommand using [Formik](https://formik.org/) even for complexe form.
+            If you want a complexe form you will have to create it by your self.
+            We recommand using [Formik](https://formik.org/) even for complexe
+            form.
           </Description>
           <ArgsTable story={PRIMARY_STORY} />
           <Subtitle>References</Subtitle>
@@ -56,8 +59,15 @@ export default {
             </LinkTo>
           </Typography>
           <Description>
-            You have to use the hook `useForm` that will intialise the formState and return it to you. The `FormState` equal to the return type of the hook
-            useFormik.
+            You have to use the hook `useForm` that will intialise the formState
+            and return it to you. The `FormState` equal to the return type of
+            the hook useFormik.
+          </Description>
+          <Description>
+            If you need the formik state in your fields creation you can use
+            `useFormWithPartialFields` that only requires the minimum
+            informations needed to init the formik states. So you can create
+            your fields with the formState available.
           </Description>
           <Stories />
         </>
@@ -108,10 +118,7 @@ export default {
   }
 } as Meta
 
-export const FormStory: Story<FormBasicProps> = (
-  args: FormBasicProps
-) => {
-
+export const FormStory: Story<FormBasicProps> = (args: FormBasicProps) => {
   const formState = useForm({
     fields: args.fields,
     onSubmit: (values) => console.log(values)
@@ -121,28 +128,52 @@ export const FormStory: Story<FormBasicProps> = (
 
 const fields: Field[] = [
   {
-    key: "storybook-form-field-name",
-    name: "name",
-    label: "Name",
-    type: "textfield",
-    validator: (value) => value === undefined || value === '' ? 'The name is required' : undefined
+    key: 'storybook-form-field-name',
+    name: 'name',
+    label: 'Name',
+    type: 'textfield',
+    validator: (value) =>
+      value === undefined || value === '' ? 'The name is required' : undefined
   },
   {
-    key: "storybook-form-field-gender",
-    name: "gender",
-    label: "Gender",
-    type: "select",
+    key: 'storybook-form-field-gender',
+    name: 'gender',
+    label: 'Gender',
+    type: 'datepicker',
     defaultValue: '',
-    validator: (value) => value === undefined || value === '' ? 'The gender is required' : undefined,
-    selectProps: { options: [{ key: "male", label: 'male' }, { key: "female", label: 'female' }] }
+    validator: (value) =>
+      value === undefined || value === ''
+        ? 'The gender is required'
+        : undefined,
+    selectProps: {
+      options: [
+        { key: 'male', label: 'male' },
+        { key: 'female', label: 'female' }
+      ]
+    }
   },
   {
-    key: "storybook-form-field-terms",
-    name: "terms",
-    label: "I agree to the terms and conditions",
-    type: "checkbox",
+    key: 'storybook-form-field-yesOrNo',
+    name: 'yesOrNo',
+    label: 'Yes or no?',
+    type: 'radioChoices',
+    defaultValue: '',
+    validator: (value) =>
+      value === undefined || value === '' ? 'answer the question' : undefined,
+    radioChoicesProps: {
+      choices: [
+        { key: 'yes', label: 'Yes' },
+        { key: 'no', label: 'No' }
+      ]
+    }
+  },
+  {
+    key: 'storybook-form-field-terms',
+    name: 'terms',
+    label: 'I agree to the terms and conditions',
+    type: 'checkbox',
     defaultValue: false,
-    validator: (value) => value !== true ? 'You have to agree' : undefined
+    validator: (value) => (value !== true ? 'You have to agree' : undefined)
   }
 ]
 
@@ -152,7 +183,7 @@ FormStory.args = {
     {
       label: 'validate',
       key: 'validateFormButton',
-      type: "submit"
+      type: 'submit'
     }
   ]
 }

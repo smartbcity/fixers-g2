@@ -1,23 +1,29 @@
-import React, { useState, useEffect, useCallback, useMemo, forwardRef } from 'react'
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+  useMemo,
+  forwardRef
+} from 'react'
 import { FileRejection, DropzoneProps, useDropzone } from 'react-dropzone'
-import { Paper, Typography } from  '@mui/material'
+import { Paper, Typography } from '@mui/material'
 import { Clear, AddPhotoAlternate } from '@mui/icons-material'
 import {
   BasicProps,
   MergeMuiElementProps,
-  lowLevelStyles
+  makeG2STyles
 } from '@smartb/g2-themes'
 import { Tooltip } from '@smartb/g2-notifications'
 import clsx from 'clsx'
 
-const useStyles = lowLevelStyles<{ width: number }>()({
+const useStyles = makeG2STyles<{ width: number }>()((theme, { width }) => ({
   root: {
-    width: ({ width }) => `${width}px`,
+    width: `${width}px`,
     position: 'relative'
   },
   dropZone: {
-    width: ({ width }) => `${width}px`,
-    height: ({ width }) => `${width}px`,
+    width: `${width}px`,
+    height: `${width}px`,
     background: 'rgb(237, 237, 237)',
     border: 'dashed rgba(209,202,203,1) 2px',
     borderRadius: '5px',
@@ -32,7 +38,7 @@ const useStyles = lowLevelStyles<{ width: number }>()({
     fontSize: '12px'
   },
   image: {
-    width: ({ width }) => `${width}px`,
+    width: `${width}px`,
     borderRadius: '5px'
   },
   clear: {
@@ -46,7 +52,7 @@ const useStyles = lowLevelStyles<{ width: number }>()({
     left: '50%'
   },
   container: {
-    width: ({ width }) => `${width}px`,
+    width: `${width}px`,
     height: 'auto',
     position: 'relative',
     cursor: 'pointer',
@@ -71,7 +77,7 @@ const useStyles = lowLevelStyles<{ width: number }>()({
     top: 0,
     left: 0
   }
-})
+}))
 
 interface DropPictureClasses {
   image?: string
@@ -165,7 +171,10 @@ export type DropPictureProps = MergeMuiElementProps<
   DropPictureBasicProps
 >
 
-const DropPictureBase = (props: DropPictureProps, ref: React.ForwardedRef<HTMLDivElement>) => {
+const DropPictureBase = (
+  props: DropPictureProps,
+  ref: React.ForwardedRef<HTMLDivElement>
+) => {
   const {
     onPictureDroped,
     onRemovePicture,
@@ -187,7 +196,7 @@ const DropPictureBase = (props: DropPictureProps, ref: React.ForwardedRef<HTMLDi
   } = props
 
   const stylesWidth = useMemo(() => ({ width: width }), [width])
-  const defaultClasses = useStyles(stylesWidth)
+  const defaultStyles = useStyles(stylesWidth)
   const [logo, setLogo] = useState<string>(initialPicture)
 
   useEffect(() => {
@@ -232,7 +241,7 @@ const DropPictureBase = (props: DropPictureProps, ref: React.ForwardedRef<HTMLDi
     return (
       <img
         src={logo !== '' ? logo : defaultPicture}
-        className={clsx(defaultClasses.image, classes?.image)}
+        className={clsx(defaultStyles.classes.image, classes?.image)}
         style={styles?.image}
         alt='A picture'
         onError={onError}
@@ -243,7 +252,7 @@ const DropPictureBase = (props: DropPictureProps, ref: React.ForwardedRef<HTMLDi
     return (
       <div
         ref={ref}
-        className={clsx(defaultClasses.root, className)}
+        className={clsx(defaultStyles.classes.root, className)}
         style={style}
         id={id}
       >
@@ -254,20 +263,23 @@ const DropPictureBase = (props: DropPictureProps, ref: React.ForwardedRef<HTMLDi
         >
           <Paper
             elevation={0}
-            className={clsx(defaultClasses.dropZone, classes?.dropZone)}
+            className={clsx(defaultStyles.classes.dropZone, classes?.dropZone)}
             style={styles?.dropZone}
             {...getRootProps()}
           >
             <input {...getInputProps()} />
             <AddPhotoAlternate
-              className={clsx(defaultClasses.add, classes?.addPictureIcon)}
+              className={clsx(
+                defaultStyles.classes.add,
+                classes?.addPictureIcon
+              )}
               style={styles?.addPictureIcon}
             />
           </Paper>
         </Tooltip>
         {!!errorMessage && (
           <Typography
-            className={clsx(defaultClasses.error, classes?.errorMessage)}
+            className={clsx(defaultStyles.classes.error, classes?.errorMessage)}
             style={styles?.errorMessage}
             variant='body2'
             align='center'
@@ -285,20 +297,20 @@ const DropPictureBase = (props: DropPictureProps, ref: React.ForwardedRef<HTMLDi
     >
       <div
         ref={ref}
-        className={clsx(defaultClasses.container, className)}
+        className={clsx(defaultStyles.classes.container, className)}
         style={style}
         id={id}
         onClick={onRemoveLogo}
       >
         <img
           src={logo}
-          className={clsx(defaultClasses.image, classes?.image)}
+          className={clsx(defaultStyles.classes.image, classes?.image)}
           style={styles?.image}
           alt='A picture'
           onError={onError}
         />
         <Clear
-          className={clsx(defaultClasses.clear, classes?.clearIcon)}
+          className={clsx(defaultStyles.classes.clear, classes?.clearIcon)}
           style={styles?.clearIcon}
         />
       </div>

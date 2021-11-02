@@ -5,15 +5,15 @@ import {
   Typography,
   ListItemIcon,
   Grid
-} from  '@mui/material'
+} from '@mui/material'
 import {
   MergeReactElementProps,
   BasicProps,
-  lowLevelStyles
+  makeG2STyles
 } from '@smartb/g2-themes'
 import clsx from 'clsx'
 
-const useStyles = lowLevelStyles()({
+const useStyles = makeG2STyles()({
   gridContainer: {
     display: 'flex',
     padding: '5px',
@@ -108,7 +108,7 @@ export const ItemsLayout = React.forwardRef(
       styles,
       ...other
     } = props
-    const defaultClasses = useStyles()
+    const defaultStyles = useStyles()
 
     if (display === 'list')
       return (
@@ -126,7 +126,7 @@ export const ItemsLayout = React.forwardRef(
                 onClick={() => it.goto && !it.href && it.goto()}
                 href={it.href}
                 className={clsx(
-                  defaultClasses.item,
+                  defaultStyles.classes.item,
                   'AruiItemsLayout-listItem',
                   classes?.listItem
                 )}
@@ -134,7 +134,7 @@ export const ItemsLayout = React.forwardRef(
                 key={it.key}
               >
                 {it.icon && (
-                  <ListItemIcon classes={{ root: defaultClasses.icon }}>
+                  <ListItemIcon classes={{ root: defaultStyles.classes.icon }}>
                     {it.icon}
                   </ListItemIcon>
                 )}
@@ -146,7 +146,7 @@ export const ItemsLayout = React.forwardRef(
     return (
       <div
         className={clsx(
-          defaultClasses.gridRoot,
+          defaultStyles.classes.gridRoot,
           'AruiItemsLayout-gridRoot',
           className
         )}
@@ -161,7 +161,7 @@ export const ItemsLayout = React.forwardRef(
           direction='row'
           alignContent='flex-start'
           className={clsx(
-            defaultClasses.gridContainer,
+            defaultStyles.classes.gridContainer,
             'AruiItemsLayout-gridContainer',
             classes?.gridContainer
           )}
@@ -178,7 +178,7 @@ export const ItemsLayout = React.forwardRef(
                 direction='column'
                 justifyContent='space-around'
                 className={clsx(
-                  defaultClasses.gridItem,
+                  defaultStyles.classes.gridItem,
                   'AruiItemsLayout-gridItem',
                   classes?.gridItem
                 )}
@@ -192,6 +192,6 @@ export const ItemsLayout = React.forwardRef(
             ))}
         </Grid>
       </div>
-    );
+    )
   }
 )

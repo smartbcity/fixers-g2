@@ -1,9 +1,9 @@
 import React, { forwardRef } from 'react'
 import { Arrow } from '../icons'
-import { lowLevelStyles } from '@smartb/g2-themes'
+import { makeG2STyles } from '@smartb/g2-themes'
 import { Button, ButtonProps } from './Button'
 
-const useStyles = lowLevelStyles()({
+const useStyles = makeG2STyles()({
   arrow: {
     marginLeft: '-8px',
     marginRight: '8px',
@@ -13,8 +13,11 @@ const useStyles = lowLevelStyles()({
   }
 })
 
-const BackButtonBase = function <T = {}>(props: ButtonProps<T>, ref: React.ForwardedRef<HTMLButtonElement>) {
-  const classes = useStyles()
+const BackButtonBase = function <T = {}>(
+  props: ButtonProps<T>,
+  ref: React.ForwardedRef<HTMLButtonElement>
+) {
+  const { classes } = useStyles()
   return (
     <Button
       variant='text'

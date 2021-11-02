@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import { Popover as AruiPopover, PopoverBasicProps } from './Popover'
 import { Meta } from '@storybook/react'
 import { Story } from '@storybook/react/types-6-0'
@@ -43,7 +43,12 @@ export const Popover: Story<PopoverBasicProps> = (args: PopoverBasicProps) => {
   const anchor = useRef<HTMLButtonElement>(null)
   return (
     <Box display='flex' justifyContent='center' alignItems='center'>
-      <Button ref={anchor} onClick={() => setOpen(!open)}>
+      <Button
+        ref={anchor}
+        onClick={() => {
+          setOpen(!open)
+        }}
+      >
         Open the popover
       </Button>
       <AruiPopover
@@ -51,7 +56,7 @@ export const Popover: Story<PopoverBasicProps> = (args: PopoverBasicProps) => {
         open={open}
         onClose={() => setOpen(!open)}
         anchorEl={anchor.current}
-        placement='left'
+        placement='top'
       >
         <Box display='flex' flexDirection='column' maxWidth='300px'>
           <Typography variant='h6' style={{ marginBottom: '15px' }}>

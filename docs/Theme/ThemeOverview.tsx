@@ -1,64 +1,61 @@
 import React from "react";
-import { createStyles, makeStyles } from "@mui/styles";
-import { Typography } from  '@mui/material';
+import { Typography } from "@mui/material";
 import { SBButton, Panel, Card } from "../../packages/components/src";
 import { getShadows } from "./Theme";
 import ThemeGetter from "./ThemeGetter";
-import { ThemeColors, useThemeContext } from "@smartb/g2-themes";
+import { ThemeColors, useThemeContext, makeG2STyles } from "@smartb/g2-themes";
 
-const useStyles = makeStyles(() =>
-  createStyles({
-    card: {
-      width: "150px",
-      height: "150px",
-      boxShadow: "rgba(0, 0, 0, 0.2) -3px -5px inset",
-      margin: "10px",
-      borderRadius: "5px",
-      alignItems: "center",
-      display: "flex",
-      justifyContent: "center",
-    },
-    container: {
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "space-around",
-      flexWrap: "wrap",
-      width: "100%",
-    },
-    root: {
-      width: "100%",
-      border: "#dbdbdb 1px solid",
-      borderRadius: "10px",
-      marginBottom: "20px",
-    },
-    header: {
-      width: "80%",
-      marginLeft: "10%",
-      borderBottom: "#dbdbdb 1px solid",
-      display: "flex",
-      padding: "15px",
-      justifyContent: "center",
-      flexDirection: "column",
-    },
-    image: {
-      maxWidth: "500px",
-      maxHeight: "200px",
-    },
-    text: {
-      color: "black",
-    },
-    inputContainer: {
-      display: "inline-flex",
-      flexWrap: "wrap",
-    },
-    input: {
-      width: "20px",
-    },
-  })
-);
+const useStyles = makeG2STyles()(() => ({
+  card: {
+    width: "150px",
+    height: "150px",
+    boxShadow: "rgba(0, 0, 0, 0.2) -3px -5px inset",
+    margin: "10px",
+    borderRadius: "5px",
+    alignItems: "center",
+    display: "flex",
+    justifyContent: "center",
+  },
+  container: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-around",
+    flexWrap: "wrap",
+    width: "100%",
+  },
+  root: {
+    width: "100%",
+    border: "#dbdbdb 1px solid",
+    borderRadius: "10px",
+    marginBottom: "20px",
+  },
+  header: {
+    width: "80%",
+    marginLeft: "10%",
+    borderBottom: "#dbdbdb 1px solid",
+    display: "flex",
+    padding: "15px",
+    justifyContent: "center",
+    flexDirection: "column",
+  },
+  image: {
+    maxWidth: "500px",
+    maxHeight: "200px",
+  },
+  text: {
+    color: "black",
+  },
+  inputContainer: {
+    display: "inline-flex",
+    flexWrap: "wrap",
+  },
+  input: {
+    width: "20px",
+  },
+}));
 
 const ThemeOverview = () => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const themeContext = useThemeContext();
   const onColorChange = (props: keyof ThemeColors, color: string) => {
     themeContext.changeTheme({ [props]: color });

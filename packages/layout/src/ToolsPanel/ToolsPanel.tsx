@@ -9,11 +9,11 @@ import {
   AccordionDetails,
   ListItem,
   List
-} from  '@mui/material'
-import { BasicProps, lowLevelStyles } from '@smartb/g2-themes'
+} from '@mui/material'
+import { BasicProps, makeG2STyles } from '@smartb/g2-themes'
 import clsx from 'clsx'
 
-const useStyles = lowLevelStyles()({
+const useStyles = makeG2STyles()({
   profile: {
     boxShadow: 'none !important',
     background: 'transparent',
@@ -56,7 +56,7 @@ export interface ToolsPanelProps extends BasicProps {
 
 export const ToolsPanel = (props: ToolsPanelProps) => {
   const { menu, style, className, id } = props
-  const classes = useStyles()
+  const { classes } = useStyles()
 
   return (
     <Accordion
