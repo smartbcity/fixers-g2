@@ -35,18 +35,18 @@ export const defaultTheme: Theme = {
   },
   shadows: [
     'none',
-    '0px 3px 10px 0 rgba(0,0,0,0.1)',
-    '0px 3.75px 12.5px 0px rgba(0,0,0,0.12)',
-    '0px 4.5px 15px 0px rgba(0,0,0,0.14)',
-    '0px 5.25px 17.5px 0px rgba(0,0,0,0.16)',
-    '0px 6px 20px 0px rgba(0,0,0,0.18)',
-    '0px 6.75px 22.5px 0px rgba(0,0,0,0.2)',
-    '0px 7.5px 25px 0px rgba(0,0,0,0.22)',
-    '0px 8.25px 27.5px 0px rgba(0,0,0,0.24)',
-    '0px 9px 30px 0px rgba(0,0,0,0.26)',
-    '0px 9.75px 32.5px 0px rgba(0,0,0,0.28)',
-    '0px 10.5px 35px 0px rgba(0,0,0,0.3)',
-    '0px 11.25px 37.5px 0px rgba(0,0,0,0.32)'
+    '0px 4px 8px rgba(0, 0, 0, 0.2)',
+    '0px 5px 12px rgba(0, 0, 0, 0.21)',
+    '0px 6px 16px rgba(0, 0, 0, 0.22)',
+    '0px 7px 20px rgba(0, 0, 0, 0.23)',
+    '0px 8px 24px rgba(0, 0, 0, 0.24)',
+    '0px 9px 28px rgba(0, 0, 0, 0.25)',
+    '0px 10px 32px rgba(0, 0, 0, 0.26)',
+    '0px 11px 36px rgba(0, 0, 0, 0.27)',
+    '0px 12px 40px rgba(0, 0, 0, 0.28)',
+    '0px 13px 44px rgba(0, 0, 0, 0.29)',
+    '0px 14px 48px rgba(0, 0, 0, 0.3)',
+    '0px 15px 52px rgba(0, 0, 0, 0.31)'
   ]
 } //the archetypes theme (maybe not the final version)
 
