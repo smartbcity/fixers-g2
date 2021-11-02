@@ -6,11 +6,10 @@ export const useAlertHub = () => {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar()
 
   const pushAlert = useCallback(
-    //@ts-ignore
     (alertProps: AlertProps & { persist?: boolean; key?: string }) =>
+      //@ts-ignore
       enqueueSnackbar(alertProps.message ?? '', {
-        //@ts-ignore
-        variant: 'alert',
+        variant: 'customAlert',
         persist: true,
         ...alertProps
       }),

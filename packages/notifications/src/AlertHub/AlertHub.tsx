@@ -1,7 +1,7 @@
 import React, { forwardRef, useCallback } from 'react'
 import { SnackbarProvider, useSnackbar, SnackbarProviderProps } from 'notistack'
 import { Alert, AlertProps } from '../Alert/Alert'
-import Grow from '@mui/material/Grow'
+import { Grow } from '@mui/material'
 import { makeG2STyles } from '@smartb/g2-themes'
 import clsx from 'clsx'
 
@@ -25,15 +25,13 @@ export interface AlertHubProps extends SnackbarProviderProps {
 export const AlertHub = (props: AlertHubProps) => {
   const { children, ...other } = props
   return (
-    //@ts-ignore
     <SnackbarProvider
       anchorOrigin={{
         vertical: 'bottom',
         horizontal: 'left'
       }}
       Components={{
-        //@ts-ignore
-        alert: ClosableAlert
+        customAlert: ClosableAlert
       }}
       maxSnack={3}
       //@ts-ignore
@@ -47,12 +45,14 @@ export const AlertHub = (props: AlertHubProps) => {
 
 const ClosableAlert = forwardRef<HTMLElement, Omit<AlertProps, 'onClose'>>(
   (props, ref) => {
-    const { id, className, ...other } = props
+    const { key, id = key, className, ...other } = props
     const { classes } = useSytles()
     const { closeSnackbar } = useSnackbar()
     const handleClose = useCallback(() => closeSnackbar(id), [id])
     return (
       <Alert
+        key={key}
+        id={id}
         className={clsx(className, classes.alert)}
         onClose={handleClose}
         ref={ref}
