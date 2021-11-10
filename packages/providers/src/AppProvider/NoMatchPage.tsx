@@ -96,6 +96,7 @@ export const NoMatchPage = (props: NoMatchPageProps) => {
       flexDirection='column'
       justifyContent='center'
       alignItems='center'
+      padding='20px'
       {...other}
     >
       <NotFoundIcon

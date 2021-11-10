@@ -4,7 +4,7 @@ import { Meta } from '@storybook/react'
 import { Story } from '@storybook/react/types-6-0'
 import { useAuth, KeycloackService } from './useAuth'
 import { Button } from '@smartb/g2-components'
-import { Link, Typography } from  '@mui/material'
+import { Link, Typography } from '@mui/material'
 import {
   ArgsTable,
   PRIMARY_STORY,
@@ -35,7 +35,10 @@ export default {
             style={{ margin: '5px', marginBottom: '20px' }}
           >
             -{' '}
-            <Link href='https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/oidc/javascript-adapter.adoc'>
+            <Link
+              color='#0000ee'
+              href='https://github.com/keycloak/keycloak-documentation/blob/master/securing_apps/topics/oidc/javascript-adapter.adoc'
+            >
               Keycloak init options
             </Link>
           </Typography>
@@ -54,7 +57,7 @@ export default {
           </Description>
           <CodeHighlighter code={localUseAuth} />
           <Description>
-            The authService contains already 2 functions. One for veifying if
+            The authService contains already 2 functions. One for verifying if
             the current user has the wanted roles `isAuthorized` and another one
             to get the current user id `getUserId`.
           </Description>

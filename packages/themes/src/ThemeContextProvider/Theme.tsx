@@ -97,6 +97,18 @@ export const defaultMaterialUiTheme = (
       },
       secondary: {
         main: theme.colors.secondary
+      },
+      success: {
+        main: theme.colors.success
+      },
+      warning: {
+        main: theme.colors.warning
+      },
+      info: {
+        main: theme.colors.info
+      },
+      error: {
+        main: theme.colors.error
       }
     },
     typography: {

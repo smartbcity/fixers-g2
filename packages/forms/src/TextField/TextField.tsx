@@ -142,6 +142,13 @@ export interface TextFieldBasicProps extends BasicProps {
   iconPosition?: 'start' | 'end'
 
   /**
+   * pass this prop to true if the check or clear icons are bothering you
+   *
+   * @default false
+   */
+  noCheckOrClearIcon?: boolean
+
+  /**
    * The event called when a search request is send when the `textFieldType` is equal to 'search'
    */
   onSearch?: () => void
@@ -184,6 +191,7 @@ export const TextField = React.forwardRef(
       validated = false,
       onSearch,
       InputProps,
+      noCheckOrClearIcon = false,
       ...other
     } = props
 
@@ -284,6 +292,7 @@ export const TextField = React.forwardRef(
     }, [classes?.helperText, styles?.helperText])
 
     const rightIcon = useMemo(() => {
+      if (noCheckOrClearIcon) return
       if (validated)
         return (
           <CheckRounded
@@ -324,6 +333,7 @@ export const TextField = React.forwardRef(
       classes?.validIcon,
       styles?.validIcon,
       inputAdornment.endAdornment,
+      noCheckOrClearIcon,
       error,
       disabled
     ])
