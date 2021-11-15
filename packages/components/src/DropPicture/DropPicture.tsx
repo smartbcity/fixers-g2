@@ -1,10 +1,4 @@
-import React, {
-  useState,
-  useEffect,
-  useCallback,
-  useMemo,
-  forwardRef
-} from 'react'
+import React, { useState, useEffect, useCallback, forwardRef } from 'react'
 import { FileRejection, DropzoneProps, useDropzone } from 'react-dropzone'
 import { Paper, Typography } from '@mui/material'
 import { Clear, AddPhotoAlternate } from '@mui/icons-material'
@@ -16,14 +10,16 @@ import {
 import { Tooltip } from '@smartb/g2-notifications'
 import clsx from 'clsx'
 
-const useStyles = makeG2STyles<{ width: number }>()((theme, { width }) => ({
+//@ts-ignore
+const useStyles = makeG2STyles()({
   root: {
-    width: `${width}px`,
-    position: 'relative'
+    position: 'relative',
+    width: `100%`,
+    height: `100%`
   },
   dropZone: {
-    width: `${width}px`,
-    height: `${width}px`,
+    width: `100%`,
+    height: `100%`,
     background: 'rgb(237, 237, 237)',
     border: 'dashed rgba(209,202,203,1) 2px',
     borderRadius: '5px',
@@ -38,8 +34,10 @@ const useStyles = makeG2STyles<{ width: number }>()((theme, { width }) => ({
     fontSize: '12px'
   },
   image: {
-    width: `${width}px`,
-    borderRadius: '5px'
+    width: `100%`,
+    borderRadius: '5px',
+    objectFit: 'cover',
+    height: '100%'
   },
   clear: {
     color: '#757575',
@@ -52,7 +50,7 @@ const useStyles = makeG2STyles<{ width: number }>()((theme, { width }) => ({
     left: '50%'
   },
   container: {
-    width: `${width}px`,
+    width: `100%`,
     height: 'auto',
     position: 'relative',
     cursor: 'pointer',
@@ -77,7 +75,7 @@ const useStyles = makeG2STyles<{ width: number }>()((theme, { width }) => ({
     top: 0,
     left: 0
   }
-}))
+})
 
 interface DropPictureClasses {
   image?: string
@@ -195,8 +193,7 @@ const DropPictureBase = (
     ...other
   } = props
 
-  const stylesWidth = useMemo(() => ({ width: width }), [width])
-  const defaultStyles = useStyles(stylesWidth)
+  const defaultStyles = useStyles()
   const [logo, setLogo] = useState<string>(initialPicture)
 
   useEffect(() => {
@@ -252,7 +249,11 @@ const DropPictureBase = (
     return (
       <div
         ref={ref}
-        className={clsx(defaultStyles.classes.root, className)}
+        className={clsx(
+          defaultStyles.classes.root,
+          'AruiDropzone-root',
+          className
+        )}
         style={style}
         id={id}
       >
@@ -263,7 +264,11 @@ const DropPictureBase = (
         >
           <Paper
             elevation={0}
-            className={clsx(defaultStyles.classes.dropZone, classes?.dropZone)}
+            className={clsx(
+              defaultStyles.classes.dropZone,
+              'AruiDropzone-dropzone',
+              classes?.dropZone
+            )}
             style={styles?.dropZone}
             {...getRootProps()}
           >
@@ -279,7 +284,11 @@ const DropPictureBase = (
         </Tooltip>
         {!!errorMessage && (
           <Typography
-            className={clsx(defaultStyles.classes.error, classes?.errorMessage)}
+            className={clsx(
+              defaultStyles.classes.error,
+              'AruiDropzone-error',
+              classes?.errorMessage
+            )}
             style={styles?.errorMessage}
             variant='body2'
             align='center'
@@ -297,20 +306,32 @@ const DropPictureBase = (
     >
       <div
         ref={ref}
-        className={clsx(defaultStyles.classes.container, className)}
+        className={clsx(
+          defaultStyles.classes.container,
+          'AruiDropzone-root',
+          className
+        )}
         style={style}
         id={id}
         onClick={onRemoveLogo}
       >
         <img
           src={logo}
-          className={clsx(defaultStyles.classes.image, classes?.image)}
+          className={clsx(
+            defaultStyles.classes.image,
+            'AruiDropzone-image',
+            classes?.image
+          )}
           style={styles?.image}
-          alt='A picture'
+          alt='The uploaded picture'
           onError={onError}
         />
         <Clear
-          className={clsx(defaultStyles.classes.clear, classes?.clearIcon)}
+          className={clsx(
+            defaultStyles.classes.clear,
+            'AruiDropzone-clearIcon',
+            classes?.clearIcon
+          )}
           style={styles?.clearIcon}
         />
       </div>
