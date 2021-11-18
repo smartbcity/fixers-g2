@@ -164,6 +164,7 @@ export const InputForm: InputFormComponent = React.forwardRef(
       return readonly ? (
         <TextField
           {...other}
+          size={size}
           className={classes?.input}
           style={styles?.input}
           classes={inputClasses}
@@ -175,6 +176,7 @@ export const InputForm: InputFormComponent = React.forwardRef(
       ) : inputType === 'textField' ? (
         <TextField
           {...other}
+          size={size}
           className={classes?.input}
           style={styles?.input}
           classes={inputClasses}
@@ -185,6 +187,7 @@ export const InputForm: InputFormComponent = React.forwardRef(
       ) : inputType === 'select' ? (
         <Select
           {...other}
+          size={size}
           className={classes?.input}
           style={styles?.input}
           classes={inputClasses}
@@ -205,6 +208,7 @@ export const InputForm: InputFormComponent = React.forwardRef(
       ) : (
         <DatePicker
           {...other}
+          size={size}
           className={classes?.input}
           style={styles?.input}
           classes={inputClasses}
@@ -221,6 +225,7 @@ export const InputForm: InputFormComponent = React.forwardRef(
       id,
       styles?.input,
       ref,
+      size,
       Object.values({ ...other })
     ])
 

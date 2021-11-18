@@ -22,12 +22,10 @@ function Example() {
   const { pushAlert } = useAlertHub()
 
   const handleClick = () => {
-    //@ts-ignore
     pushAlert({ message: 'hello' })
   }
 
   const handleClickSuccess = () => {
-    //@ts-ignore
     pushAlert({ message: 'hello', severity: 'success' })
   }
 

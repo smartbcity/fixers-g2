@@ -88,6 +88,8 @@ interface AlertStyles {
   closeIcon?: React.CSSProperties
 }
 
+export type AlertSeverity = 'info' | 'warning' | 'success' | 'error'
+
 export interface AlertBasicProps extends BasicProps {
   /**
    * The content displayed in the alert. It overrides the prop `message` if provided
