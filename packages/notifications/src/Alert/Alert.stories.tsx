@@ -3,7 +3,7 @@ import { Alert as AruiAlert, AlertBasicProps } from './Alert'
 import { Meta } from '@storybook/react'
 import { Story } from '@storybook/react/types-6-0'
 import { withDesign } from 'storybook-addon-designs'
-import { Box } from  '@mui/material'
+import { Box } from '@mui/material'
 import { classes, styles } from './types'
 
 export default {
@@ -130,7 +130,7 @@ export const AlertColorBase: Story<AlertBasicProps> = () => {
 }
 
 Alert.args = {
-  children: 'Hello',
+  message: 'Hello',
   onClose: () => {}
 }
 

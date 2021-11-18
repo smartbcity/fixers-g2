@@ -19,12 +19,21 @@ import {
 } from '@mui/icons-material'
 
 const useStyles = makeG2STyles()((theme) => ({
+  root: {
+    maxWidth: '400px'
+  },
   content: {
     background: '#595959',
     borderRadius: '5px',
     position: 'relative',
     overflow: 'hidden',
-    padding: '4px 32px 4px 60px'
+    padding: '4px 32px 4px 60px',
+    '& .MuiSnackbarContent-message': {
+      padding: '3px 0',
+      minHeight: '29px',
+      display: 'flex',
+      alignItems: 'center'
+    }
   },
   contentWithoutClose: {
     padding: '4px 16px 4px 60px'
@@ -38,7 +47,7 @@ const useStyles = makeG2STyles()((theme) => ({
   },
   closeIcon: {
     position: 'absolute',
-    top: 'calc(50% - 10px)',
+    top: 'calc(50% - 9.5px)',
     right: 10,
     cursor: 'pointer',
     width: 20,
@@ -191,7 +200,7 @@ const AlertBase = (props: AlertProps, ref: React.ForwardedRef<HTMLElement>) => {
   }, [severity, classes?.severityIcon, styles?.severityIcon])
   return (
     <MuiSnackbar
-      className={clsx(className, 'AruiAlert-root')}
+      className={clsx(className, 'AruiAlert-root', defaultStyles.classes.root)}
       ref={ref}
       ClickAwayListenerProps={{ onClickAway: () => {} }}
       ContentProps={{
@@ -224,7 +233,7 @@ const AlertBase = (props: AlertProps, ref: React.ForwardedRef<HTMLElement>) => {
           {children ? (
             children
           ) : (
-            <Typography variant='subtitle2'>{message}</Typography>
+            <Typography variant='body2'>{message}</Typography>
           )}
           {onClose && (
             <CloseRounded
