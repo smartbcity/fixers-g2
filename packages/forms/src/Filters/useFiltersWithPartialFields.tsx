@@ -1,14 +1,13 @@
 import { FormikConfig, FormikHelpers, useFormik } from 'formik'
-import { useCallback, useMemo } from 'react'
-import { FormState } from './useForm'
+import { useMemo } from 'react'
+import { FiltersState } from './useFilters'
 
 export type PartialField = {
   name: string
   defaultValue?: any
-  validator?: (value: any) => string | undefined | void
 }
 
-interface useFormWithPartialParams {
+interface useFiltersWithPartialParams {
   /**
    * the partial fields of the form
    */
@@ -32,12 +31,13 @@ interface useFormWithPartialParams {
 }
 
 /**
- * the useform with the minimum informations needed to init the useformik state
+ * the usefilters with the minimum informations needed to init the useformik state
  */
-export const useFormWithPartialFields = (
-  params: useFormWithPartialParams
-): FormState => {
+export const useFiltersWithPartialFields = (
+  params: useFiltersWithPartialParams
+): FiltersState => {
   const { partialFields, onSubmit, formikConfig } = params
+
   const initialValues = useMemo(() => {
     const obj = {}
     partialFields.forEach((field) => {
@@ -46,24 +46,9 @@ export const useFormWithPartialFields = (
     return obj
   }, [partialFields])
 
-  const validate = useCallback(
-    (values) => {
-      const errors = {}
-      partialFields.forEach((field) => {
-        if (field.validator) {
-          const error = field.validator(values[field.name])
-          if (error) errors[field.name] = error
-        }
-      })
-      return errors
-    },
-    [partialFields]
-  )
-
   const formik = useFormik({
     initialValues: initialValues,
     onSubmit: onSubmit,
-    validate: validate,
     ...formikConfig
   })
 

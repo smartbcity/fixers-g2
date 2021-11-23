@@ -3,7 +3,7 @@
   "repository": "https://gitlab.smartb.city/fixers/g2.git",
   "author": "Adrien Poupard <adrien@smartb.city>",
   "license": "Apache-2.0",
-  "version": "1.0.0-alpha.12",
+  "version": "1.0.0-alpha.13",
   "description": "React notifications library",
   "private": false,
   "main": "dist/index.js",
@@ -26,8 +26,8 @@
     "dist"
   ],
   "devDependencies": {
-    "@smartb/g2-components": "^1.0.0-alpha.12",
-    "@smartb/g2-forms": "^1.0.0-alpha.12"
+    "@smartb/g2-components": "^1.0.0-alpha.13",
+    "@smartb/g2-forms": "^1.0.0-alpha.13"
   },
   "peerDependencies": {
     "@mui/material": "^5.0.6",
@@ -37,7 +37,7 @@
   },
   "dependencies": {
     "@mui/icons-material": "^5.0.5",
-    "@smartb/g2-themes": "^1.0.0-alpha.12",
+    "@smartb/g2-themes": "^1.0.0-alpha.13",
     "clsx": "^1.1.1",
     "notistack": "3.0.0-alpha.1"
   },

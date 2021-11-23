@@ -21,6 +21,8 @@ export {
   Filters,
   Action as FiltersAction,
   Field as FiltersField,
+  PartialField as FiltersPartialField,
+  useFiltersWithPartialFields,
   FiltersProps,
   FiltersState,
   useFilters
