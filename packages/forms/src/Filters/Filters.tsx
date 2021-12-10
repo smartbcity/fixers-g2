@@ -224,7 +224,10 @@ export const Filters = (props: FiltersProps) => {
                 onChangeValues={(values) =>
                   formState.setFieldValue(field.name, values, false)
                 }
-                onRemove={() => formState.setFieldValue(field.name, [], false)}
+                onRemove={() => {
+                  formState.setFieldValue(field.name, [], false)
+                  defaultSubmitBehavior && formState.submitForm()
+                }}
                 onClose={() => defaultSubmitBehavior && formState.submitForm()}
                 {...field.selectProps}
               />
@@ -236,7 +239,10 @@ export const Filters = (props: FiltersProps) => {
                   formState.setFieldValue(field.name, value, false)
                   formState.submitForm()
                 }}
-                onRemove={() => formState.setFieldValue(field.name, '', false)}
+                onRemove={() => {
+                  formState.setFieldValue(field.name, '', false)
+                  defaultSubmitBehavior && formState.submitForm()
+                }}
                 onClose={() => defaultSubmitBehavior && formState.submitForm()}
                 {...field.selectProps}
               />

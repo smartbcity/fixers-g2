@@ -76,13 +76,13 @@ const useStyles = makeG2STyles()({
     }
   },
   selectPaddingWithClear: {
-    '& .MuiSelect-root': {
-      paddingRight: '44px'
+    '& .MuiSelect-select': {
+      paddingRight: '44px !important'
     }
   },
   selectPadding: {
-    '& .MuiSelect-root': {
-      paddingRight: '28px',
+    '& .MuiSelect-select': {
+      paddingRight: '28px !important',
       margin: '0px'
     }
   },
@@ -91,6 +91,7 @@ const useStyles = makeG2STyles()({
   },
   chip: {
     width: '17px',
+    minWidth: '17px',
     height: '17px',
     display: 'flex',
     justifyContent: 'center',
@@ -248,6 +249,11 @@ export const FilterSelect = React.forwardRef(
       [onChangeValue, onChangeValues]
     )
 
+    const optionsMap = useMemo(
+      () => new Map(options.map((el) => [el.key, el.label])),
+      [options]
+    )
+
     const renderValue = useCallback(
       (selected: string | string[]) => {
         if (variant === 'outlined') {
@@ -258,10 +264,10 @@ export const FilterSelect = React.forwardRef(
             return placeholder
           }
           if (Array.isArray(selected) && selected.length > 0) {
-            return selected.join(', ')
+            return selected.map((el) => optionsMap.get(el)).join(', ')
           }
           if (!Array.isArray(selected)) {
-            return selected
+            return optionsMap.get(selected)
           }
           return ''
         }
@@ -271,7 +277,11 @@ export const FilterSelect = React.forwardRef(
           ? 0
           : 1
         return (
-          <Box display='flex' alignItems='center'>
+          <Box
+            display='flex'
+            justifyContent='space-between'
+            alignItems='center'
+          >
             <InputLabel
               className={clsx(
                 classes?.label,
@@ -306,7 +316,8 @@ export const FilterSelect = React.forwardRef(
         classes?.label,
         classes?.chip,
         styles?.label,
-        styles?.chip
+        styles?.chip,
+        optionsMap
       ]
     )
 
@@ -366,13 +377,16 @@ export const FilterSelect = React.forwardRef(
 
     const onCloseMemoized = useCallback(
       (event: React.SyntheticEvent<Element, Event>) => {
-        if (!multiple) return
         //@ts-ignore
         const valueClicked = event.currentTarget.dataset.value
-        onRemove && value === valueClicked && onRemove()
+        onRemove &&
+          value &&
+          valueClicked &&
+          value.toString() === valueClicked.toString() &&
+          onRemove()
         onClose && onClose(event)
       },
-      [value, onRemove, onClose, multiple]
+      [value, onRemove, onClose]
     )
 
     const canRemove =

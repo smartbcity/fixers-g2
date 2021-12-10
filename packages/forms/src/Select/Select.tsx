@@ -199,6 +199,7 @@ export const Select = React.forwardRef(
       styles,
       size = 'medium',
       multiple = false,
+      onClose,
       ...other
     } = props
 
@@ -287,14 +288,18 @@ export const Select = React.forwardRef(
       }
     }, [name, onRemove, value, classes?.input, styles?.input, id])
 
-    const onClose = useCallback(
+    const onCloseMemoized = useCallback(
       (event: React.SyntheticEvent<Element, Event>) => {
-        if (!multiple) return
         //@ts-ignore
         const valueClicked = event.currentTarget.dataset.value
-        onRemove && value === valueClicked && onRemove()
+        onRemove &&
+          value &&
+          valueClicked &&
+          value.toString() === valueClicked.toString() &&
+          onRemove()
+        onClose && onClose(event)
       },
-      [value, onRemove, multiple]
+      [value, onRemove, onClose]
     )
 
     const canRemove =
@@ -333,7 +338,7 @@ export const Select = React.forwardRef(
           )}
           variant={'filled'}
           value={multiple ? values : value}
-          onClose={onClose}
+          onClose={onCloseMemoized}
           multiple={multiple}
           IconComponent={selectIcon}
           onChange={onChangeMemoized}

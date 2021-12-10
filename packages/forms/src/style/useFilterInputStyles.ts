@@ -11,6 +11,7 @@ export const useFilterInputStyles = makeG2STyles()((theme) => ({
     '& .MuiInputBase-input': {
       padding: '5px 7px',
       fontSize: '14px',
+      height: 'unset',
       color: 'inherit'
     },
     '& .MuiSelect-root': {
@@ -31,14 +32,15 @@ export const useFilterInputStyles = makeG2STyles()((theme) => ({
       borderRadius: '4px',
       color: '#323338',
       minWidth: '100px',
-      backgroundColor: 'white',
+      backgroundColor: 'transparent',
       transition: 'background-color 200ms'
     },
     '& .MuiOutlinedInput-notchedOutline': {
+      top: '-7px',
       '& legend': {
         height: 15,
         '& span': {
-          padding: 0
+          padding: '0px 3px'
         }
       }
     },
@@ -64,10 +66,12 @@ export const useFilterInputStyles = makeG2STyles()((theme) => ({
       color: '#323338'
     },
     '& .MuiInputLabel-outlined': {
-      transform: 'translate(14px, 6.5px) scale(1)'
+      transform: 'translate(14px, 6.5px) scale(1)',
+      top: '-2px'
     },
     '& .MuiInputLabel-outlined.MuiInputLabel-shrink': {
-      transform: 'translate(14px, -6px) scale(0.75)'
+      transform: 'translate(14px, -6px) scale(0.75)',
+      top: '-3px'
     },
     '& .MuiFilledInput-underline:before': {
       borderBottom: 'none'

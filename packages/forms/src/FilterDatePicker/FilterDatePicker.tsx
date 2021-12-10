@@ -310,6 +310,7 @@ const FilterDatePickerBase = (
         {...props}
         id={id}
         name={name}
+        onClick={onOpenMemoized}
         placeholder={variant === 'filled' ? label : undefined}
         color={color !== 'default' ? color : undefined}
         className={clsx(
@@ -331,8 +332,7 @@ const FilterDatePickerBase = (
             'AruiFilterDatePicker-label',
             classes?.label
           ),
-          style: styles?.label,
-          shrink: true
+          style: styles?.label
         }}
         inputProps={{
           size: '5',
