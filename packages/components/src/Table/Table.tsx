@@ -41,7 +41,7 @@ const useStyles = makeG2STyles()({
   }
 })
 
-const getCustomStyles = (theme: Theme) => ({
+const getCustomStyles = (theme: Theme, highlightOnHover: boolean) => ({
   table: {
     style: {
       backgroundColor: 'transparent'
@@ -62,7 +62,9 @@ const getCustomStyles = (theme: Theme) => ({
       borderRadius: '5px',
       border: `2px solid transparent !important`,
       '&:hover': {
-        border: `2px solid ${theme.colors.secondary} !important`,
+        border: highlightOnHover
+          ? `2px solid ${theme.colors.secondary} !important`
+          : '',
         backgroundColor: `#FFFFFF !important`,
         borderRadius: 5,
         outlineWidth: 'inherit !important'
@@ -209,11 +211,16 @@ export const Table = <Row,>(props: TableProps<Row>) => {
     ExpandableComponents,
     expandOnRowClicked = false,
     loadingComponent,
+    pointerOnHover = false,
+    highlightOnHover = false,
     style,
     ...other
   } = props
   const theme = useTheme()
-  const customStyles = useMemo(() => getCustomStyles(theme), [theme])
+  const customStyles = useMemo(
+    () => getCustomStyles(theme, highlightOnHover),
+    [theme, highlightOnHover]
+  )
   const { classes } = useStyles()
 
   return (
@@ -231,8 +238,8 @@ export const Table = <Row,>(props: TableProps<Row>) => {
           noDataComponent={
             noDataMessage ? noDataMessage : 'Aucun élément à afficher'
           }
-          highlightOnHover
-          pointerOnHover
+          highlightOnHover={highlightOnHover}
+          pointerOnHover={pointerOnHover}
           selectableRows={selectableRows}
           onRowClicked={onRowClicked}
           customStyles={customStyles as IDataTableStyles}
