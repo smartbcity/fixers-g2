@@ -13,7 +13,7 @@ import { Story } from '@storybook/react/types-6-0'
 import { action } from '@storybook/addon-actions'
 import { ArgsTable, Title, Primary, Stories } from '@storybook/addon-docs'
 import { styles, classes, Action } from './types'
-import { Box, Typography } from  '@mui/material'
+import { Box, Typography } from '@mui/material'
 import imageHolder from '../assets/imageHolder.jpg'
 import { Button } from '@smartb/g2-components'
 import { withDesign } from 'storybook-addon-designs'
@@ -39,7 +39,7 @@ export default {
     },
     design: {
       type: 'figma',
-      url: 'https://www.figma.com/file/4Nl4422AUGHNVClZOHzPg8/SmartB-UI-kit?node-id=212%3A396'
+      url: 'https://www.figma.com/file/kgphqh0uVhoXt8TK3LlkGj/G2-%2F-Design-System?node-id=1014%3A390'
     }
   }
 } as Meta

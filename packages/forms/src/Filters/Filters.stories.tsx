@@ -20,10 +20,18 @@ import {
   FiltersState
 } from './docs'
 import { useFilters } from './useFilters'
+import { withDesign } from 'storybook-addon-designs'
 
 export default {
   title: 'Forms/Filters',
   component: Filters,
+  decorators: [withDesign],
+  parameters: {
+    design: {
+      type: 'figma',
+      url: 'https://www.figma.com/file/kgphqh0uVhoXt8TK3LlkGj/G2-%2F-Design-System?node-id=1097%3A177'
+    }
+  },
   parameters: {
     docs: {
       page: () => (

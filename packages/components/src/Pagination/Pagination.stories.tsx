@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import {
   Pagination as AruiPagination,
-  PaginationBasicProps,
+  PaginationBasicProps
 } from './Pagination'
 import { Meta } from '@storybook/react'
 import { Story } from '@storybook/react/types-6-0'
@@ -11,12 +11,12 @@ import { withDesign } from 'storybook-addon-designs'
 export default {
   title: 'Components/Pagination',
   component: AruiPagination,
-  decorators:[withDesign],
+  decorators: [withDesign],
   parameters: {
     design: {
       type: 'figma',
-      url: 'https://www.figma.com/file/4Nl4422AUGHNVClZOHzPg8/SmartB-UI-kit?node-id=208%3A1792',
-    },
+      url: 'https://www.figma.com/file/kgphqh0uVhoXt8TK3LlkGj/G2-%2F-Design-System?node-id=1017%3A1884'
+    }
   },
   argTypes: {
     classes: {
@@ -38,10 +38,16 @@ export default {
   }
 } as Meta
 
-export const Pagination: Story<PaginationBasicProps> = (args: PaginationBasicProps) => {
+export const Pagination: Story<PaginationBasicProps> = (
+  args: PaginationBasicProps
+) => {
   const [page, setpage] = useState(1)
   return (
-    <AruiPagination onPageChange={(newPageNumber) => setpage(newPageNumber) } page={page} {...args}/>
+    <AruiPagination
+      onPageChange={(newPageNumber) => setpage(newPageNumber)}
+      page={page}
+      {...args}
+    />
   )
 }
 
@@ -49,6 +55,4 @@ Pagination.args = {
   totalPage: 10
 }
 
-
 Pagination.storyName = 'Pagination'
-
