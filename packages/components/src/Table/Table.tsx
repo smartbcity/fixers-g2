@@ -16,16 +16,16 @@ import { Pagination } from '../Pagination'
 
 const useStyles = makeG2STyles()({
   container: {
-    '& .rdt_TableRow .rdt_TableCell:last-child': {
+    '& .rdt_TableRow .rdt_TableCell:last-of-type': {
       paddingRight: '30px'
     },
-    '& .rdt_TableCol:last-child': {
+    '& .rdt_TableCol:last-of-type': {
       paddingRight: '30px'
     },
-    '& .rdt_TableRow .rdt_TableCell:first-child': {
+    '& .rdt_TableRow .rdt_TableCell:first-of-type': {
       paddingLeft: '30px'
     },
-    '& .rdt_TableCol:first-child': {
+    '& .rdt_TableCol:first-of-type': {
       paddingLeft: '30px'
     },
     '& .rdt_TableBody': {

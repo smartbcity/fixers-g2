@@ -46,7 +46,6 @@ export const FilterTextFieldStory: Story<FilterTextFieldProps> = (
       value={value}
       onChange={setValue}
       onRemove={() => setValue('')}
-      inputIcon='€'
       {...args}
     />
   )

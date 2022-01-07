@@ -1,4 +1,10 @@
-import React, { useCallback, useEffect, useState, forwardRef } from 'react'
+import React, {
+  useCallback,
+  useEffect,
+  useState,
+  forwardRef,
+  useRef
+} from 'react'
 import {
   Button as MuiButton,
   ButtonProps as MuiButtonProps,
@@ -134,6 +140,14 @@ export const ButtonBase = function <T = {}>(
       : textUseStyles()
   const forcedLoading = isLoading
   const [loading, setloading] = useState(false)
+  const isMounted = useRef(false)
+
+  useEffect(() => {
+    isMounted.current = true
+    return () => {
+      isMounted.current = false
+    }
+  }, [])
 
   useEffect(() => {
     if (success || fail) setloading(false)
@@ -144,7 +158,9 @@ export const ButtonBase = function <T = {}>(
       if (!!onClick) {
         setloading(true)
         await onClick(event)
-        setloading(false)
+        if (isMounted.current) {
+          setloading(false)
+        }
       }
     },
     [onClick]

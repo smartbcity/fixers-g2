@@ -87,11 +87,11 @@ const useStyles = makeG2STyles()((theme) => ({
     top: '2px'
   },
   timelineAlternate: {
-    '& .AruiTimeLine-item-ClickableContainer:nth-child(even) .AruiTimeLine-item':
+    '& .AruiTimeLine-item-ClickableContainer:nth-of-type(even) .AruiTimeLine-item':
       {
         flexDirection: 'row-reverse'
       },
-    '& .AruiTimeLine-item-ClickableContainer:nth-child(even) .AruiTimeLine-timeContainer':
+    '& .AruiTimeLine-item-ClickableContainer:nth-of-type(even) .AruiTimeLine-timeContainer':
       {
         alignItems: 'end'
       }
