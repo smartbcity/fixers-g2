@@ -14,8 +14,8 @@
     "@testing-library/user-event": "^12.1.10"
   },
   "dependencies": {
-    "@mui/material": "^5.0.6",
-    "@mui/icons-material": "^5.0.5",
+    "@mui/material": "^5.2.7",
+    "@mui/icons-material": "^5.2.5",
     "@emotion/react": "^11.4.1",
     "@emotion/styled": "^11.3.0",
     "@smartb/g2": "^1.0.0-alpha.8",

@@ -1,4 +1,4 @@
-import React, { createContext, useCallback, useContext } from 'react'
+import React, { createContext, useCallback, useContext, useMemo } from 'react'
 import { ThemeProvider, ThemeOptions } from '@mui/material'
 import { defaultMaterialUiTheme, defaultTheme, Theme } from './Theme'
 import { CacheProvider } from '@emotion/react'
@@ -41,14 +41,17 @@ export const tssCache = createCache({
 export const ThemeContextProvider = (props: ThemeContextProviderProps) => {
   const { children, customMuiTheme, theme } = props
   const [localTheme, setLocalTheme] = React.useState<Theme>(
-    mergeDeepRight(defaultTheme, theme)
+    theme ? mergeDeepRight(defaultTheme, theme) : defaultTheme
   )
   const setPartialTheme = useCallback((partialTheme: Theme | any) => {
     setLocalTheme((oldLocalTheme) =>
       mergeDeepRight(oldLocalTheme, partialTheme)
     )
   }, [])
-  const defaultMuiTheme = defaultMaterialUiTheme(localTheme, customMuiTheme)
+  const defaultMuiTheme = useMemo(
+    () => defaultMaterialUiTheme(localTheme, customMuiTheme),
+    [customMuiTheme, localTheme]
+  )
   return (
     <ThemeContext.Provider
       value={{ theme: localTheme, changeTheme: setPartialTheme }}
