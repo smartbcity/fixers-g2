@@ -381,6 +381,7 @@ export const FilterTextField = React.forwardRef(
           defaultValue={defaultValue}
           className={clsx(
             defaultStyles.classes.input,
+            variant !== 'outlined' && defaultStyles.classes.inputWithoutLabel,
             localStyles.classes.input,
             onRemove &&
               inputAdornment.endAdornment &&

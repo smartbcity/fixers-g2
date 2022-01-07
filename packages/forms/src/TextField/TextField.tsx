@@ -23,25 +23,31 @@ const useStyles = makeG2STyles()({
   },
   withIconStart: {
     '& .MuiInputBase-input': {
-      paddingLeft: '0px !important',
-      paddingRight: '8px !important'
+      paddingLeft: '0px',
+      paddingRight: '8px'
     }
   },
   withIconEnd: {
     '& .MuiInputBase-input': {
-      paddingLeft: '5px !important'
+      paddingLeft: '5px'
     }
   },
   withIconEndOnRemove: {
     '& .MuiInputBase-input': {
-      paddingLeft: '5px !important',
-      paddingRight: '20px !important'
+      paddingLeft: '5px',
+      paddingRight: '20px'
     }
   },
   searchIcon: {
     width: '20px',
     height: '20px',
     cursor: 'pointer'
+  },
+  endAdornmentWithInputIcon: {
+    right: '30px'
+  },
+  inputWithClear: {
+    paddingRight: '27px'
   }
 })
 
@@ -125,7 +131,8 @@ export interface TextFieldBasicProps extends BasicProps {
   disabled?: boolean
 
   /**
-   * The icon of the icon
+   * The icon of the icon. It happen sometimes when your icon is to large that the clear icon overflow the input icon.
+   * To change that you can use the props `styles` or `classes` to move it on the side or you can use `noCheckOrClearIcon` to supress it.
    */
   inputIcon?: React.ReactNode
 
@@ -299,11 +306,12 @@ export const TextField = React.forwardRef(
             className={clsx(
               defaultStyles.classes.validated,
               classes?.validIcon,
+              inputAdornment.endAdornment &&
+                localStyles.classes.endAdornmentWithInputIcon,
               'AruiTextfield-validIcon'
             )}
             style={{
-              ...styles?.validIcon,
-              right: inputAdornment.endAdornment ? '30px' : ''
+              ...styles?.validIcon
             }}
           />
         )
@@ -316,11 +324,12 @@ export const TextField = React.forwardRef(
               defaultStyles.classes.clear,
               error && defaultStyles.classes.clearError,
               classes?.clearIcon,
+              inputAdornment.endAdornment &&
+                localStyles.classes.endAdornmentWithInputIcon,
               'AruiTextfield-clearIcon'
             )}
             style={{
-              ...styles?.clearIcon,
-              right: inputAdornment.endAdornment ? '30px' : ''
+              ...styles?.clearIcon
             }}
           />
         )
@@ -343,7 +352,7 @@ export const TextField = React.forwardRef(
         return localStyles.classes.withIconStart
       }
       if (inputIcon && iconPosition === 'end') {
-        if (onRemove) {
+        if ((onRemove || validated) && !noCheckOrClearIcon) {
           return localStyles.classes.withIconEndOnRemove
         }
         return localStyles.classes.withIconEnd
@@ -396,18 +405,16 @@ export const TextField = React.forwardRef(
             disableUnderline: true,
             onKeyUp: upHandler,
             style: {
-              ...styles?.input,
-              paddingRight:
-                (onRemove || validated) &&
-                value &&
-                value !== '' &&
-                !inputAdornment.endAdornment
-                  ? '27px'
-                  : ''
+              ...styles?.input
             },
             className: clsx(
               inputClasses(),
               classes?.input,
+              (onRemove || validated) &&
+                value &&
+                value !== '' &&
+                !inputAdornment.endAdornment &&
+                localStyles.classes.inputWithClear,
               'AruiTextfield-input'
             ),
             ...InputProps

@@ -51,6 +51,9 @@ const useStyles = makeG2STyles()((theme) => ({
     color: 'currentColor',
     stroke: 'currentColor'
   },
+  calendarIconDisabled: {
+    cursor: 'default'
+  },
   dialog: {
     '& .MuiButton-root': {
       background: theme.colors.primary,
@@ -284,10 +287,11 @@ const FilterDatePickerBase = (
           position='end'
         >
           <Calendar
-            onClick={onOpenMemoized}
+            onClick={!disabled ? onOpenMemoized : undefined}
             className={clsx(
               localStyles.classes.calendarIcon,
               classes?.calendarIcon,
+              disabled && localStyles.classes.calendarIconDisabled,
               'AruiFilterDatePicker-calendarIcon'
             )}
             style={styles?.calendarIcon}
@@ -310,12 +314,14 @@ const FilterDatePickerBase = (
         {...props}
         id={id}
         name={name}
-        onClick={onOpenMemoized}
+        onClick={!disabled ? onOpenMemoized : undefined}
+        disabled={disabled}
         placeholder={variant === 'filled' ? label : undefined}
         color={color !== 'default' ? color : undefined}
         className={clsx(
           classes?.textField,
           defaultStyles.classes.input,
+          variant !== 'outlined' && defaultStyles.classes.inputWithoutLabel,
           !!rightIcon
             ? localStyles.classes.inputWithRemove
             : localStyles.classes.input,

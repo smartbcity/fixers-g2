@@ -402,6 +402,7 @@ export const FilterSelect = React.forwardRef(
         className={clsx(
           className,
           defaultStyles.classes.input,
+          variant !== 'outlined' && defaultStyles.classes.inputWithoutLabel,
           getVariantColorClass(),
           'AruiFilterSelect-root'
         )}

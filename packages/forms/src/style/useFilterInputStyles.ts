@@ -36,7 +36,7 @@ export const useFilterInputStyles = makeG2STyles()((theme) => ({
       transition: 'background-color 200ms'
     },
     '& .MuiOutlinedInput-notchedOutline': {
-      top: '-7px',
+      top: '-8px',
       '& legend': {
         height: 15,
         '& span': {
@@ -182,6 +182,11 @@ export const useFilterInputStyles = makeG2STyles()((theme) => ({
   inputWithClear: {
     '& .MuiFilledInput-inputAdornedEnd': {
       padding: '0px 15px 0px 10px'
+    }
+  },
+  inputWithoutLabel: {
+    '& .MuiOutlinedInput-notchedOutline legend span': {
+      padding: '0px'
     }
   },
   clear: {
