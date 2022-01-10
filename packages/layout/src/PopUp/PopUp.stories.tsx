@@ -19,7 +19,7 @@ import { Button } from '@smartb/g2-components'
 import { withDesign } from 'storybook-addon-designs'
 
 export default {
-  title: 'Components/PopUp',
+  title: 'Layout/PopUp',
   component: AruiPopUp,
   decorators: [withDesign],
   subcomponents: { ConfirmationPopUp: AruiConfirmationPopUp },
