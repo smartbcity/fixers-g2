@@ -8,20 +8,17 @@ import {
 import clsx from 'clsx'
 import React, { forwardRef, useMemo } from 'react'
 
-const useStyles = makeG2STyles<{ color: string }>()(
-  //@ts-ignore
-  (theme, { color }) => ({
-    tagWidth: {
-      width: 'fit-content',
-      padding: '0px 5px',
-      '& .MuiChip-label': {
-        color: color
-      },
-      background: `${color}26`,
-      border: `1.5px solid ${color}`
-    }
-  })
-)
+const useStyles = makeG2STyles<{ color: string }>()((_, { color }) => ({
+  tagWidth: {
+    width: 'fit-content',
+    padding: '0px 5px',
+    '& .MuiChip-label': {
+      color: color
+    },
+    background: `${color}26`,
+    border: `1.5px solid ${color}`
+  }
+}))
 
 export interface StatusTagBasicProps extends BasicProps {
   /**

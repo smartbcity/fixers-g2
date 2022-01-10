@@ -12,29 +12,26 @@ import { Paper, PaperProps } from '@mui/material'
 import clsx from 'clsx'
 import { BasicProps, makeG2STyles } from '@smartb/g2-themes'
 
-const useStyles = makeG2STyles<{ muiTheme: MuiTheme }>()(
-  //@ts-ignore
-  (theme, { muiTheme }) => ({
-    root: {
-      width: '90%',
-      height: '90%',
-      maxWidth: '90%'
-    },
-    stepper: {
-      margin: muiTheme.spacing(5)
-    },
-    actions: {
-      marginTop: muiTheme.spacing(5)
-    },
-    backButton: {
-      marginRight: muiTheme.spacing(1)
-    },
-    instructions: {
-      marginTop: muiTheme.spacing(1),
-      marginBottom: muiTheme.spacing(1)
-    }
-  })
-)
+const useStyles = makeG2STyles<{ muiTheme: MuiTheme }>()((_, { muiTheme }) => ({
+  root: {
+    width: '90%',
+    height: '90%',
+    maxWidth: '90%'
+  },
+  stepper: {
+    margin: muiTheme.spacing(5)
+  },
+  actions: {
+    marginTop: muiTheme.spacing(5)
+  },
+  backButton: {
+    marginRight: muiTheme.spacing(1)
+  },
+  instructions: {
+    marginTop: muiTheme.spacing(1),
+    marginBottom: muiTheme.spacing(1)
+  }
+}))
 
 export interface OnNextHandles {
   onNext(): boolean

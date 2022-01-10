@@ -97,7 +97,7 @@ export interface SelectBasicProps extends BasicProps {
   /**
    * The value selected
    *
-   * @default '''
+   * @default ''
    */
   value?: string | number
 

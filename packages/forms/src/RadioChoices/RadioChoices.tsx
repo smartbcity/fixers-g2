@@ -36,7 +36,7 @@ export interface RadioChoicesBasicProps extends BasicProps {
   value?: string
 
   /**
-   * The event called when the value of the slect change
+   * The event called when the value of the input change
    */
   onChange?: (event: React.ChangeEvent<HTMLInputElement>, value: string) => void
 

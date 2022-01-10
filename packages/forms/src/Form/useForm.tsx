@@ -4,11 +4,17 @@ import { Field } from './Form'
 
 export type FormState = ReturnType<typeof useFormik>
 
-interface useFormParams {
+export type PartialField = {
+  name: string
+  defaultValue?: any
+  validator?: (value: any) => string | undefined | void
+}
+
+interface useFormParams<T extends PartialField = PartialField> {
   /**
    * the fields of the form
    */
-  fields: Field[]
+  fields: T[]
   /**
    * the callback called when the form is being validated by the user
    * please use the `setSubmitting` in the formikHelpers object to inform about any asynchronous task
@@ -27,7 +33,22 @@ interface useFormParams {
   >
 }
 
-export const useForm = (params: useFormParams): FormState => {
+export const useForm = (params: useFormParams<Field>): FormState => {
+  return useFormBase(params)
+}
+
+/**
+ * the useForm with the minimum informations needed to init the useformik state
+ */
+export const useFormWithPartialFields = (
+  params: useFormParams<PartialField>
+): FormState => {
+  return useFormBase(params)
+}
+
+const useFormBase = <T extends PartialField = PartialField>(
+  params: useFormParams<T>
+): FormState => {
   const { fields, onSubmit, formikConfig } = params
   const initialValues = useMemo(() => {
     const obj = {}

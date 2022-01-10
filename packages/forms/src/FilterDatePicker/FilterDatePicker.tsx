@@ -23,6 +23,7 @@ import { Calendar } from '../assets/icons'
 import tinycolor from 'tinycolor2'
 import { ClearRounded } from '@mui/icons-material'
 import { fr, enUS } from 'date-fns/locale'
+import { DatePickerView } from '@mui/lab/DatePicker/shared'
 const dateFnsLocales = [fr, enUS]
 
 const useStyles = makeG2STyles()((theme) => ({
@@ -163,6 +164,8 @@ export type FilterDatePickerProps = MergeMuiElementProps<
   FilterDatePickerBasicProps
 >
 
+const views: DatePickerView[] = ['day', 'month', 'year']
+
 const FilterDatePickerBase = (
   props: FilterDatePickerProps,
   ref: React.ForwardedRef<HTMLDivElement>
@@ -177,7 +180,7 @@ const FilterDatePickerBase = (
     minDate,
     maxDate,
     disabled = false,
-    label = 'jj/MM/yyyy',
+    label = '',
     color = 'primary',
     variant = 'filled',
     locale = 'fr',
@@ -365,7 +368,7 @@ const FilterDatePickerBase = (
         <MuiMobileDatePicker
           ref={ref}
           label={variant === 'outlined' ? label : undefined}
-          views={['day', 'month', 'year']}
+          views={views}
           openTo='day'
           open={open}
           onOpen={onOpen}

@@ -89,8 +89,7 @@ const LabelSwitchBase = (
   const defaultStyles = useStyles()
 
   const handleChange = useCallback(
-    //@ts-ignore
-    (event: React.ChangeEvent<{}>, newValue: string) => {
+    (_: React.ChangeEvent<{}>, newValue: string) => {
       onLabelChange && onLabelChange(newValue)
     },
     [onLabelChange]

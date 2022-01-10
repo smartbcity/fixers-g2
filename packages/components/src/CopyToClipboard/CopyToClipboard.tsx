@@ -78,10 +78,16 @@ const CopyToClipboardBase = (
   } = props
   const [done, setDone] = useState(false)
   const defaultStyles = useStyles()
+
   const onCopy = useCallback(() => {
-    navigator.clipboard.writeText(value)
-    setDone(true)
+    if (window.isSecureContext) {
+      navigator.clipboard.writeText(value)
+      setDone(true)
+    } else {
+      console.error('You cannot access the clipboard from a non https website')
+    }
   }, [value])
+
   return (
     <Tooltip
       className={clsx(classes?.tooltip, 'AruiCopyToClipboard-tooltip')}

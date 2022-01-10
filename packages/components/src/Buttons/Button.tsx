@@ -21,6 +21,7 @@ import {
   outlinedUseStyles,
   textUseStyles
 } from './buttonStyles'
+import clsx from 'clsx'
 
 export type Variant = 'contained' | 'outlined' | 'text'
 
@@ -172,11 +173,15 @@ export const ButtonBase = function <T = {}>(
         ref={ref}
         style={style}
         disabled={loading || disabled || forcedLoading}
-        className={`${classes.root} ${
-          disabled && classes.disabled
-        } AruiButton-root ${className} ${success ? classes.success : ''} ${
-          fail ? classes.fail : ''
-        } ${warning ? classes.advertissement : classes.defaultColor}`}
+        className={clsx(
+          classes.root,
+          disabled && classes.disabled,
+          'AruiButton-root ',
+          className,
+          success && classes.success,
+          fail && classes.fail,
+          warning ? classes.advertissement : classes.defaultColor
+        )}
         onClick={(e: any) => !href && onClick && onClickMemoisied(e)}
         component={component}
         href={href}
@@ -212,11 +217,15 @@ export const ButtonBase = function <T = {}>(
       ref={ref}
       style={style}
       disabled={loading || disabled || forcedLoading}
-      className={`${classes.root} ${
-        disabled && classes.disabled
-      } AruiButton-root ${className} ${success ? classes.success : ''} ${
-        fail ? classes.fail : ''
-      } ${warning ? classes.advertissement : classes.defaultColor}`}
+      className={clsx(
+        classes.root,
+        disabled && classes.disabled,
+        'AruiButton-root ',
+        className,
+        success && classes.success,
+        fail && classes.fail,
+        warning ? classes.advertissement : classes.defaultColor
+      )}
       onClick={(e) => !href && onClick && onClickMemoisied(e)}
       href={href}
       id={id}

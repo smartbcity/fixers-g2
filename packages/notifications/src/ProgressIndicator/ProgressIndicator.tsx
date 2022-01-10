@@ -52,7 +52,7 @@ export interface ProgressIndicatorBasicProps extends BasicProps {
   /**
    * Label of the progress indicator
    *
-   * @default '0%''
+   * @default '${roundedValue}%'
    */
   label?: string
   /**

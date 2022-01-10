@@ -37,10 +37,6 @@ export interface AutoCompleteBasicProps<T> extends BasicProps {
    */
   onChangeSelectedElement?: (value: T | T[]) => void
   /**
-   * The default element value.
-   */
-  defaultValue?: T | T[]
-  /**
    * The event called when search value change.
    * @param value
    */
@@ -129,7 +125,6 @@ const AutoCompleteBase = function <T>(
       multiple={multiple}
       options={options}
       className={clsx(className, 'AruiAutoComplete-root')}
-      defaultValue={defaultValue}
       forcePopupIcon={false}
       getOptionLabel={getOptionLabel}
       style={style}

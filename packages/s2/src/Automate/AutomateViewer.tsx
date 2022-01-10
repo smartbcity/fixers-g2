@@ -61,6 +61,14 @@ export interface AutomateViewerBasicProps extends BasicProps {
    * the event triggered when the user click on the different part of the viewer
    */
   onSelect?: (edgesSelected: Edge[], nodeSelected?: Node) => void
+  /**
+   * the envent to customise the nodes
+   */
+  customNode?: (index: number) => Partial<Node>
+  /**
+   * the envent to customise the nodes
+   */
+  customEdge?: (transition: Transition, index: number) => Partial<Edge>
 }
 
 export type AutomateViewerProps = MergeReactElementProps<
@@ -69,7 +77,8 @@ export type AutomateViewerProps = MergeReactElementProps<
 >
 
 export const AutomateViewer = (props: AutomateViewerProps) => {
-  const { transitions, onSelect, className, ...other } = props
+  const { transitions, onSelect, className, customNode, customEdge, ...other } =
+    props
   const theme = useTheme()
   const defaultStyles = useStyles()
   const [network, setNetwork] = useState<Network | undefined>(undefined)
@@ -95,7 +104,8 @@ export const AutomateViewer = (props: AutomateViewerProps) => {
           size: 40,
           angle: Math.PI / selfRefSize[from],
           renderBehindTheNode: false
-        }
+        },
+        ...(customEdge ? customEdge(transition, index) : undefined)
       }
     })
     for (let i = 0; i < nbNodes; i++) {
@@ -122,14 +132,15 @@ export const AutomateViewer = (props: AutomateViewerProps) => {
           left: 30,
           right: 30,
           top: 30
-        }
+        },
+        ...(customNode ? customNode(i) : {})
       })
     }
     return {
       edges: edges,
       nodes: nodes
     }
-  }, [transitions])
+  }, [transitions, customNode])
 
   useEffect(() => {
     containerRef.current &&

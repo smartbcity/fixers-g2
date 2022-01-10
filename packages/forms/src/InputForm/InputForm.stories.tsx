@@ -11,7 +11,7 @@ import {
   Stories
 } from '@storybook/addon-docs'
 import LinkTo from '@storybook/addon-links/react'
-import { Box, Typography } from  '@mui/material'
+import { Box, Typography } from '@mui/material'
 import { InputFormClasses, InputFormStyles } from './docs'
 
 export default {
@@ -50,6 +50,12 @@ export default {
             -{' '}
             <LinkTo kind='Forms' story='DatePicker'>
               DatePicker
+            </LinkTo>
+          </Typography>
+          <Typography variant='body2' style={{ marginBottom: '5px' }}>
+            -{' '}
+            <LinkTo kind='Forms' story='RadioChoices'>
+              RadioChoices
             </LinkTo>
           </Typography>
           <Stories />
@@ -98,7 +104,13 @@ export const InputFormStory: Story<InputFormBasicProps> = (
 }
 
 export const FormExample: Story<InputFormBasicProps> = () => {
-  const [form, setform] = useState({ email: '', password: '', gender: '', birthday: undefined })
+  const [form, setform] = useState({
+    email: '',
+    password: '',
+    gender: '',
+    birthday: undefined,
+    nationality: 'fr'
+  })
   return (
     <Box display='flex' flexDirection='column' alignItems='center'>
       <InputForm
@@ -161,6 +173,26 @@ export const FormExample: Story<InputFormBasicProps> = () => {
         inputType='datePicker'
         onChangeDate={(date) => setform({ ...form, birthday: date })}
         placeholder='Choose your birthday'
+        style={{
+          width: '400px',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          margin: '20px'
+        }}
+        styles={{ label: { marginBottom: '0px' }, input: { width: '60%' } }}
+      />
+      <InputForm
+        value={form.nationality}
+        label='nationality:'
+        inputType='radioChoices'
+        onChange={(_: React.ChangeEvent<HTMLInputElement>, value: string) =>
+          setform({ ...form, nationality: value })
+        }
+        choices={[
+          { key: 'fr', label: 'I have the french nationnality' },
+          { key: 'other', label: "I don't have the french nationnality" }
+        ]}
         style={{
           width: '400px',
           display: 'flex',

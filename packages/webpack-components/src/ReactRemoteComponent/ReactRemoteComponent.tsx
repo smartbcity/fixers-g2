@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, CircularProgress } from  '@mui/material'
+import { Box, CircularProgress } from '@mui/material'
 import { ErrorBoundary } from './ErrorBoundary'
 
 type Dependency = any
@@ -9,12 +9,14 @@ export interface ReactRemoteComponentProps<T extends object = {}> {
   moduleName: string
   moduleDeps?: { [dependencyName: string]: Dependency }
   componentProps?: T
+  unavailableComponent?: React.ReactNode
 }
 
 export const ReactRemoteComponent = <T extends object = {}>(
   props: ReactRemoteComponentProps<T>
 ) => {
-  const { url, moduleName, moduleDeps, componentProps } = props
+  const { url, moduleName, moduleDeps, componentProps, unavailableComponent } =
+    props
   const { ready, failed } = useDynamicScript(url, moduleName, moduleDeps)
 
   if (!ready) {
@@ -22,7 +24,7 @@ export const ReactRemoteComponent = <T extends object = {}>(
   }
 
   if (failed) {
-    return <h2>Unavailable component</h2>
+    return unavailableComponent ?? <h2>Unavailable component</h2>
   }
 
   const Component = React.lazy(async () => {

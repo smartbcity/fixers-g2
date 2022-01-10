@@ -39,6 +39,9 @@ const useStyles = makeG2STyles()({
     '& .MuiInputBase-input': {
       paddingRight: '18px'
     }
+  },
+  inputWithEndAbornment: {
+    paddingRight: '20px'
   }
 })
 
@@ -338,17 +341,6 @@ export const FilterTextField = React.forwardRef(
       }
     }
 
-    const inputStyles = useMemo(
-      () => ({
-        ...styles?.input,
-        paddingRight:
-          onRemove && value && value !== '' && !inputAdornment.endAdornment
-            ? '20px'
-            : ''
-      }),
-      [styles?.input, onRemove, value, inputAdornment.endAdornment]
-    )
-
     return (
       <div
         className={clsx(
@@ -399,14 +391,19 @@ export const FilterTextField = React.forwardRef(
             onKeyUp: upHandler,
             style:
               variant === 'filled'
-                ? { ...inputStyles, ...colorStyle }
-                : inputStyles,
+                ? { ...styles?.input, ...colorStyle }
+                : styles?.input,
             className: clsx(
               inputIcon &&
                 iconPosition === 'end' &&
                 onRemove &&
                 localStyles.classes.withIconEndOnRemove,
               classes?.input,
+              onRemove &&
+                value &&
+                value !== '' &&
+                !inputAdornment.endAdornment &&
+                localStyles.classes.inputWithEndAbornment,
               'AruiTextfield-input'
             ),
             ...InputProps

@@ -312,11 +312,9 @@ const getInput = (field: Field, formState: FormState, commonProps: any) => {
           {...commonProps}
           inputType='radioChoices'
           value={formState.values[field.name] ?? ''}
-          onChange={(
-            //@ts-ignore
-            event: React.ChangeEvent<HTMLInputElement>,
-            value: string
-          ) => formState.setFieldValue(field.name, value, false)}
+          onChange={(_: React.ChangeEvent<HTMLInputElement>, value: string) =>
+            formState.setFieldValue(field.name, value, false)
+          }
           {...field.radioChoicesProps}
         />
       )

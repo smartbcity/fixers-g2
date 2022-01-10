@@ -10,16 +10,15 @@ import {
 import { Tooltip } from '@smartb/g2-notifications'
 import clsx from 'clsx'
 
-//@ts-ignore
 const useStyles = makeG2STyles()({
   root: {
     position: 'relative',
-    width: `100%`,
-    height: `100%`
+    width: '100%',
+    height: '100%'
   },
   dropZone: {
-    width: `100%`,
-    height: `100%`,
+    width: '100%',
+    height: '100%',
     background: 'rgb(237, 237, 237)',
     border: 'dashed rgba(209,202,203,1) 2px',
     borderRadius: '5px',
@@ -34,7 +33,7 @@ const useStyles = makeG2STyles()({
     fontSize: '12px'
   },
   image: {
-    width: `100%`,
+    width: '100%',
     borderRadius: '5px',
     objectFit: 'cover',
     height: '100%'
@@ -50,7 +49,7 @@ const useStyles = makeG2STyles()({
     left: '50%'
   },
   container: {
-    width: `100%`,
+    width: '100%',
     height: 'auto',
     position: 'relative',
     cursor: 'pointer',
@@ -145,15 +144,21 @@ export interface DropPictureBasicProps extends BasicProps {
   /**
    * The text in the tooltip when a picture is dropable
    *
-   * @default "Ajouter une image"
+   * @default "'Add an image"
    */
   addPictureHelperText?: string
   /**
    * The text in the tooltip when a picture is removable
    *
-   * @default "Supprimer cette image"
+   * @default "Delete this image"
    */
   removePictureHelperText?: string
+  /**
+   * The description of the picture
+   *
+   * @default "A picture"
+   */
+  alt?: string
   /**
    * The classes applied to the different part of the component
    */
@@ -186,8 +191,9 @@ const DropPictureBase = (
     errorMessage,
     onDropError,
     id,
-    addPictureHelperText = 'Ajouter une image',
-    removePictureHelperText = 'Supprimer cette image',
+    addPictureHelperText = 'Add an image',
+    removePictureHelperText = 'Delete this image',
+    alt = 'A picture',
     classes,
     styles,
     ...other
@@ -240,7 +246,7 @@ const DropPictureBase = (
         src={logo !== '' ? logo : defaultPicture}
         className={clsx(defaultStyles.classes.image, classes?.image)}
         style={styles?.image}
-        alt='A picture'
+        alt={alt}
         onError={onError}
       />
     )
@@ -323,7 +329,7 @@ const DropPictureBase = (
             classes?.image
           )}
           style={styles?.image}
-          alt='The uploaded picture'
+          alt={alt}
           onError={onError}
         />
         <Clear

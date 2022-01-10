@@ -17,6 +17,7 @@ import {
 } from '@smartb/g2-themes'
 import clsx from 'clsx'
 import { fr, enUS } from 'date-fns/locale'
+import { DatePickerView } from '@mui/lab/DatePicker/shared'
 const dateFnsLocales = [fr, enUS]
 
 const useStyles = makeG2STyles()((theme) => ({
@@ -120,6 +121,8 @@ export type DatePickerProps = MergeMuiElementProps<
   DatePickerBasicProps
 >
 
+const views: DatePickerView[] = ['day', 'month', 'year']
+
 const DatePickerBase = (
   props: DatePickerProps,
   ref: React.ForwardedRef<HTMLDivElement>
@@ -177,7 +180,6 @@ const DatePickerBase = (
       if (placeholder) {
         delete props.inputProps?.placeholder
       }
-      //@ts-ignore
       return (
         <MuiTextField
           {...textFieldProps}
@@ -231,7 +233,7 @@ const DatePickerBase = (
     >
       <MuiDatePicker
         ref={ref}
-        views={['day', 'month', 'year']}
+        views={views}
         openTo='day'
         inputFormat={format.format}
         mask={format.mask}
