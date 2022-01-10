@@ -29,6 +29,10 @@ yarn add @smartb/g2-providers
 yarn add @smartb/g2-s2
 ```
 
+## 📁 The ready-to-go empty application based on our ecosystem with g2 integrated
+
+[get the zip here !](app-full.zip) (open it in a new window)
+
 ## 🧰 The contents
 
 Almost every components are based on [Material-ui](https://material-ui.com/).
@@ -53,7 +57,7 @@ Almost every components are based on [Material-ui](https://material-ui.com/).
 
 There is a `theme provider` component in @smartb/g2-components that has to include the app.
 
-You have to give it a theme that you can get and customise [here](/?path=/story/overview-cheatsheet-theme--page). And you can also give it a [material-ui theme](https://material-ui.com/customization/default-theme/) to override the material-ui default properties.
+You have to give it a theme ~~that you can get and customise [here](/?path=/story/overview-cheatsheet-theme--page)~~ (not yet available). And you can also give it a [material-ui theme](https://material-ui.com/customization/default-theme/) to override the material-ui default properties.
 
 Every components and layouts will have the following props to easily override their default styles:
 

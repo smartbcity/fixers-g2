@@ -39,6 +39,7 @@ module.exports = {
       },
     },
   },
+  staticDirs: ["./public"],
   features: {
     emotionAlias: false,
   },

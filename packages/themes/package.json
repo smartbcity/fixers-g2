@@ -40,7 +40,7 @@
   "dependencies": {
     "ramda": "^0.27.1",
     "tinycolor2": "^1.4.2",
-    "tss-react": "^0.9.3"
+    "tss-react": "^3.3.1"
   },
   "gitHead": "01582f4b620c1e44cab5a65394e29d95f66ddabb",
   "publishConfig": {
