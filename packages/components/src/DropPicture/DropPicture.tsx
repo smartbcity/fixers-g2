@@ -1,23 +1,24 @@
-import React, { useState, useEffect, useCallback, useMemo, forwardRef } from 'react'
+import React, { useState, useEffect, useCallback, forwardRef } from 'react'
 import { FileRejection, DropzoneProps, useDropzone } from 'react-dropzone'
-import { Paper, Typography } from '@material-ui/core'
-import { Clear, AddPhotoAlternate } from '@material-ui/icons'
+import { Paper, Typography } from '@mui/material'
+import { Clear, AddPhotoAlternate } from '@mui/icons-material'
 import {
   BasicProps,
   MergeMuiElementProps,
-  lowLevelStyles
-} from '@smartb/archetypes-ui-themes'
-import { Tooltip } from '../Tooltip'
+  makeG2STyles
+} from '@smartb/g2-themes'
+import { Tooltip } from '@smartb/g2-notifications'
 import clsx from 'clsx'
 
-const useStyles = lowLevelStyles<{ width: number }>()({
+const useStyles = makeG2STyles()({
   root: {
-    width: ({ width }) => `${width}px`,
-    position: 'relative'
+    position: 'relative',
+    width: '100%',
+    height: '100%'
   },
   dropZone: {
-    width: ({ width }) => `${width}px`,
-    height: ({ width }) => `${width}px`,
+    width: '100%',
+    height: '100%',
     background: 'rgb(237, 237, 237)',
     border: 'dashed rgba(209,202,203,1) 2px',
     borderRadius: '5px',
@@ -32,8 +33,10 @@ const useStyles = lowLevelStyles<{ width: number }>()({
     fontSize: '12px'
   },
   image: {
-    width: ({ width }) => `${width}px`,
-    borderRadius: '5px'
+    width: '100%',
+    borderRadius: '5px',
+    objectFit: 'cover',
+    height: '100%'
   },
   clear: {
     color: '#757575',
@@ -46,7 +49,7 @@ const useStyles = lowLevelStyles<{ width: number }>()({
     left: '50%'
   },
   container: {
-    width: ({ width }) => `${width}px`,
+    width: '100%',
     height: 'auto',
     position: 'relative',
     cursor: 'pointer',
@@ -141,15 +144,21 @@ export interface DropPictureBasicProps extends BasicProps {
   /**
    * The text in the tooltip when a picture is dropable
    *
-   * @default "Ajouter une image"
+   * @default "'Add an image"
    */
   addPictureHelperText?: string
   /**
    * The text in the tooltip when a picture is removable
    *
-   * @default "Supprimer cette image"
+   * @default "Delete this image"
    */
   removePictureHelperText?: string
+  /**
+   * The description of the picture
+   *
+   * @default "A picture"
+   */
+  alt?: string
   /**
    * The classes applied to the different part of the component
    */
@@ -165,7 +174,10 @@ export type DropPictureProps = MergeMuiElementProps<
   DropPictureBasicProps
 >
 
-const DropPictureBase = (props: DropPictureProps, ref: React.ForwardedRef<HTMLDivElement>) => {
+const DropPictureBase = (
+  props: DropPictureProps,
+  ref: React.ForwardedRef<HTMLDivElement>
+) => {
   const {
     onPictureDroped,
     onRemovePicture,
@@ -179,15 +191,15 @@ const DropPictureBase = (props: DropPictureProps, ref: React.ForwardedRef<HTMLDi
     errorMessage,
     onDropError,
     id,
-    addPictureHelperText = 'Ajouter une image',
-    removePictureHelperText = 'Supprimer cette image',
+    addPictureHelperText = 'Add an image',
+    removePictureHelperText = 'Delete this image',
+    alt = 'A picture',
     classes,
     styles,
     ...other
   } = props
 
-  const stylesWidth = useMemo(() => ({ width: width }), [width])
-  const defaultClasses = useStyles(stylesWidth)
+  const defaultStyles = useStyles()
   const [logo, setLogo] = useState<string>(initialPicture)
 
   useEffect(() => {
@@ -232,9 +244,9 @@ const DropPictureBase = (props: DropPictureProps, ref: React.ForwardedRef<HTMLDi
     return (
       <img
         src={logo !== '' ? logo : defaultPicture}
-        className={clsx(defaultClasses.image, classes?.image)}
+        className={clsx(defaultStyles.classes.image, classes?.image)}
         style={styles?.image}
-        alt='A picture'
+        alt={alt}
         onError={onError}
       />
     )
@@ -243,7 +255,11 @@ const DropPictureBase = (props: DropPictureProps, ref: React.ForwardedRef<HTMLDi
     return (
       <div
         ref={ref}
-        className={clsx(defaultClasses.root, className)}
+        className={clsx(
+          defaultStyles.classes.root,
+          'AruiDropzone-root',
+          className
+        )}
         style={style}
         id={id}
       >
@@ -254,20 +270,31 @@ const DropPictureBase = (props: DropPictureProps, ref: React.ForwardedRef<HTMLDi
         >
           <Paper
             elevation={0}
-            className={clsx(defaultClasses.dropZone, classes?.dropZone)}
+            className={clsx(
+              defaultStyles.classes.dropZone,
+              'AruiDropzone-dropzone',
+              classes?.dropZone
+            )}
             style={styles?.dropZone}
             {...getRootProps()}
           >
             <input {...getInputProps()} />
             <AddPhotoAlternate
-              className={clsx(defaultClasses.add, classes?.addPictureIcon)}
+              className={clsx(
+                defaultStyles.classes.add,
+                classes?.addPictureIcon
+              )}
               style={styles?.addPictureIcon}
             />
           </Paper>
         </Tooltip>
         {!!errorMessage && (
           <Typography
-            className={clsx(defaultClasses.error, classes?.errorMessage)}
+            className={clsx(
+              defaultStyles.classes.error,
+              'AruiDropzone-error',
+              classes?.errorMessage
+            )}
             style={styles?.errorMessage}
             variant='body2'
             align='center'
@@ -285,20 +312,32 @@ const DropPictureBase = (props: DropPictureProps, ref: React.ForwardedRef<HTMLDi
     >
       <div
         ref={ref}
-        className={clsx(defaultClasses.container, className)}
+        className={clsx(
+          defaultStyles.classes.container,
+          'AruiDropzone-root',
+          className
+        )}
         style={style}
         id={id}
         onClick={onRemoveLogo}
       >
         <img
           src={logo}
-          className={clsx(defaultClasses.image, classes?.image)}
+          className={clsx(
+            defaultStyles.classes.image,
+            'AruiDropzone-image',
+            classes?.image
+          )}
           style={styles?.image}
-          alt='A picture'
+          alt={alt}
           onError={onError}
         />
         <Clear
-          className={clsx(defaultClasses.clear, classes?.clearIcon)}
+          className={clsx(
+            defaultStyles.classes.clear,
+            'AruiDropzone-clearIcon',
+            classes?.clearIcon
+          )}
           style={styles?.clearIcon}
         />
       </div>

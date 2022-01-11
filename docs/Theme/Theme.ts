@@ -1,5 +1,4 @@
-import { createMuiTheme } from "@material-ui/core/styles";
-import { Theme } from "@smartb/archetypes-ui-Themes";
+import { Theme } from "@smartb/g2-themes";
 
 const round = (value: number) => {
   return Math.round(value * 100) / 100;
@@ -54,16 +53,3 @@ export const getTheme = (): Theme => ({
   shadows: getShadows(localStorage.getItem("shadows")),
 });
 
-export const muiTheme = createMuiTheme({
-  palette: {
-    primary: {
-      main: getTheme().colors.primary,
-    },
-    secondary: {
-      main: getTheme().colors.secondary,
-    },
-  },
-  typography: {
-    fontFamily: "'Montserrat', Arial",
-  },
-});

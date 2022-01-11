@@ -1,30 +1,32 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import DataTable, {
   IDataTableColumn,
   IDataTableStyles,
   IDataTableProps
 } from 'react-data-table-component'
-import { Typography } from '@material-ui/core'
+import { Typography } from '@mui/material'
 import {
   BasicProps,
-  lowLevelStyles,
-  MergeMuiElementProps
-} from '@smartb/archetypes-ui-themes'
-import { useTheme, Theme } from '@smartb/archetypes-ui-themes'
+  makeG2STyles,
+  MergeMuiElementProps,
+  Theme,
+  useTheme
+} from '@smartb/g2-themes'
 import { Pagination } from '../Pagination'
+import clsx from 'clsx'
 
-const useStyles = lowLevelStyles()({
+const useStyles = makeG2STyles()({
   container: {
-    '& .rdt_TableRow .rdt_TableCell:last-child': {
+    '& .rdt_TableRow .rdt_TableCell:last-of-type': {
       paddingRight: '30px'
     },
-    '& .rdt_TableCol:last-child': {
+    '& .rdt_TableCol:last-of-type': {
       paddingRight: '30px'
     },
-    '& .rdt_TableRow .rdt_TableCell:first-child': {
+    '& .rdt_TableRow .rdt_TableCell:first-of-type': {
       paddingLeft: '30px'
     },
-    '& .rdt_TableCol:first-child': {
+    '& .rdt_TableCol:first-of-type': {
       paddingLeft: '30px'
     },
     '& .rdt_TableBody': {
@@ -40,7 +42,7 @@ const useStyles = lowLevelStyles()({
   }
 })
 
-const customStyles = (theme: Theme) => ({
+const getCustomStyles = (theme: Theme, highlightOnHover: boolean) => ({
   table: {
     style: {
       backgroundColor: 'transparent'
@@ -61,7 +63,9 @@ const customStyles = (theme: Theme) => ({
       borderRadius: '5px',
       border: `2px solid transparent !important`,
       '&:hover': {
-        border: `2px solid ${theme.colors.secondary} !important`,
+        border: highlightOnHover
+          ? `2px solid ${theme.colors.secondary} !important`
+          : '',
         backgroundColor: `#FFFFFF !important`,
         borderRadius: 5,
         outlineWidth: 'inherit !important'
@@ -203,16 +207,23 @@ export const Table = <Row,>(props: TableProps<Row>) => {
     isLoading = false,
     className,
     keyField,
-    noDataMessage,
+    noDataMessage = 'No data found',
     expandableRows = false,
     ExpandableComponents,
     expandOnRowClicked = false,
     loadingComponent,
+    pointerOnHover = false,
+    highlightOnHover = false,
     style,
     ...other
   } = props
-  const classes = useStyles()
   const theme = useTheme()
+  const customStyles = useMemo(
+    () => getCustomStyles(theme, highlightOnHover),
+    [theme, highlightOnHover]
+  )
+  const { classes } = useStyles()
+
   return (
     <>
       {isLoading ? (
@@ -220,19 +231,17 @@ export const Table = <Row,>(props: TableProps<Row>) => {
       ) : (
         <DataTable
           columns={columns}
-          className={`${className} ${classes.container}`}
+          className={clsx(className, classes.container)}
           style={style}
           theme='colisactiv'
           data={data}
           noHeader
-          noDataComponent={
-            noDataMessage ? noDataMessage : 'Aucun élément à afficher'
-          }
-          highlightOnHover
-          pointerOnHover
+          noDataComponent={noDataMessage}
+          highlightOnHover={highlightOnHover}
+          pointerOnHover={pointerOnHover}
           selectableRows={selectableRows}
           onRowClicked={onRowClicked}
-          customStyles={customStyles(theme) as IDataTableStyles}
+          customStyles={customStyles as IDataTableStyles}
           keyField={keyField}
           expandableRows={expandableRows}
           expandableRowsComponent={ExpandableComponents}

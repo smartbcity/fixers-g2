@@ -1,6 +1,6 @@
 import { Route, RouteProps } from "react-router-dom";
 import React from "react";
-import { MergeMuiElementProps } from "@smartb/archetypes-ui-themes";
+import { MergeMuiElementProps } from "@smartb/g2-themes";
 import { useAuth } from "../KeycloakProvider";
 import { NoMatchPage } from "./NoMatchPage";
 

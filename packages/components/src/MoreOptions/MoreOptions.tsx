@@ -1,15 +1,15 @@
 import React, { forwardRef, useCallback, useState } from 'react'
-import { Menu as MuiMenu, IconButton, IconButtonProps } from '@material-ui/core'
-import { MoreHoriz } from '@material-ui/icons'
+import { Menu as MuiMenu, IconButton, IconButtonProps } from '@mui/material'
+import { MoreHoriz } from '@mui/icons-material'
 import { MenuItem, Menu, MenuProps } from '../Menu'
 import {
   BasicProps,
-  lowLevelStyles,
+  makeG2STyles,
   MergeMuiElementProps
-} from '@smartb/archetypes-ui-themes'
+} from '@smartb/g2-themes'
 import clsx from 'clsx'
 
-const useStyles = lowLevelStyles()({
+const useStyles = makeG2STyles()({
   menu: {
     maxWidth: '300px',
     maxHeight: '250px',
@@ -63,7 +63,7 @@ const MoreOptionsBase = <T extends object = {}>(
   const { options, menuContainerProps, className, classes, styles, ...other } =
     props
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-  const defaultClasses = useStyles()
+  const defaultStyles = useStyles()
 
   const handleClick = useCallback((event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget)
@@ -83,6 +83,7 @@ const MoreOptionsBase = <T extends object = {}>(
         onClick={handleClick}
         className={clsx(className, 'AruiMoreOptions-root')}
         {...other}
+        size='large'
       >
         <MoreHoriz
           className={clsx(
@@ -98,7 +99,7 @@ const MoreOptionsBase = <T extends object = {}>(
         open={Boolean(anchorEl)}
         onClose={close}
         PaperProps={{
-          className: defaultClasses.menu
+          className: defaultStyles.classes.menu
         }}
         className={clsx(classes?.menu, 'AruiMoreOptions-menu')}
         style={styles?.menu}
@@ -106,7 +107,7 @@ const MoreOptionsBase = <T extends object = {}>(
         <Menu
           menu={options}
           {...menuContainerProps}
-          classes={{ item: { root: defaultClasses.listItem } }}
+          classes={{ item: { root: defaultStyles.classes.listItem } }}
         />
       </MuiMenu>
     </>

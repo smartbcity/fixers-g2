@@ -1,9 +1,9 @@
 import React, { forwardRef } from 'react'
 import { Delete } from '../icons'
-import { lowLevelStyles } from '@smartb/archetypes-ui-themes'
+import { makeG2STyles } from '@smartb/g2-themes'
 import { Button, ButtonProps } from './Button'
 
-const useStyles = lowLevelStyles()({
+const useStyles = makeG2STyles()({
   icon: {
     width: '20px',
     height: '20px',
@@ -11,8 +11,11 @@ const useStyles = lowLevelStyles()({
   }
 })
 
-const DeleteButtonBase = function <T = {}>(props: ButtonProps<T>, ref: React.ForwardedRef<HTMLButtonElement>) {
-  const classes = useStyles()
+const DeleteButtonBase = function <T = {}>(
+  props: ButtonProps<T>,
+  ref: React.ForwardedRef<HTMLButtonElement>
+) {
+  const { classes } = useStyles()
   return (
     <Button<T>
       variant='text'
@@ -23,5 +26,6 @@ const DeleteButtonBase = function <T = {}>(props: ButtonProps<T>, ref: React.For
   )
 }
 
-export const DeleteButton = forwardRef(DeleteButtonBase) as typeof DeleteButtonBase
-
+export const DeleteButton = forwardRef(
+  DeleteButtonBase
+) as typeof DeleteButtonBase

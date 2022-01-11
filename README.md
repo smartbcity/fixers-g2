@@ -1,55 +1,63 @@
-# Archetypes-ui libraries
+# G2 libraries
 
 ![](https://badgen.net/badge/React/16.13.1/purple)
 ![](https://badgen.net/badge/@material-ui/4.11.3/green)
-[![](https://badgen.net/npm/v/@smartb/archetypes-ui-layout/latest)](https://www.npmjs.com/package/@smartb/archetypes-ui-components)
+![](https://badgen.net/npm/v/@smartb/g2-components/latest)
 ![](https://badgen.net/npm/types/tslib)
 
 ## 📦 Install
 
 ```bash
-npm install @smartb/archetypes-ui-components
-npm install @smartb/archetypes-ui-documentation
-npm install @smartb/archetypes-ui-layout
-npm install @smartb/archetypes-ui-forms
-npm install @smartb/archetypes-ui-providers
-npm install @smartb/archetypes-ui-themes
-npm install @smartb/archetypes-ui-s2
+npm install @smartb/g2-components
+npm install @smartb/g2-documentation
+npm install @smartb/g2-layout
+npm install @smartb/g2-notifications
+npm install @smartb/g2-forms
+npm install @smartb/g2-providers
+npm install @smartb/g2-themes
+npm install @smartb/g2-s2
 ```
 
 ```bash
-yarn add @smartb/archetypes-ui-components
-yarn add @smartb/archetypes-ui-documentation
-yarn add @smartb/archetypes-ui-layout
-yarn add @smartb/archetypes-ui-forms
-yarn add @smartb/archetypes-ui-themes
-yarn add @smartb/archetypes-ui-providers
-yarn add @smartb/archetypes-ui-s2
+yarn add @smartb/g2-components
+yarn add @smartb/g2-documentation
+yarn add @smartb/g2-layout
+yarn add @smartb/g2-notifications
+yarn add @smartb/g2-forms
+yarn add @smartb/g2-themes
+yarn add @smartb/g2-providers
+yarn add @smartb/g2-s2
 ```
+
+## 📁 The ready-to-go empty application based on our ecosystem with g2 integrated
+
+[get the zip here !](app-full.zip) (open it in a new window)
 
 ## 🧰 The contents
 
 Almost every components are based on [Material-ui](https://material-ui.com/).
 
-- @smartb/archetypes-ui-components regroups basic components to build an application like button, card, panel etc...
+- @smartb/g2-components regroups basic components to build an application like button, card, panel etc...
 
-- @smartb/archetypes-ui-documentation regroups the components to document code.
+- @smartb/g2-documentation regroups the components to document code.
 
-- @smartb/archetypes-ui-forms regroups the components to build a complete form like text-fields, select etc...
+- @smartb/g2-forms regroups the components to build a complete form like text-fields, select etc...
 
-- @smartb/archetypes-ui-layout regroups complexe layouts to structure an application like nav-bar, steppers, tools-menu etc...
+- @smartb/g2-layout regroups complexe layouts to structure an application like nav-bar, steppers, tools-menu etc...
 
-- @smartb/archetypes-ui-providers regroups provider to make a standard modern react app like i18n, redux etc...
+- @smartb/g2-notifications regroups the components to notify the user of an application.
 
-- @smartb/archetypes-ui-themes regroups providers and hooks to use our theme and the material-ui theme in the application.
+- @smartb/g2-providers regroups provider to make a standard modern react app like i18n, redux etc...
 
-- @smartb/archetypes-ui-s2 regroups components to work with Smartb's tools.
+- @smartb/g2-themes regroups providers and hooks to use our theme and the material-ui theme in the application.
+
+- @smartb/g2-s2 regroups components to work with Smartb's tools.
 
 ## 🌈 Override styles
 
-There is a `theme provider` component in @smartb/archetypes-ui-components that has to include the app.
+There is a `theme provider` component in @smartb/g2-components that has to include the app.
 
-You have to give it a theme that you can get and customise [here](/?path=/story/overview-cheatsheet-theme--page). And you can also give it a [material-ui theme](https://material-ui.com/customization/default-theme/) to override the material-ui default properties.
+You have to give it a theme ~~that you can get and customise [here](/?path=/story/overview-cheatsheet-theme--page)~~ (not yet available). And you can also give it a [material-ui theme](https://material-ui.com/customization/default-theme/) to override the material-ui default properties.
 
 Every components and layouts will have the following props to easily override their default styles:
 
@@ -78,12 +86,20 @@ yarn workspaces run build
 yarn storybook
 ```
 
-- Release Version
+- Release Version on npm from master
 
 ```
 lerna version 0.0.1 --no-git-tag-version
 
 lerna publish from-package
+```
+
+- Release experimental Version on gitlab from develop
+
+```
+lerna version 1.0.0-alpha.1 --no-git-tag-version
+
+yarn publishWorkspaces:experimental
 ```
 
 - Create new package

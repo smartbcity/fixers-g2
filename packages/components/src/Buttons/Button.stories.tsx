@@ -2,8 +2,8 @@ import React, { useState } from 'react'
 import { Button as AruiButton, ButtonBasicProps } from './Button'
 import { Meta } from '@storybook/react'
 import { Story } from '@storybook/react/types-6-0'
-import { Box } from '@material-ui/core'
-import { SwapHoriz } from '@material-ui/icons'
+import { Box } from '@mui/material'
+import { SwapHoriz } from '@mui/icons-material'
 import { EditButton } from './EditButton'
 import { DeleteButton } from './DeleteButton'
 import { BackButton } from './BackButton'
@@ -12,12 +12,12 @@ import { withDesign } from 'storybook-addon-designs'
 export default {
   title: 'Components/Button',
   component: AruiButton,
-  decorators:[withDesign],
+  decorators: [withDesign],
   parameters: {
     design: {
       type: 'figma',
-      url: 'https://www.figma.com/file/4Nl4422AUGHNVClZOHzPg8/SmartB-UI-kit?node-id=204%3A61',
-    },
+      url: 'https://www.figma.com/file/kgphqh0uVhoXt8TK3LlkGj/G2-%2F-Design-System?node-id=1014%3A871'
+    }
   }
 } as Meta
 

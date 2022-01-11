@@ -6,12 +6,17 @@ import {
   ListItemText,
   MenuItem,
   Select as MuiSelect,
+  SelectChangeEvent,
   SelectProps as MuiSelectProps
-} from '@material-ui/core'
-import { Clear } from '@material-ui/icons'
+} from '@mui/material'
+import { ClearRounded } from '@mui/icons-material'
 import { SelectIcon } from '../assets/icons'
 import { useInputStyles } from '../style'
-import { BasicProps, lowLevelStyles, MergeMuiElementProps, useTheme } from '@smartb/archetypes-ui-themes'
+import {
+  BasicProps,
+  makeG2STyles,
+  MergeMuiElementProps
+} from '@smartb/g2-themes'
 import clsx from 'clsx'
 import { CheckBox } from '../CheckBox'
 
@@ -21,7 +26,6 @@ export type Option = {
 }
 
 export interface SelectClasses {
-  label?: string
   select?: string
   input?: string
   helperText?: string
@@ -32,7 +36,6 @@ export interface SelectClasses {
 }
 
 export interface SelectStyles {
-  label?: React.CSSProperties
   select?: React.CSSProperties
   input?: React.CSSProperties
   helperText?: React.CSSProperties
@@ -42,7 +45,10 @@ export interface SelectStyles {
   menu?: React.CSSProperties
 }
 
-const useStyles = lowLevelStyles()({
+const useStyles = makeG2STyles()({
+  formcontrol: {
+    width: '100%'
+  },
   root: {
     '& .MuiFilledInput-input': {
       margin: '0px 5px'
@@ -50,8 +56,8 @@ const useStyles = lowLevelStyles()({
   },
   disabledStyle: {
     '& .MuiSelect-root': {
-      color: "#676879B3",
-      fontSize: "14px",
+      color: '#676879B3',
+      fontSize: '14px'
     }
   },
   clear: {
@@ -63,48 +69,48 @@ const useStyles = lowLevelStyles()({
     color: 'rgba(0, 0, 0, 0.54)'
   },
   selectIcon: {
-    width: '20px',
-    height: '20px',
+    width: '12px',
+    height: '12px',
     right: '10px',
-    top: 'calc(50% - 9px)'
+    top: 'calc(50% - 5px)'
   },
   list: {
-    padding: "0px"
+    padding: '0px'
   },
   selectPaddingWithClear: {
     '& .MuiSelect-root': {
-      paddingRight: "55px"
+      paddingRight: '55px'
     }
   },
   selectPadding: {
     '& .MuiSelect-root': {
-      paddingRight: "30px",
-      margin: "0px"
+      paddingRight: '30px',
+      margin: '0px'
     }
   },
   menu: {
-    marginTop: "5px"
+    marginTop: '5px'
   }
 })
 
 export interface SelectBasicProps extends BasicProps {
   /**
    * The value selected
-   * 
-   * @default '''
+   *
+   * @default ''
    */
   value?: string | number
 
   /**
    * The values of selected. ⚠️ This prop is used only if `multiple` is true
-   * 
+   *
    * @default []
    */
   values?: (string | number)[]
 
   /**
    * If true the select will be able to handle multiple selections
-   * 
+   *
    *  @default false
    */
   multiple?: boolean
@@ -121,14 +127,14 @@ export interface SelectBasicProps extends BasicProps {
 
   /**
    * The size of the input
-   * 
+   *
    *  @default "medium"
    */
-  size?: "large" | "medium" | "small"
+  size?: 'large' | 'medium' | 'small'
 
   /**
    * List of options available in the option
-   * 
+   *
    * @default []
    */
   options?: Option[]
@@ -140,7 +146,7 @@ export interface SelectBasicProps extends BasicProps {
 
   /**
    * Define if the value of the input is valid or not
-   * 
+   *
    * @default false
    */
   error?: boolean
@@ -156,7 +162,7 @@ export interface SelectBasicProps extends BasicProps {
   onRemove?: () => void
   /**
    * If true the input will be disabled
-   * 
+   *
    * @default false
    */
   disabled?: boolean
@@ -172,155 +178,219 @@ export interface SelectBasicProps extends BasicProps {
 
 export type SelectProps = MergeMuiElementProps<MuiSelectProps, SelectBasicProps>
 
-export const Select = React.forwardRef((props: SelectProps, ref: React.ForwardedRef<HTMLDivElement>) => {
-  const {
-    value = '',
-    values = [],
-    onChangeValue,
-    onChangeValues,
-    label = '',
-    options = [],
-    className,
-    placeholder = "",
-    style,
-    id,
-    error = false,
-    errorMessage = '',
-    onRemove,
-    disabled = false,
-    classes,
-    styles,
-    size = "medium",
-    multiple = false,
-    ...other
-  } = props
+export const Select = React.forwardRef(
+  (props: SelectProps, ref: React.ForwardedRef<HTMLDivElement>) => {
+    const {
+      value = '',
+      values = [],
+      onChangeValue,
+      onChangeValues,
+      name,
+      options = [],
+      className,
+      placeholder = '',
+      style,
+      id,
+      error = false,
+      errorMessage = '',
+      onRemove,
+      disabled = false,
+      classes,
+      styles,
+      size = 'medium',
+      multiple = false,
+      onClose,
+      ...other
+    } = props
 
-  const theme = useTheme()
-  const defaultClasses = useInputStyles(theme)
-  const classesLocal = useStyles()
+    const defaultStyles = useInputStyles()
+    const localStyles = useStyles()
 
-  const onChangeMemoized = useCallback(
-    (e: React.ChangeEvent<{ name?: string | undefined; value: unknown }>) => {
-      const eventValue = e.target.value
-      if (Array.isArray(eventValue)) {
-        onChangeValues && onChangeValues(eventValue as string[])
+    const onChangeMemoized = useCallback(
+      (event: SelectChangeEvent<unknown>) => {
+        const eventValue = event.target.value
+        if (Array.isArray(eventValue)) {
+          onChangeValues && onChangeValues(eventValue as string[])
+        }
+        onChangeValue && onChangeValue(eventValue as string)
+      },
+      [onChangeValue, onChangeValues]
+    )
+
+    const optionsMap = useMemo(
+      () => new Map(options.map((el) => [el.key, el.label])),
+      [options]
+    )
+
+    const renderValue = useCallback(
+      (selected: string | string[]) => {
+        if (
+          (!Array.isArray(selected) && selected === '') ||
+          (Array.isArray(selected) && selected.length === 0)
+        ) {
+          return placeholder
+        }
+        if (Array.isArray(selected) && selected.length > 0) {
+          return selected.map((el) => optionsMap.get(el)).join(', ')
+        }
+        if (!Array.isArray(selected)) {
+          return optionsMap.get(selected)
+        }
+        return ''
+      },
+      [placeholder, optionsMap]
+    )
+
+    const selectIcon = useCallback(
+      (props) => (
+        <SelectIcon
+          {...props}
+          color='#98A5AE'
+          className={clsx(
+            classes?.selectIcon,
+            localStyles.classes.selectIcon,
+            'AruiSelect-selectIcon',
+            props.className
+          )}
+          style={styles?.selectIcon}
+        />
+      ),
+      []
+    )
+
+    const optionsMemoized = useMemo(() => {
+      return options.map((option) => (
+        <MenuItem
+          data-value={option.key}
+          className={clsx(classes?.option, 'AruiSelect-option')}
+          style={styles?.option}
+          key={option.key}
+          value={option.key}
+        >
+          <CheckBox
+            data-value={option.key}
+            checked={values.indexOf(option.key) > -1 || value === option.key}
+          />
+          <ListItemText
+            data-value={option.key}
+            primary={option.label as string}
+          />
+        </MenuItem>
+      ))
+    }, [options, values, value, classes?.option, styles?.option])
+
+    const inputProp: InputBaseComponentProps = useMemo(() => {
+      return {
+        name: name,
+        className: clsx(classes?.input, 'AruiSelect-select'),
+        style: styles?.input,
+        id: id
       }
-      onChangeValue && onChangeValue(eventValue as string)
-    },
-    [onChangeValue, onChangeValues],
-  )
+    }, [name, onRemove, value, classes?.input, styles?.input, id])
 
-  const renderValue = useCallback(
-    (selected: string | string[]) => {
-      if ((!Array.isArray(selected) && selected === "") || (Array.isArray(selected) && selected.length === 0)) {
-        return placeholder
-      }
-      if (Array.isArray(selected) && selected.length > 0) {
-        return selected.join(', ')
-      }
-      if (!Array.isArray(selected)) {
-        return selected
-      }
-      return ""
-    },
-    [placeholder],
-  )
+    const onCloseMemoized = useCallback(
+      (event: React.SyntheticEvent<Element, Event>) => {
+        //@ts-ignore
+        const valueClicked = event.currentTarget.dataset.value
+        onRemove &&
+          value &&
+          valueClicked &&
+          value.toString() === valueClicked.toString() &&
+          onRemove()
+        onClose && onClose(event)
+      },
+      [value, onRemove, onClose]
+    )
 
-  const selectIcon = useCallback(
-    (props) => (
-      <SelectIcon
-        {...props}
-        color='#98A5AE'
-        className={clsx(classes?.selectIcon, classesLocal.selectIcon, "AruiSelect-selectIcon", props.className)}
-        style={styles?.selectIcon}
-      />
-    ),
-    [],
-  )
+    const canRemove =
+      (value !== '' || values.length > 0) && onRemove && !disabled
 
-  const optionsMemoized = useMemo(() => {
-    return options.map((option) => (
-      <MenuItem className={clsx(classes?.option, "AruiSelect-option")} style={styles?.option} key={option.key} value={option.label}>
-        <CheckBox checked={values.indexOf(option.label) > -1 || value === option.label} />
-        <ListItemText primary={option.label as string} />
-      </MenuItem>
-    ))
-  }, [options, values, value, classes?.option, styles?.option])
-
-  const inputProp: InputBaseComponentProps = useMemo(() => {
-    return {
-      name: label,
-      className: clsx(classes?.input, "AruiSelect-select"),
-      style: styles?.input
-    }
-  }, [label, onRemove, value, classes?.input, styles?.input])
-
-  return (
-    <FormControl
-      variant='filled'
-      className={clsx(
-        className,
-        defaultClasses.input,
-        size === "large" && defaultClasses.inputLarge,
-        size === "medium" && defaultClasses.inputMedium,
-        size === "small" && defaultClasses.inputSmall,
-        disabled && defaultClasses.inputDisabled,
-        error && defaultClasses.inputError,
-        "AruiSelect-root"
-      )}
-      style={style}
-      error={error}
-    >
-      <MuiSelect
-        {...other}
-        ref={ref}
+    return (
+      <FormControl
+        variant='filled'
         className={clsx(
-          classesLocal.root,
-            values && value === '' && values.length <= 0 && placeholder ? classesLocal.disabledStyle : '', 
-           classes?.select, 
-           onRemove ? classesLocal.selectPaddingWithClear : classesLocal.selectPadding,
-           "AruiSelect-select"
-           )}
-        id={id}
-        variant={'filled'}
-        value={multiple ? values : value}
-        multiple={multiple}
-        IconComponent={selectIcon}
-        onChange={onChangeMemoized}
-        inputProps={inputProp}
-        renderValue={renderValue}
-        displayEmpty
-        MenuProps={{
-          anchorOrigin: {
-            vertical: 'bottom',
-            horizontal: 'center'
-          },
-          transformOrigin: {
-            vertical: 'top',
-            horizontal: 'center'
-          },
-          getContentAnchorEl: null,
-          classes:{list: classesLocal.list},
-          className:clsx(classesLocal.menu, classes?.menu, "AruiSelect-menu"),
-          style: styles?.menu
-        }}
-        style={{
-          ...styles?.select,
-          color: '#98A5AE',
-          fontWeight: 500
-        }}
-        disabled={disabled}
+          className,
+          defaultStyles.classes.input,
+          size === 'large' && defaultStyles.classes.inputLarge,
+          size === 'medium' && defaultStyles.classes.inputMedium,
+          size === 'small' && defaultStyles.classes.inputSmall,
+          disabled && defaultStyles.classes.inputDisabled,
+          error && defaultStyles.classes.inputError,
+          localStyles.classes.formcontrol,
+          'AruiSelect-root'
+        )}
+        style={style}
+        error={error}
       >
-        {optionsMemoized}
-      </MuiSelect>
-      {((value !== '' || values.length > 0)) && onRemove && !disabled && (
-        <Clear onClick={onRemove} className={clsx(classesLocal.clear, classes?.clearIcon, "AruiSelect-clearIcon")} style={styles?.clearIcon} />
-      )}
-      {errorMessage !== '' && error && (
-        <FormHelperText className={clsx(defaultClasses.helperText, classes?.helperText, "AruiSelect-helperText")} style={styles?.helperText}>
-          {errorMessage}
-        </FormHelperText>
-      )}
-    </FormControl>
-  )
-})
+        <MuiSelect
+          {...other}
+          ref={ref}
+          className={clsx(
+            localStyles.classes.root,
+            values && value === '' && values.length <= 0 && placeholder
+              ? localStyles.classes.disabledStyle
+              : '',
+            classes?.select,
+            canRemove
+              ? localStyles.classes.selectPaddingWithClear
+              : localStyles.classes.selectPadding,
+            'AruiSelect-select'
+          )}
+          variant={'filled'}
+          value={multiple ? values : value}
+          onClose={onCloseMemoized}
+          multiple={multiple}
+          IconComponent={selectIcon}
+          onChange={onChangeMemoized}
+          inputProps={inputProp}
+          renderValue={renderValue}
+          displayEmpty
+          MenuProps={{
+            anchorOrigin: {
+              vertical: 'bottom',
+              horizontal: 'center'
+            },
+            transformOrigin: {
+              vertical: 'top',
+              horizontal: 'center'
+            },
+            classes: { list: localStyles.classes.list },
+            className: clsx(
+              localStyles.classes.menu,
+              classes?.menu,
+              'AruiSelect-menu'
+            ),
+            style: styles?.menu
+          }}
+          style={styles?.select}
+          disabled={disabled}
+        >
+          {optionsMemoized}
+        </MuiSelect>
+        {canRemove && (
+          <ClearRounded
+            onClick={onRemove}
+            className={clsx(
+              localStyles.classes.clear,
+              classes?.clearIcon,
+              'AruiSelect-clearIcon'
+            )}
+            style={styles?.clearIcon}
+          />
+        )}
+        {errorMessage !== '' && error && (
+          <FormHelperText
+            className={clsx(
+              defaultStyles.classes.helperText,
+              classes?.helperText,
+              'AruiSelect-helperText'
+            )}
+            style={styles?.helperText}
+          >
+            {errorMessage}
+          </FormHelperText>
+        )}
+      </FormControl>
+    )
+  }
+)

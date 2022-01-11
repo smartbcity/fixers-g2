@@ -1,19 +1,19 @@
 import React from 'react'
-import { MenuItems } from '@smartb/archetypes-ui-components'
-import { ExpandMore } from '@material-ui/icons'
+import { MenuItems } from '@smartb/g2-components'
+import { ExpandMore } from '@mui/icons-material'
 import {
-  ExpansionPanel,
-  ExpansionPanelSummary,
+  Accordion,
+  AccordionSummary,
   ListItemIcon,
   ListItemText,
-  ExpansionPanelDetails,
+  AccordionDetails,
   ListItem,
   List
-} from '@material-ui/core'
-import { BasicProps, lowLevelStyles } from '@smartb/archetypes-ui-themes'
+} from '@mui/material'
+import { BasicProps, makeG2STyles } from '@smartb/g2-themes'
 import clsx from 'clsx'
 
-const useStyles = lowLevelStyles()({
+const useStyles = makeG2STyles()({
   profile: {
     boxShadow: 'none !important',
     background: 'transparent',
@@ -56,16 +56,16 @@ export interface ToolsPanelProps extends BasicProps {
 
 export const ToolsPanel = (props: ToolsPanelProps) => {
   const { menu, style, className, id } = props
-  const classes = useStyles()
+  const { classes } = useStyles()
 
   return (
-    <ExpansionPanel
+    <Accordion
       className={clsx(classes.profile, 'AruiToolsPanel-root', className)}
       style={style}
       id={id}
       classes={{ expanded: classes.expanded }}
     >
-      <ExpansionPanelSummary
+      <AccordionSummary
         expandIcon={<ExpandMore />}
         className={classes.summary}
         classes={{
@@ -75,8 +75,8 @@ export const ToolsPanel = (props: ToolsPanelProps) => {
       >
         <ListItemIcon>{menu.icon}</ListItemIcon>
         <ListItemText primary={menu.label} />
-      </ExpansionPanelSummary>
-      <ExpansionPanelDetails className={classes.details}>
+      </AccordionSummary>
+      <AccordionDetails className={classes.details}>
         <List className={classes.list}>
           {menu.items && menu.items.length <= 1
             ? menu.items[0].items &&
@@ -114,7 +114,7 @@ export const ToolsPanel = (props: ToolsPanelProps) => {
                 )
               })}
         </List>
-      </ExpansionPanelDetails>
-    </ExpansionPanel>
+      </AccordionDetails>
+    </Accordion>
   )
 }

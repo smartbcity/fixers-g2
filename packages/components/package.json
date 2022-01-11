@@ -1,9 +1,9 @@
 {
-  "name": "@smartb/archetypes-ui-components",
-  "repository": "https://gitlab.smartb.city/app/archetypes-ui.git",
+  "name": "@smartb/g2-components",
+  "repository": "https://gitlab.smartb.city/fixers/g2.git",
   "author": "Adrien Poupard <adrien@smartb.city>",
   "license": "Apache-2.0",
-  "version": "0.1.45",
+  "version": "1.0.0",
   "description": "React components library",
   "private": false,
   "main": "dist/index.js",
@@ -19,26 +19,28 @@
     "test:build": "run-s build",
     "test:lint": "eslint .",
     "test:unit": "cross-env CI=1 react-scripts test --env=jsdom",
-    "test:watch": "react-scripts test --env=jsdom"
+    "test:watch": "react-scripts test --env=jsdom",
+    "publish:experimental": "npm publish --tag experimental"
   },
   "files": [
     "dist"
   ],
   "devDependencies": {
+    "@smartb/g2-forms": "^1.0.0",
     "@types/react-dropzone": "^5.1.0",
     "@types/stringify-object": "^3.3.0"
   },
   "peerDependencies": {
-    "@material-ui/core": "^4.11.3",
-    "@types/react": "^16.9.27",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1"
+    "@mui/material": "^5.2.7",
+    "@types/react": "^17.0.14",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
   },
   "dependencies": {
-    "@material-ui/icons": "^4.11.2",
-    "@smartb/archetypes-ui-themes": "^0.1.45",
-    "@material-ui/lab": "^4.0.0-alpha.57",
-    "@smartb/archetypes-ui-forms": "^0.1.45",
+    "@mui/icons-material": "^5.2.5",
+    "@mui/lab": "^5.0.0-alpha.63",
+    "@smartb/g2-notifications": "^1.0.0",
+    "@smartb/g2-themes": "^1.0.0",
     "clsx": "^1.1.1",
     "react-data-table-component": "^6.9.7",
     "react-dropzone": "^11.3.2",
@@ -46,5 +48,8 @@
     "stringify-object": "^3.3.0",
     "styled-components": "^5.2.1"
   },
-  "gitHead": "01582f4b620c1e44cab5a65394e29d95f66ddabb"
+  "gitHead": "01582f4b620c1e44cab5a65394e29d95f66ddabb",
+  "publishConfig": {
+    "@smartb:registry": "https://gitlab.smartb.city/api/v4/projects/52/packages/npm/"
+  }
 }

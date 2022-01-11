@@ -1,0 +1,48 @@
+{
+  "name": "@smartb/g2-notifications",
+  "repository": "https://gitlab.smartb.city/fixers/g2.git",
+  "author": "Adrien Poupard <adrien@smartb.city>",
+  "license": "Apache-2.0",
+  "version": "1.0.0",
+  "description": "React notifications library",
+  "private": false,
+  "main": "dist/index.js",
+  "source": "src/index.ts",
+  "types": "dist/index.d.ts",
+  "module": "dist/index.es.js",
+  "engines": {
+    "node": ">=10"
+  },
+  "scripts": {
+    "build": "rollup -c",
+    "test": "run-s test:unit test:lint test:build",
+    "test:build": "run-s build",
+    "test:lint": "eslint .",
+    "test:unit": "cross-env CI=1 react-scripts test --env=jsdom",
+    "test:watch": "react-scripts test --env=jsdom",
+    "publish:experimental": "npm publish --tag experimental"
+  },
+  "files": [
+    "dist"
+  ],
+  "devDependencies": {
+    "@smartb/g2-components": "^1.0.0",
+    "@smartb/g2-forms": "^1.0.0"
+  },
+  "peerDependencies": {
+    "@mui/material": "^5.2.7",
+    "@types/react": "^17.0.14",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  },
+  "dependencies": {
+    "@mui/icons-material": "^5.2.5",
+    "@smartb/g2-themes": "^1.0.0",
+    "clsx": "^1.1.1",
+    "notistack": "3.0.0-alpha.1"
+  },
+  "gitHead": "01582f4b620c1e44cab5a65394e29d95f66ddabb",
+  "publishConfig": {
+    "@smartb:registry": "https://gitlab.smartb.city/api/v4/projects/52/packages/npm/"
+  }
+}

@@ -1,9 +1,9 @@
 import React from 'react'
-import { Grid, Hidden } from '@material-ui/core'
+import { Grid, Hidden } from '@mui/material'
 import clsx from 'clsx'
-import { lowLevelStyles } from '@smartb/archetypes-ui-themes'
+import { makeG2STyles } from '@smartb/g2-themes'
 
-const useStyles = lowLevelStyles()({
+const useStyles = makeG2STyles()({
   img: {
     width: '100%',
     height: '100%',
@@ -22,7 +22,7 @@ export interface StepperImgProps {
 
 export const StepperImg = (props: StepperImgProps) => {
   const { img, children, className } = props
-  const classes = useStyles()
+  const { classes } = useStyles()
 
   return (
     <Grid

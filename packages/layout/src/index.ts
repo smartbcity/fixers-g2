@@ -17,3 +17,10 @@ export { TabsMenu, TabsMenuProps } from './TabsMenu'
 export { ItemsLayout, ItemsLayoutProps } from './ItemsLayout'
 export { ToolsPanel, ToolsPanelProps } from './ToolsPanel'
 export { Page, pageProps } from './Page'
+export {
+  PopUp,
+  Action as PopUpAction,
+  PopUpProps,
+  ConfirmationPopUp,
+  ConfirmationPopUpProps
+} from './PopUp'

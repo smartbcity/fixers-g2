@@ -3,7 +3,7 @@ import { ToolsPanel as AruiToolsPanel, ToolsPanelProps } from './ToolsPanel'
 import { Meta } from '@storybook/react'
 import { Story } from '@storybook/react/types-6-0'
 import defaultLogo from '../assets/impactcity-logo-2.png'
-import { AccountCircle } from '@material-ui/icons'
+import { AccountCircle } from '@mui/icons-material'
 import { Menu } from './types'
 
 export default {

@@ -1,19 +1,19 @@
 import React from 'react'
-import { MenuItems } from '@smartb/archetypes-ui-components'
+import { MenuItems } from '@smartb/g2-components'
 import {
   MenuItem as MuiMenuItem,
   Typography,
   ListItemIcon,
   Grid
-} from '@material-ui/core'
+} from '@mui/material'
 import {
   MergeReactElementProps,
   BasicProps,
-  lowLevelStyles
-} from '@smartb/archetypes-ui-themes'
+  makeG2STyles
+} from '@smartb/g2-themes'
 import clsx from 'clsx'
 
-const useStyles = lowLevelStyles()({
+const useStyles = makeG2STyles()({
   gridContainer: {
     display: 'flex',
     padding: '5px',
@@ -108,7 +108,7 @@ export const ItemsLayout = React.forwardRef(
       styles,
       ...other
     } = props
-    const defaultClasses = useStyles()
+    const defaultStyles = useStyles()
 
     if (display === 'list')
       return (
@@ -122,12 +122,11 @@ export const ItemsLayout = React.forwardRef(
           {menu.items &&
             menu.items.map((it) => (
               <MuiMenuItem
-                button
                 component={it.href ? 'a' : 'div'}
                 onClick={() => it.goto && !it.href && it.goto()}
                 href={it.href}
                 className={clsx(
-                  defaultClasses.item,
+                  defaultStyles.classes.item,
                   'AruiItemsLayout-listItem',
                   classes?.listItem
                 )}
@@ -135,7 +134,7 @@ export const ItemsLayout = React.forwardRef(
                 key={it.key}
               >
                 {it.icon && (
-                  <ListItemIcon classes={{ root: defaultClasses.icon }}>
+                  <ListItemIcon classes={{ root: defaultStyles.classes.icon }}>
                     {it.icon}
                   </ListItemIcon>
                 )}
@@ -147,7 +146,7 @@ export const ItemsLayout = React.forwardRef(
     return (
       <div
         className={clsx(
-          defaultClasses.gridRoot,
+          defaultStyles.classes.gridRoot,
           'AruiItemsLayout-gridRoot',
           className
         )}
@@ -162,7 +161,7 @@ export const ItemsLayout = React.forwardRef(
           direction='row'
           alignContent='flex-start'
           className={clsx(
-            defaultClasses.gridContainer,
+            defaultStyles.classes.gridContainer,
             'AruiItemsLayout-gridContainer',
             classes?.gridContainer
           )}
@@ -177,9 +176,9 @@ export const ItemsLayout = React.forwardRef(
                 href={it.href}
                 alignItems='center'
                 direction='column'
-                justify='space-around'
+                justifyContent='space-around'
                 className={clsx(
-                  defaultClasses.gridItem,
+                  defaultStyles.classes.gridItem,
                   'AruiItemsLayout-gridItem',
                   classes?.gridItem
                 )}

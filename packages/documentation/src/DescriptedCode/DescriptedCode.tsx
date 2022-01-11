@@ -1,5 +1,5 @@
-import { Box } from '@material-ui/core'
-import { BasicProps } from '@smartb/archetypes-ui-themes'
+import { Box } from  '@mui/material'
+import { BasicProps } from '@smartb/g2-themes'
 import clsx from 'clsx'
 import React from 'react'
 
@@ -28,7 +28,7 @@ export const DescriptedCode = (props: DescriptedCodeProps) => {
       <Box
         className={'AruiDescriptedCode-leftContainer'}
         width='60%'
-        padding='0px 10px'
+        paddingRight='10px'
         boxSizing='border-box'
       >
         {leftElement}

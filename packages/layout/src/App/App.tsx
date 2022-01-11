@@ -1,123 +1,121 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import { Drawer, DrawerProps, Theme } from '@material-ui/core'
-import { createStyles } from '@material-ui/core'
+import {
+  Drawer,
+  DrawerProps,
+  Theme as MuiTheme,
+  useTheme as useMuiTheme
+} from '@mui/material'
 import clsx from 'clsx'
 import { StyleProps } from '../StyleProps'
 import { ToolsMenuProps, ToolsMenu } from '../ToolsMenu'
 import { useDebouncedCallback } from 'use-debounce'
-import {
-  Theme as SBTheme,
-  useTheme,
-  lowLevelStyles
-} from '@smartb/archetypes-ui-themes'
-import { Menu, MenuItem } from '@smartb/archetypes-ui-components'
+import { makeG2STyles } from '@smartb/g2-themes'
+import { Menu, MenuItem } from '@smartb/g2-components'
 import { ToolsPanel } from '../ToolsPanel'
 import { AppBarLayout, AppBarLayoutProps } from '../AppBarLayout'
 import { TitleContainer } from './TitleContainer'
 
-const useStyles = lowLevelStyles<
-  { styleprops: StyleProps; theme: SBTheme },
-  Theme
->()((theme: Theme) =>
-  createStyles({
-    appbar: (props) => ({
-      height: `${props.styleprops.appBarHeight}px`,
-      backgroundColor: props.theme.colors.primary,
-      boxShadow: props.theme.shadows[4],
-      '& .MuiToolbar-root': {
-        height: '100%'
-      },
-      transition: theme.transitions.create(['margin', 'width'], {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.leavingScreen
-      })
-    }),
-    appBarOpen: (props) => ({
-      width: `calc(100% - ${props.styleprops.menuWidth}px)`,
-      marginLeft: `${props.styleprops.menuWidth}px`,
-      transition: theme.transitions.create(['margin', 'width'], {
-        easing: theme.transitions.easing.easeOut,
-        duration: theme.transitions.duration.enteringScreen
-      })
-    }),
-    titleContainer: (props) => ({
-      height: `${props.styleprops.appBarHeight}px`,
-      paddingLeft: '10px',
-      display: 'flex',
-      alignItems: 'center',
-      position: 'fixed',
-      marginLeft: `0px`,
-      top: '0px',
-      left: '0px',
-      transition: theme.transitions.create(['margin', 'width'], {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.leavingScreen
-      })
-    }),
-    titleContainerOpen: (props) => ({
-      marginLeft: `${props.styleprops.menuWidth}px`,
-      transition: theme.transitions.create(['margin', 'width'], {
-        easing: theme.transitions.easing.easeOut,
-        duration: theme.transitions.duration.enteringScreen
-      })
-    }),
-    drawer: (props) => ({
-      width: `${props.styleprops.menuWidth}px`,
-      '& .MuiDrawer-paper': {
-        top: `0px`,
-        zIndex: 1000,
-        width: `${props.styleprops.menuWidth}px`,
-        background: 'white',
-        height: `100vh`,
-        overflowX: 'hidden',
-        transition: theme.transitions.create('transform', {
-          easing: theme.transitions.easing.sharp,
-          duration: theme.transitions.duration.enteringScreen
-        })
-      }
-    }),
-    drawerClosed: (props) => ({
-      '& .MuiDrawer-paper': {
-        transform: `translateX(-${props.styleprops.menuWidth}px)`,
-        transition: theme.transitions.create('transform', {
-          easing: theme.transitions.easing.easeOut,
-          duration: theme.transitions.duration.leavingScreen
-        })
-      }
-    }),
-    main: (props) => ({
-      flexGrow: 1,
-      transition: theme.transitions.create('padding', {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.leavingScreen
-      }),
-      paddingTop: props.styleprops.appBarHeight,
-      paddingLeft: props.styleprops.menuWidth
-    }),
-    mainShift: (props) => ({
-      flexGrow: 1,
-      paddingTop: props.styleprops.appBarHeight,
-      transition: theme.transitions.create('padding', {
-        easing: theme.transitions.easing.easeOut,
-        duration: theme.transitions.duration.enteringScreen
-      }),
-      paddingLeft: 0
-    }),
-    hidder: {
-      opacity: '0.5',
-      position: 'fixed',
-      height: '100vh',
-      width: '100vw',
-      backgroundColor: 'black',
-      top: '0',
-      left: '0',
-      zIndex: 5
+const useStyles = makeG2STyles<{
+  styleprops: StyleProps
+  muiTheme: MuiTheme
+}>()((theme, props) => ({
+  appbar: {
+    height: `${props.styleprops.appBarHeight}px`,
+    backgroundColor: theme.colors.primary,
+    boxShadow: theme.shadows[4],
+    '& .MuiToolbar-root': {
+      height: '100%'
     },
-    grow: {
-      flexGrow: 1
+    transition: props.muiTheme.transitions.create(['margin', 'width'], {
+      easing: props.muiTheme.transitions.easing.sharp,
+      duration: props.muiTheme.transitions.duration.leavingScreen
+    })
+  },
+  appBarOpen: {
+    width: `calc(100% - ${props.styleprops.menuWidth}px)`,
+    marginLeft: `${props.styleprops.menuWidth}px`,
+    transition: props.muiTheme.transitions.create(['margin', 'width'], {
+      easing: props.muiTheme.transitions.easing.easeOut,
+      duration: props.muiTheme.transitions.duration.enteringScreen
+    })
+  },
+  titleContainer: {
+    height: `${props.styleprops.appBarHeight}px`,
+    paddingLeft: '10px',
+    display: 'flex',
+    alignItems: 'center',
+    position: 'fixed',
+    marginLeft: `0px`,
+    top: '0px',
+    left: '0px',
+    transition: props.muiTheme.transitions.create(['margin', 'width'], {
+      easing: props.muiTheme.transitions.easing.sharp,
+      duration: props.muiTheme.transitions.duration.leavingScreen
+    })
+  },
+  titleContainerOpen: {
+    marginLeft: `${props.styleprops.menuWidth}px`,
+    transition: props.muiTheme.transitions.create(['margin', 'width'], {
+      easing: props.muiTheme.transitions.easing.easeOut,
+      duration: props.muiTheme.transitions.duration.enteringScreen
+    })
+  },
+  drawer: {
+    width: `${props.styleprops.menuWidth}px`,
+    '& .MuiDrawer-paper': {
+      top: `0px`,
+      zIndex: 1000,
+      width: `${props.styleprops.menuWidth}px`,
+      background: 'white',
+      height: `100vh`,
+      overflowX: 'hidden',
+      transition: props.muiTheme.transitions.create('transform', {
+        easing: props.muiTheme.transitions.easing.sharp,
+        duration: props.muiTheme.transitions.duration.enteringScreen
+      })
     }
-  })
-)
+  },
+  drawerClosed: {
+    '& .MuiDrawer-paper': {
+      transform: `translateX(-${props.styleprops.menuWidth}px)`,
+      transition: props.muiTheme.transitions.create('transform', {
+        easing: props.muiTheme.transitions.easing.easeOut,
+        duration: props.muiTheme.transitions.duration.leavingScreen
+      })
+    }
+  },
+  main: {
+    flexGrow: 1,
+    transition: props.muiTheme.transitions.create('padding', {
+      easing: props.muiTheme.transitions.easing.sharp,
+      duration: props.muiTheme.transitions.duration.leavingScreen
+    }),
+    paddingTop: props.styleprops.appBarHeight,
+    paddingLeft: props.styleprops.menuWidth
+  },
+  mainShift: {
+    flexGrow: 1,
+    paddingTop: props.styleprops.appBarHeight,
+    transition: props.muiTheme.transitions.create('padding', {
+      easing: props.muiTheme.transitions.easing.easeOut,
+      duration: props.muiTheme.transitions.duration.enteringScreen
+    }),
+    paddingLeft: 0
+  },
+  hidder: {
+    opacity: '0.5',
+    position: 'fixed',
+    height: '100vh',
+    width: '100vw',
+    backgroundColor: 'black',
+    top: '0',
+    left: '0',
+    zIndex: 5
+  },
+  grow: {
+    flexGrow: 1
+  }
+}))
 
 interface AppClasses {
   main?: string
@@ -223,15 +221,15 @@ export const App = (props: AppProps) => {
     styles,
     onToggle
   } = props
-  const theme = useTheme()
+  const muiTheme = useMuiTheme()
   const stylesDependencies = useMemo(
-    (): { styleprops: StyleProps; theme: SBTheme } => ({
+    (): { styleprops: StyleProps; muiTheme: MuiTheme } => ({
       styleprops: styleProps,
-      theme: theme
+      muiTheme: muiTheme
     }),
-    [styleProps, theme]
+    [styleProps, muiTheme]
   )
-  const defaultClasses = useStyles(stylesDependencies)
+  const defaultStyles = useStyles(stylesDependencies)
   const [innerWidth, setInnerWidth] = useState(window.innerWidth)
   const [handleResize] = useDebouncedCallback(() => {
     const min = Math.min.apply(Math, [window.innerWidth, innerWidth])
@@ -255,13 +253,13 @@ export const App = (props: AppProps) => {
         className={
           showAppBar
             ? clsx(
-                defaultClasses.appbar,
-                open && defaultClasses.appBarOpen,
+                defaultStyles.classes.appbar,
+                open && defaultStyles.classes.appBarOpen,
                 appBarLayoutProps?.className
               )
             : clsx(
-                defaultClasses.titleContainer,
-                open && defaultClasses.titleContainerOpen,
+                defaultStyles.classes.titleContainer,
+                open && defaultStyles.classes.titleContainerOpen,
                 appBarLayoutProps?.className
               )
         }
@@ -272,7 +270,10 @@ export const App = (props: AppProps) => {
           <>
             <TitleContainer title={title} logo={logo} />
             <div
-              className={clsx(defaultClasses.grow, 'AruiAppBar-flexFiller')}
+              className={clsx(
+                defaultStyles.classes.grow,
+                'AruiAppBar-flexFiller'
+              )}
             />
             {window.innerWidth > 600 && navBarContent}
             {window.innerWidth > 400 &&
@@ -289,8 +290,8 @@ export const App = (props: AppProps) => {
           variant='persistent'
           open={open}
           className={clsx(
-            defaultClasses.drawer,
-            !open && defaultClasses.drawerClosed,
+            defaultStyles.classes.drawer,
+            !open && defaultStyles.classes.drawerClosed,
             drawerProps?.className
           )}
           {...drawerProps}
@@ -310,14 +311,14 @@ export const App = (props: AppProps) => {
       )}
       <main
         className={clsx(
-          open ? defaultClasses.main : defaultClasses.mainShift,
+          open ? defaultStyles.classes.main : defaultStyles.classes.mainShift,
           'AruiApp-main',
           classes?.main
         )}
         style={styles?.main}
       >
         <div
-          className={defaultClasses.hidder}
+          className={defaultStyles.classes.hidder}
           style={{
             display: window.innerWidth < 768 && open ? 'block' : 'none'
           }}

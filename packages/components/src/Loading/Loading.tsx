@@ -1,7 +1,7 @@
-import { Box, LinearProgress, BoxProps } from '@material-ui/core'
+import { Box, LinearProgress, BoxProps } from  '@mui/material'
 import clsx from 'clsx'
 import React from 'react'
-import { BasicProps, MergeMuiElementProps } from '@smartb/archetypes-ui-themes'
+import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 
 interface LoadingClasses {
   iconContainer?: string

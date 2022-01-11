@@ -1,35 +1,35 @@
 import React, { useCallback, useRef } from 'react'
-import { Theme } from '@material-ui/core/styles'
+import { Theme as MuiTheme, useTheme as useMuiTheme } from '@mui/material'
 import MuiStepper, {
   StepperProps as MuiStepperProps
-} from '@material-ui/core/Stepper'
-import MuiStep, { StepProps as MuiStepProps } from '@material-ui/core/Step'
+} from '@mui/material/Stepper'
+import MuiStep, { StepProps as MuiStepProps } from '@mui/material/Step'
 import MuiStepLabel, {
   StepLabelProps as MuiStepLabelProps
-} from '@material-ui/core/StepLabel'
-import Button, { ButtonProps } from '@material-ui/core/Button'
-import { Paper, PaperProps } from '@material-ui/core'
+} from '@mui/material/StepLabel'
+import Button, { ButtonProps } from '@mui/material/Button'
+import { Paper, PaperProps } from '@mui/material'
 import clsx from 'clsx'
-import { BasicProps, lowLevelStyles } from '@smartb/archetypes-ui-themes'
+import { BasicProps, makeG2STyles } from '@smartb/g2-themes'
 
-const useStyles = lowLevelStyles()((theme: Theme) => ({
+const useStyles = makeG2STyles<{ muiTheme: MuiTheme }>()((_, { muiTheme }) => ({
   root: {
     width: '90%',
     height: '90%',
     maxWidth: '90%'
   },
   stepper: {
-    margin: theme.spacing(5)
+    margin: muiTheme.spacing(5)
   },
   actions: {
-    marginTop: theme.spacing(5)
+    marginTop: muiTheme.spacing(5)
   },
   backButton: {
-    marginRight: theme.spacing(1)
+    marginRight: muiTheme.spacing(1)
   },
   instructions: {
-    marginTop: theme.spacing(1),
-    marginBottom: theme.spacing(1)
+    marginTop: muiTheme.spacing(1),
+    marginBottom: muiTheme.spacing(1)
   }
 }))
 
@@ -142,7 +142,8 @@ export const MuiStepperWrapper = (props: MuiStepperWrapperProps) => {
     classes,
     styles
   } = props
-  const defaultClasses = useStyles()
+  const muiTheme = useMuiTheme()
+  const defaultStyles = useStyles({ muiTheme })
   const stepRef = useRef<OnNextHandles>(null)
   const steps = getSteps(stepRef)
 
@@ -189,7 +190,7 @@ export const MuiStepperWrapper = (props: MuiStepperWrapperProps) => {
       <Paper
         elevation={0}
         className={clsx(
-          defaultClasses.stepper,
+          defaultStyles.classes.stepper,
           'AruiStepperBase-content',
           classes?.content
         )}
@@ -199,7 +200,7 @@ export const MuiStepperWrapper = (props: MuiStepperWrapperProps) => {
         {getStepContent(activeStep, steps)}
         <div
           className={clsx(
-            defaultClasses.actions,
+            defaultStyles.classes.actions,
             'AruiStepperBase-actions',
             classes?.actions
           )}
@@ -210,7 +211,7 @@ export const MuiStepperWrapper = (props: MuiStepperWrapperProps) => {
             disabled={activeStep === 0}
             onClick={handleBack}
             className={clsx(
-              defaultClasses.backButton,
+              defaultStyles.classes.backButton,
               'AruiStepperBase-backButton',
               classes?.backButton
             )}

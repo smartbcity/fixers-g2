@@ -1,10 +1,16 @@
 import React from "react";
-import { ThemeContextProvider } from "@smartb/archetypes-ui-themes";
-import { getTheme, muiTheme } from "../docs/Theme/Theme";
+import { ThemeContextProvider } from "@smartb/g2-themes";
+import { StorybookCanvas } from "../packages/storybook-documentation/src/StorybookCanvas";
 
-import font from "./preview.css";
+import "./default.css";
 
 export const parameters = {
+  docs: {
+    container: StorybookCanvas,
+    components: {
+      Canvas: StorybookCanvas,
+    },
+  },
   options: {
     storySort: {
       order: [
@@ -20,7 +26,7 @@ export const parameters = {
 
 export const withThemeProvider = (Story) => {
   return (
-    <ThemeContextProvider customMuiTheme={muiTheme} theme={getTheme()}>
+    <ThemeContextProvider>
       <Story />
     </ThemeContextProvider>
   );

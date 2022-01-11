@@ -1,7 +1,7 @@
-import { Box, BoxProps } from '@material-ui/core'
-import { BackButton } from '@smartb/archetypes-ui-components'
+import { Box, BoxProps } from  '@mui/material'
+import { BackButton } from '@smartb/g2-components'
 import React, { useEffect, useState } from 'react'
-import { BasicProps, MergeMuiElementProps } from '@smartb/archetypes-ui-themes'
+import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 
 interface PageClasses {
   header: string
@@ -27,7 +27,7 @@ export interface pageBasicProps extends BasicProps {
    */
   goBackLabel?: string
   /**
-   * Indicates if the header is whether relative inside the root component or absolute outside
+   * Indicates if the header is either relative inside the root component or absolute outside
    */
   fixedHeader?: boolean
   /**

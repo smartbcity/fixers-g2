@@ -1,11 +1,20 @@
-import { Chip } from '@material-ui/core'
-import { Autocomplete as MuiAutocomplete, AutocompleteProps as MuiAutocompleteProps, AutocompleteGetTagProps, AutocompleteRenderInputParams } from '@material-ui/lab'
+import { Chip } from '@mui/material'
+import {
+  Autocomplete as MuiAutocomplete,
+  AutocompleteProps as MuiAutocompleteProps,
+  AutocompleteGetTagProps,
+  AutocompleteRenderInputParams
+} from '@mui/material'
 import React, { forwardRef, useCallback } from 'react'
-import { BasicProps, lowLevelStyles, MergeMuiElementProps } from '@smartb/archetypes-ui-themes'
+import {
+  BasicProps,
+  makeG2STyles,
+  MergeMuiElementProps
+} from '@smartb/g2-themes'
 import { TextField, TextFieldProps } from '../TextField'
 import clsx from 'clsx'
 
-const useStyles = lowLevelStyles()({
+const useStyles = makeG2STyles()({
   chip: {
     backgroundColor: '#EBEBEC',
     borderRadius: '5px',
@@ -28,10 +37,6 @@ export interface AutoCompleteBasicProps<T> extends BasicProps {
    */
   onChangeSelectedElement?: (value: T | T[]) => void
   /**
-   * The default element value.
-   */
-  defaultValue?: T | T[]
-  /**
    * The event called when search value change.
    * @param value
    */
@@ -47,19 +52,25 @@ export interface AutoCompleteBasicProps<T> extends BasicProps {
   getOptionLabel: (option: T) => string
   /**
    * If true the input will be disabled
-   * 
+   *
    * @default false
    */
   disabled?: boolean
   /**
-  * If props given to the textField in the autoComplete
-  */
+   * If props given to the textField in the autoComplete
+   */
   textFieldProps?: TextFieldProps
 }
 
-export type AutoCompleteProps<T> = MergeMuiElementProps<Omit<MuiAutocompleteProps<T, undefined, undefined, undefined>, "renderInput">, AutoCompleteBasicProps<T>>
+export type AutoCompleteProps<T> = MergeMuiElementProps<
+  Omit<MuiAutocompleteProps<T, undefined, undefined, undefined>, 'renderInput'>,
+  AutoCompleteBasicProps<T>
+>
 
-const AutoCompleteBase = function <T>(props: AutoCompleteProps<T>, ref: React.ForwardedRef<HTMLElement>) {
+const AutoCompleteBase = function <T>(
+  props: AutoCompleteProps<T>,
+  ref: React.ForwardedRef<HTMLElement>
+) {
   const {
     className,
     style,
@@ -76,31 +87,33 @@ const AutoCompleteBase = function <T>(props: AutoCompleteProps<T>, ref: React.Fo
     ...other
   } = props
 
-  const defaultClasses = useStyles()
+  const defaultStyles = useStyles()
 
   const onChangeElementMemoized = useCallback(
-    (_, newValue) => onChangeSelectedElement && onChangeSelectedElement(newValue || []),
+    (_, newValue) =>
+      onChangeSelectedElement && onChangeSelectedElement(newValue || []),
     [onChangeSelectedElement]
   )
 
   const renderTags = useCallback(
     (value: T[], getTagProps: AutocompleteGetTagProps) =>
       value.map((option: T, index: number) => (
-        <Chip classes={{root: clsx(defaultClasses.chip, "AruiAutoComplete-chip")}} label={getOptionLabel(option)} {...getTagProps({ index })} />
+        <Chip
+          classes={{
+            root: clsx(defaultStyles.classes.chip, 'AruiAutoComplete-chip')
+          }}
+          label={getOptionLabel(option)}
+          {...getTagProps({ index })}
+        />
       )),
-    [getOptionLabel],
+    [getOptionLabel]
   )
 
   const renderInput = useCallback(
     (params: AutocompleteRenderInputParams) => {
-      return (
-        <TextField
-          {...textFieldProps}
-          {...params}
-        />
-      )
+      return <TextField {...textFieldProps} {...params} />
     },
-    [textFieldProps],
+    [textFieldProps]
   )
 
   return (
@@ -111,8 +124,7 @@ const AutoCompleteBase = function <T>(props: AutoCompleteProps<T>, ref: React.Fo
       limitTags={2}
       multiple={multiple}
       options={options}
-      className={clsx(className, "AruiAutoComplete-root")}
-      defaultValue={defaultValue}
+      className={clsx(className, 'AruiAutoComplete-root')}
       forcePopupIcon={false}
       getOptionLabel={getOptionLabel}
       style={style}
@@ -126,4 +138,6 @@ const AutoCompleteBase = function <T>(props: AutoCompleteProps<T>, ref: React.Fo
   )
 }
 
-export const AutoComplete = forwardRef(AutoCompleteBase) as typeof AutoCompleteBase
+export const AutoComplete = forwardRef(
+  AutoCompleteBase
+) as typeof AutoCompleteBase

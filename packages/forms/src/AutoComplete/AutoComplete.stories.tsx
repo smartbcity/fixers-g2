@@ -1,7 +1,10 @@
-import React, {useState} from 'react'
-import {AutoComplete as AruiAutoComplete, AutoCompleteBasicProps} from './AutoComplete'
-import {Meta} from "@storybook/react";
-import {Story} from "@storybook/react/types-6-0";
+import React, { useState } from 'react'
+import {
+  AutoComplete as AruiAutoComplete,
+  AutoCompleteBasicProps
+} from './AutoComplete'
+import { Meta } from '@storybook/react'
+import { Story } from '@storybook/react/types-6-0'
 
 export default {
   title: 'Forms/AutoComplete',
@@ -11,7 +14,7 @@ export default {
       control: null
     }
   }
-} as Meta;
+} as Meta
 
 interface Book {
   title: string
@@ -27,8 +30,9 @@ const books: Book[] = [
   { title: 'Impactosorus', author: 'Greg beatcoyn', id: 'b5' }
 ]
 
-export const AutoComplete: Story<AutoCompleteBasicProps<Book>> = (args: AutoCompleteBasicProps<Book>) => {
-
+export const AutoComplete: Story<AutoCompleteBasicProps<Book>> = (
+  args: AutoCompleteBasicProps<Book>
+) => {
   return (
     <AruiAutoComplete<Book>
       style={{
@@ -41,10 +45,9 @@ export const AutoComplete: Story<AutoCompleteBasicProps<Book>> = (args: AutoComp
 
 AutoComplete.args = {
   options: books,
-  id: "test",
-  noOptionsText: "Rechercher un livre",
-  getOptionLabel: (book) => book.title ?? "",
-  defaultValue: []
+  id: 'test',
+  noOptionsText: 'Rechercher un livre',
+  getOptionLabel: (book) => book.title ?? ''
 }
 
 AutoComplete.storyName = 'AutoComplete'

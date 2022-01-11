@@ -1,17 +1,27 @@
-import React, { useCallback, useEffect, useState, forwardRef } from 'react'
+import React, {
+  useCallback,
+  useEffect,
+  useState,
+  forwardRef,
+  useRef
+} from 'react'
 import {
   Button as MuiButton,
   ButtonProps as MuiButtonProps,
   CircularProgress
-} from '@material-ui/core'
-import { BasicProps, MergeMuiElementProps } from '@smartb/archetypes-ui-themes'
-import { useTheme } from '@smartb/archetypes-ui-themes'
-import { Check, Close, ReportProblemOutlined } from '@material-ui/icons'
+} from '@mui/material'
+import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
+import {
+  CheckRounded,
+  CloseRounded,
+  ReportProblemOutlined
+} from '@mui/icons-material'
 import {
   containedUseStyles,
   outlinedUseStyles,
   textUseStyles
 } from './buttonStyles'
+import clsx from 'clsx'
 
 export type Variant = 'contained' | 'outlined' | 'text'
 
@@ -96,9 +106,14 @@ export type ButtonProps<T = {}> = MergeMuiElementProps<
   ButtonBasicProps<T>
 >
 
-type refType<T> = T extends [{}] ? React.ForwardedRef<HTMLElement> : React.ForwardedRef<T>
+type refType<T> = T extends [{}]
+  ? React.ForwardedRef<HTMLAnchorElement>
+  : React.ForwardedRef<T>
 
-export const ButtonBase = function <T = {}>(props: ButtonProps<T>, ref: refType<T>) {
+export const ButtonBase = function <T = {}>(
+  props: ButtonProps<T>,
+  ref: refType<T>
+) {
   const {
     children,
     onClick,
@@ -118,15 +133,22 @@ export const ButtonBase = function <T = {}>(props: ButtonProps<T>, ref: refType<
     componentProps,
     ...other
   } = props
-  const theme = useTheme()
-  const classes =
+  const { classes } =
     variant === 'contained'
-      ? containedUseStyles(theme)
+      ? containedUseStyles()
       : variant === 'outlined'
-        ? outlinedUseStyles(theme)
-        : textUseStyles(theme)
+      ? outlinedUseStyles()
+      : textUseStyles()
   const forcedLoading = isLoading
   const [loading, setloading] = useState(false)
+  const isMounted = useRef(false)
+
+  useEffect(() => {
+    isMounted.current = true
+    return () => {
+      isMounted.current = false
+    }
+  }, [])
 
   useEffect(() => {
     if (success || fail) setloading(false)
@@ -137,7 +159,9 @@ export const ButtonBase = function <T = {}>(props: ButtonProps<T>, ref: refType<
       if (!!onClick) {
         setloading(true)
         await onClick(event)
-        setloading(false)
+        if (isMounted.current) {
+          setloading(false)
+        }
       }
     },
     [onClick]
@@ -149,9 +173,15 @@ export const ButtonBase = function <T = {}>(props: ButtonProps<T>, ref: refType<
         ref={ref}
         style={style}
         disabled={loading || disabled || forcedLoading}
-        className={`${classes.root} ${disabled && classes.disabled
-          } AruiButton-root ${className} ${success ? classes.success : ''} ${fail ? classes.fail : ''
-          } ${warning ? classes.advertissement : classes.defaultColor}`}
+        className={clsx(
+          classes.root,
+          disabled && classes.disabled,
+          'AruiButton-root ',
+          className,
+          success && classes.success,
+          fail && classes.fail,
+          warning ? classes.advertissement : classes.defaultColor
+        )}
         onClick={(e: any) => !href && onClick && onClickMemoisied(e)}
         component={component}
         href={href}
@@ -166,9 +196,9 @@ export const ButtonBase = function <T = {}>(props: ButtonProps<T>, ref: refType<
               className={classes.buttonProgress}
             />
           ) : success ? (
-            <Check className={classes.icon} />
+            <CheckRounded className={classes.icon} />
           ) : fail ? (
-            <Close className={classes.icon} />
+            <CloseRounded className={classes.icon} />
           ) : warning ? (
             <ReportProblemOutlined className={classes.icon} />
           ) : icon ? (
@@ -181,14 +211,21 @@ export const ButtonBase = function <T = {}>(props: ButtonProps<T>, ref: refType<
     )
 
   return (
-    //@ts-ignore
     <MuiButton
+      component={href ? 'a' : 'button'}
+      //@ts-ignore
       ref={ref}
       style={style}
       disabled={loading || disabled || forcedLoading}
-      className={`${classes.root} ${disabled && classes.disabled
-        } AruiButton-root ${className} ${success ? classes.success : ''} ${fail ? classes.fail : ''
-        } ${warning ? classes.advertissement : classes.defaultColor}`}
+      className={clsx(
+        classes.root,
+        disabled && classes.disabled,
+        'AruiButton-root ',
+        className,
+        success && classes.success,
+        fail && classes.fail,
+        warning ? classes.advertissement : classes.defaultColor
+      )}
       onClick={(e) => !href && onClick && onClickMemoisied(e)}
       href={href}
       id={id}
@@ -201,9 +238,9 @@ export const ButtonBase = function <T = {}>(props: ButtonProps<T>, ref: refType<
             className={classes.buttonProgress}
           />
         ) : success ? (
-          <Check className={classes.icon} />
+          <CheckRounded className={classes.icon} />
         ) : fail ? (
-          <Close className={classes.icon} />
+          <CloseRounded className={classes.icon} />
         ) : warning ? (
           <ReportProblemOutlined className={classes.icon} />
         ) : icon ? (

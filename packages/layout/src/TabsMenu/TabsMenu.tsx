@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
-import { withStyles } from '@material-ui/core/styles'
-import { AppBar, Tab, Tabs } from '@material-ui/core'
+import { styled } from '@mui/material/styles'
+import { AppBar, Tab, Tabs } from '@mui/material'
 import clsx from 'clsx'
-import { BasicProps, lowLevelStyles } from '@smartb/archetypes-ui-themes'
+import { BasicProps, makeG2STyles } from '@smartb/g2-themes'
 
-const useStyles = lowLevelStyles()({
+const useStyles = makeG2STyles()({
   appBar: {
     background: 'transparent',
     boxShadow: 'none !important'
@@ -26,21 +26,19 @@ const useStyles = lowLevelStyles()({
   }
 })
 
-const StyledTabs = withStyles(() => ({
-  root: {
-    minHeight: '20px',
-    borderBottom: '0.2px #8f8f8f solid',
-    overflow: 'visible',
-    '& .MuiTabs-indicator': {
-      backgroundColor: '#4d4d4d',
-      height: '2px',
-      bottom: '-1px'
-    },
-    '& .MuiTabs-scroller': {
-      overflow: 'visible !important'
-    }
+const StyledTabs = styled(Tabs)({
+  minHeight: '20px',
+  borderBottom: '0.2px #8f8f8f solid',
+  overflow: 'visible',
+  '& .MuiTabs-indicator': {
+    backgroundColor: '#4d4d4d',
+    height: '2px',
+    bottom: '-1px'
+  },
+  '& .MuiTabs-scroller': {
+    overflow: 'visible !important'
   }
-}))(Tabs)
+})
 
 export type Variant = 'fullWidth' | 'fixedWidth'
 
@@ -97,7 +95,7 @@ export const TabsMenu = (props: TabsMenuProps) => {
     classes,
     styles
   } = props
-  const defaultClasses = useStyles()
+  const defaultStyles = useStyles()
   const [value, setValue] = useState(0)
 
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
@@ -109,7 +107,7 @@ export const TabsMenu = (props: TabsMenuProps) => {
     <div className={clsx('AruiTabsMenu-root', className)} style={style} id={id}>
       <AppBar
         className={clsx(
-          defaultClasses.appBar,
+          defaultStyles.classes.appBar,
           'AruiTabsMenu-appBar',
           classes?.appBar
         )}
@@ -134,8 +132,8 @@ export const TabsMenu = (props: TabsMenuProps) => {
               key={index}
               className={clsx(
                 {
-                  [defaultClasses.tab]: variant !== 'fullWidth',
-                  [defaultClasses.tabFW]: variant === 'fullWidth'
+                  [defaultStyles.classes.tab]: variant !== 'fullWidth',
+                  [defaultStyles.classes.tabFW]: variant === 'fullWidth'
                 },
                 'AruiTabsMenu-tab',
                 classes?.tab
