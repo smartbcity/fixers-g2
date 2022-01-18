@@ -3,7 +3,7 @@
   "repository": "https://gitlab.smartb.city/fixers/g2.git",
   "author": "Adrien Poupard <adrien@smartb.city>",
   "license": "Apache-2.0",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "description": "React notifications library",
   "private": false,
   "main": "dist/index.js",
@@ -20,14 +20,15 @@
     "test:lint": "eslint .",
     "test:unit": "cross-env CI=1 react-scripts test --env=jsdom",
     "test:watch": "react-scripts test --env=jsdom",
-    "publish:experimental": "npm publish --tag experimental"
+    "publish:experimental": "npm publish --tag experimental",
+    "publish:gitlab": "yarn publish --access public --new-version ${VERSION}"
   },
   "files": [
     "dist"
   ],
   "devDependencies": {
-    "@smartb/g2-components": "^1.0.0",
-    "@smartb/g2-forms": "^1.0.0"
+    "@smartb/g2-components": "^0.0.0",
+    "@smartb/g2-forms": "^0.0.0"
   },
   "peerDependencies": {
     "@mui/material": "^5.2.7",
@@ -37,7 +38,7 @@
   },
   "dependencies": {
     "@mui/icons-material": "^5.2.5",
-    "@smartb/g2-themes": "^1.0.0",
+    "@smartb/g2-themes": "^0.0.0",
     "clsx": "^1.1.1",
     "notistack": "3.0.0-alpha.1"
   },

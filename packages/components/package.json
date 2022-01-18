@@ -3,7 +3,7 @@
   "repository": "https://gitlab.smartb.city/fixers/g2.git",
   "author": "Adrien Poupard <adrien@smartb.city>",
   "license": "Apache-2.0",
-  "version": "0.0.2",
+  "version": "0.0.0",
   "description": "React components library",
   "private": false,
   "main": "dist/index.js",
@@ -20,13 +20,14 @@
     "test:lint": "eslint .",
     "test:unit": "cross-env CI=1 react-scripts test --env=jsdom",
     "test:watch": "react-scripts test --env=jsdom",
-    "publish:experimental": "npm publish --tag experimental"
+    "publish:experimental": "npm publish --tag experimental",
+    "publish:gitlab": "echo ${VERSION}"
   },
   "files": [
     "dist"
   ],
   "devDependencies": {
-    "@smartb/g2-forms": "^0.0.1",
+    "@smartb/g2-forms": "^0.0.0",
     "@types/react-dropzone": "^5.1.0",
     "@types/stringify-object": "^3.3.0"
   },
@@ -39,8 +40,8 @@
   "dependencies": {
     "@mui/icons-material": "^5.2.5",
     "@mui/lab": "^5.0.0-alpha.63",
-    "@smartb/g2-notifications": "^0.0.1",
-    "@smartb/g2-themes": "^0.0.1",
+    "@smartb/g2-notifications": "^0.0.0",
+    "@smartb/g2-themes": "^0.0.0",
     "clsx": "^1.1.1",
     "react-data-table-component": "^6.9.7",
     "react-dropzone": "^11.3.2",

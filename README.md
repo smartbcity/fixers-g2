@@ -91,7 +91,7 @@ yarn storybook
 ```
 lerna version 0.0.1 --no-git-tag-version
 
-lerna publish from-package
+lerna publish from-package --no-git-reset
 ```
 
 - Release experimental Version on gitlab from develop
