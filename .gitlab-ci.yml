@@ -2,6 +2,12 @@ include:
   - project: "fixers/cicd"
     file: "fixers/.gitlab-ci-base.yml"
   - project: "fixers/cicd"
-    file: "fixers/.gitlab-ci-libs.yml"
-  - project: "fixers/cicd"
     file: "fixers/.gitlab-ci-docs.yml"
+
+npm:
+  stage: libs
+  extends:
+    - .make
+  variables:
+    NEXT_VERSION: "0.0.10"
+    MAKE_TARGET: libs
