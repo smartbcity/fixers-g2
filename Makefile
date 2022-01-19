@@ -3,8 +3,6 @@ STORYBOOK_NAME	   	 	:= smartbcity/e2-storybook
 STORYBOOK_IMG	    	:= ${STORYBOOK_NAME}:${VERSION}
 STORYBOOK_LATEST		:= ${STORYBOOK_NAME}:latest
 
-libs: package-libs push-libs
-
 docs: package-storybook
 
 package-storybook:
@@ -24,5 +22,8 @@ package-libs:
 	@yarn workspace @smartb/g2 run build
 	@yarn workspace @smartb/g2-storybook-documentation run build
 
-push-libs:
+push-libs-npm:
 	VERSION=${VERSION} yarn publishWorkspaces:npm
+
+push-libs-gitlab:
+	TAG=${VERSION} yarn publishWorkspaces:gitlab

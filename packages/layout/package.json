@@ -20,11 +20,11 @@
     "test:lint": "eslint .",
     "test:unit": "cross-env CI=1 react-scripts test --env=jsdom",
     "test:watch": "react-scripts test --env=jsdom",
-    "publish:experimental": "npm publish --tag experimental",
+    "publish:gitlab": "npm publish --tag ${TAG}",
     "publish:npm": "yarn publish --access public --new-version ${VERSION}"
   },
   "devDependencies": {
-    "@smartb/g2-forms": "^0.1.0-alpha.7"
+    "@smartb/g2-forms": "0.0.0"
   },
   "peerDependencies": {
     "@mui/material": "^5.2.7",
@@ -35,9 +35,9 @@
   "dependencies": {
     "@mui/icons-material": "^5.2.5",
     "@mui/lab": "^5.0.0-alpha.63",
-    "@smartb/g2-components": "^0.0.0",
-    "@smartb/g2-forms": "^0.0.0",
-    "@smartb/g2-themes": "^0.0.0",
+    "@smartb/g2-components": "0.0.0",
+    "@smartb/g2-forms": "0.0.0",
+    "@smartb/g2-themes": "0.0.0",
     "clsx": "^1.1.1",
     "use-debounce": "^3.4.2"
   },

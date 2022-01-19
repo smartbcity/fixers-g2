@@ -4,10 +4,35 @@ include:
   - project: "fixers/cicd"
     file: "fixers/.gitlab-ci-docs.yml"
 
-npm:
+npm-package:
   stage: libs
   extends:
     - .make
   variables:
-    NEXT_VERSION: "0.0.10"
-    MAKE_TARGET: libs
+    MAKE_TARGET: package-libs
+  rules:
+    - if: $IS_TAG == "false"
+      variables: # Override DEPLOY_VARIABLE defined
+        DEPLOY_VARIABLE: "job1-deploy-production" # at the job level.
+      when: always
+    - when: never
+
+npm-package-publish-npm:
+  stage: libs
+  extends:
+    - .make
+  variables:
+    MAKE_TARGET: package-libs push-libs-npm
+  only:
+    variables:
+      - $IS_TAG == "true"
+
+npm-package-publish-gitlab:
+  stage: libs
+  extends:
+    - .make
+  variables:
+    MAKE_TARGET: package-libs  push-libs-gitlab
+  only:
+    variables:
+      - $IS_TAG == "true"
