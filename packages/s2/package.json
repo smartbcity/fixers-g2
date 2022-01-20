@@ -20,7 +20,7 @@
     "test:lint": "eslint .",
     "test:unit": "cross-env CI=1 react-scripts test --env=jsdom",
     "test:watch": "react-scripts test --env=jsdom",
-    "publish:experimental": "npm publish --tag experimental",
+    "publish:gitlab": "npm publish --tag ${TAG}",
     "publish:npm": "yarn publish --access public --new-version ${VERSION}"
   },
   "files": [
@@ -36,7 +36,7 @@
     "@types/mermaid": "^8.2.4"
   },
   "dependencies": {
-    "@smartb/g2-themes": "^0.0.0",
+    "@smartb/g2-themes": "0.0.0",
     "clsx": "^1.1.1",
     "mermaid": "^8.9.2",
     "vis-data": "^7.1.2",

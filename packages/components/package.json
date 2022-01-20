@@ -20,14 +20,14 @@
     "test:lint": "eslint .",
     "test:unit": "cross-env CI=1 react-scripts test --env=jsdom",
     "test:watch": "react-scripts test --env=jsdom",
-    "publish:experimental": "npm publish --tag experimental",
+    "publish:gitlab": "npm publish --tag ${TAG}",
     "publish:npm": "yarn publish --access public --new-version ${VERSION}"
   },
   "files": [
     "dist"
   ],
   "devDependencies": {
-    "@smartb/g2-forms": "^0.0.0",
+    "@smartb/g2-forms": "0.0.0",
     "@types/react-dropzone": "^5.1.0",
     "@types/stringify-object": "^3.3.0"
   },
@@ -40,8 +40,8 @@
   "dependencies": {
     "@mui/icons-material": "^5.2.5",
     "@mui/lab": "^5.0.0-alpha.63",
-    "@smartb/g2-notifications": "^0.0.0",
-    "@smartb/g2-themes": "^0.0.0",
+    "@smartb/g2-notifications": "0.0.0",
+    "@smartb/g2-themes": "0.0.0",
     "clsx": "^1.1.1",
     "react-data-table-component": "^6.9.7",
     "react-dropzone": "^11.3.2",
