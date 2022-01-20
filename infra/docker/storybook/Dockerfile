@@ -5,7 +5,7 @@ WORKDIR /app
 
 COPY . ./
 
-RUN yarn install
+RUN make package-libs
 ENV PATH /app/node_modules/.bin:$PATH
 RUN  yarn workspaces run build
 RUN  yarn build-storybook
