@@ -6,26 +6,30 @@ export interface AutomatedOrgCreation {
   apiUrl: string
   jwt?: string
   update?: boolean
+  organizationId?: string
   submitted?: (organization: Organization) => void
 }
 
 export const AutomatedOrgCreation = (props: AutomatedOrgCreation) => {
-  const { apiUrl, jwt, update = false, submitted } = props
+  const { apiUrl, jwt, update = false, submitted, organizationId } = props
 
   const getOrganization = useCallback(async () => {
     return request<Organization>({
-      url: `${apiUrl}/getOrganization`,
+      url: `${apiUrl}/${organizationId}/getOrganization`,
       method: 'POST',
       jwt: jwt
     })
-  }, [apiUrl, jwt])
+  }, [apiUrl, jwt, organizationId])
 
   const { result, status } = useAsyncResponse(getOrganization, update)
 
   const organization = useMemo(() => {
     if (!result) return undefined
-    return { ...result, image: `${apiUrl}/getOrganizationImage` }
-  }, [result])
+    return {
+      ...result,
+      image: `${apiUrl}/${organizationId}/getOrganizationImage`
+    }
+  }, [result, organizationId])
 
   const getInseeOrganization = useCallback(async () => {
     return request<Organization>({
@@ -38,14 +42,14 @@ export const AutomatedOrgCreation = (props: AutomatedOrgCreation) => {
   const updateOrganization = useCallback(
     async (organization: Organization) => {
       await request<Organization>({
-        url: `${apiUrl}/updateOrganization`,
+        url: `${apiUrl}/${organizationId}/updateOrganization`,
         method: 'POST',
         body: JSON.stringify(organization),
         jwt: jwt
       })
       submitted && submitted(organization)
     },
-    [apiUrl, jwt, submitted]
+    [apiUrl, jwt, submitted, organizationId]
   )
 
   const createOrganization = useCallback(
