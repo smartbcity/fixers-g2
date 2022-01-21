@@ -175,7 +175,9 @@ export const useInputStyles = makeG2STyles()((theme) => ({
   helperText: {
     position: 'absolute',
     top: '100%',
-    color: `${theme.colors.error} !important`
+    color: `${theme.colors.error}`,
+    margin: '0',
+    marginTop: '3px'
   },
   clear: {
     position: 'absolute',

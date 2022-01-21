@@ -76,6 +76,11 @@ const useStyles = makeG2STyles()({
   }
 })
 
+export type DropPictureError =
+  | 'file-too-large'
+  | 'too-many-files'
+  | 'file-invalid-type'
+
 interface DropPictureClasses {
   image?: string
   tooltip?: string
@@ -106,23 +111,11 @@ export interface DropPictureBasicProps extends BasicProps {
   /**
    * The event called when an invalid picture is dropped
    */
-  onDropError?: (
-    errorType:
-      | 'file-too-large'
-      | 'too-many-files'
-      | 'file-invalid-type'
-      | string
-  ) => void
+  onDropError?: (errorType: DropPictureError) => void
   /**
    * The error message to display under the component
    */
   errorMessage?: string
-  /**
-   * Set the width for the dropzone area
-   *
-   * @default 200
-   */
-  width?: number
   /**
    * If true, the dropzone won't appear and the `initialPicture` or the `defaultPicture` will be displayed
    */
@@ -183,7 +176,6 @@ const DropPictureBase = (
     onRemovePicture,
     className,
     style,
-    width = 200,
     readonly = false,
     initialPicture = '',
     defaultPicture = '',
@@ -220,7 +212,7 @@ const DropPictureBase = (
 
   const onReject = useCallback(
     (files: FileRejection[]) =>
-      onDropError && onDropError(files[0].errors[0].code),
+      onDropError && onDropError(files[0].errors[0].code as DropPictureError),
     [onDropError]
   )
 

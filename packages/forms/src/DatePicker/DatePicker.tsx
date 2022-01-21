@@ -8,7 +8,7 @@ import React, { forwardRef, useCallback, useMemo } from 'react'
 import { useInputStyles } from '../style'
 import {
   TextField as MuiTextField,
-  TextFieldProps as MuiTextFieldProps
+  FilledTextFieldProps as MuiTextFieldProps
 } from '@mui/material'
 import {
   BasicProps,

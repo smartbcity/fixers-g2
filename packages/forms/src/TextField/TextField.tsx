@@ -48,6 +48,11 @@ const useStyles = makeG2STyles()({
   },
   inputWithClear: {
     paddingRight: '27px'
+  },
+  paddingMultiline: {
+    '& .MuiInputBase-root': {
+      padding: '10px 0px'
+    }
   }
 })
 
@@ -80,7 +85,13 @@ export interface TextFieldBasicProps extends BasicProps {
    *
    * @default 'text'
    */
-  textFieldType?: 'number' | 'text' | 'email' | 'password' | 'search'
+  textFieldType?:
+    | 'number'
+    | 'text'
+    | 'email'
+    | 'password'
+    | 'search'
+    | 'search-number'
 
   /**
    * The size of the input
@@ -199,6 +210,7 @@ export const TextField = React.forwardRef(
       onSearch,
       InputProps,
       noCheckOrClearIcon = false,
+      multiline = false,
       ...other
     } = props
 
@@ -206,23 +218,27 @@ export const TextField = React.forwardRef(
     const localStyles = useStyles()
 
     const onChangeMemoized = useCallback(
-      (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
-        onChange && onChange(e.target.value),
+      (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        onChange && onChange(e.target.value)
+      },
       [onChange]
     )
 
-    const upHandler = useCallback(
+    const downHandler = useCallback(
       (event: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        if (event.key === 'Enter') {
+        if (
+          (textFieldType === 'search' || textFieldType === 'search-number') &&
+          event.key === 'Enter'
+        ) {
           event.currentTarget.blur()
           onSearch && onSearch()
         }
       },
-      [onSearch]
+      [onSearch, textFieldType]
     )
 
     const inputAdornment = useMemo(() => {
-      if (textFieldType === 'search') {
+      if (textFieldType === 'search' || textFieldType === 'search-number') {
         if (iconPosition === 'start') {
           return {
             startAdornment: (
@@ -315,8 +331,8 @@ export const TextField = React.forwardRef(
             }}
           />
         )
-      if (!value || value === '') return undefined
-      if ((onRemove || error) && !disabled)
+      if ((!value || value === '') && !error) return undefined
+      if ((onRemove || error) && !disabled) {
         return (
           <ClearRounded
             onClick={onRemove}
@@ -333,6 +349,7 @@ export const TextField = React.forwardRef(
             }}
           />
         )
+      }
       return undefined
     }, [
       value,
@@ -376,7 +393,13 @@ export const TextField = React.forwardRef(
           value={value}
           onChange={onChangeMemoized}
           placeholder={placeholder}
-          type={textFieldType === 'search' ? 'text' : textFieldType}
+          type={
+            textFieldType === 'search'
+              ? 'text'
+              : textFieldType === 'search-number'
+              ? 'number'
+              : textFieldType
+          }
           defaultValue={defaultValue}
           className={clsx(
             defaultStyles.classes.input,
@@ -389,9 +412,11 @@ export const TextField = React.forwardRef(
             error && defaultStyles.classes.inputError,
             onRemove &&
               inputAdornment.endAdornment &&
-              textFieldType === 'search' &&
+              (textFieldType === 'search' ||
+                textFieldType === 'search-number') &&
               defaultStyles.classes.inputWithClear,
             classes?.textfield,
+            multiline && localStyles.classes.paddingMultiline,
             'AruiTextfield-Textfield'
           )}
           style={styles?.textfield}
@@ -403,7 +428,7 @@ export const TextField = React.forwardRef(
           InputProps={{
             ...inputAdornment,
             disableUnderline: true,
-            onKeyUp: upHandler,
+            onKeyDown: downHandler,
             style: {
               ...styles?.input
             },
@@ -420,6 +445,7 @@ export const TextField = React.forwardRef(
             ...InputProps
           }}
           FormHelperTextProps={formHelperProps}
+          multiline={multiline}
         />
         {rightIcon}
       </div>

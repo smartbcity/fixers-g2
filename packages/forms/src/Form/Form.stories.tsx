@@ -139,7 +139,7 @@ const fields: Field[] = [
     key: 'storybook-form-field-gender',
     name: 'gender',
     label: 'Gender',
-    type: 'datepicker',
+    type: 'select',
     defaultValue: '',
     validator: (value) =>
       value === undefined || value === ''
@@ -151,6 +151,13 @@ const fields: Field[] = [
         { key: 'female', label: 'female' }
       ]
     }
+  },
+  {
+    key: 'storybook-form-field-birthdate',
+    name: 'birthdate',
+    label: 'Birthdate',
+    type: 'datepicker',
+    defaultValue: ''
   },
   {
     key: 'storybook-form-field-yesOrNo',

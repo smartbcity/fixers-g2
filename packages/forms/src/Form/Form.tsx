@@ -44,7 +44,7 @@ export type Field = {
   /**
    * the validator that takes the value of the input and return an error or undefined/nothing if the value is valid
    */
-  validator?: (value: any) => string | undefined | void
+  validator?: (value: any) => string | undefined
   /**
    * if you want to add other nodes around the input use this function
    */
@@ -173,26 +173,13 @@ export const Form = (props: FormProps) => {
   const fieldsMemoized = useMemo(
     () =>
       fields.map((field) => {
-        const commonProps = {
-          key: field.key,
-          id: field.key,
-          label: field.label,
-          name: field.name,
-          error: !!formState.errors[field.name],
-          errorMessage: formState.errors[field.name] as string,
-          className: clsx(
-            classes?.field,
-            defaultStyles.classes.field,
-            field.checkBoxProps?.className,
-            field.datePickerProps?.className,
-            field.selectProps?.className,
-            field.textFieldProps?.className,
-            'AruiForm-field'
-          ),
-          style: styles?.field
-        }
-
-        const input = getInput(field, formState, commonProps)
+        const input = getInput(
+          field,
+          formState,
+          defaultStyles.classes.field,
+          classes,
+          styles
+        )
         if (!!field.customDisplay) {
           return field.customDisplay(input)
         }
@@ -261,17 +248,43 @@ export const Form = (props: FormProps) => {
   )
 }
 
-const getInput = (field: Field, formState: FormState, commonProps: any) => {
+const getInput = (
+  field: Field,
+  formState: FormState,
+  fieldClassName: string,
+  classes?: FormClasses,
+  styles?: FormStyles
+) => {
+  const commonProps = {
+    key: field.key,
+    id: field.key,
+    label: field.label,
+    name: field.name,
+    error: !!formState.errors[field.name],
+    errorMessage: formState.errors[field.name] as string,
+    className: clsx(
+      classes?.field,
+      fieldClassName,
+      field.checkBoxProps?.className,
+      field.datePickerProps?.className,
+      field.selectProps?.className,
+      field.textFieldProps?.className,
+      'AruiForm-field'
+    ),
+    style: styles?.field
+  }
   switch (field.type) {
     case 'datepicker':
+      console.log(formState.values[field.name])
       return (
         <InputForm
           {...commonProps}
           inputType='datePicker'
           value={formState.values[field.name] ?? ''}
-          onChangeDate={(date) =>
+          onChangeDate={(date) => {
+            console.log(date)
             formState.setFieldValue(field.name, date, false)
-          }
+          }}
           {...field.datePickerProps}
         />
       )
@@ -302,7 +315,9 @@ const getInput = (field: Field, formState: FormState, commonProps: any) => {
         <CheckBox
           {...commonProps}
           checked={formState.values[field.name]}
-          onChange={formState.handleChange}
+          onChange={(_: React.ChangeEvent<HTMLInputElement>, value: boolean) =>
+            formState.setFieldValue(field.name, value, false)
+          }
           {...field.checkBoxProps}
         />
       )

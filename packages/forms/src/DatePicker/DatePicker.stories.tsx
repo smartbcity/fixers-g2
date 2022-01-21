@@ -17,6 +17,8 @@ export const DatePicker: Story<DatePickerProps> = (args: DatePickerProps) => {
   const handleDateChange = (date?: Date) => {
     setSelectedDate(date)
   }
+
+  console.log(date)
   return (
     <AruiDatePicker
       value={date}
