@@ -1,14 +1,27 @@
 import { Box, Stack, Typography } from '@mui/material'
 import { Link, Table, TableProps } from '@smartb/g2-components'
-import { MergeMuiElementProps } from '@smartb/g2-themes'
+import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 import React, { useCallback, useMemo, useState } from 'react'
 import { Organization } from '../OrgCreation/OrgCreation'
-import { OrgFilters } from './OrgFilters'
+import { OrgFilters, OrgFiltersProps } from './OrgFilters'
 
-export interface OrgTableBasicProps {
+export interface OrgTableBasicProps extends BasicProps {
+  /**
+   * The organizations to pe parsed in the table
+   */
   organizations: Organization[]
+  /**
+   * The initial values of the filters
+   */
   initialFiltersValues?: { search?: string; page?: number }
+  /**
+   * The event called when the filters are submitted or when the pagination updates
+   */
   onFetchOrganizations: (page: number, search?: string) => void
+  /**
+   * The props passes to the filters component
+   */
+  filtersProps?: Partial<OrgFiltersProps>
 }
 
 export type OrgTableProps = MergeMuiElementProps<
@@ -21,6 +34,7 @@ export const OrgTable = (props: OrgTableProps) => {
     organizations,
     initialFiltersValues,
     onFetchOrganizations,
+    filtersProps,
     ...other
   } = props
   const [page, setPage] = useState(initialFiltersValues?.page ?? 1)
@@ -118,7 +132,7 @@ export const OrgTable = (props: OrgTableProps) => {
 
   return (
     <>
-      <OrgFilters onSubmit={onSubmitFilters} />
+      <OrgFilters onSubmit={onSubmitFilters} {...filtersProps} />
       <Table<Organization>
         page={page}
         handlePageChange={onChangePage}

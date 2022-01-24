@@ -1,16 +1,22 @@
+import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 import React, { useCallback, useEffect } from 'react'
 import { request, useAsyncResponse } from 'utils'
 import { Organization } from '../OrgCreation/OrgCreation'
-import { OrgTable } from './OrgTable'
+import { OrgTable, OrgTableProps } from './OrgTable'
 
-export interface AutomatedOrgTableProps {
+export interface AutomatedOrgTableBasicProps extends BasicProps {
   apiUrl: string
   jwt?: string
   initialFiltersValues?: { search?: string; page?: number }
 }
 
+export type AutomatedOrgTableProps = MergeMuiElementProps<
+  Omit<OrgTableProps, 'organizations' | 'onFetchOrganizations'>,
+  AutomatedOrgTableBasicProps
+>
+
 export const AutomatedOrgTable = (props: AutomatedOrgTableProps) => {
-  const { apiUrl, jwt, initialFiltersValues } = props
+  const { apiUrl, jwt, initialFiltersValues, ...other } = props
 
   const getOrganizations = useCallback(
     async (params?: { page?: number; search?: string }) => {
@@ -42,6 +48,7 @@ export const AutomatedOrgTable = (props: AutomatedOrgTableProps) => {
       isLoading={status !== 'SUCCESS'}
       organizations={result ?? []}
       onFetchOrganizations={onFetchOrganizations}
+      {...other}
     />
   )
 }

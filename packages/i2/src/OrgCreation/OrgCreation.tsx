@@ -5,10 +5,19 @@ import {
   useFormWithPartialFields,
   FormPartialField
 } from '@smartb/g2-forms'
-import { Box, InputLabel, Stack, styled, Typography } from '@mui/material'
+import {
+  Box,
+  InputLabel,
+  Stack,
+  StackProps,
+  styled,
+  Typography
+} from '@mui/material'
 import { Button, DropPicture, DropPictureError } from '@smartb/g2-components'
 import { Popover } from '@smartb/g2-notifications'
 import { fileToBase64 } from 'utils'
+import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
+import clsx from 'clsx'
 
 const StyledStack = styled(Stack)({
   '& .AruiPopover-root': {
@@ -49,21 +58,72 @@ export type Organization = {
   image?: string
 }
 
-export interface OrgCreationProps {
+export interface OrgCreationClasses {
+  siretForm?: string
+  leftForm?: string
+  rightForm?: string
+  dropPictureBox?: string
+  actionsContainer?: string
+  infoPopover?: string
+}
+
+export interface OrgCreationStyles {
+  siretForm?: React.CSSProperties
+  leftForm?: React.CSSProperties
+  rightForm?: React.CSSProperties
+  dropPictureBox?: React.CSSProperties
+  actionsContainer?: React.CSSProperties
+  infoPopover?: React.CSSProperties
+}
+
+export interface OrgCreationBasicProps extends BasicProps {
+  /**
+   * The base organization. If it's given the component should be considered as an updater of the object
+   */
   organization?: Organization
+  /**
+   * The event called after the research on the siret field
+   * that should fill as much as it can the organization type
+   */
   getInseeOrganization?: (
     siret: string
   ) => Promise<Partial<Organization> | undefined>
+  /**
+   * The submit event
+   * @default 'Valider'
+   * @param organization the complete organization object after form validation
+   */
   onSubmit?: (organization: Organization) => void
+  /**
+   * The label placed in the submit button
+   * @default 'Valider'
+   */
   submitButtonLabel?: string
+  /**
+   * The classes applied to the different part of the component
+   */
+  classes?: OrgCreationClasses
+  /**
+   * The styles applied to the different part of the component
+   */
+  styles?: OrgCreationStyles
 }
+
+export type OrgCreationProps = MergeMuiElementProps<
+  StackProps,
+  OrgCreationBasicProps
+>
 
 export const OrgCreation = (props: OrgCreationProps) => {
   const {
     organization,
     onSubmit,
     getInseeOrganization,
-    submitButtonLabel = 'Valider'
+    submitButtonLabel = 'Valider',
+    className,
+    classes,
+    styles,
+    ...other
   } = props
 
   const [openSiretInfo, setOpenSiretInfo] = useState(!organization)
@@ -290,17 +350,38 @@ export const OrgCreation = (props: OrgCreationProps) => {
       maxWidth='650px'
       spacing={2}
       onFocus={onCloseSiretInfo}
+      className={clsx(className, 'AruiOrgCreation-root')}
+      {...other}
     >
-      <Form fields={siret} formState={formState} />
+      <Form
+        className={clsx(classes?.siretForm, 'AruiOrgCreation-siretForm')}
+        style={styles?.siretForm}
+        fields={siret}
+        formState={formState}
+      />
       <Stack
         direction='row'
         flexWrap='wrap'
         justifyContent='space-between'
         width='100%'
       >
-        <Form className='mainFormLeft' fields={details} formState={formState} />
+        <Form
+          className={clsx(
+            classes?.leftForm,
+            'AruiOrgCreation-leftForm',
+            'mainFormLeft'
+          )}
+          style={styles?.leftForm}
+          fields={details}
+          formState={formState}
+        />
         <Stack>
           <Box
+            className={clsx(
+              classes?.dropPictureBox,
+              'AruiOrgCreation-dropPictureBox'
+            )}
+            style={styles?.dropPictureBox}
             sx={{
               margin: '20px 0',
               marginBottom: '23px',
@@ -331,22 +412,39 @@ export const OrgCreation = (props: OrgCreationProps) => {
             />
           </Box>
           <Form
-            className='mainFormRight'
+            className={clsx(
+              classes?.rightForm,
+              'AruiOrgCreation-rightForm',
+              'mainFormRight'
+            )}
+            style={styles?.rightForm}
             fields={description}
             formState={formState}
           />
         </Stack>
       </Stack>
-      <Stack direction='row' justifyContent='flex-end' width='100%'>
+      <Stack
+        className={clsx(
+          classes?.actionsContainer,
+          'AruiOrgCreation-actionsContainer'
+        )}
+        style={styles?.actionsContainer}
+        direction='row'
+        justifyContent='flex-end'
+        width='100%'
+      >
         <Button onClick={formState.submitForm}>{submitButtonLabel}</Button>
       </Stack>
 
       {siretRef && (
         <StyledPopover
+          //@ts-ignore
           open={openSiretInfo}
           onClose={onCloseSiretInfo}
           anchorEl={siretRef}
           placement='bottom'
+          className={clsx(classes?.infoPopover, 'AruiOrgCreation-infoPopover')}
+          style={styles?.infoPopover}
         >
           <Typography variant='body1'>
             Le numéro de siret permettra de remplir automatiquement une partie

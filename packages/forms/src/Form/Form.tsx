@@ -275,15 +275,20 @@ const getInput = (
   }
   switch (field.type) {
     case 'datepicker':
-      console.log(formState.values[field.name])
+      const date = new Date(formState.values[field.name])
       return (
         <InputForm
           {...commonProps}
           inputType='datePicker'
-          value={formState.values[field.name] ?? ''}
+          value={
+            !isNaN(date.getTime()) ? date : formState.values[field.name] ?? ''
+          }
           onChangeDate={(date) => {
-            console.log(date)
-            formState.setFieldValue(field.name, date, false)
+            formState.setFieldValue(
+              field.name,
+              date && !isNaN(date.getTime()) ? date : date?.toString(),
+              false
+            )
           }}
           {...field.datePickerProps}
         />

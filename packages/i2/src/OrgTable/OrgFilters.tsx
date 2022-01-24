@@ -1,13 +1,24 @@
 import { Stack } from '@mui/material'
-import { Filters, FiltersField, useFilters } from '@smartb/g2-forms'
+import {
+  Filters,
+  FiltersField,
+  useFilters,
+  FiltersProps
+} from '@smartb/g2-forms'
+import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 import React from 'react'
 
-export interface OrgFiltersProps {
+export interface OrgFiltersBasicProps extends BasicProps {
   onSubmit: (values: { search?: string }) => void
 }
 
+export type OrgFiltersProps = MergeMuiElementProps<
+  Omit<FiltersProps, 'fields' | 'formState'>,
+  OrgFiltersBasicProps
+>
+
 export const OrgFilters = (props: OrgFiltersProps) => {
-  const { onSubmit } = props
+  const { onSubmit, ...other } = props
 
   const fields: FiltersField[] = [
     {
@@ -37,7 +48,7 @@ export const OrgFilters = (props: OrgFiltersProps) => {
         }
       }}
     >
-      <Filters fields={fields} formState={formState} />
+      <Filters fields={fields} formState={formState} {...other} />
     </Stack>
   )
 }
