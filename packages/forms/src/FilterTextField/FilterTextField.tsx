@@ -37,11 +37,14 @@ const useStyles = makeG2STyles()({
   },
   withIconEndOnRemove: {
     '& .MuiInputBase-input': {
-      paddingRight: '18px'
+      paddingRight: '22px'
     }
   },
   inputWithEndAbornment: {
     paddingRight: '20px'
+  },
+  clearWithEndAbornment: {
+    right: 32
   }
 })
 
@@ -300,12 +303,11 @@ export const FilterTextField = React.forwardRef(
             className={clsx(
               defaultStyles.classes.clear,
               classes?.clearIcon,
-              'AruiTextfield-clearIcon'
+              'AruiTextfield-clearIcon',
+              inputAdornment.endAdornment &&
+                localStyles.classes.clearWithEndAbornment
             )}
-            style={{
-              ...styles?.clearIcon,
-              right: inputAdornment.endAdornment ? '22px' : ''
-            }}
+            style={styles?.clearIcon}
           />
         )
       return undefined
@@ -394,8 +396,7 @@ export const FilterTextField = React.forwardRef(
                 ? { ...styles?.input, ...colorStyle }
                 : styles?.input,
             className: clsx(
-              inputIcon &&
-                iconPosition === 'end' &&
+              inputAdornment.endAdornment &&
                 onRemove &&
                 localStyles.classes.withIconEndOnRemove,
               classes?.input,
