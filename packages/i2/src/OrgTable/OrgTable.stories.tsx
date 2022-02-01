@@ -43,19 +43,23 @@ export const OrgTableStory: Story<OrgTableProps> = (args: OrgTableProps) => {
 const organizations: Organization[] = [
   {
     name: 'Smartb',
-    address: '2 Rue du Pavillon',
-    postalCode: 34000,
-    city: 'Montpellier',
+    address: {
+      street: '2 Rue du Pavillon',
+      postalCode: 34000,
+      city: 'Montpellier'
+    },
     siret: 12345678912345,
-    webSite: 'https://smartb.city'
+    website: 'https://smartb.city'
   },
   {
     name: 'Smartb',
-    address: '2 Rue du Pavillon',
-    postalCode: 34000,
-    city: 'Montpellier',
+    address: {
+      street: '2 Rue du Pavillon',
+      postalCode: 34000,
+      city: 'Montpellier'
+    },
     siret: 12345678912345,
-    webSite: 'https://smartb.city'
+    website: 'https://smartb.city'
   }
 ]
 

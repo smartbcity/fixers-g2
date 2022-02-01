@@ -2,7 +2,7 @@ import { Box, Stack, Typography } from '@mui/material'
 import { Link, Table, TableProps } from '@smartb/g2-components'
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 import React, { useCallback, useMemo, useState } from 'react'
-import { Organization } from '../OrgCreation/OrgCreation'
+import { Organization } from '../OrgCreation/types'
 import { OrgFilters, OrgFiltersProps } from './OrgFilters'
 
 export interface OrgTableBasicProps extends BasicProps {
@@ -111,7 +111,7 @@ export const OrgTable = (props: OrgTableProps) => {
         name: 'Adresse',
         cell: (row: Organization) => (
           <Typography data-tag='___react-data-table-allow-propagation___'>
-            {`${row.address}, ${row.postalCode} ${row.city}`}
+            {`${row.address.street}, ${row.address.postalCode} ${row.address.city}`}
           </Typography>
         )
       },
@@ -120,9 +120,9 @@ export const OrgTable = (props: OrgTableProps) => {
         cell: (row: Organization) => (
           <Link
             data-tag='___react-data-table-allow-propagation___'
-            href={row.webSite}
+            href={row.website}
           >
-            {row.webSite}
+            {row.website}
           </Link>
         )
       }
@@ -137,6 +137,7 @@ export const OrgTable = (props: OrgTableProps) => {
         page={page}
         handlePageChange={onChangePage}
         data={organizations}
+        noDataMessage='Pas de donnée trouvé'
         columns={columns}
         {...other}
       />

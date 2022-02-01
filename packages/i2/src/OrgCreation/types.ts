@@ -61,6 +61,12 @@ export type OrganizationUpdateCommand = Command & Organization
 
 export type OrganizationCreateCommand = Command & Organization
 
+export type OrganizationGetAllQuery = Command & {
+  search?: string
+  page: number
+  size: number
+}
+
 export type OrganizationGetByIdQuery = Command & {
   id: string
 }

@@ -1,8 +1,24 @@
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 import React, { useCallback, useEffect } from 'react'
 import { request, useAsyncResponse } from 'utils'
-import { Organization } from '../OrgCreation/OrgCreation'
+import {
+  Command,
+  OrganizationGetAllQuery,
+  Organization
+} from '../OrgCreation/types'
 import { OrgTable, OrgTableProps } from './OrgTable'
+
+const commandBase: Command = {
+  auth: {
+    serverUrl: 'https://auth.smart-b.io/auth',
+    realmId: 'master',
+    clientId: 'admin-cli',
+    redirectUrl: '',
+    username: 'smartb',
+    password: 'conorS'
+  },
+  realmId: 'test'
+}
 
 export interface AutomatedOrgTableBasicProps extends BasicProps {
   apiUrl: string
@@ -20,12 +36,21 @@ export const AutomatedOrgTable = (props: AutomatedOrgTableProps) => {
 
   const getOrganizations = useCallback(
     async (params?: { page?: number; search?: string }) => {
-      return request<Organization[]>({
-        url: `${apiUrl}/getOrganizations`,
+      const res = await request<{ organizations: Organization[] }[]>({
+        url: `${apiUrl}/getAllOrganizations`,
         method: 'POST',
-        body: JSON.stringify(params),
+        body: JSON.stringify({
+          ...params,
+          ...commandBase,
+          size: 10
+        } as OrganizationGetAllQuery),
         jwt: jwt
       })
+      if (res) {
+        return res[0].organizations
+      } else {
+        return undefined
+      }
     },
     [apiUrl, jwt]
   )
