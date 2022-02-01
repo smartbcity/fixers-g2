@@ -2,7 +2,6 @@ import { Meta } from '@storybook/react'
 import React from 'react'
 import { OrgCreation, OrgCreationProps } from './OrgCreation'
 import { Story } from '@storybook/react/types-6-0'
-import { getOrganization } from './getOrganization'
 import { ArgsTable, PRIMARY_STORY, Subtitle } from '@storybook/addon-docs'
 import LinkTo from '@storybook/addon-links/react'
 import { Stack, Typography } from '@mui/material'
@@ -62,8 +61,7 @@ export const OrgCreationStory: Story<OrgCreationProps> = (
 }
 
 OrgCreationStory.args = {
-  onSubmit: (org) => console.log(org),
-  getInseeOrganization: getOrganization
+  onSubmit: (org) => console.log(org)
 }
 
 OrgCreationStory.storyName = 'OrgCreation'

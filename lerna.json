@@ -4,13 +4,14 @@
     "packages/documentation",
     "packages/forms",
     "packages/g2",
+    "packages/i2",
     "packages/layout",
     "packages/notifications",
     "packages/providers",
+    "packages/storybook-documentation",
     "packages/s2",
     "packages/themes",
-    "packages/webpack-components",
-    "packages/storybook-documentation"
+    "packages/webpack-components"
   ],
   "npmClient": "yarn",
   "tagVersionPrefix": "",

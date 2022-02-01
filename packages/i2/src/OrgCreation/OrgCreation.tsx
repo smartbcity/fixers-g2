@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import {
   Form,
   FormField,
@@ -18,6 +18,12 @@ import { Popover } from '@smartb/g2-notifications'
 import { fileToBase64 } from 'utils'
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 import clsx from 'clsx'
+import {
+  FlatOrganization,
+  flatOrganizationToOrganization,
+  Organization,
+  organizationToFlatOrganization
+} from './types'
 
 const StyledStack = styled(Stack)({
   '& .AruiPopover-root': {
@@ -41,22 +47,13 @@ const StyledStack = styled(Stack)({
   }
 })
 
+export type Validated = boolean
+
 //@ts-ignore
 const StyledPopover = styled(Popover)({
   width: '80vw',
   maxWidth: '450px'
 })
-
-export type Organization = {
-  siret: number
-  name: string
-  description?: string
-  webSite?: string
-  address: string
-  postalCode: number
-  city: string
-  image?: string
-}
 
 export interface OrgCreationClasses {
   siretForm?: string
@@ -85,15 +82,14 @@ export interface OrgCreationBasicProps extends BasicProps {
    * The event called after the research on the siret field
    * that should fill as much as it can the organization type
    */
-  getInseeOrganization?: (
-    siret: string
-  ) => Promise<Partial<Organization> | undefined>
+  getInseeOrganization?: (siret: string) => Promise<Organization | undefined>
   /**
    * The submit event
    * @default 'Valider'
    * @param organization the complete organization object after form validation
+   * @returns true if the api call has been successfull
    */
-  onSubmit?: (organization: Organization) => void
+  onSubmit?: (organization: Organization) => Promise<Validated> | Validated
   /**
    * The label placed in the submit button
    * @default 'Valider'
@@ -131,6 +127,11 @@ export const OrgCreation = (props: OrgCreationProps) => {
   const [siretRef, setSiretRef] = useState(null)
   const [imageError, setImageError] = useState<string | undefined>(undefined)
   const [image, setImage] = useState<string | undefined>(undefined)
+  const [feedback, setFeedback] = useState<boolean | undefined>(undefined)
+
+  useEffect(() => {
+    setFeedback(undefined)
+  }, [onSubmit])
 
   const onCloseSiretInfo = useCallback(() => setOpenSiretInfo(false), [])
 
@@ -149,8 +150,8 @@ export const OrgCreation = (props: OrgCreationProps) => {
         }
       },
       {
-        name: 'address',
-        defaultValue: organization?.address,
+        name: 'street',
+        defaultValue: organization?.address.street,
         validator: (value?: string) => {
           const trimmed = (value ?? '').trim()
           if (!trimmed) return "Vous devez renseigner l'addresse" as string
@@ -159,7 +160,7 @@ export const OrgCreation = (props: OrgCreationProps) => {
       },
       {
         name: 'postalCode',
-        defaultValue: organization?.postalCode,
+        defaultValue: organization?.address.postalCode,
         validator: (value?: string | number) => {
           const string = String(value).trim()
           if (!string || !value)
@@ -171,7 +172,7 @@ export const OrgCreation = (props: OrgCreationProps) => {
       },
       {
         name: 'city',
-        defaultValue: organization?.city,
+        defaultValue: organization?.address.city,
         validator: (value?: string) => {
           const trimmed = (value ?? '').trim()
           if (!trimmed) return 'Vous devez renseigner la ville' as string
@@ -189,31 +190,27 @@ export const OrgCreation = (props: OrgCreationProps) => {
       },
       {
         name: 'description',
-        defaultValue: organization?.name
+        defaultValue: organization?.description
       },
       {
-        name: 'webSite',
-        defaultValue: organization?.webSite
+        name: 'website',
+        defaultValue: organization?.website
       }
     ],
     [organization]
   )
 
   const onSubmitMemoized = useCallback(
-    (values: any) => {
-      onSubmit &&
-        onSubmit({
-          address: values.address,
-          city: values.city,
-          name: values.name,
-          postalCode: Number(values.postalCode),
-          siret: Number(values.siret),
-          description: values.description,
-          webSite: values.webSite,
-          image: image
+    async (values: FlatOrganization) => {
+      if (onSubmit) {
+        const feedback = await onSubmit({
+          ...flatOrganizationToOrganization(values),
+          id: organization?.id ?? ''
         })
+        setFeedback(feedback)
+      }
     },
-    [onSubmit, image]
+    [onSubmit, image, organization]
   )
 
   const formState = useFormWithPartialFields({
@@ -225,7 +222,7 @@ export const OrgCreation = (props: OrgCreationProps) => {
     getInseeOrganization &&
       getInseeOrganization(formState.values['siret']).then((values) => {
         if (values) {
-          formState.setValues(values, false)
+          formState.setValues(organizationToFlatOrganization(values), false)
           setSiretValid(true)
         } else {
           formState.setFieldError(
@@ -275,8 +272,8 @@ export const OrgCreation = (props: OrgCreationProps) => {
         label: 'Nom'
       },
       {
-        key: 'address',
-        name: 'address',
+        key: 'street',
+        name: 'street',
         type: 'textfield',
         label: 'addresse'
       },
@@ -296,8 +293,8 @@ export const OrgCreation = (props: OrgCreationProps) => {
         label: 'Ville'
       },
       {
-        key: 'webSite',
-        name: 'webSite',
+        key: 'website',
+        name: 'website',
         type: 'textfield',
         label: 'Site web (optionnel)'
       }
@@ -433,7 +430,13 @@ export const OrgCreation = (props: OrgCreationProps) => {
         justifyContent='flex-end'
         width='100%'
       >
-        <Button onClick={formState.submitForm}>{submitButtonLabel}</Button>
+        <Button
+          success={feedback !== undefined && feedback}
+          fail={feedback !== undefined && !feedback}
+          onClick={formState.submitForm}
+        >
+          {submitButtonLabel}
+        </Button>
       </Stack>
 
       {siretRef && (

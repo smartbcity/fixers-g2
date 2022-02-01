@@ -1,7 +1,26 @@
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 import React, { useCallback, useMemo } from 'react'
 import { request, useAsyncResponse } from 'utils'
-import { Organization, OrgCreation, OrgCreationProps } from './OrgCreation'
+import {
+  Command,
+  Organization,
+  OrganizationCreateCommand,
+  OrganizationGetByIdQuery,
+  OrganizationUpdateCommand
+} from './types'
+import { OrgCreation, OrgCreationProps } from './OrgCreation'
+
+const commandBase: Command = {
+  auth: {
+    serverUrl: 'https://auth.smart-b.io/auth',
+    realmId: 'master',
+    clientId: 'admin-cli',
+    redirectUrl: '',
+    username: 'smartb',
+    password: 'conorS'
+  },
+  realmId: 'test'
+}
 
 export interface AutomatedOrgCreationBasicProps extends BasicProps {
   /**
@@ -36,29 +55,35 @@ export const AutomatedOrgCreation = (props: AutomatedOrgCreationProps) => {
   const { apiUrl, jwt, update = false, submitted, organizationId } = props
 
   const getOrganization = useCallback(async () => {
-    return request<Organization>({
+    const res = await request<{ organization?: Organization }[]>({
       url: `${apiUrl}/getOrganization`,
       method: 'POST',
       body: JSON.stringify({
-        organizationId: organizationId
-      }),
+        id: organizationId,
+        ...commandBase
+      } as OrganizationGetByIdQuery),
       jwt: jwt
     })
+    if (res) {
+      return res[0]
+    } else {
+      return undefined
+    }
   }, [apiUrl, jwt, organizationId])
 
   const { result, status } = useAsyncResponse(getOrganization, update)
 
   const organization = useMemo(() => {
-    if (!result) return undefined
+    if (!result || !result.organization) return undefined
     return {
-      ...result,
+      ...result.organization,
       image: `${apiUrl}/${organizationId}/getOrganizationImage`
     }
   }, [result, organizationId])
 
   const getInseeOrganization = useCallback(
     async (siret: string) => {
-      return request<Partial<Organization>>({
+      const res = await request<{ organization?: Organization }[]>({
         url: `${apiUrl}/getInseeOrganization`,
         method: 'POST',
         body: JSON.stringify({
@@ -66,32 +91,53 @@ export const AutomatedOrgCreation = (props: AutomatedOrgCreationProps) => {
         }),
         jwt: jwt
       })
+      if (res) {
+        return res[0].organization
+      } else {
+        return undefined
+      }
     },
     [apiUrl, jwt]
   )
 
   const updateOrganization = useCallback(
     async (organization: Organization) => {
-      await request<Organization>({
+      const res = await request<{ id: string }[]>({
         url: `${apiUrl}/updateOrganization`,
         method: 'POST',
-        body: JSON.stringify(organization),
+        body: JSON.stringify({
+          ...organization,
+          ...commandBase
+        } as OrganizationUpdateCommand),
         jwt: jwt
       })
-      submitted && submitted(organization)
+      if (res) {
+        submitted && submitted(organization)
+        return true
+      } else {
+        return false
+      }
     },
     [apiUrl, jwt, submitted, organizationId]
   )
 
   const createOrganization = useCallback(
     async (organization: Organization) => {
-      await request<Organization>({
+      const res = await request<{ id: string }[]>({
         url: `${apiUrl}/createOrganization`,
         method: 'POST',
-        body: JSON.stringify(organization),
+        body: JSON.stringify({
+          ...organization,
+          ...commandBase
+        } as OrganizationCreateCommand),
         jwt: jwt
       })
-      submitted && submitted(organization)
+      if (res) {
+        submitted && submitted({ ...organization, id: res[0].id })
+        return true
+      } else {
+        return false
+      }
     },
     [apiUrl, jwt, submitted]
   )
