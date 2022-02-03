@@ -11,6 +11,8 @@
     "node": ">=10"
   },
   "scripts": {
-    "build": "echo 'no build for this package'"
+    "build": "echo 'no build for this package'",
+    "publish:gitlab": "echo 'this package is not publishable'",
+    "publish:npm": "echo 'this package is not publishable'"
   }
 }

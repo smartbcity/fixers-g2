@@ -99,7 +99,7 @@ lerna publish from-package --no-git-reset
 ```
 lerna version 1.0.0-alpha.1 --no-git-tag-version
 
-yarn publishWorkspaces:experimental
+yarn publishWorkspaces:gitlab
 ```
 
 - Create new package

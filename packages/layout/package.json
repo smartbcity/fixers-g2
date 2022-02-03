@@ -23,9 +23,6 @@
     "publish:gitlab": "npm publish",
     "publish:npm": "yarn publish --access public --new-version ${VERSION}"
   },
-  "devDependencies": {
-    "@smartb/g2-forms": "1.0.0"
-  },
   "peerDependencies": {
     "@mui/material": "^5.2.7",
     "@types/react": "^17.0.14",

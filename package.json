@@ -68,7 +68,6 @@
     "chromatic": "npx chromatic",
     "publishWorkspaces:version": "lerna version ${VERSION} --no-git-tag-version --yes",
     "publishWorkspaces:gitlab": "yarn workspaces run publish:gitlab",
-    "publishWorkspaces:gitlabW": "env:TAG = '1.0.0-alpha.16'",
     "publishWorkspaces:npm": "VERSION=${VERSION} yarn workspaces run publish:npm"
   },
   "publishConfig": {
