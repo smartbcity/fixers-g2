@@ -3,12 +3,14 @@
   "version": "1.0.0",
   "description": "Utility package used in the g2 packages. It shouldn't be pushed on npm",
   "author": "SmartB",
-  "license": "",
   "repository": "SmartB/utils",
   "main": "src/index.ts",
   "source": "src/index.ts",
   "types": "src/index.ts",
   "engines": {
     "node": ">=10"
+  },
+  "scripts": {
+    "build": "echo 'no build for this package'"
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "@smartb/g2-themes",
-  "version": "1.0.0",
+  "version": "1.0.0-alpha.16",
   "repository": "https://gitlab.smartb.city/fixers/g2.git",
   "author": "Adrien Poupard <adrien@smartb.city>",
   "license": "Apache-2.0",
@@ -30,9 +30,8 @@
     "@types/ramda": "^0.27.45"
   },
   "peerDependencies": {
-    "@emotion/cache": "^11.4.0",
-    "@emotion/react": "^11.4.1",
-    "@emotion/styled": "^11.3.0",
+    "@emotion/react": "11.7.1",
+    "@emotion/styled": "^11.6.0",
     "@mui/material": "^5.2.7",
     "@types/react": "^17.0.14",
     "react": "^17.0.2",

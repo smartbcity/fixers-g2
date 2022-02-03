@@ -1,0 +1,104 @@
+import React, { useEffect, useRef } from 'react';
+import { parse, Spec, View } from "vega"
+
+const spec: Spec = {
+    $schema: "https://vega.github.io/schema/vega/v5.json",
+    width: 400,
+    height: 200,
+    padding: 5,
+    autosize: "pad",
+    data: [
+        {
+            name: "table",
+            values: [
+                { step: "Step 1", amount: 1550 },
+                { step: "Step 2", amount: 9563 },
+                { step: "Step 3", amount: 2786 },
+                { step: "Step 4", amount: 8212 },
+                { step: "Step 5", amount: 5746 },
+                { step: "Step 6", amount: 7426 },
+                { step: "Step 7", amount: 3241 },
+                { step: "Step 8", amount: 4689 },
+            ]
+        }
+    ],
+    scales: [
+        {
+            "name": "xscale",
+            "type": "band",
+            "domain": { "data": "table", "field": "step" },
+            "range": "width",
+            "padding": 0.05,
+            "round": false
+        },
+        {
+            "name": "yscale",
+            "domain": { "data": "table", "field": "amount" },
+            "nice": true,
+            "range": "height"
+        }
+    ],
+
+    "axes": [
+        { "orient": "bottom", "scale": "xscale" },
+        { "orient": "left", "scale": "yscale" }
+    ],
+
+    "marks": [
+        {
+            "type": "rect",
+            "from": { "data": "table" },
+            "encode": {
+                "enter": {
+                    "x": { "scale": "xscale", "field": "step" },
+                    "width": { "scale": "xscale", "band": 1 },
+                    "y": { "scale": "yscale", "field": "amount" },
+                    "y2": { "scale": "yscale", "value": 0 }
+                },
+                "update": {
+                    "fill": { "value": "steelblue" }
+                },
+                "hover": {
+                    "fill": { "value": "red" }
+                }
+            }
+        },
+        {
+            "type": "text",
+            "from": { "data": "bars" },
+            "encode": {
+                "enter": {
+                    "x": { "field": "x2", "offset": -5 },
+                    "y": { "field": "y", "offset": { "field": "height", "mult": 0.5 } },
+                    "fill": [
+                        { "test": "contrast('white', datum.fill) > contrast('black', datum.fill)", "value": "white" },
+                        { "value": "black" }
+                    ],
+                    "align": { "value": "right" },
+                    "baseline": { "value": "middle" },
+                    "text": { "field": "datum.value" }
+                }
+            }
+        }
+    ]
+}
+
+export interface VegaTestProps {
+
+}
+
+export const VegaTest = (props: VegaTestProps) => {
+    const chartRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        new View(parse(spec), {
+            renderer: 'canvas',
+            container: chartRef.current ?? undefined,
+            hover: true
+        })
+    }, [chartRef.current]);
+
+    return (
+        <div ref={chartRef} />
+    );
+};

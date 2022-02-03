@@ -176,11 +176,11 @@ export const ButtonBase = function <T = {}>(
         className={clsx(
           classes.root,
           disabled && classes.disabled,
-          'AruiButton-root ',
-          className,
           success && classes.success,
           fail && classes.fail,
-          warning ? classes.advertissement : classes.defaultColor
+          warning ? classes.advertissement : classes.defaultColor,
+          'AruiButton-root ',
+          className
         )}
         onClick={(e: any) => !href && onClick && onClickMemoisied(e)}
         component={component}
@@ -220,11 +220,11 @@ export const ButtonBase = function <T = {}>(
       className={clsx(
         classes.root,
         disabled && classes.disabled,
-        'AruiButton-root ',
-        className,
         success && classes.success,
         fail && classes.fail,
-        warning ? classes.advertissement : classes.defaultColor
+        warning ? classes.advertissement : classes.defaultColor,
+        'AruiButton-root ',
+        className
       )}
       onClick={(e) => !href && onClick && onClickMemoisied(e)}
       href={href}
