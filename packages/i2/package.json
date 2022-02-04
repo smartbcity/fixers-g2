@@ -3,7 +3,7 @@
   "repository": "https://gitlab.smartb.city/fixers/g2.git",
   "author": "Adrien Poupard <adrien@smartb.city>",
   "license": "Apache-2.0",
-  "version": "1.0.0-alpha.16",
+  "version": "1.0.0-alpha.17",
   "description": "React i2 components library",
   "private": false,
   "main": "dist/index.js",
@@ -34,13 +34,13 @@
   },
   "dependencies": {
     "@mui/icons-material": "^5.2.5",
-    "@smartb/g2-components": "^1.0.0-alpha.16",
-    "@smartb/g2-forms": "^1.0.0-alpha.16",
-    "@smartb/g2-notifications": "^1.0.0-alpha.16",
-    "@smartb/g2-themes": "^1.0.0-alpha.16"
+    "@smartb/g2-components": "^1.0.0-alpha.17",
+    "@smartb/g2-forms": "^1.0.0-alpha.17",
+    "@smartb/g2-notifications": "^1.0.0-alpha.17",
+    "@smartb/g2-themes": "^1.0.0-alpha.17"
   },
   "devDependencies": {
-    "@smartb/g2-providers": "^1.0.0-alpha.16"
+    "@smartb/g2-providers": "^1.0.0-alpha.17"
   },
   "publishConfig": {
     "@smartb:registry": "https://gitlab.smartb.city/api/v4/projects/52/packages/npm/"

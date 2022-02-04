@@ -1,6 +1,6 @@
 {
   "name": "@smartb/g2-layout",
-  "version": "1.0.0-alpha.16",
+  "version": "1.0.0-alpha.17",
   "repository": "https://gitlab.smartb.city/fixers/g2.git",
   "author": "Adrien Poupard <adrien@smartb.city>",
   "license": "Apache-2.0",
@@ -32,9 +32,9 @@
   "dependencies": {
     "@mui/icons-material": "^5.2.5",
     "@mui/lab": "^5.0.0-alpha.63",
-    "@smartb/g2-components": "^1.0.0-alpha.16",
-    "@smartb/g2-forms": "^1.0.0-alpha.16",
-    "@smartb/g2-themes": "^1.0.0-alpha.16",
+    "@smartb/g2-components": "^1.0.0-alpha.17",
+    "@smartb/g2-forms": "^1.0.0-alpha.17",
+    "@smartb/g2-themes": "^1.0.0-alpha.17",
     "use-debounce": "^3.4.2"
   },
   "files": [
