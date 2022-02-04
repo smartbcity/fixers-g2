@@ -7,7 +7,6 @@ import {
   makeG2STyles,
   MergeMuiElementProps
 } from '@smartb/g2-themes'
-import clsx from 'clsx'
 
 const useStyles = makeG2STyles()({
   menu: {
@@ -81,14 +80,14 @@ const MoreOptionsBase = <T extends object = {}>(
         aria-controls='long-menu'
         aria-haspopup='true'
         onClick={handleClick}
-        className={clsx(className, 'AruiMoreOptions-root')}
+        className={defaultStyles.cx('AruiMoreOptions-root', className)}
         {...other}
         size='large'
       >
         <MoreHoriz
-          className={clsx(
-            classes?.moreOptionsIcon,
-            'AruiMoreOptions-moreOptionsIcon'
+          className={defaultStyles.cx(
+            'AruiMoreOptions-moreOptionsIcon',
+            classes?.moreOptionsIcon
           )}
           style={styles?.moreOptionsIcon}
         />
@@ -101,7 +100,7 @@ const MoreOptionsBase = <T extends object = {}>(
         PaperProps={{
           className: defaultStyles.classes.menu
         }}
-        className={clsx(classes?.menu, 'AruiMoreOptions-menu')}
+        className={defaultStyles.cx('AruiMoreOptions-menu', classes?.menu)}
         style={styles?.menu}
       >
         <Menu

@@ -5,7 +5,6 @@ import {
   DrawerProps,
   useTheme as useMuiTheme
 } from '@mui/material'
-import clsx from 'clsx'
 import { StyleProps } from '../StyleProps'
 import { makeG2STyles } from '@smartb/g2-themes'
 import { AppBarLayout, AppBarLayoutProps } from '../AppBarLayout'
@@ -207,12 +206,12 @@ export const AppLayout = (props: AppLayoutProps) => {
         {...appBarLayoutProps}
         className={
           showAppBar
-            ? clsx(
+            ? defaultStyles.cx(
                 defaultStyles.classes.appbar,
                 open && defaultStyles.classes.appBarOpen,
                 appBarLayoutProps?.className
               )
-            : clsx(
+            : defaultStyles.cx(
                 defaultStyles.classes.titleContainer,
                 open && defaultStyles.classes.titleContainerOpen,
                 appBarLayoutProps?.className
@@ -228,7 +227,7 @@ export const AppLayout = (props: AppLayoutProps) => {
           open={open}
           variant='persistent'
           {...drawerProps}
-          className={clsx(
+          className={defaultStyles.cx(
             defaultStyles.classes.drawer,
             !open && defaultStyles.classes.drawerClosed,
             drawerProps?.className
@@ -238,7 +237,7 @@ export const AppLayout = (props: AppLayoutProps) => {
         </Drawer>
       )}
       <main
-        className={clsx(
+        className={defaultStyles.cx(
           open ? defaultStyles.classes.main : defaultStyles.classes.mainShift,
           'AruiApp-main',
           classes?.main

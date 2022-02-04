@@ -33,7 +33,6 @@
   },
   "dependencies": {
     "@smartb/g2-themes": "^1.0.0-alpha.16",
-    "clsx": "^1.1.1",
     "github-markdown-css": "^4.0.0",
     "react-markdown": "^6.0.2",
     "react-syntax-highlighter": "^15.4.3",

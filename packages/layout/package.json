@@ -35,7 +35,6 @@
     "@smartb/g2-components": "^1.0.0-alpha.16",
     "@smartb/g2-forms": "^1.0.0-alpha.16",
     "@smartb/g2-themes": "^1.0.0-alpha.16",
-    "clsx": "^1.1.1",
     "use-debounce": "^3.4.2"
   },
   "files": [

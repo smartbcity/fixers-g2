@@ -16,7 +16,6 @@ import stringifyObject from 'stringify-object'
 import { useMemo } from 'react'
 import { BasicProps, makeG2STyles } from '@smartb/g2-themes'
 import { Box, Typography } from '@mui/material'
-import clsx from 'clsx'
 
 const useStyles = makeG2STyles()({
   root: {
@@ -97,7 +96,7 @@ export const CodeHighlighter = (props: CodeHighlighterProps) => {
     id,
     ...other
   } = props
-  const { classes } = useStyles()
+  const { classes, cx } = useStyles()
   const formatedObject = useMemo(() => {
     if (!object) return
     return stringifyObject(object, {
@@ -114,17 +113,17 @@ export const CodeHighlighter = (props: CodeHighlighterProps) => {
   return (
     <Box
       style={style}
-      className={clsx(
-        className,
+      className={cx(
         classes.root,
         title && classes.rootWithTitle,
-        'AruiCodeHighlighter-root'
+        'AruiCodeHighlighter-root',
+        className
       )}
       id={id}
     >
       {title && (
         <Box
-          className={clsx(
+          className={cx(
             classes.titleContainer,
             'AruiCodeHighlighter-titleContainer'
           )}

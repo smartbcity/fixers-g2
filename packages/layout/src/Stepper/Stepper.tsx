@@ -1,5 +1,4 @@
 import React from 'react'
-import clsx from 'clsx'
 import { StepConnector } from './StepConnector'
 import { StepEmptyIcon, StepIcon } from './StepIcon'
 import {
@@ -55,7 +54,7 @@ export const Stepper = (props: StepperProps) => {
     muiStepperWrapperLabel
   } = props
   const theme = useTheme()
-  const { classes } = useStyles()
+  const { classes, cx } = useStyles()
   const AruiStepConnector = StepConnector(theme)
   return (
     <div className='AruiStepper-root'>
@@ -65,7 +64,7 @@ export const Stepper = (props: StepperProps) => {
         PaperProps={{ elevation: 0 }}
         StepperProps={{
           connector: <AruiStepConnector />,
-          className: clsx(classes.stepper, classes.transparent)
+          className: cx(classes.stepper, classes.transparent)
         }}
         StepperButtonProps={{
           className: classes.button

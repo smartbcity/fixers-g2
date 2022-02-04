@@ -12,6 +12,7 @@
   "devDependencies": {
     "@mui/material": "^5.2.7",
     "@emotion/react": "^11.7.1",
+    "@emotion/css": "^11.7.1",
     "@emotion/styled": "^11.6.0",
     "@rollup/plugin-commonjs": "^21.0.1",
     "@rollup/plugin-image": "^2.1.1",

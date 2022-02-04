@@ -15,7 +15,6 @@ import {
 } from '../DatePicker'
 import { useInputStyles } from '../style'
 import { BasicProps } from '@smartb/g2-themes'
-import clsx from 'clsx'
 import {
   RadioChoicesClasses,
   RadioChoicesProps,
@@ -146,10 +145,10 @@ export const InputForm: InputFormComponent = React.forwardRef(
       return label ? (
         <InputLabel
           htmlFor={id}
-          className={clsx(
+          className={defaultStyles.cx(
             defaultStyles.classes.label,
-            classes?.label,
-            size === 'small' && defaultStyles.classes.labelSmall
+            size === 'small' && defaultStyles.classes.labelSmall,
+            classes?.label
           )}
           style={styles?.label}
         >

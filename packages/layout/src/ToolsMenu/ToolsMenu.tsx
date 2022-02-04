@@ -4,7 +4,6 @@ import { IconButton, Menu as MuiMenu } from '@mui/material'
 import { ItemsLayout, Display, ItemsLayoutBasicProps } from '../ItemsLayout'
 import { TabsMenuProps } from '../TabsMenu'
 import { TabsMenu } from '../TabsMenu'
-import clsx from 'clsx'
 import { BasicProps, makeG2STyles } from '@smartb/g2-themes'
 
 const useStyles = makeG2STyles()({
@@ -106,13 +105,13 @@ export const ToolsMenu = (props: ToolsMenuProps) => {
 
   return (
     <div
-      className={clsx(className, 'AruiToolsMenu-root')}
+      className={defaultStyles.cx('AruiToolsMenu-root', className)}
       style={style}
       id={id}
     >
       <IconButton
-        className={clsx(
-          { [defaultStyles.classes.menuOpened]: !!open },
+        className={defaultStyles.cx(
+          !!open && defaultStyles.classes.menuOpened,
           'AruiToolsMenu-iconButton',
           classes?.iconButton
         )}
@@ -126,7 +125,7 @@ export const ToolsMenu = (props: ToolsMenuProps) => {
         {menu.icon}
       </IconButton>
       <MuiMenu
-        className={clsx('AruiToolsMenu-menu', classes?.menu)}
+        className={defaultStyles.cx('AruiToolsMenu-menu', classes?.menu)}
         style={styles?.menu}
         classes={{
           paper: `${defaultStyles.classes.menu} ${

@@ -42,7 +42,6 @@
     "@mui/lab": "^5.0.0-alpha.63",
     "@smartb/g2-notifications": "^1.0.0-alpha.16",
     "@smartb/g2-themes": "^1.0.0-alpha.16",
-    "clsx": "^1.1.1",
     "react-data-table-component": "^6.9.7",
     "react-dropzone": "^11.3.2",
     "react-spinners": "^0.9.0",

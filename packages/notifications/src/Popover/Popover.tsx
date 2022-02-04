@@ -6,7 +6,6 @@ import {
 import { ClickAwayListener, Popper, PopperProps } from '@mui/material'
 import React, { forwardRef, useCallback, useMemo, useState } from 'react'
 import { CloseRounded } from '@mui/icons-material'
-import clsx from 'clsx'
 
 const useStyles = makeG2STyles()((theme) => ({
   popper: {
@@ -178,10 +177,10 @@ const PopoverBase = (
     <Popper
       ref={ref}
       id={id}
-      className={clsx(
-        className,
+      className={defaultStyles.cx(
         defaultStyles.classes.popper,
-        'AruiPopover-root'
+        'AruiPopover-root',
+        className
       )}
       style={style}
       open={open}
@@ -190,20 +189,20 @@ const PopoverBase = (
     >
       <div ref={setArrowRef} className={'AruiPopover-arrowContainer'}>
         <div
-          className={clsx(
+          className={defaultStyles.cx(
             defaultStyles.classes.arrow,
-            classes?.arrow,
-            'AruiPopover-arrow'
+            'AruiPopover-arrow',
+            classes?.arrow
           )}
           style={styles?.arrow}
         />
       </div>
       {onClose && (
         <CloseRounded
-          className={clsx(
-            classes?.closeIcon,
+          className={defaultStyles.cx(
+            defaultStyles.classes.closeIcon,
             'AruiPopover-closeIcon',
-            defaultStyles.classes.closeIcon
+            classes?.closeIcon
           )}
           style={styles?.closeIcon}
           onClick={onClose}

@@ -11,7 +11,6 @@ import {
   BasicProps,
   makeG2STyles
 } from '@smartb/g2-themes'
-import clsx from 'clsx'
 
 const useStyles = makeG2STyles()({
   gridContainer: {
@@ -113,7 +112,7 @@ export const ItemsLayout = React.forwardRef(
     if (display === 'list')
       return (
         <div
-          className={clsx(className, 'AruiItemsLayout-listRoot')}
+          className={defaultStyles.cx('AruiItemsLayout-listRoot', className)}
           style={style}
           id={id}
           ref={ref}
@@ -125,7 +124,7 @@ export const ItemsLayout = React.forwardRef(
                 component={it.href ? 'a' : 'div'}
                 onClick={() => it.goto && !it.href && it.goto()}
                 href={it.href}
-                className={clsx(
+                className={defaultStyles.cx(
                   defaultStyles.classes.item,
                   'AruiItemsLayout-listItem',
                   classes?.listItem
@@ -145,7 +144,7 @@ export const ItemsLayout = React.forwardRef(
       )
     return (
       <div
-        className={clsx(
+        className={defaultStyles.cx(
           defaultStyles.classes.gridRoot,
           'AruiItemsLayout-gridRoot',
           className
@@ -160,7 +159,7 @@ export const ItemsLayout = React.forwardRef(
           container
           direction='row'
           alignContent='flex-start'
-          className={clsx(
+          className={defaultStyles.cx(
             defaultStyles.classes.gridContainer,
             'AruiItemsLayout-gridContainer',
             classes?.gridContainer
@@ -177,7 +176,7 @@ export const ItemsLayout = React.forwardRef(
                 alignItems='center'
                 direction='column'
                 justifyContent='space-around'
-                className={clsx(
+                className={defaultStyles.cx(
                   defaultStyles.classes.gridItem,
                   'AruiItemsLayout-gridItem',
                   classes?.gridItem

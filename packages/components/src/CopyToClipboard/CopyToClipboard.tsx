@@ -2,7 +2,6 @@ import { IconButton, IconButtonProps } from '@mui/material'
 import { CheckRounded } from '@mui/icons-material'
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 import { makeG2STyles } from '@smartb/g2-themes'
-import clsx from 'clsx'
 import React, { forwardRef, useCallback, useState } from 'react'
 import { Clipboard } from '../icons'
 import { Tooltip } from '@smartb/g2-notifications'
@@ -90,32 +89,35 @@ const CopyToClipboardBase = (
 
   return (
     <Tooltip
-      className={clsx(classes?.tooltip, 'AruiCopyToClipboard-tooltip')}
+      className={defaultStyles.cx(
+        'AruiCopyToClipboard-tooltip',
+        classes?.tooltip
+      )}
       style={styles?.tooltip}
       helperText={done ? successHelperText : helperText}
     >
       <IconButton
         {...other}
         ref={ref}
-        className={clsx(className, 'AruiCopyToClipboard-root')}
+        className={defaultStyles.cx('AruiCopyToClipboard-root', className)}
         onClick={onCopy}
         size='large'
       >
         {done ? (
           <CheckRounded
-            className={clsx(
+            className={defaultStyles.cx(
               defaultStyles.classes.successIcon,
-              classes?.successIcon,
-              'AruiCopyToClipboard-successIcon'
+              'AruiCopyToClipboard-successIcon',
+              classes?.successIcon
             )}
             style={styles?.successIcon}
           />
         ) : (
           <Clipboard
-            className={clsx(
+            className={defaultStyles.cx(
               defaultStyles.classes.clipboardIcon,
-              classes?.clipBoardIcon,
-              'AruiCopyToClipboard-clipBoardIcon'
+              'AruiCopyToClipboard-clipBoardIcon',
+              classes?.clipBoardIcon
             )}
             style={styles?.clipBoardIcon}
           />

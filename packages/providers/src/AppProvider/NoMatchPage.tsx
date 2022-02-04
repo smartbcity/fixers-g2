@@ -8,7 +8,6 @@ import {
 } from '@smartb/g2-themes'
 import { Button } from '@smartb/g2-components'
 import { Link, LinkProps } from 'react-router-dom'
-import clsx from 'clsx'
 
 const useStyles = makeG2STyles()({
   notFoundIcon: {
@@ -100,7 +99,7 @@ export const NoMatchPage = (props: NoMatchPageProps) => {
       {...other}
     >
       <NotFoundIcon
-        className={clsx(
+        className={defaultStyles.cx(
           defaultStyles.classes.notFoundIcon,
           classes?.notFoundIcon
         )}
@@ -108,7 +107,10 @@ export const NoMatchPage = (props: NoMatchPageProps) => {
       />
       <Typography
         variant='h3'
-        className={clsx(defaultStyles.classes.title, classes?.title)}
+        className={defaultStyles.cx(
+          defaultStyles.classes.title,
+          classes?.title
+        )}
         style={styles?.title}
       >
         {title}

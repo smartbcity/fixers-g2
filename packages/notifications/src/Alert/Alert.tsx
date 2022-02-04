@@ -10,7 +10,6 @@ import {
   makeG2STyles,
   MergeMuiElementProps
 } from '@smartb/g2-themes'
-import clsx from 'clsx'
 import {
   CheckRounded,
   CloseRounded,
@@ -161,7 +160,7 @@ const AlertBase = (props: AlertProps, ref: React.ForwardedRef<HTMLElement>) => {
     if (severity === 'warning')
       return (
         <ReportProblemOutlined
-          className={clsx(
+          className={defaultStyles.cx(
             defaultStyles.classes.severityIcon,
             classes?.severityIcon
           )}
@@ -171,7 +170,7 @@ const AlertBase = (props: AlertProps, ref: React.ForwardedRef<HTMLElement>) => {
     if (severity === 'success')
       return (
         <CheckRounded
-          className={clsx(
+          className={defaultStyles.cx(
             defaultStyles.classes.severityIcon,
             classes?.severityIcon
           )}
@@ -181,7 +180,7 @@ const AlertBase = (props: AlertProps, ref: React.ForwardedRef<HTMLElement>) => {
     if (severity === 'error')
       return (
         <CloseRounded
-          className={clsx(
+          className={defaultStyles.cx(
             defaultStyles.classes.severityIcon,
             classes?.severityIcon
           )}
@@ -190,7 +189,7 @@ const AlertBase = (props: AlertProps, ref: React.ForwardedRef<HTMLElement>) => {
       )
     return (
       <InfoOutlined
-        className={clsx(
+        className={defaultStyles.cx(
           defaultStyles.classes.severityIcon,
           classes?.severityIcon
         )}
@@ -200,23 +199,27 @@ const AlertBase = (props: AlertProps, ref: React.ForwardedRef<HTMLElement>) => {
   }, [severity, classes?.severityIcon, styles?.severityIcon])
   return (
     <MuiSnackbar
-      className={clsx(className, 'AruiAlert-root', defaultStyles.classes.root)}
+      className={defaultStyles.cx(
+        defaultStyles.classes.root,
+        'AruiAlert-root',
+        className
+      )}
       ref={ref}
       ClickAwayListenerProps={{ onClickAway: () => {} }}
       ContentProps={{
-        className: clsx(
+        className: defaultStyles.cx(
           defaultStyles.classes.content,
           colorBase === 'light' && defaultStyles.classes.lightRoot,
           !onClose && defaultStyles.classes.contentWithoutClose,
-          classes?.contentContainer,
-          'AruiAlert-contentContainer'
+          'AruiAlert-contentContainer',
+          classes?.contentContainer
         ),
         style: styles?.contentContainer
       }}
       message={
         <>
           <Box
-            className={clsx(
+            className={defaultStyles.cx(
               defaultStyles.classes.severityIndicator,
               severity === 'error' &&
                 defaultStyles.classes.severityIndicatorError,
@@ -237,11 +240,11 @@ const AlertBase = (props: AlertProps, ref: React.ForwardedRef<HTMLElement>) => {
           )}
           {onClose && (
             <CloseRounded
-              className={clsx(
-                classes?.closeIcon,
-                'AruiAlert-closeIcon',
+              className={defaultStyles.cx(
+                defaultStyles.classes.closeIcon,
                 colorBase === 'light' && defaultStyles.classes.closeIconLight,
-                defaultStyles.classes.closeIcon
+                'AruiAlert-closeIcon',
+                classes?.closeIcon
               )}
               style={styles?.closeIcon}
               onClick={onClose}

@@ -21,7 +21,6 @@ import {
   outlinedUseStyles,
   textUseStyles
 } from './buttonStyles'
-import clsx from 'clsx'
 
 export type Variant = 'contained' | 'outlined' | 'text'
 
@@ -133,7 +132,7 @@ export const ButtonBase = function <T = {}>(
     componentProps,
     ...other
   } = props
-  const { classes } =
+  const { classes, cx } =
     variant === 'contained'
       ? containedUseStyles()
       : variant === 'outlined'
@@ -173,12 +172,13 @@ export const ButtonBase = function <T = {}>(
         ref={ref}
         style={style}
         disabled={loading || disabled || forcedLoading}
-        className={clsx(
+        className={cx(
           classes.root,
+          !fail && !success && !warning && classes.defaultColor,
           disabled && classes.disabled,
           success && classes.success,
           fail && classes.fail,
-          warning ? classes.advertissement : classes.defaultColor,
+          warning && classes.advertissement,
           'AruiButton-root ',
           className
         )}
@@ -217,12 +217,13 @@ export const ButtonBase = function <T = {}>(
       ref={ref}
       style={style}
       disabled={loading || disabled || forcedLoading}
-      className={clsx(
+      className={cx(
         classes.root,
+        !fail && !success && !warning && classes.defaultColor,
         disabled && classes.disabled,
         success && classes.success,
         fail && classes.fail,
-        warning ? classes.advertissement : classes.defaultColor,
+        warning && classes.advertissement,
         'AruiButton-root ',
         className
       )}

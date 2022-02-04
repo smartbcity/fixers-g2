@@ -7,7 +7,6 @@ import {
   MergeMuiElementProps
 } from '@smartb/g2-themes'
 import { TextField } from '@smartb/g2-forms'
-import clsx from 'clsx'
 
 const useStyles = makeG2STyles()({
   cancel: {
@@ -162,18 +161,18 @@ export const ConfirmationPopUp = (props: ConfirmationPopUpProps) => {
       open={open}
       actions={actions}
       onClose={handleClose}
-      className={clsx(
-        className,
-        'AruiConfirmationPopUp-strongConfirmationText'
+      className={defaultStyles.cx(
+        'AruiConfirmationPopUp-strongConfirmationText',
+        className
       )}
       {...other}
     >
       {strongConfirmation ? (
         <>
           <Typography
-            className={clsx(
-              classes?.strongConfirmationText,
-              'AruiConfirmationPopUp-strongConfirmationText'
+            className={defaultStyles.cx(
+              'AruiConfirmationPopUp-strongConfirmationText',
+              classes?.strongConfirmationText
             )}
             style={styles?.strongConfirmationText}
             variant='body1'
@@ -186,9 +185,9 @@ export const ConfirmationPopUp = (props: ConfirmationPopUpProps) => {
             size='small'
             error={error}
             errorMessage={strongConfirmationErrorText}
-            className={clsx(
-              classes?.textField,
-              'AruiConfirmationPopUp-textField'
+            className={defaultStyles.cx(
+              'AruiConfirmationPopUp-textField',
+              classes?.textField
             )}
             style={styles?.textField}
           />

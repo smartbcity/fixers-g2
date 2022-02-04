@@ -37,7 +37,6 @@
   },
   "dependencies": {
     "@smartb/g2-themes": "^1.0.0-alpha.16",
-    "clsx": "^1.1.1",
     "mermaid": "^8.9.2",
     "vis-data": "^7.1.2",
     "vis-network": "^9.0.0"

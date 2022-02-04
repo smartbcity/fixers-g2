@@ -11,7 +11,6 @@ import {
   styled
 } from '@mui/material'
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
-import clsx from 'clsx'
 import React, {
   forwardRef,
   useCallback,
@@ -21,6 +20,7 @@ import React, {
 } from 'react'
 import { RoundedArrow } from '../icons'
 import { MenuItems } from '../Menu'
+import { cx } from '@emotion/css'
 
 const StyledPaper = styled(Paper)({
   borderRadius: '2px',
@@ -166,15 +166,15 @@ export const ContextMenuBase = (
       ref={ref}
       open={openPopper}
       anchorEl={anchorEl}
-      className={clsx(className, 'AruiContextMenu-root')}
+      className={cx('AruiContextMenu-root', className)}
       {...other}
     >
       <StyledPaper
-        className={clsx(classes?.paper, 'AruiContextMenu-paper')}
+        className={cx('AruiContextMenu-paper', classes?.paper)}
         style={styles?.paper}
       >
         <MenuList
-          className={clsx(classes?.list, 'AruiContextMenu-list')}
+          className={cx('AruiContextMenu-list', classes?.list)}
           style={styles?.list}
         >
           {uiMenu}
@@ -243,7 +243,7 @@ const Item = forwardRef(
         style={styles?.item?.root}
         {...componentProps}
         {...other}
-        className={clsx(classes?.item?.root)}
+        className={classes?.item?.root}
       >
         {!!icon && (
           <ListItemIcon
@@ -256,12 +256,12 @@ const Item = forwardRef(
         <ListItemText
           primaryTypographyProps={{ color: 'inherit', variant: 'body2' }}
           primary={label}
-          className={clsx(classes?.item?.text)}
+          className={classes?.item?.text}
           style={styles?.item?.text}
         />
         {!!items && (
           <RoundedArrow
-            className={clsx('AruiContextMenu-arrow', classes?.item?.arrow)}
+            className={cx('AruiContextMenu-arrow', classes?.item?.arrow)}
             style={styles?.item?.arrow}
           />
         )}

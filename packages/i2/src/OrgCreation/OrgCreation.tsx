@@ -17,7 +17,7 @@ import { Button, DropPicture, DropPictureError } from '@smartb/g2-components'
 import { Popover } from '@smartb/g2-notifications'
 import { fileToBase64 } from 'utils'
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
-import clsx from 'clsx'
+import { cx } from '@emotion/css'
 import {
   FlatOrganization,
   flatOrganizationToOrganization,
@@ -347,11 +347,11 @@ export const OrgCreation = (props: OrgCreationProps) => {
       maxWidth='650px'
       spacing={2}
       onFocus={onCloseSiretInfo}
-      className={clsx(className, 'AruiOrgCreation-root')}
+      className={cx('AruiOrgCreation-root', className)}
       {...other}
     >
       <Form
-        className={clsx(classes?.siretForm, 'AruiOrgCreation-siretForm')}
+        className={cx('AruiOrgCreation-siretForm', classes?.siretForm)}
         style={styles?.siretForm}
         fields={siret}
         formState={formState}
@@ -363,10 +363,10 @@ export const OrgCreation = (props: OrgCreationProps) => {
         width='100%'
       >
         <Form
-          className={clsx(
-            classes?.leftForm,
+          className={cx(
             'AruiOrgCreation-leftForm',
-            'mainFormLeft'
+            'mainFormLeft',
+            classes?.leftForm
           )}
           style={styles?.leftForm}
           fields={details}
@@ -374,9 +374,9 @@ export const OrgCreation = (props: OrgCreationProps) => {
         />
         <Stack>
           <Box
-            className={clsx(
-              classes?.dropPictureBox,
-              'AruiOrgCreation-dropPictureBox'
+            className={cx(
+              'AruiOrgCreation-dropPictureBox',
+              classes?.dropPictureBox
             )}
             style={styles?.dropPictureBox}
             sx={{
@@ -409,10 +409,10 @@ export const OrgCreation = (props: OrgCreationProps) => {
             />
           </Box>
           <Form
-            className={clsx(
-              classes?.rightForm,
+            className={cx(
               'AruiOrgCreation-rightForm',
-              'mainFormRight'
+              'mainFormRight',
+              classes?.rightForm
             )}
             style={styles?.rightForm}
             fields={description}
@@ -421,9 +421,9 @@ export const OrgCreation = (props: OrgCreationProps) => {
         </Stack>
       </Stack>
       <Stack
-        className={clsx(
-          classes?.actionsContainer,
-          'AruiOrgCreation-actionsContainer'
+        className={cx(
+          'AruiOrgCreation-actionsContainer',
+          classes?.actionsContainer
         )}
         style={styles?.actionsContainer}
         direction='row'
@@ -446,7 +446,7 @@ export const OrgCreation = (props: OrgCreationProps) => {
           onClose={onCloseSiretInfo}
           anchorEl={siretRef}
           placement='bottom'
-          className={clsx(classes?.infoPopover, 'AruiOrgCreation-infoPopover')}
+          className={cx('AruiOrgCreation-infoPopover', classes?.infoPopover)}
           style={styles?.infoPopover}
         >
           <Typography variant='body1'>

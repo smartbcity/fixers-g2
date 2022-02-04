@@ -13,7 +13,6 @@ import {
   useTheme
 } from '@smartb/g2-themes'
 import { Pagination } from '../Pagination'
-import clsx from 'clsx'
 
 const useStyles = makeG2STyles()({
   container: {
@@ -222,7 +221,7 @@ export const Table = <Row,>(props: TableProps<Row>) => {
     () => getCustomStyles(theme, highlightOnHover),
     [theme, highlightOnHover]
   )
-  const { classes } = useStyles()
+  const { classes, cx } = useStyles()
 
   return (
     <>
@@ -231,7 +230,7 @@ export const Table = <Row,>(props: TableProps<Row>) => {
       ) : (
         <DataTable
           columns={columns}
-          className={clsx(className, classes.container)}
+          className={cx(classes.container, className)}
           style={style}
           theme='colisactiv'
           data={data}

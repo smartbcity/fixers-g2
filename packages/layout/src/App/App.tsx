@@ -5,7 +5,6 @@ import {
   Theme as MuiTheme,
   useTheme as useMuiTheme
 } from '@mui/material'
-import clsx from 'clsx'
 import { StyleProps } from '../StyleProps'
 import { ToolsMenuProps, ToolsMenu } from '../ToolsMenu'
 import { useDebouncedCallback } from 'use-debounce'
@@ -252,12 +251,12 @@ export const App = (props: AppProps) => {
         onDrawerOpen={onToggle}
         className={
           showAppBar
-            ? clsx(
+            ? defaultStyles.cx(
                 defaultStyles.classes.appbar,
                 open && defaultStyles.classes.appBarOpen,
                 appBarLayoutProps?.className
               )
-            : clsx(
+            : defaultStyles.cx(
                 defaultStyles.classes.titleContainer,
                 open && defaultStyles.classes.titleContainerOpen,
                 appBarLayoutProps?.className
@@ -270,7 +269,7 @@ export const App = (props: AppProps) => {
           <>
             <TitleContainer title={title} logo={logo} />
             <div
-              className={clsx(
+              className={defaultStyles.cx(
                 defaultStyles.classes.grow,
                 'AruiAppBar-flexFiller'
               )}
@@ -289,7 +288,7 @@ export const App = (props: AppProps) => {
         <Drawer
           variant='persistent'
           open={open}
-          className={clsx(
+          className={defaultStyles.cx(
             defaultStyles.classes.drawer,
             !open && defaultStyles.classes.drawerClosed,
             drawerProps?.className
@@ -310,7 +309,7 @@ export const App = (props: AppProps) => {
         </Drawer>
       )}
       <main
-        className={clsx(
+        className={defaultStyles.cx(
           open ? defaultStyles.classes.main : defaultStyles.classes.mainShift,
           'AruiApp-main',
           classes?.main

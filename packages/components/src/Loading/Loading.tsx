@@ -1,5 +1,5 @@
-import { Box, LinearProgress, BoxProps } from  '@mui/material'
-import clsx from 'clsx'
+import { Box, LinearProgress, BoxProps } from '@mui/material'
+import { cx } from '@emotion/css'
 import React from 'react'
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 
@@ -43,21 +43,18 @@ export const Loading = (props: LoadingProps) => {
       alignItems='center'
       width={fullPage ? '100vw' : '100%'}
       height={fullPage ? '100vh' : '100%'}
-      className={clsx(className, 'AruiLoading-iconContainer')}
+      className={cx('AruiLoading-iconContainer', className)}
       {...other}
     >
       <Box
         display='flex'
         flexDirection='column'
-        className={clsx(classes?.iconContainer, 'AruiLoading-iconContainer')}
+        className={cx('AruiLoading-iconContainer', classes?.iconContainer)}
         style={styles?.iconContainer}
       >
         {icon}
         <LinearProgress
-          className={clsx(
-            classes?.linearProgress,
-            'AruiLoading-linearProgress'
-          )}
+          className={cx('AruiLoading-linearProgress', classes?.linearProgress)}
           style={styles?.linearProgress}
         />
       </Box>

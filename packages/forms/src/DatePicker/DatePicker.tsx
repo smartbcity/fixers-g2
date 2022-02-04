@@ -15,7 +15,6 @@ import {
   makeG2STyles,
   MergeMuiElementProps
 } from '@smartb/g2-themes'
-import clsx from 'clsx'
 import { fr, enUS } from 'date-fns/locale'
 import { DatePickerView } from '@mui/lab/DatePicker/shared'
 const dateFnsLocales = [fr, enUS]
@@ -166,10 +165,10 @@ const DatePickerBase = (
 
   const formHelperProps = useMemo(() => {
     return {
-      className: clsx(
+      className: defaultStyles.cx(
         defaultStyles.classes.helperText,
-        classes?.helperText,
-        'AruiTextfield-helperText'
+        'AruiTextfield-helperText',
+        classes?.helperText
       ),
       style: styles?.helperText
     }
@@ -188,15 +187,15 @@ const DatePickerBase = (
           name={name}
           variant='filled'
           error={error}
-          className={clsx(
-            className,
+          className={defaultStyles.cx(
             defaultStyles.classes.input,
             size === 'large' && defaultStyles.classes.inputLarge,
             size === 'medium' && defaultStyles.classes.inputMedium,
             size === 'small' && defaultStyles.classes.inputSmall,
-            disabled && defaultStyles.classes.inputDisabled,
             error && defaultStyles.classes.inputError,
-            'AruiDatePicker-datePicker'
+            disabled && defaultStyles.classes.inputDisabled,
+            'AruiDatePicker-datePicker',
+            className
           )}
           style={style}
           helperText={error ? errorMessage : ''}
@@ -204,7 +203,7 @@ const DatePickerBase = (
           InputProps={{
             disableUnderline: true,
             style: styles?.input,
-            className: clsx(classes?.input, 'AruiDatePicker-input'),
+            className: defaultStyles.cx('AruiDatePicker-input', classes?.input),
             ...textFieldProps?.InputProps,
             ...props.InputProps
           }}

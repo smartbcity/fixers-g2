@@ -11,7 +11,6 @@ import {
   makeG2STyles,
   MergeMuiElementProps
 } from '@smartb/g2-themes'
-import clsx from 'clsx'
 import { CheckIcon, UnCheckIcon } from '../assets/icons'
 
 const useStyles = makeG2STyles()((theme) => ({
@@ -175,20 +174,20 @@ const CheckBoxBase = (
 
   return (
     <div
-      className={clsx(
-        className,
+      className={defaultStyles.cx(
         defaultStyles.classes.base,
-        'AruiTextfield-root'
+        'AruiTextfield-root',
+        className
       )}
       style={style}
     >
       <FormControlLabel
         ref={ref}
-        className={clsx(
+        className={defaultStyles.cx(
           defaultStyles.classes.container,
-          classes?.formControl,
           disabled && defaultStyles.classes.containerDisabled,
-          'AruiCheckBox-root'
+          'AruiCheckBox-root',
+          classes?.formControl
         )}
         style={styles?.formControl}
         control={
@@ -197,29 +196,29 @@ const CheckBoxBase = (
             checked={checked}
             disabled={disabled}
             id={id}
-            className={clsx(
+            className={defaultStyles.cx(
               defaultStyles.classes.root,
-              classes?.checkbox,
-              'AruiCheckBox-checkbox'
+              'AruiCheckBox-checkbox',
+              classes?.checkbox
             )}
             style={styles?.checkbox}
             disableRipple
             icon={
               <UnCheckIcon
-                className={clsx(
-                  classes?.checkIcon,
+                className={defaultStyles.cx(
                   defaultStyles.classes.iconSize,
-                  'AruiCheckBox-unCheckIcon'
+                  'AruiCheckBox-unCheckIcon',
+                  classes?.checkIcon
                 )}
                 style={styles?.checkIcon}
               />
             }
             checkedIcon={
               <CheckIcon
-                className={clsx(
+                className={defaultStyles.cx(
                   defaultStyles.classes.iconSize,
-                  classes?.unCheckIcon,
-                  'AruiCheckBox-checkIcon'
+                  'AruiCheckBox-checkIcon',
+                  classes?.unCheckIcon
                 )}
                 style={styles?.unCheckIcon}
               />
@@ -231,10 +230,10 @@ const CheckBoxBase = (
       />
       {errorMessage !== '' && error && (
         <FormHelperText
-          className={clsx(
+          className={defaultStyles.cx(
             defaultStyles.classes.helperText,
-            classes?.helperText,
-            'AruiCheckBox-helperText'
+            'AruiCheckBox-helperText',
+            classes?.helperText
           )}
           style={styles?.helperText}
         >

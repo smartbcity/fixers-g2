@@ -1,5 +1,4 @@
 import { Box, List, ListItem, ListItemText } from '@mui/material'
-import clsx from 'clsx'
 import React from 'react'
 import { BasicProps, makeG2STyles } from '@smartb/g2-themes'
 
@@ -43,10 +42,10 @@ export const TitleContainer = (props: TitleContainerProps) => {
     <Box
       display='flex'
       justifyContent='center'
-      className={clsx(
-        className,
+      className={defaultStyles.cx(
+        defaultStyles.classes.drawerSpacer,
         'AruiTitleContainer-root',
-        defaultStyles.classes.drawerSpacer
+        className
       )}
       {...other}
     >
@@ -56,7 +55,10 @@ export const TitleContainer = (props: TitleContainerProps) => {
             {logo && (
               <img
                 src={logo}
-                className={clsx(classes?.logo, 'AruiTitleContainer-logo')}
+                className={defaultStyles.cx(
+                  'AruiTitleContainer-logo',
+                  classes?.logo
+                )}
                 style={styles?.logo}
                 alt='Logo'
               />
@@ -65,7 +67,10 @@ export const TitleContainer = (props: TitleContainerProps) => {
           {title && (
             <ListItemText
               primary={title}
-              className={clsx(classes?.title, 'AruiTitleContainer-title')}
+              className={defaultStyles.cx(
+                'AruiTitleContainer-title',
+                classes?.title
+              )}
               style={styles?.title}
             />
           )}

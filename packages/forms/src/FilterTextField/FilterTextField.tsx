@@ -12,7 +12,6 @@ import {
   MergeMuiElementProps,
   useTheme
 } from '@smartb/g2-themes'
-import clsx from 'clsx'
 import { SearchIcon } from '../assets/icons'
 import { ClearRounded } from '@mui/icons-material'
 import tinycolor from 'tinycolor2'
@@ -224,10 +223,10 @@ export const FilterTextField = React.forwardRef(
               >
                 <SearchIcon
                   onClick={onSearch}
-                  className={clsx(
+                  className={defaultStyles.cx(
                     localStyles.classes.searchIcon,
-                    classes?.searchIcon,
-                    'AruiTextfield-searchIcon'
+                    'AruiTextfield-searchIcon',
+                    classes?.searchIcon
                   )}
                   style={styles?.searchIcon}
                 />
@@ -244,10 +243,10 @@ export const FilterTextField = React.forwardRef(
               >
                 <SearchIcon
                   onClick={onSearch}
-                  className={clsx(
+                  className={defaultStyles.cx(
                     localStyles.classes.searchIcon,
-                    classes?.searchIcon,
-                    'AruiTextfield-searchIcon'
+                    'AruiTextfield-searchIcon',
+                    classes?.searchIcon
                   )}
                   style={styles?.searchIcon}
                 />
@@ -300,12 +299,12 @@ export const FilterTextField = React.forwardRef(
         return (
           <ClearRounded
             onClick={onRemove}
-            className={clsx(
+            className={defaultStyles.cx(
               defaultStyles.classes.clear,
-              classes?.clearIcon,
-              'AruiTextfield-clearIcon',
               inputAdornment.endAdornment &&
-                localStyles.classes.clearWithEndAbornment
+                localStyles.classes.clearWithEndAbornment,
+              'AruiTextfield-clearIcon',
+              classes?.clearIcon
             )}
             style={styles?.clearIcon}
           />
@@ -345,10 +344,10 @@ export const FilterTextField = React.forwardRef(
 
     return (
       <div
-        className={clsx(
-          className,
+        className={defaultStyles.cx(
           localStyles.classes.root,
-          'AruiTextfield-root'
+          'AruiTextfield-root',
+          className
         )}
         style={variant === 'filled' ? { ...style, ...colorStyle } : style}
       >
@@ -359,7 +358,7 @@ export const FilterTextField = React.forwardRef(
           label={variant === 'outlined' ? label : undefined}
           InputLabelProps={{
             ...InputLabelProps,
-            className: clsx(
+            className: defaultStyles.cx(
               defaultStyles.classes.label,
               'AruiTextfield-label',
               classes?.label
@@ -373,7 +372,7 @@ export const FilterTextField = React.forwardRef(
           onChange={onChangeMemoized}
           type={textFieldType === 'search' ? 'text' : textFieldType}
           defaultValue={defaultValue}
-          className={clsx(
+          className={defaultStyles.cx(
             defaultStyles.classes.input,
             variant !== 'outlined' && defaultStyles.classes.inputWithoutLabel,
             localStyles.classes.input,
@@ -381,9 +380,9 @@ export const FilterTextField = React.forwardRef(
               inputAdornment.endAdornment &&
               textFieldType === 'search' &&
               defaultStyles.classes.inputWithClear,
-            classes?.textfield,
             getVariantColorClass(),
-            'AruiTextfield-Textfield'
+            'AruiTextfield-Textfield',
+            classes?.textfield
           )}
           style={styles?.textfield}
           disabled={disabled}
@@ -395,17 +394,17 @@ export const FilterTextField = React.forwardRef(
               variant === 'filled'
                 ? { ...styles?.input, ...colorStyle }
                 : styles?.input,
-            className: clsx(
+            className: defaultStyles.cx(
               inputAdornment.endAdornment &&
                 onRemove &&
                 localStyles.classes.withIconEndOnRemove,
-              classes?.input,
-              onRemove &&
-                value &&
+              !!onRemove &&
+                !!value &&
                 value !== '' &&
                 !inputAdornment.endAdornment &&
                 localStyles.classes.inputWithEndAbornment,
-              'AruiTextfield-input'
+              'AruiTextfield-input',
+              classes?.input
             ),
             ...InputProps
           }}

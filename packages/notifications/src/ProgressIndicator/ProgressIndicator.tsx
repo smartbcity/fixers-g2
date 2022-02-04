@@ -9,7 +9,6 @@ import {
   makeG2STyles,
   MergeMuiElementProps
 } from '@smartb/g2-themes'
-import clsx from 'clsx'
 import React, { useMemo } from 'react'
 
 const useStyles = makeG2STyles()((theme) => ({
@@ -86,20 +85,20 @@ export const ProgressIndicator = (props: ProgressIndicatorProps) => {
   const roundedValue = useMemo(() => Math.round(value), [value])
   return (
     <Box
-      className={clsx(
-        className,
+      className={defaultStyles.cx(
+        defaultStyles.classes.root,
         'AruiProgressIndicator-root',
-        defaultStyles.classes.root
+        className
       )}
       style={style}
       id={id}
     >
       <Typography
         variant='subtitle1'
-        className={clsx(
+        className={defaultStyles.cx(
           defaultStyles.classes.label,
-          classes?.label,
-          'AruiProgressIndicator-label'
+          'AruiProgressIndicator-label',
+          classes?.label
         )}
         style={styles?.label}
       >
@@ -108,7 +107,7 @@ export const ProgressIndicator = (props: ProgressIndicatorProps) => {
       <LinearProgress
         variant='determinate'
         color='secondary'
-        className={clsx(
+        className={defaultStyles.cx(
           defaultStyles.classes.progress,
           'AruiProgressIndicator-LinearProgress',
           classes?.linearProgress

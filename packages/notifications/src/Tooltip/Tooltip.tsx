@@ -8,7 +8,6 @@ import {
   BasicProps,
   makeG2STyles
 } from '@smartb/g2-themes'
-import clsx from 'clsx'
 
 const useStyles = makeG2STyles()((theme) => ({
   root: {
@@ -71,7 +70,7 @@ const TooltipBase = (
     <MuiTooltip
       ref={ref}
       id={id}
-      className={clsx(className, 'AruiTooltip-root')}
+      className={defaultStyles.cx('AruiTooltip-root', className)}
       style={style}
       arrow
       classes={{

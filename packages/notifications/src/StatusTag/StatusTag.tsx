@@ -5,7 +5,6 @@ import {
   MergeMuiElementProps,
   useTheme
 } from '@smartb/g2-themes'
-import clsx from 'clsx'
 import React, { forwardRef, useMemo } from 'react'
 
 const useStyles = makeG2STyles<{ color: string }>()((_, { color }) => ({
@@ -53,12 +52,12 @@ export const StatusTagBase = (
     if (customColor) return { color: customColor }
     return { color: theme.colors[variant] }
   }, [variant, customColor, theme])
-  const { classes } = useStyles(color)
+  const { classes, cx } = useStyles(color)
   return (
     <Chip
       ref={ref}
       label={label}
-      className={clsx(classes.tagWidth, className, 'AruiStatusTag-root')}
+      className={cx(classes.tagWidth, 'AruiStatusTag-root', className)}
       {...other}
     />
   )

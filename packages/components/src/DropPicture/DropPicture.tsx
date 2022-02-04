@@ -8,7 +8,6 @@ import {
   makeG2STyles
 } from '@smartb/g2-themes'
 import { Tooltip } from '@smartb/g2-notifications'
-import clsx from 'clsx'
 
 const useStyles = makeG2STyles()({
   root: {
@@ -236,7 +235,10 @@ const DropPictureBase = (
     return (
       <img
         src={logo !== '' ? logo : defaultPicture}
-        className={clsx(defaultStyles.classes.image, classes?.image)}
+        className={defaultStyles.cx(
+          defaultStyles.classes.image,
+          classes?.image
+        )}
         style={styles?.image}
         alt={alt}
         onError={onError}
@@ -247,7 +249,7 @@ const DropPictureBase = (
     return (
       <div
         ref={ref}
-        className={clsx(
+        className={defaultStyles.cx(
           defaultStyles.classes.root,
           'AruiDropzone-root',
           className
@@ -262,7 +264,7 @@ const DropPictureBase = (
         >
           <Paper
             elevation={0}
-            className={clsx(
+            className={defaultStyles.cx(
               defaultStyles.classes.dropZone,
               'AruiDropzone-dropzone',
               classes?.dropZone
@@ -272,7 +274,7 @@ const DropPictureBase = (
           >
             <input {...getInputProps()} />
             <AddPhotoAlternate
-              className={clsx(
+              className={defaultStyles.cx(
                 defaultStyles.classes.add,
                 classes?.addPictureIcon
               )}
@@ -282,7 +284,7 @@ const DropPictureBase = (
         </Tooltip>
         {!!errorMessage && (
           <Typography
-            className={clsx(
+            className={defaultStyles.cx(
               defaultStyles.classes.error,
               'AruiDropzone-error',
               classes?.errorMessage
@@ -304,7 +306,7 @@ const DropPictureBase = (
     >
       <div
         ref={ref}
-        className={clsx(
+        className={defaultStyles.cx(
           defaultStyles.classes.container,
           'AruiDropzone-root',
           className
@@ -315,7 +317,7 @@ const DropPictureBase = (
       >
         <img
           src={logo}
-          className={clsx(
+          className={defaultStyles.cx(
             defaultStyles.classes.image,
             'AruiDropzone-image',
             classes?.image
@@ -325,7 +327,7 @@ const DropPictureBase = (
           onError={onError}
         />
         <Clear
-          className={clsx(
+          className={defaultStyles.cx(
             defaultStyles.classes.clear,
             'AruiDropzone-clearIcon',
             classes?.clearIcon

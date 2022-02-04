@@ -9,7 +9,7 @@ import {
   MergeReactElementProps
 } from '@smartb/g2-themes'
 import { Stack, StackProps } from '@mui/material'
-import clsx from 'clsx'
+import { cx } from '@emotion/css'
 import { FiltersState } from './useFilters'
 
 export type Action = {
@@ -169,13 +169,13 @@ export const Filters = (props: FiltersProps) => {
           id: field.key,
           label: field.label,
           name: field.name,
-          className: clsx(
-            classes?.field,
+          className: cx(
             defaultStyles.classes.field,
+            classes?.field,
+            'AruiFilters-field',
             field.datePickerProps?.className,
             field.selectProps?.className,
-            field.textFieldProps?.className,
-            'AruiFilters-field'
+            field.textFieldProps?.className
           ),
           style: styles?.field
         }
@@ -269,10 +269,10 @@ export const Filters = (props: FiltersProps) => {
       return (
         <Button
           key={key}
-          className={clsx(
+          className={cx(
+            defaultStyles.classes.button,
             'AruiFilters-button',
             classes?.button,
-            defaultStyles.classes.button,
             className
           )}
           style={styles?.button}
@@ -287,20 +287,16 @@ export const Filters = (props: FiltersProps) => {
   return (
     <form
       onSubmit={formState.handleSubmit}
-      className={clsx(
-        className,
-        'AruiFilters-root',
-        defaultStyles.classes?.form
-      )}
+      className={cx(defaultStyles.classes?.form, 'AruiFilters-root', className)}
       {...other}
     >
       {actionsPosition === 'left' && (
         <Stack
           {...actionsStackProps}
-          className={clsx(
+          className={cx(
+            defaultStyles.classes.actionContainer,
             'AruiFilters-actions',
-            classes?.actions,
-            defaultStyles.classes.actionContainer
+            classes?.actions
           )}
           style={styles?.actions}
         >
@@ -310,10 +306,10 @@ export const Filters = (props: FiltersProps) => {
       <Stack
         direction='row'
         {...fieldsStackProps}
-        className={clsx(
+        className={cx(
+          defaultStyles.classes.fieldsContainer,
           'AruiFilters-fieldsContainer',
-          classes?.fieldsContainer,
-          defaultStyles.classes.fieldsContainer
+          classes?.fieldsContainer
         )}
         style={styles?.fieldsContainer}
       >
@@ -322,10 +318,10 @@ export const Filters = (props: FiltersProps) => {
       {actionsPosition === 'right' && (
         <Stack
           {...actionsStackProps}
-          className={clsx(
+          className={cx(
+            defaultStyles.classes.actionContainer,
             'AruiFilters-actions',
-            classes?.actions,
-            defaultStyles.classes.actionContainer
+            classes?.actions
           )}
           style={styles?.actions}
         >

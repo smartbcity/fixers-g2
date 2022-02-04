@@ -11,7 +11,6 @@ import {
   makeG2STyles,
   MergeMuiElementProps
 } from '@smartb/g2-themes'
-import clsx from 'clsx'
 import { SearchIcon } from '../assets/icons'
 
 const useStyles = makeG2STyles()({
@@ -246,10 +245,10 @@ export const TextField = React.forwardRef(
                 <SearchIcon
                   color='#323338'
                   onClick={onSearch}
-                  className={clsx(
+                  className={defaultStyles.cx(
                     localStyles.classes.searchIcon,
-                    classes?.searchIcon,
-                    'AruiTextfield-searchIcon'
+                    'AruiTextfield-searchIcon',
+                    classes?.searchIcon
                   )}
                   style={styles?.searchIcon}
                 />
@@ -263,10 +262,10 @@ export const TextField = React.forwardRef(
                 <SearchIcon
                   color='#323338'
                   onClick={onSearch}
-                  className={clsx(
+                  className={defaultStyles.cx(
                     localStyles.classes.searchIcon,
-                    classes?.searchIcon,
-                    'AruiTextfield-searchIcon'
+                    'AruiTextfield-searchIcon',
+                    classes?.searchIcon
                   )}
                   style={styles?.searchIcon}
                 />
@@ -305,10 +304,10 @@ export const TextField = React.forwardRef(
 
     const formHelperProps = useMemo(() => {
       return {
-        className: clsx(
+        className: defaultStyles.cx(
           defaultStyles.classes.helperText,
-          classes?.helperText,
-          'AruiTextfield-helperText'
+          'AruiTextfield-helperText',
+          classes?.helperText
         ),
         style: styles?.helperText
       }
@@ -319,12 +318,12 @@ export const TextField = React.forwardRef(
       if (validated)
         return (
           <CheckRounded
-            className={clsx(
+            className={defaultStyles.cx(
               defaultStyles.classes.validated,
-              classes?.validIcon,
               inputAdornment.endAdornment &&
                 localStyles.classes.endAdornmentWithInputIcon,
-              'AruiTextfield-validIcon'
+              'AruiTextfield-validIcon',
+              classes?.validIcon
             )}
             style={{
               ...styles?.validIcon
@@ -336,13 +335,13 @@ export const TextField = React.forwardRef(
         return (
           <ClearRounded
             onClick={onRemove}
-            className={clsx(
+            className={defaultStyles.cx(
               defaultStyles.classes.clear,
-              error && defaultStyles.classes.clearError,
-              classes?.clearIcon,
               inputAdornment.endAdornment &&
                 localStyles.classes.endAdornmentWithInputIcon,
-              'AruiTextfield-clearIcon'
+              error && defaultStyles.classes.clearError,
+              'AruiTextfield-clearIcon',
+              classes?.clearIcon
             )}
             style={{
               ...styles?.clearIcon
@@ -379,10 +378,10 @@ export const TextField = React.forwardRef(
 
     return (
       <div
-        className={clsx(
-          className,
+        className={defaultStyles.cx(
           localStyles.classes.root,
-          'AruiTextfield-root'
+          'AruiTextfield-root',
+          className
         )}
         style={style}
       >
@@ -401,13 +400,14 @@ export const TextField = React.forwardRef(
               : textFieldType
           }
           defaultValue={defaultValue}
-          className={clsx(
+          className={defaultStyles.cx(
             defaultStyles.classes.input,
             localStyles.classes.input,
             validated && defaultStyles.classes.inputValidated,
             size === 'large' && defaultStyles.classes.inputLarge,
             size === 'medium' && defaultStyles.classes.inputMedium,
             size === 'small' && defaultStyles.classes.inputSmall,
+            multiline && localStyles.classes.paddingMultiline,
             disabled && defaultStyles.classes.inputDisabled,
             error && defaultStyles.classes.inputError,
             onRemove &&
@@ -415,9 +415,8 @@ export const TextField = React.forwardRef(
               (textFieldType === 'search' ||
                 textFieldType === 'search-number') &&
               defaultStyles.classes.inputWithClear,
-            classes?.textfield,
-            multiline && localStyles.classes.paddingMultiline,
-            'AruiTextfield-Textfield'
+            'AruiTextfield-Textfield',
+            classes?.textfield
           )}
           style={styles?.textfield}
           variant='filled'
@@ -432,15 +431,15 @@ export const TextField = React.forwardRef(
             style: {
               ...styles?.input
             },
-            className: clsx(
+            className: defaultStyles.cx(
               inputClasses(),
-              classes?.input,
-              (onRemove || validated) &&
-                value &&
+              (!!onRemove || !!validated) &&
+                !!value &&
                 value !== '' &&
                 !inputAdornment.endAdornment &&
                 localStyles.classes.inputWithClear,
-              'AruiTextfield-input'
+              'AruiTextfield-input',
+              classes?.input
             ),
             ...InputProps
           }}

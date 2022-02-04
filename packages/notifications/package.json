@@ -39,7 +39,6 @@
   "dependencies": {
     "@mui/icons-material": "^5.2.5",
     "@smartb/g2-themes": "^1.0.0-alpha.16",
-    "clsx": "^1.1.1",
     "notistack": "3.0.0-alpha.1"
   },
   "gitHead": "01582f4b620c1e44cab5a65394e29d95f66ddabb",

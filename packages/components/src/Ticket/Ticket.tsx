@@ -4,7 +4,6 @@ import {
   makeG2STyles,
   MergeMuiElementProps
 } from '@smartb/g2-themes'
-import clsx from 'clsx'
 import React, { forwardRef } from 'react'
 
 const useStyles = makeG2STyles()({
@@ -117,18 +116,21 @@ const TicketBase = (
       ref={ref}
       id={id}
       style={style}
-      className={clsx(
-        className,
+      className={defaultStyles.cx(
         defaultStyles.classes.root,
         variant !== 'normal' && defaultStyles.classes.composedRoot,
         longText && defaultStyles.classes.rootLongText,
-        'AruiTicket-root'
+        'AruiTicket-root',
+        className
       )}
       elevation={variant === 'elevated' ? 1 : 0}
       {...other}
     >
       <Box
-        className={clsx(classes?.baseContainer, 'AruiTicket-baseContainer')}
+        className={defaultStyles.cx(
+          'AruiTicket-baseContainer',
+          classes?.baseContainer
+        )}
         style={styles?.baseContainer}
         display='flex'
         justifyContent='center'
@@ -136,19 +138,22 @@ const TicketBase = (
       >
         {icon}
         <Box
-          className={clsx(classes?.textContainer, 'AruiTicket-textContainer')}
+          className={defaultStyles.cx(
+            'AruiTicket-textContainer',
+            classes?.textContainer
+          )}
           style={styles?.textContainer}
           marginLeft={icon ? (longText ? '15px' : '20px') : undefined}
           display='flex'
           flexDirection='column'
         >
           <Typography
-            className={clsx(
+            className={defaultStyles.cx(
               !reversed
                 ? defaultStyles.classes.title
                 : defaultStyles.classes.content,
-              classes?.title,
-              'AruiTicket-title'
+              'AruiTicket-title',
+              classes?.title
             )}
             style={styles?.title}
             variant={!reversed ? 'body2' : 'subtitle1'}
@@ -156,12 +161,12 @@ const TicketBase = (
             {title}
           </Typography>
           <Typography
-            className={clsx(
+            className={defaultStyles.cx(
               !reversed
                 ? defaultStyles.classes.content
                 : defaultStyles.classes.title,
-              classes?.content,
-              'AruiTicket-content'
+              'AruiTicket-content',
+              classes?.content
             )}
             style={styles?.content}
             variant={!reversed ? 'subtitle1' : 'body2'}

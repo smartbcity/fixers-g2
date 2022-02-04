@@ -1,10 +1,7 @@
 import React, { useEffect } from 'react'
 import mermaid from 'mermaid'
-import {
-  MergeReactElementProps,
-  BasicProps
-} from '@smartb/g2-themes'
-import clsx from 'clsx'
+import { MergeReactElementProps, BasicProps } from '@smartb/g2-themes'
+import { cx } from '@emotion/css'
 
 export interface MermaidBasicProps extends BasicProps {
   chart: string
@@ -25,7 +22,7 @@ export const Mermaid = (props: MermaidProps) => {
   }, [chart])
 
   return (
-    <div className={clsx('mermaid', className)} {...other}>
+    <div className={cx('mermaid', className)} {...other}>
       {chart}
     </div>
   )

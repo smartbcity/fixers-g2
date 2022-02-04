@@ -11,7 +11,7 @@ import {
   MergeReactElementProps
 } from '@smartb/g2-themes'
 import { StackProps, Stack } from '@mui/material'
-import clsx from 'clsx'
+import { cx } from '@emotion/css'
 import { FormState } from './useForm'
 import { RadioChoicesProps } from '../RadioChoices'
 
@@ -202,7 +202,7 @@ export const Form = (props: FormProps) => {
       return (
         <Button
           key={key}
-          className={clsx('AruiForm-button', classes?.button, className)}
+          className={cx('AruiForm-button', classes?.button, className)}
           style={styles?.button}
           {...other}
         >
@@ -215,14 +215,14 @@ export const Form = (props: FormProps) => {
   return (
     <form
       onSubmit={formState.handleSubmit}
-      className={clsx(className, 'AruiForm-root')}
+      className={cx('AruiForm-root', className)}
       {...other}
     >
       {actionsPosition === 'above' && (
         <Stack
           direction='row'
           {...actionsStackProps}
-          className={clsx('AruiForm-actions', classes?.actions)}
+          className={cx('AruiForm-actions', classes?.actions)}
           style={styles?.actions}
         >
           {actionsDisplay}
@@ -230,7 +230,7 @@ export const Form = (props: FormProps) => {
       )}
       <Stack
         {...fieldsStackProps}
-        className={clsx('AruiForm-fieldsContainer', classes?.fieldsContainer)}
+        className={cx('AruiForm-fieldsContainer', classes?.fieldsContainer)}
         style={styles?.fieldsContainer}
       >
         {fieldsMemoized}
@@ -238,7 +238,7 @@ export const Form = (props: FormProps) => {
       {actionsPosition === 'below' && (
         <Stack
           {...actionsStackProps}
-          className={clsx('AruiForm-actions', classes?.actions)}
+          className={cx('AruiForm-actions', classes?.actions)}
           style={styles?.actions}
         >
           {actionsDisplay}
@@ -262,14 +262,14 @@ const getInput = (
     name: field.name,
     error: !!formState.errors[field.name],
     errorMessage: formState.errors[field.name] as string,
-    className: clsx(
+    className: cx(
       classes?.field,
+      'AruiForm-field',
       fieldClassName,
       field.checkBoxProps?.className,
       field.datePickerProps?.className,
       field.selectProps?.className,
-      field.textFieldProps?.className,
-      'AruiForm-field'
+      field.textFieldProps?.className
     ),
     style: styles?.field
   }
