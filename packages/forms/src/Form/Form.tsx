@@ -11,7 +11,7 @@ import {
   MergeReactElementProps
 } from '@smartb/g2-themes'
 import { StackProps, Stack } from '@mui/material'
-import clsx from 'clsx'
+import { cx } from '@emotion/css'
 import { FormState } from './useForm'
 import { RadioChoicesProps } from '../RadioChoices'
 
@@ -44,7 +44,7 @@ export type Field = {
   /**
    * the validator that takes the value of the input and return an error or undefined/nothing if the value is valid
    */
-  validator?: (value: any) => string | undefined | void
+  validator?: (value: any) => string | undefined
   /**
    * if you want to add other nodes around the input use this function
    */
@@ -173,26 +173,13 @@ export const Form = (props: FormProps) => {
   const fieldsMemoized = useMemo(
     () =>
       fields.map((field) => {
-        const commonProps = {
-          key: field.key,
-          id: field.key,
-          label: field.label,
-          name: field.name,
-          error: !!formState.errors[field.name],
-          errorMessage: formState.errors[field.name] as string,
-          className: clsx(
-            classes?.field,
-            defaultStyles.classes.field,
-            field.checkBoxProps?.className,
-            field.datePickerProps?.className,
-            field.selectProps?.className,
-            field.textFieldProps?.className,
-            'AruiForm-field'
-          ),
-          style: styles?.field
-        }
-
-        const input = getInput(field, formState, commonProps)
+        const input = getInput(
+          field,
+          formState,
+          defaultStyles.classes.field,
+          classes,
+          styles
+        )
         if (!!field.customDisplay) {
           return field.customDisplay(input)
         }
@@ -215,7 +202,7 @@ export const Form = (props: FormProps) => {
       return (
         <Button
           key={key}
-          className={clsx('AruiForm-button', classes?.button, className)}
+          className={cx('AruiForm-button', classes?.button, className)}
           style={styles?.button}
           {...other}
         >
@@ -228,14 +215,14 @@ export const Form = (props: FormProps) => {
   return (
     <form
       onSubmit={formState.handleSubmit}
-      className={clsx(className, 'AruiForm-root')}
+      className={cx('AruiForm-root', className)}
       {...other}
     >
       {actionsPosition === 'above' && (
         <Stack
           direction='row'
           {...actionsStackProps}
-          className={clsx('AruiForm-actions', classes?.actions)}
+          className={cx('AruiForm-actions', classes?.actions)}
           style={styles?.actions}
         >
           {actionsDisplay}
@@ -243,7 +230,7 @@ export const Form = (props: FormProps) => {
       )}
       <Stack
         {...fieldsStackProps}
-        className={clsx('AruiForm-fieldsContainer', classes?.fieldsContainer)}
+        className={cx('AruiForm-fieldsContainer', classes?.fieldsContainer)}
         style={styles?.fieldsContainer}
       >
         {fieldsMemoized}
@@ -251,7 +238,7 @@ export const Form = (props: FormProps) => {
       {actionsPosition === 'below' && (
         <Stack
           {...actionsStackProps}
-          className={clsx('AruiForm-actions', classes?.actions)}
+          className={cx('AruiForm-actions', classes?.actions)}
           style={styles?.actions}
         >
           {actionsDisplay}
@@ -261,17 +248,48 @@ export const Form = (props: FormProps) => {
   )
 }
 
-const getInput = (field: Field, formState: FormState, commonProps: any) => {
+const getInput = (
+  field: Field,
+  formState: FormState,
+  fieldClassName: string,
+  classes?: FormClasses,
+  styles?: FormStyles
+) => {
+  const commonProps = {
+    key: field.key,
+    id: field.key,
+    label: field.label,
+    name: field.name,
+    error: !!formState.errors[field.name],
+    errorMessage: formState.errors[field.name] as string,
+    className: cx(
+      classes?.field,
+      'AruiForm-field',
+      fieldClassName,
+      field.checkBoxProps?.className,
+      field.datePickerProps?.className,
+      field.selectProps?.className,
+      field.textFieldProps?.className
+    ),
+    style: styles?.field
+  }
   switch (field.type) {
     case 'datepicker':
+      const date = new Date(formState.values[field.name])
       return (
         <InputForm
           {...commonProps}
           inputType='datePicker'
-          value={formState.values[field.name] ?? ''}
-          onChangeDate={(date) =>
-            formState.setFieldValue(field.name, date, false)
+          value={
+            !isNaN(date.getTime()) ? date : formState.values[field.name] ?? ''
           }
+          onChangeDate={(date) => {
+            formState.setFieldValue(
+              field.name,
+              date && !isNaN(date.getTime()) ? date : date?.toString(),
+              false
+            )
+          }}
           {...field.datePickerProps}
         />
       )
@@ -302,7 +320,9 @@ const getInput = (field: Field, formState: FormState, commonProps: any) => {
         <CheckBox
           {...commonProps}
           checked={formState.values[field.name]}
-          onChange={formState.handleChange}
+          onChange={(_: React.ChangeEvent<HTMLInputElement>, value: boolean) =>
+            formState.setFieldValue(field.name, value, false)
+          }
           {...field.checkBoxProps}
         />
       )

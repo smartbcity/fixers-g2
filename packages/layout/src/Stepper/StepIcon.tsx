@@ -1,5 +1,5 @@
 import { StepIconProps as MuiStepIconProps } from '@mui/material'
-import clsx from 'clsx'
+import { cx } from '@emotion/css'
 import React from 'react'
 import { makeG2STyles } from '@smartb/g2-themes'
 
@@ -34,12 +34,13 @@ export const StepIcon = (props: MuiStepIconProps) => {
   const { classes } = useStepIconStyles()
   const { active, completed, icon } = props
   return (
-    <div className={clsx({ [classes.activeIcon]: active })}>
+    <div className={cx(active && classes.activeIcon)}>
       <div
-        className={clsx(classes.root, {
-          [classes.active]: active,
-          [classes.completed]: completed
-        })}
+        className={cx(
+          classes.root,
+          active && classes.active,
+          completed && classes.completed
+        )}
       >
         {icon}
       </div>

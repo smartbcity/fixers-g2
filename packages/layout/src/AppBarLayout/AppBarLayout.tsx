@@ -8,7 +8,6 @@ import {
   MergeMuiElementProps,
   makeG2STyles
 } from '@smartb/g2-themes'
-import clsx from 'clsx'
 
 const useStyles = makeG2STyles()({
   root: {
@@ -62,18 +61,18 @@ export const AppBarLayout = (props: AppBarLayoutProps) => {
   if (!show)
     return (
       <Box
-        className={clsx(
-          className,
+        className={defaultStyles.cx(
+          defaultStyles.classes.root,
           'AruiAppBar-root',
-          defaultStyles.classes.root
+          className
         )}
       >
         {onDrawerOpen && (
           <IconButton
-            className={clsx(
-              classes?.menuButton,
+            className={defaultStyles.cx(
+              defaultStyles.classes.iconButton,
               'AruiAppBar-menuButton',
-              defaultStyles.classes.iconButton
+              classes?.menuButton
             )}
             color='inherit'
             aria-label='Open drawer'
@@ -81,17 +80,20 @@ export const AppBarLayout = (props: AppBarLayoutProps) => {
             size='large'
           >
             <MenuIcon
-              className={clsx(classes?.menuIcon, 'AruiAppBar-menuIcon')}
+              className={defaultStyles.cx(
+                'AruiAppBar-menuIcon',
+                classes?.menuIcon
+              )}
               style={styles?.menuIcon}
             />
           </IconButton>
         )}
         <Box
           display='flex'
-          className={clsx(
-            classes?.toolBar,
+          className={defaultStyles.cx(
+            defaultStyles.classes.toolbar,
             'AruiAppBar-toolbar',
-            defaultStyles.classes.toolbar
+            classes?.toolBar
           )}
           style={styles?.toolBar}
         >
@@ -101,26 +103,26 @@ export const AppBarLayout = (props: AppBarLayoutProps) => {
     )
   return (
     <MuiAppBar
-      className={clsx(className, 'AruiAppBar-root')}
+      className={defaultStyles.cx('AruiAppBar-root', className)}
       id={id}
       style={style}
       square={true}
       {...other}
     >
       <Toolbar
-        className={clsx(
-          classes?.toolBar,
+        className={defaultStyles.cx(
+          defaultStyles.classes.toolbar,
           'AruiAppBar-toolbar',
-          defaultStyles.classes.toolbar
+          classes?.toolBar
         )}
         style={styles?.toolBar}
       >
         {onDrawerOpen && (
           <IconButton
-            className={clsx(
-              classes?.menuButton,
+            className={defaultStyles.cx(
+              defaultStyles.classes.iconButton,
               'AruiAppBar-menuButton',
-              defaultStyles.classes.iconButton
+              classes?.menuButton
             )}
             color='inherit'
             aria-label='Open drawer'
@@ -128,7 +130,10 @@ export const AppBarLayout = (props: AppBarLayoutProps) => {
             size='large'
           >
             <MenuIcon
-              className={clsx(classes?.menuIcon, 'AruiAppBar-menuIcon')}
+              className={defaultStyles.cx(
+                'AruiAppBar-menuIcon',
+                classes?.menuIcon
+              )}
               style={styles?.menuIcon}
             />
           </IconButton>

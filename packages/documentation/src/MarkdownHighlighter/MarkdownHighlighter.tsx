@@ -3,7 +3,6 @@ import ReactMarkdown from 'react-markdown'
 import { CodeHighlighter } from '../CodeHighlighter'
 import 'github-markdown-css'
 import { makeG2STyles } from '@smartb/g2-themes'
-import clsx from 'clsx'
 import gfm from 'remark-gfm'
 import raw from 'rehype-raw'
 
@@ -99,10 +98,10 @@ const rehype: ReactMarkdown.PluggableList = [raw]
 
 export const MarkdownHighlighter = (props: MarkdownHighlighterProps) => {
   const { markdown, className } = props
-  const { classes } = useStyles()
+  const { classes, cx } = useStyles()
   return (
     <ReactMarkdown
-      className={clsx('markdown-body', classes.markdown, className)}
+      className={cx(classes.markdown, 'markdown-body', className)}
       remarkPlugins={remark}
       rehypePlugins={rehype}
       //@ts-ignore

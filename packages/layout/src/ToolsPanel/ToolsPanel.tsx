@@ -11,7 +11,6 @@ import {
   List
 } from '@mui/material'
 import { BasicProps, makeG2STyles } from '@smartb/g2-themes'
-import clsx from 'clsx'
 
 const useStyles = makeG2STyles()({
   profile: {
@@ -56,11 +55,11 @@ export interface ToolsPanelProps extends BasicProps {
 
 export const ToolsPanel = (props: ToolsPanelProps) => {
   const { menu, style, className, id } = props
-  const { classes } = useStyles()
+  const { classes, cx } = useStyles()
 
   return (
     <Accordion
-      className={clsx(classes.profile, 'AruiToolsPanel-root', className)}
+      className={cx(classes.profile, 'AruiToolsPanel-root', className)}
       style={style}
       id={id}
       classes={{ expanded: classes.expanded }}

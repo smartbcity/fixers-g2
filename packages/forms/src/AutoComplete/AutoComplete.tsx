@@ -12,7 +12,6 @@ import {
   MergeMuiElementProps
 } from '@smartb/g2-themes'
 import { TextField, TextFieldProps } from '../TextField'
-import clsx from 'clsx'
 
 const useStyles = makeG2STyles()({
   chip: {
@@ -100,7 +99,10 @@ const AutoCompleteBase = function <T>(
       value.map((option: T, index: number) => (
         <Chip
           classes={{
-            root: clsx(defaultStyles.classes.chip, 'AruiAutoComplete-chip')
+            root: defaultStyles.cx(
+              defaultStyles.classes.chip,
+              'AruiAutoComplete-chip'
+            )
           }}
           label={getOptionLabel(option)}
           {...getTagProps({ index })}
@@ -124,7 +126,7 @@ const AutoCompleteBase = function <T>(
       limitTags={2}
       multiple={multiple}
       options={options}
-      className={clsx(className, 'AruiAutoComplete-root')}
+      className={defaultStyles.cx('AruiAutoComplete-root', className)}
       forcePopupIcon={false}
       getOptionLabel={getOptionLabel}
       style={style}

@@ -5,7 +5,6 @@ import {
   MergeReactElementProps,
   makeG2STyles
 } from '@smartb/g2-themes'
-import clsx from 'clsx'
 import { useTheme } from '@smartb/g2-themes'
 
 const useStyles = makeG2STyles()({
@@ -166,7 +165,7 @@ export const AutomateViewer = (props: AutomateViewerProps) => {
     <div
       {...other}
       ref={containerRef}
-      className={clsx(
+      className={defaultStyles.cx(
         defaultStyles.classes.container,
         'AruiAutomateViewer-root',
         className

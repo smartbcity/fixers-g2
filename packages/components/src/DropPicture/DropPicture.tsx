@@ -8,7 +8,6 @@ import {
   makeG2STyles
 } from '@smartb/g2-themes'
 import { Tooltip } from '@smartb/g2-notifications'
-import clsx from 'clsx'
 
 const useStyles = makeG2STyles()({
   root: {
@@ -76,6 +75,11 @@ const useStyles = makeG2STyles()({
   }
 })
 
+export type DropPictureError =
+  | 'file-too-large'
+  | 'too-many-files'
+  | 'file-invalid-type'
+
 interface DropPictureClasses {
   image?: string
   tooltip?: string
@@ -106,23 +110,11 @@ export interface DropPictureBasicProps extends BasicProps {
   /**
    * The event called when an invalid picture is dropped
    */
-  onDropError?: (
-    errorType:
-      | 'file-too-large'
-      | 'too-many-files'
-      | 'file-invalid-type'
-      | string
-  ) => void
+  onDropError?: (errorType: DropPictureError) => void
   /**
    * The error message to display under the component
    */
   errorMessage?: string
-  /**
-   * Set the width for the dropzone area
-   *
-   * @default 200
-   */
-  width?: number
   /**
    * If true, the dropzone won't appear and the `initialPicture` or the `defaultPicture` will be displayed
    */
@@ -183,7 +175,6 @@ const DropPictureBase = (
     onRemovePicture,
     className,
     style,
-    width = 200,
     readonly = false,
     initialPicture = '',
     defaultPicture = '',
@@ -220,7 +211,7 @@ const DropPictureBase = (
 
   const onReject = useCallback(
     (files: FileRejection[]) =>
-      onDropError && onDropError(files[0].errors[0].code),
+      onDropError && onDropError(files[0].errors[0].code as DropPictureError),
     [onDropError]
   )
 
@@ -244,7 +235,10 @@ const DropPictureBase = (
     return (
       <img
         src={logo !== '' ? logo : defaultPicture}
-        className={clsx(defaultStyles.classes.image, classes?.image)}
+        className={defaultStyles.cx(
+          defaultStyles.classes.image,
+          classes?.image
+        )}
         style={styles?.image}
         alt={alt}
         onError={onError}
@@ -255,7 +249,7 @@ const DropPictureBase = (
     return (
       <div
         ref={ref}
-        className={clsx(
+        className={defaultStyles.cx(
           defaultStyles.classes.root,
           'AruiDropzone-root',
           className
@@ -270,7 +264,7 @@ const DropPictureBase = (
         >
           <Paper
             elevation={0}
-            className={clsx(
+            className={defaultStyles.cx(
               defaultStyles.classes.dropZone,
               'AruiDropzone-dropzone',
               classes?.dropZone
@@ -280,7 +274,7 @@ const DropPictureBase = (
           >
             <input {...getInputProps()} />
             <AddPhotoAlternate
-              className={clsx(
+              className={defaultStyles.cx(
                 defaultStyles.classes.add,
                 classes?.addPictureIcon
               )}
@@ -290,7 +284,7 @@ const DropPictureBase = (
         </Tooltip>
         {!!errorMessage && (
           <Typography
-            className={clsx(
+            className={defaultStyles.cx(
               defaultStyles.classes.error,
               'AruiDropzone-error',
               classes?.errorMessage
@@ -312,7 +306,7 @@ const DropPictureBase = (
     >
       <div
         ref={ref}
-        className={clsx(
+        className={defaultStyles.cx(
           defaultStyles.classes.container,
           'AruiDropzone-root',
           className
@@ -323,7 +317,7 @@ const DropPictureBase = (
       >
         <img
           src={logo}
-          className={clsx(
+          className={defaultStyles.cx(
             defaultStyles.classes.image,
             'AruiDropzone-image',
             classes?.image
@@ -333,7 +327,7 @@ const DropPictureBase = (
           onError={onError}
         />
         <Clear
-          className={clsx(
+          className={defaultStyles.cx(
             defaultStyles.classes.clear,
             'AruiDropzone-clearIcon',
             classes?.clearIcon

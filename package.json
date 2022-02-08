@@ -12,6 +12,7 @@
   "devDependencies": {
     "@mui/material": "^5.2.7",
     "@emotion/react": "^11.7.1",
+    "@emotion/css": "^11.7.1",
     "@emotion/styled": "^11.6.0",
     "@rollup/plugin-commonjs": "^21.0.1",
     "@rollup/plugin-image": "^2.1.1",
@@ -49,11 +50,11 @@
     "pretty-quick": "^2.0.1",
     "raw-loader": "^4.0.2",
     "react-is": "^17.0.2",
-    "rollup": "^2.63.0",
+    "rollup": "^2.67.0",
     "rollup-plugin-json": "^4.0.0",
-    "rollup-plugin-typescript2": "^0.31.1",
+    "rollup-plugin-typescript2": "^0.31.2",
     "storybook-addon-designs": "^6.2.1",
-    "typescript": "^4.5.4",
+    "typescript": "^4.5.5",
     "react": "^17.0.2",
     "react-dom": "^17.0.2"
   },
@@ -67,7 +68,7 @@
     "build-storybook": "build-storybook",
     "chromatic": "npx chromatic",
     "publishWorkspaces:version": "lerna version ${VERSION} --no-git-tag-version --yes",
-    "publishWorkspaces:gitlab": "VERSION=${VERSION} yarn workspaces run publish:gitlab",
+    "publishWorkspaces:gitlab": "yarn workspaces run publish:gitlab",
     "publishWorkspaces:npm": "VERSION=${VERSION} yarn workspaces run publish:npm"
   },
   "publishConfig": {

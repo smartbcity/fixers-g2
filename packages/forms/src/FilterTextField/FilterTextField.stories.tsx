@@ -46,6 +46,7 @@ export const FilterTextFieldStory: Story<FilterTextFieldProps> = (
       value={value}
       onChange={setValue}
       onRemove={() => setValue('')}
+      textFieldType='search'
       {...args}
     />
   )

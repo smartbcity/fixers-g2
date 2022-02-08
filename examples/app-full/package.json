@@ -18,6 +18,7 @@
     "@mui/icons-material": "^5.2.5",
     "@emotion/react": "^11.7.1",
     "@emotion/styled": "^11.6.0",
+    "@emotion/css": "^11.7.1",
     "@smartb/g2": "^1.0.0",
     "connected-react-router": "^6.9.1",
     "deox": "^3.3.1",

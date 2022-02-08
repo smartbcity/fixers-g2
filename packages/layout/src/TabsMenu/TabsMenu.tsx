@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { styled } from '@mui/material/styles'
 import { AppBar, Tab, Tabs } from '@mui/material'
-import clsx from 'clsx'
 import { BasicProps, makeG2STyles } from '@smartb/g2-themes'
 
 const useStyles = makeG2STyles()({
@@ -104,9 +103,13 @@ export const TabsMenu = (props: TabsMenuProps) => {
   }
 
   return (
-    <div className={clsx('AruiTabsMenu-root', className)} style={style} id={id}>
+    <div
+      className={defaultStyles.cx('AruiTabsMenu-root', className)}
+      style={style}
+      id={id}
+    >
       <AppBar
-        className={clsx(
+        className={defaultStyles.cx(
           defaultStyles.classes.appBar,
           'AruiTabsMenu-appBar',
           classes?.appBar
@@ -121,7 +124,7 @@ export const TabsMenu = (props: TabsMenuProps) => {
               ? { ...styles?.tabs, width: `${children.length * 100}px` }
               : styles?.tabs
           }
-          className={clsx('AruiTabsMenu-tabs', classes?.tabs)}
+          className={defaultStyles.cx('AruiTabsMenu-tabs', classes?.tabs)}
           onChange={handleChange}
           variant={variant !== 'fullWidth' ? 'scrollable' : 'fullWidth'}
           scrollButtons='auto'
@@ -130,11 +133,9 @@ export const TabsMenu = (props: TabsMenuProps) => {
             <Tab
               icon={tab.icon}
               key={index}
-              className={clsx(
-                {
-                  [defaultStyles.classes.tab]: variant !== 'fullWidth',
-                  [defaultStyles.classes.tabFW]: variant === 'fullWidth'
-                },
+              className={defaultStyles.cx(
+                variant !== 'fullWidth' && defaultStyles.classes.tab,
+                variant === 'fullWidth' && defaultStyles.classes.tabFW,
                 'AruiTabsMenu-tab',
                 classes?.tab
               )}
@@ -147,7 +148,7 @@ export const TabsMenu = (props: TabsMenuProps) => {
       {children.map((child, index) => (
         <div
           key={index}
-          className={clsx('AruiTabsMenu-content', classes?.content)}
+          className={defaultStyles.cx('AruiTabsMenu-content', classes?.content)}
           style={{
             ...styles?.content,
             display: value !== index ? 'none' : 'block'

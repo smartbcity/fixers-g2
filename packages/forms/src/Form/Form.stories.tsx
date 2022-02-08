@@ -69,6 +69,12 @@ export default {
             informations needed to init the formik states. So you can create
             your fields with the formState available.
           </Description>
+          <Description>
+            In your validator functions there is some type check that have to be
+            done. If you expect a number coming out of your field check if it
+            hasn't been stringified. When a date picker return an invalid date
+            the date is stringified.
+          </Description>
           <Stories />
         </>
       )
@@ -139,7 +145,7 @@ const fields: Field[] = [
     key: 'storybook-form-field-gender',
     name: 'gender',
     label: 'Gender',
-    type: 'datepicker',
+    type: 'select',
     defaultValue: '',
     validator: (value) =>
       value === undefined || value === ''
@@ -151,6 +157,13 @@ const fields: Field[] = [
         { key: 'female', label: 'female' }
       ]
     }
+  },
+  {
+    key: 'storybook-form-field-birthdate',
+    name: 'birthdate',
+    label: 'Birthdate',
+    type: 'datepicker',
+    defaultValue: ''
   },
   {
     key: 'storybook-form-field-yesOrNo',

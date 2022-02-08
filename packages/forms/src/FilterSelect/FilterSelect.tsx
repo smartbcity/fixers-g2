@@ -18,7 +18,6 @@ import {
   MergeMuiElementProps,
   useTheme
 } from '@smartb/g2-themes'
-import clsx from 'clsx'
 import { CheckBox } from '../CheckBox'
 import { useFilterInputStyles } from '../style'
 import tinycolor from 'tinycolor2'
@@ -283,21 +282,21 @@ export const FilterSelect = React.forwardRef(
             alignItems='center'
           >
             <InputLabel
-              className={clsx(
-                classes?.label,
+              className={defaultStyles.cx(
                 defaultStyles.classes.label,
+                localStyles.classes.label,
                 'AruiFilterSelect-label',
-                localStyles.classes.label
+                classes?.label
               )}
               style={{ ...styles?.label, ...colorStyle }}
             >
               {label}
             </InputLabel>
             <Chip
-              className={clsx(
-                classes?.chip,
+              className={defaultStyles.cx(
                 localStyles.classes.chip,
-                'AruiFilterSelect-chip'
+                'AruiFilterSelect-chip',
+                classes?.chip
               )}
               label={count}
               variant='outlined'
@@ -325,7 +324,10 @@ export const FilterSelect = React.forwardRef(
       return options.map((option) => (
         <MenuItem
           data-value={option.key}
-          className={clsx(classes?.option, 'AruiFilterSelect-option')}
+          className={defaultStyles.cx(
+            'AruiFilterSelect-option',
+            classes?.option
+          )}
           style={styles?.option}
           key={option.key}
           value={option.key}
@@ -346,7 +348,7 @@ export const FilterSelect = React.forwardRef(
     const inputProp: InputBaseComponentProps = useMemo(() => {
       return {
         name: name,
-        className: clsx(classes?.input, 'AruiFilterSelect-select'),
+        className: defaultStyles.cx('AruiFilterSelect-select', classes?.input),
         style: styles?.input,
         id: id
       }
@@ -399,21 +401,21 @@ export const FilterSelect = React.forwardRef(
       <FormControl
         variant='outlined'
         color={color !== 'default' ? color : undefined}
-        className={clsx(
-          className,
+        className={defaultStyles.cx(
           defaultStyles.classes.input,
           variant !== 'outlined' && defaultStyles.classes.inputWithoutLabel,
           getVariantColorClass(),
-          'AruiFilterSelect-root'
+          'AruiFilterSelect-root',
+          className
         )}
         style={style}
       >
         {variant === 'outlined' && (
           <InputLabel
-            className={clsx(
-              classes?.label,
+            className={defaultStyles.cx(
               defaultStyles.classes?.label,
-              'AruiFilterSelect-label'
+              'AruiFilterSelect-label',
+              classes?.label
             )}
             style={styles?.label}
           >
@@ -425,13 +427,13 @@ export const FilterSelect = React.forwardRef(
           ref={ref}
           label={variant === 'outlined' ? label : undefined}
           onClose={onCloseMemoized}
-          className={clsx(
+          className={defaultStyles.cx(
             localStyles.classes.root,
-            classes?.select,
             canRemove
               ? localStyles.classes.selectPaddingWithClear
               : localStyles.classes.selectPadding,
-            'AruiFilterSelect-select'
+            'AruiFilterSelect-select',
+            classes?.select
           )}
           value={multiple ? values : value}
           multiple={multiple}
@@ -449,10 +451,10 @@ export const FilterSelect = React.forwardRef(
               horizontal: 'center'
             },
             classes: { list: localStyles.classes.list },
-            className: clsx(
+            className: defaultStyles.cx(
               localStyles.classes.menu,
-              classes?.menu,
-              'AruiFilterSelect-menu'
+              'AruiFilterSelect-menu',
+              classes?.menu
             ),
             style: styles?.menu
           }}
@@ -468,10 +470,10 @@ export const FilterSelect = React.forwardRef(
         {canRemove && (
           <ClearRounded
             onClick={onRemove}
-            className={clsx(
+            className={defaultStyles.cx(
               localStyles.classes.clear,
-              classes?.clearIcon,
-              'AruiFilterSelect-clearIcon'
+              'AruiFilterSelect-clearIcon',
+              classes?.clearIcon
             )}
             style={styles?.clearIcon}
           />

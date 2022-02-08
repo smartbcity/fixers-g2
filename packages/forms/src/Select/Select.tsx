@@ -17,7 +17,6 @@ import {
   makeG2STyles,
   MergeMuiElementProps
 } from '@smartb/g2-themes'
-import clsx from 'clsx'
 import { CheckBox } from '../CheckBox'
 
 export type Option = {
@@ -78,9 +77,7 @@ const useStyles = makeG2STyles()({
     padding: '0px'
   },
   selectPaddingWithClear: {
-    '& .MuiSelect-root': {
-      paddingRight: '55px'
-    }
+    paddingRight: '12px'
   },
   selectPadding: {
     '& .MuiSelect-root': {
@@ -246,10 +243,10 @@ export const Select = React.forwardRef(
         <SelectIcon
           {...props}
           color='#98A5AE'
-          className={clsx(
-            classes?.selectIcon,
+          className={defaultStyles.cx(
             localStyles.classes.selectIcon,
             'AruiSelect-selectIcon',
+            classes?.selectIcon,
             props.className
           )}
           style={styles?.selectIcon}
@@ -262,7 +259,7 @@ export const Select = React.forwardRef(
       return options.map((option) => (
         <MenuItem
           data-value={option.key}
-          className={clsx(classes?.option, 'AruiSelect-option')}
+          className={defaultStyles.cx('AruiSelect-option', classes?.option)}
           style={styles?.option}
           key={option.key}
           value={option.key}
@@ -282,7 +279,7 @@ export const Select = React.forwardRef(
     const inputProp: InputBaseComponentProps = useMemo(() => {
       return {
         name: name,
-        className: clsx(classes?.input, 'AruiSelect-select'),
+        className: defaultStyles.cx('AruiSelect-select', classes?.input),
         style: styles?.input,
         id: id
       }
@@ -308,16 +305,16 @@ export const Select = React.forwardRef(
     return (
       <FormControl
         variant='filled'
-        className={clsx(
-          className,
+        className={defaultStyles.cx(
           defaultStyles.classes.input,
+          localStyles.classes.formcontrol,
           size === 'large' && defaultStyles.classes.inputLarge,
           size === 'medium' && defaultStyles.classes.inputMedium,
           size === 'small' && defaultStyles.classes.inputSmall,
           disabled && defaultStyles.classes.inputDisabled,
           error && defaultStyles.classes.inputError,
-          localStyles.classes.formcontrol,
-          'AruiSelect-root'
+          'AruiSelect-root',
+          className
         )}
         style={style}
         error={error}
@@ -325,16 +322,16 @@ export const Select = React.forwardRef(
         <MuiSelect
           {...other}
           ref={ref}
-          className={clsx(
+          className={defaultStyles.cx(
             localStyles.classes.root,
             values && value === '' && values.length <= 0 && placeholder
               ? localStyles.classes.disabledStyle
               : '',
-            classes?.select,
             canRemove
               ? localStyles.classes.selectPaddingWithClear
               : localStyles.classes.selectPadding,
-            'AruiSelect-select'
+            'AruiSelect-select',
+            classes?.select
           )}
           variant={'filled'}
           value={multiple ? values : value}
@@ -355,10 +352,10 @@ export const Select = React.forwardRef(
               horizontal: 'center'
             },
             classes: { list: localStyles.classes.list },
-            className: clsx(
+            className: defaultStyles.cx(
               localStyles.classes.menu,
-              classes?.menu,
-              'AruiSelect-menu'
+              'AruiSelect-menu',
+              classes?.menu
             ),
             style: styles?.menu
           }}
@@ -370,20 +367,20 @@ export const Select = React.forwardRef(
         {canRemove && (
           <ClearRounded
             onClick={onRemove}
-            className={clsx(
+            className={defaultStyles.cx(
               localStyles.classes.clear,
-              classes?.clearIcon,
-              'AruiSelect-clearIcon'
+              'AruiSelect-clearIcon',
+              classes?.clearIcon
             )}
             style={styles?.clearIcon}
           />
         )}
         {errorMessage !== '' && error && (
           <FormHelperText
-            className={clsx(
+            className={defaultStyles.cx(
               defaultStyles.classes.helperText,
-              classes?.helperText,
-              'AruiSelect-helperText'
+              'AruiSelect-helperText',
+              classes?.helperText
             )}
             style={styles?.helperText}
           >

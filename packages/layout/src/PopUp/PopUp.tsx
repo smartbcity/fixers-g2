@@ -11,7 +11,6 @@ import {
   BasicProps,
   makeG2STyles
 } from '@smartb/g2-themes'
-import clsx from 'clsx'
 import { CloseRounded } from '@mui/icons-material'
 
 const useStyles = makeG2STyles()({
@@ -112,11 +111,11 @@ const PopUpBase = (
       return (
         <Button
           key={key}
-          className={clsx(
+          className={defaultStyles.cx(
+            defaultStyles.classes.button,
             'AruiPopUp-button',
             classes?.button,
-            className,
-            defaultStyles.classes.button
+            className
           )}
           style={styles?.button}
           {...other}
@@ -138,23 +137,23 @@ const PopUpBase = (
         elevation: 12,
         className: defaultStyles.classes.paper
       }}
-      className={clsx(className, 'AruiPopUp-root')}
+      className={defaultStyles.cx('AruiPopUp-root', className)}
       {...other}
     >
       <CloseRounded
-        className={clsx(
-          classes?.closeIcon,
+        className={defaultStyles.cx(
+          defaultStyles.classes.closeIcon,
           'AruiPopUp-closeIcon',
-          defaultStyles.classes.closeIcon
+          classes?.closeIcon
         )}
         style={styles?.closeIcon}
         onClick={onClose}
       />
       <DialogContent
-        className={clsx(
-          classes?.content,
+        className={defaultStyles.cx(
+          defaultStyles.classes.content,
           'AruiPopUp-content',
-          defaultStyles.classes.content
+          classes?.content
         )}
         style={styles?.content}
       >
@@ -162,10 +161,10 @@ const PopUpBase = (
       </DialogContent>
       {actionsDisplay !== undefined && (
         <DialogActions
-          className={clsx(
+          className={defaultStyles.cx(
+            defaultStyles.classes.actionsContainer,
             'AruiPopUp-actions',
-            classes?.actions,
-            defaultStyles.classes.actionsContainer
+            classes?.actions
           )}
           style={styles?.actions}
         >

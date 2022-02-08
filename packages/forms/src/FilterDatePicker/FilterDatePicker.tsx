@@ -12,7 +12,6 @@ import {
   MergeMuiElementProps,
   useTheme
 } from '@smartb/g2-themes'
-import clsx from 'clsx'
 import {
   InputAdornment,
   InputLabelProps,
@@ -261,10 +260,10 @@ const FilterDatePickerBase = (
       return (
         <ClearRounded
           onClick={onRemove}
-          className={clsx(
+          className={defaultStyles.cx(
             defaultStyles.classes.clear,
-            'AruiFilterDatePicker-clearIcon',
             localStyles.classes.clear,
+            'AruiFilterDatePicker-clearIcon',
             classes?.clearIcon
           )}
           style={styles?.clearIcon}
@@ -291,11 +290,11 @@ const FilterDatePickerBase = (
         >
           <Calendar
             onClick={!disabled ? onOpenMemoized : undefined}
-            className={clsx(
+            className={defaultStyles.cx(
               localStyles.classes.calendarIcon,
-              classes?.calendarIcon,
               disabled && localStyles.classes.calendarIconDisabled,
-              'AruiFilterDatePicker-calendarIcon'
+              'AruiFilterDatePicker-calendarIcon',
+              classes?.calendarIcon
             )}
             style={styles?.calendarIcon}
           />
@@ -305,7 +304,7 @@ const FilterDatePickerBase = (
         variant === 'filled'
           ? { ...styles?.input, ...colorStyle }
           : styles?.input,
-      className: clsx(classes?.input, 'AruiDatePicker-input'),
+      className: defaultStyles.cx('AruiDatePicker-input', classes?.input),
       ...textFieldProps?.InputProps,
       ...props.InputProps
     }
@@ -321,22 +320,22 @@ const FilterDatePickerBase = (
         disabled={disabled}
         placeholder={variant === 'filled' ? label : undefined}
         color={color !== 'default' ? color : undefined}
-        className={clsx(
-          classes?.textField,
+        className={defaultStyles.cx(
           defaultStyles.classes.input,
           variant !== 'outlined' && defaultStyles.classes.inputWithoutLabel,
           !!rightIcon
             ? localStyles.classes.inputWithRemove
             : localStyles.classes.input,
           getVariantColorClass(),
-          'AruiFilterDatePicker-datePicker'
+          'AruiFilterDatePicker-datePicker',
+          classes?.textField
         )}
         style={styles?.textField}
         variant='outlined'
         InputProps={InputProps}
         InputLabelProps={{
           ...InputLabelProps,
-          className: clsx(
+          className: defaultStyles.cx(
             defaultStyles.classes.label,
             'AruiFilterDatePicker-label',
             classes?.label
@@ -358,10 +357,10 @@ const FilterDatePickerBase = (
       locale={dateFnsLocales[locale]}
     >
       <div
-        className={clsx(
+        className={defaultStyles.cx(
           localStyles.classes.root,
-          className,
-          'AruiFilterDatePicker-root'
+          'AruiFilterDatePicker-root',
+          className
         )}
         style={variant === 'filled' ? { ...style, ...colorStyle } : style}
       >

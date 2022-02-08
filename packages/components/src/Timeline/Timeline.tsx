@@ -10,7 +10,6 @@ import {
 } from '@mui/lab'
 import React, { forwardRef, useMemo } from 'react'
 import { Typography } from '@mui/material'
-import clsx from 'clsx'
 import {
   MergeMuiElementProps,
   makeG2STyles,
@@ -23,12 +22,14 @@ const useStyles = makeG2STyles()((theme) => ({
   dot: {
     background: theme.colors.secondary,
     position: 'relative',
-    alignSelf: 'unset'
+    alignSelf: 'unset',
+    boxShadow: 'unset'
   },
   dotPassed: {
     background: theme.colors.tertiary,
     position: 'relative',
-    alignSelf: 'unset'
+    alignSelf: 'unset',
+    boxShadow: 'unset'
   },
   separator: {
     minWidth: '50px',
@@ -243,7 +244,7 @@ const TimelineBase = (
           <div
             key={line.id}
             onClick={() => onSelectCell && !line.disabled && onSelectCell(line)}
-            className={clsx(
+            className={defaultStyles.cx(
               onSelectCell &&
                 !line.disabled &&
                 defaultStyles.classes.selectableItem,
@@ -252,13 +253,13 @@ const TimelineBase = (
           >
             <TimelineItem
               key={line.id}
-              className={clsx(
+              className={defaultStyles.cx(
+                defaultStyles.classes.item,
                 line.disabled && defaultStyles.classes.ItemDisabled,
                 !!selectedCellId &&
                   selectedCellId !== line.id &&
                   defaultStyles.classes.ItemDisabled,
                 isSelected && defaultStyles.classes.itemSelected,
-                defaultStyles.classes.item,
                 'AruiTimeLine-item',
                 classes?.item
               )}
@@ -266,13 +267,13 @@ const TimelineBase = (
             >
               <FilledArrow
                 color={theme.colors.primary}
-                className={clsx(
+                className={defaultStyles.cx(
                   defaultStyles.classes.selectorIndicator,
                   'AruiTimeLine-selectorIndicator'
                 )}
               />
               <TimelineOppositeContent
-                className={clsx(
+                className={defaultStyles.cx(
                   align === 'alternate'
                     ? defaultStyles.classes.timeContainerAlternate
                     : defaultStyles.classes.timeContainer,
@@ -286,15 +287,15 @@ const TimelineBase = (
                 <Typography variant='body2'>{line.endTime}</Typography>
               </TimelineOppositeContent>
               <TimelineSeparator
-                className={clsx(
+                className={defaultStyles.cx(
+                  defaultStyles.classes.separator,
                   'AruiTimeLine-separator',
-                  classes?.separator,
-                  defaultStyles.classes.separator
+                  classes?.separator
                 )}
                 style={styles?.separator}
               >
                 <TimelineDot
-                  className={clsx(
+                  className={defaultStyles.cx(
                     isPassed && !passedTimeLine
                       ? defaultStyles.classes.dotPassed
                       : defaultStyles.classes.dot,
@@ -309,7 +310,7 @@ const TimelineBase = (
                   )}
                 </TimelineDot>
                 <TimelineConnector
-                  className={clsx(
+                  className={defaultStyles.cx(
                     defaultStyles.classes.connector,
                     'AruiTimeLine-connector',
                     classes?.connector
@@ -328,7 +329,7 @@ const TimelineBase = (
                 </TimelineConnector>
                 {line.endTime && (
                   <TimelineDot
-                    className={clsx(
+                    className={defaultStyles.cx(
                       defaultStyles.classes.dotPassed,
                       'AruiTimeLine-endDot',
                       classes?.endDot
@@ -340,7 +341,10 @@ const TimelineBase = (
                 )}
               </TimelineSeparator>
               <TimelineContent
-                className={clsx('AruiTimeLine-content', classes?.content)}
+                className={defaultStyles.cx(
+                  'AruiTimeLine-content',
+                  classes?.content
+                )}
                 style={styles?.content}
               >
                 {line.content}
@@ -366,7 +370,7 @@ const TimelineBase = (
       //@ts-ignore
       ref={ref}
       {...other}
-      className={clsx(
+      className={defaultStyles.cx(
         align === 'alternate' && defaultStyles.classes.timelineAlternate,
         align === 'right' && defaultStyles.classes.timelineRight,
         'AruiTimeLine-root',

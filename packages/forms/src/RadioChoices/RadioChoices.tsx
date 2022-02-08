@@ -9,7 +9,6 @@ import {
 } from '@mui/material'
 import { useInputStyles } from '../style'
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
-import clsx from 'clsx'
 
 export type Choice = {
   key: string | number
@@ -102,7 +101,10 @@ export const RadioChoices = React.forwardRef(
           {...choice.props}
           control={<Radio />}
           color='primary'
-          className={clsx(classes?.choice, 'AruiRadioChoices-choice')}
+          className={defaultStyles.cx(
+            'AruiRadioChoices-choice',
+            classes?.choice
+          )}
           style={styles?.choice}
         />
       ))
@@ -115,14 +117,14 @@ export const RadioChoices = React.forwardRef(
         value={value}
         onChange={onChange}
         name={name}
-        className={clsx(className, 'AruiRadioChoices-root')}
+        className={defaultStyles.cx('AruiRadioChoices-root', className)}
         style={style}
         {...other}
       >
         {choicesMemoized}
         {errorMessage !== '' && error && (
           <FormHelperText
-            className={clsx(
+            className={defaultStyles.cx(
               defaultStyles.classes.helperText,
               classes?.helperText,
               'AruiRadioChoices-helperText'

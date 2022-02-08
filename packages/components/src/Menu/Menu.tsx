@@ -14,7 +14,6 @@ import {
   MergeMuiElementProps,
   makeG2STyles
 } from '@smartb/g2-themes'
-import clsx from 'clsx'
 
 const useStyles = makeG2STyles<{ paddingLeft: number }>()(
   (theme, { paddingLeft }) => ({
@@ -137,7 +136,10 @@ const Item = (props: ItemProps) => {
           style={styles?.item?.root}
           {...componentProps}
           {...other}
-          className={clsx(classes?.item?.root, defaultStyles.classes.item)}
+          className={defaultStyles.cx(
+            defaultStyles.classes.item,
+            classes?.item?.root
+          )}
         >
           {!!icon && (
             <ListItemIcon
@@ -150,7 +152,7 @@ const Item = (props: ItemProps) => {
           <ListItemText
             primaryTypographyProps={{ color: 'inherit' }}
             primary={label}
-            className={clsx(
+            className={defaultStyles.cx(
               classes?.item?.text,
               defaultStyles.classes.itemText,
               isSelected && defaultStyles.classes.selectedTitle
@@ -160,7 +162,10 @@ const Item = (props: ItemProps) => {
         </ListItem>
         <Menu
           {...subMenuProps}
-          className={clsx(subMenuProps, defaultStyles.classes.subList)}
+          className={defaultStyles.cx(
+            defaultStyles.classes.subList,
+            subMenuProps?.className
+          )}
           paddingLeft={paddingLeft + 10}
           menu={items}
         />
@@ -174,10 +179,10 @@ const Item = (props: ItemProps) => {
       style={styles?.item?.root}
       {...componentProps}
       {...other}
-      className={clsx(
-        classes?.item?.root,
+      className={defaultStyles.cx(
         defaultStyles.classes.item,
-        isSelected && defaultStyles.classes.selectedItem
+        isSelected && defaultStyles.classes.selectedItem,
+        classes?.item?.root
       )}
     >
       {!!icon && (
@@ -191,8 +196,10 @@ const Item = (props: ItemProps) => {
       <ListItemText
         primaryTypographyProps={{ color: 'inherit' }}
         primary={label}
-        className={clsx(classes?.item?.text, defaultStyles.classes.itemText)}
-        //on ajoute le style du text que si les objets le contenant éxiste
+        className={defaultStyles.cx(
+          defaultStyles.classes.itemText,
+          classes?.item?.text
+        )}
         style={styles?.item?.text}
       />
     </ListItemButton>

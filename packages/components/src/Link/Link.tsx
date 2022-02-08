@@ -2,7 +2,6 @@ import React from 'react'
 import { Link as MuiLink, LinkProps as MuiLinkProps } from '@mui/material'
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 import { makeG2STyles } from '@smartb/g2-themes'
-import clsx from 'clsx'
 
 const useStyles = makeG2STyles()({
   link: {
@@ -49,16 +48,16 @@ export type LinkProps<T extends object = {}> = MergeMuiElementProps<
 export const Link = <T extends object = {}>(props: LinkProps<T>) => {
   const { href, className, component, componentProps, disabled, ...other } =
     props
-  const { classes } = useStyles()
+  const { classes, cx } = useStyles()
   if (component)
     return (
       <MuiLink
         href={!disabled ? href : undefined}
-        className={clsx(
-          className,
-          'AruiLink-root',
+        className={cx(
           classes.link,
-          disabled && classes.disabled
+          disabled && classes.disabled,
+          'AruiLink-root',
+          className
         )}
         component={component}
         variant='body2'
@@ -70,11 +69,11 @@ export const Link = <T extends object = {}>(props: LinkProps<T>) => {
   return (
     <MuiLink
       href={!disabled ? href : undefined}
-      className={clsx(
-        className,
-        'AruiLink-root',
+      className={cx(
         classes.link,
-        disabled && classes.disabled
+        disabled && classes.disabled,
+        'AruiLink-root',
+        className
       )}
       variant='body2'
       color='inherit'

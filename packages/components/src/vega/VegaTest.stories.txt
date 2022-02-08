@@ -1,0 +1,27 @@
+import React from 'react'
+import {
+  VegaTest as AruiVegaTest,
+  VegaTestProps
+} from './VegaTest'
+import { Meta } from '@storybook/react'
+import { Story } from '@storybook/react/types-6-0'
+
+export default {
+  title: 'Components/VegaTest',
+  component: AruiVegaTest,
+} as Meta
+
+export const VegaTest: Story<VegaTestProps> = (
+  args: VegaTestProps
+) => {
+  return (
+    <AruiVegaTest
+      {...args}
+    />
+  )
+}
+
+VegaTest.args = {
+}
+
+VegaTest.storyName = 'VegaTest'

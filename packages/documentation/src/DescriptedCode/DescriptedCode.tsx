@@ -1,6 +1,6 @@
-import { Box } from  '@mui/material'
+import { Box } from '@mui/material'
 import { BasicProps } from '@smartb/g2-themes'
-import clsx from 'clsx'
+import { cx } from '@emotion/css'
 import React from 'react'
 
 export interface DescriptedCodeProps extends BasicProps {
@@ -18,7 +18,7 @@ export const DescriptedCode = (props: DescriptedCodeProps) => {
   const { leftElement, rightElement, className, style, id } = props
   return (
     <Box
-      className={clsx(className, 'AruiDescriptedCode-root')}
+      className={cx('AruiDescriptedCode-root', className)}
       style={style}
       id={id}
       display='flex'

@@ -9,7 +9,6 @@ import MuiStepLabel, {
 } from '@mui/material/StepLabel'
 import Button, { ButtonProps } from '@mui/material/Button'
 import { Paper, PaperProps } from '@mui/material'
-import clsx from 'clsx'
 import { BasicProps, makeG2STyles } from '@smartb/g2-themes'
 
 const useStyles = makeG2STyles<{ muiTheme: MuiTheme }>()((_, { muiTheme }) => ({
@@ -173,7 +172,7 @@ export const MuiStepperWrapper = (props: MuiStepperWrapperProps) => {
   }
   return (
     <Paper
-      className={clsx('AruiStepperBase-root', className)}
+      className={defaultStyles.cx('AruiStepperBase-root', className)}
       style={style}
       id={id}
       {...PaperProps}
@@ -189,7 +188,7 @@ export const MuiStepperWrapper = (props: MuiStepperWrapperProps) => {
       </MuiStepper>
       <Paper
         elevation={0}
-        className={clsx(
+        className={defaultStyles.cx(
           defaultStyles.classes.stepper,
           'AruiStepperBase-content',
           classes?.content
@@ -199,7 +198,7 @@ export const MuiStepperWrapper = (props: MuiStepperWrapperProps) => {
         {/* old className "sb-stepper-content" */}
         {getStepContent(activeStep, steps)}
         <div
-          className={clsx(
+          className={defaultStyles.cx(
             defaultStyles.classes.actions,
             'AruiStepperBase-actions',
             classes?.actions
@@ -210,7 +209,7 @@ export const MuiStepperWrapper = (props: MuiStepperWrapperProps) => {
           <Button
             disabled={activeStep === 0}
             onClick={handleBack}
-            className={clsx(
+            className={defaultStyles.cx(
               defaultStyles.classes.backButton,
               'AruiStepperBase-backButton',
               classes?.backButton
@@ -222,7 +221,7 @@ export const MuiStepperWrapper = (props: MuiStepperWrapperProps) => {
           {activeStep === steps.length - 1 ? (
             <Button
               {...activeButtonProps}
-              className={clsx(
+              className={defaultStyles.cx(
                 'AruiStepperBase-finishButton',
                 classes?.finishButton
               )}
@@ -233,7 +232,7 @@ export const MuiStepperWrapper = (props: MuiStepperWrapperProps) => {
             </Button>
           ) : (
             <Button
-              className={clsx(
+              className={defaultStyles.cx(
                 'AruiStepperBase-nextButton',
                 classes?.nextButton
               )}

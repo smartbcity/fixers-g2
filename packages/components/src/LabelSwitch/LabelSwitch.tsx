@@ -1,7 +1,6 @@
 import { Tab, Tabs, TabsProps } from '@mui/material'
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 import { makeG2STyles } from '@smartb/g2-themes'
-import clsx from 'clsx'
 import React, { forwardRef, useCallback, useMemo } from 'react'
 
 const useStyles = makeG2STyles()((theme) => ({
@@ -100,10 +99,10 @@ const LabelSwitchBase = (
       labels.map((label) => (
         <Tab
           key={label.key}
-          className={clsx(
+          className={defaultStyles.cx(
             defaultStyles.classes.tab,
-            classes?.tab,
-            'AruiLabelSwitch-tab'
+            'AruiLabelSwitch-tab',
+            classes?.tab
           )}
           style={styles?.tab}
           label={label.name}
@@ -118,20 +117,20 @@ const LabelSwitchBase = (
       ref={ref}
       value={selectedLabelValue}
       classes={{
-        indicator: clsx(
-          classes?.indicator,
+        indicator: defaultStyles.cx(
           defaultStyles.classes.indicator,
-          'AruiLabelSwitch-indicator'
+          'AruiLabelSwitch-indicator',
+          classes?.indicator
         )
       }}
       TabIndicatorProps={{ style: styles?.indicator }}
       id={id}
       indicatorColor='primary'
       textColor='primary'
-      className={clsx(
-        className,
+      className={defaultStyles.cx(
         defaultStyles.classes.tabs,
-        'AruiLabelSwitch-root'
+        'AruiLabelSwitch-root',
+        className
       )}
       style={style}
       onChange={handleChange}

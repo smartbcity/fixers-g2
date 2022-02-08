@@ -1,12 +1,9 @@
-import { Box } from  '@mui/material'
+import { Box } from '@mui/material'
 import React, { useCallback } from 'react'
-import { Pagination as MuiPagination } from '@mui/material';
-import { PaginationProps as MuiPaginationProps } from '@mui/lab';
-import {
-  BasicProps,
-  MergeMuiElementProps
-} from '@smartb/g2-themes'
-import clsx from 'clsx'
+import { Pagination as MuiPagination } from '@mui/material'
+import { PaginationProps as MuiPaginationProps } from '@mui/lab'
+import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
+import { cx } from '@emotion/css'
 
 interface PaginationClasses {
   pagination?: string
@@ -70,16 +67,13 @@ export const Pagination = (props: PaginationProps) => {
       display='flex'
       justifyContent='flex-end'
       marginTop='10px'
-      className={clsx(className, 'AruiPagination-root')}
+      className={cx('AruiPagination-root', className)}
       style={style}
       id={id}
     >
       <MuiPagination
         page={page}
-        className={clsx(
-          'AruiPagination-pagination',
-          classes?.pagination
-        )}
+        className={cx('AruiPagination-pagination', classes?.pagination)}
         style={styles?.pagination}
         count={totalPage}
         onChange={onChangePage}

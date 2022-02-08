@@ -1,6 +1,6 @@
 {
   "name": "@smartb/g2-themes",
-  "version": "0.0.0",
+  "version": "1.0.0-alpha.17",
   "repository": "https://gitlab.smartb.city/fixers/g2.git",
   "author": "Adrien Poupard <adrien@smartb.city>",
   "license": "Apache-2.0",
@@ -20,7 +20,7 @@
     "test:lint": "eslint .",
     "test:unit": "cross-env CI=1 react-scripts test --env=jsdom",
     "test:watch": "react-scripts test --env=jsdom",
-    "publish:gitlab": "npm publish --tag ${TAG}",
+    "publish:gitlab": "npm publish",
     "publish:npm": "yarn publish --access public --new-version ${VERSION}"
   },
   "files": [
@@ -30,9 +30,9 @@
     "@types/ramda": "^0.27.45"
   },
   "peerDependencies": {
-    "@emotion/cache": "^11.4.0",
-    "@emotion/react": "^11.4.1",
-    "@emotion/styled": "^11.3.0",
+    "@emotion/css": "^11.7.1",
+    "@emotion/react": "^11.7.1",
+    "@emotion/styled": "^11.6.0",
     "@mui/material": "^5.2.7",
     "@types/react": "^17.0.14",
     "react": "^17.0.2",

@@ -15,7 +15,6 @@ import {
 } from '../DatePicker'
 import { useInputStyles } from '../style'
 import { BasicProps } from '@smartb/g2-themes'
-import clsx from 'clsx'
 import {
   RadioChoicesClasses,
   RadioChoicesProps,
@@ -33,18 +32,18 @@ interface InputFormStyles {
   input?: React.CSSProperties
 }
 
-export interface InputFormBasicProps<
-  T extends 'select' | 'textField' | 'datePicker' | 'radioChoices' = 'textField'
-> extends BasicProps {
+export type InputFormTypes =
+  | 'select'
+  | 'textField'
+  | 'datePicker'
+  | 'radioChoices'
+
+export interface InputFormBasicProps<T extends InputFormTypes = 'textField'>
+  extends BasicProps {
   /**
    * The label of the input
    */
   label?: string
-  /**
-   * The type of the input
-   * @default "textField"
-   */
-  inputType: 'select' | 'textField' | 'datePicker' | 'radioChoices'
   /**
    * If true the input will be disabled and forced on type 'textfield'
    * @default false
@@ -89,9 +88,9 @@ export interface InputFormBasicProps<
 type RemoveMainProps<T> = Omit<T, keyof InputFormBasicProps>
 
 type InputFormComponentProps<
-  T extends 'select' | 'textField' | 'datePicker' | 'radioChoices' = never,
+  T extends InputFormTypes,
   R extends Boolean = false
-> = InputFormBasicProps &
+> = InputFormBasicProps<T> &
   ([R] extends [true]
     ? RemoveMainProps<TextFieldProps>
     : [T] extends ['select']
@@ -103,10 +102,7 @@ type InputFormComponentProps<
     : RemoveMainProps<TextFieldProps>)
 
 interface InputFormComponent {
-  <
-    T extends 'select' | 'textField' | 'datePicker' | 'radioChoices',
-    R extends Boolean = false
-  >(
+  <T extends InputFormTypes, R extends Boolean = false>(
     props: {
       inputType: T
       readonly?: R
@@ -122,6 +118,7 @@ export type InputFormProps = InputFormBasicProps &
   Omit<RadioChoicesProps, keyof InputFormBasicProps> & {
     inputClasses?: SelectClasses | TextFieldClasses | DatePickerClasses
     inputStyles?: SelectStyles | TextFieldStyles | DatePickerStyles
+    inputType: InputFormTypes
   }
 
 //@ts-ignore
@@ -148,10 +145,10 @@ export const InputForm: InputFormComponent = React.forwardRef(
       return label ? (
         <InputLabel
           htmlFor={id}
-          className={clsx(
+          className={defaultStyles.cx(
             defaultStyles.classes.label,
-            classes?.label,
-            size === 'small' && defaultStyles.classes.labelSmall
+            size === 'small' && defaultStyles.classes.labelSmall,
+            classes?.label
           )}
           style={styles?.label}
         >

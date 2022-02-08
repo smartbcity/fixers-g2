@@ -9,6 +9,7 @@ module.exports = {
     "../packages/s2/src/**/*.stories.@(ts|tsx|mdx)",
     "../packages/providers/src/**/*.stories.@(ts|tsx|mdx)",
     "../packages/webpack-components/src/**/*.stories.@(ts|tsx|mdx)",
+    "../packages/i2/src/**/*.stories.@(ts|tsx|mdx)",
   ],
   addons: [
     "@storybook/addon-links",
