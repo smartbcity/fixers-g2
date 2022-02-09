@@ -154,7 +154,7 @@ export type CheckBoxProps = MergeMuiElementProps<
 
 const CheckBoxBase = (
   props: CheckBoxProps,
-  ref: React.ForwardedRef<HTMLElement>
+  ref: React.ForwardedRef<HTMLButtonElement>
 ) => {
   const {
     checked = false,
@@ -182,7 +182,6 @@ const CheckBoxBase = (
       style={style}
     >
       <FormControlLabel
-        ref={ref}
         className={defaultStyles.cx(
           defaultStyles.classes.container,
           disabled && defaultStyles.classes.containerDisabled,
@@ -192,6 +191,7 @@ const CheckBoxBase = (
         style={styles?.formControl}
         control={
           <Checkbox
+            ref={ref}
             {...other}
             checked={checked}
             disabled={disabled}
