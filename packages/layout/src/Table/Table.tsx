@@ -4,7 +4,8 @@ import {
   useExpanded,
   TableRowProps,
   HeaderProps,
-  Hooks
+  Hooks,
+  usePagination
 } from 'react-table'
 import React, { useEffect, useMemo, useCallback } from 'react'
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
@@ -15,7 +16,8 @@ import {
   CellProps,
   Row,
   Column,
-  UseCompleteTable
+  UseCompleteTable,
+  BasicData
 } from './types'
 import { cx } from '@emotion/css'
 import { TableContainer } from './TableContainer'
@@ -26,7 +28,6 @@ export interface TableClasses {
   table?: string
   tableHead?: string
   tableBody?: string
-  tableFooter?: string
   tableHeaderRow?: string
   tableRow?: string
   tableCell?: string
@@ -38,7 +39,6 @@ export interface TableStyles {
   table?: React.CSSProperties
   tableHead?: React.CSSProperties
   tableBody?: React.CSSProperties
-  tableFooter?: React.CSSProperties
   tableHeaderRow?: React.CSSProperties
   tableRow?: React.CSSProperties
   tableCell?: React.CSSProperties
@@ -46,7 +46,7 @@ export interface TableStyles {
   Pagination?: React.CSSProperties
 }
 
-export interface TableBasicProps<Data extends object> extends BasicProps {
+export interface TableBasicProps<Data extends BasicData> extends BasicProps {
   /**
    * An array of the data that will be displayed in the table
    */
@@ -83,7 +83,7 @@ export interface TableBasicProps<Data extends object> extends BasicProps {
   /**
    * the envent triggered when the selectedRows state changes
    */
-  setSelectedRows?: (rows: Row<Data>[]) => void
+  setSelectedRowIds?: (rowIds: Record<string, boolean>) => void
   /**
    * the envent triggered when a sub components is called
    */
@@ -106,12 +106,12 @@ export interface TableBasicProps<Data extends object> extends BasicProps {
   styles?: TableStyles
 }
 
-export type TableProps<Data extends object> = MergeMuiElementProps<
+export type TableProps<Data extends BasicData> = MergeMuiElementProps<
   TableContainerProps,
   TableBasicProps<Data>
 >
 
-export const Table = <Data extends object = {}>(props: TableProps<Data>) => {
+export const Table = <Data extends BasicData>(props: TableProps<Data>) => {
   const {
     data,
     columns,
@@ -120,7 +120,7 @@ export const Table = <Data extends object = {}>(props: TableProps<Data>) => {
     handlePageChange,
     isLoading,
     totalPages,
-    setSelectedRows,
+    setSelectedRowIds,
     variant = 'elevated',
     renderSubComponent,
     className,
@@ -129,7 +129,7 @@ export const Table = <Data extends object = {}>(props: TableProps<Data>) => {
     onRowClicked,
     ...other
   } = props
-  const isSelectabale = !!setSelectedRows
+  const isSelectabale = !!setSelectedRowIds
   const isExpandable = !!renderSubComponent
 
   const useVariableHooks = useCallback(
@@ -168,21 +168,17 @@ export const Table = <Data extends object = {}>(props: TableProps<Data>) => {
                 accessor: 'selection',
                 Header: ({
                   //@ts-ignore
-                  getToggleAllRowsSelectedProps
+                  getToggleAllPageRowsSelectedProps
                 }: HeaderProps<Data>) => {
-                  console.log(getToggleAllRowsSelectedProps())
-                  return (
-                    <div>
-                      <CheckBox {...getToggleAllRowsSelectedProps()} />
-                    </div>
-                  )
+                  console.log(getToggleAllPageRowsSelectedProps())
+                  return <CheckBox {...getToggleAllPageRowsSelectedProps()} />
                 },
                 Cell: ({ row }: CellProps<Data>) => {
-                  console.log(row.getToggleRowSelectedProps())
                   return (
-                    <div>
-                      <CheckBox {...row.getToggleRowSelectedProps()} />
-                    </div>
+                    <CheckBox
+                      {...row.getToggleRowSelectedProps()}
+                      onClick={(event) => event.stopPropagation()}
+                    />
                   )
                 },
                 maxWidth: 50,
@@ -196,18 +192,33 @@ export const Table = <Data extends object = {}>(props: TableProps<Data>) => {
     [isSelectabale, isExpandable]
   )
 
-  const { getTableProps, headerGroups, rows, prepareRow, selectedFlatRows } =
-    UseCompleteTable<Data>(
-      variant,
-      { data, columns, ...tableOptions },
-      useExpanded,
-      useRowSelect,
-      useVariableHooks
-    )
+  const {
+    getTableProps,
+    headerGroups,
+    rows,
+    prepareRow,
+    state: { selectedRowIds }
+  } = UseCompleteTable<Data>(
+    variant,
+    {
+      data,
+      columns,
+      initialState: { pageIndex: 0, pageSize: data.length },
+      manualPagination: true,
+      pageCount: totalPages,
+      autoResetSelectedRows: false,
+      getRowId: (row) => `${row.id}`,
+      ...tableOptions
+    },
+    useExpanded,
+    usePagination,
+    useRowSelect,
+    useVariableHooks
+  )
 
   useEffect(() => {
-    setSelectedRows && setSelectedRows(selectedFlatRows)
-  }, [selectedFlatRows, setSelectedRows])
+    setSelectedRowIds && setSelectedRowIds(selectedRowIds)
+  }, [selectedRowIds, setSelectedRowIds])
 
   const tableProps = useMemo(() => getTableProps(), [getTableProps])
 
@@ -247,6 +258,7 @@ export const Table = <Data extends object = {}>(props: TableProps<Data>) => {
           classes={classes}
           handlePageChange={handlePageChange}
           onRowClicked={onRowClicked}
+          selectedRowIds={selectedRowIds}
           page={page}
           renderSubComponent={renderSubComponent}
           styles={styles}
@@ -255,13 +267,14 @@ export const Table = <Data extends object = {}>(props: TableProps<Data>) => {
       ) : (
         <GroundedBase
           headerGroups={headerGroups}
+          selectedRowIds={selectedRowIds}
+          page={page}
           prepareRow={prepareRow}
           rows={rows}
           tableProps={tableProps}
           classes={classes}
           handlePageChange={handlePageChange}
           onRowClicked={onRowClicked}
-          page={page}
           renderSubComponent={renderSubComponent}
           styles={styles}
           totalPages={totalPages}

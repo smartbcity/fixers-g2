@@ -25,7 +25,11 @@ export const TableContainer = styled(BasicTableContainer)((props) => {
   const { variant, theme } = props
   const comunStyles = {
     '& .AruiTable-actionColumn': {
+      maxWidth: '65px',
       width: '20px'
+    },
+    '& .AruiTable-pagination': {
+      marginTop: '30px'
     }
   }
   if (variant === 'grounded') {

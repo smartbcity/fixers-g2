@@ -5,7 +5,9 @@ import {
   UseExpandedOptions,
   UseExpandedState,
   UseRowSelectOptions,
+  UsePaginationOptions,
   UseRowSelectState,
+  UsePaginationState,
   CellProps as BasicCellProps,
   Row as BasicRow,
   UseExpandedRowProps,
@@ -13,50 +15,60 @@ import {
   TableInstance,
   UseExpandedInstanceProps,
   UseRowSelectInstanceProps,
+  UsePaginationInstanceProps,
   Column as BasicColumn,
   PluginHook,
   useTable,
   useFlexLayout
 } from 'react-table'
 
-export interface CompleteTableOptions<Data extends object>
+export interface CompleteTableOptions<Data extends BasicData>
   extends Omit<TableOptions<Data>, 'data' | 'columns'>,
     UseExpandedOptions<Data>,
-    UseRowSelectOptions<Data> {}
+    UseRowSelectOptions<Data>,
+    UsePaginationOptions<Data> {}
 
-export interface CompleteTableState<Data extends object>
+export interface CompleteTableState<Data extends BasicData>
   extends TableState<Data>,
     UseExpandedState<Data>,
-    UseRowSelectState<Data> {}
+    UseRowSelectState<Data>,
+    UsePaginationState<Data> {}
 
-export interface Row<Data extends object>
+export interface Row<Data extends BasicData>
   extends BasicRow<Data>,
     UseExpandedRowProps<Data>,
     UseRowSelectRowProps<Data> {}
 
-export interface CellProps<Data extends object> extends BasicCellProps<Data> {
+export interface CellProps<Data extends BasicData>
+  extends BasicCellProps<Data> {
   row: Row<Data>
 }
 
-export interface CompleteTableInstance<Data extends object>
+export interface CompleteTableInstance<Data extends BasicData>
   extends TableInstance<Data>,
     UseExpandedInstanceProps<Data>,
-    UseRowSelectInstanceProps<Data> {
+    UseRowSelectInstanceProps<Data>,
+    UsePaginationInstanceProps<Data> {
   state: CompleteTableState<Data>
   rows: Row<Data>[]
   selectedFlatRows: Row<Data>[]
 }
 
-export type Column<Data extends object> = BasicColumn<Data> & {
+export type BasicData = {
+  id: string | number
+}
+
+export type Column<Data extends BasicData> = BasicColumn<Data> & {
   className?: string
   style?: React.CSSProperties
 }
 
-export const UseCompleteTable = <Data extends object>(
+export const UseCompleteTable = <Data extends BasicData>(
   variant: 'grounded' | 'elevated',
   options: CompleteTableOptions<Data> & {
     data: Data[]
     columns: Column<Data>[]
+    initialState?: Partial<CompleteTableState<Data>>
   },
   ...plugins: PluginHook<Data>[]
 ): CompleteTableInstance<Data> => {

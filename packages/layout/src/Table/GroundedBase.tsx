@@ -4,7 +4,6 @@ import {
   Table,
   TableBody,
   TableCell,
-  TableFooter,
   TableHead,
   TableRow,
   Typography
@@ -13,9 +12,9 @@ import { Pagination } from '@smartb/g2-components'
 import React, { Fragment, useMemo } from 'react'
 import { HeaderGroup, TableProps, TableRowProps } from 'react-table'
 import { TableClasses, TableStyles } from './Table'
-import { Row } from './types'
+import { Row, BasicData } from './types'
 
-export interface GroundedBaseProps<Data extends object> {
+export interface GroundedBaseProps<Data extends BasicData> {
   /**
    * The number of pages the table contain.
    *
@@ -52,9 +51,10 @@ export interface GroundedBaseProps<Data extends object> {
   prepareRow: (row: Row<Data>) => void
   headerGroups: HeaderGroup<Data>[]
   tableProps: TableProps
+  selectedRowIds: Record<string, boolean>
 }
 
-export const GroundedBase = <Data extends object = {}>(
+export const GroundedBase = <Data extends BasicData>(
   props: GroundedBaseProps<Data>
 ) => {
   const {
@@ -68,7 +68,8 @@ export const GroundedBase = <Data extends object = {}>(
     renderSubComponent,
     styles,
     totalPages,
-    tableProps
+    tableProps,
+    selectedRowIds
   } = props
   const isPaginated = !!page && !!totalPages
   const rowsDisplay = useMemo(() => {
@@ -144,28 +145,36 @@ export const GroundedBase = <Data extends object = {}>(
           style={styles?.tableHeaderRow}
           {...headerGroup.getHeaderGroupProps()}
         >
-          {headerGroup.headers.map((column) => (
-            <TableCell
-              className={cx(
+          {headerGroup.headers.map((column) => {
+            return (
+              <TableCell
+                className={cx(
+                  //@ts-ignore
+                  column.className,
+                  'AruiTable-tableHeaderCell',
+                  classes?.tableHeaderCell
+                )}
                 //@ts-ignore
-                column.className,
-                'AruiTable-tableHeaderCell',
-                classes?.tableHeaderCell
-              )}
-              //@ts-ignore
-              style={{ ...column.style, ...styles?.tableHeaderCell }}
-              variant='head'
-              {...column.getHeaderProps()}
-            >
-              <Typography variant='subtitle1'>
-                {column.render('Header')}
-              </Typography>
-            </TableCell>
-          ))}
+                style={{ ...column.style, ...styles?.tableHeaderCell }}
+                variant='head'
+                {...column.getHeaderProps()}
+              >
+                {column.id !== 'selection' ? (
+                  <Typography variant='subtitle1'>
+                    {column.render('Header')}
+                  </Typography>
+                ) : (
+                  column.render('Header')
+                )}
+              </TableCell>
+            )
+          })}
         </TableRow>
       )),
     [
       headerGroups,
+      selectedRowIds,
+      page,
       classes?.tableRow,
       styles?.tableRow,
       classes?.tableHeaderCell,
@@ -174,37 +183,33 @@ export const GroundedBase = <Data extends object = {}>(
   )
 
   return (
-    <Table
-      className={cx('AruiTable-table', classes?.table)}
-      style={styles?.table}
-      {...tableProps}
-    >
-      <TableHead
-        className={cx('AruiTable-tableHead', classes?.tableHead)}
-        style={styles?.tableHead}
+    <>
+      <Table
+        className={cx('AruiTable-table', classes?.table)}
+        style={styles?.table}
+        {...tableProps}
       >
-        {headerDisplay}
-      </TableHead>
-      <TableBody
-        className={cx('AruiTable-tableBody', classes?.tableBody)}
-        style={styles?.tableBody}
-      >
-        {rowsDisplay}
-      </TableBody>
-      <TableFooter
-        className={cx('AruiTable-tableFooter', classes?.tableFooter)}
-        style={styles?.tableFooter}
-      >
-        {isPaginated ? (
-          <TableRow>
-            <Pagination
-              onPageChange={handlePageChange}
-              page={page}
-              totalPage={totalPages}
-            />
-          </TableRow>
-        ) : undefined}
-      </TableFooter>
-    </Table>
+        <TableHead
+          className={cx('AruiTable-tableHead', classes?.tableHead)}
+          style={styles?.tableHead}
+        >
+          {headerDisplay}
+        </TableHead>
+        <TableBody
+          className={cx('AruiTable-tableBody', classes?.tableBody)}
+          style={styles?.tableBody}
+        >
+          {rowsDisplay}
+        </TableBody>
+      </Table>
+      {isPaginated ? (
+        <Pagination
+          className='AruiTable-pagination'
+          onPageChange={handlePageChange}
+          page={page}
+          totalPage={totalPages}
+        />
+      ) : undefined}
+    </>
   )
 }

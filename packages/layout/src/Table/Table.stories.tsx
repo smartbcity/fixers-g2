@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Meta } from '@storybook/react'
 import { Table as AruiTable, TableBasicProps } from './Table'
 import { Column, CellProps } from 'react-table'
@@ -13,7 +13,7 @@ import {
   Stories
 } from '@storybook/addon-docs'
 import { CodeHighlighter } from '@smartb/g2-documentation'
-import { customCellExample, classes, styles } from './types'
+import { customCellExample, classes, styles, BasicData } from './types'
 import { Info } from '@mui/icons-material'
 
 export default {
@@ -33,6 +33,8 @@ export default {
             table. The columns need to have an id or an acessor as described
             here:
             https://react-table.tanstack.com/docs/api/useTable#column-options.
+            And the Data should extends the type `BasicData` in order to have
+            server side pagination and row selection working
           </Description>
           <Description>
             To create a custom cell you will have to type the parameters with
@@ -79,19 +81,13 @@ export default {
   }
 } as Meta
 
-export const Table: Story<TableBasicProps<Data>> = (
-  args: TableBasicProps<Data>
-) => {
-  return <AruiTable {...args}></AruiTable>
-}
-
-interface Data {
+interface Data extends BasicData {
   id: string
   name: string
   isRelaxed: boolean
 }
 
-const data: Data[] = [
+const data1: Data[] = [
   {
     id: '0',
     name: 'Jean',
@@ -108,6 +104,39 @@ const data: Data[] = [
     isRelaxed: true
   }
 ]
+
+const data2: Data[] = [
+  {
+    id: '3',
+    name: 'Paul',
+    isRelaxed: true
+  },
+  {
+    id: '4',
+    name: 'Olivier',
+    isRelaxed: false
+  },
+  {
+    id: '5',
+    name: 'Thomas',
+    isRelaxed: true
+  }
+]
+
+export const Table: Story<TableBasicProps<Data>> = (
+  args: TableBasicProps<Data>
+) => {
+  const [page, setPage] = useState<number>(1)
+  return (
+    <AruiTable
+      data={page === 1 ? data1 : data2}
+      page={page}
+      totalPages={2}
+      handlePageChange={(newPage) => setPage(newPage)}
+      {...args}
+    ></AruiTable>
+  )
+}
 
 const columns: Column<Data>[] = [
   {
@@ -134,9 +163,8 @@ const columns: Column<Data>[] = [
 ]
 
 Table.args = {
-  data: data,
   columns: columns,
-  setSelectedRows: (rows) => console.log(rows),
+  setSelectedRowIds: (ids) => console.log(ids),
   renderSubComponent: (row, rowProps) => (
     <Box
       sx={{
@@ -150,7 +178,7 @@ Table.args = {
 }
 
 export const theVariants: Story = () => {
-  type DataExample = {
+  interface DataExample extends BasicData {
     name: string
     age: number
     gender: 'Male' | 'Female'
@@ -158,24 +186,28 @@ export const theVariants: Story = () => {
   }
   const dataExample: DataExample[] = [
     {
+      id: '1',
       name: 'Jean',
       age: 20,
       gender: 'Male',
       nationality: 'French'
     },
     {
+      id: '2',
       name: 'Jean',
       age: 20,
       gender: 'Male',
       nationality: 'French'
     },
     {
+      id: '3',
       name: 'Jean',
       age: 20,
       gender: 'Male',
       nationality: 'French'
     },
     {
+      id: '3',
       name: 'Jean',
       age: 20,
       gender: 'Male',
@@ -230,25 +262,29 @@ export const theVariants: Story = () => {
 }
 
 export const potentialUse: Story = () => {
-  type Notification = {
+  interface Notification extends BasicData {
     message: string
     date: number
   }
 
   const dataNotifications: Notification[] = [
     {
+      id: '1',
       message: 'Jean sent you a message',
       date: Date.now()
     },
     {
+      id: '2',
       message: 'Jean sent you a message',
       date: Date.now()
     },
     {
+      id: '3',
       message: 'Jean sent you a message',
       date: Date.now()
     },
     {
+      id: '4',
       message: 'Jean sent you a message',
       date: Date.now()
     }

@@ -4,9 +4,9 @@ import { Pagination } from '@smartb/g2-components'
 import React, { Fragment, useMemo } from 'react'
 import { HeaderGroup, TableProps, TableRowProps } from 'react-table'
 import { TableClasses, TableStyles } from './Table'
-import { Row } from './types'
+import { Row, BasicData } from './types'
 
-export interface ElevatedBaseProps<Data extends object> {
+export interface ElevatedBaseProps<Data extends BasicData> {
   /**
    * The number of pages the table contain.
    *
@@ -43,9 +43,10 @@ export interface ElevatedBaseProps<Data extends object> {
   prepareRow: (row: Row<Data>) => void
   headerGroups: HeaderGroup<Data>[]
   tableProps: TableProps
+  selectedRowIds: Record<string, boolean>
 }
 
-export const ElevatedBase = <Data extends object = {}>(
+export const ElevatedBase = <Data extends BasicData>(
   props: ElevatedBaseProps<Data>
 ) => {
   const {
@@ -59,7 +60,8 @@ export const ElevatedBase = <Data extends object = {}>(
     renderSubComponent,
     styles,
     totalPages,
-    tableProps
+    tableProps,
+    selectedRowIds
   } = props
   const isPaginated = !!page && !!totalPages
   const rowsDisplay = useMemo(() => {
@@ -146,15 +148,21 @@ export const ElevatedBase = <Data extends object = {}>(
               style={{ ...column.style, ...styles?.tableHeaderCell }}
               {...column.getHeaderProps()}
             >
-              <Typography variant='subtitle1'>
-                {column.render('Header')}
-              </Typography>
+              {column.id !== 'selection' ? (
+                <Typography variant='subtitle1'>
+                  {column.render('Header')}
+                </Typography>
+              ) : (
+                column.render('Header')
+              )}
             </Box>
           ))}
         </Box>
       )),
     [
       headerGroups,
+      selectedRowIds,
+      page,
       classes?.tableRow,
       styles?.tableRow,
       classes?.tableHeaderCell,
@@ -163,37 +171,33 @@ export const ElevatedBase = <Data extends object = {}>(
   )
 
   return (
-    <Box
-      className={cx('AruiTable-table', classes?.table)}
-      style={styles?.table}
-      {...tableProps}
-    >
+    <>
       <Box
-        className={cx('AruiTable-tableHead', classes?.tableHead)}
-        style={styles?.tableHead}
+        className={cx('AruiTable-table', classes?.table)}
+        style={styles?.table}
+        {...tableProps}
       >
-        {headerDisplay}
+        <Box
+          className={cx('AruiTable-tableHead', classes?.tableHead)}
+          style={styles?.tableHead}
+        >
+          {headerDisplay}
+        </Box>
+        <Box
+          className={cx('AruiTable-tableBody', classes?.tableBody)}
+          style={styles?.tableBody}
+        >
+          {rowsDisplay}
+        </Box>
       </Box>
-      <Box
-        className={cx('AruiTable-tableBody', classes?.tableBody)}
-        style={styles?.tableBody}
-      >
-        {rowsDisplay}
-      </Box>
-      <Box
-        className={cx('AruiTable-tableFooter', classes?.tableFooter)}
-        style={styles?.tableFooter}
-      >
-        {isPaginated ? (
-          <Box>
-            <Pagination
-              onPageChange={handlePageChange}
-              page={page}
-              totalPage={totalPages}
-            />
-          </Box>
-        ) : undefined}
-      </Box>
-    </Box>
+      {isPaginated ? (
+        <Pagination
+          className='AruiTable-pagination'
+          onPageChange={handlePageChange}
+          page={page}
+          totalPage={totalPages}
+        />
+      ) : undefined}
+    </>
   )
 }
