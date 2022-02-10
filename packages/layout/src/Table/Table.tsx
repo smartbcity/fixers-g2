@@ -1,15 +1,4 @@
-import {
-  Table as MuiTable,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  TableFooter,
-  TableContainerProps,
-  IconButton,
-  Collapse,
-  Typography
-} from '@mui/material'
+import { TableContainerProps, IconButton } from '@mui/material'
 import {
   useRowSelect,
   useExpanded,
@@ -17,8 +6,7 @@ import {
   HeaderProps,
   Hooks
 } from 'react-table'
-import React, { useEffect, useMemo, Fragment, useCallback } from 'react'
-import { Pagination } from '@smartb/g2-components/src'
+import React, { useEffect, useMemo, useCallback } from 'react'
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 import { CheckBox } from '@smartb/g2-forms'
 import { Arrow } from '@smartb/g2-components/src/icons'
@@ -31,6 +19,8 @@ import {
 } from './types'
 import { cx } from '@emotion/css'
 import { TableContainer } from './TableContainer'
+import { GroundedBase } from './GroundedBase'
+import { ElevatedBase } from './ElevatedBase'
 
 export interface TableClasses {
   table?: string
@@ -139,7 +129,6 @@ export const Table = <Data extends object = {}>(props: TableProps<Data>) => {
     onRowClicked,
     ...other
   } = props
-  const isPaginated = !!page && !!totalPages
   const isSelectabale = !!setSelectedRows
   const isExpandable = !!renderSubComponent
 
@@ -167,6 +156,7 @@ export const Table = <Data extends object = {}>(props: TableProps<Data>) => {
                     />
                   </IconButton>
                 ),
+                width: 40,
                 className: 'AruiTable-actionColumn'
               } as Column<Data>
             ]
@@ -176,8 +166,8 @@ export const Table = <Data extends object = {}>(props: TableProps<Data>) => {
               {
                 id: 'selection',
                 accessor: 'selection',
-                //@ts-ignore
                 Header: ({
+                  //@ts-ignore
                   getToggleAllRowsSelectedProps
                 }: HeaderProps<Data>) => {
                   console.log(getToggleAllRowsSelectedProps())
@@ -195,6 +185,7 @@ export const Table = <Data extends object = {}>(props: TableProps<Data>) => {
                     </div>
                   )
                 },
+                width: 40,
                 className: 'AruiTable-actionColumn'
               } as Column<Data>
             ]
@@ -207,6 +198,7 @@ export const Table = <Data extends object = {}>(props: TableProps<Data>) => {
 
   const { getTableProps, headerGroups, rows, prepareRow, selectedFlatRows } =
     UseCompleteTable<Data>(
+      variant,
       { data, columns, ...tableOptions },
       useExpanded,
       useRowSelect,
@@ -217,153 +209,58 @@ export const Table = <Data extends object = {}>(props: TableProps<Data>) => {
     setSelectedRows && setSelectedRows(selectedFlatRows)
   }, [selectedFlatRows, setSelectedRows])
 
-  const rowsDisplay = useMemo(() => {
-    return rows.map((row) => {
-      prepareRow(row)
-      row.getRowProps()
-      const rowProps = row.getRowProps()
-      return (
-        <Fragment key={rowProps.key}>
-          <TableRow
-            onClick={() => onRowClicked && onRowClicked(row)}
-            sx={{ '& > *': { borderBottom: 'unset ' } }}
-            className={cx('AruiTable-tableRow', classes?.tableRow)}
-            style={styles?.tableRow}
-            {...row.getRowProps()}
-          >
-            {row.cells.map((cell) => {
-              const column = cell.column
-              return (
-                <TableCell
-                  className={cx(
-                    //@ts-ignore
-                    column.className,
-                    'AruiTable-tableCell',
-                    classes?.tableCell
-                  )}
-                  //@ts-ignore
-                  style={{ ...column.style, ...styles?.tableCell }}
-                  {...cell.getCellProps()}
-                >
-                  {cell.render('Cell')}
-                </TableCell>
-              )
-            })}
-          </TableRow>
-          <TableRow
-            className={cx('AruiTable-tableRow', classes?.tableRow)}
-            style={styles?.tableRow}
-          >
-            <TableCell
-              className={cx('AruiTable-tableCell', classes?.tableCell)}
-              style={styles?.tableCell}
-              sx={{ paddingBottom: 0, paddingTop: 0 }}
-              colSpan={6}
-            >
-              <Collapse in={row.isExpanded} timeout='auto' unmountOnExit>
-                {renderSubComponent && renderSubComponent(row, rowProps)}
-              </Collapse>
-            </TableCell>
-          </TableRow>
-        </Fragment>
-      )
-    })
-  }, [
-    rows,
-    renderSubComponent,
-    prepareRow,
-    classes?.tableRow,
-    styles?.tableRow,
-    classes?.tableCell,
-    styles?.tableCell,
-    onRowClicked
-  ])
-
-  const headerDisplay = useMemo(
-    () =>
-      headerGroups.map((headerGroup) => (
-        <TableRow
-          className={cx('AruiTable-tableHeaderRow', classes?.tableHeaderRow)}
-          style={styles?.tableHeaderRow}
-          {...headerGroup.getHeaderGroupProps()}
-        >
-          {headerGroup.headers.map((column) => (
-            <TableCell
-              className={cx(
-                //@ts-ignore
-                column.className,
-                'AruiTable-tableHeaderCell',
-                classes?.tableHeaderCell
-              )}
-              //@ts-ignore
-              style={{ ...column.style, ...styles?.tableHeaderCell }}
-              variant='head'
-              {...column.getHeaderProps()}
-            >
-              <Typography variant='subtitle1'>
-                {column.render('Header')}
-              </Typography>
-            </TableCell>
-          ))}
-        </TableRow>
-      )),
-    [
-      headerGroups,
-      classes?.tableRow,
-      styles?.tableRow,
-      classes?.tableHeaderCell,
-      styles?.tableHeaderCell
-    ]
-  )
-
   const tableProps = useMemo(() => getTableProps(), [getTableProps])
 
   return (
     <TableContainer
       className={cx('AruiTable-root', className)}
-      sx={{
-        '& .AruiTable-tableRow:hover': !!onRowClicked
+      sx={
+        variant === 'elevated'
           ? {
-              background: '#D9DBE1',
-              cursor: 'pointer'
+              padding: '0 10px',
+              boxSizing: 'border-box'
             }
-          : {}
-      }}
+          : {
+              '& .AruiTable-principaleTableRow:hover': !!onRowClicked
+                ? {
+                    background: '#D9DBE14D',
+                    cursor: 'pointer'
+                  }
+                : {}
+            }
+      }
       variant={variant}
       {...other}
     >
-      <MuiTable
-        className={cx('AruiTable-table', classes?.table)}
-        style={styles?.table}
-        {...tableProps}
-      >
-        <TableHead
-          className={cx('AruiTable-tableHead', classes?.tableHead)}
-          style={styles?.tableHead}
-        >
-          {headerDisplay}
-        </TableHead>
-        <TableBody
-          className={cx('AruiTable-tableBody', classes?.tableBody)}
-          style={styles?.tableBody}
-        >
-          {rowsDisplay}
-        </TableBody>
-        <TableFooter
-          className={cx('AruiTable-tableFooter', classes?.tableFooter)}
-          style={styles?.tableFooter}
-        >
-          {isPaginated ? (
-            <TableRow>
-              <Pagination
-                onPageChange={handlePageChange}
-                page={page}
-                totalPage={totalPages}
-              />
-            </TableRow>
-          ) : undefined}
-        </TableFooter>
-      </MuiTable>
+      {variant === 'elevated' ? (
+        <ElevatedBase
+          headerGroups={headerGroups}
+          prepareRow={prepareRow}
+          rows={rows}
+          tableProps={tableProps}
+          classes={classes}
+          handlePageChange={handlePageChange}
+          onRowClicked={onRowClicked}
+          page={page}
+          renderSubComponent={renderSubComponent}
+          styles={styles}
+          totalPages={totalPages}
+        />
+      ) : (
+        <GroundedBase
+          headerGroups={headerGroups}
+          prepareRow={prepareRow}
+          rows={rows}
+          tableProps={tableProps}
+          classes={classes}
+          handlePageChange={handlePageChange}
+          onRowClicked={onRowClicked}
+          page={page}
+          renderSubComponent={renderSubComponent}
+          styles={styles}
+          totalPages={totalPages}
+        />
+      )}
     </TableContainer>
   )
 }

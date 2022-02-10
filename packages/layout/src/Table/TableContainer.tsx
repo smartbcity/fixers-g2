@@ -23,27 +23,40 @@ const BasicTableContainer = (props: BasicTableContainerProps) => {
 
 export const TableContainer = styled(BasicTableContainer)((props) => {
   const { variant, theme } = props
-  if (variant === 'elevated') {
+  const comunStyles = {
+    '& .AruiTable-actionColumn': {
+      width: '20px'
+    }
+  }
+  if (variant === 'grounded') {
     return {
-      '& .AruiTable-actionColumn': {
-        width: '20px'
-      },
+      ...comunStyles,
       '& .MuiTableCell-root': {
         borderBottomColor: '#D9DBE1'
+      },
+      '& .AruiTable-principaleTableRow': {
+        '& > *': { borderBottom: 'unset ' }
       }
     }
   } else {
     return {
-      '& .AruiTable-actionColumn': {
-        width: '20px'
-      },
+      ...comunStyles,
       '& .MuiTableCell-root': {
         border: 'unset'
       },
-      '& .AruiTable-tableRow': {
+      '& .AruiTable-principaleTableRow': {
         borderRadius: '4px',
         background: 'white',
-        boxShadow: theme.shadows[2]
+        boxShadow: theme.shadows[1],
+        margin: '10p 0px'
+      },
+      '& .AruiTable-tableCell': {
+        padding: '7px 12px',
+        alignSelf: 'center'
+      },
+      '& .AruiTable-tableHeaderCell': {
+        padding: '7px 12px',
+        alignSelf: 'center'
       }
     }
   }

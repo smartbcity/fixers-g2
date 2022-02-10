@@ -15,7 +15,8 @@ import {
   UseRowSelectInstanceProps,
   Column as BasicColumn,
   PluginHook,
-  useTable
+  useTable,
+  useFlexLayout
 } from 'react-table'
 
 export interface CompleteTableOptions<Data extends object>
@@ -52,12 +53,18 @@ export type Column<Data extends object> = BasicColumn<Data> & {
 }
 
 export const UseCompleteTable = <Data extends object>(
+  variant: 'grounded' | 'elevated',
   options: CompleteTableOptions<Data> & {
     data: Data[]
     columns: Column<Data>[]
   },
   ...plugins: PluginHook<Data>[]
 ): CompleteTableInstance<Data> => {
-  //@ts-ignore
-  return useTable(options, ...plugins)
+  if (variant === 'grounded') {
+    //@ts-ignore
+    return useTable(options, ...plugins)
+  } else {
+    //@ts-ignore
+    return useTable(options, ...plugins, useFlexLayout)
+  }
 }
