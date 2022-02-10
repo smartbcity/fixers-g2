@@ -23,6 +23,8 @@ import { cx } from '@emotion/css'
 import { TableContainer } from './TableContainer'
 import { GroundedBase } from './GroundedBase'
 import { ElevatedBase } from './ElevatedBase'
+import { ElevatedLoading } from './ElevatedLoading'
+import { GroundedLoading } from './GroundedLoading'
 
 export interface TableClasses {
   table?: string
@@ -249,37 +251,40 @@ export const Table = <Data extends BasicData>(props: TableProps<Data>) => {
       variant={variant}
       {...other}
     >
-      {variant === 'elevated' ? (
-        <ElevatedBase
-          headerGroups={headerGroups}
-          prepareRow={prepareRow}
-          rows={rows}
-          tableProps={tableProps}
-          classes={classes}
-          handlePageChange={handlePageChange}
-          onRowClicked={onRowClicked}
-          selectedRowIds={selectedRowIds}
-          page={page}
-          renderSubComponent={renderSubComponent}
-          styles={styles}
-          totalPages={totalPages}
-        />
-      ) : (
-        <GroundedBase
-          headerGroups={headerGroups}
-          selectedRowIds={selectedRowIds}
-          page={page}
-          prepareRow={prepareRow}
-          rows={rows}
-          tableProps={tableProps}
-          classes={classes}
-          handlePageChange={handlePageChange}
-          onRowClicked={onRowClicked}
-          renderSubComponent={renderSubComponent}
-          styles={styles}
-          totalPages={totalPages}
-        />
-      )}
+      {isLoading &&
+        (variant === 'elevated' ? <ElevatedLoading /> : <GroundedLoading />)}
+      {!isLoading &&
+        (variant === 'elevated' ? (
+          <ElevatedBase
+            headerGroups={headerGroups}
+            prepareRow={prepareRow}
+            rows={rows}
+            tableProps={tableProps}
+            classes={classes}
+            handlePageChange={handlePageChange}
+            onRowClicked={onRowClicked}
+            selectedRowIds={selectedRowIds}
+            page={page}
+            renderSubComponent={renderSubComponent}
+            styles={styles}
+            totalPages={totalPages}
+          />
+        ) : (
+          <GroundedBase
+            headerGroups={headerGroups}
+            selectedRowIds={selectedRowIds}
+            page={page}
+            prepareRow={prepareRow}
+            rows={rows}
+            tableProps={tableProps}
+            classes={classes}
+            handlePageChange={handlePageChange}
+            onRowClicked={onRowClicked}
+            renderSubComponent={renderSubComponent}
+            styles={styles}
+            totalPages={totalPages}
+          />
+        ))}
     </TableContainer>
   )
 }
