@@ -68,3 +68,39 @@ export const UseCompleteTable = <Data extends object>(
     return useTable(options, ...plugins, useFlexLayout)
   }
 }
+
+export const customCellExample = `
+{
+  Header: 'Name',
+  accessor: 'name',
+  Cell: ({ row }: CellProps<Data>) => (
+    <Typography>{row.original.name}</Typography>
+  )
+}
+`
+export const classes = `
+export interface TableClasses {
+  table?: string
+  tableHead?: string
+  tableBody?: string
+  tableFooter?: string
+  tableHeaderRow?: string
+  tableRow?: string
+  tableCell?: string
+  tableHeaderCell?: string
+  Pagination?: string
+}
+`
+export const styles = `
+export interface TableStyles {
+  table?: React.CSSProperties
+  tableHead?: React.CSSProperties
+  tableBody?: React.CSSProperties
+  tableFooter?: React.CSSProperties
+  tableHeaderRow?: React.CSSProperties
+  tableRow?: React.CSSProperties
+  tableCell?: React.CSSProperties
+  tableHeaderCell?: React.CSSProperties
+  Pagination?: React.CSSProperties
+}
+`

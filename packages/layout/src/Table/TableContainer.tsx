@@ -48,7 +48,8 @@ export const TableContainer = styled(BasicTableContainer)((props) => {
         borderRadius: '4px',
         background: 'white',
         boxShadow: theme.shadows[1],
-        margin: '10p 0px'
+        margin: '10p 0px',
+        border: '2px solid transparent'
       },
       '& .AruiTable-tableCell': {
         padding: '7px 12px',

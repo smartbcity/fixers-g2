@@ -24,7 +24,8 @@
     "publish:npm": "yarn publish --access public --new-version ${VERSION}"
   },
   "devDependencies": {
-    "@types/react-table": "^7.7.9"
+    "@types/react-table": "^7.7.9",
+    "@smartb/g2-documentation": "^1.0.0-alpha.17"
   },
   "peerDependencies": {
     "@mui/material": "^5.2.7",

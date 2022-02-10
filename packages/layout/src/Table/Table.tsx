@@ -57,7 +57,7 @@ export interface TableBasicProps<Data extends object> extends BasicProps {
   columns: Column<Data>[]
   /**
    * The variants of the style of the table
-   * @default "elevated"
+   * @default elevated
    */
   variant?: 'grounded' | 'elevated'
   /**
@@ -156,7 +156,7 @@ export const Table = <Data extends object = {}>(props: TableProps<Data>) => {
                     />
                   </IconButton>
                 ),
-                width: 40,
+                maxWidth: 50,
                 className: 'AruiTable-actionColumn'
               } as Column<Data>
             ]
@@ -185,7 +185,7 @@ export const Table = <Data extends object = {}>(props: TableProps<Data>) => {
                     </div>
                   )
                 },
-                width: 40,
+                maxWidth: 50,
                 className: 'AruiTable-actionColumn'
               } as Column<Data>
             ]
@@ -218,7 +218,13 @@ export const Table = <Data extends object = {}>(props: TableProps<Data>) => {
         variant === 'elevated'
           ? {
               padding: '0 10px',
-              boxSizing: 'border-box'
+              boxSizing: 'border-box',
+              '& .AruiTable-principaleTableRow:hover': !!onRowClicked
+                ? {
+                    borderColor: 'secondary.main',
+                    cursor: 'pointer'
+                  }
+                : {}
             }
           : {
               '& .AruiTable-principaleTableRow:hover': !!onRowClicked
