@@ -19,8 +19,10 @@ package-libs:
 	@yarn workspace @smartb/g2-layout run build
 	@yarn workspace @smartb/g2-providers run build
 	@yarn workspace @smartb/g2-s2 run build
+	@yarn workspace @smartb/g2-i2 run build
 	@yarn workspace @smartb/g2 run build
 	@yarn workspace @smartb/g2-storybook-documentation run build
+	@yarn workspace @smartb/webpack-components run build
 
 push-libs-npm:
 	VERSION=${VERSION} yarn publishWorkspaces:npm

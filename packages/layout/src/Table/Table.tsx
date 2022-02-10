@@ -10,7 +10,7 @@ import {
 import React, { useEffect, useMemo, useCallback } from 'react'
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 import { CheckBox } from '@smartb/g2-forms'
-import { Arrow } from '@smartb/g2-components/src/icons'
+import { Arrow } from '../icons'
 import {
   CompleteTableOptions,
   CellProps,

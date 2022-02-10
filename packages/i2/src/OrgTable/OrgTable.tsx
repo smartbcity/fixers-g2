@@ -1,5 +1,6 @@
 import { Box, Stack, Typography } from '@mui/material'
-import { Link, Table, TableProps } from '@smartb/g2-components'
+import { Link } from '@smartb/g2-components'
+import { Column, Table, TableProps, CellProps } from '@smartb/g2-layout'
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 import React, { useCallback, useMemo, useState } from 'react'
 import { Organization } from '../OrgCreation/types'
@@ -66,10 +67,11 @@ export const OrgTable = (props: OrgTableProps) => {
   )
 
   const columns = useMemo(
-    () => [
+    (): Column<Organization>[] => [
       {
-        name: 'Organisation',
-        cell: (row: Organization) => (
+        Header: 'Organisation',
+        accessor: 'name',
+        Cell: ({ row }: CellProps<Organization>) => (
           <Stack
             display='flex'
             justifyContent='space-around'
@@ -77,7 +79,7 @@ export const OrgTable = (props: OrgTableProps) => {
             direction='row'
             data-tag='___react-data-table-allow-propagation___'
           >
-            {row.image && (
+            {row.original.image && (
               <Box
                 width='50px'
                 data-tag='___react-data-table-allow-propagation___'
@@ -92,8 +94,8 @@ export const OrgTable = (props: OrgTableProps) => {
               >
                 <img
                   data-tag='___react-data-table-allow-propagation___'
-                  src={row.image}
-                  alt={`Le logo de l'entreprise ${row.name}`}
+                  src={row.original.image}
+                  alt={`Le logo de l'entreprise ${row.original.name}`}
                   className='companyImage'
                 />
               </Box>
@@ -102,27 +104,29 @@ export const OrgTable = (props: OrgTableProps) => {
               data-tag='___react-data-table-allow-propagation___'
               align='left'
             >
-              {row.name}
+              {row.original.name}
             </Typography>
           </Stack>
         )
       },
       {
-        name: 'Adresse',
-        cell: (row: Organization) => (
+        Header: 'Adresse',
+        accessor: 'address',
+        Cell: ({ row }: CellProps<Organization>) => (
           <Typography data-tag='___react-data-table-allow-propagation___'>
-            {`${row.address.street}, ${row.address.postalCode} ${row.address.city}`}
+            {`${row.original.address.street}, ${row.original.address.postalCode} ${row.original.address.city}`}
           </Typography>
         )
       },
       {
-        name: 'Site web',
-        cell: (row: Organization) => (
+        Header: 'Site web',
+        accessor: 'website',
+        Cell: ({ row }: CellProps<Organization>) => (
           <Link
             data-tag='___react-data-table-allow-propagation___'
-            href={row.website}
+            href={row.original.website}
           >
-            {row.website}
+            {row.original.website}
           </Link>
         )
       }
@@ -137,7 +141,6 @@ export const OrgTable = (props: OrgTableProps) => {
         page={page}
         handlePageChange={onChangePage}
         data={organizations}
-        noDataMessage='Pas de donnée trouvé'
         columns={columns}
         {...other}
       />

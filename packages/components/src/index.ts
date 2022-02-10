@@ -8,7 +8,6 @@ export {
 export { Timeline, TimelineProps, TimeLineCell } from './Timeline'
 export { Loading, LoadingProps } from './Loading'
 export { Pagination, PaginationProps } from './Pagination'
-export { Table, TableProps, Column } from './Table'
 export { LabelSwitch, LabelSwitchProps, Label } from './LabelSwitch'
 export { Ticket, TicketProps } from './Ticket'
 export { CopyToClipboard, CopyToClipboardProps } from './CopyToClipboard'
