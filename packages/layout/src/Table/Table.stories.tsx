@@ -246,7 +246,7 @@ export const theVariants: Story = () => {
     }
   ]
   return (
-    <Stack spacing={4}>
+    <Stack spacing={5}>
       <AruiTable<DataExample>
         data={dataExample}
         columns={columnsExample}
@@ -257,6 +257,15 @@ export const theVariants: Story = () => {
         columns={columnsExample}
         variant='elevated'
       />
+    </Stack>
+  )
+}
+
+export const LoadingStates: Story = () => {
+  return (
+    <Stack spacing={5}>
+      <AruiTable columns={[]} data={[]} isLoading variant='grounded' />
+      <AruiTable columns={[]} data={[]} isLoading variant='elevated' />
     </Stack>
   )
 }
