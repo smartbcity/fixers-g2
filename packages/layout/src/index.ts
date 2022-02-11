@@ -24,3 +24,12 @@ export {
   ConfirmationPopUp,
   ConfirmationPopUpProps
 } from './PopUp'
+export {
+  Table,
+  CellProps,
+  Column,
+  CompleteTableOptions,
+  Row,
+  TableProps,
+  BasicData
+} from './Table'
