@@ -4,6 +4,7 @@ import {
   Table,
   TableBody,
   TableCell,
+  TableFooter,
   TableHead,
   TableRow,
   Typography
@@ -50,8 +51,11 @@ export interface GroundedBaseProps<Data extends BasicData> {
   rows: Row<Data>[]
   prepareRow: (row: Row<Data>) => void
   headerGroups: HeaderGroup<Data>[]
+  footerGroups: HeaderGroup<Data>[]
+  withFooter: boolean
   tableProps: TableProps
   selectedRowIds: Record<string, boolean>
+  renderRowHoveredComponent?: (row: Row<Data>) => JSX.Element
 }
 
 export const GroundedBase = <Data extends BasicData>(
@@ -69,7 +73,10 @@ export const GroundedBase = <Data extends BasicData>(
     styles,
     totalPages,
     tableProps,
-    selectedRowIds
+    selectedRowIds,
+    footerGroups,
+    withFooter,
+    renderRowHoveredComponent
   } = props
   const isPaginated = !!page && !!totalPages
   const rowsDisplay = useMemo(() => {
@@ -107,17 +114,29 @@ export const GroundedBase = <Data extends BasicData>(
                 </TableCell>
               )
             })}
+            {!!renderRowHoveredComponent && (
+              <TableCell
+                sx={{
+                  padding: 0,
+                  position: 'absolute',
+                  width: '100%',
+                  height: '100%'
+                }}
+                className={cx(
+                  'AruiTable-rowHoveredComponentContainer',
+                  classes?.rowHoveredComponentContainer
+                )}
+                style={styles?.rowHoveredComponentContainer}
+              >
+                {renderRowHoveredComponent(row)}
+              </TableCell>
+            )}
           </TableRow>
           <TableRow
             className={cx('AruiTable-tableRow', classes?.tableRow)}
             style={styles?.tableRow}
           >
-            <TableCell
-              className={cx('AruiTable-tableCell', classes?.tableCell)}
-              style={styles?.tableCell}
-              sx={{ paddingBottom: 0, paddingTop: 0 }}
-              colSpan={6}
-            >
+            <TableCell sx={{ paddingBottom: 0, paddingTop: 0 }} colSpan={100}>
               <Collapse in={row.isExpanded} timeout='auto' unmountOnExit>
                 {renderSubComponent && renderSubComponent(row, rowProps)}
               </Collapse>
@@ -130,6 +149,9 @@ export const GroundedBase = <Data extends BasicData>(
     rows,
     renderSubComponent,
     prepareRow,
+    renderRowHoveredComponent,
+    classes?.rowHoveredComponentContainer,
+    styles?.rowHoveredComponentContainer,
     classes?.tableRow,
     styles?.tableRow,
     classes?.tableCell,
@@ -175,10 +197,53 @@ export const GroundedBase = <Data extends BasicData>(
       headerGroups,
       selectedRowIds,
       page,
-      classes?.tableRow,
-      styles?.tableRow,
+      classes?.tableHeaderRow,
+      styles?.tableHeaderRow,
       classes?.tableHeaderCell,
       styles?.tableHeaderCell
+    ]
+  )
+
+  const footerDisplay = useMemo(
+    () =>
+      !withFooter
+        ? undefined
+        : footerGroups.map((footerGroup) => (
+            <TableRow
+              className={cx(
+                'AruiTable-tableFooterRow',
+                classes?.tableFooterRow
+              )}
+              style={styles?.tableFooterRow}
+              {...footerGroup.getFooterGroupProps()}
+            >
+              {footerGroup.headers.map((column) => {
+                return (
+                  <TableCell
+                    className={cx(
+                      //@ts-ignore
+                      column.className,
+                      'AruiTable-tableFooterCell',
+                      classes?.tableFooterCell
+                    )}
+                    //@ts-ignore
+                    style={{ ...column.style, ...styles?.tableFooterCell }}
+                    variant='body'
+                    {...column.getFooterProps()}
+                  >
+                    {column.render('Footer')}
+                  </TableCell>
+                )
+              })}
+            </TableRow>
+          )),
+    [
+      footerGroups,
+      classes?.tableFooterRow,
+      styles?.tableFooterRow,
+      classes?.tableFooterCell,
+      styles?.tableFooterCell,
+      withFooter
     ]
   )
 
@@ -201,6 +266,14 @@ export const GroundedBase = <Data extends BasicData>(
         >
           {rowsDisplay}
         </TableBody>
+        {footerDisplay && (
+          <TableFooter
+            className={cx('AruiTable-tableFooter', classes?.tableFooter)}
+            style={styles?.tableFooter}
+          >
+            {footerDisplay}
+          </TableFooter>
+        )}
       </Table>
       {isPaginated ? (
         <Pagination

@@ -1,9 +1,8 @@
 import React, { useState } from 'react'
 import { Meta } from '@storybook/react'
 import { Table as AruiTable, TableBasicProps } from './Table'
-import { Column, CellProps } from 'react-table'
 import { Story } from '@storybook/react/types-6-0'
-import { Box, Divider, Stack, Typography } from '@mui/material'
+import { Box, Button, Divider, Stack, Typography } from '@mui/material'
 import {
   ArgsTable,
   PRIMARY_STORY,
@@ -13,7 +12,14 @@ import {
   Stories
 } from '@storybook/addon-docs'
 import { CodeHighlighter } from '@smartb/g2-documentation'
-import { customCellExample, classes, styles, BasicData } from './types'
+import {
+  customCellExample,
+  classes,
+  styles,
+  Column,
+  BasicData,
+  CellProps
+} from './types'
 import { Info } from '@mui/icons-material'
 
 export default {
@@ -270,7 +276,7 @@ export const LoadingStates: Story = () => {
   )
 }
 
-export const potentialUse: Story = () => {
+export const NotificationList: Story = () => {
   interface Notification extends BasicData {
     message: string
     date: number
@@ -340,6 +346,193 @@ export const potentialUse: Story = () => {
         columns={columnsNotification}
         variant='grounded'
         onRowClicked={() => {}}
+      />
+    </Stack>
+  )
+}
+
+export const AxessExample: Story = () => {
+  interface AxessData extends BasicData {
+    protocol: string
+    sectors: string
+    vintage: string
+    marketprice: string
+    purchaseprice: string
+    gain: string
+    quantity: string
+    total: string
+  }
+
+  const axessData: AxessData[] = [
+    {
+      id: '1',
+      protocol: 'Protocol name',
+      sectors: 'Category, Category, Category',
+      vintage: '-',
+      marketprice: '500 $',
+      purchaseprice: '300 $',
+      gain: '+47%',
+      quantity: '1000 tCO2e',
+      total: '340 000 $'
+    },
+    {
+      id: '2',
+      protocol: 'Protocol name',
+      sectors: 'Category, Category, Category',
+      vintage: '-',
+      marketprice: '500 $',
+      purchaseprice: '300 $',
+      gain: '+47%',
+      quantity: '1000 tCO2e',
+      total: '340 000 $'
+    },
+    {
+      id: '3',
+      protocol: 'Protocol name',
+      sectors: 'Category, Category, Category',
+      vintage: '-',
+      marketprice: '500 $',
+      purchaseprice: '300 $',
+      gain: '+47%',
+      quantity: '1000 tCO2e',
+      total: '340 000 $'
+    },
+    {
+      id: '4',
+      protocol: 'Protocol name',
+      sectors: 'Category, Category, Category',
+      vintage: '-',
+      marketprice: '500 $',
+      purchaseprice: '300 $',
+      gain: '+47%',
+      quantity: '1 000 tCO2e',
+      total: '340 000 $'
+    }
+  ]
+
+  const axessColumns: Column<AxessData>[] = [
+    {
+      Header: 'Protocol',
+      accessor: 'protocol',
+      Cell: ({ row }: CellProps<AxessData>) => (
+        <Typography variant='body2'>{row.original.protocol}</Typography>
+      )
+    },
+    {
+      Header: 'Sectors',
+      accessor: 'sectors',
+      Cell: ({ row }: CellProps<AxessData>) => (
+        <Typography variant='body2'>{row.original.sectors}</Typography>
+      )
+    },
+    {
+      Header: 'Vintage',
+      accessor: 'vintage',
+      Cell: ({ row }: CellProps<AxessData>) => (
+        <Typography variant='body2'>{row.original.vintage}</Typography>
+      ),
+      className: 'vintageColumn'
+    },
+    {
+      Header: 'Mark. price',
+      accessor: 'marketprice',
+      Cell: ({ row }: CellProps<AxessData>) => (
+        <Typography variant='body2'>{row.original.marketprice}</Typography>
+      ),
+      className: 'marketColumn'
+    },
+    {
+      Header: 'Purch. price',
+      accessor: 'purchaseprice',
+      Cell: ({ row }: CellProps<AxessData>) => (
+        <Typography variant='body2'>{row.original.purchaseprice}</Typography>
+      ),
+      Footer: () => <Typography variant='body2'>290 $</Typography>,
+      className: 'dataColumn'
+    },
+    {
+      Header: 'Gain',
+      accessor: 'gain',
+      Cell: ({ row }: CellProps<AxessData>) => (
+        <Typography variant='body2'>{row.original.gain}</Typography>
+      ),
+      Footer: () => <Typography variant='body2'>+47%</Typography>,
+      className: 'dataColumn'
+    },
+    {
+      Header: 'Quantity',
+      accessor: 'quantity',
+      Cell: ({ row }: CellProps<AxessData>) => (
+        <Typography variant='body2'>{row.original.quantity}</Typography>
+      ),
+      Footer: () => <Typography variant='body2'>5 000 tCO2E</Typography>,
+      className: 'dataColumn'
+    },
+    {
+      Header: 'Total',
+      accessor: 'total',
+      Cell: ({ row }: CellProps<AxessData>) => (
+        <Typography variant='subtitle2'>{row.original.total}</Typography>
+      ),
+      Footer: () => <Typography variant='subtitle2'>1 450 000 $</Typography>,
+      className: 'dataColumn'
+    }
+  ]
+  return (
+    <Stack
+      sx={{
+        '& .vintageColumn': {
+          textAlign: 'center'
+        },
+        '& .dataColumn': {
+          textAlign: 'right'
+        },
+        '& .marketColumn': {
+          textAlign: 'right'
+        },
+        '& .AruiTable-tableCell.dataColumn': {
+          background: '#F2F3F5'
+        },
+        '& .AruiTable-tableHeaderRow': {
+          background: '#404A68',
+          color: 'white'
+        },
+        '& .AruiTable-tableHeaderCell': {
+          color: 'white'
+        },
+        '& .AruiTable-tableFooterCell.dataColumn': {
+          background: '#404A68',
+          color: 'white'
+        },
+        '.AruiTable-rowHoveredComponentContainer': {
+          width: 'fit-content',
+          paddingRight: '10px',
+          paddingLeft: '50px',
+          right: '0px',
+          background:
+            'linear-gradient(270deg, #D9DBE1 84.38%, rgba(217, 219, 225, 0) 100%)',
+          '& button': {
+            color: 'black',
+            fontSize: '1rem',
+            fontWeight: 600
+          }
+        }
+      }}
+    >
+      <AruiTable<AxessData>
+        data={axessData}
+        columns={axessColumns}
+        variant='grounded'
+        setSelectedRowIds={(rows) => console.log(rows)}
+        noToggleAllPageRowsSelected
+        withFooter
+        renderRowHoveredComponent={() => (
+          <Stack direction='row' spacing={2} alignItems='center' height='100%'>
+            <Button>Buy</Button>
+            <Button>Sell</Button>
+            <Button>Burn</Button>
+          </Stack>
+        )}
       />
     </Stack>
   )

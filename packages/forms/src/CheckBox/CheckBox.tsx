@@ -12,6 +12,7 @@ import {
   MergeMuiElementProps
 } from '@smartb/g2-themes'
 import { CheckIcon, UnCheckIcon } from '../assets/icons'
+import { IndeterminateIcon } from '../assets/icons/IndeterminateIcon'
 
 const useStyles = makeG2STyles()((theme) => ({
   base: {
@@ -46,6 +47,15 @@ const useStyles = makeG2STyles()((theme) => ({
     },
     '& .AruiCheckBox-checkIcon path': {
       fill: 'white'
+    },
+    '& .AruiCheckBox-inderterminateIcon rect': {
+      fill: theme.colors.primary + 'B3'
+    },
+    '&:hover .AruiCheckBox-inderterminateIcon rect': {
+      fill: theme.colors.primary
+    },
+    '& .AruiCheckBox-inderterminateIcon path': {
+      fill: 'white'
     }
   },
   containerDisabled: {
@@ -69,6 +79,15 @@ const useStyles = makeG2STyles()((theme) => ({
     },
     '& .AruiCheckBox-checkIcon path': {
       fill: '#676879'
+    },
+    '& .AruiCheckBox-inderterminateIcon rect': {
+      fill: '#E6E9EF'
+    },
+    '&:hover .AruiCheckBox-inderterminateIcon rect': {
+      fill: '#E6E9EF'
+    },
+    '& .AruiCheckBox-inderterminateIcon path': {
+      fill: '#676879'
     }
   },
   iconSize: {
@@ -90,6 +109,7 @@ export interface CheckBoxClasses {
   checkbox?: string
   checkIcon?: string
   unCheckIcon?: string
+  inderterminateIcon?: string
   helperText?: string
 }
 
@@ -98,6 +118,7 @@ export interface CheckBoxStyles {
   checkbox?: React.CSSProperties
   checkIcon?: React.CSSProperties
   unCheckIcon?: React.CSSProperties
+  inderterminateIcon?: React.CSSProperties
   helperText?: React.CSSProperties
 }
 
@@ -221,6 +242,16 @@ const CheckBoxBase = (
                   classes?.unCheckIcon
                 )}
                 style={styles?.unCheckIcon}
+              />
+            }
+            indeterminateIcon={
+              <IndeterminateIcon
+                className={defaultStyles.cx(
+                  defaultStyles.classes.iconSize,
+                  'AruiCheckBox-inderterminateIcon',
+                  classes?.inderterminateIcon
+                )}
+                style={styles?.inderterminateIcon}
               />
             }
           />
