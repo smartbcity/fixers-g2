@@ -247,7 +247,7 @@ export const Table = <Data extends BasicData>(props: TableProps<Data>) => {
       pageCount: totalPages,
       autoResetSelectedRows: false,
       getRowId: (row) => `${row.id}`,
-      defaultColumn: defaultColumn,
+      defaultColumn: defaultColumn as Partial<Column<Data>>,
       ...tableOptions
     },
     useExpanded,
