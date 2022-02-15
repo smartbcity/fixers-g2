@@ -30,10 +30,14 @@ export interface TableClasses {
   table?: string
   tableHead?: string
   tableBody?: string
+  tableFooter?: string
   tableHeaderRow?: string
   tableRow?: string
+  tableFooterRow?: string
   tableCell?: string
   tableHeaderCell?: string
+  tableFooterCell?: string
+  rowHoveredComponentContainer?: string
   Pagination?: string
 }
 
@@ -41,10 +45,14 @@ export interface TableStyles {
   table?: React.CSSProperties
   tableHead?: React.CSSProperties
   tableBody?: React.CSSProperties
+  tableFooter?: React.CSSProperties
   tableHeaderRow?: React.CSSProperties
   tableRow?: React.CSSProperties
+  tableFooterRow?: React.CSSProperties
   tableCell?: React.CSSProperties
   tableHeaderCell?: React.CSSProperties
+  tableFooterCell?: React.CSSProperties
+  rowHoveredComponentContainer?: React.CSSProperties
   Pagination?: React.CSSProperties
 }
 
@@ -87,17 +95,31 @@ export interface TableBasicProps<Data extends BasicData> extends BasicProps {
    */
   setSelectedRowIds?: (rowIds: Record<string, boolean>) => void
   /**
-   * the envent triggered when a sub components is called
-   */
-  renderSubComponent?: (row: Row<Data>, rowProps: TableRowProps) => JSX.Element
-  /**
    * the envent triggered when a row is clicked
    */
   onRowClicked?: (row: Row<Data>) => void
   /**
+   * provide this function if you want to have a subcomponent for the rows
+   */
+  renderSubComponent?: (row: Row<Data>, rowProps: TableRowProps) => JSX.Element
+  /**
+   * provide this function if you want to have a component appearing over the rows on hover
+   */
+  renderRowHoveredComponent?: (row: Row<Data>) => JSX.Element
+  /**
    * Indicates if the data is currently loading
    */
   isLoading?: boolean
+  /**
+   * Indicates if there shouldn't be a checkbox to check or uncheck all the rows on the current page at the same time
+   * @default false
+   */
+  noToggleAllPageRowsSelected?: boolean
+  /**
+   * Indicates if your `columns` include footers. This prop is here to avoid processing footers node for nothing
+   * @default false
+   */
+  withFooter?: boolean
   /**
    * The classes applied to the different part of the component
    */
@@ -106,6 +128,10 @@ export interface TableBasicProps<Data extends BasicData> extends BasicProps {
    * The styles applied to the different part of the component
    */
   styles?: TableStyles
+}
+
+const defaultColumn: Partial<Column<{ id: string }>> = {
+  width: 100
 }
 
 export type TableProps<Data extends BasicData> = MergeMuiElementProps<
@@ -128,7 +154,10 @@ export const Table = <Data extends BasicData>(props: TableProps<Data>) => {
     className,
     classes,
     styles,
+    withFooter = false,
     onRowClicked,
+    noToggleAllPageRowsSelected = false,
+    renderRowHoveredComponent,
     ...other
   } = props
   const isSelectabale = !!setSelectedRowIds
@@ -142,22 +171,26 @@ export const Table = <Data extends BasicData>(props: TableProps<Data>) => {
               {
                 id: 'expander',
                 accessor: 'expander',
-                Cell: ({ row }: CellProps<Data>) => (
-                  <IconButton {...row.getToggleRowExpandedProps()}>
-                    <Arrow
-                      key='expanderIcon'
-                      color='#353945'
-                      width='20px'
-                      height='20px'
-                      style={{
-                        transform: row.isExpanded
-                          ? 'rotate(90deg)'
-                          : 'rotate(-90deg)',
-                        transition: '0.2s'
-                      }}
-                    />
-                  </IconButton>
-                ),
+                Cell: ({ row }: CellProps<Data>) => {
+                  return (
+                    <div onClick={(e) => e.stopPropagation()}>
+                      <IconButton {...row.getToggleRowExpandedProps()}>
+                        <Arrow
+                          key='expanderIcon'
+                          color='#353945'
+                          width='20px'
+                          height='20px'
+                          style={{
+                            transform: row.isExpanded
+                              ? 'rotate(90deg)'
+                              : 'rotate(-90deg)',
+                            transition: '0.2s'
+                          }}
+                        />
+                      </IconButton>
+                    </div>
+                  )
+                },
                 maxWidth: 50,
                 className: 'AruiTable-actionColumn'
               } as Column<Data>
@@ -172,8 +205,11 @@ export const Table = <Data extends BasicData>(props: TableProps<Data>) => {
                   //@ts-ignore
                   getToggleAllPageRowsSelectedProps
                 }: HeaderProps<Data>) => {
-                  console.log(getToggleAllPageRowsSelectedProps())
-                  return <CheckBox {...getToggleAllPageRowsSelectedProps()} />
+                  return noToggleAllPageRowsSelected ? (
+                    <div />
+                  ) : (
+                    <CheckBox {...getToggleAllPageRowsSelectedProps()} />
+                  )
                 },
                 Cell: ({ row }: CellProps<Data>) => {
                   return (
@@ -191,12 +227,13 @@ export const Table = <Data extends BasicData>(props: TableProps<Data>) => {
         ...columns
       ])
     },
-    [isSelectabale, isExpandable]
+    [isSelectabale, isExpandable, noToggleAllPageRowsSelected]
   )
 
   const {
     getTableProps,
     headerGroups,
+    footerGroups,
     rows,
     prepareRow,
     state: { selectedRowIds }
@@ -210,6 +247,7 @@ export const Table = <Data extends BasicData>(props: TableProps<Data>) => {
       pageCount: totalPages,
       autoResetSelectedRows: false,
       getRowId: (row) => `${row.id}`,
+      defaultColumn: defaultColumn,
       ...tableOptions
     },
     useExpanded,
@@ -231,6 +269,7 @@ export const Table = <Data extends BasicData>(props: TableProps<Data>) => {
         variant === 'elevated'
           ? {
               padding: '0 10px',
+              paddingBottom: '10px',
               boxSizing: 'border-box',
               '& .AruiTable-principaleTableRow:hover': !!onRowClicked
                 ? {
@@ -257,6 +296,8 @@ export const Table = <Data extends BasicData>(props: TableProps<Data>) => {
         (variant === 'elevated' ? (
           <ElevatedBase
             headerGroups={headerGroups}
+            footerGroups={footerGroups}
+            withFooter={withFooter}
             prepareRow={prepareRow}
             rows={rows}
             tableProps={tableProps}
@@ -266,12 +307,15 @@ export const Table = <Data extends BasicData>(props: TableProps<Data>) => {
             selectedRowIds={selectedRowIds}
             page={page}
             renderSubComponent={renderSubComponent}
+            renderRowHoveredComponent={renderRowHoveredComponent}
             styles={styles}
             totalPages={totalPages}
           />
         ) : (
           <GroundedBase
+            withFooter={withFooter}
             headerGroups={headerGroups}
+            footerGroups={footerGroups}
             selectedRowIds={selectedRowIds}
             page={page}
             prepareRow={prepareRow}
@@ -281,6 +325,7 @@ export const Table = <Data extends BasicData>(props: TableProps<Data>) => {
             handlePageChange={handlePageChange}
             onRowClicked={onRowClicked}
             renderSubComponent={renderSubComponent}
+            renderRowHoveredComponent={renderRowHoveredComponent}
             styles={styles}
             totalPages={totalPages}
           />

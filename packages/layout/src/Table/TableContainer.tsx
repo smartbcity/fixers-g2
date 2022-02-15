@@ -30,6 +30,17 @@ export const TableContainer = styled(BasicTableContainer)((props) => {
     },
     '& .AruiTable-pagination': {
       marginTop: '30px'
+    },
+    '& .AruiTable-tableRow': {
+      '& .AruiTable-rowHoveredComponentContainer': {
+        display: 'none'
+      },
+      position: 'relative'
+    },
+    '& .AruiTable-tableRow:hover': {
+      '& .AruiTable-rowHoveredComponentContainer': {
+        display: 'block'
+      }
     }
   }
   if (variant === 'grounded') {
@@ -38,7 +49,7 @@ export const TableContainer = styled(BasicTableContainer)((props) => {
       '& .MuiTableCell-root': {
         borderBottomColor: '#D9DBE1'
       },
-      '& .AruiTable-principaleTableRow': {
+      '& .AruiTable-principaleTableRow, .AruiTable-tableFooterRow': {
         '& > *': { borderBottom: 'unset ' }
       }
     }
@@ -48,20 +59,25 @@ export const TableContainer = styled(BasicTableContainer)((props) => {
       '& .MuiTableCell-root': {
         border: 'unset'
       },
-      '& .AruiTable-principaleTableRow': {
+      '& .AruiTable-principaleTableRow, .AruiTable-tableFooterRow': {
         borderRadius: '4px',
         background: 'white',
         boxShadow: theme.shadows[1],
-        margin: '10p 0px',
-        border: '2px solid transparent'
+        margin: '3px 0px',
+        border: '2px solid transparent',
+        minWidth: 'fit-content !important'
       },
-      '& .AruiTable-tableCell': {
-        padding: '7px 12px',
-        alignSelf: 'center'
+      '& .AruiTable-tableHeaderRow': {
+        minWidth: 'fit-content !important'
       },
-      '& .AruiTable-tableHeaderCell': {
-        padding: '7px 12px',
-        alignSelf: 'center'
+      '& .AruiTable-tableCell, .AruiTable-tableHeaderCell, .AruiTable-tableFooterCell':
+        {
+          padding: '7px 12px',
+          alignSelf: 'center'
+        },
+      '& .AruiTable-table': {
+        display: 'inline-block',
+        width: '100%'
       }
     }
   }
