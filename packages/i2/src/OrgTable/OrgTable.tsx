@@ -1,5 +1,5 @@
 import { Box, Stack, Typography } from '@mui/material'
-import { Link } from '@smartb/g2-components'
+import { Link, MenuItem, MoreOptions } from '@smartb/g2-components'
 import { Column, Table, TableProps, CellProps } from '@smartb/g2-layout'
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 import React, { useCallback, useMemo, useState } from 'react'
@@ -23,6 +23,10 @@ export interface OrgTableBasicProps extends BasicProps {
    * The props passes to the filters component
    */
   filtersProps?: Partial<OrgFiltersProps>
+  /**
+   * The actions available on a organization
+   */
+  getActions?: (org: Organization) => MenuItem<{}>[]
 }
 
 export type OrgTableProps = MergeMuiElementProps<
@@ -36,6 +40,7 @@ export const OrgTable = (props: OrgTableProps) => {
     initialFiltersValues,
     onFetchOrganizations,
     filtersProps,
+    getActions,
     ...other
   } = props
   const [page, setPage] = useState(initialFiltersValues?.page ?? 1)
@@ -129,9 +134,19 @@ export const OrgTable = (props: OrgTableProps) => {
             {row.original.website}
           </Link>
         )
-      }
+      },
+      ...(!!getActions
+        ? [
+            {
+              id: 'moreoptions',
+              Cell: ({ row }: CellProps<Organization>) => (
+                <MoreOptions options={getActions(row.original)} />
+              )
+            }
+          ]
+        : [])
     ],
-    []
+    [getActions]
   )
 
   return (
