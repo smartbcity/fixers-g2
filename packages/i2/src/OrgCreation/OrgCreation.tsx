@@ -85,7 +85,6 @@ export interface OrgCreationBasicProps extends BasicProps {
   getInseeOrganization?: (siret: string) => Promise<Organization | undefined>
   /**
    * The submit event
-   * @default 'Valider'
    * @param organization the complete organization object after form validation
    * @returns true if the api call has been successfull
    */

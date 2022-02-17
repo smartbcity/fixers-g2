@@ -44,7 +44,7 @@ export type Field = {
   /**
    * the validator that takes the value of the input and return an error or undefined/nothing if the value is valid
    */
-  validator?: (value: any) => string | undefined
+  validator?: (value: any, values: any) => string | undefined
   /**
    * if you want to add other nodes around the input use this function
    */

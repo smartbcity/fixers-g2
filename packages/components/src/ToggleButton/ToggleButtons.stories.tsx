@@ -37,7 +37,6 @@ export const ToggleButtons: Story<ToggleButtonsBasicProps> = (
     string | number | (string | number)[] | undefined
   >(undefined)
   return (
-    //@ts-ignore
     <AruiToggleButtons
       value={value}
       values={value}
