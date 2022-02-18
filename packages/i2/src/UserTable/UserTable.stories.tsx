@@ -1,15 +1,15 @@
 import { Meta } from '@storybook/react'
 import React from 'react'
-import { OrgTable, OrgTableProps } from './OrgTable'
+import { UserTable, UserTableProps } from './UserTable'
 import { Story } from '@storybook/react/types-6-0'
 import { ArgsTable, PRIMARY_STORY, Subtitle } from '@storybook/addon-docs'
 import LinkTo from '@storybook/addon-links/react'
 import { Stack, Typography } from '@mui/material'
-import { Organization } from '../OrgCreation/types'
+import { User } from '../UserCreation/types'
 
 export default {
-  title: 'I2/OrgTable',
-  component: OrgTable,
+  title: 'I2/UserTable',
+  component: UserTable,
   parameters: {
     docs: {
       page: () => (
@@ -36,37 +36,62 @@ export default {
   }
 } as Meta
 
-export const OrgTableStory: Story<OrgTableProps> = (args: OrgTableProps) => {
-  return <OrgTable {...args} />
+export const UserTableStory: Story<UserTableProps> = (args: UserTableProps) => {
+  return <UserTable {...args} />
 }
 
-const organizations: Organization[] = [
+const users: User[] = [
   {
-    name: 'Smartb',
+    id: '1',
+    givenName: 'Basile',
+    familyName: 'Savouret',
     address: {
       street: '2 Rue du Pavillon',
       postalCode: '34000',
       city: 'Montpellier'
     },
-    siret: '12345678912345',
-    website: 'https://smartb.city'
+    mail: 'savouret.basile@gmail.com',
+    memberOf: {
+      id: '1',
+      name: 'Smartb'
+    }
   },
   {
-    name: 'Smartb',
+    id: '2',
+    givenName: 'Basile',
+    familyName: 'Savouret',
     address: {
       street: '2 Rue du Pavillon',
       postalCode: '34000',
       city: 'Montpellier'
     },
-    siret: '12345678912345',
-    website: 'https://smartb.city'
+    mail: 'savouret.basile@gmail.com',
+    memberOf: {
+      id: '1',
+      name: 'Smartb'
+    }
+  },
+  {
+    id: '3',
+    givenName: 'Basile',
+    familyName: 'Savouret',
+    address: {
+      street: '2 Rue du Pavillon',
+      postalCode: '34000',
+      city: 'Montpellier'
+    },
+    mail: 'savouret.basile@gmail.com',
+    memberOf: {
+      id: '1',
+      name: 'Smartb'
+    }
   }
 ]
 
-OrgTableStory.args = {
-  organizations: organizations,
+UserTableStory.args = {
+  users: users,
   totalPages: 10,
-  onFetchOrganizations: (page, search) => console.log(page, search)
+  onFetchUsers: (page, search) => console.log(page, search)
 }
 
-OrgTableStory.storyName = 'OrgTable'
+UserTableStory.storyName = 'UserTable'
