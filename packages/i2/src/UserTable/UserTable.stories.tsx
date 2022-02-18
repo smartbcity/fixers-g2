@@ -58,8 +58,8 @@ const users: User[] = [
   },
   {
     id: '2',
-    givenName: 'Basile',
-    familyName: 'Savouret',
+    givenName: 'Teddy',
+    familyName: 'Lee',
     address: {
       street: '2 Rue du Pavillon',
       postalCode: '34000',
