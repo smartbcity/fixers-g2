@@ -30,10 +30,10 @@ const StyledStack = styled(Stack)({
   '& .MuiInputLabel-root': {
     whiteSpace: 'break-spaces'
   },
-  '& .AruiUserCreation-submitForm': {
+  '& .AruiUserFactory-submitForm': {
     marginTop: '20px'
   },
-  '& .AruiUserCreation-sendEmailLink': {
+  '& .AruiUserFactory-sendEmailLink': {
     margin: '20px 0',
     marginTop: '30px'
   }
@@ -43,19 +43,19 @@ export type Validated = boolean
 
 const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}/i
 
-export interface UserCreationClasses {
+export interface UserFactoryClasses {
   leftForm?: string
   rightForm?: string
   actionsContainer?: string
 }
 
-export interface UserCreationStyles {
+export interface UserFactoryStyles {
   leftForm?: React.CSSProperties
   rightForm?: React.CSSProperties
   actionsContainer?: React.CSSProperties
 }
 
-export interface UserCreationBasicProps extends BasicProps {
+export interface UserFactoryBasicProps extends BasicProps {
   /**
    * The base user
    */
@@ -79,19 +79,19 @@ export interface UserCreationBasicProps extends BasicProps {
   /**
    * The classes applied to the different part of the component
    */
-  classes?: UserCreationClasses
+  classes?: UserFactoryClasses
   /**
    * The styles applied to the different part of the component
    */
-  styles?: UserCreationStyles
+  styles?: UserFactoryStyles
 }
 
-export type UserCreationProps = MergeMuiElementProps<
+export type UserFactoryProps = MergeMuiElementProps<
   StackProps,
-  UserCreationBasicProps
+  UserFactoryBasicProps
 >
 
-export const UserCreation = (props: UserCreationProps) => {
+export const UserFactory = (props: UserFactoryProps) => {
   const {
     user,
     onSubmit,
@@ -180,28 +180,6 @@ export const UserCreation = (props: UserCreationProps) => {
           const trimmed = (value ?? '').trim()
           if (trimmed && trimmed.length != 10)
             return 'Le numéro de téléphone doit contenir dix chiffre'
-          return undefined
-        }
-      },
-      {
-        name: 'password',
-        defaultValue: user?.password,
-        validator: (value?: string, values?: any) => {
-          const trimmed = (value ?? '').trim()
-          const link =
-            typeof values['sendEmailLink'] === 'boolean'
-              ? values['sendEmailLink']
-              : values['sendEmailLink'] === 'true'
-          if (link) {
-            if (!trimmed && !isUpdate) return undefined
-            if (trimmed.length < 8)
-              return 'Le mot de passe temporaire doit contenir au moins 8 caractère'
-            return undefined
-          }
-          if (!trimmed && !isUpdate)
-            return "Vous devez renseigner le mot de passe de l'utilisateur si vous ne lui envoyez pas de lien" as string
-          if (trimmed.length < 8)
-            return 'Le mot de passe temporaire doit contenir au moins 8 caractère'
           return undefined
         }
       },
@@ -311,7 +289,7 @@ export const UserCreation = (props: UserCreationProps) => {
               type: 'checkbox',
               label: "Envoyer un lien d'invitation par mail",
               checkBoxProps: {
-                className: 'AruiUserCreation-sendEmailLink'
+                className: 'AruiUserFactory-sendEmailLink'
               }
             } as FormField
           ]
@@ -328,7 +306,7 @@ export const UserCreation = (props: UserCreationProps) => {
         success: feedback !== undefined && feedback,
         fail: feedback !== undefined && !feedback,
         onClick: formState.submitForm,
-        className: 'AruiUserCreation-submitForm'
+        className: 'AruiUserFactory-submitForm'
       }
     ],
     [submitButtonLabel, formState.submitForm, feedback]
@@ -341,12 +319,12 @@ export const UserCreation = (props: UserCreationProps) => {
       flexWrap='wrap'
       justifyContent='space-between'
       direction='row'
-      className={cx('AruiUserCreation-root', className)}
+      className={cx('AruiUserFactory-root', className)}
       {...other}
     >
       <Form
         className={cx(
-          'AruiUserCreation-leftForm',
+          'AruiUserFactory-leftForm',
           'mainFormLeft',
           classes?.leftForm
         )}
@@ -356,7 +334,7 @@ export const UserCreation = (props: UserCreationProps) => {
       />
       <Form
         className={cx(
-          'AruiUserCreation-rightForm',
+          'AruiUserFactory-rightForm',
           'mainFormRight',
           classes?.rightForm
         )}
@@ -369,7 +347,7 @@ export const UserCreation = (props: UserCreationProps) => {
           justifyContent: 'flex-end',
           width: '100%',
           className: cx(
-            'AruiUserCreation-actionsContainer',
+            'AruiUserFactory-actionsContainer',
             classes?.actionsContainer
           ),
           style: styles?.actionsContainer

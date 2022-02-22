@@ -43,31 +43,17 @@ export interface FlatOrganization {
   city: string
 }
 
-export type Command = {
-  auth: AuthRealm
-  realmId: string
-}
+export type OrganizationUpdateCommand = Organization
 
-export type AuthRealm = {
-  serverUrl: string
-  realmId: string
-  clientId: string
-  redirectUrl: string
-  username: string
-  password: string
-}
+export type OrganizationCreateCommand = Organization
 
-export type OrganizationUpdateCommand = Command & Organization
-
-export type OrganizationCreateCommand = Command & Organization
-
-export type OrganizationGetAllQuery = Command & {
+export type OrganizationGetAllQuery = {
   search?: string
   page: number
   size: number
 }
 
-export type OrganizationGetByIdQuery = Command & {
+export type OrganizationGetByIdQuery = {
   id: string
 }
 

@@ -9,14 +9,14 @@ export const styles = `export interface UserCreationStyles {
   actionsContainer?: React.CSSProperties
 }`
 
-type organizationRef = {
+export type OrganizationRef = {
   id: string
   name: string
 }
 
 export interface User {
   id: string
-  memberOf: organizationRef
+  memberOf?: OrganizationRef
   familyName: string
   givenName: string
   address: Address
@@ -34,12 +34,11 @@ export interface Address {
 
 export interface FlatUser {
   id: string
-  memberOf: organizationRef
+  memberOf?: OrganizationRef
   familyName: string
   givenName: string
   mail: string
   phone?: string
-  password?: string
   sendEmailLink?: boolean
   street: string
   postalCode: string

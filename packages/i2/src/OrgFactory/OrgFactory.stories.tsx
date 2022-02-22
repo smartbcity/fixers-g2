@@ -1,6 +1,6 @@
 import { Meta } from '@storybook/react'
 import React from 'react'
-import { OrgCreation, OrgCreationProps } from './OrgCreation'
+import { OrgFactory, OrgFactoryProps } from './OrgFactory'
 import { Story } from '@storybook/react/types-6-0'
 import { ArgsTable, PRIMARY_STORY, Subtitle } from '@storybook/addon-docs'
 import LinkTo from '@storybook/addon-links/react'
@@ -8,8 +8,8 @@ import { Stack, Typography } from '@mui/material'
 import { styles, classes } from './types'
 
 export default {
-  title: 'I2/OrgCreation',
-  component: OrgCreation,
+  title: 'I2/OrgFactory',
+  component: OrgFactory,
   parameters: {
     docs: {
       page: () => (
@@ -38,7 +38,7 @@ export default {
     classes: {
       table: {
         type: {
-          summary: 'OrgCreationClasses',
+          summary: 'OrgFactoryClasses',
           detail: classes
         }
       }
@@ -46,7 +46,7 @@ export default {
     styles: {
       table: {
         type: {
-          summary: 'OrgCreationStyles',
+          summary: 'OrgFactoryStyles',
           detail: styles
         }
       }
@@ -54,14 +54,14 @@ export default {
   }
 } as Meta
 
-export const OrgCreationStory: Story<OrgCreationProps> = (
-  args: OrgCreationProps
+export const OrgFactoryStory: Story<OrgFactoryProps> = (
+  args: OrgFactoryProps
 ) => {
-  return <OrgCreation {...args} />
+  return <OrgFactory {...args} />
 }
 
-OrgCreationStory.args = {
+OrgFactoryStory.args = {
   onSubmit: (org) => console.log(org)
 }
 
-OrgCreationStory.storyName = 'OrgCreation'
+OrgFactoryStory.storyName = 'OrgFactory'

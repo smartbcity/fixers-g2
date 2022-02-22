@@ -1,7 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import reportWebVitals from "reportWebVitals";
-import { AppProvider, KeycloakProvider } from "@smartb/g2-providers";
+import {
+  AppProvider,
+  KeycloakProvider,
+  useKeycloak,
+} from "@smartb/g2-providers";
 import { languages } from "i18n";
 import { history, store } from "store";
 import { ThemeContextProvider } from "@smartb/g2-themes";

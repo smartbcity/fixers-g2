@@ -3,7 +3,7 @@ import { Link, MenuItem, MoreOptions } from '@smartb/g2-components'
 import { Column, Table, TableProps, CellProps } from '@smartb/g2-layout'
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 import React, { useCallback, useMemo, useState } from 'react'
-import { Organization } from '../OrgCreation/types'
+import { Organization } from '../OrgFactory/types'
 import { OrgFilters, OrgFiltersProps } from './OrgFilters'
 
 export interface OrgTableBasicProps extends BasicProps {
@@ -14,7 +14,7 @@ export interface OrgTableBasicProps extends BasicProps {
   /**
    * The initial values of the filters
    */
-  initialFiltersValues?: { search?: string; page?: number }
+  initialFiltersValues?: { page?: number; search?: string }
   /**
    * The event called when the filters are submitted or when the pagination updates
    */
@@ -151,7 +151,11 @@ export const OrgTable = (props: OrgTableProps) => {
 
   return (
     <>
-      <OrgFilters onSubmit={onSubmitFilters} {...filtersProps} />
+      <OrgFilters
+        onSubmit={onSubmitFilters}
+        defaultSearch={initialFiltersValues?.search}
+        {...filtersProps}
+      />
       <Table<Organization>
         page={page}
         handlePageChange={onChangePage}

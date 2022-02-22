@@ -6,10 +6,11 @@ import {
   FiltersProps
 } from '@smartb/g2-forms'
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
-import React from 'react'
+import React, { useMemo } from 'react'
 
 export interface OrgFiltersBasicProps extends BasicProps {
   onSubmit: (values: { search?: string }) => void
+  defaultSearch?: string
 }
 
 export type OrgFiltersProps = MergeMuiElementProps<
@@ -18,20 +19,24 @@ export type OrgFiltersProps = MergeMuiElementProps<
 >
 
 export const OrgFilters = (props: OrgFiltersProps) => {
-  const { onSubmit, ...other } = props
+  const { onSubmit, defaultSearch, ...other } = props
 
-  const fields: FiltersField[] = [
-    {
-      key: 'search',
-      name: 'search',
-      label: 'Rechercher',
-      type: 'textfield',
-      textFieldProps: {
-        textFieldType: 'search',
-        className: 'searchFilter'
+  const fields = useMemo(
+    (): FiltersField[] => [
+      {
+        key: 'search',
+        name: 'search',
+        defaultValue: defaultSearch,
+        label: 'Rechercher',
+        type: 'textfield',
+        textFieldProps: {
+          textFieldType: 'search',
+          className: 'searchFilter'
+        }
       }
-    }
-  ]
+    ],
+    [defaultSearch]
+  )
 
   const formState = useFilters({
     fields: fields,

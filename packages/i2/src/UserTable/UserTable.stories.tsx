@@ -5,7 +5,7 @@ import { Story } from '@storybook/react/types-6-0'
 import { ArgsTable, PRIMARY_STORY, Subtitle } from '@storybook/addon-docs'
 import LinkTo from '@storybook/addon-links/react'
 import { Stack, Typography } from '@mui/material'
-import { User } from '../UserCreation/types'
+import { User } from '../UserFactory/types'
 
 export default {
   title: 'I2/UserTable',
@@ -91,7 +91,8 @@ const users: User[] = [
 UserTableStory.args = {
   users: users,
   totalPages: 10,
-  onFetchUsers: (page, search) => console.log(page, search)
+  onFetchUsers: (page, search) => console.log(page, search),
+  organizationsRefs: []
 }
 
 UserTableStory.storyName = 'UserTable'

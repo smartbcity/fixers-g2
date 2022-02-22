@@ -1,29 +1,26 @@
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 import React, { useCallback, useEffect } from 'react'
 import { request, useAsyncResponse } from 'utils'
-import {
-  Command,
-  OrganizationGetAllQuery,
-  Organization
-} from '../OrgCreation/types'
+import { OrganizationGetAllQuery, Organization } from '../OrgFactory/types'
 import { OrgTable, OrgTableProps } from './OrgTable'
 
-const commandBase: Command = {
-  auth: {
-    serverUrl: 'https://auth.smart-b.io/auth',
-    realmId: 'master',
-    clientId: 'admin-cli',
-    redirectUrl: '',
-    username: 'smartb',
-    password: 'conorS'
-  },
-  realmId: 'test'
-}
-
 export interface AutomatedOrgTableBasicProps extends BasicProps {
+  /**
+   * The api url where to make the locals api calls
+   */
   apiUrl: string
+  /**
+   * The token to authorize the api calls
+   */
   jwt?: string
-  initialFiltersValues?: { search?: string; page?: number }
+  /**
+   * The initial states of the filters
+   */
+  initialFiltersValues?: { page?: number; search?: string }
+  /**
+   * The event called when the filters changes
+   */
+  submitted?: (params: { page?: number; search?: string }) => void
 }
 
 export type AutomatedOrgTableProps = MergeMuiElementProps<
@@ -32,7 +29,7 @@ export type AutomatedOrgTableProps = MergeMuiElementProps<
 >
 
 export const AutomatedOrgTable = (props: AutomatedOrgTableProps) => {
-  const { apiUrl, jwt, initialFiltersValues, ...other } = props
+  const { apiUrl, jwt, initialFiltersValues, submitted, ...other } = props
 
   const getOrganizations = useCallback(
     async (params?: { page?: number; search?: string }) => {
@@ -41,7 +38,6 @@ export const AutomatedOrgTable = (props: AutomatedOrgTableProps) => {
         method: 'POST',
         body: JSON.stringify({
           ...params,
-          ...commandBase,
           size: 10
         } as OrganizationGetAllQuery),
         jwt: jwt
@@ -64,8 +60,9 @@ export const AutomatedOrgTable = (props: AutomatedOrgTableProps) => {
   const onFetchOrganizations = useCallback(
     (page: number, search?: string | undefined) => {
       execute({ page: page, search: search })
+      submitted && submitted({ page: page, search: search })
     },
-    [execute]
+    [execute, submitted]
   )
 
   return (

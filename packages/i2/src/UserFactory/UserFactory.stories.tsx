@@ -1,6 +1,6 @@
 import { Meta } from '@storybook/react'
 import React from 'react'
-import { UserCreation, UserCreationProps } from './UserCreation'
+import { UserFactory, UserFactoryProps } from './UserFactory'
 import { Story } from '@storybook/react/types-6-0'
 import { ArgsTable, PRIMARY_STORY, Subtitle } from '@storybook/addon-docs'
 import LinkTo from '@storybook/addon-links/react'
@@ -8,8 +8,8 @@ import { Stack, Typography } from '@mui/material'
 import { styles, classes } from './types'
 
 export default {
-  title: 'I2/UserCreation',
-  component: UserCreation,
+  title: 'I2/UserFactory',
+  component: UserFactory,
   parameters: {
     docs: {
       page: () => (
@@ -32,7 +32,7 @@ export default {
     classes: {
       table: {
         type: {
-          summary: 'UserCreationClasses',
+          summary: 'UserFactoryClasses',
           detail: classes
         }
       }
@@ -40,7 +40,7 @@ export default {
     styles: {
       table: {
         type: {
-          summary: 'UserCreationStyles',
+          summary: 'UserFactoryStyles',
           detail: styles
         }
       }
@@ -48,14 +48,14 @@ export default {
   }
 } as Meta
 
-export const UserCreationStory: Story<UserCreationProps> = (
-  args: UserCreationProps
+export const UserFactoryStory: Story<UserFactoryProps> = (
+  args: UserFactoryProps
 ) => {
-  return <UserCreation {...args} />
+  return <UserFactory {...args} />
 }
 
-UserCreationStory.args = {
+UserFactoryStory.args = {
   onSubmit: (user) => console.log(user)
 }
 
-UserCreationStory.storyName = 'UserCreation'
+UserFactoryStory.storyName = 'UserFactory'

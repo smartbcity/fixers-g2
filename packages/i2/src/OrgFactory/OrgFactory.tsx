@@ -55,7 +55,7 @@ const StyledPopover = styled(Popover)({
   maxWidth: '450px'
 })
 
-export interface OrgCreationClasses {
+export interface OrgFactoryClasses {
   siretForm?: string
   leftForm?: string
   rightForm?: string
@@ -64,7 +64,7 @@ export interface OrgCreationClasses {
   infoPopover?: string
 }
 
-export interface OrgCreationStyles {
+export interface OrgFactoryStyles {
   siretForm?: React.CSSProperties
   leftForm?: React.CSSProperties
   rightForm?: React.CSSProperties
@@ -73,7 +73,7 @@ export interface OrgCreationStyles {
   infoPopover?: React.CSSProperties
 }
 
-export interface OrgCreationBasicProps extends BasicProps {
+export interface OrgFactoryBasicProps extends BasicProps {
   /**
    * The base organization. If it's given the component should be considered as an updater of the object
    */
@@ -97,19 +97,19 @@ export interface OrgCreationBasicProps extends BasicProps {
   /**
    * The classes applied to the different part of the component
    */
-  classes?: OrgCreationClasses
+  classes?: OrgFactoryClasses
   /**
    * The styles applied to the different part of the component
    */
-  styles?: OrgCreationStyles
+  styles?: OrgFactoryStyles
 }
 
-export type OrgCreationProps = MergeMuiElementProps<
+export type OrgFactoryProps = MergeMuiElementProps<
   StackProps,
-  OrgCreationBasicProps
+  OrgFactoryBasicProps
 >
 
-export const OrgCreation = (props: OrgCreationProps) => {
+export const OrgFactory = (props: OrgFactoryProps) => {
   const {
     organization,
     onSubmit,
@@ -346,11 +346,11 @@ export const OrgCreation = (props: OrgCreationProps) => {
       maxWidth='650px'
       spacing={2}
       onFocus={onCloseSiretInfo}
-      className={cx('AruiOrgCreation-root', className)}
+      className={cx('AruiOrgFactory-root', className)}
       {...other}
     >
       <Form
-        className={cx('AruiOrgCreation-siretForm', classes?.siretForm)}
+        className={cx('AruiOrgFactory-siretForm', classes?.siretForm)}
         style={styles?.siretForm}
         fields={siret}
         formState={formState}
@@ -363,7 +363,7 @@ export const OrgCreation = (props: OrgCreationProps) => {
       >
         <Form
           className={cx(
-            'AruiOrgCreation-leftForm',
+            'AruiOrgFactory-leftForm',
             'mainFormLeft',
             classes?.leftForm
           )}
@@ -374,7 +374,7 @@ export const OrgCreation = (props: OrgCreationProps) => {
         <Stack>
           <Box
             className={cx(
-              'AruiOrgCreation-dropPictureBox',
+              'AruiOrgFactory-dropPictureBox',
               classes?.dropPictureBox
             )}
             style={styles?.dropPictureBox}
@@ -409,7 +409,7 @@ export const OrgCreation = (props: OrgCreationProps) => {
           </Box>
           <Form
             className={cx(
-              'AruiOrgCreation-rightForm',
+              'AruiOrgFactory-rightForm',
               'mainFormRight',
               classes?.rightForm
             )}
@@ -421,7 +421,7 @@ export const OrgCreation = (props: OrgCreationProps) => {
       </Stack>
       <Stack
         className={cx(
-          'AruiOrgCreation-actionsContainer',
+          'AruiOrgFactory-actionsContainer',
           classes?.actionsContainer
         )}
         style={styles?.actionsContainer}
@@ -445,7 +445,7 @@ export const OrgCreation = (props: OrgCreationProps) => {
           onClose={onCloseSiretInfo}
           anchorEl={siretRef}
           placement='bottom'
-          className={cx('AruiOrgCreation-infoPopover', classes?.infoPopover)}
+          className={cx('AruiOrgFactory-infoPopover', classes?.infoPopover)}
           style={styles?.infoPopover}
         >
           <Typography variant='body1'>

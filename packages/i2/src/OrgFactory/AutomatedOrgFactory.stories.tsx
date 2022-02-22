@@ -1,21 +1,21 @@
 import React from 'react'
 import { Meta } from '@storybook/react'
 import {
-  AutomatedOrgCreation,
-  AutomatedOrgCreationBasicProps as AutomatedOrgCreationProps
-} from './AutomatedOrgCreation'
+  AutomatedOrgFactory,
+  AutomatedOrgFactoryBasicProps as AutomatedOrgFactoryProps
+} from './AutomatedOrgFactory'
 import { Story } from '@storybook/react/types-6-0'
 import { KeycloakProvider, useAuth } from '@smartb/g2-providers'
 import { Typography } from '@mui/material'
 import { useState } from 'react'
 
 export default {
-  title: 'I2/AutomatedOrgCreation',
-  component: AutomatedOrgCreation
+  title: 'I2/AutomatedOrgFactory',
+  component: AutomatedOrgFactory
 } as Meta
 
-export const AutomatedOrgCreationStory: Story<AutomatedOrgCreationProps> = (
-  args: AutomatedOrgCreationProps
+export const AutomatedOrgFactoryStory: Story<AutomatedOrgFactoryProps> = (
+  args: AutomatedOrgFactoryProps
 ) => {
   return (
     <KeycloakProvider
@@ -32,14 +32,14 @@ export const AutomatedOrgCreationStory: Story<AutomatedOrgCreationProps> = (
   )
 }
 
-const Following = (args: AutomatedOrgCreationProps) => {
+const Following = (args: AutomatedOrgFactoryProps) => {
   const [organizationId, setorganizationId] = useState<string | undefined>(
     'ec1a059a-b6de-4c17-9466-12e1dde4eff0'
   )
   const { keycloak } = useAuth()
   if (!keycloak.authenticated) return <></>
   return (
-    <AutomatedOrgCreation
+    <AutomatedOrgFactory
       submitted={(org) => setorganizationId(org.id)}
       organizationId={organizationId}
       update={!!organizationId}
@@ -49,8 +49,8 @@ const Following = (args: AutomatedOrgCreationProps) => {
   )
 }
 
-AutomatedOrgCreationStory.args = {
+AutomatedOrgFactoryStory.args = {
   apiUrl: 'http://localhost:9090'
 }
 
-AutomatedOrgCreationStory.storyName = 'AutomatedOrgCreation'
+AutomatedOrgFactoryStory.storyName = 'AutomatedOrgFactory'

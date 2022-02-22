@@ -5,7 +5,7 @@ import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 import React, { useCallback, useMemo, useState } from 'react'
 import { UserFilters, UserFiltersProps } from './UserFilters'
 import { stringToAvatarAttributs } from 'utils'
-import { User } from '../UserCreation/types'
+import { User, OrganizationRef } from '../UserFactory/types'
 
 export interface UserTableBasicProps extends BasicProps {
   /**
@@ -15,11 +15,19 @@ export interface UserTableBasicProps extends BasicProps {
   /**
    * The initial values of the filters
    */
-  initialFiltersValues?: { search?: string; page?: number }
+  initialFiltersValues?: {
+    page?: number
+    search?: string
+    organizationId?: string
+  }
+  /**
+   * The organizationRefs are essentials for the filter organizations
+   */
+  organizationsRefs?: OrganizationRef[]
   /**
    * The event called when the filters are submitted or when the pagination updates
    */
-  onFetchUsers: (page: number, search?: string) => void
+  onFetchUsers: (page: number, search?: string, organizationId?: string) => void
   /**
    * The props passes to the filters component
    */
@@ -47,24 +55,29 @@ export const UserTable = (props: UserTableProps) => {
     filtersProps,
     getActions,
     getOrganizationUrl,
+    organizationsRefs,
     ...other
   } = props
   const [page, setPage] = useState(initialFiltersValues?.page ?? 1)
-  const [filters, setFilters] = useState<{ search?: string } | undefined>(
-    initialFiltersValues
-  )
+  const [filters, setFilters] = useState<
+    { search?: string; organizationId?: string } | undefined
+  >(initialFiltersValues)
 
   const onFetch = useCallback(
-    (pageNumber?: number, search?: string) => {
-      onFetchUsers(pageNumber ?? page, search ?? filters?.search)
+    (pageNumber?: number, search?: string, organizationId?: string) => {
+      onFetchUsers(
+        pageNumber ?? page,
+        search ?? filters?.search,
+        organizationId ?? filters?.organizationId
+      )
     },
-    [onFetchUsers, filters?.search, page]
+    [onFetchUsers, filters?.search, filters?.organizationId, page]
   )
 
   const onSubmitFilters = useCallback(
-    (values: { search?: string }) => {
+    (values: { search?: string; organizationId?: string }) => {
       setFilters(values)
-      onFetch(undefined, values.search)
+      onFetch(undefined, values.search, values.organizationId)
     },
     [onFetch]
   )
@@ -129,21 +142,28 @@ export const UserTable = (props: UserTableProps) => {
         ),
         width: 250
       },
-      {
-        Header: 'Organization',
-        accessor: 'memberOf',
-        Cell: ({ row }: CellProps<User>) => {
-          if (!!getOrganizationUrl) {
-            return (
-              <Link href={getOrganizationUrl(row.original.memberOf.id)}>
-                {row.original.memberOf.name}
-              </Link>
-            )
-          }
-          return <Typography>{row.original.memberOf.name}</Typography>
-        },
-        width: 150
-      },
+      ...(!!users[0] && !!users[0].memberOf
+        ? [
+            {
+              Header: 'Organization',
+              accessor: 'memberOf',
+              Cell: ({ row }: CellProps<User>) => {
+                if (!!getOrganizationUrl && row.original.memberOf?.id) {
+                  return (
+                    <Link
+                      href={getOrganizationUrl(row.original.memberOf?.id)}
+                      target='_blank'
+                    >
+                      {row.original.memberOf?.name}
+                    </Link>
+                  )
+                }
+                return <Typography>{row.original.memberOf?.name}</Typography>
+              },
+              width: 150
+            } as Column<User>
+          ]
+        : []),
       ...(!!getActions
         ? [
             {
@@ -160,7 +180,12 @@ export const UserTable = (props: UserTableProps) => {
 
   return (
     <>
-      <UserFilters onSubmit={onSubmitFilters} {...filtersProps} />
+      <UserFilters
+        organizationsRefs={organizationsRefs}
+        onSubmit={onSubmitFilters}
+        defaultSearch={initialFiltersValues?.search}
+        {...filtersProps}
+      />
       <Table<User>
         page={page}
         handlePageChange={onChangePage}

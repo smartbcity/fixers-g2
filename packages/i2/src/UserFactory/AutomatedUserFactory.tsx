@@ -1,10 +1,11 @@
+import { unstable_createMuiStrictModeTheme } from '@mui/material'
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 import React, { useCallback } from 'react'
 import { request, useAsyncResponse } from 'utils'
 import { User } from './types'
-import { UserCreation, UserCreationProps } from './UserCreation'
+import { UserFactory, UserFactoryProps } from './UserFactory'
 
-export interface AutomatedUserCreationBasicProps extends BasicProps {
+export interface AutomatedUserFactoryBasicProps extends BasicProps {
   /**
    * The api url where to make the locals api calls
    */
@@ -19,7 +20,7 @@ export interface AutomatedUserCreationBasicProps extends BasicProps {
    */
   update?: boolean
   /**
-   * The organizationId of the user.⚠️ You have to provide it if `update` is false
+   * The organizationId of the user.⚠️ You have to provide it if `update` is false and the organization module is activated
    */
   organizationId?: string
   /**
@@ -32,12 +33,12 @@ export interface AutomatedUserCreationBasicProps extends BasicProps {
   submitted?: (user: User) => void
 }
 
-export type AutomatedUserCreationProps = MergeMuiElementProps<
-  UserCreationProps,
-  AutomatedUserCreationBasicProps
+export type AutomatedUserFactoryProps = MergeMuiElementProps<
+  UserFactoryProps,
+  AutomatedUserFactoryBasicProps
 >
 
-export const AutomatedUserCreation = (props: AutomatedUserCreationProps) => {
+export const AutomatedUserFactory = (props: AutomatedUserFactoryProps) => {
   const {
     apiUrl,
     jwt,
@@ -52,7 +53,7 @@ export const AutomatedUserCreation = (props: AutomatedUserCreationProps) => {
       url: `${apiUrl}/getUser`,
       method: 'POST',
       body: JSON.stringify({
-        id: userId
+        id: unstable_createMuiStrictModeTheme
       }),
       jwt: jwt
     })
@@ -61,7 +62,7 @@ export const AutomatedUserCreation = (props: AutomatedUserCreationProps) => {
     } else {
       return undefined
     }
-  }, [apiUrl, jwt, userId])
+  }, [apiUrl, jwt])
 
   const { result, status } = useAsyncResponse(getUser, update)
 
@@ -88,7 +89,10 @@ export const AutomatedUserCreation = (props: AutomatedUserCreationProps) => {
       const res = await request<{ id: string }[]>({
         url: `${apiUrl}/createUser`,
         method: 'POST',
-        body: JSON.stringify(user),
+        body: JSON.stringify({
+          ...user,
+          memberOf: { id: organizationId }
+        } as User),
         jwt: jwt
       })
       if (res) {
@@ -98,12 +102,12 @@ export const AutomatedUserCreation = (props: AutomatedUserCreationProps) => {
         return false
       }
     },
-    [apiUrl, jwt, submitted]
+    [apiUrl, jwt, submitted, organizationId]
   )
 
   if (update && status !== 'SUCCESS') return <></>
   return (
-    <UserCreation
+    <UserFactory
       user={result?.user}
       onSubmit={update ? updateUser : createUser}
       submitButtonLabel={update ? 'Mettre à jour' : 'Créer'}
