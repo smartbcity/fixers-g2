@@ -8,13 +8,22 @@ import {
 } from '@smartb/g2-forms'
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 import React, { useMemo } from 'react'
+import { UserTableBlockedFilters } from '.'
 import { OrganizationRef } from '..'
 
+export type UserFilters = {
+  search?: string
+  organizationId?: string
+  role?: string
+}
+
 export interface UserFiltersBasicProps extends BasicProps {
-  onSubmit: (values: { search?: string }) => void
-  defaultSearch?: string
-  defaultOrganizationId?: string
+  onSubmit: (values: any) => void
+  initialFiltersValues?: UserFilters
   organizationsRefs?: OrganizationRef[]
+  rolesOptions?: Option[]
+  blockedFilters?: UserTableBlockedFilters
+  TableActions?: React.ReactNode
 }
 
 export type UserFiltersProps = MergeMuiElementProps<
@@ -25,9 +34,11 @@ export type UserFiltersProps = MergeMuiElementProps<
 export const UserFilters = (props: UserFiltersProps) => {
   const {
     onSubmit,
-    defaultOrganizationId,
-    defaultSearch,
+    initialFiltersValues,
     organizationsRefs,
+    blockedFilters,
+    rolesOptions,
+    TableActions,
     ...other
   } = props
 
@@ -42,33 +53,51 @@ export const UserFilters = (props: UserFiltersProps) => {
           )
         : undefined
     return [
-      {
-        key: 'search',
-        name: 'search',
-        label: 'Rechercher',
-        defaultValue: defaultSearch,
-        type: 'textfield',
-        textFieldProps: {
-          textFieldType: 'search',
-          className: 'searchFilter'
-        }
-      },
-      ...(!!orgsOptions
+      ...(!blockedFilters?.search
+        ? [
+            {
+              key: 'search',
+              name: 'search',
+              label: 'Rechercher',
+              defaultValue: initialFiltersValues?.search,
+              type: 'textfield',
+              textFieldProps: {
+                textFieldType: 'search',
+                className: 'searchFilter'
+              }
+            } as FiltersField
+          ]
+        : []),
+      ...(!!orgsOptions && !blockedFilters?.organizationId
         ? [
             {
               key: 'organizationId',
               name: 'organizationId',
               label: 'Organization',
-              defaultValue: defaultOrganizationId,
+              defaultValue: initialFiltersValues?.organizationId,
               type: 'select',
               selectProps: {
                 options: orgsOptions
               }
             } as FiltersField
           ]
+        : []),
+      ...(!!rolesOptions && !blockedFilters?.role
+        ? [
+            {
+              key: 'role',
+              name: 'role',
+              label: 'Role',
+              defaultValue: initialFiltersValues?.role,
+              type: 'select',
+              selectProps: {
+                options: rolesOptions
+              }
+            } as FiltersField
+          ]
         : [])
     ]
-  }, [organizationsRefs])
+  }, [organizationsRefs, blockedFilters, rolesOptions, initialFiltersValues])
 
   const formState = useFilters({
     fields: fields,
@@ -78,7 +107,8 @@ export const UserFilters = (props: UserFiltersProps) => {
   return (
     <Stack
       direction='row'
-      justifyContent='flex-end'
+      justifyContent='space-between'
+      alignItems='center'
       sx={{
         '& .searchFilter': {
           width: '150px'
@@ -86,6 +116,7 @@ export const UserFilters = (props: UserFiltersProps) => {
       }}
     >
       <Filters fields={fields} formState={formState} {...other} />
+      {TableActions}
     </Stack>
   )
 }

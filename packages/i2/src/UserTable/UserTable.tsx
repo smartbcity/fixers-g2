@@ -6,6 +6,17 @@ import React, { useCallback, useMemo, useState } from 'react'
 import { UserFilters, UserFiltersProps } from './UserFilters'
 import { stringToAvatarAttributs } from 'utils'
 import { User, OrganizationRef } from '../UserFactory/types'
+import { Option } from '@smartb/g2-forms'
+
+export type UserTableFilters = {
+  page?: number
+} & UserFilters
+
+export type UserTableBlockedFilters = {
+  search?: boolean
+  organizationId?: boolean
+  role?: boolean
+}
 
 export interface UserTableBasicProps extends BasicProps {
   /**
@@ -15,25 +26,35 @@ export interface UserTableBasicProps extends BasicProps {
   /**
    * The initial values of the filters
    */
-  initialFiltersValues?: {
-    page?: number
-    search?: string
-    organizationId?: string
-  }
+  initialFiltersValues?: UserTableFilters
+  /**
+   * The filters that will be used in the api calls but not rendered for the user.
+   * by default they are all set to false
+   */
+  blockedFilters?: UserTableBlockedFilters
   /**
    * The organizationRefs are essentials for the filter organizations
    */
   organizationsRefs?: OrganizationRef[]
   /**
+   * The roles options needed to make the roles select.
+   * The default role selected in the form will be the first of the list
+   */
+  rolesOptions?: Option[]
+  /**
+   * The actions place on the top near the filters
+   */
+  TableActions?: React.ReactNode
+  /**
    * The event called when the filters are submitted or when the pagination updates
    */
-  onFetchUsers: (page: number, search?: string, organizationId?: string) => void
+  onFetchUsers: (params?: UserTableFilters) => void
   /**
    * The props passes to the filters component
    */
   filtersProps?: Partial<UserFiltersProps>
   /**
-   * The actions available on a useranization
+   * The actions available on a user
    */
   getActions?: (user: User) => MenuItem<{}>[]
   /**
@@ -56,28 +77,37 @@ export const UserTable = (props: UserTableProps) => {
     getActions,
     getOrganizationUrl,
     organizationsRefs,
+    blockedFilters,
+    rolesOptions,
+    TableActions,
     ...other
   } = props
   const [page, setPage] = useState(initialFiltersValues?.page ?? 1)
-  const [filters, setFilters] = useState<
-    { search?: string; organizationId?: string } | undefined
-  >(initialFiltersValues)
+  const [filters, setFilters] = useState<UserFilters | undefined>(
+    initialFiltersValues
+  )
 
   const onFetch = useCallback(
-    (pageNumber?: number, search?: string, organizationId?: string) => {
-      onFetchUsers(
-        pageNumber ?? page,
-        search ?? filters?.search,
-        organizationId ?? filters?.organizationId
-      )
+    (
+      pageNumber?: number,
+      search?: string,
+      organizationId?: string,
+      role?: string
+    ) => {
+      onFetchUsers({
+        page: pageNumber ?? page,
+        search: search ?? filters?.search,
+        organizationId: organizationId ?? filters?.organizationId,
+        role: role ?? filters?.role
+      })
     },
-    [onFetchUsers, filters?.search, filters?.organizationId, page]
+    [onFetchUsers, filters, page]
   )
 
   const onSubmitFilters = useCallback(
-    (values: { search?: string; organizationId?: string }) => {
+    (values: UserFilters) => {
       setFilters(values)
-      onFetch(undefined, values.search, values.organizationId)
+      onFetch(undefined, values.search, values.organizationId, values.role)
     },
     [onFetch]
   )
@@ -183,7 +213,10 @@ export const UserTable = (props: UserTableProps) => {
       <UserFilters
         organizationsRefs={organizationsRefs}
         onSubmit={onSubmitFilters}
-        defaultSearch={initialFiltersValues?.search}
+        initialFiltersValues={initialFiltersValues}
+        blockedFilters={blockedFilters}
+        rolesOptions={rolesOptions}
+        TableActions={TableActions}
         {...filtersProps}
       />
       <Table<User>

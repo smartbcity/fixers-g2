@@ -1,6 +1,7 @@
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 import React, { useCallback, useEffect } from 'react'
 import { request, useAsyncResponse } from 'utils'
+import { UserTableFilters } from '.'
 import { User, OrganizationRef } from '../UserFactory/types'
 import { UserTable, UserTableProps } from './UserTable'
 
@@ -16,11 +17,7 @@ export interface AutomatedUserTableBasicProps extends BasicProps {
   /**
    * The initial states of the filters
    */
-  initialFiltersValues?: {
-    page?: number
-    search?: string
-    organizationId?: string
-  }
+  initialFiltersValues?: UserTableFilters
   /**
    * The organizationRefs for the filter organizations
    */
@@ -28,11 +25,7 @@ export interface AutomatedUserTableBasicProps extends BasicProps {
   /**
    * The event called when the filters changes
    */
-  submitted?: (params: {
-    page?: number
-    search?: string
-    organizationId?: string
-  }) => void
+  submitted?: (params?: UserTableFilters) => void
 }
 
 export type AutomatedUserTableProps = MergeMuiElementProps<
@@ -51,11 +44,7 @@ export const AutomatedUserTable = (props: AutomatedUserTableProps) => {
   } = props
 
   const getUsers = useCallback(
-    async (params?: {
-      page?: number
-      search?: string
-      organizationId?: string
-    }) => {
+    async (params?: UserTableFilters) => {
       const res = await request<{ users: User[] }[]>({
         url: `${apiUrl}/getAllUsers`,
         method: 'POST',
@@ -81,14 +70,9 @@ export const AutomatedUserTable = (props: AutomatedUserTableProps) => {
   }, [execute, initialFiltersValues])
 
   const onFetchUsers = useCallback(
-    (page: number, search?: string, organizationId?: string) => {
-      execute({ page: page, search: search, organizationId: organizationId })
-      submitted &&
-        submitted({
-          page: page,
-          search: search,
-          organizationId: organizationId
-        })
+    (params?: UserTableFilters) => {
+      execute(params)
+      submitted && submitted(params)
     },
     [execute, submitted]
   )

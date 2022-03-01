@@ -3,7 +3,8 @@ import {
   Form,
   FormField,
   useFormWithPartialFields,
-  FormPartialField
+  FormPartialField,
+  Option
 } from '@smartb/g2-forms'
 import {
   Box,
@@ -95,6 +96,16 @@ export interface OrgFactoryBasicProps extends BasicProps {
    */
   submitButtonLabel?: string
   /**
+   * The roles options needed to make the roles select.
+   * The default role selected in the form will be the first of the list
+   */
+  rolesOptions?: Option[]
+  /**
+   * To activate Readonly view
+   * @default false
+   */
+  readonly?: boolean
+  /**
    * The classes applied to the different part of the component
    */
   classes?: OrgFactoryClasses
@@ -118,10 +129,12 @@ export const OrgFactory = (props: OrgFactoryProps) => {
     className,
     classes,
     styles,
+    rolesOptions,
+    readonly = false,
     ...other
   } = props
 
-  const [openSiretInfo, setOpenSiretInfo] = useState(!organization)
+  const [openSiretInfo, setOpenSiretInfo] = useState(!organization && !readonly)
   const [siretValid, setSiretValid] = useState(false)
   const [siretRef, setSiretRef] = useState(null)
   const [imageError, setImageError] = useState<string | undefined>(undefined)
@@ -194,9 +207,13 @@ export const OrgFactory = (props: OrgFactoryProps) => {
       {
         name: 'website',
         defaultValue: organization?.website
+      },
+      {
+        name: 'role',
+        defaultValue: organization?.role ?? (rolesOptions ?? [])[0]?.key
       }
     ],
-    [organization]
+    [organization, rolesOptions]
   )
 
   const onSubmitMemoized = useCallback(
@@ -255,11 +272,12 @@ export const OrgFactory = (props: OrgFactoryProps) => {
             if (!formState.validateField('siret')) {
               fetchOrganization()
             }
-          }
+          },
+          disabled: readonly
         }
       }
     ],
-    [formState.validateField, fetchOrganization, siretValid]
+    [formState.validateField, fetchOrganization, siretValid, readonly]
   )
 
   const details = useMemo(
@@ -268,13 +286,19 @@ export const OrgFactory = (props: OrgFactoryProps) => {
         key: 'name',
         name: 'name',
         type: 'textfield',
-        label: 'Nom'
+        label: 'Nom',
+        textFieldProps: {
+          disabled: readonly
+        }
       },
       {
         key: 'street',
         name: 'street',
         type: 'textfield',
-        label: 'addresse'
+        label: 'addresse',
+        textFieldProps: {
+          disabled: readonly
+        }
       },
       {
         key: 'postalCode',
@@ -282,27 +306,48 @@ export const OrgFactory = (props: OrgFactoryProps) => {
         type: 'textfield',
         label: 'Code postal',
         textFieldProps: {
-          textFieldType: 'number'
+          textFieldType: 'number',
+          disabled: readonly
         }
       },
       {
         key: 'city',
         name: 'city',
         type: 'textfield',
-        label: 'Ville'
+        label: 'Ville',
+        textFieldProps: {
+          disabled: readonly
+        }
       },
-      {
-        key: 'website',
-        name: 'website',
-        type: 'textfield',
-        label: 'Site web (optionnel)'
-      }
+      ...(rolesOptions
+        ? [
+            {
+              key: 'role',
+              name: 'role',
+              label: 'Type',
+              type: 'select',
+              selectProps: {
+                options: rolesOptions,
+                disabled: readonly
+              }
+            } as FormField
+          ]
+        : [])
     ],
-    []
+    [readonly]
   )
 
   const description = useMemo(
     (): FormField[] => [
+      {
+        key: 'website',
+        name: 'website',
+        type: 'textfield',
+        label: 'Site web (optionnel)',
+        textFieldProps: {
+          disabled: readonly
+        }
+      },
       {
         key: 'description',
         name: 'description',
@@ -310,11 +355,12 @@ export const OrgFactory = (props: OrgFactoryProps) => {
         label: 'Description (optionnel)',
         textFieldProps: {
           multiline: true,
-          rows: 11
+          rows: 6,
+          disabled: readonly
         }
       }
     ],
-    []
+    [readonly]
   )
 
   const onDropError = useCallback((errorType: DropPictureError) => {
@@ -398,6 +444,7 @@ export const OrgFactory = (props: OrgFactoryProps) => {
             </InputLabel>
             <DropPicture
               errorMessage={imageError}
+              readonly={readonly}
               onDropError={onDropError}
               onRemovePicture={onRemovePicture}
               initialPicture={organization?.image}
@@ -429,13 +476,15 @@ export const OrgFactory = (props: OrgFactoryProps) => {
         justifyContent='flex-end'
         width='100%'
       >
-        <Button
-          success={feedback !== undefined && feedback}
-          fail={feedback !== undefined && !feedback}
-          onClick={formState.submitForm}
-        >
-          {submitButtonLabel}
-        </Button>
+        {!readonly && (
+          <Button
+            success={feedback !== undefined && feedback}
+            fail={feedback !== undefined && !feedback}
+            onClick={formState.submitForm}
+          >
+            {submitButtonLabel}
+          </Button>
+        )}
       </Stack>
 
       {siretRef && (

@@ -14,6 +14,12 @@ export type OrganizationRef = {
   name: string
 }
 
+export interface Address {
+  street: string
+  postalCode: string
+  city: string
+}
+
 export interface User {
   id: string
   memberOf?: OrganizationRef
@@ -21,23 +27,18 @@ export interface User {
   givenName: string
   address: Address
   mail: string
+  role: string
   phone?: string
-  password?: string
   sendEmailLink?: boolean
-}
-
-export interface Address {
-  street: string
-  postalCode: string
-  city: string
 }
 
 export interface FlatUser {
   id: string
-  memberOf?: OrganizationRef
+  memberOf?: string
   familyName: string
   givenName: string
   mail: string
+  role: string
   phone?: string
   sendEmailLink?: boolean
   street: string
@@ -50,7 +51,8 @@ export const userToFlatUser = (user: User): FlatUser => {
     ...user,
     street: user.address.street,
     city: user.address.city,
-    postalCode: user.address.postalCode
+    postalCode: user.address.postalCode,
+    memberOf: user.memberOf?.id
   }
   delete flat.address
   return flat
@@ -67,6 +69,10 @@ export const FlatUserToUser = (flat: FlatUser): User => {
       street: flat.street,
       city: flat.city,
       postalCode: flat.postalCode
+    },
+    memberOf: {
+      id: flat.memberOf ?? '',
+      name: ''
     }
   }
   delete user.street

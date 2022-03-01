@@ -9,7 +9,9 @@ export {
   AutomatedOrgTable,
   OrgTable,
   AutomatedOrgTableProps,
-  OrgTableProps
+  OrgTableProps,
+  OrgTableFilters,
+  OrgTableBlockedFilters
 } from './OrgTable'
 export {
   User,
@@ -24,5 +26,7 @@ export {
   AutomatedUserTable,
   AutomatedUserTableProps,
   UserTable,
-  UserTableProps
+  UserTableProps,
+  UserTableFilters,
+  UserTableBlockedFilters
 } from './UserTable'

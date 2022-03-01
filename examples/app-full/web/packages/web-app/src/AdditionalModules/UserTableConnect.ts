@@ -9,6 +9,7 @@ const mapStateToProps = (state: State) => ({
 
 const mapDispatchToProps = {
   gotoUserTable: router.gotoAditionalModules.userTable,
+  gotoCreateUser: router.gotoAditionalModules.createUser,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps);

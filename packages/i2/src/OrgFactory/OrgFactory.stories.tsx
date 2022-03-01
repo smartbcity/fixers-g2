@@ -57,11 +57,21 @@ export default {
 export const OrgFactoryStory: Story<OrgFactoryProps> = (
   args: OrgFactoryProps
 ) => {
-  return <OrgFactory {...args} />
+  return <OrgFactory readonly {...args} />
 }
 
 OrgFactoryStory.args = {
-  onSubmit: (org) => console.log(org)
+  onSubmit: (org) => console.log(org),
+  rolesOptions: [
+    {
+      key: '1',
+      label: 'Operateur'
+    },
+    {
+      key: '2',
+      label: 'Manager'
+    }
+  ]
 }
 
 OrgFactoryStory.storyName = 'OrgFactory'

@@ -1,7 +1,7 @@
-import { unstable_createMuiStrictModeTheme } from '@mui/material'
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 import React, { useCallback } from 'react'
 import { request, useAsyncResponse } from 'utils'
+import { OrganizationRef } from '.'
 import { User } from './types'
 import { UserFactory, UserFactoryProps } from './UserFactory'
 
@@ -48,21 +48,27 @@ export const AutomatedUserFactory = (props: AutomatedUserFactoryProps) => {
     organizationId
   } = props
 
-  const getUser = useCallback(async () => {
+  const getUser = useCallback(async (): Promise<User | undefined> => {
     const res = await request<{ user?: User }[]>({
       url: `${apiUrl}/getUser`,
       method: 'POST',
       body: JSON.stringify({
-        id: unstable_createMuiStrictModeTheme
+        id: userId
       }),
       jwt: jwt
     })
     if (res) {
-      return res[0]
+      //@ts-ignore
+      return {
+        ...res[0].user,
+        memberOf:
+          res[0]?.user?.memberOf ??
+          ({ id: organizationId, name: '' } as OrganizationRef)
+      }
     } else {
       return undefined
     }
-  }, [apiUrl, jwt])
+  }, [apiUrl, jwt, userId, organizationId])
 
   const { result, status } = useAsyncResponse(getUser, update)
 
@@ -108,7 +114,7 @@ export const AutomatedUserFactory = (props: AutomatedUserFactoryProps) => {
   if (update && status !== 'SUCCESS') return <></>
   return (
     <UserFactory
-      user={result?.user}
+      user={result}
       onSubmit={update ? updateUser : createUser}
       submitButtonLabel={update ? 'Mettre à jour' : 'Créer'}
     />

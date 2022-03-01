@@ -1,6 +1,7 @@
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 import React, { useCallback, useEffect } from 'react'
 import { request, useAsyncResponse } from 'utils'
+import { OrgTableFilters } from '.'
 import { OrganizationGetAllQuery, Organization } from '../OrgFactory/types'
 import { OrgTable, OrgTableProps } from './OrgTable'
 
@@ -16,11 +17,11 @@ export interface AutomatedOrgTableBasicProps extends BasicProps {
   /**
    * The initial states of the filters
    */
-  initialFiltersValues?: { page?: number; search?: string }
+  initialFiltersValues?: OrgTableFilters
   /**
    * The event called when the filters changes
    */
-  submitted?: (params: { page?: number; search?: string }) => void
+  submitted?: (params?: OrgTableFilters) => void
 }
 
 export type AutomatedOrgTableProps = MergeMuiElementProps<
@@ -32,7 +33,7 @@ export const AutomatedOrgTable = (props: AutomatedOrgTableProps) => {
   const { apiUrl, jwt, initialFiltersValues, submitted, ...other } = props
 
   const getOrganizations = useCallback(
-    async (params?: { page?: number; search?: string }) => {
+    async (params?: OrgTableFilters) => {
       const res = await request<{ organizations: Organization[] }[]>({
         url: `${apiUrl}/getAllOrganizations`,
         method: 'POST',
@@ -58,9 +59,9 @@ export const AutomatedOrgTable = (props: AutomatedOrgTableProps) => {
   }, [execute, initialFiltersValues])
 
   const onFetchOrganizations = useCallback(
-    (page: number, search?: string | undefined) => {
-      execute({ page: page, search: search })
-      submitted && submitted({ page: page, search: search })
+    (params?: OrgTableFilters) => {
+      execute(params)
+      submitted && submitted(params)
     },
     [execute, submitted]
   )

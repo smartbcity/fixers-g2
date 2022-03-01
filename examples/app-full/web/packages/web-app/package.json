@@ -19,7 +19,7 @@
     "@emotion/react": "^11.7.1",
     "@emotion/styled": "^11.6.0",
     "@emotion/css": "^11.7.1",
-    "@smartb/g2": "^1.0.0-alpha.20",
+    "@smartb/g2": "^1.0.0-alpha.21",
     "connected-react-router": "^6.9.1",
     "qs": "^6.10.3",
     "deox": "^3.3.1",

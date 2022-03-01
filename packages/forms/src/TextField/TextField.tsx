@@ -42,6 +42,10 @@ const useStyles = makeG2STyles()({
     height: '20px',
     cursor: 'pointer'
   },
+  searchIconDisabled: {
+    cursor: 'default',
+    fill: 'rgba(0, 0, 0, 0.26)'
+  },
   endAdornmentWithInputIcon: {
     right: '30px'
   },
@@ -244,9 +248,10 @@ export const TextField = React.forwardRef(
               <InputAdornment component='div' position='start'>
                 <SearchIcon
                   color='#323338'
-                  onClick={onSearch}
+                  onClick={!disabled ? onSearch : undefined}
                   className={defaultStyles.cx(
                     localStyles.classes.searchIcon,
+                    disabled && localStyles.classes.searchIconDisabled,
                     'AruiTextfield-searchIcon',
                     classes?.searchIcon
                   )}
@@ -261,9 +266,10 @@ export const TextField = React.forwardRef(
               <InputAdornment component='div' position='end'>
                 <SearchIcon
                   color='#323338'
-                  onClick={onSearch}
+                  onClick={!disabled ? onSearch : undefined}
                   className={defaultStyles.cx(
                     localStyles.classes.searchIcon,
+                    disabled && localStyles.classes.searchIconDisabled,
                     'AruiTextfield-searchIcon',
                     classes?.searchIcon
                   )}
@@ -299,6 +305,7 @@ export const TextField = React.forwardRef(
       iconPosition,
       classes?.searchIcon,
       styles?.searchIcon,
+      disabled,
       onSearch
     ])
 

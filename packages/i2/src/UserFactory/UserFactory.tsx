@@ -5,10 +5,12 @@ import {
   FormAction,
   FormField,
   FormPartialField,
+  Option,
   useFormWithPartialFields
 } from '@smartb/g2-forms'
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import { OrganizationRef } from '.'
 import { FlatUser, FlatUserToUser, User } from './types'
 
 const StyledStack = styled(Stack)({
@@ -77,6 +79,20 @@ export interface UserFactoryBasicProps extends BasicProps {
    */
   isUpdate?: boolean
   /**
+   * To activate Readonly view
+   * @default false
+   */
+  readonly?: boolean
+  /**
+   * The organizations refs needed to make the orgnization select
+   */
+  organizationsRefs?: OrganizationRef[]
+  /**
+   * The roles options needed to make the roles select.
+   * The default role selected in the form will be the first of the list
+   */
+  rolesOptions?: Option[]
+  /**
    * The classes applied to the different part of the component
    */
   classes?: UserFactoryClasses
@@ -100,6 +116,9 @@ export const UserFactory = (props: UserFactoryProps) => {
     styles,
     isUpdate = false,
     className,
+    readonly = false,
+    organizationsRefs,
+    rolesOptions,
     ...other
   } = props
 
@@ -183,7 +202,15 @@ export const UserFactory = (props: UserFactoryProps) => {
           return undefined
         }
       },
-      ...(!isUpdate
+      {
+        name: 'role',
+        defaultValue: user?.role ?? (rolesOptions ?? [])[0]?.key
+      },
+      {
+        name: 'memberOf',
+        defaultValue: user?.memberOf?.id
+      },
+      ...(!isUpdate && !readonly
         ? [
             {
               name: 'sendEmailLink',
@@ -192,7 +219,7 @@ export const UserFactory = (props: UserFactoryProps) => {
           ]
         : [])
     ],
-    [user, isUpdate]
+    [user, isUpdate, rolesOptions, readonly]
   )
 
   const onSubmitMemoized = useCallback(
@@ -222,19 +249,28 @@ export const UserFactory = (props: UserFactoryProps) => {
         key: 'givenName',
         name: 'givenName',
         type: 'textfield',
-        label: 'Prénom'
+        label: 'Prénom',
+        textFieldProps: {
+          disabled: readonly
+        }
       },
       {
         key: 'familyName',
         name: 'familyName',
         type: 'textfield',
-        label: 'Nom de Famille'
+        label: 'Nom de Famille',
+        textFieldProps: {
+          disabled: readonly
+        }
       },
       {
         key: 'street',
         name: 'street',
         type: 'textfield',
-        label: 'addresse'
+        label: 'addresse',
+        textFieldProps: {
+          disabled: readonly
+        }
       },
       {
         key: 'postalCode',
@@ -242,28 +278,42 @@ export const UserFactory = (props: UserFactoryProps) => {
         type: 'textfield',
         label: 'Code postal',
         textFieldProps: {
-          textFieldType: 'number'
+          textFieldType: 'number',
+          disabled: readonly
         }
       },
       {
         key: 'city',
         name: 'city',
         type: 'textfield',
-        label: 'Ville'
+        label: 'Ville',
+        textFieldProps: {
+          disabled: readonly
+        }
       }
     ],
-    []
+    [readonly]
   )
 
-  const rightForm = useMemo(
-    (): FormField[] => [
+  const rightForm = useMemo((): FormField[] => {
+    const orgsOptions =
+      !!organizationsRefs && organizationsRefs.length > 0
+        ? organizationsRefs.map(
+            (orgRef): Option => ({
+              key: orgRef.id,
+              label: orgRef.name
+            })
+          )
+        : undefined
+    return [
       {
         key: 'mail',
         name: 'mail',
         type: 'textfield',
         label: 'Adresse mail',
         textFieldProps: {
-          textFieldType: 'email'
+          textFieldType: 'email',
+          disabled: readonly
         }
       },
       {
@@ -272,16 +322,39 @@ export const UserFactory = (props: UserFactoryProps) => {
         type: 'textfield',
         label: 'Numéro de téléphone (facultatif)',
         textFieldProps: {
-          textFieldType: 'number'
+          textFieldType: 'number',
+          disabled: readonly
         }
       },
-      {
-        key: 'password',
-        name: 'password',
-        type: 'textfield',
-        label: "Mot de passe temporaire (obligatoire sans lien d'invitation)"
-      },
-      ...(!isUpdate
+      ...(rolesOptions
+        ? [
+            {
+              key: 'role',
+              name: 'role',
+              label: 'Role',
+              type: 'select',
+              selectProps: {
+                options: rolesOptions,
+                disabled: readonly
+              }
+            } as FormField
+          ]
+        : []),
+      ...(orgsOptions
+        ? [
+            {
+              key: 'memberOf',
+              name: 'memberOf',
+              label: 'Organisation',
+              type: 'select',
+              selectProps: {
+                options: orgsOptions,
+                disabled: readonly
+              }
+            } as FormField
+          ]
+        : []),
+      ...(!isUpdate && !readonly
         ? [
             {
               key: 'sendEmailLink',
@@ -289,27 +362,30 @@ export const UserFactory = (props: UserFactoryProps) => {
               type: 'checkbox',
               label: "Envoyer un lien d'invitation par mail",
               checkBoxProps: {
-                className: 'AruiUserFactory-sendEmailLink'
+                className: 'AruiUserFactory-sendEmailLink',
+                disabled: readonly
               }
             } as FormField
           ]
         : [])
-    ],
-    [isUpdate]
-  )
+    ]
+  }, [isUpdate, rolesOptions, organizationsRefs, readonly])
 
   const actions = useMemo(
-    (): FormAction[] => [
-      {
-        key: 'SubmitForm',
-        label: submitButtonLabel,
-        success: feedback !== undefined && feedback,
-        fail: feedback !== undefined && !feedback,
-        onClick: formState.submitForm,
-        className: 'AruiUserFactory-submitForm'
-      }
-    ],
-    [submitButtonLabel, formState.submitForm, feedback]
+    (): FormAction[] =>
+      readonly
+        ? []
+        : [
+            {
+              key: 'SubmitForm',
+              label: submitButtonLabel,
+              success: feedback !== undefined && feedback,
+              fail: feedback !== undefined && !feedback,
+              onClick: formState.submitForm,
+              className: 'AruiUserFactory-submitForm'
+            }
+          ],
+    [submitButtonLabel, formState.submitForm, feedback, readonly]
   )
 
   return (

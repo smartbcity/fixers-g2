@@ -1,10 +1,20 @@
 import { Box, Stack, Typography } from '@mui/material'
 import { Link, MenuItem, MoreOptions } from '@smartb/g2-components'
+import { Option } from '@smartb/g2-forms'
 import { Column, Table, TableProps, CellProps } from '@smartb/g2-layout'
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 import React, { useCallback, useMemo, useState } from 'react'
 import { Organization } from '../OrgFactory/types'
 import { OrgFilters, OrgFiltersProps } from './OrgFilters'
+
+export type OrgTableFilters = {
+  page?: number
+} & OrgFilters
+
+export type OrgTableBlockedFilters = {
+  search?: boolean
+  role?: boolean
+}
 
 export interface OrgTableBasicProps extends BasicProps {
   /**
@@ -14,11 +24,25 @@ export interface OrgTableBasicProps extends BasicProps {
   /**
    * The initial values of the filters
    */
-  initialFiltersValues?: { page?: number; search?: string }
+  initialFiltersValues?: OrgTableFilters
+  /**
+   * The filters that will be used in the api calls but not rendered for the user.
+   * by default they are all set to false
+   */
+  blockedFilters?: OrgTableBlockedFilters
+  /**
+   * The actions place on the top near the filters
+   */
+  TableActions?: React.ReactNode
+  /**
+   * The roles options needed to make the roles select.
+   * The default role selected in the form will be the first of the list
+   */
+  rolesOptions?: Option[]
   /**
    * The event called when the filters are submitted or when the pagination updates
    */
-  onFetchOrganizations: (page: number, search?: string) => void
+  onFetchOrganizations: (params?: OrgTableFilters) => void
   /**
    * The props passes to the filters component
    */
@@ -41,24 +65,31 @@ export const OrgTable = (props: OrgTableProps) => {
     onFetchOrganizations,
     filtersProps,
     getActions,
+    rolesOptions,
+    blockedFilters,
+    TableActions,
     ...other
   } = props
   const [page, setPage] = useState(initialFiltersValues?.page ?? 1)
-  const [filters, setFilters] = useState<{ search?: string } | undefined>(
+  const [filters, setFilters] = useState<OrgFilters | undefined>(
     initialFiltersValues
   )
 
   const onFetch = useCallback(
-    (pageNumber?: number, search?: string) => {
-      onFetchOrganizations(pageNumber ?? page, search ?? filters?.search)
+    (pageNumber?: number, params?: OrgFilters) => {
+      onFetchOrganizations({
+        page: pageNumber ?? page,
+        role: params?.role ?? filters?.role,
+        search: params?.search ?? filters?.search
+      })
     },
-    [onFetchOrganizations, filters?.search, page]
+    [onFetchOrganizations, filters, page]
   )
 
   const onSubmitFilters = useCallback(
-    (values: { search?: string }) => {
+    (values: OrgFilters) => {
       setFilters(values)
-      onFetch(undefined, values.search)
+      onFetch(undefined, values)
     },
     [onFetch]
   )
@@ -153,7 +184,10 @@ export const OrgTable = (props: OrgTableProps) => {
     <>
       <OrgFilters
         onSubmit={onSubmitFilters}
-        defaultSearch={initialFiltersValues?.search}
+        initialFiltersValues={initialFiltersValues}
+        blockedFilters={blockedFilters}
+        rolesOptions={rolesOptions}
+        TableActions={TableActions}
         {...filtersProps}
       />
       <Table<Organization>

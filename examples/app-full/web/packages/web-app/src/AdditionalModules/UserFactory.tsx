@@ -10,10 +10,11 @@ export interface UserFactoryPros {
   jwt?: string;
   update?: boolean;
   gotoEditUser: (userId?: string | undefined) => void;
+  readonly?: boolean;
 }
 
 export const UserFactory = connect((props: UserFactoryPros) => {
-  const { url, jwt, update, gotoEditUser } = props;
+  const { url, jwt, update, gotoEditUser, readonly = false } = props;
   const { userId } = useParams<{ userId?: string }>();
 
   const organizationId = useMemo(() => {
@@ -22,7 +23,7 @@ export const UserFactory = connect((props: UserFactoryPros) => {
       return params.organizationId;
     }
     return undefined;
-  }, []);
+  }, [userId, update]);
 
   const onSubmitted = useCallback(
     (user: User) => {
@@ -41,6 +42,7 @@ export const UserFactory = connect((props: UserFactoryPros) => {
       userId={update ? userId : undefined}
       organizationId={organizationId}
       submitted={onSubmitted}
+      readonly={readonly}
     />
   );
 });

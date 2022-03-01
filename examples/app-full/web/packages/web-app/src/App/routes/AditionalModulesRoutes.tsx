@@ -22,23 +22,39 @@ export const AditionalModulesRoutes = () => {
             <OrgTable url={orgUrl} jwt={keycloak.token} />
           </Route>
           <Route exact path="/organizations/:organizationId/edit">
-            <OrgFactory url={orgUrl} jwt={keycloak.token} update />
+            <OrgFactory
+              url={orgUrl}
+              userUrl={userUrl}
+              jwt={keycloak.token}
+              update
+            />
+          </Route>
+          <Route exact path="/organizations/:organizationId/view">
+            <OrgFactory
+              url={orgUrl}
+              userUrl={userUrl}
+              jwt={keycloak.token}
+              readonly
+            />
           </Route>
           <Route exact path="/organizations/add">
-            <OrgFactory url={orgUrl} jwt={keycloak.token} />
+            <OrgFactory url={orgUrl} userUrl={userUrl} jwt={keycloak.token} />
           </Route>
         </>
       )}
-      {orgUrl && (
+      {userUrl && (
         <>
           <Route exact path="/users">
-            <UserTable url={orgUrl} jwt={keycloak.token} />
+            <UserTable url={userUrl} jwt={keycloak.token} />
           </Route>
           <Route exact path="/users/:userId/edit">
-            <UserFactory url={orgUrl} jwt={keycloak.token} update />
+            <UserFactory url={userUrl} jwt={keycloak.token} update />
+          </Route>
+          <Route exact path="/users/:userId/view">
+            <UserFactory url={userUrl} jwt={keycloak.token} readonly />
           </Route>
           <Route exact path="/users/add">
-            <UserFactory url={orgUrl} jwt={keycloak.token} />
+            <UserFactory url={userUrl} jwt={keycloak.token} />
           </Route>
         </>
       )}
