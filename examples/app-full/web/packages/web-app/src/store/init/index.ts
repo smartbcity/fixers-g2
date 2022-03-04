@@ -1,35 +1,32 @@
-import { Dispatch } from "redux";
-import { State } from "store";
-import {
-  getMeasures,
-  getPublishedOrderBookOverviews,
-  getProjectRefs,
-  getUserRefs,
-} from "datahub";
-import { refs } from "../refs";
+import { request } from "utils";
+import { OrganizationRef } from "@smartb/g2-i2";
+import { useEffect } from "react";
+import { useExtendedAuth } from "auth";
 
-export const initStore = () => {
-  //@ts-ignore
-  return async (dispatch: Dispatch, getState: () => State) => {
-    getMeasures().then((measures) => {
-      if (measures) {
-        dispatch(refs.actions.setMeasures(measures));
-      }
-    });
-    getProjectRefs().then((projectRefs) => {
-      if (projectRefs) {
-        dispatch(refs.actions.setProjectRefs(projectRefs));
-      }
-    });
-    getUserRefs().then((userRefs) => {
-      if (userRefs) {
-        dispatch(refs.actions.setUserRefs(userRefs));
-      }
-      getPublishedOrderBookOverviews().then((orderBookOverviews) => {
-        if (orderBookOverviews) {
-          dispatch(refs.actions.setOrderBookOverviews(orderBookOverviews));
+//@ts-ignore
+const orgUrl = window._env_.i2OrgUrl;
+
+const getAllOrganizationRefs = (jwt: string, url: string) =>
+  request<{ organizations: OrganizationRef[] }[]>({
+    url: `${url}/getAllOrganizationRefs`,
+    method: "POST",
+    body: "[{}]",
+    jwt: jwt,
+  });
+
+export const useInitStore = (params: {
+  setOrganizationsRefs: (organizationsRefs: OrganizationRef[]) => void;
+}) => {
+  const { setOrganizationsRefs } = params;
+
+  const { keycloak } = useExtendedAuth();
+  useEffect(() => {
+    if (keycloak.authenticated && keycloak.token) {
+      getAllOrganizationRefs(keycloak.token, orgUrl).then((res) => {
+        if (res) {
+          setOrganizationsRefs(res[0]?.organizations ?? []);
         }
       });
-    });
-  };
+    }
+  }, [keycloak.authenticated]);
 };

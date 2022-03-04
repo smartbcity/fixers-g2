@@ -106,7 +106,8 @@ const useStyles = makeG2STyles()({
     }
   },
   label: {
-    cursor: 'pointer'
+    cursor: 'pointer',
+    lineHeight: 'unset'
   }
 })
 

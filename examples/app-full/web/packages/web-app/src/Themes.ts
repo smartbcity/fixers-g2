@@ -12,6 +12,7 @@ type DeepPartial<T> = {
 };
 
 export const theme: DeepPartial<AruiTheme> = {
+  // to complete and to use
   name: "X2",
   colors: {
     primary: "#ffffff",

@@ -93,6 +93,10 @@ export interface UserFactoryBasicProps extends BasicProps {
    */
   rolesOptions?: Option[]
   /**
+   * The organizationId of the user. Needed if you want to preSelect it when you are creating a user
+   */
+  organizationId?: string
+  /**
    * The classes applied to the different part of the component
    */
   classes?: UserFactoryClasses
@@ -119,6 +123,7 @@ export const UserFactory = (props: UserFactoryProps) => {
     readonly = false,
     organizationsRefs,
     rolesOptions,
+    organizationId,
     ...other
   } = props
 
@@ -181,8 +186,8 @@ export const UserFactory = (props: UserFactoryProps) => {
         }
       },
       {
-        name: 'mail',
-        defaultValue: user?.mail,
+        name: 'email',
+        defaultValue: user?.email,
         validator: (value?: string) => {
           const trimmed = (value ?? '').trim()
           if (!trimmed)
@@ -204,11 +209,11 @@ export const UserFactory = (props: UserFactoryProps) => {
       },
       {
         name: 'role',
-        defaultValue: user?.role ?? (rolesOptions ?? [])[0]?.key
+        defaultValue: user?.roles ?? [(rolesOptions ?? [])[0]?.key]
       },
       {
         name: 'memberOf',
-        defaultValue: user?.memberOf?.id
+        defaultValue: user?.memberOf?.id ?? organizationId
       },
       ...(!isUpdate && !readonly
         ? [
@@ -219,7 +224,7 @@ export const UserFactory = (props: UserFactoryProps) => {
           ]
         : [])
     ],
-    [user, isUpdate, rolesOptions, readonly]
+    [user, isUpdate, rolesOptions, readonly, organizationId]
   )
 
   const onSubmitMemoized = useCallback(
@@ -307,8 +312,8 @@ export const UserFactory = (props: UserFactoryProps) => {
         : undefined
     return [
       {
-        key: 'mail',
-        name: 'mail',
+        key: 'email',
+        name: 'email',
         type: 'textfield',
         label: 'Adresse mail',
         textFieldProps: {
@@ -335,12 +340,13 @@ export const UserFactory = (props: UserFactoryProps) => {
               type: 'select',
               selectProps: {
                 options: rolesOptions,
-                disabled: readonly
+                disabled: readonly,
+                multiple: true
               }
             } as FormField
           ]
         : []),
-      ...(orgsOptions
+      ...(orgsOptions || organizationId
         ? [
             {
               key: 'memberOf',
@@ -369,7 +375,7 @@ export const UserFactory = (props: UserFactoryProps) => {
           ]
         : [])
     ]
-  }, [isUpdate, rolesOptions, organizationsRefs, readonly])
+  }, [isUpdate, rolesOptions, organizationsRefs, readonly, organizationId])
 
   const actions = useMemo(
     (): FormAction[] =>

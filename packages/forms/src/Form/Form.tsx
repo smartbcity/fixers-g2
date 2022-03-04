@@ -278,7 +278,6 @@ const getInput = (
       const date = new Date(formState.values[field.name])
       return (
         <InputForm
-          {...commonProps}
           inputType='datePicker'
           value={
             !isNaN(date.getTime()) ? date : formState.values[field.name] ?? ''
@@ -291,63 +290,64 @@ const getInput = (
             )
           }}
           {...field.datePickerProps}
+          {...commonProps}
         />
       )
     case 'select':
       return field.selectProps?.multiple === true ? (
         <InputForm
-          {...commonProps}
           inputType='select'
           values={formState.values[field.name] ?? []}
           onChangeValues={(values) =>
             formState.setFieldValue(field.name, values, false)
           }
           {...field.selectProps}
+          {...commonProps}
         />
       ) : (
         <InputForm
-          {...commonProps}
           inputType='select'
           value={formState.values[field.name] ?? ''}
           onChangeValue={(value) =>
             formState.setFieldValue(field.name, value, false)
           }
           {...field.selectProps}
+          {...commonProps}
         />
       )
     case 'checkbox':
       return (
         <CheckBox
-          {...commonProps}
           checked={formState.values[field.name]}
           onChange={(_: React.ChangeEvent<HTMLInputElement>, value: boolean) =>
             formState.setFieldValue(field.name, value, false)
           }
           {...field.checkBoxProps}
+          {...commonProps}
         />
       )
     case 'radioChoices':
       return (
         <InputForm
-          {...commonProps}
           inputType='radioChoices'
           value={formState.values[field.name] ?? ''}
           onChange={(_: React.ChangeEvent<HTMLInputElement>, value: string) =>
             formState.setFieldValue(field.name, value, false)
           }
           {...field.radioChoicesProps}
+          {...commonProps}
         />
       )
   }
   return (
     <InputForm
-      {...commonProps}
       inputType='textField'
       value={formState.values[field.name] ?? ''}
       onChange={(value: string) =>
         formState.setFieldValue(field.name, value, false)
       }
       {...field.textFieldProps}
+      {...commonProps}
     />
   )
 }

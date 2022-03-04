@@ -26,8 +26,8 @@ export interface User {
   familyName: string
   givenName: string
   address: Address
-  mail: string
-  role: string
+  email: string
+  roles: string[]
   phone?: string
   sendEmailLink?: boolean
 }
@@ -37,8 +37,8 @@ export interface FlatUser {
   memberOf?: string
   familyName: string
   givenName: string
-  mail: string
-  role: string
+  email: string
+  roles: string[]
   phone?: string
   sendEmailLink?: boolean
   street: string

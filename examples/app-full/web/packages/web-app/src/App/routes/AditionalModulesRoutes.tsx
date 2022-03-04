@@ -1,4 +1,3 @@
-import React from "react";
 import { useAuth } from "@smartb/g2-providers";
 import { OrgTable, OrgFactory } from "AdditionalModules";
 import { Route } from "react-router";

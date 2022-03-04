@@ -209,8 +209,8 @@ export const OrgFactory = (props: OrgFactoryProps) => {
         defaultValue: organization?.website
       },
       {
-        name: 'role',
-        defaultValue: organization?.role ?? (rolesOptions ?? [])[0]?.key
+        name: 'roles',
+        defaultValue: organization?.roles ?? [(rolesOptions ?? [])[0]?.key]
       }
     ],
     [organization, rolesOptions]
@@ -322,13 +322,14 @@ export const OrgFactory = (props: OrgFactoryProps) => {
       ...(rolesOptions
         ? [
             {
-              key: 'role',
-              name: 'role',
+              key: 'roles',
+              name: 'roles',
               label: 'Type',
               type: 'select',
               selectProps: {
                 options: rolesOptions,
-                disabled: readonly
+                disabled: readonly,
+                multiple: true
               }
             } as FormField
           ]

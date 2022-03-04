@@ -57,7 +57,7 @@ export default {
 export const OrgFactoryStory: Story<OrgFactoryProps> = (
   args: OrgFactoryProps
 ) => {
-  return <OrgFactory readonly {...args} />
+  return <OrgFactory {...args} />
 }
 
 OrgFactoryStory.args = {

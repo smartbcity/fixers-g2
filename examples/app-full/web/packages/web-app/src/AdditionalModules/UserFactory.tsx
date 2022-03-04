@@ -1,20 +1,29 @@
-import React, { useMemo } from "react";
-import { AutomatedUserFactory, User } from "@smartb/g2-i2";
+import { useMemo } from "react";
+import { AutomatedUserFactory, User, OrganizationRef } from "@smartb/g2-i2";
 import { useCallback } from "react";
 import { useParams } from "react-router";
 import { parse } from "qs";
 import connect from "./UserFactoryConnect";
+import { rolesOptions } from "auth";
 
 export interface UserFactoryPros {
   url: string;
   jwt?: string;
   update?: boolean;
   gotoEditUser: (userId?: string | undefined) => void;
+  orgnaizationsRefs: Map<string, OrganizationRef>;
   readonly?: boolean;
 }
 
 export const UserFactory = connect((props: UserFactoryPros) => {
-  const { url, jwt, update, gotoEditUser, readonly = false } = props;
+  const {
+    url,
+    jwt,
+    update,
+    gotoEditUser,
+    readonly = false,
+    orgnaizationsRefs,
+  } = props;
   const { userId } = useParams<{ userId?: string }>();
 
   const organizationId = useMemo(() => {
@@ -34,6 +43,11 @@ export const UserFactory = connect((props: UserFactoryPros) => {
     [update]
   );
 
+  const orgnaizationsRefsArray = useMemo(
+    () => Array.from(orgnaizationsRefs.values()),
+    [orgnaizationsRefs]
+  );
+
   return (
     <AutomatedUserFactory
       apiUrl={url}
@@ -42,6 +56,8 @@ export const UserFactory = connect((props: UserFactoryPros) => {
       userId={update ? userId : undefined}
       organizationId={organizationId}
       submitted={onSubmitted}
+      rolesOptions={rolesOptions}
+      organizationsRefs={orgnaizationsRefsArray}
       readonly={readonly}
     />
   );

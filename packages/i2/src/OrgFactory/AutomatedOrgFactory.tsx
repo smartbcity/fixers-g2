@@ -39,7 +39,14 @@ export type AutomatedOrgFactoryProps = MergeMuiElementProps<
 >
 
 export const AutomatedOrgFactory = (props: AutomatedOrgFactoryProps) => {
-  const { apiUrl, jwt, update = false, submitted, organizationId } = props
+  const {
+    apiUrl,
+    jwt,
+    update = false,
+    submitted,
+    organizationId,
+    ...other
+  } = props
 
   const getOrganization = useCallback(async () => {
     const res = await request<{ organization?: Organization }[]>({
@@ -133,6 +140,7 @@ export const AutomatedOrgFactory = (props: AutomatedOrgFactoryProps) => {
       getInseeOrganization={getInseeOrganization}
       onSubmit={update ? updateOrganization : createOrganization}
       submitButtonLabel={update ? 'Mettre à jour' : 'Créer'}
+      {...other}
     />
   )
 }

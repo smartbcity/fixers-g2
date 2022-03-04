@@ -181,7 +181,6 @@ export const Filters = (props: FiltersProps) => {
         }
         const textField = (
           <FilterTextField
-            {...commonProps}
             value={formState.values[field.name] ?? ''}
             onChange={(value) =>
               formState.setFieldValue(field.name, value, false)
@@ -193,6 +192,7 @@ export const Filters = (props: FiltersProps) => {
             textFieldType='search'
             onSearch={() => defaultSubmitBehavior && formState.submitForm()}
             {...field.textFieldProps}
+            {...commonProps}
           />
         )
         switch (field.type) {
@@ -201,7 +201,6 @@ export const Filters = (props: FiltersProps) => {
           case 'datepicker':
             return (
               <FilterDatePicker
-                {...commonProps}
                 value={formState.values[field.name] ?? ''}
                 onChangeDate={(date) => {
                   formState.setFieldValue(field.name, date, false)
@@ -214,12 +213,12 @@ export const Filters = (props: FiltersProps) => {
                   defaultSubmitBehavior && formState.submitForm()
                 }}
                 {...field.datePickerProps}
+                {...commonProps}
               />
             )
           case 'select':
             return field.selectProps?.multiple === true ? (
               <FilterSelect
-                {...commonProps}
                 values={formState.values[field.name] ?? []}
                 onChangeValues={(values) =>
                   formState.setFieldValue(field.name, values, false)
@@ -230,10 +229,10 @@ export const Filters = (props: FiltersProps) => {
                 }}
                 onClose={() => defaultSubmitBehavior && formState.submitForm()}
                 {...field.selectProps}
+                {...commonProps}
               />
             ) : (
               <FilterSelect
-                {...commonProps}
                 value={formState.values[field.name] ?? ''}
                 onChangeValue={(value) => {
                   formState.setFieldValue(field.name, value, false)
@@ -245,6 +244,7 @@ export const Filters = (props: FiltersProps) => {
                 }}
                 onClose={() => defaultSubmitBehavior && formState.submitForm()}
                 {...field.selectProps}
+                {...commonProps}
               />
             )
           default:

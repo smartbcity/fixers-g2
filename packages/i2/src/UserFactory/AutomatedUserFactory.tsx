@@ -45,7 +45,8 @@ export const AutomatedUserFactory = (props: AutomatedUserFactoryProps) => {
     update = false,
     submitted,
     userId,
-    organizationId
+    organizationId,
+    ...other
   } = props
 
   const getUser = useCallback(async (): Promise<User | undefined> => {
@@ -77,7 +78,10 @@ export const AutomatedUserFactory = (props: AutomatedUserFactoryProps) => {
       const res = await request<{ id: string }[]>({
         url: `${apiUrl}/updateUser`,
         method: 'POST',
-        body: JSON.stringify(user),
+        body: JSON.stringify({
+          ...user,
+          memberOf: user.memberOf?.id
+        }),
         jwt: jwt
       })
       if (res) {
@@ -97,7 +101,8 @@ export const AutomatedUserFactory = (props: AutomatedUserFactoryProps) => {
         method: 'POST',
         body: JSON.stringify({
           ...user,
-          memberOf: { id: organizationId }
+          roles: user.roles ?? [],
+          memberOf: organizationId
         } as User),
         jwt: jwt
       })
@@ -117,6 +122,7 @@ export const AutomatedUserFactory = (props: AutomatedUserFactoryProps) => {
       user={result}
       onSubmit={update ? updateUser : createUser}
       submitButtonLabel={update ? 'Mettre à jour' : 'Créer'}
+      {...other}
     />
   )
 }

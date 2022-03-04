@@ -1,4 +1,4 @@
-import { Avatar, Stack, Typography } from '@mui/material'
+import { Avatar, Box, Stack, Typography } from '@mui/material'
 import { Link, MenuItem, MoreOptions } from '@smartb/g2-components'
 import { Column, Table, TableProps, CellProps } from '@smartb/g2-layout'
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
@@ -44,11 +44,15 @@ export interface UserTableBasicProps extends BasicProps {
   /**
    * The actions place on the top near the filters
    */
-  TableActions?: React.ReactNode
+  tableActions?: React.ReactNode
   /**
    * The event called when the filters are submitted or when the pagination updates
    */
   onFetchUsers: (params?: UserTableFilters) => void
+  /**
+   * Used for the pagination
+   */
+  totalPages?: number
   /**
    * The props passes to the filters component
    */
@@ -79,7 +83,8 @@ export const UserTable = (props: UserTableProps) => {
     organizationsRefs,
     blockedFilters,
     rolesOptions,
-    TableActions,
+    tableActions,
+    totalPages,
     ...other
   } = props
   const [page, setPage] = useState(initialFiltersValues?.page ?? 1)
@@ -166,9 +171,9 @@ export const UserTable = (props: UserTableProps) => {
       },
       {
         Header: 'Email',
-        accessor: 'mail',
+        accessor: 'email',
         Cell: ({ row }: CellProps<User>) => (
-          <Typography>{row.original.mail}</Typography>
+          <Typography>{row.original.email}</Typography>
         ),
         width: 250
       },
@@ -209,23 +214,36 @@ export const UserTable = (props: UserTableProps) => {
   )
 
   return (
-    <>
-      <UserFilters
-        organizationsRefs={organizationsRefs}
-        onSubmit={onSubmitFilters}
-        initialFiltersValues={initialFiltersValues}
-        blockedFilters={blockedFilters}
-        rolesOptions={rolesOptions}
-        TableActions={TableActions}
-        {...filtersProps}
-      />
+    <Box
+      sx={{
+        '& .AruiTable-root': {
+          borderRadius: '5px',
+          boxShadow: 1,
+          background: 'white',
+          marginBottom: '20px'
+        }
+      }}
+    >
       <Table<User>
         page={page}
         handlePageChange={onChangePage}
+        totalPages={totalPages}
         data={users}
         columns={columns}
+        variant='grounded'
+        header={
+          <UserFilters
+            organizationsRefs={organizationsRefs}
+            onSubmit={onSubmitFilters}
+            initialFiltersValues={initialFiltersValues}
+            blockedFilters={blockedFilters}
+            rolesOptions={rolesOptions}
+            tableActions={tableActions}
+            {...filtersProps}
+          />
+        }
         {...other}
       />
-    </>
+    </Box>
   )
 }

@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import {
   AutomatedOrgTable,
   Organization,
@@ -9,6 +9,7 @@ import { useCallback } from "react";
 import { Link, LinkProps } from "react-router-dom";
 import { parse, stringify } from "qs";
 import connect from "./OrgTableConnect";
+import { orgRolesOptions } from "auth";
 
 export interface OrgTablePros {
   url: string;
@@ -92,8 +93,9 @@ export const OrgTable = connect((props: OrgTablePros) => {
       jwt={jwt}
       getActions={getActions}
       submitted={gotoOrganizationTable}
-      TableActions={actions}
+      tableActions={actions}
       initialFiltersValues={params}
+      rolesOptions={orgRolesOptions}
     />
   );
 });

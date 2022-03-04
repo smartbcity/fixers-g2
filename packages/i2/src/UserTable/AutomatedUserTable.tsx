@@ -45,17 +45,23 @@ export const AutomatedUserTable = (props: AutomatedUserTableProps) => {
 
   const getUsers = useCallback(
     async (params?: UserTableFilters) => {
-      const res = await request<{ users: User[] }[]>({
+      const res = await request<{ users: User[]; total: number }[]>({
         url: `${apiUrl}/getAllUsers`,
         method: 'POST',
         body: JSON.stringify({
           ...params,
+          page: params?.page ? params?.page - 1 : 0,
           size: 10
         }),
         jwt: jwt
       })
       if (res) {
-        return res[0].users
+        return {
+          users: res[0]?.users,
+          totalPages: res[0]?.total
+            ? Math.floor(res[0]?.total / 10) + 1
+            : undefined
+        }
       } else {
         return undefined
       }
@@ -81,8 +87,14 @@ export const AutomatedUserTable = (props: AutomatedUserTableProps) => {
     <UserTable
       organizationsRefs={organizationsRefs}
       isLoading={status !== 'SUCCESS'}
-      users={result ?? []}
+      users={result?.users ?? []}
+      totalPages={
+        result?.totalPages && result?.totalPages > 1
+          ? result?.totalPages
+          : undefined
+      }
       onFetchUsers={onFetchUsers}
+      initialFiltersValues={initialFiltersValues}
       {...other}
     />
   )

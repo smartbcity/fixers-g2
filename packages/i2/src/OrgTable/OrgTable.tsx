@@ -33,12 +33,16 @@ export interface OrgTableBasicProps extends BasicProps {
   /**
    * The actions place on the top near the filters
    */
-  TableActions?: React.ReactNode
+  tableActions?: React.ReactNode
   /**
    * The roles options needed to make the roles select.
    * The default role selected in the form will be the first of the list
    */
   rolesOptions?: Option[]
+  /**
+   * Used for the pagination
+   */
+  totalPages?: number
   /**
    * The event called when the filters are submitted or when the pagination updates
    */
@@ -67,7 +71,8 @@ export const OrgTable = (props: OrgTableProps) => {
     getActions,
     rolesOptions,
     blockedFilters,
-    TableActions,
+    tableActions,
+    totalPages,
     ...other
   } = props
   const [page, setPage] = useState(initialFiltersValues?.page ?? 1)
@@ -113,12 +118,10 @@ export const OrgTable = (props: OrgTableProps) => {
             justifyContent='space-around'
             alignItems='center'
             direction='row'
-            data-tag='___react-data-table-allow-propagation___'
           >
             {row.original.image && (
               <Box
                 width='50px'
-                data-tag='___react-data-table-allow-propagation___'
                 marginRight='10px'
                 sx={{
                   '& .companyImage': {
@@ -129,19 +132,13 @@ export const OrgTable = (props: OrgTableProps) => {
                 }}
               >
                 <img
-                  data-tag='___react-data-table-allow-propagation___'
                   src={row.original.image}
                   alt={`Le logo de l'entreprise ${row.original.name}`}
                   className='companyImage'
                 />
               </Box>
             )}
-            <Typography
-              data-tag='___react-data-table-allow-propagation___'
-              align='left'
-            >
-              {row.original.name}
-            </Typography>
+            <Typography align='left'>{row.original.name}</Typography>
           </Stack>
         )
       },
@@ -149,7 +146,7 @@ export const OrgTable = (props: OrgTableProps) => {
         Header: 'Adresse',
         accessor: 'address',
         Cell: ({ row }: CellProps<Organization>) => (
-          <Typography data-tag='___react-data-table-allow-propagation___'>
+          <Typography>
             {`${row.original.address.street}, ${row.original.address.postalCode} ${row.original.address.city}`}
           </Typography>
         )
@@ -158,12 +155,7 @@ export const OrgTable = (props: OrgTableProps) => {
         Header: 'Site web',
         accessor: 'website',
         Cell: ({ row }: CellProps<Organization>) => (
-          <Link
-            data-tag='___react-data-table-allow-propagation___'
-            href={row.original.website}
-          >
-            {row.original.website}
-          </Link>
+          <Link href={row.original.website}>{row.original.website}</Link>
         )
       },
       ...(!!getActions
@@ -181,22 +173,35 @@ export const OrgTable = (props: OrgTableProps) => {
   )
 
   return (
-    <>
-      <OrgFilters
-        onSubmit={onSubmitFilters}
-        initialFiltersValues={initialFiltersValues}
-        blockedFilters={blockedFilters}
-        rolesOptions={rolesOptions}
-        TableActions={TableActions}
-        {...filtersProps}
-      />
+    <Box
+      sx={{
+        '& .AruiTable-root': {
+          borderRadius: '5px',
+          boxShadow: 1,
+          background: 'white',
+          marginBottom: '20px'
+        }
+      }}
+    >
       <Table<Organization>
         page={page}
         handlePageChange={onChangePage}
         data={organizations}
         columns={columns}
+        totalPages={totalPages}
+        variant='grounded'
+        header={
+          <OrgFilters
+            onSubmit={onSubmitFilters}
+            initialFiltersValues={initialFiltersValues}
+            blockedFilters={blockedFilters}
+            rolesOptions={rolesOptions}
+            tableActions={tableActions}
+            {...filtersProps}
+          />
+        }
         {...other}
       />
-    </>
+    </Box>
   )
 }

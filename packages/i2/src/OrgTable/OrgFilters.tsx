@@ -20,7 +20,7 @@ export interface OrgFiltersBasicProps extends BasicProps {
   initialFiltersValues?: OrgFilters
   blockedFilters?: OrgTableBlockedFilters
   rolesOptions?: Option[]
-  TableActions?: React.ReactNode
+  tableActions?: React.ReactNode
 }
 
 export type OrgFiltersProps = MergeMuiElementProps<
@@ -34,7 +34,7 @@ export const OrgFilters = (props: OrgFiltersProps) => {
     initialFiltersValues,
     blockedFilters,
     rolesOptions,
-    TableActions,
+    tableActions,
     ...other
   } = props
 
@@ -50,7 +50,8 @@ export const OrgFilters = (props: OrgFiltersProps) => {
               type: 'textfield',
               textFieldProps: {
                 textFieldType: 'search',
-                className: 'searchFilter'
+                className: 'searchFilter',
+                color: 'secondary'
               }
             } as FiltersField
           ]
@@ -64,7 +65,8 @@ export const OrgFilters = (props: OrgFiltersProps) => {
               defaultValue: initialFiltersValues?.role,
               type: 'select',
               selectProps: {
-                options: rolesOptions
+                options: rolesOptions,
+                color: 'secondary'
               }
             } as FiltersField
           ]
@@ -82,14 +84,16 @@ export const OrgFilters = (props: OrgFiltersProps) => {
     <Stack
       direction='row'
       justifyContent='space-between'
+      alignItems='center'
       sx={{
         '& .searchFilter': {
           width: '150px'
-        }
+        },
+        padding: '10px 20px'
       }}
     >
       <Filters fields={fields} formState={formState} {...other} />
-      {TableActions}
+      {tableActions}
     </Stack>
   )
 }

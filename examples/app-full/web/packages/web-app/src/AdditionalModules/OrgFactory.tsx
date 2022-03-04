@@ -1,10 +1,10 @@
-import React from "react";
 import { AutomatedOrgFactory, Organization } from "@smartb/g2-i2";
 import { useCallback } from "react";
 import { useParams } from "react-router";
 import connect from "./OrgFactoryConnect";
 import { Box, Typography } from "@mui/material";
 import { UserTable } from "./UserTable";
+import { orgRolesOptions } from "auth";
 
 export interface OrgFactoryPros {
   url: string;
@@ -45,6 +45,7 @@ export const OrgFactory = connect((props: OrgFactoryPros) => {
         organizationId={update ? organizationId : undefined}
         submitted={onSubmitted}
         readonly={readonly}
+        rolesOptions={orgRolesOptions}
       />
       {userUrl && (
         <>

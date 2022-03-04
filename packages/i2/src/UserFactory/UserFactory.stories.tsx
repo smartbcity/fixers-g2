@@ -51,11 +51,12 @@ export default {
 export const UserFactoryStory: Story<UserFactoryProps> = (
   args: UserFactoryProps
 ) => {
-  return <UserFactory readonly {...args} />
+  return <UserFactory {...args} />
 }
 
 UserFactoryStory.args = {
   onSubmit: (user) => console.log(user),
+  organizationId: '1',
   organizationsRefs: [
     {
       id: '1',

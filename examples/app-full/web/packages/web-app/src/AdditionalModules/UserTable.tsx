@@ -1,4 +1,3 @@
-import React from "react";
 import {
   AutomatedUserTable,
   User,
@@ -12,6 +11,7 @@ import { Link, LinkProps } from "react-router-dom";
 import connect from "./UserTableConnect";
 import { useMemo } from "react";
 import { parse } from "qs";
+import { rolesOptions } from "auth";
 
 export interface UserTablePros {
   url: string;
@@ -67,12 +67,12 @@ export const UserTable = connect((props: UserTablePros) => {
       page = Number(params.page);
     }
     return {
-      organizationId: org,
+      organizationId: organizationId ?? org,
       search: search,
       role: role,
       page: page,
     };
-  }, []);
+  }, [organizationId]);
 
   const getOrganizationUrl = useCallback(
     (organizationId: string) => `/organizations/${organizationId}/edit`,
@@ -107,8 +107,9 @@ export const UserTable = connect((props: UserTablePros) => {
       getActions={getActions}
       getOrganizationUrl={getOrganizationUrl}
       submitted={gotoUserTable}
-      TableActions={actions}
+      tableActions={actions}
       blockedFilters={blockedFilters}
+      rolesOptions={rolesOptions}
       initialFiltersValues={params}
     />
   );

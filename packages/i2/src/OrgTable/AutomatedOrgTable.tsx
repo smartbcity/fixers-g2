@@ -34,17 +34,26 @@ export const AutomatedOrgTable = (props: AutomatedOrgTableProps) => {
 
   const getOrganizations = useCallback(
     async (params?: OrgTableFilters) => {
-      const res = await request<{ organizations: Organization[] }[]>({
+      const res = await request<
+        { organizations: Organization[]; total: number }[]
+      >({
         url: `${apiUrl}/getAllOrganizations`,
         method: 'POST',
         body: JSON.stringify({
           ...params,
+          name: params?.search,
+          page: params?.page ? params?.page - 1 : 0,
           size: 10
         } as OrganizationGetAllQuery),
         jwt: jwt
       })
       if (res) {
-        return res[0].organizations
+        return {
+          organizations: res[0]?.organizations,
+          totalPages: res[0]?.total
+            ? Math.floor(res[0]?.total / 10) + 1
+            : undefined
+        }
       } else {
         return undefined
       }
@@ -69,8 +78,14 @@ export const AutomatedOrgTable = (props: AutomatedOrgTableProps) => {
   return (
     <OrgTable
       isLoading={status !== 'SUCCESS'}
-      organizations={result ?? []}
+      organizations={result?.organizations ?? []}
+      totalPages={
+        result?.totalPages && result?.totalPages > 1
+          ? result?.totalPages
+          : undefined
+      }
       onFetchOrganizations={onFetchOrganizations}
+      initialFiltersValues={initialFiltersValues}
       {...other}
     />
   )

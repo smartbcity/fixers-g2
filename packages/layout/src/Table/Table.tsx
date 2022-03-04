@@ -25,6 +25,7 @@ import { GroundedBase } from './GroundedBase'
 import { ElevatedBase } from './ElevatedBase'
 import { ElevatedLoading } from './ElevatedLoading'
 import { GroundedLoading } from './GroundedLoading'
+import { Pagination } from '@smartb/g2-components'
 
 export interface TableClasses {
   table?: string
@@ -111,6 +112,16 @@ export interface TableBasicProps<Data extends BasicData> extends BasicProps {
    */
   isLoading?: boolean
   /**
+   * Used for the loading state. Indicates the expected number of rows in the table after the loading
+   * so that the loading component has the same size than the loaded table
+   * @default 10
+   */
+  expectedSize?: number
+  /**
+   * The component to render in the table header
+   */
+  header?: React.ReactNode
+  /**
    * Indicates if there shouldn't be a checkbox to check or uncheck all the rows on the current page at the same time
    * @default false
    */
@@ -158,10 +169,13 @@ export const Table = <Data extends BasicData>(props: TableProps<Data>) => {
     onRowClicked,
     noToggleAllPageRowsSelected = false,
     renderRowHoveredComponent,
+    header,
+    expectedSize = 10,
     ...other
   } = props
   const isSelectabale = !!setSelectedRowIds
   const isExpandable = !!renderSubComponent
+  const isPaginated = !!page && !!totalPages
 
   const useVariableHooks = useCallback(
     (hooks: Hooks<Data>) => {
@@ -263,73 +277,84 @@ export const Table = <Data extends BasicData>(props: TableProps<Data>) => {
   const tableProps = useMemo(() => getTableProps(), [getTableProps])
 
   return (
-    <TableContainer
-      className={cx('AruiTable-root', className)}
-      sx={
-        variant === 'elevated'
-          ? {
-              padding: '0 10px',
-              paddingBottom: '10px',
-              boxSizing: 'border-box',
-              '& .AruiTable-principaleTableRow:hover': !!onRowClicked
-                ? {
-                    borderColor: 'secondary.main',
-                    cursor: 'pointer'
-                  }
-                : {}
-            }
-          : {
-              '& .AruiTable-principaleTableRow:hover': !!onRowClicked
-                ? {
-                    background: '#D9DBE14D',
-                    cursor: 'pointer'
-                  }
-                : {}
-            }
-      }
-      variant={variant}
-      {...other}
-    >
-      {isLoading &&
-        (variant === 'elevated' ? <ElevatedLoading /> : <GroundedLoading />)}
-      {!isLoading &&
-        (variant === 'elevated' ? (
-          <ElevatedBase
-            headerGroups={headerGroups}
-            footerGroups={footerGroups}
-            withFooter={withFooter}
-            prepareRow={prepareRow}
-            rows={rows}
-            tableProps={tableProps}
-            classes={classes}
-            handlePageChange={handlePageChange}
-            onRowClicked={onRowClicked}
-            selectedRowIds={selectedRowIds}
-            page={page}
-            renderSubComponent={renderSubComponent}
-            renderRowHoveredComponent={renderRowHoveredComponent}
-            styles={styles}
-            totalPages={totalPages}
-          />
-        ) : (
-          <GroundedBase
-            withFooter={withFooter}
-            headerGroups={headerGroups}
-            footerGroups={footerGroups}
-            selectedRowIds={selectedRowIds}
-            page={page}
-            prepareRow={prepareRow}
-            rows={rows}
-            tableProps={tableProps}
-            classes={classes}
-            handlePageChange={handlePageChange}
-            onRowClicked={onRowClicked}
-            renderSubComponent={renderSubComponent}
-            renderRowHoveredComponent={renderRowHoveredComponent}
-            styles={styles}
-            totalPages={totalPages}
-          />
-        ))}
-    </TableContainer>
+    <>
+      <TableContainer
+        className={cx('AruiTable-root', className)}
+        sx={
+          variant === 'elevated'
+            ? {
+                padding: '0 10px',
+                paddingBottom: '10px',
+                boxSizing: 'border-box',
+                '& .AruiTable-principaleTableRow:hover': !!onRowClicked
+                  ? {
+                      borderColor: 'secondary.main',
+                      cursor: 'pointer'
+                    }
+                  : {}
+              }
+            : {
+                '& .AruiTable-principaleTableRow:hover': !!onRowClicked
+                  ? {
+                      background: '#D9DBE14D',
+                      cursor: 'pointer'
+                    }
+                  : {}
+              }
+        }
+        variant={variant}
+        {...other}
+      >
+        {header}
+        {isLoading &&
+          (variant === 'elevated' ? (
+            <ElevatedLoading expectedSize={expectedSize} />
+          ) : (
+            <GroundedLoading expectedSize={expectedSize} />
+          ))}
+        {!isLoading &&
+          (variant === 'elevated' ? (
+            <ElevatedBase
+              headerGroups={headerGroups}
+              footerGroups={footerGroups}
+              withFooter={withFooter}
+              prepareRow={prepareRow}
+              rows={rows}
+              tableProps={tableProps}
+              classes={classes}
+              onRowClicked={onRowClicked}
+              selectedRowIds={selectedRowIds}
+              page={page}
+              renderSubComponent={renderSubComponent}
+              renderRowHoveredComponent={renderRowHoveredComponent}
+              styles={styles}
+            />
+          ) : (
+            <GroundedBase
+              withFooter={withFooter}
+              headerGroups={headerGroups}
+              footerGroups={footerGroups}
+              selectedRowIds={selectedRowIds}
+              page={page}
+              prepareRow={prepareRow}
+              rows={rows}
+              tableProps={tableProps}
+              classes={classes}
+              onRowClicked={onRowClicked}
+              renderSubComponent={renderSubComponent}
+              renderRowHoveredComponent={renderRowHoveredComponent}
+              styles={styles}
+            />
+          ))}
+      </TableContainer>
+      {isPaginated ? (
+        <Pagination
+          className='AruiTable-pagination'
+          onPageChange={handlePageChange}
+          page={page}
+          totalPage={totalPages}
+        />
+      ) : undefined}
+    </>
   )
 }

@@ -1,23 +1,18 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import reportWebVitals from "reportWebVitals";
-import {
-  AppProvider,
-  KeycloakProvider,
-  useKeycloak,
-} from "@smartb/g2-providers";
+import { AppProvider, KeycloakProvider } from "@smartb/g2-providers";
 import { languages } from "i18n";
 import { history, store } from "store";
 import { ThemeContextProvider } from "@smartb/g2-themes";
 import { Typography } from "@mui/material";
-import { theme } from "Themes";
 import App from "App";
 
 ReactDOM.render(
   <React.StrictMode>
-    <ThemeContextProvider theme={theme}>
+    <ThemeContextProvider>
       <KeycloakProvider
-        config={{ clientId: "unknown", realm: "unknown", url: "unknown" }}
+        config={{ clientId: "unknown", realm: "unknown", url: "unknown" }} // to complete
         initOptions={{ onLoad: undefined }}
         loadingComponent={<Typography>Loading...</Typography>}
       >

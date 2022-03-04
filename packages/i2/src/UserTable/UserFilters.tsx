@@ -23,7 +23,7 @@ export interface UserFiltersBasicProps extends BasicProps {
   organizationsRefs?: OrganizationRef[]
   rolesOptions?: Option[]
   blockedFilters?: UserTableBlockedFilters
-  TableActions?: React.ReactNode
+  tableActions?: React.ReactNode
 }
 
 export type UserFiltersProps = MergeMuiElementProps<
@@ -38,7 +38,7 @@ export const UserFilters = (props: UserFiltersProps) => {
     organizationsRefs,
     blockedFilters,
     rolesOptions,
-    TableActions,
+    tableActions,
     ...other
   } = props
 
@@ -63,7 +63,8 @@ export const UserFilters = (props: UserFiltersProps) => {
               type: 'textfield',
               textFieldProps: {
                 textFieldType: 'search',
-                className: 'searchFilter'
+                className: 'searchFilter',
+                color: 'secondary'
               }
             } as FiltersField
           ]
@@ -77,7 +78,8 @@ export const UserFilters = (props: UserFiltersProps) => {
               defaultValue: initialFiltersValues?.organizationId,
               type: 'select',
               selectProps: {
-                options: orgsOptions
+                options: orgsOptions,
+                color: 'secondary'
               }
             } as FiltersField
           ]
@@ -91,7 +93,8 @@ export const UserFilters = (props: UserFiltersProps) => {
               defaultValue: initialFiltersValues?.role,
               type: 'select',
               selectProps: {
-                options: rolesOptions
+                options: rolesOptions,
+                color: 'secondary'
               }
             } as FiltersField
           ]
@@ -112,11 +115,12 @@ export const UserFilters = (props: UserFiltersProps) => {
       sx={{
         '& .searchFilter': {
           width: '150px'
-        }
+        },
+        padding: '10px 20px'
       }}
     >
       <Filters fields={fields} formState={formState} {...other} />
-      {TableActions}
+      {tableActions}
     </Stack>
   )
 }

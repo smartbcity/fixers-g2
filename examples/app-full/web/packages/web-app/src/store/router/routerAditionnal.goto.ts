@@ -24,16 +24,16 @@ const userTable = (params?: Object) => {
 };
 
 const createOrganization = () => {
-  return push(`/organiations/add`);
+  return push(`/organizations/add`);
 };
 
 const editOrganization = (organizationId: string) => {
-  return push(`/organiations/${organizationId}/edit`);
+  return push(`/organizations/${organizationId}/edit`);
 };
 
 const organizationTable = (params?: Object) => {
   return push(
-    `/organiations${stringify(params, {
+    `/organizations${stringify(params, {
       addQueryPrefix: true,
       arrayFormat: "repeat",
     })}`

@@ -6,6 +6,7 @@ import { ArgsTable, PRIMARY_STORY, Subtitle } from '@storybook/addon-docs'
 import LinkTo from '@storybook/addon-links/react'
 import { Stack, Typography } from '@mui/material'
 import { User } from '../UserFactory/types'
+import { Button } from '@smartb/g2-components'
 
 export default {
   title: 'I2/UserTable',
@@ -43,6 +44,7 @@ export const UserTableStory: Story<UserTableProps> = (args: UserTableProps) => {
 const users: User[] = [
   {
     id: '1',
+    role: 'User',
     givenName: 'Basile',
     familyName: 'Savouret',
     address: {
@@ -60,6 +62,7 @@ const users: User[] = [
     id: '2',
     givenName: 'Teddy',
     familyName: 'Lee',
+    role: 'Admin',
     address: {
       street: '2 Rue du Pavillon',
       postalCode: '34000',
@@ -75,6 +78,7 @@ const users: User[] = [
     id: '3',
     givenName: 'Basile',
     familyName: 'Savouret',
+    role: 'User',
     address: {
       street: '2 Rue du Pavillon',
       postalCode: '34000',
@@ -91,8 +95,24 @@ const users: User[] = [
 UserTableStory.args = {
   users: users,
   totalPages: 10,
-  onFetchUsers: (page, search) => console.log(page, search),
-  organizationsRefs: []
+  onFetchUsers: (params) => console.log(params),
+  organizationsRefs: [
+    {
+      id: 'smartb',
+      name: 'smartb'
+    }
+  ],
+  rolesOptions: [
+    {
+      key: 'user',
+      label: 'User'
+    },
+    {
+      key: 'admin',
+      label: 'Admin'
+    }
+  ],
+  tableActions: <Button>Créer une organisation</Button>
 }
 
 UserTableStory.storyName = 'UserTable'
