@@ -1,7 +1,31 @@
 import { Skeleton, Stack, Typography } from '@mui/material'
-import React from 'react'
+import React, { useMemo } from 'react'
 
-export const ElevatedLoading = () => {
+interface ElevatedLoadingProps {
+  expectedSize: number
+}
+
+export const ElevatedLoading = (props: ElevatedLoadingProps) => {
+  const { expectedSize } = props
+  const rows = useMemo(() => {
+    const display = []
+    for (let i = 0; i < expectedSize; i++) {
+      display.push(
+        <Skeleton
+          key={i}
+          animation='wave'
+          variant='rectangular'
+          sx={{
+            height: '42px',
+            width: '100%',
+            margin: '10px 0',
+            borderRadius: '4px'
+          }}
+        />
+      )
+    }
+    return display
+  }, [expectedSize])
   return (
     <Stack
       sx={{
@@ -32,46 +56,7 @@ export const ElevatedLoading = () => {
           <Skeleton animation='wave' />
         </Typography>
       </Stack>
-      <Skeleton
-        animation='wave'
-        variant='rectangular'
-        sx={{
-          height: '42px',
-          width: '100%',
-          margin: '10px 0',
-          borderRadius: '4px'
-        }}
-      />
-      <Skeleton
-        animation='wave'
-        variant='rectangular'
-        sx={{
-          height: '42px',
-          width: '100%',
-          margin: '10px 0',
-          borderRadius: '4px'
-        }}
-      />
-      <Skeleton
-        animation='wave'
-        variant='rectangular'
-        sx={{
-          height: '42px',
-          width: '100%',
-          margin: '10px 0',
-          borderRadius: '4px'
-        }}
-      />
-      <Skeleton
-        animation='wave'
-        variant='rectangular'
-        sx={{
-          height: '42px',
-          width: '100%',
-          margin: '10px 0',
-          borderRadius: '4px'
-        }}
-      />
+      {rows}
     </Stack>
   )
 }

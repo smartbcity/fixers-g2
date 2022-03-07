@@ -9,7 +9,7 @@ export type FormState = Omit<ReturnType<typeof useFormik>, 'validateField'> & {
 export type PartialField = {
   name: string
   defaultValue?: any
-  validator?: (value: any) => string | undefined
+  validator?: (value: any, values: any) => string | undefined
 }
 
 interface useFormParams<T extends PartialField = PartialField> {
@@ -65,7 +65,7 @@ const useFormBase = <T extends PartialField = PartialField>(
       const errors = {}
       fields.forEach((field) => {
         if (field.validator) {
-          const error = field.validator(values[field.name])
+          const error = field.validator(values[field.name], values)
           if (error) errors[field.name] = error
         }
       })
@@ -87,7 +87,7 @@ const useFormBase = <T extends PartialField = PartialField>(
     (fieldName: string) => {
       const field = fields.find((field) => field.name === fieldName)
       const error = field?.validator
-        ? field?.validator(formik.values[fieldName])
+        ? field?.validator(formik.values[fieldName], formik.values)
         : undefined
       formik.setFieldError(fieldName, error)
       return error

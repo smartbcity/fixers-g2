@@ -7,9 +7,14 @@ import {
   TableRow,
   Typography
 } from '@mui/material'
-import React from 'react'
+import React, { useMemo } from 'react'
 
-export const GroundedLoading = () => {
+interface GroundedLoadingProps {
+  expectedSize: number
+}
+
+export const GroundedLoading = (props: GroundedLoadingProps) => {
+  const { expectedSize } = props
   const headerCell = (
     <TableCell>
       <Typography sx={{ width: '120px' }} variant='h6'>
@@ -24,14 +29,22 @@ export const GroundedLoading = () => {
       </Typography>
     </TableCell>
   )
-  const bodyRow = (
-    <TableRow>
-      {bodyCell}
-      {bodyCell}
-      {bodyCell}
-      {bodyCell}
-    </TableRow>
-  )
+
+  const rows = useMemo(() => {
+    const display = []
+    for (let i = 0; i < expectedSize; i++) {
+      display.push(
+        <TableRow key={i}>
+          {bodyCell}
+          {bodyCell}
+          {bodyCell}
+          {bodyCell}
+        </TableRow>
+      )
+    }
+    return display
+  }, [expectedSize])
+
   return (
     <Table>
       <TableHead>
@@ -42,12 +55,7 @@ export const GroundedLoading = () => {
           {headerCell}
         </TableRow>
       </TableHead>
-      <TableBody>
-        {bodyRow}
-        {bodyRow}
-        {bodyRow}
-        {bodyRow}
-      </TableBody>
+      <TableBody>{rows}</TableBody>
     </Table>
   )
 }

@@ -1,21 +1,21 @@
 import React from 'react'
 import { Meta } from '@storybook/react'
 import {
-  AutomatedOrgCreation,
-  AutomatedOrgCreationBasicProps as AutomatedOrgCreationProps
-} from './AutomatedOrgCreation'
+  AutomatedUserFactory,
+  AutomatedUserFactoryBasicProps as AutomatedUserFactoryProps
+} from './AutomatedUserFactory'
 import { Story } from '@storybook/react/types-6-0'
 import { KeycloakProvider, useAuth } from '@smartb/g2-providers'
 import { Typography } from '@mui/material'
 import { useState } from 'react'
 
 export default {
-  title: 'I2/AutomatedOrgCreation',
-  component: AutomatedOrgCreation
+  title: 'I2/AutomatedUserFactory',
+  component: AutomatedUserFactory
 } as Meta
 
-export const AutomatedOrgCreationStory: Story<AutomatedOrgCreationProps> = (
-  args: AutomatedOrgCreationProps
+export const AutomatedUserFactoryStory: Story<AutomatedUserFactoryProps> = (
+  args: AutomatedUserFactoryProps
 ) => {
   return (
     <KeycloakProvider
@@ -32,25 +32,23 @@ export const AutomatedOrgCreationStory: Story<AutomatedOrgCreationProps> = (
   )
 }
 
-const Following = (args: AutomatedOrgCreationProps) => {
-  const [organizationId, setorganizationId] = useState<string | undefined>(
-    'ec1a059a-b6de-4c17-9466-12e1dde4eff0'
-  )
+const Following = (args: AutomatedUserFactoryProps) => {
+  const [userId, setuserId] = useState<string | undefined>(undefined)
   const { keycloak } = useAuth()
   if (!keycloak.authenticated) return <></>
   return (
-    <AutomatedOrgCreation
-      submitted={(org) => setorganizationId(org.id)}
-      organizationId={organizationId}
-      update={!!organizationId}
+    <AutomatedUserFactory
+      submitted={(user) => setuserId(user.id)}
+      userId={userId}
+      update={!!userId}
       {...args}
       jwt={keycloak.token}
     />
   )
 }
 
-AutomatedOrgCreationStory.args = {
+AutomatedUserFactoryStory.args = {
   apiUrl: 'http://localhost:9090'
 }
 
-AutomatedOrgCreationStory.storyName = 'AutomatedOrgCreation'
+AutomatedUserFactoryStory.storyName = 'AutomatedUserFactory'

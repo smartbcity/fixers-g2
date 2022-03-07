@@ -1,6 +1,5 @@
 import { cx } from '@emotion/css'
 import { Box, Collapse, Typography } from '@mui/material'
-import { Pagination } from '@smartb/g2-components'
 import React, { Fragment, useMemo } from 'react'
 import { HeaderGroup, TableProps, TableRowProps } from 'react-table'
 import { TableClasses, TableStyles } from './Table'
@@ -13,16 +12,6 @@ export interface ElevatedBaseProps<Data extends BasicData> {
    * ⚠️ if you want the pagination to appear you must provide this props and also `totalPages`
    */
   page?: number
-  /**
-   * The number of pages the table contain.
-   *
-   * ⚠️ if you want the pagination to appear you must provide this props and also **page**
-   */
-  totalPages?: number
-  /**
-   * the envent triggered when the current page has to change
-   */
-  handlePageChange?: (page: number) => void
   /**
    * the envent triggered when a sub components is called
    */
@@ -57,19 +46,16 @@ export const ElevatedBase = <Data extends BasicData>(
     prepareRow,
     rows,
     classes,
-    handlePageChange,
     onRowClicked,
     page,
     renderSubComponent,
     styles,
-    totalPages,
     tableProps,
     selectedRowIds,
     footerGroups,
     withFooter,
     renderRowHoveredComponent
   } = props
-  const isPaginated = !!page && !!totalPages
   const rowsDisplay = useMemo(() => {
     return rows.map((row) => {
       prepareRow(row)
@@ -239,41 +225,31 @@ export const ElevatedBase = <Data extends BasicData>(
   )
 
   return (
-    <>
+    <Box
+      className={cx('AruiTable-table', classes?.table)}
+      style={styles?.table}
+      {...tableProps}
+    >
       <Box
-        className={cx('AruiTable-table', classes?.table)}
-        style={styles?.table}
-        {...tableProps}
+        className={cx('AruiTable-tableHead', classes?.tableHead)}
+        style={styles?.tableHead}
       >
-        <Box
-          className={cx('AruiTable-tableHead', classes?.tableHead)}
-          style={styles?.tableHead}
-        >
-          {headerDisplay}
-        </Box>
-        <Box
-          className={cx('AruiTable-tableBody', classes?.tableBody)}
-          style={styles?.tableBody}
-        >
-          {rowsDisplay}
-        </Box>
-        {footerDisplay && (
-          <Box
-            className={cx('AruiTable-tableFooter', classes?.tableFooter)}
-            style={styles?.tableFooter}
-          >
-            {footerDisplay}
-          </Box>
-        )}
+        {headerDisplay}
       </Box>
-      {isPaginated ? (
-        <Pagination
-          className='AruiTable-pagination'
-          onPageChange={handlePageChange}
-          page={page}
-          totalPage={totalPages}
-        />
-      ) : undefined}
-    </>
+      <Box
+        className={cx('AruiTable-tableBody', classes?.tableBody)}
+        style={styles?.tableBody}
+      >
+        {rowsDisplay}
+      </Box>
+      {footerDisplay && (
+        <Box
+          className={cx('AruiTable-tableFooter', classes?.tableFooter)}
+          style={styles?.tableFooter}
+        >
+          {footerDisplay}
+        </Box>
+      )}
+    </Box>
   )
 }

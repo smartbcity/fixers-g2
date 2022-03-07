@@ -55,10 +55,12 @@ export const Pagination = (props: PaginationProps) => {
   } = props
 
   const onChangePage = useCallback(
-    (_: React.ChangeEvent<unknown>, page: number) => {
-      onPageChange && onPageChange(page)
+    (_: React.ChangeEvent<unknown>, newPage: number) => {
+      if (page !== newPage) {
+        onPageChange && onPageChange(page)
+      }
     },
-    [onPageChange]
+    [onPageChange, page]
   )
 
   return (

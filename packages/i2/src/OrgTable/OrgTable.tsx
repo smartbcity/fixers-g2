@@ -1,10 +1,20 @@
 import { Box, Stack, Typography } from '@mui/material'
-import { Link } from '@smartb/g2-components'
+import { Link, MenuItem, MoreOptions } from '@smartb/g2-components'
+import { Option } from '@smartb/g2-forms'
 import { Column, Table, TableProps, CellProps } from '@smartb/g2-layout'
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 import React, { useCallback, useMemo, useState } from 'react'
-import { Organization } from '../OrgCreation/types'
+import { Organization } from '../OrgFactory/types'
 import { OrgFilters, OrgFiltersProps } from './OrgFilters'
+
+export type OrgTableFilters = {
+  page?: number
+} & OrgFilters
+
+export type OrgTableBlockedFilters = {
+  search?: boolean
+  role?: boolean
+}
 
 export interface OrgTableBasicProps extends BasicProps {
   /**
@@ -14,15 +24,37 @@ export interface OrgTableBasicProps extends BasicProps {
   /**
    * The initial values of the filters
    */
-  initialFiltersValues?: { search?: string; page?: number }
+  initialFiltersValues?: OrgTableFilters
+  /**
+   * The filters that will be used in the api calls but not rendered for the user.
+   * by default they are all set to false
+   */
+  blockedFilters?: OrgTableBlockedFilters
+  /**
+   * The actions place on the top near the filters
+   */
+  tableActions?: React.ReactNode
+  /**
+   * The roles options needed to make the roles select.
+   * The default role selected in the form will be the first of the list
+   */
+  rolesOptions?: Option[]
+  /**
+   * Used for the pagination
+   */
+  totalPages?: number
   /**
    * The event called when the filters are submitted or when the pagination updates
    */
-  onFetchOrganizations: (page: number, search?: string) => void
+  onFetchOrganizations: (params?: OrgTableFilters) => void
   /**
    * The props passes to the filters component
    */
   filtersProps?: Partial<OrgFiltersProps>
+  /**
+   * The actions available on a organization
+   */
+  getActions?: (org: Organization) => MenuItem<{}>[]
 }
 
 export type OrgTableProps = MergeMuiElementProps<
@@ -36,24 +68,33 @@ export const OrgTable = (props: OrgTableProps) => {
     initialFiltersValues,
     onFetchOrganizations,
     filtersProps,
+    getActions,
+    rolesOptions,
+    blockedFilters,
+    tableActions,
+    totalPages,
     ...other
   } = props
   const [page, setPage] = useState(initialFiltersValues?.page ?? 1)
-  const [filters, setFilters] = useState<{ search?: string } | undefined>(
+  const [filters, setFilters] = useState<OrgFilters | undefined>(
     initialFiltersValues
   )
 
   const onFetch = useCallback(
-    (pageNumber?: number, search?: string) => {
-      onFetchOrganizations(pageNumber ?? page, search ?? filters?.search)
+    (pageNumber?: number, params?: OrgFilters) => {
+      onFetchOrganizations({
+        page: pageNumber ?? page,
+        role: params?.role ?? filters?.role,
+        search: params?.search ?? filters?.search
+      })
     },
-    [onFetchOrganizations, filters?.search, page]
+    [onFetchOrganizations, filters, page]
   )
 
   const onSubmitFilters = useCallback(
-    (values: { search?: string }) => {
+    (values: OrgFilters) => {
       setFilters(values)
-      onFetch(undefined, values.search)
+      onFetch(undefined, values)
     },
     [onFetch]
   )
@@ -77,12 +118,10 @@ export const OrgTable = (props: OrgTableProps) => {
             justifyContent='space-around'
             alignItems='center'
             direction='row'
-            data-tag='___react-data-table-allow-propagation___'
           >
             {row.original.image && (
               <Box
                 width='50px'
-                data-tag='___react-data-table-allow-propagation___'
                 marginRight='10px'
                 sx={{
                   '& .companyImage': {
@@ -93,19 +132,13 @@ export const OrgTable = (props: OrgTableProps) => {
                 }}
               >
                 <img
-                  data-tag='___react-data-table-allow-propagation___'
                   src={row.original.image}
                   alt={`Le logo de l'entreprise ${row.original.name}`}
                   className='companyImage'
                 />
               </Box>
             )}
-            <Typography
-              data-tag='___react-data-table-allow-propagation___'
-              align='left'
-            >
-              {row.original.name}
-            </Typography>
+            <Typography align='left'>{row.original.name}</Typography>
           </Stack>
         )
       },
@@ -113,7 +146,7 @@ export const OrgTable = (props: OrgTableProps) => {
         Header: 'Adresse',
         accessor: 'address',
         Cell: ({ row }: CellProps<Organization>) => (
-          <Typography data-tag='___react-data-table-allow-propagation___'>
+          <Typography>
             {`${row.original.address.street}, ${row.original.address.postalCode} ${row.original.address.city}`}
           </Typography>
         )
@@ -122,28 +155,53 @@ export const OrgTable = (props: OrgTableProps) => {
         Header: 'Site web',
         accessor: 'website',
         Cell: ({ row }: CellProps<Organization>) => (
-          <Link
-            data-tag='___react-data-table-allow-propagation___'
-            href={row.original.website}
-          >
-            {row.original.website}
-          </Link>
+          <Link href={row.original.website}>{row.original.website}</Link>
         )
-      }
+      },
+      ...(!!getActions
+        ? [
+            {
+              id: 'moreoptions',
+              Cell: ({ row }: CellProps<Organization>) => (
+                <MoreOptions options={getActions(row.original)} />
+              )
+            }
+          ]
+        : [])
     ],
-    []
+    [getActions]
   )
 
   return (
-    <>
-      <OrgFilters onSubmit={onSubmitFilters} {...filtersProps} />
+    <Box
+      sx={{
+        '& .AruiTable-root': {
+          borderRadius: '5px',
+          boxShadow: 1,
+          background: 'white',
+          marginBottom: '20px'
+        }
+      }}
+    >
       <Table<Organization>
         page={page}
         handlePageChange={onChangePage}
         data={organizations}
         columns={columns}
+        totalPages={totalPages}
+        variant='grounded'
+        header={
+          <OrgFilters
+            onSubmit={onSubmitFilters}
+            initialFiltersValues={initialFiltersValues}
+            blockedFilters={blockedFilters}
+            rolesOptions={rolesOptions}
+            tableActions={tableActions}
+            {...filtersProps}
+          />
+        }
         {...other}
       />
-    </>
+    </Box>
   )
 }

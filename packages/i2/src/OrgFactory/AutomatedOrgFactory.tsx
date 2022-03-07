@@ -2,27 +2,14 @@ import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 import React, { useCallback, useMemo } from 'react'
 import { request, useAsyncResponse } from 'utils'
 import {
-  Command,
   Organization,
   OrganizationCreateCommand,
   OrganizationGetByIdQuery,
   OrganizationUpdateCommand
 } from './types'
-import { OrgCreation, OrgCreationProps } from './OrgCreation'
+import { OrgFactory, OrgFactoryProps } from './OrgFactory'
 
-const commandBase: Command = {
-  auth: {
-    serverUrl: 'https://auth.smart-b.io/auth',
-    realmId: 'master',
-    clientId: 'admin-cli',
-    redirectUrl: '',
-    username: 'smartb',
-    password: 'conorS'
-  },
-  realmId: 'test'
-}
-
-export interface AutomatedOrgCreationBasicProps extends BasicProps {
+export interface AutomatedOrgFactoryBasicProps extends BasicProps {
   /**
    * The api url where to make the locals api calls
    */
@@ -46,21 +33,27 @@ export interface AutomatedOrgCreationBasicProps extends BasicProps {
   submitted?: (organization: Organization) => void
 }
 
-export type AutomatedOrgCreationProps = MergeMuiElementProps<
-  OrgCreationProps,
-  AutomatedOrgCreationBasicProps
+export type AutomatedOrgFactoryProps = MergeMuiElementProps<
+  OrgFactoryProps,
+  AutomatedOrgFactoryBasicProps
 >
 
-export const AutomatedOrgCreation = (props: AutomatedOrgCreationProps) => {
-  const { apiUrl, jwt, update = false, submitted, organizationId } = props
+export const AutomatedOrgFactory = (props: AutomatedOrgFactoryProps) => {
+  const {
+    apiUrl,
+    jwt,
+    update = false,
+    submitted,
+    organizationId,
+    ...other
+  } = props
 
   const getOrganization = useCallback(async () => {
     const res = await request<{ organization?: Organization }[]>({
       url: `${apiUrl}/getOrganization`,
       method: 'POST',
       body: JSON.stringify({
-        id: organizationId,
-        ...commandBase
+        id: organizationId
       } as OrganizationGetByIdQuery),
       jwt: jwt
     })
@@ -106,8 +99,7 @@ export const AutomatedOrgCreation = (props: AutomatedOrgCreationProps) => {
         url: `${apiUrl}/updateOrganization`,
         method: 'POST',
         body: JSON.stringify({
-          ...organization,
-          ...commandBase
+          ...organization
         } as OrganizationUpdateCommand),
         jwt: jwt
       })
@@ -127,8 +119,7 @@ export const AutomatedOrgCreation = (props: AutomatedOrgCreationProps) => {
         url: `${apiUrl}/createOrganization`,
         method: 'POST',
         body: JSON.stringify({
-          ...organization,
-          ...commandBase
+          ...organization
         } as OrganizationCreateCommand),
         jwt: jwt
       })
@@ -144,11 +135,12 @@ export const AutomatedOrgCreation = (props: AutomatedOrgCreationProps) => {
 
   if (update && status !== 'SUCCESS') return <></>
   return (
-    <OrgCreation
+    <OrgFactory
       organization={organization}
       getInseeOrganization={getInseeOrganization}
       onSubmit={update ? updateOrganization : createOrganization}
       submitButtonLabel={update ? 'Mettre à jour' : 'Créer'}
+      {...other}
     />
   )
 }

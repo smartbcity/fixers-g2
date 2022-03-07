@@ -3,7 +3,8 @@ import {
   Form,
   FormField,
   useFormWithPartialFields,
-  FormPartialField
+  FormPartialField,
+  Option
 } from '@smartb/g2-forms'
 import {
   Box,
@@ -55,7 +56,7 @@ const StyledPopover = styled(Popover)({
   maxWidth: '450px'
 })
 
-export interface OrgCreationClasses {
+export interface OrgFactoryClasses {
   siretForm?: string
   leftForm?: string
   rightForm?: string
@@ -64,7 +65,7 @@ export interface OrgCreationClasses {
   infoPopover?: string
 }
 
-export interface OrgCreationStyles {
+export interface OrgFactoryStyles {
   siretForm?: React.CSSProperties
   leftForm?: React.CSSProperties
   rightForm?: React.CSSProperties
@@ -73,7 +74,7 @@ export interface OrgCreationStyles {
   infoPopover?: React.CSSProperties
 }
 
-export interface OrgCreationBasicProps extends BasicProps {
+export interface OrgFactoryBasicProps extends BasicProps {
   /**
    * The base organization. If it's given the component should be considered as an updater of the object
    */
@@ -85,7 +86,6 @@ export interface OrgCreationBasicProps extends BasicProps {
   getInseeOrganization?: (siret: string) => Promise<Organization | undefined>
   /**
    * The submit event
-   * @default 'Valider'
    * @param organization the complete organization object after form validation
    * @returns true if the api call has been successfull
    */
@@ -96,21 +96,31 @@ export interface OrgCreationBasicProps extends BasicProps {
    */
   submitButtonLabel?: string
   /**
+   * The roles options needed to make the roles select.
+   * The default role selected in the form will be the first of the list
+   */
+  rolesOptions?: Option[]
+  /**
+   * To activate Readonly view
+   * @default false
+   */
+  readonly?: boolean
+  /**
    * The classes applied to the different part of the component
    */
-  classes?: OrgCreationClasses
+  classes?: OrgFactoryClasses
   /**
    * The styles applied to the different part of the component
    */
-  styles?: OrgCreationStyles
+  styles?: OrgFactoryStyles
 }
 
-export type OrgCreationProps = MergeMuiElementProps<
+export type OrgFactoryProps = MergeMuiElementProps<
   StackProps,
-  OrgCreationBasicProps
+  OrgFactoryBasicProps
 >
 
-export const OrgCreation = (props: OrgCreationProps) => {
+export const OrgFactory = (props: OrgFactoryProps) => {
   const {
     organization,
     onSubmit,
@@ -119,10 +129,12 @@ export const OrgCreation = (props: OrgCreationProps) => {
     className,
     classes,
     styles,
+    rolesOptions,
+    readonly = false,
     ...other
   } = props
 
-  const [openSiretInfo, setOpenSiretInfo] = useState(!organization)
+  const [openSiretInfo, setOpenSiretInfo] = useState(!organization && !readonly)
   const [siretValid, setSiretValid] = useState(false)
   const [siretRef, setSiretRef] = useState(null)
   const [imageError, setImageError] = useState<string | undefined>(undefined)
@@ -195,9 +207,13 @@ export const OrgCreation = (props: OrgCreationProps) => {
       {
         name: 'website',
         defaultValue: organization?.website
+      },
+      {
+        name: 'roles',
+        defaultValue: organization?.roles ?? [(rolesOptions ?? [])[0]?.key]
       }
     ],
-    [organization]
+    [organization, rolesOptions]
   )
 
   const onSubmitMemoized = useCallback(
@@ -256,11 +272,12 @@ export const OrgCreation = (props: OrgCreationProps) => {
             if (!formState.validateField('siret')) {
               fetchOrganization()
             }
-          }
+          },
+          disabled: readonly
         }
       }
     ],
-    [formState.validateField, fetchOrganization, siretValid]
+    [formState.validateField, fetchOrganization, siretValid, readonly]
   )
 
   const details = useMemo(
@@ -269,13 +286,19 @@ export const OrgCreation = (props: OrgCreationProps) => {
         key: 'name',
         name: 'name',
         type: 'textfield',
-        label: 'Nom'
+        label: 'Nom',
+        textFieldProps: {
+          disabled: readonly
+        }
       },
       {
         key: 'street',
         name: 'street',
         type: 'textfield',
-        label: 'addresse'
+        label: 'addresse',
+        textFieldProps: {
+          disabled: readonly
+        }
       },
       {
         key: 'postalCode',
@@ -283,27 +306,49 @@ export const OrgCreation = (props: OrgCreationProps) => {
         type: 'textfield',
         label: 'Code postal',
         textFieldProps: {
-          textFieldType: 'number'
+          textFieldType: 'number',
+          disabled: readonly
         }
       },
       {
         key: 'city',
         name: 'city',
         type: 'textfield',
-        label: 'Ville'
+        label: 'Ville',
+        textFieldProps: {
+          disabled: readonly
+        }
       },
-      {
-        key: 'website',
-        name: 'website',
-        type: 'textfield',
-        label: 'Site web (optionnel)'
-      }
+      ...(rolesOptions
+        ? [
+            {
+              key: 'roles',
+              name: 'roles',
+              label: 'Type',
+              type: 'select',
+              selectProps: {
+                options: rolesOptions,
+                disabled: readonly,
+                multiple: true
+              }
+            } as FormField
+          ]
+        : [])
     ],
-    []
+    [readonly]
   )
 
   const description = useMemo(
     (): FormField[] => [
+      {
+        key: 'website',
+        name: 'website',
+        type: 'textfield',
+        label: 'Site web (optionnel)',
+        textFieldProps: {
+          disabled: readonly
+        }
+      },
       {
         key: 'description',
         name: 'description',
@@ -311,11 +356,12 @@ export const OrgCreation = (props: OrgCreationProps) => {
         label: 'Description (optionnel)',
         textFieldProps: {
           multiline: true,
-          rows: 11
+          rows: 6,
+          disabled: readonly
         }
       }
     ],
-    []
+    [readonly]
   )
 
   const onDropError = useCallback((errorType: DropPictureError) => {
@@ -347,11 +393,11 @@ export const OrgCreation = (props: OrgCreationProps) => {
       maxWidth='650px'
       spacing={2}
       onFocus={onCloseSiretInfo}
-      className={cx('AruiOrgCreation-root', className)}
+      className={cx('AruiOrgFactory-root', className)}
       {...other}
     >
       <Form
-        className={cx('AruiOrgCreation-siretForm', classes?.siretForm)}
+        className={cx('AruiOrgFactory-siretForm', classes?.siretForm)}
         style={styles?.siretForm}
         fields={siret}
         formState={formState}
@@ -364,7 +410,7 @@ export const OrgCreation = (props: OrgCreationProps) => {
       >
         <Form
           className={cx(
-            'AruiOrgCreation-leftForm',
+            'AruiOrgFactory-leftForm',
             'mainFormLeft',
             classes?.leftForm
           )}
@@ -375,7 +421,7 @@ export const OrgCreation = (props: OrgCreationProps) => {
         <Stack>
           <Box
             className={cx(
-              'AruiOrgCreation-dropPictureBox',
+              'AruiOrgFactory-dropPictureBox',
               classes?.dropPictureBox
             )}
             style={styles?.dropPictureBox}
@@ -399,6 +445,7 @@ export const OrgCreation = (props: OrgCreationProps) => {
             </InputLabel>
             <DropPicture
               errorMessage={imageError}
+              readonly={readonly}
               onDropError={onDropError}
               onRemovePicture={onRemovePicture}
               initialPicture={organization?.image}
@@ -410,7 +457,7 @@ export const OrgCreation = (props: OrgCreationProps) => {
           </Box>
           <Form
             className={cx(
-              'AruiOrgCreation-rightForm',
+              'AruiOrgFactory-rightForm',
               'mainFormRight',
               classes?.rightForm
             )}
@@ -422,7 +469,7 @@ export const OrgCreation = (props: OrgCreationProps) => {
       </Stack>
       <Stack
         className={cx(
-          'AruiOrgCreation-actionsContainer',
+          'AruiOrgFactory-actionsContainer',
           classes?.actionsContainer
         )}
         style={styles?.actionsContainer}
@@ -430,13 +477,15 @@ export const OrgCreation = (props: OrgCreationProps) => {
         justifyContent='flex-end'
         width='100%'
       >
-        <Button
-          success={feedback !== undefined && feedback}
-          fail={feedback !== undefined && !feedback}
-          onClick={formState.submitForm}
-        >
-          {submitButtonLabel}
-        </Button>
+        {!readonly && (
+          <Button
+            success={feedback !== undefined && feedback}
+            fail={feedback !== undefined && !feedback}
+            onClick={formState.submitForm}
+          >
+            {submitButtonLabel}
+          </Button>
+        )}
       </Stack>
 
       {siretRef && (
@@ -446,7 +495,7 @@ export const OrgCreation = (props: OrgCreationProps) => {
           onClose={onCloseSiretInfo}
           anchorEl={siretRef}
           placement='bottom'
-          className={cx('AruiOrgCreation-infoPopover', classes?.infoPopover)}
+          className={cx('AruiOrgFactory-infoPopover', classes?.infoPopover)}
           style={styles?.infoPopover}
         >
           <Typography variant='body1'>

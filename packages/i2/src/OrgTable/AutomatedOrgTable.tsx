@@ -1,29 +1,27 @@
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 import React, { useCallback, useEffect } from 'react'
 import { request, useAsyncResponse } from 'utils'
-import {
-  Command,
-  OrganizationGetAllQuery,
-  Organization
-} from '../OrgCreation/types'
+import { OrgTableFilters } from '.'
+import { OrganizationGetAllQuery, Organization } from '../OrgFactory/types'
 import { OrgTable, OrgTableProps } from './OrgTable'
 
-const commandBase: Command = {
-  auth: {
-    serverUrl: 'https://auth.smart-b.io/auth',
-    realmId: 'master',
-    clientId: 'admin-cli',
-    redirectUrl: '',
-    username: 'smartb',
-    password: 'conorS'
-  },
-  realmId: 'test'
-}
-
 export interface AutomatedOrgTableBasicProps extends BasicProps {
+  /**
+   * The api url where to make the locals api calls
+   */
   apiUrl: string
+  /**
+   * The token to authorize the api calls
+   */
   jwt?: string
-  initialFiltersValues?: { search?: string; page?: number }
+  /**
+   * The initial states of the filters
+   */
+  initialFiltersValues?: OrgTableFilters
+  /**
+   * The event called when the filters changes
+   */
+  submitted?: (params?: OrgTableFilters) => void
 }
 
 export type AutomatedOrgTableProps = MergeMuiElementProps<
@@ -32,22 +30,30 @@ export type AutomatedOrgTableProps = MergeMuiElementProps<
 >
 
 export const AutomatedOrgTable = (props: AutomatedOrgTableProps) => {
-  const { apiUrl, jwt, initialFiltersValues, ...other } = props
+  const { apiUrl, jwt, initialFiltersValues, submitted, ...other } = props
 
   const getOrganizations = useCallback(
-    async (params?: { page?: number; search?: string }) => {
-      const res = await request<{ organizations: Organization[] }[]>({
+    async (params?: OrgTableFilters) => {
+      const res = await request<
+        { organizations: Organization[]; total: number }[]
+      >({
         url: `${apiUrl}/getAllOrganizations`,
         method: 'POST',
         body: JSON.stringify({
           ...params,
-          ...commandBase,
+          name: params?.search,
+          page: params?.page ? params?.page - 1 : 0,
           size: 10
         } as OrganizationGetAllQuery),
         jwt: jwt
       })
       if (res) {
-        return res[0].organizations
+        return {
+          organizations: res[0]?.organizations,
+          totalPages: res[0]?.total
+            ? Math.floor(res[0]?.total / 10) + 1
+            : undefined
+        }
       } else {
         return undefined
       }
@@ -62,17 +68,24 @@ export const AutomatedOrgTable = (props: AutomatedOrgTableProps) => {
   }, [execute, initialFiltersValues])
 
   const onFetchOrganizations = useCallback(
-    (page: number, search?: string | undefined) => {
-      execute({ page: page, search: search })
+    (params?: OrgTableFilters) => {
+      execute(params)
+      submitted && submitted(params)
     },
-    [execute]
+    [execute, submitted]
   )
 
   return (
     <OrgTable
       isLoading={status !== 'SUCCESS'}
-      organizations={result ?? []}
+      organizations={result?.organizations ?? []}
+      totalPages={
+        result?.totalPages && result?.totalPages > 1
+          ? result?.totalPages
+          : undefined
+      }
       onFetchOrganizations={onFetchOrganizations}
+      initialFiltersValues={initialFiltersValues}
       {...other}
     />
   )
