@@ -14,7 +14,7 @@ import { Box, Button, Typography } from '@mui/material'
 import { ArgsTable, PRIMARY_STORY, Subtitle } from '@storybook/addon-docs'
 import { styles, classes, StyleProps, MenuItem } from './types'
 import LinkTo from '@storybook/addon-links/react'
-import logo from '../assets/smartb.png'
+import { AppMenuLogoProps } from '../AppMenu'
 
 export default {
   title: 'Layout/App',
@@ -209,7 +209,10 @@ App.args = {
     }
   ],
   title: 'SmartB',
-  logo: logo,
+  logo: {
+    src: defaultLogo,
+    onClick: () => window.alert('Going somewhere')
+  } as AppMenuLogoProps,
   navBarContent: (
     <div>
       <Button onClick={action('clicked on Company')}>Company</Button>

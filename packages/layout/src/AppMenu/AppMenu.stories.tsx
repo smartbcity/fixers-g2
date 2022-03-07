@@ -1,5 +1,9 @@
 import React from 'react'
-import { AppMenu as AruiAppMenu, AppMenuProps } from './AppMenu'
+import {
+  AppMenu as AruiAppMenu,
+  AppMenuLogoProps,
+  AppMenuProps
+} from './AppMenu'
 import { Meta } from '@storybook/react'
 import { Story } from '@storybook/react/types-6-0'
 import { Box, Link, Typography } from '@mui/material'
@@ -98,7 +102,9 @@ const Template: Story<AppMenuProps> = (args: AppMenuProps) => {
 export const AppMenu = Template.bind({})
 
 AppMenu.args = {
-  logo: defaultLogo,
+  logo: {
+    src: defaultLogo
+  } as AppMenuLogoProps,
   menu: [
     {
       key: 'dashboard',

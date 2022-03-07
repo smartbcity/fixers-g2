@@ -13,7 +13,7 @@ import { MenuItem } from '@smartb/g2-components'
 import { ToolsPanel } from '../ToolsPanel'
 import { AppBarLayout, AppBarLayoutProps } from '../AppBarLayout'
 import { TitleContainer } from './TitleContainer'
-import { AppMenu } from '../AppMenu'
+import { AppMenu, AppMenuLogoProps } from '../AppMenu'
 
 const useStyles = makeG2STyles<{
   styleprops: StyleProps
@@ -159,7 +159,7 @@ export interface AppProps {
   /**
    * The logo in the navBar
    */
-  logo: string
+  logo: AppMenuLogoProps
   /**
    * Defined if the drawer is open or not
    */
