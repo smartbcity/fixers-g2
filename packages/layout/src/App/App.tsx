@@ -9,10 +9,11 @@ import { StyleProps } from '../StyleProps'
 import { ToolsMenuProps, ToolsMenu } from '../ToolsMenu'
 import { useDebouncedCallback } from 'use-debounce'
 import { makeG2STyles } from '@smartb/g2-themes'
-import { Menu, MenuItem } from '@smartb/g2-components'
+import { MenuItem } from '@smartb/g2-components'
 import { ToolsPanel } from '../ToolsPanel'
 import { AppBarLayout, AppBarLayoutProps } from '../AppBarLayout'
 import { TitleContainer } from './TitleContainer'
+import { AppMenu } from '../AppMenu'
 
 const useStyles = makeG2STyles<{
   styleprops: StyleProps
@@ -156,17 +157,21 @@ export interface AppProps {
    */
   children?: React.ReactNode
   /**
-   * The logo in the navBAr
+   * The logo in the navBar
    */
-  logo: string
+  logo: React.ReactNode
   /**
    * Defined if the drawer is open or not
    */
-  open: boolean
+  open?: boolean
   /**
    * The title that will be displayed in the navBar
    */
   title?: string
+  /**
+   * The logo in the title
+   */
+  titleLogo?: string
   /**
    * The style of the navBar and the drawer
    */
@@ -210,9 +215,10 @@ export const App = (props: AppProps) => {
     navBarContent,
     drawerContent,
     menu,
-    open,
+    open = true,
     title,
     logo,
+    titleLogo,
     styleProps,
     showAppBar = true,
     showDrawer = true,
@@ -267,7 +273,7 @@ export const App = (props: AppProps) => {
       >
         {showAppBar ? (
           <>
-            <TitleContainer title={title} logo={logo} />
+            <TitleContainer title={title} logo={titleLogo} />
             <div
               className={defaultStyles.cx(
                 defaultStyles.classes.grow,
@@ -281,7 +287,7 @@ export const App = (props: AppProps) => {
               ))}
           </>
         ) : (
-          <TitleContainer title={title} logo={logo} />
+          <TitleContainer title={title} logo={titleLogo} />
         )}
       </AppBarLayout>
       {showDrawer && (
@@ -295,7 +301,7 @@ export const App = (props: AppProps) => {
           )}
           {...drawerProps}
         >
-          {menu && <Menu menu={menu} />}
+          {menu && <AppMenu menu={menu} logo={logo} />}
           {drawerContent}
           {(window.innerWidth <= 600 || !showAppBar) && navBarContent}
           {(window.innerWidth <= 600 || !showAppBar) &&

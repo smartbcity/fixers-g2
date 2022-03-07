@@ -42,14 +42,26 @@ const useStyles = makeG2STyles<{ paddingLeft: number }>()(
   })
 )
 
-interface MenuClasses {
-  item?: ItemClasses
+export interface MenuClasses {
+  item?: MenuItemClasses
   icon?: string
   text?: string
 }
 
-interface MenuStyles {
-  item?: ItemStyles
+export interface MenuStyles {
+  item?: MenuItemStyles
+  icon?: React.CSSProperties
+  text?: React.CSSProperties
+}
+
+export interface MenuItemClasses {
+  root?: string
+  icon?: string
+  text?: string
+}
+
+export interface MenuItemStyles {
+  root?: React.CSSProperties
   icon?: React.CSSProperties
   text?: React.CSSProperties
 }
@@ -80,18 +92,6 @@ export const Menu = (props: MenuProps) => {
     [classes, styles, menu, paddingLeft, subMenuProps]
   )
   return <List {...other}>{uiMenu}</List>
-}
-
-interface ItemClasses {
-  root?: string
-  icon?: string
-  text?: string
-}
-
-interface ItemStyles {
-  root?: React.CSSProperties
-  icon?: React.CSSProperties
-  text?: React.CSSProperties
 }
 
 interface ItemBasicProps extends BasicProps {

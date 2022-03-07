@@ -1,15 +1,17 @@
-import React, { useState } from 'react'
-import { AppLayout as AruiAppLayout, AppLayoutProps } from './AppLayout'
+import React from 'react'
+import { AppMenu as AruiAppMenu, AppMenuProps } from './AppMenu'
 import { Meta } from '@storybook/react'
 import { Story } from '@storybook/react/types-6-0'
 import { Box, Link, Typography } from '@mui/material'
 import { ArgsTable, PRIMARY_STORY, Subtitle } from '@storybook/addon-docs'
 import { styles, classes, StyleProps } from './types'
 import LinkTo from '@storybook/addon-links/react'
+import defaultLogo from '../assets/smartb.png'
+import itemsLogo from '../assets/impactcity-logo-2.png'
 
 export default {
-  title: 'Layout/AppLayout',
-  component: AruiAppLayout,
+  title: 'Layout/AppMenu',
+  component: AruiAppMenu,
   parameters: {
     docs: {
       page: () => (
@@ -19,8 +21,8 @@ export default {
           <Box display='flex' flexDirection='column'>
             <Typography variant='body2' style={{ marginBottom: '5px' }}>
               -{' '}
-              <LinkTo kind='Layout' story='AppBarLayout'>
-                appBarLayoutProps
+              <LinkTo kind='Layout' story='AppBarMenu'>
+                appBarMenuProps
               </LinkTo>
             </Typography>
             <Typography variant='body2' style={{ marginBottom: '5px' }}>
@@ -38,10 +40,10 @@ export default {
     }
   },
   argTypes: {
-    appBarLayoutProps: {
+    appBarMenuProps: {
       table: {
         type: {
-          summary: 'Partial<AppBarLayoutProps>'
+          summary: 'Partial<AppBarMenuProps>'
         }
       },
       control: null
@@ -69,7 +71,7 @@ export default {
     classes: {
       table: {
         type: {
-          summary: 'AppLayoutClasses',
+          summary: 'AppMenuClasses',
           detail: classes
         }
       }
@@ -77,7 +79,7 @@ export default {
     styles: {
       table: {
         type: {
-          summary: 'AppLayoutStyles',
+          summary: 'AppMenuStyles',
           detail: styles
         }
       }
@@ -85,24 +87,38 @@ export default {
   }
 } as Meta
 
-const Template: Story<AppLayoutProps> = (args: AppLayoutProps) => {
-  const [open, setOpen] = useState(true)
-
-  return <AruiAppLayout {...args} open={open} onToggle={() => setOpen(!open)} />
+const Template: Story<AppMenuProps> = (args: AppMenuProps) => {
+  return (
+    <div style={{ width: '200px' }}>
+      <AruiAppMenu {...args} />
+    </div>
+  )
 }
 
-export const AppLayout = Template.bind({})
-AppLayout.args = {
-  appBarContent: 'AppBar content',
-  drawerContent: 'Drawer content',
-  drawerProps: {
-    className: 'test'
-  },
-  styleProps: {
-    appBarHeight: 70,
-    detailDrawerWidth: 600,
-    menuWidth: 210
-  }
+export const AppMenu = Template.bind({})
+
+AppMenu.args = {
+  logo: defaultLogo,
+  menu: [
+    {
+      key: 'dashboard',
+      goto: () => {},
+      label: 'dashboard',
+      icon: <img style={{ width: '30px', height: '30px' }} src={itemsLogo} />
+    },
+    {
+      key: 'activities',
+      goto: () => {},
+      label: 'activities',
+      icon: <img style={{ width: '30px', height: '30px' }} src={itemsLogo} />
+    },
+    {
+      key: 'application',
+      goto: () => {},
+      label: 'application',
+      icon: <img style={{ width: '30px', height: '30px' }} src={itemsLogo} />
+    }
+  ]
 }
 
-AppLayout.storyName = 'AppLayout'
+AppMenu.storyName = 'AppMenu'

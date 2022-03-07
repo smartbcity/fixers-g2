@@ -32,7 +32,7 @@ npm-package-publish-gitlab:
   extends:
     - .make
   variables:
-    MAKE_TARGET: package-libs  push-libs-gitlab
+    MAKE_TARGET: package-libs push-libs-gitlab
   only:
     variables:
       - $IS_TAG == "true"

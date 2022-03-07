@@ -10,10 +10,11 @@ import {
   Settings
 } from '@mui/icons-material'
 import defaultLogo from '../assets/impactcity-logo-2.png'
-import { Box, Button, Typography } from  '@mui/material'
+import { Box, Button, Typography } from '@mui/material'
 import { ArgsTable, PRIMARY_STORY, Subtitle } from '@storybook/addon-docs'
 import { styles, classes, StyleProps, MenuItem } from './types'
 import LinkTo from '@storybook/addon-links/react'
+import logo from '../assets/smartb.png'
 
 export default {
   title: 'Layout/App',
@@ -114,7 +115,7 @@ export default {
 } as Meta
 
 const Template: Story<AppProps> = (args: AppProps) => {
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(true)
 
   return <AruiApp {...args} open={open} onToggle={() => setOpen(!open)} />
 }
@@ -208,7 +209,7 @@ App.args = {
     }
   ],
   title: 'SmartB',
-  logo: defaultLogo,
+  logo: logo,
   navBarContent: (
     <div>
       <Button onClick={action('clicked on Company')}>Company</Button>
