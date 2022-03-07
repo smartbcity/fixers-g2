@@ -48,15 +48,15 @@ export const defaultTheme: Theme = {
     '0px 14px 48px rgba(0, 0, 0, 0.3)',
     '0px 15px 52px rgba(0, 0, 0, 0.31)'
   ]
-} //the archetypes theme (maybe not the final version)
+} // the archetypes theme (maybe not the final version)
 
 export const defaultMaterialUiTheme = (
   theme: Theme,
   customMuiTheme?: Partial<ThemeOptions>
 ) => {
-  const isPrymaryTooLight = tinycolor(theme.colors.primary).getLuminance() > 0.6
+  const isPrimaryTooLight = tinycolor(theme.colors.primary).getLuminance() > 0.6
   const themeOverride: ThemeOptions = {
-    //@ts-ignore
+    // @ts-ignore
     shadows: [...theme.shadows, ...Array(12).fill('none')],
     components: {
       MuiTab: {
@@ -76,9 +76,9 @@ export const defaultMaterialUiTheme = (
       MuiButton: {
         styleOverrides: {
           root: {
-            color: isPrymaryTooLight ? '#353945' : '#ffffff',
+            color: isPrimaryTooLight ? '#353945' : '#ffffff',
             '&.Mui-disabled': {
-              color: isPrymaryTooLight ? '#353945' : '#ffffff'
+              color: isPrimaryTooLight ? '#353945' : '#ffffff'
             }
           }
         }
@@ -86,7 +86,7 @@ export const defaultMaterialUiTheme = (
       MuiTooltip: {
         styleOverrides: {
           tooltip: {
-            color: isPrymaryTooLight ? '#353945' : '#ffffff'
+            color: isPrimaryTooLight ? '#353945' : '#ffffff'
           }
         }
       }

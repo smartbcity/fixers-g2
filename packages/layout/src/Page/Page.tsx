@@ -1,4 +1,4 @@
-import { Box, BoxProps } from  '@mui/material'
+import { Box, BoxProps } from '@mui/material'
 import { BackButton } from '@smartb/g2-components'
 import React, { useEffect, useState } from 'react'
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
@@ -44,9 +44,9 @@ export interface pageBasicProps extends BasicProps {
   styles?: PageStyles
 }
 
-export type pageProps = MergeMuiElementProps<BoxProps, pageBasicProps>
+export type PageProps = MergeMuiElementProps<BoxProps, pageBasicProps>
 
-export const Page = (props: pageProps) => {
+export const Page = (props: PageProps) => {
   const {
     children,
     goBackLabel,

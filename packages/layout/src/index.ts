@@ -2,7 +2,7 @@ export { AppBarLayout, AppBarLayoutProps } from './AppBarLayout'
 export { AppLayout, AppLayoutProps } from './AppLayout'
 export { ToolsMenu, ToolsMenuProps } from './ToolsMenu'
 export { App, AppProps } from './App'
-export { StyleProps } from './StyleProps'
+export { AppStyleProps } from './AppStyleProps'
 export {
   OnNextHandles,
   MuiStepperWrapperProps,
@@ -16,7 +16,7 @@ export {
 export { TabsMenu, TabsMenuProps } from './TabsMenu'
 export { ItemsLayout, ItemsLayoutProps } from './ItemsLayout'
 export { ToolsPanel, ToolsPanelProps } from './ToolsPanel'
-export { Page, pageProps } from './Page'
+export { Page, PageProps } from './Page'
 export {
   PopUp,
   Action as PopUpAction,

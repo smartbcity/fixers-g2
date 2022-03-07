@@ -98,10 +98,14 @@ AppLayout.args = {
   drawerProps: {
     className: 'test'
   },
-  styleProps: {
-    appBarHeight: 70,
-    detailDrawerWidth: 600,
-    menuWidth: 210
+  appBar: {
+    height: 150
+  },
+  menu: {
+    width: 250
+  },
+  main: {
+    margin: '24px'
   }
 }
 

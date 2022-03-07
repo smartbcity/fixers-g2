@@ -5,7 +5,7 @@ import {
   Theme as MuiTheme,
   useTheme as useMuiTheme
 } from '@mui/material'
-import { StyleProps } from '../StyleProps'
+import { applyAppStyleProps, AppStyleProps } from '../AppStyleProps'
 import { ToolsMenuProps, ToolsMenu } from '../ToolsMenu'
 import { useDebouncedCallback } from 'use-debounce'
 import { makeG2STyles } from '@smartb/g2-themes'
@@ -14,14 +14,15 @@ import { ToolsPanel } from '../ToolsPanel'
 import { AppBarLayout, AppBarLayoutProps } from '../AppBarLayout'
 import { TitleContainer } from './TitleContainer'
 import { AppMenu, AppMenuLogoProps } from '../AppMenu'
+import { PartialDeep } from 'utils'
 
 const useStyles = makeG2STyles<{
-  styleprops: StyleProps
+  styleProps: AppStyleProps
   muiTheme: MuiTheme
 }>()((theme, props) => ({
   appbar: {
-    height: `${props.styleprops.appBarHeight}px`,
-    backgroundColor: theme.colors.primary,
+    height: `${props.styleProps.appBar.height}px`,
+    background: props.styleProps.appBar.background,
     boxShadow: theme.shadows[4],
     '& .MuiToolbar-root': {
       height: '100%'
@@ -32,15 +33,15 @@ const useStyles = makeG2STyles<{
     })
   },
   appBarOpen: {
-    width: `calc(100% - ${props.styleprops.menuWidth}px)`,
-    marginLeft: `${props.styleprops.menuWidth}px`,
+    width: `calc(100% - ${props.styleProps.menu.width}px)`,
+    marginLeft: `${props.styleProps.menu.width}px`,
     transition: props.muiTheme.transitions.create(['margin', 'width'], {
       easing: props.muiTheme.transitions.easing.easeOut,
       duration: props.muiTheme.transitions.duration.enteringScreen
     })
   },
   titleContainer: {
-    height: `${props.styleprops.appBarHeight}px`,
+    height: `${props.styleProps.appBar.height}px`,
     paddingLeft: '10px',
     display: 'flex',
     alignItems: 'center',
@@ -54,19 +55,19 @@ const useStyles = makeG2STyles<{
     })
   },
   titleContainerOpen: {
-    marginLeft: `${props.styleprops.menuWidth}px`,
+    marginLeft: `${props.styleProps.menu.width}px`,
     transition: props.muiTheme.transitions.create(['margin', 'width'], {
       easing: props.muiTheme.transitions.easing.easeOut,
       duration: props.muiTheme.transitions.duration.enteringScreen
     })
   },
   drawer: {
-    width: `${props.styleprops.menuWidth}px`,
+    width: `${props.styleProps.menu.width}px`,
     '& .MuiDrawer-paper': {
       top: `0px`,
-      zIndex: 1000,
-      width: `${props.styleprops.menuWidth}px`,
-      background: 'white',
+      zIndex: props.styleProps.menu.zIndex,
+      width: `${props.styleProps.menu.width}px`,
+      background: props.styleProps.menu.background,
       height: `100vh`,
       overflowX: 'hidden',
       transition: props.muiTheme.transitions.create('transform', {
@@ -77,7 +78,7 @@ const useStyles = makeG2STyles<{
   },
   drawerClosed: {
     '& .MuiDrawer-paper': {
-      transform: `translateX(-${props.styleprops.menuWidth}px)`,
+      transform: `translateX(-${props.styleProps.menu.width}px)`,
       transition: props.muiTheme.transitions.create('transform', {
         easing: props.muiTheme.transitions.easing.easeOut,
         duration: props.muiTheme.transitions.duration.leavingScreen
@@ -85,22 +86,29 @@ const useStyles = makeG2STyles<{
     }
   },
   main: {
+    background: props.styleProps.main.background,
     flexGrow: 1,
     transition: props.muiTheme.transitions.create('padding', {
       easing: props.muiTheme.transitions.easing.sharp,
       duration: props.muiTheme.transitions.duration.leavingScreen
     }),
-    paddingTop: props.styleprops.appBarHeight,
-    paddingLeft: props.styleprops.menuWidth
+    paddingTop: props.styleProps.appBar.height + props.styleProps.main.padding,
+    paddingLeft: props.styleProps.menu.width + props.styleProps.main.padding,
+    paddingRight: props.styleProps.main.padding,
+    minHeight: '100vh',
+    boxSizing: 'border-box'
   },
   mainShift: {
     flexGrow: 1,
-    paddingTop: props.styleprops.appBarHeight,
+    paddingTop: props.styleProps.appBar.height + props.styleProps.main.padding,
     transition: props.muiTheme.transitions.create('padding', {
       easing: props.muiTheme.transitions.easing.easeOut,
       duration: props.muiTheme.transitions.duration.enteringScreen
     }),
-    paddingLeft: 0
+    paddingLeft: props.styleProps.main.padding,
+    paddingRight: props.styleProps.main.padding,
+    minHeight: '100vh',
+    boxSizing: 'border-box'
   },
   hidder: {
     opacity: '0.5',
@@ -175,7 +183,7 @@ export interface AppProps {
   /**
    * The style of the navBar and the drawer
    */
-  styleProps: StyleProps
+  styleProps: PartialDeep<AppStyleProps>
   /**
    * Defined if the appBar (navBar + drawer) will be displayed or not
    */
@@ -205,7 +213,7 @@ export interface AppProps {
 const defaultProps = {
   showAppBar: true
 }
-
+// TODO This should use AppLayout.
 export const App = (props: AppProps) => {
   const {
     children,
@@ -228,8 +236,8 @@ export const App = (props: AppProps) => {
   } = props
   const muiTheme = useMuiTheme()
   const stylesDependencies = useMemo(
-    (): { styleprops: StyleProps; muiTheme: MuiTheme } => ({
-      styleprops: styleProps,
+    (): { styleProps: AppStyleProps; muiTheme: MuiTheme } => ({
+      styleProps: applyAppStyleProps(styleProps),
       muiTheme: muiTheme
     }),
     [styleProps, muiTheme]

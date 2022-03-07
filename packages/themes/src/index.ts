@@ -6,7 +6,9 @@ export {
   ThemeContext,
   useTheme,
   useThemeContext,
-  defaultMaterialUiTheme
+  defaultMaterialUiTheme,
+  defaultTheme,
+  PartialTheme
 } from './ThemeContextProvider'
 export {
   BasicProps,
