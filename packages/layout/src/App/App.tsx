@@ -159,7 +159,7 @@ export interface AppProps {
   /**
    * The logo in the navBar
    */
-  logo: React.ReactNode
+  logo: string
   /**
    * Defined if the drawer is open or not
    */
