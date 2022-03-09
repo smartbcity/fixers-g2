@@ -50,6 +50,10 @@ export interface InputFormBasicProps<T extends InputFormTypes = 'textField'>
    */
   readonly?: boolean
   /**
+   * If you want to add additionnals element near to the input use this prop
+   */
+  createInputContainer?: (input: JSX.Element) => JSX.Element
+  /**
    * The classes applied to the different part of the component
    */
   classes?: InputFormClasses
@@ -136,6 +140,7 @@ export const InputForm: InputFormComponent = React.forwardRef(
       inputClasses,
       inputStyles,
       size,
+      createInputContainer,
       ...other
     } = props
 
@@ -226,10 +231,15 @@ export const InputForm: InputFormComponent = React.forwardRef(
       Object.values({ ...other })
     ])
 
+    const container = useMemo(
+      () => (createInputContainer ? createInputContainer(inputUi) : undefined),
+      [createInputContainer, inputUi]
+    )
+
     return (
       <Box className={className} style={style}>
         {labelUi}
-        {inputUi}
+        {container ?? inputUi}
       </Box>
     )
   }
