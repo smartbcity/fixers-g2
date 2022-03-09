@@ -183,7 +183,7 @@ export interface AppProps {
   /**
    * The style of the navBar and the drawer
    */
-  styleProps: PartialDeep<AppStyleProps>
+  styleProps?: PartialDeep<AppStyleProps>
   /**
    * Defined if the appBar (navBar + drawer) will be displayed or not
    */

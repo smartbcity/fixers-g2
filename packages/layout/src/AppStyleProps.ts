@@ -40,11 +40,16 @@ export const defaultAppStyleProps: AppStyleProps = {
   }
 }
 
-type ApplyAppStyleProps = (partial: PartialDeep<AppStyleProps>) => AppStyleProps
+type ApplyAppStyleProps = (
+  partial?: PartialDeep<AppStyleProps>
+) => AppStyleProps
 
 export const applyAppStyleProps: ApplyAppStyleProps = (
-  partial: PartialDeep<AppStyleProps>
+  partial?: PartialDeep<AppStyleProps>
 ) => {
+  if (!partial) {
+    return defaultAppStyleProps
+  }
   return {
     appBar: { ...defaultAppStyleProps.appBar, ...partial.appBar },
     menu: { ...defaultAppStyleProps.menu, ...partial.menu },
