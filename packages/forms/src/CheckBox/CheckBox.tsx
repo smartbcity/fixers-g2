@@ -159,6 +159,10 @@ export interface CheckBoxBasicProps extends BasicProps {
    */
   onChange?: (event: ChangeEvent<HTMLInputElement>, checked: boolean) => void
   /**
+   * If you want to add additionnals element near to the input use this prop
+   */
+  createInputContainer?: (input: JSX.Element) => JSX.Element
+  /**
    * The classes applied to the different part of the component
    */
   classes?: CheckBoxClasses
@@ -188,10 +192,71 @@ const CheckBoxBase = (
     error,
     disabled,
     errorMessage,
+    createInputContainer,
     ...other
   } = props
 
   const defaultStyles = useStyles()
+
+  const formControl = (
+    <FormControlLabel
+      className={defaultStyles.cx(
+        defaultStyles.classes.container,
+        disabled && defaultStyles.classes.containerDisabled,
+        'AruiCheckBox-root',
+        classes?.formControl
+      )}
+      style={styles?.formControl}
+      control={
+        <Checkbox
+          ref={ref}
+          {...other}
+          checked={checked}
+          disabled={disabled}
+          id={id}
+          className={defaultStyles.cx(
+            defaultStyles.classes.root,
+            'AruiCheckBox-checkbox',
+            classes?.checkbox
+          )}
+          style={styles?.checkbox}
+          disableRipple
+          icon={
+            <UnCheckIcon
+              className={defaultStyles.cx(
+                defaultStyles.classes.iconSize,
+                'AruiCheckBox-unCheckIcon',
+                classes?.checkIcon
+              )}
+              style={styles?.checkIcon}
+            />
+          }
+          checkedIcon={
+            <CheckIcon
+              className={defaultStyles.cx(
+                defaultStyles.classes.iconSize,
+                'AruiCheckBox-checkIcon',
+                classes?.unCheckIcon
+              )}
+              style={styles?.unCheckIcon}
+            />
+          }
+          indeterminateIcon={
+            <IndeterminateIcon
+              className={defaultStyles.cx(
+                defaultStyles.classes.iconSize,
+                'AruiCheckBox-inderterminateIcon',
+                classes?.inderterminateIcon
+              )}
+              style={styles?.inderterminateIcon}
+            />
+          }
+        />
+      }
+      label={label}
+      labelPlacement='end'
+    />
+  )
 
   return (
     <div
@@ -202,63 +267,7 @@ const CheckBoxBase = (
       )}
       style={style}
     >
-      <FormControlLabel
-        className={defaultStyles.cx(
-          defaultStyles.classes.container,
-          disabled && defaultStyles.classes.containerDisabled,
-          'AruiCheckBox-root',
-          classes?.formControl
-        )}
-        style={styles?.formControl}
-        control={
-          <Checkbox
-            ref={ref}
-            {...other}
-            checked={checked}
-            disabled={disabled}
-            id={id}
-            className={defaultStyles.cx(
-              defaultStyles.classes.root,
-              'AruiCheckBox-checkbox',
-              classes?.checkbox
-            )}
-            style={styles?.checkbox}
-            disableRipple
-            icon={
-              <UnCheckIcon
-                className={defaultStyles.cx(
-                  defaultStyles.classes.iconSize,
-                  'AruiCheckBox-unCheckIcon',
-                  classes?.checkIcon
-                )}
-                style={styles?.checkIcon}
-              />
-            }
-            checkedIcon={
-              <CheckIcon
-                className={defaultStyles.cx(
-                  defaultStyles.classes.iconSize,
-                  'AruiCheckBox-checkIcon',
-                  classes?.unCheckIcon
-                )}
-                style={styles?.unCheckIcon}
-              />
-            }
-            indeterminateIcon={
-              <IndeterminateIcon
-                className={defaultStyles.cx(
-                  defaultStyles.classes.iconSize,
-                  'AruiCheckBox-inderterminateIcon',
-                  classes?.inderterminateIcon
-                )}
-                style={styles?.inderterminateIcon}
-              />
-            }
-          />
-        }
-        label={label}
-        labelPlacement='end'
-      />
+      {createInputContainer ? createInputContainer(formControl) : formControl}
       {errorMessage !== '' && error && (
         <FormHelperText
           className={defaultStyles.cx(

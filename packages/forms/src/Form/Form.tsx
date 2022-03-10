@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
 import { ButtonProps, Button } from '@smartb/g2-components'
-import { InputForm } from '../InputForm'
+import { InputForm, InputFormBasicProps } from '../InputForm'
 import { SelectProps } from '../Select'
 import { TextFieldProps } from '../TextField'
 import { DatePickerProps } from '../DatePicker'
@@ -53,14 +53,17 @@ export type Field = {
    * the props of the textfield if you choosed it
    */
   textFieldProps?: Partial<
-    Omit<TextFieldProps, 'value' | 'onChange' | 'label' | 'classes' | 'styles'>
+    Omit<
+      TextFieldProps & InputFormBasicProps<'textField'>,
+      'value' | 'onChange' | 'label' | 'classes' | 'styles'
+    >
   >
   /**
    * the props of the select if you choosed it
    */
   selectProps?: Partial<
     Omit<
-      SelectProps,
+      SelectProps & InputFormBasicProps<'select'>,
       | 'value'
       | 'onChangeValue'
       | 'onChangeValues'
@@ -74,7 +77,7 @@ export type Field = {
    */
   datePickerProps?: Partial<
     Omit<
-      DatePickerProps,
+      DatePickerProps & InputFormBasicProps<'datePicker'>,
       'value' | 'onChangeDate' | 'label' | 'classes' | 'styles'
     >
   >
@@ -89,7 +92,7 @@ export type Field = {
    */
   radioChoicesProps?: Partial<
     Omit<
-      RadioChoicesProps,
+      RadioChoicesProps & InputFormBasicProps<'radioChoices'>,
       'value' | 'onChange' | 'label' | 'classes' | 'styles'
     >
   >
@@ -271,7 +274,13 @@ const getInput = (
       field.selectProps?.className,
       field.textFieldProps?.className
     ),
-    style: styles?.field
+    style: {
+      ...styles?.field,
+      ...field.checkBoxProps?.style,
+      ...field.datePickerProps?.style,
+      ...field.selectProps?.style,
+      ...field.textFieldProps?.style
+    }
   }
   switch (field.type) {
     case 'datepicker':
