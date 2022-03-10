@@ -16,7 +16,7 @@ const useStyles = makeG2STyles<{
 }>()((theme, props) => ({
   appbar: {
     height: `${props.styleProps.appBar.height}px`,
-    backgroundColor: theme.colors.primary,
+    background: props.styleProps.appBar.background,
     boxShadow: theme.shadows[4],
     '& .MuiToolbar-root': {
       height: '100%'
@@ -61,7 +61,7 @@ const useStyles = makeG2STyles<{
       top: `0px`,
       zIndex: props.styleProps.menu.zIndex,
       width: `${props.styleProps.menu.width}px`,
-      background: 'white',
+      background: props.styleProps.menu.background,
       height: `100vh`,
       overflowX: 'hidden',
       transition: props.muiTheme.transitions.create('transform', {
