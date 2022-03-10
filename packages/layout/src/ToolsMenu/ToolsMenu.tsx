@@ -158,7 +158,7 @@ export const ToolsMenu = (props: ToolsMenuProps) => {
               <TabsMenu
                 variant={display === 'list' ? 'fixedWidth' : 'fullWidth'}
                 tabs={menu.items.map((it) => {
-                  return { label: it.label, icon: it.icon }
+                  return { label: it.label || '', icon: it.icon }
                 })}
                 {...tabsMenuProps}
               >
