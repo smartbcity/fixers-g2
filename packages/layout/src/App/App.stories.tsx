@@ -14,7 +14,7 @@ import { Box, Button, Typography } from '@mui/material'
 import { ArgsTable, PRIMARY_STORY, Subtitle } from '@storybook/addon-docs'
 import { styles, classes, StyleProps, MenuItem } from './types'
 import LinkTo from '@storybook/addon-links/react'
-import { AppMenuLogoProps } from '../AppMenu'
+import { AppLogoProps } from '../AppMenu'
 
 export default {
   title: 'Layout/App',
@@ -212,7 +212,7 @@ App.args = {
   logo: {
     src: defaultLogo,
     onClick: () => window.alert('Going somewhere')
-  } as AppMenuLogoProps,
+  } as AppLogoProps,
   navBarContent: (
     <div>
       <Button onClick={action('clicked on Company')}>Company</Button>

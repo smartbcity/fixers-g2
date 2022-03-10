@@ -13,7 +13,7 @@ import { MenuItem } from '@smartb/g2-components'
 import { ToolsPanel } from '../ToolsPanel'
 import { AppBarLayout, AppBarLayoutProps } from '../AppBarLayout'
 import { TitleContainer } from './TitleContainer'
-import { AppMenu, AppMenuLogoProps } from '../AppMenu'
+import { AppMenu, AppLogoProps } from '../AppMenu'
 import { PartialDeep } from 'utils'
 
 const useStyles = makeG2STyles<{
@@ -167,7 +167,7 @@ export interface AppProps {
   /**
    * The logo in the navBar
    */
-  logo: AppMenuLogoProps
+  logo: AppLogoProps
   /**
    * Defined if the drawer is open or not
    */
@@ -213,7 +213,8 @@ export interface AppProps {
 const defaultProps = {
   showAppBar: true
 }
-// TODO This should use AppLayout.
+
+// TODO App should use AppLayout instead of duplicate the code.
 export const App = (props: AppProps) => {
   const {
     children,

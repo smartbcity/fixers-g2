@@ -22,7 +22,7 @@ const useStyles = makeG2STyles<{
   }
 }))
 
-export interface AppMenuLogoProps {
+export interface AppLogoProps {
   /**
    * The logo in the navBar
    */
@@ -46,11 +46,12 @@ export interface AppMenuLogoProps {
 }
 
 export interface AppMenuBasicProps extends BasicProps {
-  logo: AppMenuLogoProps
+  logo: AppLogoProps
 }
 
 export type AppMenuProps = MergeMuiElementProps<MenuProps, AppMenuBasicProps>
 
+// TODO This could be removed by improving Menu and integrate AppLogo on App and/or AppLayout
 export const AppMenu = (props: AppMenuProps) => {
   const { logo } = props
   const onItemClick = useCallback(
