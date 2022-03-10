@@ -15,7 +15,7 @@ export interface AppLogoProps {
   /**
    * The item props. Use it to logo interactions behavior
    */
-  item?: MenuItem
+  item?: Omit<MenuItem, 'key'>
 }
 
 export interface AppMenuBasicProps extends BasicProps {
@@ -31,6 +31,7 @@ export const AppMenu = (props: AppMenuProps) => {
     () => [
       {
         ...logo.item,
+        key: 'application-logo',
         componentProps: {
           sx: {
             '& .MuiListItemIcon-root': {

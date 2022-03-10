@@ -149,16 +149,18 @@ const Item = (props: ItemProps) => {
               {icon}
             </ListItemIcon>
           )}
-          <ListItemText
-            primaryTypographyProps={{ color: 'inherit' }}
-            primary={label}
-            className={defaultStyles.cx(
-              classes?.item?.text,
-              defaultStyles.classes.itemText,
-              isSelected && defaultStyles.classes.selectedTitle
-            )}
-            style={styles?.item?.text}
-          />
+          {!!label && (
+            <ListItemText
+              primaryTypographyProps={{ color: 'inherit' }}
+              primary={label}
+              className={defaultStyles.cx(
+                classes?.item?.text,
+                defaultStyles.classes.itemText,
+                isSelected && defaultStyles.classes.selectedTitle
+              )}
+              style={styles?.item?.text}
+            />
+          )}
         </ListItem>
         <Menu
           {...subMenuProps}
@@ -193,15 +195,17 @@ const Item = (props: ItemProps) => {
           {icon}
         </ListItemIcon>
       )}
-      <ListItemText
-        primaryTypographyProps={{ color: 'inherit' }}
-        primary={label}
-        className={defaultStyles.cx(
-          defaultStyles.classes.itemText,
-          classes?.item?.text
-        )}
-        style={styles?.item?.text}
-      />
+      {!!label && (
+        <ListItemText
+          primaryTypographyProps={{ color: 'inherit' }}
+          primary={label}
+          className={defaultStyles.cx(
+            defaultStyles.classes.itemText,
+            classes?.item?.text
+          )}
+          style={styles?.item?.text}
+        />
+      )}
     </ListItemButton>
   )
 }
