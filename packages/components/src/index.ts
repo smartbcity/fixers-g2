@@ -13,16 +13,7 @@ export { Ticket, TicketProps } from './Ticket'
 export { CopyToClipboard, CopyToClipboardProps } from './CopyToClipboard'
 export { MoreOptions, MoreOptionsProps } from './MoreOptions'
 export { Link, LinkProps } from './Link'
-export {
-  Menu,
-  MenuItem,
-  MenuProps,
-  MenuItems,
-  MenuStyles,
-  MenuClasses,
-  MenuItemStyles,
-  MenuItemClasses
-} from './Menu'
+export { Menu, MenuItem, MenuProps, MenuItems } from './Menu'
 export { ContextMenu, ContextMenuProps } from './ContextMenu'
 export { DropPicture, DropPictureProps, DropPictureError } from './DropPicture'
 export { ToggleButtons, ToggleOption, ToggleButtonsProps } from './ToggleButton'
