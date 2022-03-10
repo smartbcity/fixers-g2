@@ -148,7 +148,7 @@ export interface AppLayoutProps {
   /**
    * Defined if the drawer is open or not
    */
-  open: boolean
+  open?: boolean
   /**
    * The base dimension of the appLayout
    */

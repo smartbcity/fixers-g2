@@ -1,157 +1,26 @@
-import React, { useEffect, useMemo, useState } from 'react'
-import {
-  Drawer,
-  DrawerProps,
-  Theme as MuiTheme,
-  useTheme as useMuiTheme
-} from '@mui/material'
-import { applyAppStyleProps, AppStyleProps } from '../AppStyleProps'
+import React from 'react'
 import { ToolsMenuProps, ToolsMenu } from '../ToolsMenu'
-import { useDebouncedCallback } from 'use-debounce'
 import { makeG2STyles } from '@smartb/g2-themes'
 import { MenuItem } from '@smartb/g2-components'
 import { ToolsPanel } from '../ToolsPanel'
-import { AppBarLayout, AppBarLayoutProps } from '../AppBarLayout'
 import { TitleContainer } from './TitleContainer'
 import { AppMenu, AppLogoProps } from '../AppMenu'
-import { PartialDeep } from 'utils'
+import { AppLayout, AppLayoutProps } from '..'
+import { useMediaQuery } from '@mui/material'
 
-const useStyles = makeG2STyles<{
-  styleProps: AppStyleProps
-  muiTheme: MuiTheme
-}>()((theme, props) => ({
-  appbar: {
-    height: `${props.styleProps.appBar.height}px`,
-    background: props.styleProps.appBar.background,
-    boxShadow: theme.shadows[4],
-    '& .MuiToolbar-root': {
-      height: '100%'
-    },
-    transition: props.muiTheme.transitions.create(['margin', 'width'], {
-      easing: props.muiTheme.transitions.easing.sharp,
-      duration: props.muiTheme.transitions.duration.leavingScreen
-    })
-  },
-  appBarOpen: {
-    width: `calc(100% - ${props.styleProps.menu.width}px)`,
-    marginLeft: `${props.styleProps.menu.width}px`,
-    transition: props.muiTheme.transitions.create(['margin', 'width'], {
-      easing: props.muiTheme.transitions.easing.easeOut,
-      duration: props.muiTheme.transitions.duration.enteringScreen
-    })
-  },
-  titleContainer: {
-    height: `${props.styleProps.appBar.height}px`,
-    paddingLeft: '10px',
-    display: 'flex',
-    alignItems: 'center',
-    position: 'fixed',
-    marginLeft: `0px`,
-    top: '0px',
-    left: '0px',
-    transition: props.muiTheme.transitions.create(['margin', 'width'], {
-      easing: props.muiTheme.transitions.easing.sharp,
-      duration: props.muiTheme.transitions.duration.leavingScreen
-    })
-  },
-  titleContainerOpen: {
-    marginLeft: `${props.styleProps.menu.width}px`,
-    transition: props.muiTheme.transitions.create(['margin', 'width'], {
-      easing: props.muiTheme.transitions.easing.easeOut,
-      duration: props.muiTheme.transitions.duration.enteringScreen
-    })
-  },
-  drawer: {
-    width: `${props.styleProps.menu.width}px`,
-    '& .MuiDrawer-paper': {
-      top: `0px`,
-      zIndex: props.styleProps.menu.zIndex,
-      width: `${props.styleProps.menu.width}px`,
-      background: props.styleProps.menu.background,
-      height: `100vh`,
-      overflowX: 'hidden',
-      transition: props.muiTheme.transitions.create('transform', {
-        easing: props.muiTheme.transitions.easing.sharp,
-        duration: props.muiTheme.transitions.duration.enteringScreen
-      })
-    }
-  },
-  drawerClosed: {
-    '& .MuiDrawer-paper': {
-      transform: `translateX(-${props.styleProps.menu.width}px)`,
-      transition: props.muiTheme.transitions.create('transform', {
-        easing: props.muiTheme.transitions.easing.easeOut,
-        duration: props.muiTheme.transitions.duration.leavingScreen
-      })
-    }
-  },
-  main: {
-    background: props.styleProps.main.background,
-    flexGrow: 1,
-    transition: props.muiTheme.transitions.create('padding', {
-      easing: props.muiTheme.transitions.easing.sharp,
-      duration: props.muiTheme.transitions.duration.leavingScreen
-    }),
-    paddingTop: props.styleProps.appBar.height + props.styleProps.main.padding,
-    paddingLeft: props.styleProps.menu.width + props.styleProps.main.padding,
-    paddingRight: props.styleProps.main.padding,
-    minHeight: '100vh',
-    boxSizing: 'border-box'
-  },
-  mainShift: {
-    flexGrow: 1,
-    paddingTop: props.styleProps.appBar.height + props.styleProps.main.padding,
-    transition: props.muiTheme.transitions.create('padding', {
-      easing: props.muiTheme.transitions.easing.easeOut,
-      duration: props.muiTheme.transitions.duration.enteringScreen
-    }),
-    paddingLeft: props.styleProps.main.padding,
-    paddingRight: props.styleProps.main.padding,
-    minHeight: '100vh',
-    boxSizing: 'border-box'
-  },
-  hidder: {
-    opacity: '0.5',
-    position: 'fixed',
-    height: '100vh',
-    width: '100vw',
-    backgroundColor: 'black',
-    top: '0',
-    left: '0',
-    zIndex: 5
-  },
+const useStyles = makeG2STyles()({
   grow: {
     flexGrow: 1
   }
-}))
+})
 
-interface AppClasses {
-  main?: string
-}
-
-interface AppStyles {
-  main?: React.CSSProperties
-}
-
-export interface AppProps {
+export interface AppProps extends AppLayoutProps {
   /**
    * An array that contains every tools menu that will be displayed in the navBar
    *
    * **See the reference below** ⬇️
    */
   toolsMenuProps?: ToolsMenuProps[]
-  /**
-   * The optionnal props of the appBar
-   *
-   * **See the reference below** ⬇️
-   */
-  appBarLayoutProps?: Partial<AppBarLayoutProps>
-  /**
-   * The optionnal props of the drawer
-   *
-   * **See the reference below** ⬇️
-   */
-  drawerProps?: Partial<DrawerProps>
   /**
    * The content that will be displayed in the navBAr at the left of the profile
    */
@@ -161,17 +30,9 @@ export interface AppProps {
    */
   menu?: MenuItem[]
   /**
-   * The application that has to be surrounded by the navbar and the drawer
-   */
-  children?: React.ReactNode
-  /**
    * The logo in the navBar
    */
   logo: AppLogoProps
-  /**
-   * Defined if the drawer is open or not
-   */
-  open?: boolean
   /**
    * The title that will be displayed in the navBar
    */
@@ -180,107 +41,46 @@ export interface AppProps {
    * The logo in the title
    */
   titleLogo?: string
-  /**
-   * The style of the navBar and the drawer
-   */
-  styleProps?: PartialDeep<AppStyleProps>
-  /**
-   * Defined if the appBar (navBar + drawer) will be displayed or not
-   */
-  showAppBar?: boolean
-  /**
-   * Defined if the drawer will be displayed or not
-   */
-  showDrawer?: boolean
-  /**
-   * The content that will be displayed in the drawer below the menu
-   */
-  drawerContent?: React.ReactNode
-  /**
-   * The function that is called when the hamburger button is clicked
-   */
-  onToggle: () => void
-  /**
-   * The classes applied to the different part of the component
-   */
-  classes?: AppClasses
-  /**
-   * The styles applied to the different part of the component
-   */
-  styles?: AppStyles
-}
-
-const defaultProps = {
-  showAppBar: true
 }
 
 // TODO App should use AppLayout instead of duplicate the code.
 export const App = (props: AppProps) => {
   const {
-    children,
     toolsMenuProps = [],
-    appBarLayoutProps,
-    drawerProps,
     navBarContent,
-    drawerContent,
     menu,
-    open = true,
     title,
     logo,
     titleLogo,
-    styleProps,
     showAppBar = true,
-    showDrawer = true,
-    classes,
-    styles,
-    onToggle
+    drawerContent,
+    ...other
   } = props
-  const muiTheme = useMuiTheme()
-  const stylesDependencies = useMemo(
-    (): { styleProps: AppStyleProps; muiTheme: MuiTheme } => ({
-      styleProps: applyAppStyleProps(styleProps),
-      muiTheme: muiTheme
-    }),
-    [styleProps, muiTheme]
-  )
-  const defaultStyles = useStyles(stylesDependencies)
-  const [innerWidth, setInnerWidth] = useState(window.innerWidth)
-  const [handleResize] = useDebouncedCallback(() => {
-    const min = Math.min.apply(Math, [window.innerWidth, innerWidth])
-    const max = Math.max.apply(Math, [window.innerWidth, innerWidth])
-    if ((min < 400 && max > 400) || (min < 600 && max > 600)) {
-      setInnerWidth(window.innerWidth)
-    }
-  }, 500)
-
-  useEffect(() => {
-    window.addEventListener('resize', handleResize)
-    return () => {
-      window.removeEventListener('resize', handleResize)
-    }
-  }, [])
+  const defaultStyles = useStyles()
+  const below600px = useMediaQuery('(max-width:600px)')
+  const over400px = useMediaQuery('(min-width:400px)')
 
   return (
-    <>
-      <AppBarLayout
-        onDrawerOpen={onToggle}
-        className={
-          showAppBar
-            ? defaultStyles.cx(
-                defaultStyles.classes.appbar,
-                open && defaultStyles.classes.appBarOpen,
-                appBarLayoutProps?.className
-              )
-            : defaultStyles.cx(
-                defaultStyles.classes.titleContainer,
-                open && defaultStyles.classes.titleContainerOpen,
-                appBarLayoutProps?.className
-              )
-        }
-        show={showAppBar}
-        {...appBarLayoutProps}
-      >
-        {showAppBar ? (
+    <AppLayout
+      {...other}
+      showAppBar={showAppBar}
+      drawerContent={
+        <>
+          {menu && <AppMenu menu={menu} logo={logo} />}
+          {drawerContent}
+          {(below600px || !showAppBar) && navBarContent}
+          {(below600px || !showAppBar) &&
+            toolsMenuProps &&
+            toolsMenuProps.map((toolsMenuProps) => (
+              <ToolsPanel
+                menu={toolsMenuProps.menu}
+                key={toolsMenuProps.menu.key}
+              />
+            ))}
+        </>
+      }
+      appBarContent={
+        showAppBar ? (
           <>
             <TitleContainer title={title} logo={titleLogo} />
             <div
@@ -289,59 +89,16 @@ export const App = (props: AppProps) => {
                 'AruiAppBar-flexFiller'
               )}
             />
-            {window.innerWidth > 600 && navBarContent}
-            {window.innerWidth > 400 &&
+            {!below600px && navBarContent}
+            {over400px &&
               toolsMenuProps.map((toolsMenuProps, index) => (
                 <ToolsMenu key={index} {...toolsMenuProps} />
               ))}
           </>
         ) : (
           <TitleContainer title={title} logo={titleLogo} />
-        )}
-      </AppBarLayout>
-      {showDrawer && (
-        <Drawer
-          variant='persistent'
-          open={open}
-          className={defaultStyles.cx(
-            defaultStyles.classes.drawer,
-            !open && defaultStyles.classes.drawerClosed,
-            drawerProps?.className
-          )}
-          {...drawerProps}
-        >
-          {menu && <AppMenu menu={menu} logo={logo} />}
-          {drawerContent}
-          {(window.innerWidth <= 600 || !showAppBar) && navBarContent}
-          {(window.innerWidth <= 600 || !showAppBar) &&
-            toolsMenuProps &&
-            toolsMenuProps.map((toolsMenuProps) => (
-              <ToolsPanel
-                menu={toolsMenuProps.menu}
-                key={toolsMenuProps.menu.key}
-              />
-            ))}
-        </Drawer>
-      )}
-      <main
-        className={defaultStyles.cx(
-          open ? defaultStyles.classes.main : defaultStyles.classes.mainShift,
-          'AruiApp-main',
-          classes?.main
-        )}
-        style={styles?.main}
-      >
-        <div
-          className={defaultStyles.classes.hidder}
-          style={{
-            display: window.innerWidth < 768 && open ? 'block' : 'none'
-          }}
-          onClick={onToggle}
-        />
-        {children}
-      </main>
-    </>
+        )
+      }
+    />
   )
 }
-
-App.defaultProps = defaultProps
