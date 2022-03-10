@@ -1,3 +1,4 @@
+import { ListItemProps } from '@mui/material'
 import React from 'react'
 
 export interface MenuItem<T = {}> {
@@ -7,7 +8,7 @@ export interface MenuItem<T = {}> {
   label: string
   component?: React.ElementType<any>
   icon?: JSX.Element
-  componentProps?: T
+  componentProps?: T & ListItemProps
   isSelected?: boolean
 }
 
