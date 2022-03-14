@@ -21,7 +21,7 @@ export const AutomatedOrgFactoryStory: Story<AutomatedOrgFactoryProps> = (
     <KeycloakProvider
       config={{
         clientId: 'admin-cli',
-        realm: 'master',
+        realm: 'test',
         url: 'https://auth.smart-b.io/auth'
       }}
       loadingComponent={<Typography>Loading...</Typography>}
@@ -50,7 +50,7 @@ const Following = (args: AutomatedOrgFactoryProps) => {
 }
 
 AutomatedOrgFactoryStory.args = {
-  apiUrl: 'http://localhost:9090'
+  apiUrl: 'http://localhost:8002'
 }
 
 AutomatedOrgFactoryStory.storyName = 'AutomatedOrgFactory'

@@ -45,6 +45,10 @@ export type Validated = boolean
 
 const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}/i
 
+export type ReadonlyFields = {
+  [k in keyof User]?: boolean
+}
+
 export interface UserFactoryClasses {
   leftForm?: string
   rightForm?: string
@@ -97,6 +101,10 @@ export interface UserFactoryBasicProps extends BasicProps {
    */
   organizationId?: string
   /**
+   * Use this prop if you want only some fields to be readonly
+   */
+  readonlyFields?: ReadonlyFields
+  /**
    * The classes applied to the different part of the component
    */
   classes?: UserFactoryClasses
@@ -124,6 +132,7 @@ export const UserFactory = (props: UserFactoryProps) => {
     organizationsRefs,
     rolesOptions,
     organizationId,
+    readonlyFields,
     ...other
   } = props
 
@@ -157,20 +166,25 @@ export const UserFactory = (props: UserFactoryProps) => {
       },
       {
         name: 'street',
-        defaultValue: user?.address.street,
-        validator: (value?: string) => {
+        defaultValue: user?.address?.street,
+        validator: (value: string, values: any) => {
+          const city = String(values['city']).trim()
+          const postalCode = String(values['postalCode']).trim()
           const trimmed = (value ?? '').trim()
-          if (!trimmed) return "Vous devez renseigner l'addresse" as string
+          if ((postalCode || city) && !trimmed)
+            return "Vous devez renseigner l'addresse en plus de la ville et du code postal" as string
           return undefined
         }
       },
       {
         name: 'postalCode',
-        defaultValue: user?.address.postalCode,
-        validator: (value?: string | number) => {
+        defaultValue: user?.address?.postalCode,
+        validator: (value: string | number, values: any) => {
+          const street = String(values['street']).trim()
+          const city = String(values['city']).trim()
           const string = String(value).trim()
-          if (!string || !value)
-            return 'Vous devez renseigner le code postal' as string
+          if ((street || city) && (!string || !value))
+            return 'Vous devez renseigner le code postal pour avoir une adresse complète' as string
           if (string.length != 5)
             return 'un code postal doit être composé de 5 chiffres' as string
           return undefined
@@ -178,10 +192,13 @@ export const UserFactory = (props: UserFactoryProps) => {
       },
       {
         name: 'city',
-        defaultValue: user?.address.city,
-        validator: (value?: string) => {
+        defaultValue: user?.address?.city,
+        validator: (value: string, values: any) => {
+          const street = String(values['street']).trim()
+          const postalCode = String(values['postalCode']).trim()
           const trimmed = (value ?? '').trim()
-          if (!trimmed) return 'Vous devez renseigner la ville' as string
+          if ((street || postalCode) && !trimmed)
+            return 'Vous devez renseigner la ville pour avoir une adresse complète' as string
           return undefined
         }
       },
@@ -209,7 +226,9 @@ export const UserFactory = (props: UserFactoryProps) => {
       },
       {
         name: 'role',
-        defaultValue: user?.roles ?? [(rolesOptions ?? [])[0]?.key]
+        defaultValue: user?.roles.assignedRoles ?? [
+          (rolesOptions ?? [])[0]?.key
+        ]
       },
       {
         name: 'memberOf',
@@ -256,7 +275,7 @@ export const UserFactory = (props: UserFactoryProps) => {
         type: 'textfield',
         label: 'Prénom',
         textFieldProps: {
-          disabled: readonly
+          disabled: readonly || readonlyFields?.givenName
         }
       },
       {
@@ -265,39 +284,39 @@ export const UserFactory = (props: UserFactoryProps) => {
         type: 'textfield',
         label: 'Nom de Famille',
         textFieldProps: {
-          disabled: readonly
+          disabled: readonly || readonlyFields?.familyName
         }
       },
       {
         key: 'street',
         name: 'street',
         type: 'textfield',
-        label: 'addresse',
+        label: 'addresse (facultatif)',
         textFieldProps: {
-          disabled: readonly
+          disabled: readonly || readonlyFields?.address
         }
       },
       {
         key: 'postalCode',
         name: 'postalCode',
         type: 'textfield',
-        label: 'Code postal',
+        label: 'Code postal (facultatif)',
         textFieldProps: {
           textFieldType: 'number',
-          disabled: readonly
+          disabled: readonly || readonlyFields?.address
         }
       },
       {
         key: 'city',
         name: 'city',
         type: 'textfield',
-        label: 'Ville',
+        label: 'Ville (facultatif)',
         textFieldProps: {
-          disabled: readonly
+          disabled: readonly || readonlyFields?.address
         }
       }
     ],
-    [readonly]
+    [readonly, readonlyFields]
   )
 
   const rightForm = useMemo((): FormField[] => {
@@ -318,7 +337,7 @@ export const UserFactory = (props: UserFactoryProps) => {
         label: 'Adresse mail',
         textFieldProps: {
           textFieldType: 'email',
-          disabled: readonly
+          disabled: readonly || readonlyFields?.email
         }
       },
       {
@@ -328,7 +347,7 @@ export const UserFactory = (props: UserFactoryProps) => {
         label: 'Numéro de téléphone (facultatif)',
         textFieldProps: {
           textFieldType: 'number',
-          disabled: readonly
+          disabled: readonly || readonlyFields?.phone
         }
       },
       ...(rolesOptions
@@ -340,7 +359,7 @@ export const UserFactory = (props: UserFactoryProps) => {
               type: 'select',
               selectProps: {
                 options: rolesOptions,
-                disabled: readonly,
+                disabled: readonly || readonlyFields?.roles,
                 multiple: true
               }
             } as FormField
@@ -355,7 +374,7 @@ export const UserFactory = (props: UserFactoryProps) => {
               type: 'select',
               selectProps: {
                 options: orgsOptions,
-                disabled: readonly
+                disabled: readonly || readonlyFields?.memberOf
               }
             } as FormField
           ]
@@ -369,7 +388,7 @@ export const UserFactory = (props: UserFactoryProps) => {
               label: "Envoyer un lien d'invitation par mail",
               checkBoxProps: {
                 className: 'AruiUserFactory-sendEmailLink',
-                disabled: readonly
+                disabled: readonly || readonlyFields?.sendEmailLink
               }
             } as FormField
           ]

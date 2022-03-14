@@ -7,7 +7,15 @@ import {
   OrganizationGetByIdQuery,
   OrganizationUpdateCommand
 } from './types'
-import { OrgFactory, OrgFactoryProps } from './OrgFactory'
+import { OrgFactory, OrgFactoryProps, ReadonlyFields } from './OrgFactory'
+
+export type ReadonlyOrgFieldsPerState = {
+  create?: ReadonlyFields
+  /**
+   * @default {siret: true, roles: true}
+   */
+  update?: ReadonlyFields
+}
 
 export interface AutomatedOrgFactoryBasicProps extends BasicProps {
   /**
@@ -28,6 +36,10 @@ export interface AutomatedOrgFactoryBasicProps extends BasicProps {
    */
   organizationId?: string
   /**
+   * The fields readonly attributes for the current state
+   */
+  readonlyFieldsPerState?: ReadonlyOrgFieldsPerState
+  /**
    * The event called when the form is submitted. It is called regardless of it is a creation or an updation
    */
   submitted?: (organization: Organization) => void
@@ -45,6 +57,7 @@ export const AutomatedOrgFactory = (props: AutomatedOrgFactoryProps) => {
     update = false,
     submitted,
     organizationId,
+    readonlyFieldsPerState,
     ...other
   } = props
 
@@ -124,7 +137,13 @@ export const AutomatedOrgFactory = (props: AutomatedOrgFactoryProps) => {
         jwt: jwt
       })
       if (res) {
-        submitted && submitted({ ...organization, id: res[0].id })
+        //@ts-ignore
+        submitted &&
+          submitted({
+            ...organization,
+            id: res[0].id,
+            roles: organization.roles.assignedRoles
+          })
         return true
       } else {
         return false
@@ -140,6 +159,11 @@ export const AutomatedOrgFactory = (props: AutomatedOrgFactoryProps) => {
       getInseeOrganization={getInseeOrganization}
       onSubmit={update ? updateOrganization : createOrganization}
       submitButtonLabel={update ? 'Mettre à jour' : 'Créer'}
+      readonlyFields={
+        update
+          ? { siret: true, roles: true, ...readonlyFieldsPerState?.update }
+          : readonlyFieldsPerState?.create
+      }
       {...other}
     />
   )

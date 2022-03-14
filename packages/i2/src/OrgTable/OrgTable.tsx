@@ -145,11 +145,12 @@ export const OrgTable = (props: OrgTableProps) => {
       {
         Header: 'Adresse',
         accessor: 'address',
-        Cell: ({ row }: CellProps<Organization>) => (
-          <Typography>
-            {`${row.original.address.street}, ${row.original.address.postalCode} ${row.original.address.city}`}
-          </Typography>
-        )
+        Cell: ({ row }: CellProps<Organization>) =>
+          row.original.address ? (
+            <Typography>
+              {`${row.original.address.street}, ${row.original.address.postalCode} ${row.original.address.city}`}
+            </Typography>
+          ) : undefined
       },
       {
         Header: 'Site web',

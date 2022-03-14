@@ -15,14 +15,19 @@ export const styles = `interface OrgCreationStyles {
   infoPopover?: React.CSSProperties
 }`
 
+export interface Roles {
+  assignedRoles: string[]
+  effectiveRoles: string[]
+}
+
 export interface Organization {
   id: string
   siret: string
   name: string
-  roles: string[]
+  roles: Roles
   description?: string
   website?: string
-  address: Address
+  address?: Address
   image?: string
 }
 
@@ -40,9 +45,9 @@ export interface FlatOrganization {
   description?: string
   website?: string
   image?: string
-  street: string
-  postalCode: string
-  city: string
+  street?: string
+  postalCode?: string
+  city?: string
 }
 
 export type OrganizationUpdateCommand = Organization
@@ -64,9 +69,10 @@ export const organizationToFlatOrganization = (
 ): FlatOrganization => {
   const flat: FlatOrganization & { address?: Address } = {
     ...org,
-    street: org.address.street,
-    city: org.address.city,
-    postalCode: org.address.postalCode
+    street: org.address?.street,
+    city: org.address?.city,
+    postalCode: org.address?.postalCode,
+    roles: org.roles.assignedRoles
   }
   delete flat.address
   return flat
@@ -82,9 +88,13 @@ export const flatOrganizationToOrganization = (
   } = {
     ...flat,
     address: {
-      street: flat.street,
-      city: flat.city,
-      postalCode: flat.postalCode
+      street: flat.street ?? '',
+      city: flat.city ?? '',
+      postalCode: flat.postalCode ?? ''
+    },
+    roles: {
+      assignedRoles: flat.roles,
+      effectiveRoles: []
     }
   }
   delete org.street

@@ -2,8 +2,17 @@ import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 import React, { useCallback } from 'react'
 import { request, useAsyncResponse } from 'utils'
 import { OrganizationRef } from '.'
+import { ReadonlyOrgFieldsPerState } from '../OrgFactory'
 import { User } from './types'
-import { UserFactory, UserFactoryProps } from './UserFactory'
+import { ReadonlyFields, UserFactory, UserFactoryProps } from './UserFactory'
+
+export type ReadonlyUserFieldsPerState = {
+  create?: ReadonlyFields
+  /**
+   * @default {memberOf: true, email: true, roles:true }
+   */
+  update?: ReadonlyFields
+}
 
 export interface AutomatedUserFactoryBasicProps extends BasicProps {
   /**
@@ -23,6 +32,10 @@ export interface AutomatedUserFactoryBasicProps extends BasicProps {
    * The organizationId of the user.⚠️ You have to provide it if `update` is false and the organization module is activated
    */
   organizationId?: string
+  /**
+   * The fields readonly attributes for the current state
+   */
+  readonlyFieldsPerState?: ReadonlyOrgFieldsPerState
   /**
    * The id of the user.⚠️ You have to provide it if `update` is true
    */
@@ -46,6 +59,7 @@ export const AutomatedUserFactory = (props: AutomatedUserFactoryProps) => {
     submitted,
     userId,
     organizationId,
+    readonlyFieldsPerState,
     ...other
   } = props
 
@@ -99,9 +113,10 @@ export const AutomatedUserFactory = (props: AutomatedUserFactoryProps) => {
       const res = await request<{ id: string }[]>({
         url: `${apiUrl}/createUser`,
         method: 'POST',
+        //@ts-ignore
         body: JSON.stringify({
           ...user,
-          roles: user.roles ?? [],
+          roles: user.roles.assignedRoles ?? [],
           memberOf: organizationId
         } as User),
         jwt: jwt
@@ -122,6 +137,18 @@ export const AutomatedUserFactory = (props: AutomatedUserFactoryProps) => {
       user={result}
       onSubmit={update ? updateUser : createUser}
       submitButtonLabel={update ? 'Mettre à jour' : 'Créer'}
+      isUpdate={update}
+      organizationId={organizationId}
+      readonlyFields={
+        update
+          ? {
+              memberOf: true,
+              email: true,
+              roles: true,
+              ...readonlyFieldsPerState?.update
+            }
+          : readonlyFieldsPerState?.create
+      }
       {...other}
     />
   )

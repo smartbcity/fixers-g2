@@ -50,6 +50,10 @@ const StyledStack = styled(Stack)({
 
 export type Validated = boolean
 
+export type ReadonlyFields = {
+  [k in keyof Organization]?: boolean
+}
+
 //@ts-ignore
 const StyledPopover = styled(Popover)({
   width: '80vw',
@@ -106,6 +110,10 @@ export interface OrgFactoryBasicProps extends BasicProps {
    */
   readonly?: boolean
   /**
+   * Use this prop if you want only some fields to be readonly
+   */
+  readonlyFields?: ReadonlyFields
+  /**
    * The classes applied to the different part of the component
    */
   classes?: OrgFactoryClasses
@@ -131,6 +139,7 @@ export const OrgFactory = (props: OrgFactoryProps) => {
     styles,
     rolesOptions,
     readonly = false,
+    readonlyFields,
     ...other
   } = props
 
@@ -163,20 +172,25 @@ export const OrgFactory = (props: OrgFactoryProps) => {
       },
       {
         name: 'street',
-        defaultValue: organization?.address.street,
-        validator: (value?: string) => {
+        defaultValue: organization?.address?.street,
+        validator: (value: string, values: any) => {
+          const city = String(values['city']).trim()
+          const postalCode = String(values['postalCode']).trim()
           const trimmed = (value ?? '').trim()
-          if (!trimmed) return "Vous devez renseigner l'addresse" as string
+          if ((postalCode || city) && !trimmed)
+            return "Vous devez renseigner l'addresse en plus de la ville et du code postal" as string
           return undefined
         }
       },
       {
         name: 'postalCode',
-        defaultValue: organization?.address.postalCode,
-        validator: (value?: string | number) => {
+        defaultValue: organization?.address?.postalCode,
+        validator: (value: string | number, values: any) => {
+          const street = String(values['street']).trim()
+          const city = String(values['city']).trim()
           const string = String(value).trim()
-          if (!string || !value)
-            return 'Vous devez renseigner le code postal' as string
+          if ((street || city) && (!string || !value))
+            return 'Vous devez renseigner le code postal pour avoir une adresse complète' as string
           if (string.length != 5)
             return 'un code postal doit être composé de 5 chiffres' as string
           return undefined
@@ -184,10 +198,13 @@ export const OrgFactory = (props: OrgFactoryProps) => {
       },
       {
         name: 'city',
-        defaultValue: organization?.address.city,
-        validator: (value?: string) => {
+        defaultValue: organization?.address?.city,
+        validator: (value: string, values: any) => {
+          const street = String(values['street']).trim()
+          const postalCode = String(values['postalCode']).trim()
           const trimmed = (value ?? '').trim()
-          if (!trimmed) return 'Vous devez renseigner la ville' as string
+          if ((street || postalCode) && !trimmed)
+            return 'Vous devez renseigner la ville pour avoir une adresse complète' as string
           return undefined
         }
       },
@@ -273,11 +290,17 @@ export const OrgFactory = (props: OrgFactoryProps) => {
               fetchOrganization()
             }
           },
-          disabled: readonly
+          disabled: readonly || readonlyFields?.siret
         }
       }
     ],
-    [formState.validateField, fetchOrganization, siretValid, readonly]
+    [
+      formState.validateField,
+      fetchOrganization,
+      siretValid,
+      readonly,
+      readonlyFields?.siret
+    ]
   )
 
   const details = useMemo(
@@ -288,35 +311,35 @@ export const OrgFactory = (props: OrgFactoryProps) => {
         type: 'textfield',
         label: 'Nom',
         textFieldProps: {
-          disabled: readonly
+          disabled: readonly || readonlyFields?.name
         }
       },
       {
         key: 'street',
         name: 'street',
         type: 'textfield',
-        label: 'addresse',
+        label: 'addresse (facultatif)',
         textFieldProps: {
-          disabled: readonly
+          disabled: readonly || readonlyFields?.address
         }
       },
       {
         key: 'postalCode',
         name: 'postalCode',
         type: 'textfield',
-        label: 'Code postal',
+        label: 'Code postal (facultatif)',
         textFieldProps: {
           textFieldType: 'number',
-          disabled: readonly
+          disabled: readonly || readonlyFields?.address
         }
       },
       {
         key: 'city',
         name: 'city',
         type: 'textfield',
-        label: 'Ville',
+        label: 'Ville (facultatif)',
         textFieldProps: {
-          disabled: readonly
+          disabled: readonly || readonlyFields?.address
         }
       },
       ...(rolesOptions
@@ -328,14 +351,14 @@ export const OrgFactory = (props: OrgFactoryProps) => {
               type: 'select',
               selectProps: {
                 options: rolesOptions,
-                disabled: readonly,
+                disabled: readonly || readonlyFields?.roles,
                 multiple: true
               }
             } as FormField
           ]
         : [])
     ],
-    [readonly]
+    [readonly, readonlyFields?.siret]
   )
 
   const description = useMemo(
@@ -344,20 +367,20 @@ export const OrgFactory = (props: OrgFactoryProps) => {
         key: 'website',
         name: 'website',
         type: 'textfield',
-        label: 'Site web (optionnel)',
+        label: 'Site web (facultatif)',
         textFieldProps: {
-          disabled: readonly
+          disabled: readonly || readonlyFields?.website
         }
       },
       {
         key: 'description',
         name: 'description',
         type: 'textfield',
-        label: 'Description (optionnel)',
+        label: 'Description (facultatif)',
         textFieldProps: {
           multiline: true,
           rows: 6,
-          disabled: readonly
+          disabled: readonly || readonlyFields?.description
         }
       }
     ],
@@ -441,7 +464,7 @@ export const OrgFactory = (props: OrgFactoryProps) => {
                 color: '#323338'
               }}
             >
-              Logo de l'entreprise (optionnel)
+              Logo de l'entreprise (facultatif)
             </InputLabel>
             <DropPicture
               errorMessage={imageError}

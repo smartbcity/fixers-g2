@@ -6,4 +6,4 @@ services:
     environment:
       - i2_jwt-issuer-uri=
     ports:
-      - 9090:9090
+      - 8002:8002

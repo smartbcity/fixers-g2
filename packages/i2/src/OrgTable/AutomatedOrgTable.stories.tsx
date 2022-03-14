@@ -19,7 +19,7 @@ export const AutomatedOrgTableStory: Story<AutomatedOrgTableProps> = (
     <KeycloakProvider
       config={{
         clientId: 'admin-cli',
-        realm: 'master',
+        realm: 'test',
         url: 'https://auth.smart-b.io/auth'
       }}
       loadingComponent={<Typography>Loading...</Typography>}
@@ -37,7 +37,7 @@ const Following = (args: AutomatedOrgTableProps) => {
 }
 
 AutomatedOrgTableStory.args = {
-  apiUrl: 'http://localhost:9090'
+  apiUrl: 'http://localhost:8002'
 }
 
 AutomatedOrgTableStory.storyName = 'AutomatedOrgTable'
