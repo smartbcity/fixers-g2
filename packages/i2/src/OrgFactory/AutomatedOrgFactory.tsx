@@ -137,11 +137,11 @@ export const AutomatedOrgFactory = (props: AutomatedOrgFactoryProps) => {
         jwt: jwt
       })
       if (res) {
-        //@ts-ignore
         submitted &&
           submitted({
             ...organization,
             id: res[0].id,
+            //@ts-ignore
             roles: organization.roles.assignedRoles
           })
         return true
