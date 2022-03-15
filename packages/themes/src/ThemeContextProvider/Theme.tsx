@@ -98,6 +98,7 @@ export const defaultMaterialUiTheme = (
       secondary: {
         main: theme.colors.secondary
       },
+      divider: theme.colors.tertiary,
       success: {
         main: theme.colors.success
       },
