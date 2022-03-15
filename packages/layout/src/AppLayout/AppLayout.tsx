@@ -201,7 +201,7 @@ export const AppLayout = (props: AppLayoutProps) => {
   const muiTheme = useMuiTheme()
 
   const stylesDependencies = useMemo(
-    (): { styleProps: AppStyleProps; muiTheme: MuiTheme } => ({
+    (): { styleProps: AppStylePropsBase; muiTheme: MuiTheme } => ({
       styleProps: applyAppStyleProps(styleProps),
       muiTheme: muiTheme
     }),

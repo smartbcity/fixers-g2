@@ -26,7 +26,7 @@ export interface AppStylePropsBase {
 
 export type AppStyleProps = PartialDeep<AppStylePropsBase>
 
-export const defaultAppStyleProps: AppStyleProps = {
+export const defaultAppStyleProps: AppStylePropsBase = {
   appBar: {
     height: 100,
     background: 'white'
@@ -42,11 +42,9 @@ export const defaultAppStyleProps: AppStyleProps = {
   }
 }
 
-type ApplyAppStyleProps = (partial?: AppStyleProps) => AppStyleProps
-
-export const applyAppStyleProps: ApplyAppStyleProps = (
+export const applyAppStyleProps = (
   partial?: AppStyleProps
-) => {
+): AppStylePropsBase => {
   if (!partial) {
     return defaultAppStyleProps
   }
