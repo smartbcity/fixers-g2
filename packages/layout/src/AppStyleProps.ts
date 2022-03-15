@@ -13,16 +13,18 @@ export interface AppMenuProps {
 }
 
 export interface AppMainProps {
-  background: string
+  background?: string
   padding: number
 }
 
-export interface AppStyleProps {
+export interface AppStylePropsBase {
   // detailDrawerWidth: number
   appBar: AppBarProps
   menu: AppMenuProps
   main: AppMainProps
 }
+
+export type AppStyleProps = PartialDeep<AppStylePropsBase>
 
 export const defaultAppStyleProps: AppStyleProps = {
   appBar: {
@@ -40,12 +42,10 @@ export const defaultAppStyleProps: AppStyleProps = {
   }
 }
 
-type ApplyAppStyleProps = (
-  partial?: PartialDeep<AppStyleProps>
-) => AppStyleProps
+type ApplyAppStyleProps = (partial?: AppStyleProps) => AppStyleProps
 
 export const applyAppStyleProps: ApplyAppStyleProps = (
-  partial?: PartialDeep<AppStyleProps>
+  partial?: AppStyleProps
 ) => {
   if (!partial) {
     return defaultAppStyleProps
