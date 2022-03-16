@@ -33,14 +33,14 @@ export const AutomatedOrgFactoryStory: Story<AutomatedOrgFactoryProps> = (
 }
 
 const Following = (args: AutomatedOrgFactoryProps) => {
-  const [organizationId, setorganizationId] = useState<string | undefined>(
+  const [organizationId, setOrganizationId] = useState<string | undefined>(
     'ec1a059a-b6de-4c17-9466-12e1dde4eff0'
   )
   const { keycloak } = useAuth()
   if (!keycloak.authenticated) return <></>
   return (
     <AutomatedOrgFactory
-      submitted={(org) => setorganizationId(org.id)}
+      submitted={(org) => setOrganizationId(org.id)}
       organizationId={organizationId}
       update={!!organizationId}
       {...args}
