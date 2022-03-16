@@ -3,7 +3,8 @@ export {
   AutomatedOrgFactoryProps,
   OrgFactory,
   OrgFactoryProps,
-  Organization
+  Organization,
+  ReadonlyOrgFieldsPerState
 } from './OrgFactory'
 export {
   AutomatedOrgTable,
@@ -20,7 +21,8 @@ export {
   UserFactory,
   UserFactoryProps,
   AutomatedUserFactory,
-  AutomatedUserFactoryProps
+  AutomatedUserFactoryProps,
+  ReadonlyUserFieldsPerState
 } from './UserFactory'
 export {
   AutomatedUserTable,

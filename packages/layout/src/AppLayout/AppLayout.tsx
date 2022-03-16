@@ -5,13 +5,16 @@ import {
   DrawerProps,
   useTheme as useMuiTheme
 } from '@mui/material'
-import { applyAppStyleProps, AppStyleProps } from '../AppStyleProps'
+import {
+  applyAppStyleProps,
+  AppStylePropsBase,
+  AppStyleProps
+} from '../AppStyleProps'
 import { makeG2STyles } from '@smartb/g2-themes'
 import { AppBarLayout, AppBarLayoutProps } from '../AppBarLayout'
-import { PartialDeep } from 'utils'
 
 const useStyles = makeG2STyles<{
-  styleProps: AppStyleProps
+  styleProps: AppStylePropsBase
   muiTheme: MuiTheme
 }>()((theme, props) => ({
   appbar: {
@@ -152,7 +155,7 @@ export interface AppLayoutProps {
   /**
    * The base dimension of the appLayout
    */
-  styleProps?: PartialDeep<AppStyleProps>
+  styleProps?: AppStyleProps
   /**
    * Defined if the appBar will be displayed or not
    */
@@ -198,7 +201,7 @@ export const AppLayout = (props: AppLayoutProps) => {
   const muiTheme = useMuiTheme()
 
   const stylesDependencies = useMemo(
-    (): { styleProps: AppStyleProps; muiTheme: MuiTheme } => ({
+    (): { styleProps: AppStylePropsBase; muiTheme: MuiTheme } => ({
       styleProps: applyAppStyleProps(styleProps),
       muiTheme: muiTheme
     }),
