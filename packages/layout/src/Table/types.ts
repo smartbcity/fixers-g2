@@ -22,29 +22,28 @@ import {
   useFlexLayout
 } from 'react-table'
 
-export interface CompleteTableOptions<Data extends BasicData>
+export interface CompleteTableOptions<Data extends {}>
   extends Omit<TableOptions<Data>, 'data' | 'columns'>,
     UseExpandedOptions<Data>,
     UseRowSelectOptions<Data>,
     UsePaginationOptions<Data> {}
 
-export interface CompleteTableState<Data extends BasicData>
+export interface CompleteTableState<Data extends {}>
   extends TableState<Data>,
     UseExpandedState<Data>,
     UseRowSelectState<Data>,
     UsePaginationState<Data> {}
 
-export interface Row<Data extends BasicData>
+export interface Row<Data extends {}>
   extends BasicRow<Data>,
     UseExpandedRowProps<Data>,
     UseRowSelectRowProps<Data> {}
 
-export interface CellProps<Data extends BasicData>
-  extends BasicCellProps<Data> {
+export interface CellProps<Data extends {}> extends BasicCellProps<Data> {
   row: Row<Data>
 }
 
-export interface CompleteTableInstance<Data extends BasicData>
+export interface CompleteTableInstance<Data extends {}>
   extends TableInstance<Data>,
     UseExpandedInstanceProps<Data>,
     UseRowSelectInstanceProps<Data>,
@@ -54,16 +53,12 @@ export interface CompleteTableInstance<Data extends BasicData>
   selectedFlatRows: Row<Data>[]
 }
 
-export type BasicData = {
-  id: string | number
-}
-
-export type Column<Data extends BasicData> = BasicColumn<Data> & {
+export type Column<Data extends {}> = BasicColumn<Data> & {
   className?: string
   style?: React.CSSProperties
 }
 
-export const UseCompleteTable = <Data extends BasicData>(
+export const UseCompleteTable = <Data extends {}>(
   variant: 'grounded' | 'elevated',
   options: CompleteTableOptions<Data> & {
     data: Data[]

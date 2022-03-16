@@ -16,8 +16,7 @@ import {
   CellProps,
   Row,
   Column,
-  UseCompleteTable,
-  BasicData
+  UseCompleteTable
 } from './types'
 import { cx } from '@emotion/css'
 import { TableContainer } from './TableContainer'
@@ -57,7 +56,7 @@ export interface TableStyles {
   Pagination?: React.CSSProperties
 }
 
-export interface TableBasicProps<Data extends BasicData> extends BasicProps {
+export interface TableBasicProps<Data extends {}> extends BasicProps {
   /**
    * An array of the data that will be displayed in the table
    */
@@ -132,6 +131,11 @@ export interface TableBasicProps<Data extends BasicData> extends BasicProps {
    */
   withFooter?: boolean
   /**
+   * Only used if you have a paginated table with a persistant select
+   * @default false
+   */
+  getRowId?: (row: Data) => string
+  /**
    * The classes applied to the different part of the component
    */
   classes?: TableClasses
@@ -145,12 +149,12 @@ const defaultColumn: Partial<Column<{ id: string }>> = {
   width: 100
 }
 
-export type TableProps<Data extends BasicData> = MergeMuiElementProps<
+export type TableProps<Data extends {}> = MergeMuiElementProps<
   TableContainerProps,
   TableBasicProps<Data>
 >
 
-export const Table = <Data extends BasicData>(props: TableProps<Data>) => {
+export const Table = <Data extends {}>(props: TableProps<Data>) => {
   const {
     data,
     columns,
@@ -170,6 +174,7 @@ export const Table = <Data extends BasicData>(props: TableProps<Data>) => {
     noToggleAllPageRowsSelected = false,
     renderRowHoveredComponent,
     header,
+    getRowId,
     expectedSize = 10,
     ...other
   } = props
@@ -260,7 +265,7 @@ export const Table = <Data extends BasicData>(props: TableProps<Data>) => {
       manualPagination: true,
       pageCount: totalPages,
       autoResetSelectedRows: false,
-      getRowId: (row) => `${row.id}`,
+      getRowId: getRowId,
       defaultColumn: defaultColumn as Partial<Column<Data>>,
       ...tableOptions
     },
