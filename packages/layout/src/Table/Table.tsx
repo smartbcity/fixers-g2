@@ -87,23 +87,27 @@ export interface TableBasicProps<Data extends {}> extends BasicProps {
    */
   totalPages?: number
   /**
-   * the envent triggered when the current page has to change
+   * @Deprecated ⚠ The method onPageChanged must be used.
    */
   handlePageChange?: (page: number) => void
   /**
-   * the envent triggered when the selectedRows state changes
+   * The event triggered when the page is changed
+   */
+  onPageChange?: (page: number) => void
+  /**
+   * The event triggered when the selectedRows state changes
    */
   setSelectedRowIds?: (rowIds: Record<string, boolean>) => void
   /**
-   * the envent triggered when a row is clicked
+   * The event triggered when a row is clicked
    */
   onRowClicked?: (row: Row<Data>) => void
   /**
-   * provide this function if you want to have a subcomponent for the rows
+   * Provide this function if you want to have a subcomponent for the rows
    */
   renderSubComponent?: (row: Row<Data>, rowProps: TableRowProps) => JSX.Element
   /**
-   * provide this function if you want to have a component appearing over the rows on hover
+   * Provide this function if you want to have a component appearing over the rows on hover
    */
   renderRowHoveredComponent?: (row: Row<Data>) => JSX.Element
   /**
@@ -180,6 +184,7 @@ export const Table = <Data extends {}>(props: TableProps<Data>) => {
     tableOptions,
     page,
     handlePageChange,
+    onPageChange,
     isLoading,
     totalPages,
     setSelectedRowIds,
@@ -405,7 +410,7 @@ export const Table = <Data extends {}>(props: TableProps<Data>) => {
       {isPaginated ? (
         <Pagination
           className='AruiTable-pagination'
-          onPageChange={handlePageChange}
+          onPageChange={onPageChange || handlePageChange}
           page={page}
           totalPage={totalPages}
         />

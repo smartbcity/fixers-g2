@@ -42,7 +42,7 @@ export const AutomatedUserTable = (props: AutomatedUserTableProps) => {
     submitted,
     ...other
   } = props
-
+  // TODO The implementation of this hooks should be outside of this class
   const getUsers = useCallback(
     async (params?: UserTableFilters) => {
       const res = await request<{ users: User[]; total: number }[]>({

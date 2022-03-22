@@ -31,7 +31,7 @@ export type AutomatedOrgTableProps = MergeMuiElementProps<
 
 export const AutomatedOrgTable = (props: AutomatedOrgTableProps) => {
   const { apiUrl, jwt, initialFiltersValues, submitted, ...other } = props
-
+  // TODO The implementation of this hooks should be outside of this class
   const getOrganizations = useCallback(
     async (params?: OrgTableFilters) => {
       const res = await request<

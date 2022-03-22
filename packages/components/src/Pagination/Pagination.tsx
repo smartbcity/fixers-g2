@@ -15,7 +15,7 @@ interface PaginationStyles {
 
 export interface PaginationBasicProps extends BasicProps {
   /**
-   * Thecurrent selected page
+   * The current selected page
    */
   page: number
   /**

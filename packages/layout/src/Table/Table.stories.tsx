@@ -138,7 +138,7 @@ export const Table: Story<TableBasicProps<Data>> = (
       data={page === 1 ? data1 : data2}
       page={page}
       totalPages={2}
-      handlePageChange={(newPage) => setPage(newPage)}
+      onPageChange={(newPage) => setPage(newPage)}
       {...args}
     ></AruiTable>
   )

@@ -62,6 +62,7 @@ export type OrgTableProps = MergeMuiElementProps<
   OrgTableBasicProps
 >
 
+// TODO Remove code duplicated with UserTable. Ask Adrien for project Tracabois
 export const OrgTable = (props: OrgTableProps) => {
   const {
     organizations,
@@ -186,7 +187,7 @@ export const OrgTable = (props: OrgTableProps) => {
     >
       <Table<Organization>
         page={page}
-        handlePageChange={onChangePage}
+        onPageChange={onChangePage}
         data={organizations}
         columns={columns}
         totalPages={totalPages}

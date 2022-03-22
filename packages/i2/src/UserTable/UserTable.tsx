@@ -72,6 +72,7 @@ export type UserTableProps = MergeMuiElementProps<
   UserTableBasicProps
 >
 
+// TODO Remove code duplicated with UserTable. Ask Adrien for project Tracabois
 export const UserTable = (props: UserTableProps) => {
   const {
     users,
