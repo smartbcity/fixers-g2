@@ -256,7 +256,8 @@ export const AppLayout = (props: AppLayoutProps) => {
         <div
           className={defaultStyles.classes.hidder}
           style={{
-            display: window.innerWidth < 768 && open ? 'block' : 'none'
+            display:
+              window.innerWidth < 768 && open && showDrawer ? 'block' : 'none'
           }}
           onClick={onToggle}
         />

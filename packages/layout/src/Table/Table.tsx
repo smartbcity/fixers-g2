@@ -1,4 +1,4 @@
-import { TableContainerProps, IconButton } from '@mui/material'
+import { TableContainerProps, IconButton, Box } from '@mui/material'
 import {
   useRowSelect,
   useExpanded,
@@ -136,6 +136,25 @@ export interface TableBasicProps<Data extends {}> extends BasicProps {
    */
   getRowId?: (row: Data) => string
   /**
+   * You optionnal custom icon used to indicate the expand status of a row
+   */
+  expandIcon?: JSX.Element
+  /**
+   * The poistion in the row of the expand icon
+   * @default 'start'
+   */
+  expandIconPosition?: 'start' | 'end'
+  /**
+   * Pass this props to true if you want the expandable row to be expanded in the row when the `variant` is 'elevated'
+   * @default false
+   */
+  expandInElevatedRow?: boolean
+  /**
+   * Pass this props to true if you want to expand the row when it's clicked (and not only on the expand icon)
+   * @default false
+   */
+  toggleExpandOnRowClicked?: boolean
+  /**
    * The classes applied to the different part of the component
    */
   classes?: TableClasses
@@ -176,6 +195,10 @@ export const Table = <Data extends {}>(props: TableProps<Data>) => {
     header,
     getRowId,
     expectedSize = 10,
+    expandIcon,
+    expandIconPosition = 'start',
+    expandInElevatedRow = false,
+    toggleExpandOnRowClicked = false,
     ...other
   } = props
   const isSelectabale = !!setSelectedRowIds
@@ -184,36 +207,49 @@ export const Table = <Data extends {}>(props: TableProps<Data>) => {
 
   const useVariableHooks = useCallback(
     (hooks: Hooks<Data>) => {
+      const expanderRow: Column<Data> = {
+        id: 'expander',
+        accessor: 'expander',
+        Cell: ({ row }: CellProps<Data>) => {
+          return (
+            <div onClick={(e) => e.stopPropagation()}>
+              <IconButton {...row.getToggleRowExpandedProps()}>
+                <Box
+                  sx={{
+                    transform:
+                      row.isExpanded && expandIconPosition === 'start'
+                        ? 'rotate(-180deg)'
+                        : row.isExpanded && expandIconPosition === 'end'
+                        ? 'rotate(180deg)'
+                        : '',
+                    transition: '0.2s',
+                    display: 'flex'
+                  }}
+                >
+                  {expandIcon ? (
+                    expandIcon
+                  ) : (
+                    <Arrow
+                      key='expanderIcon'
+                      color='#353945'
+                      width='20px'
+                      height='20px'
+                      style={{
+                        transform: 'rotate(-90deg)'
+                      }}
+                    />
+                  )}
+                </Box>
+              </IconButton>
+            </div>
+          )
+        },
+        maxWidth: 50,
+        className: 'AruiTable-actionColumn'
+      } as Column<Data>
       hooks.allColumns.push((columns) => [
-        ...(isExpandable
-          ? [
-              {
-                id: 'expander',
-                accessor: 'expander',
-                Cell: ({ row }: CellProps<Data>) => {
-                  return (
-                    <div onClick={(e) => e.stopPropagation()}>
-                      <IconButton {...row.getToggleRowExpandedProps()}>
-                        <Arrow
-                          key='expanderIcon'
-                          color='#353945'
-                          width='20px'
-                          height='20px'
-                          style={{
-                            transform: row.isExpanded
-                              ? 'rotate(90deg)'
-                              : 'rotate(-90deg)',
-                            transition: '0.2s'
-                          }}
-                        />
-                      </IconButton>
-                    </div>
-                  )
-                },
-                maxWidth: 50,
-                className: 'AruiTable-actionColumn'
-              } as Column<Data>
-            ]
+        ...(isExpandable && expandIconPosition === 'start'
+          ? [expanderRow]
           : []),
         ...(isSelectabale
           ? [
@@ -243,10 +279,17 @@ export const Table = <Data extends {}>(props: TableProps<Data>) => {
               } as Column<Data>
             ]
           : []),
-        ...columns
+        ...columns,
+        ...(isExpandable && expandIconPosition === 'end' ? [expanderRow] : [])
       ])
     },
-    [isSelectabale, isExpandable, noToggleAllPageRowsSelected]
+    [
+      isSelectabale,
+      isExpandable,
+      noToggleAllPageRowsSelected,
+      expandIcon,
+      expandIconPosition
+    ]
   )
 
   const {
@@ -255,7 +298,8 @@ export const Table = <Data extends {}>(props: TableProps<Data>) => {
     footerGroups,
     rows,
     prepareRow,
-    state: { selectedRowIds }
+    state: { selectedRowIds },
+    toggleRowExpanded
   } = UseCompleteTable<Data>(
     variant,
     {
@@ -333,6 +377,9 @@ export const Table = <Data extends {}>(props: TableProps<Data>) => {
               renderSubComponent={renderSubComponent}
               renderRowHoveredComponent={renderRowHoveredComponent}
               styles={styles}
+              expandInRow={expandInElevatedRow}
+              toggleRowExpanded={toggleRowExpanded}
+              toggleExpandOnRowClicked={toggleExpandOnRowClicked}
             />
           ) : (
             <GroundedBase
@@ -349,6 +396,8 @@ export const Table = <Data extends {}>(props: TableProps<Data>) => {
               renderSubComponent={renderSubComponent}
               renderRowHoveredComponent={renderRowHoveredComponent}
               styles={styles}
+              toggleRowExpanded={toggleRowExpanded}
+              toggleExpandOnRowClicked={toggleExpandOnRowClicked}
             />
           ))}
       </TableContainer>

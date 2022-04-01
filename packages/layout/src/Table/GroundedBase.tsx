@@ -10,11 +10,11 @@ import {
   Typography
 } from '@mui/material'
 import React, { Fragment, useMemo } from 'react'
-import { HeaderGroup, TableProps, TableRowProps } from 'react-table'
+import { HeaderGroup, IdType, TableProps, TableRowProps } from 'react-table'
 import { TableClasses, TableStyles } from './Table'
-import { Row, BasicData } from './types'
+import { Row } from './types'
 
-export interface GroundedBaseProps<Data extends BasicData> {
+export interface GroundedBaseProps<Data extends {}> {
   /**
    * The number of pages the table contain.
    *
@@ -45,9 +45,11 @@ export interface GroundedBaseProps<Data extends BasicData> {
   tableProps: TableProps
   selectedRowIds: Record<string, boolean>
   renderRowHoveredComponent?: (row: Row<Data>) => JSX.Element
+  toggleExpandOnRowClicked: boolean
+  toggleRowExpanded: (id: IdType<Data>[], value?: boolean | undefined) => void
 }
 
-export const GroundedBase = <Data extends BasicData>(
+export const GroundedBase = <Data extends {}>(
   props: GroundedBaseProps<Data>
 ) => {
   const {
@@ -63,7 +65,9 @@ export const GroundedBase = <Data extends BasicData>(
     selectedRowIds,
     footerGroups,
     withFooter,
-    renderRowHoveredComponent
+    renderRowHoveredComponent,
+    toggleExpandOnRowClicked,
+    toggleRowExpanded
   } = props
   const rowsDisplay = useMemo(() => {
     return rows.map((row) => {
@@ -73,7 +77,10 @@ export const GroundedBase = <Data extends BasicData>(
       return (
         <Fragment key={rowProps.key}>
           <TableRow
-            onClick={() => onRowClicked && onRowClicked(row)}
+            onClick={() => {
+              onRowClicked && onRowClicked(row)
+              toggleExpandOnRowClicked && toggleRowExpanded([row.id])
+            }}
             className={cx(
               'AruiTable-principaleTableRow',
               'AruiTable-tableRow',
@@ -142,7 +149,10 @@ export const GroundedBase = <Data extends BasicData>(
     styles?.tableRow,
     classes?.tableCell,
     styles?.tableCell,
-    onRowClicked
+    onRowClicked,
+    toggleExpandOnRowClicked,
+    toggleRowExpanded,
+    selectedRowIds
   ])
 
   const headerDisplay = useMemo(

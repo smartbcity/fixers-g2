@@ -1,11 +1,11 @@
 import { cx } from '@emotion/css'
 import { Box, Collapse, Typography } from '@mui/material'
 import React, { Fragment, useMemo } from 'react'
-import { HeaderGroup, TableProps, TableRowProps } from 'react-table'
+import { HeaderGroup, IdType, TableProps, TableRowProps } from 'react-table'
 import { TableClasses, TableStyles } from './Table'
-import { Row, BasicData } from './types'
+import { Row } from './types'
 
-export interface ElevatedBaseProps<Data extends BasicData> {
+export interface ElevatedBaseProps<Data extends {}> {
   /**
    * The number of pages the table contain.
    *
@@ -35,10 +35,13 @@ export interface ElevatedBaseProps<Data extends BasicData> {
   withFooter: boolean
   tableProps: TableProps
   selectedRowIds: Record<string, boolean>
+  expandInRow: boolean
   renderRowHoveredComponent?: (row: Row<Data>) => JSX.Element
+  toggleExpandOnRowClicked: boolean
+  toggleRowExpanded: (id: IdType<Data>[], value?: boolean | undefined) => void
 }
 
-export const ElevatedBase = <Data extends BasicData>(
+export const ElevatedBase = <Data extends {}>(
   props: ElevatedBaseProps<Data>
 ) => {
   const {
@@ -54,7 +57,10 @@ export const ElevatedBase = <Data extends BasicData>(
     selectedRowIds,
     footerGroups,
     withFooter,
-    renderRowHoveredComponent
+    renderRowHoveredComponent,
+    expandInRow,
+    toggleExpandOnRowClicked,
+    toggleRowExpanded
   } = props
   const rowsDisplay = useMemo(() => {
     return rows.map((row) => {
@@ -64,65 +70,76 @@ export const ElevatedBase = <Data extends BasicData>(
       return (
         <Fragment key={rowProps.key}>
           <Box
-            onClick={() => onRowClicked && onRowClicked(row)}
+            onClick={() => {
+              onRowClicked && onRowClicked(row)
+              toggleExpandOnRowClicked && toggleRowExpanded([row.id])
+            }}
             className={cx(
               'AruiTable-principaleTableRow',
               'AruiTable-tableRow',
               classes?.tableRow
             )}
             style={styles?.tableRow}
-            {...row.getRowProps()}
           >
-            {row.cells.map((cell) => {
-              const column = cell.column
-              return (
-                <Box
-                  className={cx(
+            <Box {...row.getRowProps()}>
+              {row.cells.map((cell) => {
+                const column = cell.column
+                return (
+                  <Box
+                    className={cx(
+                      //@ts-ignore
+                      column.className,
+                      'AruiTable-tableCell',
+                      classes?.tableCell
+                    )}
                     //@ts-ignore
-                    column.className,
-                    'AruiTable-tableCell',
-                    classes?.tableCell
+                    style={{ ...column.style, ...styles?.tableCell }}
+                    {...cell.getCellProps()}
+                  >
+                    {cell.render('Cell')}
+                  </Box>
+                )
+              })}
+              {!!renderRowHoveredComponent && (
+                <Box
+                  sx={{
+                    padding: 0,
+                    position: 'absolute',
+                    width: '100%',
+                    height: '100%'
+                  }}
+                  className={cx(
+                    'AruiTable-rowHoveredComponentContainer',
+                    classes?.rowHoveredComponentContainer
                   )}
-                  //@ts-ignore
-                  style={{ ...column.style, ...styles?.tableCell }}
-                  {...cell.getCellProps()}
+                  style={styles?.rowHoveredComponentContainer}
                 >
-                  {cell.render('Cell')}
+                  {renderRowHoveredComponent(row)}
                 </Box>
-              )
-            })}
-            {!!renderRowHoveredComponent && (
-              <Box
-                sx={{
-                  padding: 0,
-                  position: 'absolute',
-                  width: '100%',
-                  height: '100%'
-                }}
-                className={cx(
-                  'AruiTable-rowHoveredComponentContainer',
-                  classes?.rowHoveredComponentContainer
-                )}
-                style={styles?.rowHoveredComponentContainer}
-              >
-                {renderRowHoveredComponent(row)}
-              </Box>
-            )}
-          </Box>
-          <Box
-            className={cx('AruiTable-tableRow', classes?.tableRow)}
-            style={styles?.tableRow}
-          >
-            <Box
-              className={cx('AruiTable-tableCell', classes?.tableCell)}
-              style={styles?.tableCell}
-              sx={{ paddingBottom: 0, paddingTop: 0 }}
-            >
+              )}
+            </Box>
+            {expandInRow && (
               <Collapse in={row.isExpanded} timeout='auto' unmountOnExit>
                 {renderSubComponent && renderSubComponent(row, rowProps)}
               </Collapse>
-            </Box>
+            )}
           </Box>
+          {!expandInRow && (
+            <Box
+              className={cx('AruiTable-tableRow', classes?.tableRow)}
+              style={styles?.tableRow}
+            >
+              <Box
+                className={cx('AruiTable-tableCell', classes?.tableCell)}
+                style={styles?.tableCell}
+                sx={{ paddingBottom: 0, paddingTop: 0 }}
+              >
+                <Collapse in={row.isExpanded} timeout='auto' unmountOnExit>
+                  {renderSubComponent && renderSubComponent(row, rowProps)}
+                </Collapse>
+              </Box>
+            </Box>
+          )}
         </Fragment>
       )
     })
@@ -137,7 +154,11 @@ export const ElevatedBase = <Data extends BasicData>(
     styles?.tableRow,
     classes?.tableCell,
     styles?.tableCell,
-    onRowClicked
+    onRowClicked,
+    selectedRowIds,
+    expandInRow,
+    toggleExpandOnRowClicked,
+    toggleRowExpanded
   ])
 
   const headerDisplay = useMemo(
