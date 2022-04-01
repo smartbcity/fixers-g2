@@ -352,6 +352,7 @@ export const Table = <Data extends {}>(props: TableProps<Data>) => {
               }
         }
         variant={variant}
+        expandInElevatedRow={expandInElevatedRow}
         {...other}
       >
         {header}

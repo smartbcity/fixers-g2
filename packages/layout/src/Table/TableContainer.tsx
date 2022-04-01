@@ -9,6 +9,7 @@ import { MergeMuiElementProps } from '@smartb/g2-themes'
 interface BasicTableContainerBasicProps {
   variant: 'grounded' | 'elevated'
   children: React.ReactNode
+  expandInElevatedRow?: boolean
 }
 
 type BasicTableContainerProps = MergeMuiElementProps<
@@ -22,7 +23,7 @@ const BasicTableContainer = (props: BasicTableContainerProps) => {
 }
 
 export const TableContainer = styled(BasicTableContainer)((props) => {
-  const { variant, theme } = props
+  const { variant, theme, expandInElevatedRow } = props
   const comunStyles = {
     '& .AruiTable-actionColumn': {
       maxWidth: '65px',
@@ -65,7 +66,8 @@ export const TableContainer = styled(BasicTableContainer)((props) => {
         boxShadow: theme.shadows[1],
         margin: '3px 0px',
         border: '2px solid transparent',
-        minWidth: 'fit-content !important'
+        minWidth: 'fit-content !important',
+        marginBottom: expandInElevatedRow ? '15px' : ''
       },
       '& .AruiTable-tableHeaderRow': {
         minWidth: 'fit-content !important'
