@@ -284,12 +284,14 @@ const getInput = (
   }
   switch (field.type) {
     case 'datepicker':
-      const date = new Date(formState.values[field.name])
+      const date = new Date(formState.getFieldProps(field.name).value)
       return (
         <InputForm
           inputType='datePicker'
           value={
-            !isNaN(date.getTime()) ? date : formState.values[field.name] ?? ''
+            !isNaN(date.getTime())
+              ? date
+              : formState.getFieldProps(field.name).value ?? ''
           }
           onChangeDate={(date) => {
             formState.setFieldValue(
@@ -306,7 +308,7 @@ const getInput = (
       return field.selectProps?.multiple === true ? (
         <InputForm
           inputType='select'
-          values={formState.values[field.name] ?? []}
+          values={formState.getFieldProps(field.name).value ?? []}
           onChangeValues={(values) =>
             formState.setFieldValue(field.name, values, false)
           }
@@ -316,7 +318,7 @@ const getInput = (
       ) : (
         <InputForm
           inputType='select'
-          value={formState.values[field.name] ?? ''}
+          value={formState.getFieldProps(field.name).value ?? ''}
           onChangeValue={(value) =>
             formState.setFieldValue(field.name, value, false)
           }
@@ -327,7 +329,7 @@ const getInput = (
     case 'checkbox':
       return (
         <CheckBox
-          checked={formState.values[field.name]}
+          checked={formState.getFieldProps(field.name).value}
           onChange={(_: React.ChangeEvent<HTMLInputElement>, value: boolean) =>
             formState.setFieldValue(field.name, value, false)
           }
@@ -339,7 +341,7 @@ const getInput = (
       return (
         <InputForm
           inputType='radioChoices'
-          value={formState.values[field.name] ?? ''}
+          value={formState.getFieldProps(field.name).value ?? ''}
           onChange={(_: React.ChangeEvent<HTMLInputElement>, value: string) =>
             formState.setFieldValue(field.name, value, false)
           }
@@ -351,7 +353,7 @@ const getInput = (
   return (
     <InputForm
       inputType='textField'
-      value={formState.values[field.name] ?? ''}
+      value={formState.getFieldProps(field.name).value ?? ''}
       onChange={(value: string) =>
         formState.setFieldValue(field.name, value, false)
       }
