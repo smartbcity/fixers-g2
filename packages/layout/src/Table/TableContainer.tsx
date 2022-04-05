@@ -67,7 +67,7 @@ export const TableContainer = styled(BasicTableContainer)((props) => {
         margin: '3px 0px',
         border: '2px solid transparent',
         minWidth: 'fit-content !important',
-        marginBottom: expandInElevatedRow ? '15px' : ''
+        marginBottom: expandInElevatedRow ? '20px' : ''
       },
       '& .AruiTable-tableHeaderRow': {
         minWidth: 'fit-content !important'
