@@ -185,7 +185,7 @@ export const UserFactory = (props: UserFactoryProps) => {
           const string = String(value).trim()
           if ((street || city) && (!string || !value))
             return 'Vous devez renseigner le code postal pour avoir une adresse complète' as string
-          if (string.length != 5)
+          if ((street || city) && string.length != 5)
             return 'un code postal doit être composé de 5 chiffres' as string
           return undefined
         }
