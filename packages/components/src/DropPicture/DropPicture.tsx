@@ -100,9 +100,13 @@ interface DropPictureStyles {
 
 export interface DropPictureBasicProps extends BasicProps {
   /**
-   * The event called when a picture is dropped
+   * @deprecated Use onPictureDropped instead. Remove in 1.0.0-alpha.30
    */
   onPictureDroped?: (picture: File) => void
+  /**
+   * The event called when a picture is dropped
+   */
+  onPictureDropped?: (picture: File) => void
   /**
    * The event called when the picture is removed
    */
@@ -172,6 +176,7 @@ const DropPictureBase = (
 ) => {
   const {
     onPictureDroped,
+    onPictureDropped,
     onRemovePicture,
     className,
     style,
@@ -199,14 +204,16 @@ const DropPictureBase = (
 
   const onUpload = useCallback(
     (acceptedFiles: File[]) => {
+      // TODO @deprecated replace by onPictureDropped
       onPictureDroped && onPictureDroped(acceptedFiles[0])
+      onPictureDropped && onPictureDropped(acceptedFiles[0])
       const reader = new FileReader()
       reader.readAsDataURL(acceptedFiles[0])
       reader.onload = () => {
         setLogo(reader.result as string)
       }
     },
-    [onPictureDroped]
+    [onPictureDroped, onPictureDropped]
   )
 
   const onReject = useCallback(

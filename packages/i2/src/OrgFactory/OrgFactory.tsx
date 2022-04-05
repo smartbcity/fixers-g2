@@ -399,7 +399,7 @@ export const OrgFactory = (props: OrgFactoryProps) => {
     }
   }, [])
 
-  const onPictureDroped = useCallback((image: File) => {
+  const onPictureDropped = useCallback((image: File) => {
     fileToBase64(image).then((base64) => {
       setImage(base64)
     })
@@ -472,7 +472,7 @@ export const OrgFactory = (props: OrgFactoryProps) => {
               onDropError={onDropError}
               onRemovePicture={onRemovePicture}
               initialPicture={organization?.image}
-              onPictureDroped={onPictureDroped}
+              onPictureDropped={onPictureDropped}
               addPictureHelperText='Ajouter une image'
               removePictureHelperText="Retirer l'image"
               alt="Le logo de l'entreprise"
