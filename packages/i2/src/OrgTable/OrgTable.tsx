@@ -149,7 +149,7 @@ export const OrgTable = (props: OrgTableProps) => {
         Cell: ({ row }: CellProps<Organization>) =>
           row.original.address ? (
             <Typography>
-              {`${row.original.address.street}, ${row.original.address.postalCode} ${row.original.address.city}`}
+              {`${row.original.address.street} ${row.original.address.postalCode} ${row.original.address.city}`}
             </Typography>
           ) : undefined
       },

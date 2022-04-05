@@ -166,7 +166,7 @@ export const UserTable = (props: UserTableProps) => {
         Cell: ({ row }: CellProps<User>) =>
           row.original.address ? (
             <Typography>
-              {`${row.original.address.street}, ${row.original.address.postalCode} ${row.original.address.city}`}
+              {`${row.original.address.street} ${row.original.address.postalCode} ${row.original.address.city}`}
             </Typography>
           ) : undefined,
         width: 200
