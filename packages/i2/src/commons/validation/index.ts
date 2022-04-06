@@ -1,5 +1,7 @@
 import { addressValidation } from './address'
+import { siretValidation } from './siret'
 
 export const validation = {
-  address: addressValidation
+  address: addressValidation,
+  siret: siretValidation
 }

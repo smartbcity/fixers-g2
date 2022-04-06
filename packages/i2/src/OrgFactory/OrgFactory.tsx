@@ -162,14 +162,7 @@ export const OrgFactory = (props: OrgFactoryProps) => {
       {
         name: 'siret',
         defaultValue: organization?.siret,
-        validator: (value?: string | number) => {
-          const string = String(value).trim()
-          // if (!string || !value)
-          //   return 'Vous devez renseigner le numéro de siret' as string
-          if (!!string && string.length !== 14)
-            return 'un numéro de siret doit être composé de 14 chiffres' as string
-          return undefined
-        }
+        validator: validation.siret
       },
       {
         name: 'street',
