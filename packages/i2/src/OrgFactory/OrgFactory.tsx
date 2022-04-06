@@ -163,9 +163,9 @@ export const OrgFactory = (props: OrgFactoryProps) => {
         defaultValue: organization?.siret,
         validator: (value?: string | number) => {
           const string = String(value).trim()
-          if (!string || !value)
-            return 'Vous devez renseigner le numéro de siret' as string
-          if (string.length != 14)
+          // if (!string || !value)
+          //   return 'Vous devez renseigner le numéro de siret' as string
+          if (!!string && string.length !== 14)
             return 'un numéro de siret doit être composé de 14 chiffres' as string
           return undefined
         }
@@ -174,8 +174,8 @@ export const OrgFactory = (props: OrgFactoryProps) => {
         name: 'street',
         defaultValue: organization?.address?.street,
         validator: (value: string, values: any) => {
-          const city = String(values['city']).trim()
-          const postalCode = String(values['postalCode']).trim()
+          const city = !!String(values['city']).trim()
+          const postalCode = !!String(values['postalCode']).trim()
           const trimmed = (value ?? '').trim()
           if ((postalCode || city) && !trimmed)
             return "Vous devez renseigner l'addresse en plus de la ville et du code postal" as string
@@ -186,8 +186,8 @@ export const OrgFactory = (props: OrgFactoryProps) => {
         name: 'postalCode',
         defaultValue: organization?.address?.postalCode,
         validator: (value: string | number, values: any) => {
-          const street = String(values['street']).trim()
-          const city = String(values['city']).trim()
+          const street = !!String(values['street']).trim()
+          const city = !!String(values['city']).trim()
           const string = String(value).trim()
           if ((street || city) && (!string || !value))
             return 'Vous devez renseigner le code postal pour avoir une adresse complète' as string
@@ -200,8 +200,8 @@ export const OrgFactory = (props: OrgFactoryProps) => {
         name: 'city',
         defaultValue: organization?.address?.city,
         validator: (value: string, values: any) => {
-          const street = String(values['street']).trim()
-          const postalCode = String(values['postalCode']).trim()
+          const street = !!String(values['street']).trim()
+          const postalCode = !!String(values['postalCode']).trim()
           const trimmed = (value ?? '').trim()
           if ((street || postalCode) && !trimmed)
             return 'Vous devez renseigner la ville pour avoir une adresse complète' as string
