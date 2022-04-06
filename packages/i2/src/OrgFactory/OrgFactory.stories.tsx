@@ -57,18 +57,23 @@ export default {
 export const OrgFactoryStory: Story<OrgFactoryProps> = (
   args: OrgFactoryProps
 ) => {
-  return <OrgFactory {...args} />
+  return (
+    <OrgFactory
+      {...args}
+      organization={{ roles: ['Manager'], name: 'SmartB' }}
+    />
+  )
 }
 
 OrgFactoryStory.args = {
-  onSubmit: (org) => console.log(org),
+  onSubmit: (org) => window.alert(JSON.stringify(org)),
   rolesOptions: [
     {
-      key: '1',
+      key: 'Operateur',
       label: 'Operateur'
     },
     {
-      key: '2',
+      key: 'Manager',
       label: 'Manager'
     }
   ]

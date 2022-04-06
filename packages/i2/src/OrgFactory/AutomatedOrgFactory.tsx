@@ -140,9 +140,7 @@ export const AutomatedOrgFactory = (props: AutomatedOrgFactoryProps) => {
         submitted &&
           submitted({
             ...organization,
-            id: res[0].id,
-            //@ts-ignore
-            roles: organization.roles.assignedRoles
+            id: res[0].id
           })
         return true
       } else {

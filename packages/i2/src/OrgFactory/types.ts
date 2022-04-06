@@ -24,7 +24,7 @@ export interface Organization {
   id: string
   siret: string
   name: string
-  roles: Roles
+  roles: string[]
   description?: string
   website?: string
   address?: Address
@@ -72,7 +72,7 @@ export const organizationToFlatOrganization = (
     street: org.address?.street,
     city: org.address?.city,
     postalCode: org.address?.postalCode,
-    roles: org.roles.assignedRoles
+    roles: org.roles
   }
   delete flat.address
   return flat
@@ -92,10 +92,7 @@ export const flatOrganizationToOrganization = (
       city: flat.city ?? '',
       postalCode: flat.postalCode ?? ''
     },
-    roles: {
-      assignedRoles: flat.roles,
-      effectiveRoles: []
-    }
+    roles: flat.roles
   }
   delete org.street
   delete org.city

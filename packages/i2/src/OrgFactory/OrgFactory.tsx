@@ -55,7 +55,7 @@ export type ReadonlyFields = {
   [k in keyof Organization]?: boolean
 }
 
-//@ts-ignore
+// @ts-ignore
 const StyledPopover = styled(Popover)({
   width: '80vw',
   maxWidth: '450px'
@@ -83,7 +83,7 @@ export interface OrgFactoryBasicProps extends BasicProps {
   /**
    * The base organization. If it's given the component should be considered as an updater of the object
    */
-  organization?: Organization
+  organization?: Partial<Organization>
   /**
    * The event called after the research on the siret field
    * that should fill as much as it can the organization type
@@ -198,7 +198,7 @@ export const OrgFactory = (props: OrgFactoryProps) => {
       },
       {
         name: 'roles',
-        defaultValue: organization?.roles ?? [(rolesOptions ?? [])[0]?.key]
+        defaultValue: organization?.roles
       }
     ],
     [organization, rolesOptions]
@@ -224,7 +224,7 @@ export const OrgFactory = (props: OrgFactoryProps) => {
 
   const fetchOrganization = useCallback(() => {
     getInseeOrganization &&
-      getInseeOrganization(formState.values['siret']).then((values) => {
+      getInseeOrganization(formState.values.siret).then((values) => {
         if (values) {
           formState.setValues(organizationToFlatOrganization(values), false)
           setSiretValid(true)
@@ -236,7 +236,7 @@ export const OrgFactory = (props: OrgFactoryProps) => {
         }
       })
   }, [
-    formState.values['siret'],
+    formState.values.siret,
     formState.setValues,
     formState.setFieldError,
     getInseeOrganization
@@ -254,7 +254,7 @@ export const OrgFactory = (props: OrgFactoryProps) => {
           iconPosition: 'end',
           noCheckOrClearIcon: true,
           validated: siretValid,
-          //@ts-ignore
+          // @ts-ignore
           ref: setSiretRef,
           onSearch: () => {
             if (!formState.validateField('siret')) {
@@ -484,7 +484,7 @@ export const OrgFactory = (props: OrgFactoryProps) => {
 
       {siretRef && (
         <StyledPopover
-          //@ts-ignore
+          // @ts-ignore
           open={openSiretInfo}
           onClose={onCloseSiretInfo}
           anchorEl={siretRef}

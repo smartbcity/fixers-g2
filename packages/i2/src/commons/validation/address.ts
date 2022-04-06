@@ -1,4 +1,4 @@
-const street = (value: string, values: any) => {
+const street = (value: string, values?: any) => {
   const city = values.city?.trim()
   const postalCode = values.postalCode?.trim()
   const trimmed = value?.trim()
@@ -7,7 +7,7 @@ const street = (value: string, values: any) => {
   return undefined
 }
 
-const codePostal = (value: string | number, values: any) => {
+const codePostal = (value?: string, values?: any) => {
   const street = !!values.street?.trim()
   const city = !!values.city?.trim()
   const trimmed = value?.trim()
@@ -18,7 +18,7 @@ const codePostal = (value: string | number, values: any) => {
   return undefined
 }
 
-const city = (value: string, values: any) => {
+const city = (value?: string, values?: any) => {
   const street = values.street?.trim()
   const postalCode = values.postalCode?.trim()
   const trimmed = value?.trim()
