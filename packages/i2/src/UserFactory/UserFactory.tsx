@@ -12,6 +12,7 @@ import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { OrganizationRef } from '.'
 import { FlatUser, FlatUserToUser, User } from './types'
+import { validation } from '../commons/validation'
 
 const StyledStack = styled(Stack)({
   '& input::-webkit-outer-spin-button, input::-webkit-inner-spin-button': {
@@ -167,40 +168,17 @@ export const UserFactory = (props: UserFactoryProps) => {
       {
         name: 'street',
         defaultValue: user?.address?.street,
-        validator: (value: string, values: any) => {
-          const city = String(values['city']).trim()
-          const postalCode = String(values['postalCode']).trim()
-          const trimmed = (value ?? '').trim()
-          if ((postalCode || city) && !trimmed)
-            return "Vous devez renseigner l'addresse en plus de la ville et du code postal" as string
-          return undefined
-        }
+        validator: validation.address.street
       },
       {
         name: 'postalCode',
         defaultValue: user?.address?.postalCode,
-        validator: (value: string | number, values: any) => {
-          const street = String(values['street']).trim()
-          const city = String(values['city']).trim()
-          const string = String(value).trim()
-          if ((street || city) && (!string || !value))
-            return 'Vous devez renseigner le code postal pour avoir une adresse complète' as string
-          if ((street || city) && string.length != 5)
-            return 'un code postal doit être composé de 5 chiffres' as string
-          return undefined
-        }
+        validator: validation.address.postalCode
       },
       {
         name: 'city',
         defaultValue: user?.address?.city,
-        validator: (value: string, values: any) => {
-          const street = String(values['street']).trim()
-          const postalCode = String(values['postalCode']).trim()
-          const trimmed = (value ?? '').trim()
-          if ((street || postalCode) && !trimmed)
-            return 'Vous devez renseigner la ville pour avoir une adresse complète' as string
-          return undefined
-        }
+        validator: validation.address.city
       },
       {
         name: 'email',
@@ -291,7 +269,7 @@ export const UserFactory = (props: UserFactoryProps) => {
         key: 'street',
         name: 'street',
         type: 'textfield',
-        label: 'addresse (facultatif)',
+        label: 'Addresse (facultatif)',
         textFieldProps: {
           disabled: readonly || readonlyFields?.address
         }
