@@ -87,6 +87,7 @@ export const AutomatedUserFactory = (props: AutomatedUserFactoryProps) => {
 
   const { result, status } = useAsyncResponse(getUser, update)
 
+  // TODO Use UpdateCommand instead of User
   const updateUser = useCallback(
     async (user: User) => {
       const res = await request<{ id: string }[]>({
@@ -94,7 +95,9 @@ export const AutomatedUserFactory = (props: AutomatedUserFactoryProps) => {
         method: 'POST',
         body: JSON.stringify({
           ...user,
-          memberOf: user.memberOf?.id
+          memberOf: user.memberOf?.id,
+          // @ts-ignore
+          roles: user.role
         }),
         jwt: jwt
       })
@@ -108,6 +111,7 @@ export const AutomatedUserFactory = (props: AutomatedUserFactoryProps) => {
     [apiUrl, jwt, submitted, userId]
   )
 
+  // TODO Use CreateCommand instead of User
   const createUser = useCallback(
     async (user: User) => {
       const res = await request<{ id: string }[]>({
