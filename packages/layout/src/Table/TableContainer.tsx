@@ -19,6 +19,7 @@ type BasicTableContainerProps = MergeMuiElementProps<
 
 const BasicTableContainer = (props: BasicTableContainerProps) => {
   const { children, ...other } = props
+  delete other.expandInElevatedRow
   return <MuiTableContainer {...other}>{children}</MuiTableContainer>
 }
 
