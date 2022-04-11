@@ -1,6 +1,9 @@
 import { Meta } from '@storybook/react'
 import React from 'react'
-import { OrgFactory, OrgFactoryProps } from './OrgFactory'
+import {
+  OrganizationFactory,
+  OrganizationFactoryProps
+} from './OrganizationFactory'
 import { Story } from '@storybook/react/types-6-0'
 import { ArgsTable, PRIMARY_STORY, Subtitle } from '@storybook/addon-docs'
 import LinkTo from '@storybook/addon-links/react'
@@ -8,8 +11,8 @@ import { Stack, Typography } from '@mui/material'
 import { styles, classes } from './types'
 
 export default {
-  title: 'I2/OrgFactory',
-  component: OrgFactory,
+  title: 'I2/Factory',
+  component: OrganizationFactory,
   parameters: {
     docs: {
       page: () => (
@@ -38,7 +41,7 @@ export default {
     classes: {
       table: {
         type: {
-          summary: 'OrgFactoryClasses',
+          summary: 'OrganizationFactoryClasses',
           detail: classes
         }
       }
@@ -46,7 +49,7 @@ export default {
     styles: {
       table: {
         type: {
-          summary: 'OrgFactoryStyles',
+          summary: 'OrganizationFactoryStyles',
           detail: styles
         }
       }
@@ -54,18 +57,18 @@ export default {
   }
 } as Meta
 
-export const OrgFactoryStory: Story<OrgFactoryProps> = (
-  args: OrgFactoryProps
+export const OrganizationFactoryStory: Story<OrganizationFactoryProps> = (
+  args: OrganizationFactoryProps
 ) => {
   return (
-    <OrgFactory
+    <OrganizationFactory
       {...args}
       organization={{ roles: ['Manager'], name: 'SmartB' }}
     />
   )
 }
 
-OrgFactoryStory.args = {
+OrganizationFactoryStory.args = {
   onSubmit: (org) => window.alert(JSON.stringify(org)),
   rolesOptions: [
     {
@@ -79,4 +82,4 @@ OrgFactoryStory.args = {
   ]
 }
 
-OrgFactoryStory.storyName = 'OrgFactory'
+OrganizationFactoryStory.storyName = 'OrganizationFactory'

@@ -25,7 +25,7 @@ import {
   Organization,
   organizationToFlatOrganization
 } from './types'
-import { validation } from '../commons/validation'
+import { validation } from '../../validation'
 
 const StyledStack = styled(Stack)({
   '& .AruiPopover-root': {
@@ -61,7 +61,7 @@ const StyledPopover = styled(Popover)({
   maxWidth: '450px'
 })
 
-export interface OrgFactoryClasses {
+export interface OrganizationFactoryClasses {
   siretForm?: string
   leftForm?: string
   rightForm?: string
@@ -70,7 +70,7 @@ export interface OrgFactoryClasses {
   infoPopover?: string
 }
 
-export interface OrgFactoryStyles {
+export interface OrganizationFactoryStyles {
   siretForm?: React.CSSProperties
   leftForm?: React.CSSProperties
   rightForm?: React.CSSProperties
@@ -79,7 +79,7 @@ export interface OrgFactoryStyles {
   infoPopover?: React.CSSProperties
 }
 
-export interface OrgFactoryBasicProps extends BasicProps {
+export interface OrganizationFactoryBasicProps extends BasicProps {
   /**
    * The base organization. If it's given the component should be considered as an updater of the object
    */
@@ -92,7 +92,7 @@ export interface OrgFactoryBasicProps extends BasicProps {
   /**
    * The submit event
    * @param organization the complete organization object after form validation
-   * @returns true if the api call has been successfull
+   * @returns true if the Api call has been successfull
    */
   onSubmit?: (organization: Organization) => Promise<Validated> | Validated
   /**
@@ -117,19 +117,19 @@ export interface OrgFactoryBasicProps extends BasicProps {
   /**
    * The classes applied to the different part of the component
    */
-  classes?: OrgFactoryClasses
+  classes?: OrganizationFactoryClasses
   /**
    * The styles applied to the different part of the component
    */
-  styles?: OrgFactoryStyles
+  styles?: OrganizationFactoryStyles
 }
 
-export type OrgFactoryProps = MergeMuiElementProps<
+export type OrganizationFactoryProps = MergeMuiElementProps<
   StackProps,
-  OrgFactoryBasicProps
+  OrganizationFactoryBasicProps
 >
 
-export const OrgFactory = (props: OrgFactoryProps) => {
+export const OrganizationFactory = (props: OrganizationFactoryProps) => {
   const {
     organization,
     onSubmit,
@@ -387,11 +387,11 @@ export const OrgFactory = (props: OrgFactoryProps) => {
       maxWidth='650px'
       spacing={2}
       onFocus={onCloseSiretInfo}
-      className={cx('AruiOrgFactory-root', className)}
+      className={cx('AruiOrganizationFactory-root', className)}
       {...other}
     >
       <Form
-        className={cx('AruiOrgFactory-siretForm', classes?.siretForm)}
+        className={cx('AruiOrganizationFactory-siretForm', classes?.siretForm)}
         style={styles?.siretForm}
         fields={siret}
         formState={formState}
@@ -404,7 +404,7 @@ export const OrgFactory = (props: OrgFactoryProps) => {
       >
         <Form
           className={cx(
-            'AruiOrgFactory-leftForm',
+            'AruiOrganizationFactory-leftForm',
             'mainFormLeft',
             classes?.leftForm
           )}
@@ -415,7 +415,7 @@ export const OrgFactory = (props: OrgFactoryProps) => {
         <Stack>
           <Box
             className={cx(
-              'AruiOrgFactory-dropPictureBox',
+              'AruiOrganizationFactory-dropPictureBox',
               classes?.dropPictureBox
             )}
             style={styles?.dropPictureBox}
@@ -451,7 +451,7 @@ export const OrgFactory = (props: OrgFactoryProps) => {
           </Box>
           <Form
             className={cx(
-              'AruiOrgFactory-rightForm',
+              'AruiOrganizationFactory-rightForm',
               'mainFormRight',
               classes?.rightForm
             )}
@@ -463,7 +463,7 @@ export const OrgFactory = (props: OrgFactoryProps) => {
       </Stack>
       <Stack
         className={cx(
-          'AruiOrgFactory-actionsContainer',
+          'AruiOrganizationFactory-actionsContainer',
           classes?.actionsContainer
         )}
         style={styles?.actionsContainer}
@@ -489,7 +489,10 @@ export const OrgFactory = (props: OrgFactoryProps) => {
           onClose={onCloseSiretInfo}
           anchorEl={siretRef}
           placement='bottom'
-          className={cx('AruiOrgFactory-infoPopover', classes?.infoPopover)}
+          className={cx(
+            'AruiOrganizationFactory-infoPopover',
+            classes?.infoPopover
+          )}
           style={styles?.infoPopover}
         >
           <Typography variant='body1'>

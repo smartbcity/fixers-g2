@@ -1,11 +1,11 @@
 export {
-  AutomatedOrgFactory,
-  AutomatedOrgFactoryProps,
-  OrgFactory,
-  OrgFactoryProps,
+  AutomatedOrganizationFactory,
+  AutomatedOrganizationFactoryProps,
+  OrganizationFactory,
+  OrganizationFactoryProps,
   Organization,
   ReadonlyOrgFieldsPerState
-} from './OrgFactory'
+} from './Organization/Factory/index'
 export {
   AutomatedOrgTable,
   OrgTable,
@@ -13,7 +13,7 @@ export {
   OrgTableProps,
   OrgTableFilters,
   OrgTableBlockedFilters
-} from './OrgTable'
+} from './Organization/Table'
 export {
   User,
   Address,
@@ -23,7 +23,7 @@ export {
   AutomatedUserFactory,
   AutomatedUserFactoryProps,
   ReadonlyUserFieldsPerState
-} from './UserFactory'
+} from './User/UserFactory'
 export {
   AutomatedUserTable,
   AutomatedUserTableProps,
@@ -31,4 +31,4 @@ export {
   UserTableProps,
   UserTableFilters,
   UserTableBlockedFilters
-} from './UserTable'
+} from './User/UserTable'

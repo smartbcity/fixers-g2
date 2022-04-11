@@ -4,7 +4,7 @@ import { Option } from '@smartb/g2-forms'
 import { Column, Table, TableProps, CellProps } from '@smartb/g2-layout'
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 import React, { useCallback, useMemo, useState } from 'react'
-import { Organization } from '../OrgFactory/types'
+import { Organization } from '../Factory/types'
 import { OrgFilters, OrgFiltersProps } from './OrgFilters'
 
 export type OrgTableFilters = {
@@ -26,7 +26,7 @@ export interface OrgTableBasicProps extends BasicProps {
    */
   initialFiltersValues?: OrgTableFilters
   /**
-   * The filters that will be used in the api calls but not rendered for the user.
+   * The filters that will be used in the Api calls but not rendered for the user.
    * by default they are all set to false
    */
   blockedFilters?: OrgTableBlockedFilters

@@ -1,17 +1,17 @@
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 import React, { useCallback, useEffect } from 'react'
 import { request, useAsyncResponse } from 'utils'
-import { UserTableFilters } from '.'
+import { UserTableFilters } from './index'
 import { User, OrganizationRef } from '../UserFactory/types'
 import { UserTable, UserTableProps } from './UserTable'
 
 export interface AutomatedUserTableBasicProps extends BasicProps {
   /**
-   * The api url where to make the locals api calls
+   * The Api url where to make the locals Api calls
    */
   apiUrl: string
   /**
-   * The token to authorize the api calls
+   * The token to authorize the Api calls
    */
   jwt?: string
   /**

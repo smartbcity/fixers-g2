@@ -7,7 +7,11 @@ import {
   OrganizationGetByIdQuery,
   OrganizationUpdateCommand
 } from './types'
-import { OrgFactory, OrgFactoryProps, ReadonlyFields } from './OrgFactory'
+import {
+  OrganizationFactory,
+  OrganizationFactoryProps,
+  ReadonlyFields
+} from './OrganizationFactory'
 
 export type ReadonlyOrgFieldsPerState = {
   create?: ReadonlyFields
@@ -17,13 +21,13 @@ export type ReadonlyOrgFieldsPerState = {
   update?: ReadonlyFields
 }
 
-export interface AutomatedOrgFactoryBasicProps extends BasicProps {
+export interface AutomatedOrganizationFactoryBasicProps extends BasicProps {
   /**
-   * The api url where to make the locals api calls
+   * The Api url where to make the locals Api calls
    */
   apiUrl: string
   /**
-   * The token to authorize the api calls
+   * The token to authorize the Api calls
    */
   jwt?: string
   /**
@@ -45,12 +49,14 @@ export interface AutomatedOrgFactoryBasicProps extends BasicProps {
   submitted?: (organization: Organization) => void
 }
 
-export type AutomatedOrgFactoryProps = MergeMuiElementProps<
-  OrgFactoryProps,
-  AutomatedOrgFactoryBasicProps
+export type AutomatedOrganizationFactoryProps = MergeMuiElementProps<
+  OrganizationFactoryProps,
+  AutomatedOrganizationFactoryBasicProps
 >
 
-export const AutomatedOrgFactory = (props: AutomatedOrgFactoryProps) => {
+export const AutomatedOrganizationFactory = (
+  props: AutomatedOrganizationFactoryProps
+) => {
   const {
     apiUrl,
     jwt,
@@ -152,7 +158,7 @@ export const AutomatedOrgFactory = (props: AutomatedOrgFactoryProps) => {
 
   if (update && status !== 'SUCCESS') return <></>
   return (
-    <OrgFactory
+    <OrganizationFactory
       organization={organization}
       getInseeOrganization={getInseeOrganization}
       onSubmit={update ? updateOrganization : createOrganization}

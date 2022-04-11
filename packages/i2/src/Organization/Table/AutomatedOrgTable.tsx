@@ -1,17 +1,17 @@
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 import React, { useCallback, useEffect } from 'react'
 import { request, useAsyncResponse } from 'utils'
-import { OrgTableFilters } from '.'
-import { OrganizationGetAllQuery, Organization } from '../OrgFactory/types'
+import { OrgTableFilters } from './index'
+import { OrganizationGetAllQuery, Organization } from '../Factory/types'
 import { OrgTable, OrgTableProps } from './OrgTable'
 
 export interface AutomatedOrgTableBasicProps extends BasicProps {
   /**
-   * The api url where to make the locals api calls
+   * The Api url where to make the locals Api calls
    */
   apiUrl: string
   /**
-   * The token to authorize the api calls
+   * The token to authorize the Api calls
    */
   jwt?: string
   /**

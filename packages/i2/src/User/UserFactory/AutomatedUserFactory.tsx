@@ -1,8 +1,8 @@
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 import React, { useCallback } from 'react'
 import { request, useAsyncResponse } from 'utils'
-import { OrganizationRef } from '.'
-import { ReadonlyOrgFieldsPerState } from '../OrgFactory'
+import { OrganizationRef } from './index'
+import { ReadonlyOrgFieldsPerState } from '../../Organization/Factory'
 import { User } from './types'
 import { ReadonlyFields, UserFactory, UserFactoryProps } from './UserFactory'
 
@@ -16,11 +16,11 @@ export type ReadonlyUserFieldsPerState = {
 
 export interface AutomatedUserFactoryBasicProps extends BasicProps {
   /**
-   * The api url where to make the locals api calls
+   * The Api url where to make the locals Api calls
    */
   apiUrl: string
   /**
-   * The token to authorize the api calls
+   * The token to authorize the Api calls
    */
   jwt?: string
   /**

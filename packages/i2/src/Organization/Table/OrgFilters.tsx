@@ -8,77 +8,49 @@ import {
 } from '@smartb/g2-forms'
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 import React, { useMemo } from 'react'
-import { UserTableBlockedFilters } from '.'
-import { OrganizationRef } from '..'
+import { OrgTableBlockedFilters } from './index'
 
-export type UserFilters = {
+export type OrgFilters = {
   search?: string
-  organizationId?: string
   role?: string
 }
 
-export interface UserFiltersBasicProps extends BasicProps {
-  onSubmit: (values: any) => void
-  initialFiltersValues?: UserFilters
-  organizationsRefs?: OrganizationRef[]
+export interface OrgFiltersBasicProps extends BasicProps {
+  onSubmit: (values: OrgFilters) => void
+  initialFiltersValues?: OrgFilters
+  blockedFilters?: OrgTableBlockedFilters
   rolesOptions?: Option[]
-  blockedFilters?: UserTableBlockedFilters
   tableActions?: React.ReactNode
 }
 
-export type UserFiltersProps = MergeMuiElementProps<
+export type OrgFiltersProps = MergeMuiElementProps<
   Omit<FiltersProps, 'fields' | 'formState'>,
-  UserFiltersBasicProps
+  OrgFiltersBasicProps
 >
 
-export const UserFilters = (props: UserFiltersProps) => {
+export const OrgFilters = (props: OrgFiltersProps) => {
   const {
     onSubmit,
     initialFiltersValues,
-    organizationsRefs,
     blockedFilters,
     rolesOptions,
     tableActions,
     ...other
   } = props
 
-  const fields = useMemo((): FiltersField[] => {
-    const orgsOptions =
-      !!organizationsRefs && organizationsRefs.length > 0
-        ? organizationsRefs.map(
-            (orgRef): Option => ({
-              key: orgRef.id,
-              label: orgRef.name
-            })
-          )
-        : undefined
-    return [
+  const fields = useMemo(
+    (): FiltersField[] => [
       ...(!blockedFilters?.search
         ? [
             {
               key: 'search',
               name: 'search',
-              label: 'Rechercher',
               defaultValue: initialFiltersValues?.search,
+              label: 'Rechercher',
               type: 'textfield',
               textFieldProps: {
                 textFieldType: 'search',
                 className: 'searchFilter',
-                color: 'secondary'
-              }
-            } as FiltersField
-          ]
-        : []),
-      ...(!!orgsOptions && !blockedFilters?.organizationId
-        ? [
-            {
-              key: 'organizationId',
-              name: 'organizationId',
-              label: 'Organization',
-              defaultValue: initialFiltersValues?.organizationId,
-              type: 'select',
-              selectProps: {
-                options: orgsOptions,
                 color: 'secondary'
               }
             } as FiltersField
@@ -89,7 +61,7 @@ export const UserFilters = (props: UserFiltersProps) => {
             {
               key: 'role',
               name: 'role',
-              label: 'Role',
+              label: 'Type',
               defaultValue: initialFiltersValues?.role,
               type: 'select',
               selectProps: {
@@ -99,8 +71,9 @@ export const UserFilters = (props: UserFiltersProps) => {
             } as FiltersField
           ]
         : [])
-    ]
-  }, [organizationsRefs, blockedFilters, rolesOptions, initialFiltersValues])
+    ],
+    [initialFiltersValues, rolesOptions, blockedFilters]
+  )
 
   const formState = useFilters({
     fields: fields,

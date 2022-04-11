@@ -10,9 +10,9 @@ import {
 } from '@smartb/g2-forms'
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import { OrganizationRef } from '.'
+import { OrganizationRef } from './index'
 import { FlatUser, FlatUserToUser, User } from './types'
-import { validation } from '../commons/validation'
+import { validation } from '../../validation'
 
 const StyledStack = styled(Stack)({
   '& input::-webkit-outer-spin-button, input::-webkit-inner-spin-button': {
@@ -70,7 +70,7 @@ export interface UserFactoryBasicProps extends BasicProps {
   /**
    * The submit event
    * @param user the complete user object after form validation
-   * @returns true if the api call has been successfull
+   * @returns true if the Api call has been successfull
    */
   onSubmit?: (user: User) => Promise<Validated> | Validated
   /**

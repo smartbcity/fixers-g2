@@ -28,7 +28,7 @@ export interface UserTableBasicProps extends BasicProps {
    */
   initialFiltersValues?: UserTableFilters
   /**
-   * The filters that will be used in the api calls but not rendered for the user.
+   * The filters that will be used in the Api calls but not rendered for the user.
    * by default they are all set to false
    */
   blockedFilters?: UserTableBlockedFilters
