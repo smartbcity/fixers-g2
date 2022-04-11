@@ -10,9 +10,8 @@ import {
 } from '@smartb/g2-forms'
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import { OrganizationRef } from './index'
-import { FlatUser, FlatUserToUser, User } from './types'
-import { validation } from '../../validation'
+import { FlatUser, FlatUserToUser, User, OrganizationRef } from '../Model'
+import { validation } from '../../Validation'
 
 const StyledStack = styled(Stack)({
   '& input::-webkit-outer-spin-button, input::-webkit-inner-spin-button': {
@@ -69,7 +68,7 @@ export interface UserFactoryBasicProps extends BasicProps {
   user?: User
   /**
    * The submit event
-   * @param user the complete user object after form validation
+   * @param user the complete user object after form Validation
    * @returns true if the Api call has been successfull
    */
   onSubmit?: (user: User) => Promise<Validated> | Validated
@@ -198,7 +197,7 @@ export const UserFactory = (props: UserFactoryProps) => {
         validator: (value?: string) => {
           const trimmed = (value ?? '').trim()
           if (trimmed && trimmed.length != 10)
-            return 'Le numéro de téléphone doit contenir dix chiffre'
+            return 'Le numéro de téléphone doit contenir dix chiffres'
           return undefined
         }
       },

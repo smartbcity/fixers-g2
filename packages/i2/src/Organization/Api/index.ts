@@ -1,7 +1,8 @@
 import { fetchBaseQuery } from '@reduxjs/toolkit/query'
 import { createApi } from '@reduxjs/toolkit/dist/query/react'
-import { config, G2Organization } from 'i2'
-import { KeycloakAuth } from '@smartb/g2-providers/dist/KeycloakProvider/KeycloakConfig'
+import { keycloakAuth } from '@smartb/g2-providers'
+import { Organization } from '../Factory'
+import { i2Config } from '../../Config'
 
 export interface OrganizationGetAllQuery {
   name?: string
@@ -11,18 +12,18 @@ export interface OrganizationGetAllQuery {
 }
 
 export interface OrganizationGetAllQueryResult {
-  organizations: G2Organization[]
+  organizations: Organization[]
   total: number
 }
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: config.i2.orgUrl,
+  baseUrl: i2Config.i2.orgUrl,
   prepareHeaders: (headers) => {
-    const keycloak = KeycloakAuth.instance
+    const keycloak = keycloakAuth?.instance
 
     // If we have a token set in state, let's assume that we should be passing it.
-    if (keycloak.token) {
-      headers.set('authorization', `Bearer ${keycloak}`)
+    if (keycloak?.token) {
+      headers.set('Authorization', `Bearer ${keycloak}`)
     }
 
     return headers
@@ -33,7 +34,7 @@ export const OrganizationApi = createApi({
   reducerPath: 'organizationApi',
   baseQuery: baseQuery,
   endpoints: (builder) => ({
-    organizationPage: builder.query<G2Organization[], OrganizationGetAllQuery>({
+    organizationPage: builder.query<Organization[], OrganizationGetAllQuery>({
       query: (query: OrganizationGetAllQuery) => ({
         url: `getAllOrganizations`,
         method: 'POST',

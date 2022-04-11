@@ -1,7 +1,8 @@
+import React from 'react'
 import { Meta } from '@storybook/react'
 import {
   AutomatedUserTable,
-  AutomatedUserTableBasicProps as AutomatedUserTableProps
+  AutomatedUserTableProps
 } from './AutomatedUserTable'
 import { Story } from '@storybook/react/types-6-0'
 import { KeycloakProvider, useAuth } from '@smartb/g2-providers'

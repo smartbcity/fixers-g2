@@ -4,7 +4,7 @@ import { Option } from '@smartb/g2-forms'
 import { Column, Table, TableProps, CellProps } from '@smartb/g2-layout'
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 import React, { useCallback, useMemo, useState } from 'react'
-import { Organization } from '../Factory/types'
+import { Organization } from '../Factory'
 import { OrgFilters, OrgFiltersProps } from './OrgFilters'
 
 export type OrgTableFilters = {

@@ -1,3 +1,5 @@
+export * from './Organization/Api'
+
 export {
   AutomatedOrganizationFactory,
   AutomatedOrganizationFactoryProps,
@@ -5,25 +7,27 @@ export {
   OrganizationFactoryProps,
   Organization,
   ReadonlyOrgFieldsPerState
-} from './Organization/Factory/index'
+} from './Organization/Factory'
+
 export {
-  AutomatedOrgTable,
+  AutomatedOrganizationTable,
   OrgTable,
-  AutomatedOrgTableProps,
+  AutomatedOrganizationTableProps,
   OrgTableProps,
   OrgTableFilters,
   OrgTableBlockedFilters
 } from './Organization/Table'
+
+export * from './User/Model'
+
 export {
-  User,
-  Address,
-  OrganizationRef,
   UserFactory,
   UserFactoryProps,
   AutomatedUserFactory,
   AutomatedUserFactoryProps,
   ReadonlyUserFieldsPerState
-} from './User/UserFactory'
+} from './User/Factory'
+
 export {
   AutomatedUserTable,
   AutomatedUserTableProps,

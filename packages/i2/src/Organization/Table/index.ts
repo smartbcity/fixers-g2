@@ -1,2 +1,2 @@
 export * from './OrgTable'
-export * from './AutomatedOrgTable'
+export * from './AutomatedOrganizationTable'

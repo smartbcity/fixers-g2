@@ -2,10 +2,10 @@ import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 import React, { useCallback, useEffect } from 'react'
 import { request, useAsyncResponse } from 'utils'
 import { OrgTableFilters } from './index'
-import { OrganizationGetAllQuery, Organization } from '../Factory/types'
+import { OrganizationGetAllQuery, Organization } from '../Factory'
 import { OrgTable, OrgTableProps } from './OrgTable'
 
-export interface AutomatedOrgTableBasicProps extends BasicProps {
+export interface AutomatedOrganizationTableBasicProps extends BasicProps {
   /**
    * The Api url where to make the locals Api calls
    */
@@ -24,12 +24,14 @@ export interface AutomatedOrgTableBasicProps extends BasicProps {
   submitted?: (params?: OrgTableFilters) => void
 }
 
-export type AutomatedOrgTableProps = MergeMuiElementProps<
+export type AutomatedOrganizationTableProps = MergeMuiElementProps<
   Omit<OrgTableProps, 'organizations' | 'onFetchOrganizations'>,
-  AutomatedOrgTableBasicProps
+  AutomatedOrganizationTableBasicProps
 >
 
-export const AutomatedOrgTable = (props: AutomatedOrgTableProps) => {
+export const AutomatedOrganizationTable = (
+  props: AutomatedOrganizationTableProps
+) => {
   const { apiUrl, jwt, initialFiltersValues, submitted, ...other } = props
   // TODO The implementation of this hooks should be outside of this class
   const getOrganizations = useCallback(

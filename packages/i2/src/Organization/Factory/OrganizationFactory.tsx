@@ -25,7 +25,7 @@ import {
   Organization,
   organizationToFlatOrganization
 } from './types'
-import { validation } from '../../validation'
+import { validation } from '../../Validation'
 
 const StyledStack = styled(Stack)({
   '& .AruiPopover-root': {
@@ -91,7 +91,7 @@ export interface OrganizationFactoryBasicProps extends BasicProps {
   getInseeOrganization?: (siret: string) => Promise<Organization | undefined>
   /**
    * The submit event
-   * @param organization the complete organization object after form validation
+   * @param organization the complete organization object after form Validation
    * @returns true if the Api call has been successfull
    */
   onSubmit?: (organization: Organization) => Promise<Validated> | Validated

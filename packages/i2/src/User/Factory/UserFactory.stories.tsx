@@ -5,7 +5,7 @@ import { Story } from '@storybook/react/types-6-0'
 import { ArgsTable, PRIMARY_STORY, Subtitle } from '@storybook/addon-docs'
 import LinkTo from '@storybook/addon-links/react'
 import { Stack, Typography } from '@mui/material'
-import { styles, classes } from './types'
+import { styles, classes } from '../Model'
 
 export default {
   title: 'I2/UserFactory',
@@ -55,7 +55,10 @@ export const UserFactoryStory: Story<UserFactoryProps> = (
 }
 
 UserFactoryStory.args = {
-  onSubmit: (user) => console.log(user),
+  onSubmit: (user) => {
+    console.log(user)
+    return true
+  },
   organizationId: '1',
   organizationsRefs: [
     {

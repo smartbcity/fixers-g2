@@ -5,7 +5,7 @@ import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 import React, { useCallback, useMemo, useState } from 'react'
 import { UserFilters, UserFiltersProps } from './UserFilters'
 import { stringToAvatarAttributs } from 'utils'
-import { User, OrganizationRef } from '../UserFactory/types'
+import { User, OrganizationRef } from '../Model'
 import { Option } from '@smartb/g2-forms'
 
 export type UserTableFilters = {

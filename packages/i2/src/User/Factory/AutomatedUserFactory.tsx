@@ -1,9 +1,8 @@
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 import React, { useCallback } from 'react'
 import { request, useAsyncResponse } from 'utils'
-import { OrganizationRef } from './index'
 import { ReadonlyOrgFieldsPerState } from '../../Organization/Factory'
-import { User } from './types'
+import { User, OrganizationRef } from '../Model'
 import { ReadonlyFields, UserFactory, UserFactoryProps } from './UserFactory'
 
 export type ReadonlyUserFieldsPerState = {
@@ -62,7 +61,6 @@ export const AutomatedUserFactory = (props: AutomatedUserFactoryProps) => {
     readonlyFieldsPerState,
     ...other
   } = props
-
   const getUser = useCallback(async (): Promise<User | undefined> => {
     const res = await request<{ user?: User }[]>({
       url: `${apiUrl}/getUser`,

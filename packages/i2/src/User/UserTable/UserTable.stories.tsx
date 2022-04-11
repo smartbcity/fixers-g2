@@ -5,7 +5,7 @@ import { Story } from '@storybook/react/types-6-0'
 import { ArgsTable, PRIMARY_STORY, Subtitle } from '@storybook/addon-docs'
 import LinkTo from '@storybook/addon-links/react'
 import { Stack, Typography } from '@mui/material'
-import { User } from '../UserFactory/types'
+import { User } from '../Model'
 import { Button } from '@smartb/g2-components'
 
 export default {

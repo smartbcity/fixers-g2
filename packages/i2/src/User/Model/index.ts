@@ -9,6 +9,8 @@ export const styles = `export interface UserCreationStyles {
   actionsContainer?: React.CSSProperties
 }`
 
+export type UserId = string
+
 export type OrganizationRef = {
   id: string
   name: string
@@ -26,7 +28,7 @@ export interface Roles {
 }
 
 export interface User {
-  id: string
+  id: UserId
   memberOf?: OrganizationRef
   familyName: string
   givenName: string
@@ -38,7 +40,7 @@ export interface User {
 }
 
 export interface FlatUser {
-  id: string
+  id: UserId
   memberOf?: string
   familyName: string
   givenName: string
@@ -89,4 +91,25 @@ export const FlatUserToUser = (flat: FlatUser): User => {
   delete user.city
   delete user.postalCode
   return user
+}
+
+export interface UserGetAllQuery {
+  name?: string
+  role?: string
+  page?: number
+  size?: number
+}
+
+export interface UserGetAllQueryResult {
+  users: User[]
+  total: number
+}
+
+export interface UserResetPasswordCommand {
+  id: UserId
+  password: string
+}
+
+export interface UserPasswordResetResult {
+  id: UserId
 }

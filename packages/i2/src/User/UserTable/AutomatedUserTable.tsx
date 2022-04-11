@@ -2,7 +2,7 @@ import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 import React, { useCallback, useEffect } from 'react'
 import { request, useAsyncResponse } from 'utils'
 import { UserTableFilters } from './index'
-import { User, OrganizationRef } from '../UserFactory/types'
+import { User, OrganizationRef } from '../Model'
 import { UserTable, UserTableProps } from './UserTable'
 
 export interface AutomatedUserTableBasicProps extends BasicProps {
@@ -42,6 +42,7 @@ export const AutomatedUserTable = (props: AutomatedUserTableProps) => {
     submitted,
     ...other
   } = props
+
   // TODO The implementation of this hooks should be outside of this class
   const getUsers = useCallback(
     async (params?: UserTableFilters) => {

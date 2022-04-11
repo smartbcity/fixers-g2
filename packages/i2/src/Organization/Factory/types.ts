@@ -50,9 +50,8 @@ export interface FlatOrganization {
   city?: string
 }
 
-export type OrganizationUpdateCommand = Organization
-
 export type OrganizationCreateCommand = Organization
+export type OrganizationUpdateCommand = Organization
 
 export type OrganizationGetAllQuery = {
   search?: string
