@@ -1,50 +1,53 @@
-import { fetchBaseQuery } from '@reduxjs/toolkit/query'
-import { createApi } from '@reduxjs/toolkit/dist/query/react'
-import { keycloakAuth } from '@smartb/g2-providers'
-import { Organization } from '../Factory'
-import { i2Config } from '../../Config'
+import { Organization } from '../Domain'
+import { useCallback } from 'react'
+import { request } from 'utils'
 
-export interface OrganizationGetAllQuery {
+export interface OrganizationPageQuery {
   name?: string
   role?: string
   page?: number
   size?: number
 }
 
-export interface OrganizationGetAllQueryResult {
+export interface OrganizationPageQueryResult {
   organizations: Organization[]
   total: number
 }
 
-const baseQuery = fetchBaseQuery({
-  baseUrl: i2Config.i2.orgUrl,
-  prepareHeaders: (headers) => {
-    const keycloak = keycloakAuth?.instance
-
-    // If we have a token set in state, let's assume that we should be passing it.
-    if (keycloak?.token) {
-      headers.set('Authorization', `Bearer ${keycloak}`)
-    }
-
-    return headers
-  }
-})
-
-export const OrganizationApi = createApi({
-  reducerPath: 'organizationApi',
-  baseQuery: baseQuery,
-  endpoints: (builder) => ({
-    organizationPage: builder.query<Organization[], OrganizationGetAllQuery>({
-      query: (query: OrganizationGetAllQuery) => ({
-        url: `getAllOrganizations`,
+export const useOrganizationPageQuery = (apiUrl: string, jwt?: string) => {
+  return useCallback(
+    async (
+      params?: OrganizationPageQuery
+    ): Promise<OrganizationPageQueryResult> => {
+      const res = await request<
+        { organizations: Organization[]; total: number }[]
+      >({
+        url: `${apiUrl}/getAllOrganizations`,
         method: 'POST',
+        body: JSON.stringify({
+          ...params,
+          name: params?.name,
+          page: params?.page ? params?.page - 1 : 0,
+          size: 10
+        } as OrganizationPageQuery),
+        jwt: jwt
+      })
+      if (res) {
+        return {
+          organizations: res[0]?.organizations,
+          total: res[0]?.total ? Math.floor(res[0]?.total / 10) + 1 : 0
+        }
+      } else {
+        return {
+          organizations: [],
+          total: 0
+        }
+      }
+    },
+    [apiUrl, jwt]
+  )
+}
 
-        body: query
-      }),
-      transformResponse: (response: OrganizationGetAllQueryResult[]) =>
-        response[0].organizations
-    })
-  })
-})
-
-export const { useOrganizationPageQuery } = OrganizationApi
+export const OrganizationApi = {
+  useOrganizationPageQuery
+}

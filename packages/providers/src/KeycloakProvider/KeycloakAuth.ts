@@ -5,17 +5,17 @@ export interface KeycloakAuth {
   initOptions: KeycloakInitOptions
 }
 
-let keykcloakSingleton: KeycloakAuth
+let keycloakSingleton: KeycloakAuth | undefined
 
 const instanceBuilder = (
   config: KeycloakConfig | string,
   initOptions?: KeycloakInitOptions
 ): KeycloakAuth => {
-  keykcloakSingleton = {
+  keycloakSingleton = {
     instance: Keycloak(config),
     initOptions: initOptions || initOptionsDefault
   }
-  return keykcloakSingleton
+  return keycloakSingleton
 }
 
 const initOptionsDefault: KeycloakInitOptions = {
@@ -26,4 +26,6 @@ const initOptionsDefault: KeycloakInitOptions = {
 export const KeycloakAuthFactory = (
   config: KeycloakConfig | string,
   initOption?: KeycloakInitOptions
-): KeycloakAuth => keykcloakSingleton || instanceBuilder(config, initOption)
+): KeycloakAuth => keycloakSingleton || instanceBuilder(config, initOption)
+
+export const keycloakAuth: KeycloakAuth | undefined = keycloakSingleton

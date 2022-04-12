@@ -23,7 +23,7 @@ import {
 import { Info } from '@mui/icons-material'
 
 export default {
-  title: 'Layout/Table',
+  title: 'Layout/OrganizationTable',
   component: AruiTable,
   parameters: {
     docs: {
