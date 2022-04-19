@@ -188,6 +188,7 @@ export const GalleryFactory = (props: GalleryFactoryProps) => {
       className={cx('AruiGalleryFactory-root', className)}
       direction='row'
       alignItems='stretch'
+      //@ts-ignore
       sx={{
         gap: '20px',
         overflow: 'auto',

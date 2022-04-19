@@ -5,7 +5,7 @@ import { fileToBase64 } from 'utils'
 import { GalleryFactory, GalleryFactoryProps } from './GalleryFactory'
 import { v4 as uuidv4 } from 'uuid'
 import { FileDeleteCommand, FileUploadCommand, FsFile } from '../Gallery'
-import { UseMutationResult, useQueryClient, UseQueryResult } from 'react-query'
+import { UseMutationResult, UseQueryResult } from 'react-query'
 import { Button } from '@smartb/g2-components'
 import { DirectoryPath } from '../Gallery/types'
 

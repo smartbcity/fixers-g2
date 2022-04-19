@@ -3,7 +3,7 @@
   "repository": "https://gitlab.smartb.city/fixers/g2.git",
   "author": "Adrien Poupard <adrien@smartb.city>",
   "license": "Apache-2.0",
-  "version": "1.0.0-adrien.29",
+  "version": "1.0.0-alpha.30",
   "description": "React i2 components library",
   "private": false,
   "main": "dist/index.js",
