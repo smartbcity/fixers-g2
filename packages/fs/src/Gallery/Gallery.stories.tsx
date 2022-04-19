@@ -8,7 +8,7 @@ import verticalSrc from './vertical.jpg'
 import squaredSrc from './squared.jpg'
 
 export default {
-  title: 'I2/Gallery',
+  title: 'Fs/Gallery',
   component: Gallery
 } as Meta
 

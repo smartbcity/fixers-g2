@@ -10,7 +10,7 @@ import { FileDeleteCommand, FileUploadCommand } from '../Gallery/types'
 import { QueryClient, QueryClientProvider } from 'react-query'
 
 export default {
-  title: 'I2/AutomatedGalleryFactory',
+  title: 'Fs/AutomatedGalleryFactory',
   component: AutomatedGalleryFactory
 } as Meta
 

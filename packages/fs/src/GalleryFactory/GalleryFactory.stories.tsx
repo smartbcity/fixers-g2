@@ -8,7 +8,7 @@ import { FsFile } from '../Gallery/types'
 import { fileToBase64 } from 'utils'
 
 export default {
-  title: 'I2/GalleryFactory',
+  title: 'Fs/GalleryFactory',
   component: GalleryFactory
 } as Meta
 

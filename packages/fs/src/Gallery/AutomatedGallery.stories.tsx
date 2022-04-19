@@ -7,7 +7,7 @@ import { QueryClient, QueryClientProvider } from 'react-query'
 import { Box } from '@mui/material'
 
 export default {
-  title: 'I2/AutomatedGallery',
+  title: 'Fs/AutomatedGallery',
   component: AutomatedGallery
 } as Meta
 
