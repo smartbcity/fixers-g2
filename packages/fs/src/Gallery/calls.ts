@@ -18,6 +18,7 @@ import {
 
 export interface getGalleryParams {
   directoryPath: DirectoryPath
+  queryId?: string
   jwt?: string
   apiUrl: string
   options?: Omit<
@@ -32,7 +33,7 @@ export interface getGalleryParams {
 }
 
 export const useGetGallery = (params: getGalleryParams) => {
-  const { apiUrl, jwt, options, directoryPath } = params
+  const { apiUrl, jwt, options, directoryPath, queryId = 'gallery' } = params
 
   const getGallery = useCallback(async () => {
     const res = await request<{ files: FsFile[] }[]>({
@@ -48,7 +49,7 @@ export const useGetGallery = (params: getGalleryParams) => {
     }
   }, [apiUrl, jwt, directoryPath])
 
-  return useQuery('gallery', getGallery, options)
+  return useQuery(queryId, getGallery, options)
 }
 
 export interface deleteFilesParams {
