@@ -30,6 +30,5 @@ export {
   Column,
   CompleteTableOptions,
   Row,
-  TableProps,
-  BasicData
+  TableProps
 } from './Table'
