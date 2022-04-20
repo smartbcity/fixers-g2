@@ -43,24 +43,21 @@ const SubComponent = (args: AutomatedGalleryFactoryProps) => {
     apiUrl: 'http://51.83.34.130:8090'
   })
   return (
-    <Box
+    <AutomatedGalleryFactory
+      gallery={gallery}
+      directoryPath={{
+        directory: 'gallery1',
+        objectId: '0fe05d72-db8e-4ae1-9852-68ec74fa3b01',
+        objectType: 'project'
+      }}
+      galleryName='gallery1'
+      deleteFiles={deleteFiles}
+      uploadFiles={uploadFiles}
       sx={{
         height: '200px'
       }}
-    >
-      <AutomatedGalleryFactory
-        gallery={gallery}
-        directoryPath={{
-          directory: 'gallery1',
-          objectId: '0fe05d72-db8e-4ae1-9852-68ec74fa3b01',
-          objectType: 'project'
-        }}
-        galleryName='gallery1'
-        deleteFiles={deleteFiles}
-        uploadFiles={uploadFiles}
-        {...args}
-      />
-    </Box>
+      {...args}
+    />
   )
 }
 

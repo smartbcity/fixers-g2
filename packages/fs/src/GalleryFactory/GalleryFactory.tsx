@@ -101,6 +101,7 @@ export const GalleryFactory = (props: GalleryFactoryProps) => {
     styles,
     className,
     generateDropzone,
+    sx,
     ...rest
   } = props
 
@@ -115,8 +116,7 @@ export const GalleryFactory = (props: GalleryFactoryProps) => {
           style={styles?.imageContainer}
           key={file.path.name}
           sx={{
-            position: 'relative',
-            height: '100%'
+            position: 'relative'
           }}
         >
           <IconButton
@@ -184,15 +184,16 @@ export const GalleryFactory = (props: GalleryFactoryProps) => {
   )
 
   return (
+    //@ts-ignore
     <Stack
       className={cx('AruiGalleryFactory-root', className)}
       direction='row'
       alignItems='stretch'
-      //@ts-ignore
       sx={{
         gap: '20px',
         overflow: 'auto',
-        height: '100%',
+        minHeight: '150px',
+        ...sx,
         '& .AruiGalleryFactory-image': {
           borderRadius: '20px',
           height: '100%'

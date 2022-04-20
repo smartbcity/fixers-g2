@@ -16,6 +16,14 @@ const queryClient = new QueryClient()
 export const AutomatedGalleryStory: Story<AutomatedGalleryProps> = (
   args: AutomatedGalleryProps
 ) => {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <SubComponent {...args} />
+    </QueryClientProvider>
+  )
+}
+
+const SubComponent = (args: AutomatedGalleryProps) => {
   const gallery = useGetGallery({
     apiUrl: 'http://51.83.34.130:8090',
     directoryPath: {
@@ -26,16 +34,14 @@ export const AutomatedGalleryStory: Story<AutomatedGalleryProps> = (
   })
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <Box
-        sx={{
-          width: '400px',
-          height: '500px'
-        }}
-      >
-        <AutomatedGallery gallery={gallery} galleryName='gallery1' {...args} />
-      </Box>
-    </QueryClientProvider>
+    <Box
+      sx={{
+        width: '400px',
+        height: '500px'
+      }}
+    >
+      <AutomatedGallery gallery={gallery} galleryName='gallery1' {...args} />
+    </Box>
   )
 }
 
