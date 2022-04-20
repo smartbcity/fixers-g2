@@ -16,16 +16,14 @@ const queryClient = new QueryClient()
 export const AutomatedGalleryStory: Story<AutomatedGalleryProps> = (
   args: AutomatedGalleryProps
 ) => {
-  const hookMemoized = useCallback(() => {
-    return useGetGallery({
-      apiUrl: 'http://51.83.34.130:8090',
-      directoryPath: {
-        directory: 'gallery1',
-        objectId: '0fe05d72-db8e-4ae1-9852-68ec74fa3b01',
-        objectType: 'project'
-      }
-    })
-  }, [])
+  const gallery = useGetGallery({
+    apiUrl: 'http://51.83.34.130:8090',
+    directoryPath: {
+      directory: 'gallery1',
+      objectId: '0fe05d72-db8e-4ae1-9852-68ec74fa3b01',
+      objectType: 'project'
+    }
+  })
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -35,11 +33,7 @@ export const AutomatedGalleryStory: Story<AutomatedGalleryProps> = (
           height: '500px'
         }}
       >
-        <AutomatedGallery
-          useGetGallery={hookMemoized}
-          galleryName='gallery1'
-          {...args}
-        />
+        <AutomatedGallery gallery={gallery} galleryName='gallery1' {...args} />
       </Box>
     </QueryClientProvider>
   )

@@ -10,13 +10,14 @@ export type TrackedFsFile = FsFile & {
 
 export interface AutomatedGalleryBasicProps {
   /**
-   * the hook to get the files
+   * the state in result of the hook useGetGallery
    */
-  useGetGallery: () => UseQueryResult<
+  gallery: UseQueryResult<
     | {
         files: FsFile[]
       }
-    | undefined
+    | undefined,
+    unknown
   >
 }
 
@@ -26,9 +27,7 @@ export type AutomatedGalleryProps = MergeMuiElementProps<
 >
 
 export const AutomatedGallery = (props: AutomatedGalleryProps) => {
-  const { useGetGallery, ...rest } = props
-
-  const gallery = useGetGallery()
+  const { gallery, ...rest } = props
 
   return <Gallery {...rest} files={gallery.data?.files ?? []} />
 }

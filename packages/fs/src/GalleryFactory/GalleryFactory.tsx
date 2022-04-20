@@ -64,7 +64,7 @@ export interface GalleryFactoryBasicProps extends BasicProps {
    */
   strings?: {
     /**
-     * @defualt 'Ajouter une ou plusieurs images'
+     * @default 'Ajouter une ou plusieurs images'
      */
     addImages?: string
   }
@@ -192,7 +192,7 @@ export const GalleryFactory = (props: GalleryFactoryProps) => {
       sx={{
         gap: '20px',
         overflow: 'auto',
-        height: '300px',
+        height: '100%',
         '& .AruiGalleryFactory-image': {
           borderRadius: '20px',
           height: '100%'

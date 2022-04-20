@@ -15,27 +15,27 @@ export type TrackedFsFile = FsFile & {
 
 export interface AutomatedGalleryFactoryBasicProps {
   /**
-   * the hook to get the files
+   * the state in result of the hook useGetGallery
    */
-  useGetGallery: () => UseQueryResult<
+  gallery: UseQueryResult<
     | {
         files: FsFile[]
       }
     | undefined
   >
   /**
-   * the hook to execute the delete commands after the save
+   * the state in result of the hook useDeleteFiles
    */
-  useDeleteFiles: () => UseMutationResult<
+  deleteFiles: UseMutationResult<
     {}[] | undefined,
     unknown,
     FileDeleteCommand[],
     unknown
   >
   /**
-   * the hook to execute the upload commands after the save
+   * the state in result of the hook useUploadFiles
    */
-  useUploadFiles: () => UseMutationResult<
+  uploadFiles: UseMutationResult<
     {}[] | undefined,
     unknown,
     FileUploadCommand[],
@@ -50,15 +50,15 @@ export interface AutomatedGalleryFactoryBasicProps {
    */
   strings?: {
     /**
-     * @defualt 'Galerie'
+     * @default 'Galerie'
      */
     gallery?: string
     /**
-     * @defualt 'Eregistrer'
+     * @default 'Eregistrer'
      */
     save?: string
     /**
-     * @defualt 'Ajouter une ou plusieurs images'
+     * @default 'Ajouter une ou plusieurs images'
      */
     addImages?: string
   }
@@ -72,28 +72,18 @@ export type AutomatedGalleryFactoryProps = MergeMuiElementProps<
 export const AutomatedGalleryFactory = (
   props: AutomatedGalleryFactoryProps
 ) => {
-  const {
-    useGetGallery,
-    useDeleteFiles,
-    useUploadFiles,
-    directoryPath,
-    strings,
-    ...rest
-  } = props
-  const [gallery, setgallery] = useState<TrackedFsFile[]>([])
+  const { gallery, deleteFiles, uploadFiles, directoryPath, strings, ...rest } =
+    props
+  const [currentGallery, setCurrentGallery] = useState<TrackedFsFile[]>([])
   const [hasChanges, setHasChanges] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [isSaving, setIsSaving] = useState<boolean>(false)
 
-  const baseGallery = useGetGallery()
-  const deletes = useDeleteFiles()
-  const uploads = useUploadFiles()
-
   useEffect(() => {
-    if (baseGallery.data) {
-      setgallery(baseGallery.data.files)
+    if (gallery.data) {
+      setCurrentGallery(gallery.data.files)
     }
-  }, [baseGallery.data])
+  }, [gallery.data])
 
   const onAdd = useCallback(
     (files: File[]) => {
@@ -113,7 +103,7 @@ export const AutomatedGalleryFactory = (
         }
       })
       Promise.all(fsFiles).then((values) => {
-        setgallery((oldValues) => [...oldValues, ...values])
+        setCurrentGallery((oldValues) => [...oldValues, ...values])
         setIsLoading(false)
       })
       setHasChanges(true)
@@ -122,7 +112,7 @@ export const AutomatedGalleryFactory = (
   )
 
   const onDelete = useCallback((file: FsFile) => {
-    setgallery((oldValues) =>
+    setCurrentGallery((oldValues) =>
       oldValues.filter((element) => file.id !== element.id)
     )
     setHasChanges(true)
@@ -130,10 +120,10 @@ export const AutomatedGalleryFactory = (
 
   const onSave = useCallback(async () => {
     setIsSaving(true)
-    const base = baseGallery.data?.files || []
+    const base = gallery.data?.files || []
     const deleteCommands: FileDeleteCommand[] = []
     const uploadCommands: FileUploadCommand[] = []
-    gallery.forEach((element) => {
+    currentGallery.forEach((element) => {
       if (element.isNew) {
         uploadCommands.push({
           content: element.url,
@@ -143,27 +133,27 @@ export const AutomatedGalleryFactory = (
       }
     })
     base.forEach((element) => {
-      if (!gallery.find((element2) => element2.id === element.id)) {
+      if (!currentGallery.find((element2) => element2.id === element.id)) {
         deleteCommands.push({
           ...element.path
         })
       }
     })
     if (deleteCommands.length > 0) {
-      deletes.mutateAsync(deleteCommands)
+      deleteFiles.mutateAsync(deleteCommands)
     }
     if (uploadCommands.length > 0) {
-      await uploads.mutateAsync(uploadCommands)
+      await uploadFiles.mutateAsync(uploadCommands)
     }
-    await baseGallery.refetch()
+    await gallery.refetch()
     setIsSaving(false)
     setHasChanges(false)
   }, [
-    gallery,
-    deletes.mutateAsync,
-    uploads.mutateAsync,
-    baseGallery.data,
-    baseGallery.refetch
+    currentGallery,
+    deleteFiles.mutateAsync,
+    uploadFiles.mutateAsync,
+    gallery.data,
+    gallery.refetch
   ])
 
   return (
@@ -173,7 +163,7 @@ export const AutomatedGalleryFactory = (
         alignItems='center'
         sx={{
           gap: '10px',
-          marginBottom: '20px'
+          marginBottom: '15px'
         }}
       >
         <Typography variant='h6'>{strings?.gallery ?? 'Galerie'}</Typography>
@@ -185,7 +175,7 @@ export const AutomatedGalleryFactory = (
       </Stack>
       <GalleryFactory
         {...rest}
-        files={gallery}
+        files={currentGallery}
         onAdd={onAdd}
         onDelete={onDelete}
         isLoading={isLoading}
