@@ -1,17 +1,30 @@
 import React, { useCallback } from 'react'
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
-import { UserId, UserResetPasswordCommand } from '../../Domain'
+import {
+  UserId,
+  UserResetPasswordCommand,
+  UserResetPasswordResult
+} from '../../Domain'
 import {
   UserResetPasswordForm,
   UserResetPasswordFormProps
 } from './UserResetPasswordForm'
-import { useResetUserPassword } from '../../Api'
+import { UseMutationResult } from 'react-query'
 
 export interface UserResetPasswordFormAutomatedBasicProps extends BasicProps {
   /**
    * The id of the user
    */
   userId: UserId
+  /**
+   * The result of the hook `useResetUserPassword`
+   */
+  resetUserPassword: UseMutationResult<
+    UserResetPasswordResult,
+    unknown,
+    UserResetPasswordCommand,
+    unknown
+  >
 }
 
 export type UserResetPasswordFormAutomatedProps = MergeMuiElementProps<
@@ -22,14 +35,14 @@ export type UserResetPasswordFormAutomatedProps = MergeMuiElementProps<
 export const UserResetPasswordFormAutomated = (
   props: UserResetPasswordFormAutomatedProps
 ) => {
-  const { userId, ...other } = props
-  const resetUserPassword = useResetUserPassword()
+  const { userId, resetUserPassword, ...other } = props
+
   const handleResetPasswordSubmit = useCallback(
     async (cmd: UserResetPasswordCommand) => {
-      const result = await resetUserPassword(cmd)
+      const result = await resetUserPassword.mutateAsync(cmd)
       return !!result
     },
-    [useResetUserPassword]
+    [resetUserPassword.mutateAsync]
   )
 
   return (

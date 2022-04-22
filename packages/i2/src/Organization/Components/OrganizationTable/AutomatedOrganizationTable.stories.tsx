@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Meta } from '@storybook/react'
 import {
   AutomatedOrganizationTable,
@@ -7,37 +7,63 @@ import {
 import { Story } from '@storybook/react/types-6-0'
 import { KeycloakProvider, useAuth } from '@smartb/g2-providers'
 import { Typography } from '@mui/material'
+import { OrganizationPageQuery, useGetOrganizations } from '../../Api'
+import { QueryClient, QueryClientProvider } from 'react-query'
 
 export default {
   title: 'I2/OrganizationTable',
   component: AutomatedOrganizationTable
 } as Meta
 
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 10000000
+    }
+  }
+})
+
 export const AutomatedOrganizationTableStory: Story<AutomatedOrganizationTableProps> =
   (args: AutomatedOrganizationTableProps) => {
     return (
-      <KeycloakProvider
-        config={{
-          clientId: 'admin-cli',
-          realm: 'test',
-          url: 'https://auth.smart-b.io/auth'
-        }}
-        loadingComponent={<Typography>Loading...</Typography>}
-        initOptions={{ onLoad: 'login-required' }}
-      >
-        <Following {...args} />
-      </KeycloakProvider>
+      <QueryClientProvider client={queryClient}>
+        <KeycloakProvider
+          config={{
+            clientId: 'admin-cli',
+            realm: 'test',
+            url: 'https://auth.smart-b.io/auth'
+          }}
+          loadingComponent={<Typography>Loading...</Typography>}
+          initOptions={{ onLoad: 'login-required' }}
+        >
+          <Following {...args} />
+        </KeycloakProvider>
+      </QueryClientProvider>
     )
   }
 
 const Following = (args: AutomatedOrganizationTableProps) => {
   const { keycloak } = useAuth()
+  const [queryParams, setQueryParams] = useState<
+    OrganizationPageQuery | undefined
+  >()
+
+  const getOrganizations = useGetOrganizations({
+    apiUrl: 'http://localhost:8002',
+    jwt: keycloak.token,
+    queryParams: queryParams
+  })
+
   if (!keycloak.authenticated) return <></>
-  return <AutomatedOrganizationTable {...args} jwt={keycloak.token} />
+  return (
+    <AutomatedOrganizationTable
+      getOrganizations={getOrganizations}
+      onSubmitFilters={setQueryParams}
+      {...args}
+    />
+  )
 }
 
-AutomatedOrganizationTableStory.args = {
-  apiUrl: 'http://localhost:8002'
-}
+AutomatedOrganizationTableStory.args = {}
 
 AutomatedOrganizationTableStory.storyName = 'AutomatedOrganizationTable'

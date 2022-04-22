@@ -8,6 +8,8 @@ import {
   UserResetPasswordFormAutomatedProps
 } from './UserResetPasswordFormAutomated'
 import { I2ConfigBuilder } from '../../../Config'
+import { QueryClient, QueryClientProvider } from 'react-query'
+import { useResetUserPassword } from '../../Api'
 
 export default {
   title: 'I2/UserResetPasswordForm',
@@ -24,27 +26,42 @@ I2ConfigBuilder({
   }
 })
 
+const queryClient = new QueryClient()
+
 export const UserResetPasswordFormAutomatedStory: Story<UserResetPasswordFormAutomatedProps> =
   (args: UserResetPasswordFormAutomatedProps) => {
     return (
-      <KeycloakProvider
-        config={{
-          clientId: 'admin-cli',
-          realm: 'test',
-          url: 'https://auth.smart-b.io/auth'
-        }}
-        loadingComponent={<Typography>Loading...</Typography>}
-        initOptions={{ onLoad: 'login-required' }}
-      >
-        <Following {...args} />
-      </KeycloakProvider>
+      <QueryClientProvider client={queryClient}>
+        <KeycloakProvider
+          config={{
+            clientId: 'admin-cli',
+            realm: 'test',
+            url: 'https://auth.smart-b.io/auth'
+          }}
+          loadingComponent={<Typography>Loading...</Typography>}
+          initOptions={{ onLoad: 'login-required' }}
+        >
+          <Following {...args} />
+        </KeycloakProvider>
+      </QueryClientProvider>
     )
   }
 
 const Following = (args: UserResetPasswordFormAutomatedProps) => {
   const { keycloak } = useAuth()
+
+  const resetUserPassword = useResetUserPassword({
+    apiUrl: 'http://localhost:8002',
+    jwt: keycloak.token
+  })
+
   if (!keycloak.authenticated) return <></>
-  return <UserResetPasswordFormAutomated {...args} />
+  return (
+    <UserResetPasswordFormAutomated
+      resetUserPassword={resetUserPassword}
+      {...args}
+    />
+  )
 }
 
 UserResetPasswordFormAutomatedStory.args = {
