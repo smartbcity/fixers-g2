@@ -7,8 +7,9 @@ import {
 import { Story } from '@storybook/react/types-6-0'
 import { KeycloakProvider, useAuth } from '@smartb/g2-providers'
 import { Typography } from '@mui/material'
-import { OrganizationPageQuery, useGetOrganizations } from '../../Api'
+import { useGetOrganizations } from '../../Api'
 import { QueryClient, QueryClientProvider } from 'react-query'
+import { OrganizationTableFilters } from './OrganizationTable'
 
 export default {
   title: 'I2/OrganizationTable',
@@ -45,7 +46,7 @@ export const AutomatedOrganizationTableStory: Story<AutomatedOrganizationTablePr
 const Following = (args: AutomatedOrganizationTableProps) => {
   const { keycloak } = useAuth()
   const [queryParams, setQueryParams] = useState<
-    OrganizationPageQuery | undefined
+    OrganizationTableFilters | undefined
   >()
 
   const getOrganizations = useGetOrganizations({

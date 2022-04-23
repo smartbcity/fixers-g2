@@ -13,13 +13,7 @@ import {
   UseQueryOptions,
   QueryFunctionContext
 } from 'react-query'
-
-export interface OrganizationPageQuery {
-  name?: string
-  role?: string
-  page?: number
-  size?: number
-}
+import { OrganizationTableFilters } from '../Components/OrganizationTable'
 
 export interface OrganizationPageQueryResult {
   organizations: Organization[]
@@ -38,11 +32,11 @@ export interface getOrganizationsParams {
       OrganizationPageQueryResult,
       unknown,
       OrganizationPageQueryResult,
-      (string | OrganizationPageQuery | undefined)[]
+      (string | OrganizationTableFilters | undefined)[]
     >,
     'queryKey' | 'queryFn'
   >
-  queryParams?: OrganizationPageQuery
+  queryParams?: OrganizationTableFilters
 }
 
 export const useGetOrganizations = (params: getOrganizationsParams) => {
@@ -58,7 +52,7 @@ export const useGetOrganizations = (params: getOrganizationsParams) => {
     async ({
       queryKey
     }: QueryFunctionContext<
-      [string, OrganizationPageQuery | undefined]
+      [string, OrganizationTableFilters | undefined]
     >): Promise<OrganizationPageQueryResult> => {
       const [_key, currentParams] = queryKey
       const res = await request<
@@ -68,10 +62,10 @@ export const useGetOrganizations = (params: getOrganizationsParams) => {
         method: 'POST',
         body: JSON.stringify({
           ...currentParams,
-          name: currentParams?.name,
+          name: currentParams?.search,
           page: currentParams?.page ? currentParams?.page - 1 : 0,
           size: 10
-        } as OrganizationPageQuery),
+        } as OrganizationTableFilters),
         jwt: jwt
       })
       if (res) {

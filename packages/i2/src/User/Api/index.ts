@@ -67,7 +67,7 @@ export const useGetUsers = (params: getUsersParams) => {
   return useQuery([queryKey, queryParams], getUsers, options)
 }
 
-export interface getOrganizationParams {
+export interface getUserParams {
   /**
    * @default "organization"
    */
@@ -87,7 +87,7 @@ export interface getOrganizationParams {
   >
 }
 
-export const useGetUser = (params: getOrganizationParams) => {
+export const useGetUser = (params: getUserParams) => {
   const {
     apiUrl,
     jwt,

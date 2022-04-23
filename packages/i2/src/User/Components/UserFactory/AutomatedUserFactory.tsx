@@ -17,14 +17,15 @@ export interface AutomatedUserFactoryBasicProps extends BasicProps {
   /**
    * The result of the hook `useGetUser`
    */
-  getUser: UseQueryResult<User, unknown>
+  getUser: UseQueryResult<User | undefined, unknown>
   /**
    * The result of the hook `useUpdateUser`
    */
   updateUser: UseMutationResult<
-    {
-      id: string
-    },
+    | {
+        id: string
+      }
+    | undefined,
     unknown,
     User,
     unknown
@@ -33,9 +34,10 @@ export interface AutomatedUserFactoryBasicProps extends BasicProps {
    * The result of the hook `useCreateUser`
    */
   createUser: UseMutationResult<
-    {
-      id: string
-    },
+    | {
+        id: string
+      }
+    | undefined,
     unknown,
     User,
     unknown

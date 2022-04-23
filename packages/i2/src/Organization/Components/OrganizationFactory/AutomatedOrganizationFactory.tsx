@@ -22,18 +22,20 @@ export interface AutomatedOrganizationFactoryBasicProps extends BasicProps {
    * The result of the hook `useGetOrganization`
    */
   getOrganization: UseQueryResult<
-    {
-      organization: Organization
-    },
+    | {
+        organization: Organization
+      }
+    | undefined,
     unknown
   >
   /**
    * The result of the hook `useUpdateOrganization`
    */
   updateOrganization: UseMutationResult<
-    {
-      id: string
-    },
+    | {
+        id: string
+      }
+    | undefined,
     unknown,
     Organization,
     unknown
@@ -42,9 +44,10 @@ export interface AutomatedOrganizationFactoryBasicProps extends BasicProps {
    * The result of the hook `useCreateOrganization`
    */
   createOrganization: UseMutationResult<
-    {
-      id: string
-    },
+    | {
+        id: string
+      }
+    | undefined,
     unknown,
     Organization,
     unknown
