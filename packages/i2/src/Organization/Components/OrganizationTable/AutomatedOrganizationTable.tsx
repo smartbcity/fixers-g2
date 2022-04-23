@@ -1,19 +1,15 @@
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
-import React, { useCallback, useEffect } from 'react'
-import { useAsyncResponse } from 'utils'
+import React from 'react'
 import { OrganizationTableFilters } from './index'
 import { OrganizationTable, OrganizationTableProps } from './OrganizationTable'
-import { useOrganizationPageQuery } from '../../Api'
+import { OrganizationPageQueryResult } from '../../Api'
+import { UseQueryResult } from 'react-query'
 
 export interface AutomatedOrganizationTableBasicProps extends BasicProps {
   /**
-   * The Api url where to make the locals Api calls
+   * The result of the hook `useGetOrganizations`
    */
-  apiUrl: string
-  /**
-   * The token to authorize the Api calls
-   */
-  jwt?: string
+  getOrganizations: UseQueryResult<OrganizationPageQueryResult, unknown>
   /**
    * The initial states of the filters
    */
@@ -21,7 +17,7 @@ export interface AutomatedOrganizationTableBasicProps extends BasicProps {
   /**
    * The event called when the filters changes
    */
-  submitted?: (params?: OrganizationTableFilters) => void
+  onSubmitFilters: (params?: OrganizationTableFilters) => void
 }
 
 export type AutomatedOrganizationTableProps = MergeMuiElementProps<
@@ -32,35 +28,19 @@ export type AutomatedOrganizationTableProps = MergeMuiElementProps<
 export const AutomatedOrganizationTable = (
   props: AutomatedOrganizationTableProps
 ) => {
-  const { apiUrl, jwt, initialFiltersValues, submitted, ...other } = props
-  const getOrganizations = useOrganizationPageQuery(apiUrl, jwt)
-
-  const { result, status, execute } = useAsyncResponse(getOrganizations, false)
-
-  useEffect(() => {
-    execute(initialFiltersValues)
-  }, [execute, initialFiltersValues])
-
-  const onFetchOrganizations = useCallback(
-    (params?: OrganizationTableFilters) => {
-      execute({
-        page: params?.page,
-        size: 10,
-        name: params?.search
-      })
-      submitted && submitted(params)
-    },
-    [execute, submitted]
-  )
+  const { getOrganizations, initialFiltersValues, onSubmitFilters, ...other } =
+    props
 
   return (
     <OrganizationTable
-      isLoading={status !== 'SUCCESS'}
-      organizations={result?.organizations ?? []}
+      isLoading={!getOrganizations.isSuccess}
+      organizations={getOrganizations.data?.organizations ?? []}
       totalPages={
-        result?.total && result?.total > 1 ? result?.total : undefined
+        getOrganizations.data?.total && getOrganizations.data?.total > 1
+          ? getOrganizations.data?.total
+          : undefined
       }
-      onFetchOrganizations={onFetchOrganizations}
+      onFetchOrganizations={onSubmitFilters}
       initialFiltersValues={initialFiltersValues}
       {...other}
     />

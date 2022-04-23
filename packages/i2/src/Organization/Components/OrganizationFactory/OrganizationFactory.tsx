@@ -145,7 +145,9 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
     ...other
   } = props
 
-  const [openSiretInfo, setOpenSiretInfo] = useState(!organization && !readonly)
+  const [openSiretInfo, setOpenSiretInfo] = useState(
+    !organization && !readonly && !readonlyFields?.siret
+  )
   const [siretValid, setSiretValid] = useState(false)
   const [siretRef, setSiretRef] = useState(null)
   const [imageError, setImageError] = useState<string | undefined>(undefined)

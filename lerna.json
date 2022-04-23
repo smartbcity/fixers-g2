@@ -5,6 +5,7 @@
     "packages/forms",
     "packages/g2",
     "packages/i2",
+    "packages/fs",
     "packages/layout",
     "packages/notifications",
     "packages/providers",

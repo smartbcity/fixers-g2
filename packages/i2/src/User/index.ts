@@ -9,6 +9,19 @@ export {
 } from './Domain'
 
 export {
+  createUserParams,
+  getUserParams,
+  getUsersParams,
+  resetUserPasswordParams,
+  updateUserParams,
+  useCreateUser,
+  useGetUser,
+  useGetUsers,
+  useResetUserPassword,
+  useUpdateUser
+} from './Api'
+
+export {
   UserFactory,
   UserFactoryProps,
   AutomatedUserFactory,

@@ -1,7 +1,12 @@
 export {
-  useOrganizationPageQuery,
-  OrganizationPageQuery,
-  OrganizationApi,
+  createOrganizationParams,
+  getOrganizationParams,
+  getOrganizationsParams,
+  updateOrganizationParams,
+  useCreateOrganization,
+  useGetOrganization,
+  useGetOrganizations,
+  useUpdateOrganization,
   OrganizationPageQueryResult
 } from './Api'
 

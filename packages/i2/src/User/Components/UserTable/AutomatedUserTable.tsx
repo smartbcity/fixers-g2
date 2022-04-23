@@ -1,19 +1,21 @@
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
-import React, { useCallback, useEffect } from 'react'
-import { request, useAsyncResponse } from 'utils'
+import React, { useCallback } from 'react'
 import { UserTableFilters } from './index'
 import { User, OrganizationRef } from '../../Domain'
 import { UserTable, UserTableProps } from './UserTable'
+import { UseQueryResult } from 'react-query'
 
 export interface AutomatedUserTableBasicProps extends BasicProps {
   /**
-   * The Api url where to make the locals Api calls
+   * The result of the hook `useGetUsers`
    */
-  apiUrl: string
-  /**
-   * The token to authorize the Api calls
-   */
-  jwt?: string
+  getUsers: UseQueryResult<
+    {
+      users: User[]
+      totalPages: number
+    },
+    unknown
+  >
   /**
    * The initial states of the filters
    */
@@ -25,7 +27,7 @@ export interface AutomatedUserTableBasicProps extends BasicProps {
   /**
    * The event called when the filters changes
    */
-  submitted?: (params?: UserTableFilters) => void
+  onSubmitFilters: (params?: UserTableFilters) => void
 }
 
 export type AutomatedUserTableProps = MergeMuiElementProps<
@@ -35,63 +37,28 @@ export type AutomatedUserTableProps = MergeMuiElementProps<
 
 export const AutomatedUserTable = (props: AutomatedUserTableProps) => {
   const {
-    apiUrl,
-    jwt,
+    getUsers,
     initialFiltersValues,
     organizationsRefs,
-    submitted,
+    onSubmitFilters,
     ...other
   } = props
 
-  // TODO The implementation of this hooks should be outside of this class
-  const getUsers = useCallback(
-    async (params?: UserTableFilters) => {
-      const res = await request<{ users: User[]; total: number }[]>({
-        url: `${apiUrl}/getAllUsers`,
-        method: 'POST',
-        body: JSON.stringify({
-          ...params,
-          page: params?.page ? params?.page - 1 : 0,
-          size: 10
-        }),
-        jwt: jwt
-      })
-      if (res) {
-        return {
-          users: res[0]?.users,
-          totalPages: res[0]?.total
-            ? Math.floor(res[0]?.total / 10) + 1
-            : undefined
-        }
-      } else {
-        return undefined
-      }
-    },
-    [apiUrl, jwt]
-  )
-
-  const { result, status, execute } = useAsyncResponse(getUsers, false)
-
-  useEffect(() => {
-    execute(initialFiltersValues)
-  }, [execute, initialFiltersValues])
-
   const onFetchUsers = useCallback(
     (params?: UserTableFilters) => {
-      execute(params)
-      submitted && submitted(params)
+      onSubmitFilters(params)
     },
-    [execute, submitted]
+    [onSubmitFilters]
   )
 
   return (
     <UserTable
       organizationsRefs={organizationsRefs}
-      isLoading={status !== 'SUCCESS'}
-      users={result?.users ?? []}
+      isLoading={!getUsers.isSuccess}
+      users={getUsers.data?.users ?? []}
       totalPages={
-        result?.totalPages && result?.totalPages > 1
-          ? result?.totalPages
+        getUsers.data?.totalPages && getUsers.data?.totalPages > 1
+          ? getUsers.data?.totalPages
           : undefined
       }
       onFetchUsers={onFetchUsers}
