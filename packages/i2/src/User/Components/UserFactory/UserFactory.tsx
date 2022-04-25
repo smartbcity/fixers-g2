@@ -10,7 +10,13 @@ import {
 } from '@smartb/g2-forms'
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import { FlatUser, FlatUserToUser, User, OrganizationRef } from '../../Domain'
+import {
+  FlatUser,
+  FlatUserToUser,
+  User,
+  OrganizationRef,
+  OrganizationId
+} from '../../Domain'
 import { addressValidation } from '../../../Commons'
 
 const StyledStack = styled(Stack)({
@@ -99,7 +105,7 @@ export interface UserFactoryBasicProps extends BasicProps {
   /**
    * The organizationId of the user. Needed if you want to preSelect it when you are creating a user
    */
-  organizationId?: string
+  organizationId?: OrganizationId
   /**
    * Use this prop if you want only some fields to be readonly
    */

@@ -1,4 +1,5 @@
 import {
+  OrganizationId,
   OrganizationRef,
   User,
   UserResetPasswordCommand,
@@ -74,7 +75,7 @@ export interface getUserParams {
   queryKey?: string
   jwt?: string
   userId?: string
-  organizationId?: string
+  organizationId?: OrganizationId
   apiUrl: string
   options?: Omit<
     UseQueryOptions<
@@ -171,7 +172,7 @@ export const useUpdateUser = (params: updateUserParams) => {
 export interface createUserParams {
   jwt?: string
   apiUrl: string
-  organizationId?: string
+  organizationId?: OrganizationId
   options?: Omit<
     UseMutationOptions<{ id: string } | undefined, unknown, User, unknown>,
     'mutationFn'

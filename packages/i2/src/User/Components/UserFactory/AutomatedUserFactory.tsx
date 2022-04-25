@@ -2,7 +2,7 @@ import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 import React, { useCallback } from 'react'
 import { UseMutationResult, UseQueryResult } from 'react-query'
 import { ReadonlyOrgFieldsPerState } from '../../../Organization/Components/OrganizationFactory'
-import { User } from '../../Domain'
+import { OrganizationId, User } from '../../Domain'
 import { ReadonlyFields, UserFactory, UserFactoryProps } from './UserFactory'
 
 export type ReadonlyUserFieldsPerState = {
@@ -50,7 +50,7 @@ export interface AutomatedUserFactoryBasicProps extends BasicProps {
   /**
    * The organizationId of the user.⚠️ You have to provide it if `update` is false and the organization module is activated
    */
-  organizationId?: string
+  organizationId?: OrganizationId
   /**
    * The fields readonly attributes for the current state
    */

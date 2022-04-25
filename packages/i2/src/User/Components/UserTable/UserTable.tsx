@@ -5,7 +5,7 @@ import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 import React, { useCallback, useMemo, useState } from 'react'
 import { UserFilters, UserFiltersProps } from './UserFilters'
 import { stringToAvatarAttributs } from 'utils'
-import { User, OrganizationRef } from '../../Domain'
+import { User, OrganizationRef, OrganizationId } from '../../Domain'
 import { Option } from '@smartb/g2-forms'
 
 export type UserTableFilters = {
@@ -64,7 +64,7 @@ export interface UserTableBasicProps extends BasicProps {
   /**
    * If you want the columns organization to contain links redirecting to the organization page provide this prop
    */
-  getOrganizationUrl?: (organizationId: string) => string
+  getOrganizationUrl?: (organizationId: OrganizationId) => string
 }
 
 export type UserTableProps = MergeMuiElementProps<
@@ -97,7 +97,7 @@ export const UserTable = (props: UserTableProps) => {
     (
       pageNumber?: number,
       search?: string,
-      organizationId?: string,
+      organizationId?: OrganizationId,
       role?: string
     ) => {
       onFetchUsers({

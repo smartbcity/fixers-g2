@@ -14,6 +14,7 @@ import {
   QueryFunctionContext
 } from 'react-query'
 import { OrganizationTableFilters } from '../Components/OrganizationTable'
+import { OrganizationId } from '../../User/Domain'
 
 export interface OrganizationPageQueryResult {
   organizations: Organization[]
@@ -92,7 +93,7 @@ export interface getOrganizationParams {
    */
   queryKey?: string
   jwt?: string
-  organizationId?: string
+  organizationId?: OrganizationId
   apiUrl: string
   options?: Omit<
     UseQueryOptions<

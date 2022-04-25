@@ -5,6 +5,7 @@ export {
   UserResetPasswordCommand,
   UserResetPasswordResult,
   OrganizationRef,
+  OrganizationId,
   UserId
 } from './Domain'
 

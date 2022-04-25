@@ -10,10 +10,11 @@ import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 import React, { useMemo } from 'react'
 import { UserTableBlockedFilters } from './index'
 import { OrganizationRef } from '../../../index'
+import { OrganizationId } from '../../Domain'
 
 export type UserFilters = {
   search?: string
-  organizationId?: string
+  organizationId?: OrganizationId
   role?: string
 }
 
