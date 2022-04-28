@@ -28,4 +28,5 @@ export const KeycloakAuthFactory = (
   initOption?: KeycloakInitOptions
 ): KeycloakAuth => keycloakSingleton || instanceBuilder(config, initOption)
 
-export const keycloakAuth: KeycloakAuth | undefined = keycloakSingleton
+export const keycloakAuth: () => KeycloakAuth | undefined = () =>
+  keycloakSingleton
