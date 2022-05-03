@@ -9,8 +9,7 @@ import {
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 import React, { useMemo } from 'react'
 import { UserTableBlockedFilters } from './index'
-import { OrganizationRef } from '../../../index'
-import { OrganizationId } from '../../Domain'
+import { OrganizationId, OrganizationRef } from '../../../Organization'
 
 export type UserFilters = {
   search?: string

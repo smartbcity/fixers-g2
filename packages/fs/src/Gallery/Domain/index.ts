@@ -36,4 +36,11 @@ export interface FileUploadedEvent {
   time: number
 }
 
-export interface FileDeletedEvent extends FilePath {}
+export interface FileDeletedEvent {
+  id: string
+  path: FilePath
+}
+
+export type TrackedFsFile = FsFile & {
+  isNew?: boolean
+}

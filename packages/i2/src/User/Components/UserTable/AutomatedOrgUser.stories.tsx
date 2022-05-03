@@ -40,23 +40,13 @@ export const AutomatedUserTableStory: Story<AutomatedUserTableProps> = (
 
 const Following = (args: AutomatedUserTableProps) => {
   const { keycloak } = useAuth()
-  const [queryParams, setQueryParams] = useState<UserTableFilters | undefined>()
 
-  const getUsers = useGetUsers({
-    apiUrl: 'http://localhost:8002',
-    jwt: keycloak.token,
-    queryParams: queryParams
-  })
   if (!keycloak.authenticated) return <></>
-  return (
-    <AutomatedUserTable
-      getUsers={getUsers}
-      {...args}
-      onSubmitFilters={setQueryParams}
-    />
-  )
+  return <AutomatedUserTable {...args} jwt={keycloak.token} />
 }
 
-AutomatedUserTableStory.args = {}
+AutomatedUserTableStory.args = {
+  apiUrl: 'http://localhost:8002'
+}
 
 AutomatedUserTableStory.storyName = 'AutomatedUserTable'

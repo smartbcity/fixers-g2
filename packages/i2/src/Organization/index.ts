@@ -1,13 +1,17 @@
 export {
-  createOrganizationParams,
-  getOrganizationParams,
-  getOrganizationsParams,
-  updateOrganizationParams,
+  CreateOrganizationParams,
+  GetOrganizationParams,
+  GetOrganizationsParams,
+  UpdateOrganizationParams,
   useCreateOrganization,
   useGetOrganization,
   useGetOrganizations,
   useUpdateOrganization,
-  OrganizationPageQueryResult
+  OrganizationPageQueryResult,
+  OrganizationRefsAllParams,
+  OrganizationRefsAllQuery,
+  OrganizationRefsAllResult,
+  useGetOrganizationRefs
 } from './Api'
 
 export {
@@ -28,6 +32,8 @@ export {
 } from './Components/OrganizationTable'
 
 export {
+  OrganizationRef,
+  OrganizationId,
   Organization,
   OrganizationGetAllQuery,
   OrganizationCreateCommand,

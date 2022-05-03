@@ -8,11 +8,6 @@ import { Story } from '@storybook/react/types-6-0'
 import { KeycloakProvider, useAuth } from '@smartb/g2-providers'
 import { Typography } from '@mui/material'
 import { QueryClient, QueryClientProvider } from 'react-query'
-import {
-  useCreateOrganization,
-  useGetOrganization,
-  useUpdateOrganization
-} from '../../Api'
 
 export default {
   title: 'I2/OrganizationFactory',
@@ -44,33 +39,15 @@ const Following = (args: AutomatedOrganizationFactoryProps) => {
   const [organizationId, setOrganizationId] = useState<string | undefined>()
   const { keycloak } = useAuth()
 
-  const getOrganization = useGetOrganization({
-    apiUrl: 'http://localhost:8002',
-    organizationId: organizationId,
-    jwt: keycloak.token
-  })
-
-  const updateOrganization = useUpdateOrganization({
-    apiUrl: 'http://localhost:8002',
-    jwt: keycloak.token
-  })
-
-  const createOrganization = useCreateOrganization({
-    apiUrl: 'http://localhost:8002',
-    jwt: keycloak.token,
-    options: {
-      onSuccess: (data) => {
-        setOrganizationId(data.id)
-      }
-    }
-  })
-
   if (!keycloak.authenticated) return <></>
   return (
     <AutomatedOrganizationFactory
-      getOrganization={getOrganization}
-      updateOrganization={updateOrganization}
-      createOrganization={createOrganization}
+      createOrganizationOptions={{
+        onSuccess: (data) => {
+          setOrganizationId(data.id)
+        }
+      }}
+      organizationId={organizationId}
       update={!!organizationId}
       {...args}
       jwt={keycloak.token}

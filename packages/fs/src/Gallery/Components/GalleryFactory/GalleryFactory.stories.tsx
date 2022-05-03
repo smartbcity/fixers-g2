@@ -2,10 +2,9 @@ import { Meta } from '@storybook/react'
 import React from 'react'
 import { GalleryFactory, GalleryFactoryProps } from './GalleryFactory'
 import { Story } from '@storybook/react/types-6-0'
-import { Box } from '@mui/material'
 import { useState } from '@storybook/addons'
 import { FsFile } from '../Gallery/types'
-import { fileToBase64 } from 'utils'
+import { fileToBase64 } from '@smartb/g2-utils'
 
 export default {
   title: 'Fs/GalleryFactory',

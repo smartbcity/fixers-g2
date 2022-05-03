@@ -16,7 +16,7 @@ import {
 } from '@mui/material'
 import { Button, DropPicture, DropPictureError } from '@smartb/g2-components'
 import { Popover } from '@smartb/g2-notifications'
-import { fileToBase64 } from 'utils'
+import { fileToBase64 } from '@smartb/g2-utils'
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 import { cx } from '@emotion/css'
 import {

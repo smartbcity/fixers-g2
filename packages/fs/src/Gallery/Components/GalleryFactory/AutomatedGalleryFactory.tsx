@@ -1,50 +1,52 @@
 import { Stack, Typography } from '@mui/material'
 import { MergeMuiElementProps } from '@smartb/g2-themes'
 import React, { useCallback, useEffect, useState } from 'react'
-import { fileToBase64 } from 'utils'
+import { fileToBase64 } from '@smartb/g2-utils'
 import { GalleryFactory, GalleryFactoryProps } from './GalleryFactory'
 import { v4 as uuidv4 } from 'uuid'
-import { FileDeleteCommand, FileUploadCommand, FsFile } from '../Gallery'
-import { UseMutationResult, UseQueryResult } from 'react-query'
+import {
+  FileDeleteCommand,
+  FileUploadCommand,
+  FsFile,
+  TrackedFsFile
+} from '../../Domain'
 import { Button } from '@smartb/g2-components'
-import { DirectoryPath } from '../Gallery/types'
-
-export type TrackedFsFile = FsFile & {
-  isNew?: boolean
-}
+import { DirectoryPath } from '../../Domain'
+import {
+  GetGalleryOptions,
+  useGetGallery,
+  useUploadFiles,
+  useDeleteFiles,
+  DeleteFilesOptions,
+  UploadFilesOptions
+} from '../..'
+import { useQueryClient } from 'react-query'
 
 export interface AutomatedGalleryFactoryBasicProps {
   /**
-   * the state in result of the hook useGetGallery
+   * The Api url where to make the locals Api calls
    */
-  gallery: UseQueryResult<
-    | {
-        files: FsFile[]
-      }
-    | undefined
-  >
+  apiUrl: string
   /**
-   * the state in result of the hook useDeleteFiles
+   * The token to authorize the Api calls
    */
-  deleteFiles: UseMutationResult<
-    {}[] | undefined,
-    unknown,
-    FileDeleteCommand[],
-    unknown
-  >
-  /**
-   * the state in result of the hook useUploadFiles
-   */
-  uploadFiles: UseMutationResult<
-    {}[] | undefined,
-    unknown,
-    FileUploadCommand[],
-    unknown
-  >
+  jwt?: string
   /**
    * the directory path of the gallery
    */
   directoryPath: DirectoryPath
+  /**
+   * The getGallery hook options
+   */
+  getGalleryOptions?: GetGalleryOptions
+  /**
+   * The deleteFiles hook options
+   */
+  deleteFilesOptions?: DeleteFilesOptions
+  /**
+   * The uploadFiles hook options
+   */
+  uploadFilesOptions?: UploadFilesOptions
   /**
    * the strings in the component to do translations
    */
@@ -72,12 +74,68 @@ export type AutomatedGalleryFactoryProps = MergeMuiElementProps<
 export const AutomatedGalleryFactory = (
   props: AutomatedGalleryFactoryProps
 ) => {
-  const { gallery, deleteFiles, uploadFiles, directoryPath, strings, ...rest } =
-    props
+  const {
+    directoryPath,
+    strings,
+    apiUrl,
+    jwt,
+    getGalleryOptions,
+    deleteFilesOptions,
+    uploadFilesOptions,
+    ...rest
+  } = props
   const [currentGallery, setCurrentGallery] = useState<TrackedFsFile[]>([])
   const [hasChanges, setHasChanges] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [isSaving, setIsSaving] = useState<boolean>(false)
+  const queryClient = useQueryClient()
+
+  const gallery = useGetGallery({
+    apiUrl: apiUrl,
+    directoryPath: directoryPath,
+    jwt: jwt,
+    options: {
+      ...getGalleryOptions
+    }
+  })
+
+  const deleteFiles = useDeleteFiles({
+    apiUrl: apiUrl,
+    jwt: jwt,
+    options: {
+      ...deleteFilesOptions,
+      onSuccess: (data, varaibles, context) => {
+        if (data) {
+          const removesIds = data.map((event) => event.path.name)
+          const filtered = (gallery.data?.files ?? []).filter(
+            (file) => !removesIds.includes(file.path.name)
+          )
+          queryClient.setQueryData('gallery', { files: filtered })
+        }
+        deleteFilesOptions?.onSuccess?.(data, varaibles, context)
+      }
+    }
+  })
+
+  const uploadFiles = useUploadFiles({
+    apiUrl: apiUrl,
+    jwt: jwt,
+    options: {
+      ...uploadFilesOptions,
+      onSuccess: (data, varaibles, context) => {
+        if (data) {
+          const galleryCopy = !!gallery.data?.files
+            ? [...gallery.data?.files]
+            : []
+          data.forEach((event) => {
+            galleryCopy.push(event)
+          })
+          queryClient.setQueryData('gallery', { files: galleryCopy })
+        }
+        uploadFilesOptions?.onSuccess?.(data, varaibles, context)
+      }
+    }
+  })
 
   useEffect(() => {
     if (gallery.data) {
@@ -120,6 +178,7 @@ export const AutomatedGalleryFactory = (
 
   const onSave = useCallback(async () => {
     setIsSaving(true)
+    setIsLoading(true)
     const base = gallery.data?.files || []
     const deleteCommands: FileDeleteCommand[] = []
     const uploadCommands: FileUploadCommand[] = []
@@ -139,14 +198,14 @@ export const AutomatedGalleryFactory = (
         })
       }
     })
-    if (deleteCommands.length > 0) {
-      deleteFiles.mutateAsync(deleteCommands)
-    }
     if (uploadCommands.length > 0) {
       await uploadFiles.mutateAsync(uploadCommands)
     }
-    await gallery.refetch()
+    if (deleteCommands.length > 0) {
+      await deleteFiles.mutateAsync(deleteCommands)
+    }
     setIsSaving(false)
+    setIsLoading(false)
     setHasChanges(false)
   }, [
     currentGallery,

@@ -1,6 +1,6 @@
 import { ImageList, ImageListItem, Stack } from '@mui/material'
 import React, { useMemo } from 'react'
-import { FsFile } from './types'
+import { FsFile } from '../../Domain'
 import { cx } from '@emotion/css'
 import { BasicProps } from '@smartb/g2-themes'
 

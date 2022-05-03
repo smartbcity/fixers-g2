@@ -1,5 +1,5 @@
 // TODO This should probably merged with styles
-import { PartialDeep } from 'utils'
+import { PartialDeep } from '@smartb/g2-utils'
 
 export interface AppBarProps {
   height: number

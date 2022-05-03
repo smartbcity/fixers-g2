@@ -11,13 +11,10 @@ export {
   useGetGallery,
   useUploadFiles,
   AutomatedGallery,
-  AutomatedGalleryProps
-} from './Gallery'
-
-export {
+  AutomatedGalleryProps,
   AutomatedGalleryFactory,
   AutomatedGalleryFactoryProps,
   DropError,
   GalleryFactory,
   GalleryFactoryProps
-} from './GalleryFactory'
+} from './Gallery'
