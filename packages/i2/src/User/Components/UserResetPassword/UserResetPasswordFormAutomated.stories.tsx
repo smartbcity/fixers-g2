@@ -7,24 +7,12 @@ import {
   UserResetPasswordFormAutomated,
   UserResetPasswordFormAutomatedProps
 } from './UserResetPasswordFormAutomated'
-import { I2ConfigBuilder } from '../../../Config'
 import { QueryClient, QueryClientProvider } from 'react-query'
-import { useResetUserPassword } from '../../Api'
 
 export default {
   title: 'I2/UserResetPasswordForm',
   component: UserResetPasswordFormAutomated
 } as Meta
-
-I2ConfigBuilder({
-  orgUrl: 'http://localhost:8002',
-  userUrl: 'http://localhost:8002',
-  keycloak: {
-    clientId: 'admin-cli',
-    realm: 'test',
-    url: 'https://auth.smart-b.io/auth'
-  }
-})
 
 const queryClient = new QueryClient()
 
