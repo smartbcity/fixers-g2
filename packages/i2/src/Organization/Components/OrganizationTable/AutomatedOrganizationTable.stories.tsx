@@ -7,9 +7,7 @@ import {
 import { Story } from '@storybook/react/types-6-0'
 import { KeycloakProvider, useAuth } from '@smartb/g2-providers'
 import { Typography } from '@mui/material'
-import { useGetOrganizations } from '../../Api'
 import { QueryClient, QueryClientProvider } from 'react-query'
-import { OrganizationTableFilters } from './OrganizationTable'
 
 export default {
   title: 'I2/OrganizationTable',
@@ -45,26 +43,13 @@ export const AutomatedOrganizationTableStory: Story<AutomatedOrganizationTablePr
 
 const Following = (args: AutomatedOrganizationTableProps) => {
   const { keycloak } = useAuth()
-  const [queryParams, setQueryParams] = useState<
-    OrganizationTableFilters | undefined
-  >()
-
-  const getOrganizations = useGetOrganizations({
-    apiUrl: 'http://localhost:8002',
-    jwt: keycloak.token,
-    queryParams: queryParams
-  })
 
   if (!keycloak.authenticated) return <></>
-  return (
-    <AutomatedOrganizationTable
-      getOrganizations={getOrganizations}
-      onSubmitFilters={setQueryParams}
-      {...args}
-    />
-  )
+  return <AutomatedOrganizationTable {...args} />
 }
 
-AutomatedOrganizationTableStory.args = {}
+AutomatedOrganizationTableStory.args = {
+  apiUrl: 'http://localhost:8002'
+}
 
 AutomatedOrganizationTableStory.storyName = 'AutomatedOrganizationTable'

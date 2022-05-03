@@ -10,14 +10,9 @@ import {
 } from '@smartb/g2-forms'
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import {
-  FlatUser,
-  FlatUserToUser,
-  User,
-  OrganizationRef,
-  OrganizationId
-} from '../../Domain'
+import { FlatUser, FlatUserToUser, User } from '../../Domain'
 import { addressValidation } from '../../../Commons'
+import { OrganizationId, OrganizationRef } from '../../../Organization'
 
 const StyledStack = styled(Stack)({
   '& input::-webkit-outer-spin-button, input::-webkit-inner-spin-button': {

@@ -1,9 +1,19 @@
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 import React, { useCallback } from 'react'
-import { UseMutationResult, UseQueryResult } from 'react-query'
-import { ReadonlyOrgFieldsPerState } from '../../../Organization/Components/OrganizationFactory'
-import { OrganizationId, User } from '../../Domain'
+import {
+  OrganizationId,
+  ReadonlyOrgFieldsPerState
+} from '../../../Organization'
+import { User } from '../../Domain'
 import { ReadonlyFields, UserFactory, UserFactoryProps } from './UserFactory'
+import {
+  CreateUserOptions,
+  GetUserOptions,
+  UpdateUserOptions,
+  useCreateUser,
+  useGetUser,
+  useUpdateUser
+} from '../../Api'
 
 export type ReadonlyUserFieldsPerState = {
   create?: ReadonlyFields
@@ -15,33 +25,25 @@ export type ReadonlyUserFieldsPerState = {
 
 export interface AutomatedUserFactoryBasicProps extends BasicProps {
   /**
-   * The result of the hook `useGetUser`
+   * The Api url where to make the locals Api calls
    */
-  getUser: UseQueryResult<User | undefined, unknown>
+  apiUrl: string
   /**
-   * The result of the hook `useUpdateUser`
+   * The token to authorize the Api calls
    */
-  updateUser: UseMutationResult<
-    | {
-        id: string
-      }
-    | undefined,
-    unknown,
-    User,
-    unknown
-  >
+  jwt?: string
   /**
-   * The result of the hook `useCreateUser`
+   * The getUser hook options
    */
-  createUser: UseMutationResult<
-    | {
-        id: string
-      }
-    | undefined,
-    unknown,
-    User,
-    unknown
-  >
+  getUserOptions?: GetUserOptions
+  /**
+   * The updateUser hook options
+   */
+  updateUserOptions?: UpdateUserOptions
+  /**
+   * The createUser hook options
+   */
+  createUserOptions?: CreateUserOptions
   /**
    * Define whether the object is updated or created
    * @default false
@@ -51,6 +53,10 @@ export interface AutomatedUserFactoryBasicProps extends BasicProps {
    * The organizationId of the user.⚠️ You have to provide it if `update` is false and the organization module is activated
    */
   organizationId?: OrganizationId
+  /**
+   * The user id to provide if it's an updation
+   */
+  userId?: string
   /**
    * The fields readonly attributes for the current state
    */
@@ -64,14 +70,36 @@ export type AutomatedUserFactoryProps = MergeMuiElementProps<
 
 export const AutomatedUserFactory = (props: AutomatedUserFactoryProps) => {
   const {
-    createUser,
-    getUser,
-    updateUser,
+    apiUrl,
+    jwt,
+    userId,
     update = false,
     organizationId,
     readonlyFieldsPerState,
+    getUserOptions,
+    updateUserOptions,
+    createUserOptions,
     ...other
   } = props
+
+  const getUser = useGetUser({
+    apiUrl: apiUrl,
+    jwt: jwt,
+    userId: userId,
+    options: getUserOptions
+  })
+
+  const updateUser = useUpdateUser({
+    apiUrl: apiUrl,
+    jwt: jwt,
+    options: updateUserOptions
+  })
+
+  const createUser = useCreateUser({
+    apiUrl: apiUrl,
+    jwt: jwt,
+    options: createUserOptions
+  })
 
   const updateUserMemoized = useCallback(
     async (user: User) => {

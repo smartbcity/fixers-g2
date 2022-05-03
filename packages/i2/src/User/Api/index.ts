@@ -1,12 +1,10 @@
 import {
-  OrganizationId,
-  OrganizationRef,
   User,
   UserResetPasswordCommand,
   UserResetPasswordResult
 } from '../Domain'
 import { useCallback } from 'react'
-import { request } from 'utils'
+import { request } from '@smartb/g2-utils'
 import {
   QueryFunctionContext,
   useMutation,
@@ -15,27 +13,35 @@ import {
   UseQueryOptions
 } from 'react-query'
 import { UserTableFilters } from '../Components/UserTable'
+import { OrganizationId, OrganizationRef } from '../../Organization'
+import { UserGetAllQueryResult } from '../Domain'
 
-export interface getUsersParams {
+type UserGetAllQueryResultOptional =
+  | { users: any; totalPages: number }
+  | undefined
+
+export type GetUsersOptions = Omit<
+  UseQueryOptions<
+    UserGetAllQueryResultOptional,
+    unknown,
+    UserGetAllQueryResultOptional,
+    (string | UserTableFilters | undefined)[]
+  >,
+  'queryKey' | 'queryFn'
+>
+
+export interface GetUsersParams {
   /**
    * @default "organization"
    */
   queryKey?: string
   jwt?: string
   apiUrl: string
-  options?: Omit<
-    UseQueryOptions<
-      { users: User[]; totalPages: number } | undefined,
-      unknown,
-      { users: User[]; totalPages: number } | undefined,
-      (string | UserTableFilters | undefined)[]
-    >,
-    'queryKey' | 'queryFn'
-  >
+  options?: GetUsersOptions
   queryParams?: UserTableFilters
 }
 
-export const useGetUsers = (params: getUsersParams) => {
+export const useGetUsers = (params: GetUsersParams) => {
   const { apiUrl, jwt, options, queryKey = 'users', queryParams } = params
 
   const getUsers = useCallback(
@@ -43,7 +49,7 @@ export const useGetUsers = (params: getUsersParams) => {
       queryKey
     }: QueryFunctionContext<[string, UserTableFilters | undefined]>) => {
       const [_key, currentParams] = queryKey
-      const res = await request<{ users: User[]; total: number }[]>({
+      const res = await request<UserGetAllQueryResult[]>({
         url: `${apiUrl}/getAllUsers`,
         method: 'POST',
         body: JSON.stringify({
@@ -68,7 +74,17 @@ export const useGetUsers = (params: getUsersParams) => {
   return useQuery([queryKey, queryParams], getUsers, options)
 }
 
-export interface getUserParams {
+export type GetUserOptions = Omit<
+  UseQueryOptions<
+    User | undefined,
+    unknown,
+    User | undefined,
+    (string | undefined)[]
+  >,
+  'queryKey' | 'queryFn'
+>
+
+export interface GetUserParams {
   /**
    * @default "organization"
    */
@@ -77,18 +93,10 @@ export interface getUserParams {
   userId?: string
   organizationId?: OrganizationId
   apiUrl: string
-  options?: Omit<
-    UseQueryOptions<
-      User | undefined,
-      unknown,
-      User | undefined,
-      (string | undefined)[]
-    >,
-    'queryKey' | 'queryFn'
-  >
+  options?: GetUserOptions
 }
 
-export const useGetUser = (params: getUserParams) => {
+export const useGetUser = (params: GetUserParams) => {
   const {
     apiUrl,
     jwt,
@@ -132,16 +140,18 @@ export const useGetUser = (params: getUserParams) => {
   })
 }
 
-export interface updateUserParams {
+export type UpdateUserOptions = Omit<
+  UseMutationOptions<{ id: string } | undefined, unknown, User, unknown>,
+  'mutationFn'
+>
+
+export interface UpdateUserParams {
   jwt?: string
   apiUrl: string
-  options?: Omit<
-    UseMutationOptions<{ id: string } | undefined, unknown, User, unknown>,
-    'mutationFn'
-  >
+  options?: UpdateUserOptions
 }
 
-export const useUpdateUser = (params: updateUserParams) => {
+export const useUpdateUser = (params: UpdateUserParams) => {
   const { apiUrl, jwt, options } = params
 
   const updateUser = useCallback(
@@ -169,17 +179,19 @@ export const useUpdateUser = (params: updateUserParams) => {
   return useMutation(updateUser, options)
 }
 
-export interface createUserParams {
+export type CreateUserOptions = Omit<
+  UseMutationOptions<{ id: string } | undefined, unknown, User, unknown>,
+  'mutationFn'
+>
+
+export interface CreateUserParams {
   jwt?: string
   apiUrl: string
   organizationId?: OrganizationId
-  options?: Omit<
-    UseMutationOptions<{ id: string } | undefined, unknown, User, unknown>,
-    'mutationFn'
-  >
+  options?: CreateUserOptions
 }
 
-export const useCreateUser = (params: createUserParams) => {
+export const useCreateUser = (params: CreateUserParams) => {
   const { apiUrl, jwt, options, organizationId } = params
 
   const createUser = useCallback(
@@ -207,21 +219,23 @@ export const useCreateUser = (params: createUserParams) => {
   return useMutation(createUser, options)
 }
 
-export interface resetUserPasswordParams {
+export type ResetUserPasswordOptions = Omit<
+  UseMutationOptions<
+    UserResetPasswordResult | undefined,
+    unknown,
+    UserResetPasswordCommand | undefined,
+    unknown
+  >,
+  'mutationFn'
+>
+
+export interface ResetUserPasswordParams {
   jwt?: string
   apiUrl: string
-  options?: Omit<
-    UseMutationOptions<
-      UserResetPasswordResult | undefined,
-      unknown,
-      UserResetPasswordCommand | undefined,
-      unknown
-    >,
-    'mutationFn'
-  >
+  options?: ResetUserPasswordOptions
 }
 
-export const useResetUserPassword = (params: resetUserPasswordParams) => {
+export const useResetUserPassword = (params: ResetUserPasswordParams) => {
   const { apiUrl, jwt, options } = params
 
   const resetUserPassword = useCallback(

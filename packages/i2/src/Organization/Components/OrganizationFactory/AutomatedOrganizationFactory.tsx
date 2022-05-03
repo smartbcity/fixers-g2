@@ -1,13 +1,20 @@
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 import React, { useCallback } from 'react'
-import { UseMutationResult, UseQueryResult } from 'react-query'
-import { request } from 'utils'
 import { Organization } from '../../Domain'
 import {
   OrganizationFactory,
   OrganizationFactoryProps,
   ReadonlyFields
 } from './OrganizationFactory'
+import {
+  CreateOrganizationOptions,
+  getInseeOrganization,
+  GetOrganizationOptions,
+  UpdateOrganizationOptions,
+  useCreateOrganization,
+  useGetOrganization,
+  useUpdateOrganization
+} from '../../Api'
 
 export type ReadonlyOrgFieldsPerState = {
   create?: ReadonlyFields
@@ -19,40 +26,6 @@ export type ReadonlyOrgFieldsPerState = {
 
 export interface AutomatedOrganizationFactoryBasicProps extends BasicProps {
   /**
-   * The result of the hook `useGetOrganization`
-   */
-  getOrganization: UseQueryResult<
-    | {
-        organization: Organization
-      }
-    | undefined,
-    unknown
-  >
-  /**
-   * The result of the hook `useUpdateOrganization`
-   */
-  updateOrganization: UseMutationResult<
-    | {
-        id: string
-      }
-    | undefined,
-    unknown,
-    Organization,
-    unknown
-  >
-  /**
-   * The result of the hook `useCreateOrganization`
-   */
-  createOrganization: UseMutationResult<
-    | {
-        id: string
-      }
-    | undefined,
-    unknown,
-    Organization,
-    unknown
-  >
-  /**
    * The Api url where to make the locals Api calls
    */
   apiUrl: string
@@ -60,6 +33,22 @@ export interface AutomatedOrganizationFactoryBasicProps extends BasicProps {
    * The token to authorize the Api calls
    */
   jwt?: string
+  /**
+   * The organization id to provide if it's an updation
+   */
+  organizationId?: string
+  /**
+   * The getOrganization hook options
+   */
+  getOrganizationOptions?: GetOrganizationOptions
+  /**
+   * The updateOrganization hook options
+   */
+  updateOrganizationOptions?: UpdateOrganizationOptions
+  /**
+   * The createOrganization hook options
+   */
+  createOrganizationOptions?: CreateOrganizationOptions
   /**
    * Define whether the object is updated or created
    * @default false
@@ -80,34 +69,42 @@ export const AutomatedOrganizationFactory = (
   props: AutomatedOrganizationFactoryProps
 ) => {
   const {
-    createOrganization,
-    getOrganization,
-    updateOrganization,
+    organizationId,
     update = false,
     readonlyFieldsPerState,
     apiUrl,
     jwt,
+    getOrganizationOptions,
+    updateOrganizationOptions,
+    createOrganizationOptions,
     ...other
   } = props
 
-  const getInseeOrganization = useCallback(
+  const getInseeOrganizationMemoized = useCallback(
     async (siret: string) => {
-      const res = await request<{ organization?: Organization }[]>({
-        url: `${apiUrl}/getInseeOrganization`,
-        method: 'POST',
-        body: JSON.stringify({
-          siret: siret
-        }),
-        jwt: jwt
-      })
-      if (res) {
-        return res[0].organization
-      } else {
-        return undefined
-      }
+      return getInseeOrganization(siret, apiUrl, jwt)
     },
     [apiUrl, jwt]
   )
+
+  const getOrganization = useGetOrganization({
+    apiUrl: apiUrl,
+    organizationId: organizationId,
+    jwt: jwt,
+    options: getOrganizationOptions
+  })
+
+  const updateOrganization = useUpdateOrganization({
+    apiUrl: apiUrl,
+    jwt: jwt,
+    options: updateOrganizationOptions
+  })
+
+  const createOrganization = useCreateOrganization({
+    apiUrl: apiUrl,
+    jwt: jwt,
+    options: createOrganizationOptions
+  })
 
   const updateOrganizationMemoized = useCallback(
     async (organization: Organization) => {
@@ -137,7 +134,7 @@ export const AutomatedOrganizationFactory = (
   return (
     <OrganizationFactory
       organization={getOrganization.data?.organization}
-      getInseeOrganization={getInseeOrganization}
+      getInseeOrganization={getInseeOrganizationMemoized}
       onSubmit={
         update ? updateOrganizationMemoized : createOrganizationMemoized
       }

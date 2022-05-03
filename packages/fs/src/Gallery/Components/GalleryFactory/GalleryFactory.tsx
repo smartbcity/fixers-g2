@@ -1,5 +1,5 @@
-import React, { useCallback, useMemo } from 'react'
-import { FsFile } from '../Gallery/types'
+import React, { useCallback, useMemo, useState } from 'react'
+import { FsFile } from '../../Domain'
 import { cx } from '@emotion/css'
 import {
   Box,
@@ -9,7 +9,12 @@ import {
   Typography
 } from '@mui/material'
 import { AddPhotoAlternateRounded, CloseRounded } from '@mui/icons-material'
-import { Dropzone, DropzoneStatus, IMAGE_MIME_TYPE } from '@mantine/dropzone'
+import {
+  Dropzone,
+  DropzoneStatus,
+  IMAGE_MIME_TYPE,
+  DropzoneProps
+} from '@mantine/dropzone'
 import { FileRejection } from 'react-dropzone'
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 import { StackProps } from '@mantine/core'
@@ -28,6 +33,17 @@ export interface GalleryFactoryStyles {
   closeButton?: React.CSSProperties
   closeIcon?: React.CSSProperties
   dropzone?: React.CSSProperties
+}
+
+export type DropError =
+  | 'file-too-large'
+  | 'too-many-files'
+  | 'file-invalid-type'
+
+const defaultErrorMessages: { [key in DropError]?: string } = {
+  'file-invalid-type': 'Les fichier accepté sont: jpg, jpeg, png, gif',
+  'file-too-large':
+    'Un ou plusieurs fichiers sont trop volumineux: ils ne doivent pas dépasser 10Mo'
 }
 
 export interface GalleryFactoryBasicProps extends BasicProps {
@@ -60,6 +76,10 @@ export interface GalleryFactoryBasicProps extends BasicProps {
    */
   generateDropzone?: (status: DropzoneStatus) => JSX.Element
   /**
+   * The props of the dropzone
+   */
+  dropzoneProps?: DropzoneProps
+  /**
    * the strings in the component to do translations
    */
   strings?: {
@@ -67,6 +87,7 @@ export interface GalleryFactoryBasicProps extends BasicProps {
      * @default 'Ajouter une ou plusieurs images'
      */
     addImages?: string
+    errorMessages?: { [key in DropError]?: string }
   }
   /**
    * The classes applied to the different part of the component
@@ -78,11 +99,6 @@ export interface GalleryFactoryBasicProps extends BasicProps {
   styles?: GalleryFactoryStyles
 }
 
-export type DropError =
-  | 'file-too-large'
-  | 'too-many-files'
-  | 'file-invalid-type'
-
 export type GalleryFactoryProps = MergeMuiElementProps<
   StackProps,
   GalleryFactoryBasicProps
@@ -90,7 +106,7 @@ export type GalleryFactoryProps = MergeMuiElementProps<
 
 export const GalleryFactory = (props: GalleryFactoryProps) => {
   const {
-    files,
+    files = [],
     galleryName,
     onDelete,
     onAdd,
@@ -101,9 +117,12 @@ export const GalleryFactory = (props: GalleryFactoryProps) => {
     styles,
     className,
     generateDropzone,
+    dropzoneProps,
     sx,
     ...rest
   } = props
+
+  const [error, setError] = useState<DropError | undefined>(undefined)
 
   const images = useMemo(() => {
     return files.map((file) => {
@@ -172,6 +191,7 @@ export const GalleryFactory = (props: GalleryFactoryProps) => {
         })
         onReject(errors)
       }
+      setError(fileRejections[0].errors[0].code as DropError)
     },
     [onReject]
   )
@@ -179,8 +199,25 @@ export const GalleryFactory = (props: GalleryFactoryProps) => {
   const onDrop = useCallback(
     (files: File[]) => {
       onAdd && onAdd(files)
+      setError(undefined)
     },
     [onAdd]
+  )
+
+  const dropzone = useCallback(
+    (status) =>
+      generateDropzone
+        ? generateDropzone(status)
+        : dropzoneChildren(
+            status,
+            error
+              ? !!strings?.errorMessages
+                ? strings?.errorMessages[error]
+                : defaultErrorMessages[error]
+              : undefined,
+            strings?.addImages
+          ),
+    [generateDropzone, error, strings]
   )
 
   return (
@@ -216,12 +253,10 @@ export const GalleryFactory = (props: GalleryFactoryProps) => {
           onDrop={onDrop}
           onReject={onRejectMemoized}
           accept={IMAGE_MIME_TYPE}
+          maxSize={10 * 1024 * 1024}
+          {...dropzoneProps}
         >
-          {(status) =>
-            generateDropzone
-              ? generateDropzone(status)
-              : dropzoneChildren(status, strings?.addImages)
-          }
+          {dropzone}
         </Dropzone>
       ) : (
         <Stack
@@ -242,6 +277,7 @@ export const GalleryFactory = (props: GalleryFactoryProps) => {
 
 export const dropzoneChildren = (
   _: DropzoneStatus,
+  error?: string,
   addImagesString?: string
 ) => (
   <Stack
@@ -259,6 +295,9 @@ export const dropzoneChildren = (
     />
     <Typography>
       {addImagesString ?? 'Ajouter une ou plusieurs images'}
+    </Typography>
+    <Typography variant='body2' color='error'>
+      {error}
     </Typography>
   </Stack>
 )

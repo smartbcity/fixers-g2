@@ -2,7 +2,7 @@ import { Meta } from '@storybook/react'
 import React, { useCallback } from 'react'
 import { AutomatedGallery, AutomatedGalleryProps } from './AutomatedGallery'
 import { Story } from '@storybook/react/types-6-0'
-import { useGetGallery } from '.'
+import { useGetGallery } from '../../Api'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { Box } from '@mui/material'
 
@@ -24,15 +24,6 @@ export const AutomatedGalleryStory: Story<AutomatedGalleryProps> = (
 }
 
 const SubComponent = (args: AutomatedGalleryProps) => {
-  const gallery = useGetGallery({
-    apiUrl: 'http://51.83.34.130:8090',
-    directoryPath: {
-      directory: 'gallery1',
-      objectId: '0fe05d72-db8e-4ae1-9852-68ec74fa3b01',
-      objectType: 'project'
-    }
-  })
-
   return (
     <Box
       sx={{
@@ -40,9 +31,18 @@ const SubComponent = (args: AutomatedGalleryProps) => {
         height: '500px'
       }}
     >
-      <AutomatedGallery gallery={gallery} galleryName='gallery1' {...args} />
+      <AutomatedGallery galleryName='gallery1' {...args} />
     </Box>
   )
+}
+
+AutomatedGalleryStory.args = {
+  apiUrl: 'http://51.83.34.130:8090',
+  directoryPath: {
+    directory: 'gallery1',
+    objectId: '0fe05d72-db8e-4ae1-9852-68ec74fa3b01',
+    objectType: 'project'
+  }
 }
 
 AutomatedGalleryStory.storyName = 'AutomatedGallery'

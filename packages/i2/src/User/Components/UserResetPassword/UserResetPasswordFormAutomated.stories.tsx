@@ -50,22 +50,13 @@ export const UserResetPasswordFormAutomatedStory: Story<UserResetPasswordFormAut
 const Following = (args: UserResetPasswordFormAutomatedProps) => {
   const { keycloak } = useAuth()
 
-  const resetUserPassword = useResetUserPassword({
-    apiUrl: 'http://localhost:8002',
-    jwt: keycloak.token
-  })
-
   if (!keycloak.authenticated) return <></>
-  return (
-    <UserResetPasswordFormAutomated
-      resetUserPassword={resetUserPassword}
-      {...args}
-    />
-  )
+  return <UserResetPasswordFormAutomated {...args} jwt={keycloak.token} />
 }
 
 UserResetPasswordFormAutomatedStory.args = {
-  userId: 'userId'
+  userId: 'userId',
+  apiUrl: 'http://localhost:8002'
 }
 
 UserResetPasswordFormAutomatedStory.storyName = 'UserResetPasswordFormAutomated'

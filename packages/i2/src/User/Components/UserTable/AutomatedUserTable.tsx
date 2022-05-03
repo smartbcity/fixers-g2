@@ -1,54 +1,74 @@
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
-import React, { useCallback } from 'react'
+import React, { useCallback, useState } from 'react'
 import { UserTableFilters } from './index'
-import { User, OrganizationRef } from '../../Domain'
 import { UserTable, UserTableProps } from './UserTable'
-import { UseQueryResult } from 'react-query'
+import { GetUsersOptions, useGetUsers } from '../../Api'
+import { OrganizationRef } from '../../../Organization'
 
+// TODO Automated should be without getUsers and organizationsRefs
+// we could use a parameter to disable organizationsRefs if needed
+// jwt should be get by useAuth
+// apiUrl should be a configuration out side of the components
 export interface AutomatedUserTableBasicProps extends BasicProps {
   /**
-   * The result of the hook `useGetUsers`
+   * Bearer token to query users // Remove and use useAuth.
    */
-  getUsers: UseQueryResult<
-    {
-      users: User[]
-      totalPages: number
-    },
-    unknown
-  >
+  jwt?: string
+  /**
+   * User api url // Remove and use useAuth.
+   */
+  apiUrl: string
+  /**
+   * The getUsers hook options
+   */
+  getUsersOptions?: GetUsersOptions
   /**
    * The initial states of the filters
    */
   initialFiltersValues?: UserTableFilters
   /**
+   * The event called when the filters changes
+   */
+  onFiltersChanged?: (params?: UserTableFilters) => void
+  /**
    * The organizationRefs for the filter organizations
    */
   organizationsRefs?: OrganizationRef[]
-  /**
-   * The event called when the filters changes
-   */
-  onSubmitFilters: (params?: UserTableFilters) => void
 }
 
 export type AutomatedUserTableProps = MergeMuiElementProps<
-  Omit<UserTableProps, 'users' | 'onFetchUsers'>,
+  Omit<UserTableProps, 'users' | 'onFiltersChanged'>,
   AutomatedUserTableBasicProps
 >
 
 export const AutomatedUserTable = (props: AutomatedUserTableProps) => {
   const {
-    getUsers,
     initialFiltersValues,
+    onFiltersChanged,
     organizationsRefs,
-    onSubmitFilters,
+    getUsersOptions,
+    apiUrl,
+    jwt,
     ...other
   } = props
 
-  const onFetchUsers = useCallback(
-    (params?: UserTableFilters) => {
-      onSubmitFilters(params)
+  const [queryParams, setQueryParams] = useState<UserTableFilters | undefined>(
+    initialFiltersValues
+  )
+
+  const getUsers = useGetUsers({
+    apiUrl: apiUrl,
+    jwt: jwt,
+    queryParams: queryParams,
+    options: getUsersOptions
+  })
+
+  const onSubmitFiltersMemoized = useCallback(
+    (params: UserTableFilters) => {
+      setQueryParams(params)
+      onFiltersChanged && onFiltersChanged(params)
     },
-    [onSubmitFilters]
+    [onFiltersChanged]
   )
 
   return (
@@ -61,7 +81,7 @@ export const AutomatedUserTable = (props: AutomatedUserTableProps) => {
           ? getUsers.data?.totalPages
           : undefined
       }
-      onFetchUsers={onFetchUsers}
+      onFiltersChanged={onSubmitFiltersMemoized}
       initialFiltersValues={initialFiltersValues}
       {...other}
     />

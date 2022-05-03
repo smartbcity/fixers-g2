@@ -19,6 +19,11 @@ export const styles = `interface OrgCreationStyles {
 
 export type OrganizationId = string
 
+export type OrganizationRef = {
+  id: OrganizationId
+  name: string
+}
+
 export interface Organization {
   id: OrganizationId
   siret: string

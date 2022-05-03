@@ -1,15 +1,22 @@
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
-import React from 'react'
+import React, { useCallback, useState } from 'react'
 import { OrganizationTableFilters } from './index'
 import { OrganizationTable, OrganizationTableProps } from './OrganizationTable'
-import { OrganizationPageQueryResult } from '../../Api'
-import { UseQueryResult } from 'react-query'
+import { useGetOrganizations, GetOrganizationsOptions } from '../../Api'
 
 export interface AutomatedOrganizationTableBasicProps extends BasicProps {
   /**
-   * The result of the hook `useGetOrganizations`
+   * The Api url where to make the locals Api calls
    */
-  getOrganizations: UseQueryResult<OrganizationPageQueryResult, unknown>
+  apiUrl: string
+  /**
+   * The token to authorize the Api calls
+   */
+  jwt?: string
+  /**
+   * The getOrganizations hook options
+   */
+  getOrganizationsOptions?: GetOrganizationsOptions
   /**
    * The initial states of the filters
    */
@@ -17,7 +24,7 @@ export interface AutomatedOrganizationTableBasicProps extends BasicProps {
   /**
    * The event called when the filters changes
    */
-  onSubmitFilters: (params?: OrganizationTableFilters) => void
+  onSubmitFilters?: (params?: OrganizationTableFilters) => void
 }
 
 export type AutomatedOrganizationTableProps = MergeMuiElementProps<
@@ -28,8 +35,33 @@ export type AutomatedOrganizationTableProps = MergeMuiElementProps<
 export const AutomatedOrganizationTable = (
   props: AutomatedOrganizationTableProps
 ) => {
-  const { getOrganizations, initialFiltersValues, onSubmitFilters, ...other } =
-    props
+  const {
+    initialFiltersValues,
+    onSubmitFilters,
+    apiUrl,
+    jwt,
+    getOrganizationsOptions,
+    ...other
+  } = props
+
+  const [queryParams, setQueryParams] = useState<
+    OrganizationTableFilters | undefined
+  >(initialFiltersValues)
+
+  const getOrganizations = useGetOrganizations({
+    apiUrl: apiUrl,
+    jwt: jwt,
+    queryParams: queryParams,
+    options: getOrganizationsOptions
+  })
+
+  const onSubmitFiltersMemoized = useCallback(
+    (params: OrganizationTableFilters) => {
+      setQueryParams(params)
+      onSubmitFilters && onSubmitFilters(params)
+    },
+    [onSubmitFilters]
+  )
 
   return (
     <OrganizationTable
@@ -40,7 +72,7 @@ export const AutomatedOrganizationTable = (
           ? getOrganizations.data?.total
           : undefined
       }
-      onFetchOrganizations={onSubmitFilters}
+      onFetchOrganizations={onSubmitFiltersMemoized}
       initialFiltersValues={initialFiltersValues}
       {...other}
     />

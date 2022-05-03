@@ -4,9 +4,10 @@ import { Column, Table, TableProps, CellProps } from '@smartb/g2-layout'
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 import React, { useCallback, useMemo, useState } from 'react'
 import { UserFilters, UserFiltersProps } from './UserFilters'
-import { stringToAvatarAttributs } from 'utils'
-import { User, OrganizationRef, OrganizationId } from '../../Domain'
+import { stringToAvatarAttributs } from '@smartb/g2-utils'
+import { User } from '../../Domain'
 import { Option } from '@smartb/g2-forms'
+import { OrganizationId, OrganizationRef } from '../../../Organization'
 
 export type UserTableFilters = {
   page?: number
@@ -48,7 +49,7 @@ export interface UserTableBasicProps extends BasicProps {
   /**
    * The event called when the filters are submitted or when the pagination updates
    */
-  onFetchUsers: (params?: UserTableFilters) => void
+  onFiltersChanged: (params?: UserTableFilters) => void
   /**
    * Used for the pagination
    */
@@ -77,7 +78,7 @@ export const UserTable = (props: UserTableProps) => {
   const {
     users,
     initialFiltersValues,
-    onFetchUsers,
+    onFiltersChanged,
     filtersProps,
     getActions,
     getOrganizationUrl,
@@ -100,14 +101,14 @@ export const UserTable = (props: UserTableProps) => {
       organizationId?: OrganizationId,
       role?: string
     ) => {
-      onFetchUsers({
+      onFiltersChanged({
         page: pageNumber ?? page,
         search: search ?? filters?.search,
         organizationId: organizationId ?? filters?.organizationId,
         role: role ?? filters?.role
       })
     },
-    [onFetchUsers, filters, page]
+    [onFiltersChanged, filters, page]
   )
 
   const onSubmitFilters = useCallback(
@@ -201,7 +202,7 @@ export const UserTable = (props: UserTableProps) => {
             } as Column<User>
           ]
         : []),
-      ...(!!getActions
+      ...(getActions
         ? [
             {
               id: 'moreoptions',

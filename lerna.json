@@ -12,6 +12,7 @@
     "packages/storybook-documentation",
     "packages/s2",
     "packages/themes",
+    "packages/utils",
     "packages/webpack-components"
   ],
   "npmClient": "yarn",

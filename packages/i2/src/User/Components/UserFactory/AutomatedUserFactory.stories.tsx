@@ -7,7 +7,6 @@ import {
 import { Story } from '@storybook/react/types-6-0'
 import { KeycloakProvider, useAuth } from '@smartb/g2-providers'
 import { Typography } from '@mui/material'
-import { useCreateUser, useGetUser, useUpdateUser } from '../../Api'
 import { QueryClient, QueryClientProvider } from 'react-query'
 
 export default {
@@ -41,39 +40,24 @@ const Following = (args: AutomatedUserFactoryProps) => {
   const [userId, setuserId] = useState<string | undefined>(undefined)
   const { keycloak } = useAuth()
 
-  const getUser = useGetUser({
-    apiUrl: 'http://localhost:8002',
-    jwt: keycloak.token,
-    userId: userId
-  })
-
-  const updateUser = useUpdateUser({
-    apiUrl: 'http://localhost:8002',
-    jwt: keycloak.token
-  })
-
-  const createUser = useCreateUser({
-    apiUrl: 'http://localhost:8002',
-    jwt: keycloak.token,
-    options: {
-      onSuccess: (data) => {
-        setuserId(data.id)
-      }
-    }
-  })
-
   if (!keycloak.authenticated) return <></>
   return (
     <AutomatedUserFactory
       update={!!userId}
+      createUserOptions={{
+        onSuccess: (data) => {
+          setuserId(data.id)
+        }
+      }}
       {...args}
-      getUser={getUser}
-      updateUser={updateUser}
-      createUser={createUser}
+      userId={userId}
+      jwt={keycloak.token}
     />
   )
 }
 
-AutomatedUserFactoryStory.args = {}
+AutomatedUserFactoryStory.args = {
+  apiUrl: 'http://localhost:8002'
+}
 
 AutomatedUserFactoryStory.storyName = 'AutomatedUserFactory'

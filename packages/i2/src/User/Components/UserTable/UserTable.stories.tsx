@@ -95,7 +95,7 @@ const users: User[] = [
 UserTableStory.args = {
   users: users,
   totalPages: 10,
-  onFetchUsers: (params) => console.log(params),
+  onFiltersChanged: (params) => console.log(params),
   organizationsRefs: [
     {
       id: 'smartb',

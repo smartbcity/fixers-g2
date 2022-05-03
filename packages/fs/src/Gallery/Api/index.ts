@@ -5,7 +5,7 @@ import {
   useQuery,
   UseQueryOptions
 } from 'react-query'
-import { request } from 'utils'
+import { request } from '@smartb/g2-utils'
 import {
   DirectoryPath,
   FileDeleteCommand,
@@ -14,7 +14,17 @@ import {
   FileUploadCommand,
   FileUploadedEvent,
   FsFile
-} from './types'
+} from '../Domain'
+
+export type GetGalleryOptions = Omit<
+  UseQueryOptions<
+    { files: FsFile[] } | undefined,
+    unknown,
+    { files: FsFile[] } | undefined,
+    'gallery'
+  >,
+  'queryKey' | 'queryFn'
+>
 
 export interface getGalleryParams {
   directoryPath: DirectoryPath
@@ -24,15 +34,7 @@ export interface getGalleryParams {
   queryKey?: string
   jwt?: string
   apiUrl: string
-  options?: Omit<
-    UseQueryOptions<
-      { files: FsFile[] } | undefined,
-      unknown,
-      { files: FsFile[] } | undefined,
-      'gallery'
-    >,
-    'queryKey' | 'queryFn'
-  >
+  options?: GetGalleryOptions
 }
 
 export const useGetGallery = (params: getGalleryParams) => {
@@ -55,13 +57,20 @@ export const useGetGallery = (params: getGalleryParams) => {
   return useQuery(queryKey, getGallery, options)
 }
 
+export type DeleteFilesOptions = Omit<
+  UseMutationOptions<
+    FileDeletedEvent[] | undefined,
+    unknown,
+    FileDeleteCommand[],
+    unknown
+  >,
+  'mutationFn'
+>
+
 export interface deleteFilesParams {
   jwt?: string
   apiUrl: string
-  options?: Omit<
-    UseMutationOptions<{}[] | undefined, unknown, FileDeleteCommand[], unknown>,
-    'mutationFn'
-  >
+  options?: DeleteFilesOptions
 }
 
 export const useDeleteFiles = (params: deleteFilesParams) => {
@@ -87,13 +96,20 @@ export const useDeleteFiles = (params: deleteFilesParams) => {
   return useMutation(deleteFile, options)
 }
 
+export type UploadFilesOptions = Omit<
+  UseMutationOptions<
+    FileUploadedEvent[] | undefined,
+    unknown,
+    FileUploadCommand[],
+    unknown
+  >,
+  'mutationFn'
+>
+
 export interface uploadFilesParams {
   jwt?: string
   apiUrl: string
-  options?: Omit<
-    UseMutationOptions<{}[] | undefined, unknown, FileUploadCommand[], unknown>,
-    'mutationFn'
-  >
+  options?: UploadFilesOptions
 }
 
 export const useUploadFiles = (params: uploadFilesParams) => {

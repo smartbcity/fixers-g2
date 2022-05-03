@@ -1,4 +1,5 @@
 import { Roles } from '../../Commons'
+import { OrganizationRef } from '../../Organization/Domain'
 
 export const classes = `export interface UserCreationClasses {
   leftForm?: string
@@ -12,12 +13,6 @@ export const styles = `export interface UserCreationStyles {
 }`
 
 export type UserId = string
-export type OrganizationId = string
-
-export type OrganizationRef = {
-  id: OrganizationId
-  name: string
-}
 
 export interface Address {
   street: string

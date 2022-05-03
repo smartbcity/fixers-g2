@@ -2,10 +2,11 @@ import {
   Organization,
   OrganizationCreateCommand,
   OrganizationGetByIdQuery,
+  OrganizationId,
   OrganizationUpdateCommand
 } from '../Domain'
 import { useCallback } from 'react'
-import { request } from 'utils'
+import { request } from '@smartb/g2-utils'
 import {
   useMutation,
   UseMutationOptions,
@@ -14,33 +15,34 @@ import {
   QueryFunctionContext
 } from 'react-query'
 import { OrganizationTableFilters } from '../Components/OrganizationTable'
-import { OrganizationId } from '../../User/Domain'
 
 export interface OrganizationPageQueryResult {
   organizations: Organization[]
   total: number
 }
 
-export interface getOrganizationsParams {
+export type GetOrganizationsOptions = Omit<
+  UseQueryOptions<
+    OrganizationPageQueryResult,
+    unknown,
+    OrganizationPageQueryResult,
+    (string | OrganizationTableFilters | undefined)[]
+  >,
+  'queryKey' | 'queryFn'
+>
+
+export interface GetOrganizationsParams {
   /**
    * @default "organization"
    */
   queryKey?: string
   jwt?: string
   apiUrl: string
-  options?: Omit<
-    UseQueryOptions<
-      OrganizationPageQueryResult,
-      unknown,
-      OrganizationPageQueryResult,
-      (string | OrganizationTableFilters | undefined)[]
-    >,
-    'queryKey' | 'queryFn'
-  >
+  options?: GetOrganizationsOptions
   queryParams?: OrganizationTableFilters
 }
 
-export const useGetOrganizations = (params: getOrganizationsParams) => {
+export const useGetOrganizations = (params: GetOrganizationsParams) => {
   const {
     apiUrl,
     jwt,
@@ -48,7 +50,7 @@ export const useGetOrganizations = (params: getOrganizationsParams) => {
     queryKey = 'organizations',
     queryParams
   } = params
-
+  // TODO Remove all duplicated code with other request
   const getOrganizations = useCallback(
     async ({
       queryKey
@@ -87,7 +89,17 @@ export const useGetOrganizations = (params: getOrganizationsParams) => {
   return useQuery([queryKey, queryParams], getOrganizations, options)
 }
 
-export interface getOrganizationParams {
+export type GetOrganizationOptions = Omit<
+  UseQueryOptions<
+    { organization: Organization } | undefined,
+    unknown,
+    { organization: Organization } | undefined,
+    (string | undefined)[]
+  >,
+  'queryKey' | 'queryFn'
+>
+
+export interface GetOrganizationParams {
   /**
    * @default "organization"
    */
@@ -95,18 +107,10 @@ export interface getOrganizationParams {
   jwt?: string
   organizationId?: OrganizationId
   apiUrl: string
-  options?: Omit<
-    UseQueryOptions<
-      { organization: Organization } | undefined,
-      unknown,
-      { organization: Organization } | undefined,
-      (string | undefined)[]
-    >,
-    'queryKey' | 'queryFn'
-  >
+  options?: GetOrganizationOptions
 }
 
-export const useGetOrganization = (params: getOrganizationParams) => {
+export const useGetOrganization = (params: GetOrganizationParams) => {
   const {
     apiUrl,
     jwt,
@@ -114,7 +118,7 @@ export const useGetOrganization = (params: getOrganizationParams) => {
     organizationId,
     queryKey = 'organization'
   } = params
-
+  // TODO Remove all duplicated code with other request
   const getOrganization = useCallback(
     async ({ queryKey }: QueryFunctionContext<[string, string]>) => {
       const [_key, organizationId] = queryKey
@@ -141,23 +145,45 @@ export const useGetOrganization = (params: getOrganizationParams) => {
   })
 }
 
-export interface updateOrganizationParams {
+export const getInseeOrganization = async (
+  siret: string,
+  apiUrl: string,
   jwt?: string
-  apiUrl: string
-  options?: Omit<
-    UseMutationOptions<
-      undefined | { id: string },
-      unknown,
-      Organization,
-      unknown
-    >,
-    'mutationFn'
-  >
+) => {
+  const res = await request<{ organization?: Organization }[]>({
+    url: `${apiUrl}/getInseeOrganization`,
+    method: 'POST',
+    body: JSON.stringify({
+      siret: siret
+    }),
+    jwt: jwt
+  })
+  if (res) {
+    return res[0].organization
+  } else {
+    return undefined
+  }
 }
 
-export const useUpdateOrganization = (params: updateOrganizationParams) => {
-  const { apiUrl, jwt, options } = params
+export type UpdateOrganizationOptions = Omit<
+  UseMutationOptions<
+    undefined | { id: string },
+    unknown,
+    Organization,
+    unknown
+  >,
+  'mutationFn'
+>
 
+export interface UpdateOrganizationParams {
+  jwt?: string
+  apiUrl: string
+  options?: UpdateOrganizationOptions
+}
+
+export const useUpdateOrganization = (params: UpdateOrganizationParams) => {
+  const { apiUrl, jwt, options } = params
+  // TODO Remove all duplicated code with other request
   const updateOrganization = useCallback(
     async (organization: Organization) => {
       const res = await request<{ id: string }[]>({
@@ -180,23 +206,25 @@ export const useUpdateOrganization = (params: updateOrganizationParams) => {
   return useMutation(updateOrganization, options)
 }
 
-export interface createOrganizationParams {
+export type CreateOrganizationOptions = Omit<
+  UseMutationOptions<
+    undefined | { id: string },
+    unknown,
+    Organization,
+    unknown
+  >,
+  'mutationFn'
+>
+
+export interface CreateOrganizationParams {
   jwt?: string
   apiUrl: string
-  options?: Omit<
-    UseMutationOptions<
-      undefined | { id: string },
-      unknown,
-      Organization,
-      unknown
-    >,
-    'mutationFn'
-  >
+  options?: CreateOrganizationOptions
 }
 
-export const useCreateOrganization = (params: createOrganizationParams) => {
+export const useCreateOrganization = (params: CreateOrganizationParams) => {
   const { apiUrl, jwt, options } = params
-
+  // TODO Remove all duplicated code with other request
   const createOrganization = useCallback(
     async (organization: Organization) => {
       const res = await request<{ id: string }[]>({
@@ -218,3 +246,5 @@ export const useCreateOrganization = (params: createOrganizationParams) => {
 
   return useMutation(createOrganization, options)
 }
+
+export * from './GetOrganizationRefsQuery'

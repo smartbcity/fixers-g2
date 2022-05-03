@@ -4,17 +4,15 @@ export {
   UserGetAllQueryResult,
   UserResetPasswordCommand,
   UserResetPasswordResult,
-  OrganizationRef,
-  OrganizationId,
   UserId
 } from './Domain'
 
 export {
-  createUserParams,
-  getUserParams,
-  getUsersParams,
-  resetUserPasswordParams,
-  updateUserParams,
+  CreateUserParams,
+  GetUserParams,
+  GetUsersParams,
+  ResetUserPasswordParams,
+  UpdateUserParams,
   useCreateUser,
   useGetUser,
   useGetUsers,

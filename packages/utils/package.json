@@ -1,18 +1,32 @@
 {
-  "name": "utils",
-  "version": "1.0.0",
-  "description": "Utility package used in the g2 packages. It shouldn't be pushed on npm",
+  "name": "@smartb/g2-utils",
+  "repository": "https://gitlab.smartb.city/fixers/g2.git",
   "author": "SmartB",
-  "repository": "SmartB/utils",
-  "main": "src/index.ts",
+  "license": "Apache-2.0",
+  "version": "1.0.0-adrien.31",
+  "description": "Utility package used in the g2 packages.",
+  "private": false,
+  "main": "dist/index.js",
   "source": "src/index.ts",
-  "types": "src/index.ts",
+  "types": "dist/index.d.ts",
+  "module": "dist/index.es.js",
   "engines": {
     "node": ">=10"
   },
   "scripts": {
-    "build": "echo 'no build for this package'",
-    "publish:gitlab": "echo 'this package is not publishable'",
-    "publish:npm": "echo 'this package is not publishable'"
+    "build": "rollup -c",
+    "test": "run-s test:unit test:lint test:build",
+    "test:build": "run-s build",
+    "test:lint": "eslint .",
+    "test:unit": "cross-env CI=1 react-scripts test --env=jsdom",
+    "test:watch": "react-scripts test --env=jsdom",
+    "publish:gitlab": "npm publish",
+    "publish:npm": "yarn publish --access public --new-version ${VERSION}"
+  },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "@smartb:registry": "https://gitlab.smartb.city/api/v4/projects/52/packages/npm/"
   }
 }

@@ -190,7 +190,7 @@ export const OrganizationTable = (props: OrganizationTableProps) => {
     >
       <Table<Organization>
         page={page}
-        onPageChange={onChangePage}
+        handlePageChange={onChangePage}
         data={organizations}
         columns={columns}
         totalPages={totalPages}
