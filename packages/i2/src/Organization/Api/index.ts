@@ -15,6 +15,7 @@ import {
   QueryFunctionContext
 } from 'react-query'
 import { OrganizationTableFilters } from '../Components/OrganizationTable'
+export * from './GetOrganizationRefsQuery'
 
 export interface OrganizationPageQueryResult {
   organizations: Organization[]

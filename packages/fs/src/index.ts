@@ -16,5 +16,8 @@ export {
   AutomatedGalleryFactoryProps,
   DropError,
   GalleryFactory,
-  GalleryFactoryProps
+  GalleryFactoryProps,
+  GetGalleryOptions,
+  DeleteFilesOptions,
+  UploadFilesOptions
 } from './Gallery'

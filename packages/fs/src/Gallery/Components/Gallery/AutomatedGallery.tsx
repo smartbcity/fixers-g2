@@ -14,6 +14,10 @@ export interface AutomatedGalleryBasicProps {
    * The getGallery hook options
    */
   getGalleryOptions?: GetGalleryOptions
+  /**
+   * The getGallery query key
+   */
+  getGalleryQueryKey?: string
 }
 
 export type AutomatedGalleryProps = MergeMuiElementProps<
@@ -22,12 +26,14 @@ export type AutomatedGalleryProps = MergeMuiElementProps<
 >
 
 export const AutomatedGallery = (props: AutomatedGalleryProps) => {
-  const { getGalleryOptions, directoryPath, ...rest } = props
+  const { getGalleryOptions, directoryPath, getGalleryQueryKey, ...rest } =
+    props
 
   const gallery = useGetGallery({
     apiUrl: fsConfig().url,
     directoryPath: directoryPath,
-    options: getGalleryOptions
+    options: getGalleryOptions,
+    queryKey: getGalleryQueryKey
   })
 
   return <Gallery {...rest} files={gallery.data?.files ?? []} />

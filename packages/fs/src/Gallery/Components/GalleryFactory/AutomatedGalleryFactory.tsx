@@ -33,6 +33,10 @@ export interface AutomatedGalleryFactoryBasicProps {
    */
   getGalleryOptions?: GetGalleryOptions
   /**
+   * The getGallery query key
+   */
+  getGalleryQueryKey?: string
+  /**
    * The deleteFiles hook options
    */
   deleteFilesOptions?: DeleteFilesOptions
@@ -73,6 +77,7 @@ export const AutomatedGalleryFactory = (
     getGalleryOptions,
     deleteFilesOptions,
     uploadFilesOptions,
+    getGalleryQueryKey,
     ...rest
   } = props
   const [currentGallery, setCurrentGallery] = useState<TrackedFsFile[]>([])
@@ -86,7 +91,8 @@ export const AutomatedGalleryFactory = (
     directoryPath: directoryPath,
     options: {
       ...getGalleryOptions
-    }
+    },
+    queryKey: getGalleryQueryKey
   })
 
   const deleteFiles = useDeleteFiles({

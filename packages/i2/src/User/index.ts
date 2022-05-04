@@ -7,18 +7,7 @@ export {
   UserId
 } from './Domain'
 
-export {
-  CreateUserParams,
-  GetUserParams,
-  GetUsersParams,
-  ResetUserPasswordParams,
-  UpdateUserParams,
-  useCreateUser,
-  useGetUser,
-  useGetUsers,
-  useResetUserPassword,
-  useUpdateUser
-} from './Api'
+export * from './Api'
 
 export {
   UserFactory,
