@@ -5,7 +5,7 @@ import {
   AutomatedUserFactoryBasicProps as AutomatedUserFactoryProps
 } from './AutomatedUserFactory'
 import { Story } from '@storybook/react/types-6-0'
-import { KeycloakProvider, useAuth } from '@smartb/g2-providers'
+import { g2Config, KeycloakProvider } from '@smartb/g2-providers'
 import { Typography } from '@mui/material'
 import { QueryClient, QueryClientProvider } from 'react-query'
 
@@ -22,11 +22,7 @@ export const AutomatedUserFactoryStory: Story<AutomatedUserFactoryProps> = (
   return (
     <QueryClientProvider client={queryClient}>
       <KeycloakProvider
-        config={{
-          clientId: 'admin-cli',
-          realm: 'test',
-          url: 'https://auth.smart-b.io/auth'
-        }}
+        config={g2Config().keycloak}
         loadingComponent={<Typography>Loading...</Typography>}
         initOptions={{ onLoad: 'login-required' }}
       >
@@ -38,9 +34,7 @@ export const AutomatedUserFactoryStory: Story<AutomatedUserFactoryProps> = (
 
 const Following = (args: AutomatedUserFactoryProps) => {
   const [userId, setuserId] = useState<string | undefined>(undefined)
-  const { keycloak } = useAuth()
 
-  if (!keycloak.authenticated) return <></>
   return (
     <AutomatedUserFactory
       update={!!userId}
@@ -51,13 +45,10 @@ const Following = (args: AutomatedUserFactoryProps) => {
       }}
       {...args}
       userId={userId}
-      jwt={keycloak.token}
     />
   )
 }
 
-AutomatedUserFactoryStory.args = {
-  apiUrl: 'http://localhost:8002'
-}
+AutomatedUserFactoryStory.args = {}
 
 AutomatedUserFactoryStory.storyName = 'AutomatedUserFactory'

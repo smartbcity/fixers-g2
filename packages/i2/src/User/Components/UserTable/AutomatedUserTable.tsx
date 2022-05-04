@@ -4,20 +4,13 @@ import { UserTableFilters } from './index'
 import { UserTable, UserTableProps } from './UserTable'
 import { GetUsersOptions, useGetUsers } from '../../Api'
 import { OrganizationRef } from '../../../Organization'
+import { i2Config, useAuth } from '@smartb/g2-providers'
 
 // TODO Automated should be without getUsers and organizationsRefs
 // we could use a parameter to disable organizationsRefs if needed
 // jwt should be get by useAuth
 // apiUrl should be a configuration out side of the components
 export interface AutomatedUserTableBasicProps extends BasicProps {
-  /**
-   * Bearer token to query users // Remove and use useAuth.
-   */
-  jwt?: string
-  /**
-   * User api url // Remove and use useAuth.
-   */
-  apiUrl: string
   /**
    * The getUsers hook options
    */
@@ -47,8 +40,6 @@ export const AutomatedUserTable = (props: AutomatedUserTableProps) => {
     onFiltersChanged,
     organizationsRefs,
     getUsersOptions,
-    apiUrl,
-    jwt,
     ...other
   } = props
 
@@ -56,9 +47,11 @@ export const AutomatedUserTable = (props: AutomatedUserTableProps) => {
     initialFiltersValues
   )
 
+  const { keycloak } = useAuth()
+
   const getUsers = useGetUsers({
-    apiUrl: apiUrl,
-    jwt: jwt,
+    apiUrl: i2Config().userUrl,
+    jwt: keycloak.token,
     queryParams: queryParams,
     options: getUsersOptions
   })

@@ -3,16 +3,9 @@ import React, { useCallback, useState } from 'react'
 import { OrganizationTableFilters } from './index'
 import { OrganizationTable, OrganizationTableProps } from './OrganizationTable'
 import { useGetOrganizations, GetOrganizationsOptions } from '../../Api'
+import { i2Config, useAuth } from '@smartb/g2-providers'
 
 export interface AutomatedOrganizationTableBasicProps extends BasicProps {
-  /**
-   * The Api url where to make the locals Api calls
-   */
-  apiUrl: string
-  /**
-   * The token to authorize the Api calls
-   */
-  jwt?: string
   /**
    * The getOrganizations hook options
    */
@@ -38,19 +31,19 @@ export const AutomatedOrganizationTable = (
   const {
     initialFiltersValues,
     onSubmitFilters,
-    apiUrl,
-    jwt,
     getOrganizationsOptions,
     ...other
   } = props
+
+  const { keycloak } = useAuth()
 
   const [queryParams, setQueryParams] = useState<
     OrganizationTableFilters | undefined
   >(initialFiltersValues)
 
   const getOrganizations = useGetOrganizations({
-    apiUrl: apiUrl,
-    jwt: jwt,
+    apiUrl: i2Config().orgUrl,
+    jwt: keycloak.token,
     queryParams: queryParams,
     options: getOrganizationsOptions
   })

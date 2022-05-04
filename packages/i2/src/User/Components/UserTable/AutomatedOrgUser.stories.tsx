@@ -5,10 +5,8 @@ import {
   AutomatedUserTableProps
 } from './AutomatedUserTable'
 import { Story } from '@storybook/react/types-6-0'
-import { KeycloakProvider, useAuth } from '@smartb/g2-providers'
+import { g2Config, KeycloakProvider } from '@smartb/g2-providers'
 import { Typography } from '@mui/material'
-import { useGetUsers } from '../../Api'
-import { UserTableFilters } from '../..'
 import { QueryClient, QueryClientProvider } from 'react-query'
 
 export default {
@@ -24,11 +22,7 @@ export const AutomatedUserTableStory: Story<AutomatedUserTableProps> = (
   return (
     <QueryClientProvider client={queryClient}>
       <KeycloakProvider
-        config={{
-          clientId: 'admin-cli',
-          realm: 'test',
-          url: 'https://auth.smart-b.io/auth'
-        }}
+        config={g2Config().keycloak}
         loadingComponent={<Typography>Loading...</Typography>}
         initOptions={{ onLoad: 'login-required' }}
       >
@@ -39,14 +33,9 @@ export const AutomatedUserTableStory: Story<AutomatedUserTableProps> = (
 }
 
 const Following = (args: AutomatedUserTableProps) => {
-  const { keycloak } = useAuth()
-
-  if (!keycloak.authenticated) return <></>
-  return <AutomatedUserTable {...args} jwt={keycloak.token} />
+  return <AutomatedUserTable {...args} />
 }
 
-AutomatedUserTableStory.args = {
-  apiUrl: 'http://localhost:8002'
-}
+AutomatedUserTableStory.args = {}
 
 AutomatedUserTableStory.storyName = 'AutomatedUserTable'

@@ -3,16 +3,9 @@ import React from 'react'
 import { Gallery, GalleryProps } from './Gallery'
 import { DirectoryPath } from '../../Domain'
 import { GetGalleryOptions, useGetGallery } from '../..'
+import { fsConfig } from '@smartb/g2-providers'
 
 export interface AutomatedGalleryBasicProps {
-  /**
-   * The Api url where to make the locals Api calls
-   */
-  apiUrl: string
-  /**
-   * The token to authorize the Api calls
-   */
-  jwt?: string
   /**
    * The directoryPath of the gallery
    */
@@ -29,11 +22,10 @@ export type AutomatedGalleryProps = MergeMuiElementProps<
 >
 
 export const AutomatedGallery = (props: AutomatedGalleryProps) => {
-  const { apiUrl, jwt, getGalleryOptions, directoryPath, ...rest } = props
+  const { getGalleryOptions, directoryPath, ...rest } = props
 
   const gallery = useGetGallery({
-    apiUrl: apiUrl,
-    jwt: jwt,
+    apiUrl: fsConfig().url,
     directoryPath: directoryPath,
     options: getGalleryOptions
   })

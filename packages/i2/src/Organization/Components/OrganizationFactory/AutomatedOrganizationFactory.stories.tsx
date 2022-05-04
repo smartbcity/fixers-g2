@@ -5,7 +5,7 @@ import {
   AutomatedOrganizationFactoryBasicProps as AutomatedOrganizationFactoryProps
 } from './AutomatedOrganizationFactory'
 import { Story } from '@storybook/react/types-6-0'
-import { KeycloakProvider, useAuth } from '@smartb/g2-providers'
+import { g2Config, KeycloakProvider } from '@smartb/g2-providers'
 import { Typography } from '@mui/material'
 import { QueryClient, QueryClientProvider } from 'react-query'
 
@@ -21,11 +21,7 @@ export const AutomatedOrganizationFactoryStory: Story<AutomatedOrganizationFacto
     return (
       <QueryClientProvider client={queryClient}>
         <KeycloakProvider
-          config={{
-            clientId: 'admin-cli',
-            realm: 'test',
-            url: 'https://auth.smart-b.io/auth'
-          }}
+          config={g2Config().keycloak}
           loadingComponent={<Typography>Loading...</Typography>}
           initOptions={{ onLoad: 'login-required' }}
         >
@@ -37,9 +33,6 @@ export const AutomatedOrganizationFactoryStory: Story<AutomatedOrganizationFacto
 
 const Following = (args: AutomatedOrganizationFactoryProps) => {
   const [organizationId, setOrganizationId] = useState<string | undefined>()
-  const { keycloak } = useAuth()
-
-  if (!keycloak.authenticated) return <></>
   return (
     <AutomatedOrganizationFactory
       createOrganizationOptions={{
@@ -50,13 +43,10 @@ const Following = (args: AutomatedOrganizationFactoryProps) => {
       organizationId={organizationId}
       update={!!organizationId}
       {...args}
-      jwt={keycloak.token}
     />
   )
 }
 
-AutomatedOrganizationFactoryStory.args = {
-  apiUrl: 'http://localhost:8002'
-}
+AutomatedOrganizationFactoryStory.args = {}
 
 AutomatedOrganizationFactoryStory.storyName = 'AutomatedOrganizationFactory'

@@ -15,6 +15,7 @@ import {
   useGetOrganization,
   useUpdateOrganization
 } from '../../Api'
+import { useAuth, i2Config } from '@smartb/g2-providers'
 
 export type ReadonlyOrgFieldsPerState = {
   create?: ReadonlyFields
@@ -25,14 +26,6 @@ export type ReadonlyOrgFieldsPerState = {
 }
 
 export interface AutomatedOrganizationFactoryBasicProps extends BasicProps {
-  /**
-   * The Api url where to make the locals Api calls
-   */
-  apiUrl: string
-  /**
-   * The token to authorize the Api calls
-   */
-  jwt?: string
   /**
    * The organization id to provide if it's an updation
    */
@@ -72,37 +65,37 @@ export const AutomatedOrganizationFactory = (
     organizationId,
     update = false,
     readonlyFieldsPerState,
-    apiUrl,
-    jwt,
     getOrganizationOptions,
     updateOrganizationOptions,
     createOrganizationOptions,
     ...other
   } = props
 
+  const { keycloak } = useAuth()
+
   const getInseeOrganizationMemoized = useCallback(
     async (siret: string) => {
-      return getInseeOrganization(siret, apiUrl, jwt)
+      return getInseeOrganization(siret, i2Config().orgUrl, keycloak.token)
     },
-    [apiUrl, jwt]
+    [keycloak.token]
   )
 
   const getOrganization = useGetOrganization({
-    apiUrl: apiUrl,
+    apiUrl: i2Config().orgUrl,
     organizationId: organizationId,
-    jwt: jwt,
+    jwt: keycloak.token,
     options: getOrganizationOptions
   })
 
   const updateOrganization = useUpdateOrganization({
-    apiUrl: apiUrl,
-    jwt: jwt,
+    apiUrl: i2Config().orgUrl,
+    jwt: keycloak.token,
     options: updateOrganizationOptions
   })
 
   const createOrganization = useCreateOrganization({
-    apiUrl: apiUrl,
-    jwt: jwt,
+    apiUrl: i2Config().orgUrl,
+    jwt: keycloak.token,
     options: createOrganizationOptions
   })
 

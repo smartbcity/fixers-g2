@@ -21,16 +21,9 @@ import {
   UploadFilesOptions
 } from '../..'
 import { useQueryClient } from 'react-query'
+import { fsConfig } from '@smartb/g2-providers'
 
 export interface AutomatedGalleryFactoryBasicProps {
-  /**
-   * The Api url where to make the locals Api calls
-   */
-  apiUrl: string
-  /**
-   * The token to authorize the Api calls
-   */
-  jwt?: string
   /**
    * the directory path of the gallery
    */
@@ -77,8 +70,6 @@ export const AutomatedGalleryFactory = (
   const {
     directoryPath,
     strings,
-    apiUrl,
-    jwt,
     getGalleryOptions,
     deleteFilesOptions,
     uploadFilesOptions,
@@ -91,17 +82,15 @@ export const AutomatedGalleryFactory = (
   const queryClient = useQueryClient()
 
   const gallery = useGetGallery({
-    apiUrl: apiUrl,
+    apiUrl: fsConfig().url,
     directoryPath: directoryPath,
-    jwt: jwt,
     options: {
       ...getGalleryOptions
     }
   })
 
   const deleteFiles = useDeleteFiles({
-    apiUrl: apiUrl,
-    jwt: jwt,
+    apiUrl: fsConfig().url,
     options: {
       ...deleteFilesOptions,
       onSuccess: (data, varaibles, context) => {
@@ -118,8 +107,7 @@ export const AutomatedGalleryFactory = (
   })
 
   const uploadFiles = useUploadFiles({
-    apiUrl: apiUrl,
-    jwt: jwt,
+    apiUrl: fsConfig().url,
     options: {
       ...uploadFilesOptions,
       onSuccess: (data, varaibles, context) => {

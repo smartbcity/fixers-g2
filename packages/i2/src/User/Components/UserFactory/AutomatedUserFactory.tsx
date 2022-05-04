@@ -14,6 +14,7 @@ import {
   useGetUser,
   useUpdateUser
 } from '../../Api'
+import { i2Config, useAuth } from '@smartb/g2-providers'
 
 export type ReadonlyUserFieldsPerState = {
   create?: ReadonlyFields
@@ -24,14 +25,6 @@ export type ReadonlyUserFieldsPerState = {
 }
 
 export interface AutomatedUserFactoryBasicProps extends BasicProps {
-  /**
-   * The Api url where to make the locals Api calls
-   */
-  apiUrl: string
-  /**
-   * The token to authorize the Api calls
-   */
-  jwt?: string
   /**
    * The getUser hook options
    */
@@ -70,8 +63,6 @@ export type AutomatedUserFactoryProps = MergeMuiElementProps<
 
 export const AutomatedUserFactory = (props: AutomatedUserFactoryProps) => {
   const {
-    apiUrl,
-    jwt,
     userId,
     update = false,
     organizationId,
@@ -82,22 +73,24 @@ export const AutomatedUserFactory = (props: AutomatedUserFactoryProps) => {
     ...other
   } = props
 
+  const { keycloak } = useAuth()
+
   const getUser = useGetUser({
-    apiUrl: apiUrl,
-    jwt: jwt,
+    apiUrl: i2Config().userUrl,
+    jwt: keycloak.token,
     userId: userId,
     options: getUserOptions
   })
 
   const updateUser = useUpdateUser({
-    apiUrl: apiUrl,
-    jwt: jwt,
+    apiUrl: i2Config().userUrl,
+    jwt: keycloak.token,
     options: updateUserOptions
   })
 
   const createUser = useCreateUser({
-    apiUrl: apiUrl,
-    jwt: jwt,
+    apiUrl: i2Config().userUrl,
+    jwt: keycloak.token,
     options: createUserOptions
   })
 

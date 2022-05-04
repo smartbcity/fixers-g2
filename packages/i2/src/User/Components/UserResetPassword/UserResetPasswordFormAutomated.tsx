@@ -6,16 +6,9 @@ import {
   UserResetPasswordFormProps
 } from './UserResetPasswordForm'
 import { useResetUserPassword } from '../..'
+import { i2Config, useAuth } from '@smartb/g2-providers'
 
 export interface UserResetPasswordFormAutomatedBasicProps extends BasicProps {
-  /**
-   * The Api url where to make the locals Api calls
-   */
-  apiUrl: string
-  /**
-   * The token to authorize the Api calls
-   */
-  jwt?: string
   /**
    * The id of the user
    */
@@ -30,11 +23,13 @@ export type UserResetPasswordFormAutomatedProps = MergeMuiElementProps<
 export const UserResetPasswordFormAutomated = (
   props: UserResetPasswordFormAutomatedProps
 ) => {
-  const { userId, apiUrl, jwt, ...other } = props
+  const { userId, ...other } = props
+
+  const { keycloak } = useAuth()
 
   const resetUserPassword = useResetUserPassword({
-    apiUrl: apiUrl,
-    jwt: jwt
+    apiUrl: i2Config().userUrl,
+    jwt: keycloak.token
   })
 
   const handleResetPasswordSubmit = useCallback(

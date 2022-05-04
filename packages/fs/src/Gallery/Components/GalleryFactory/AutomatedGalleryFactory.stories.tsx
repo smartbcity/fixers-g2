@@ -38,7 +38,6 @@ const SubComponent = (args: AutomatedGalleryFactoryProps) => {
 }
 
 AutomatedGalleryFactoryStory.args = {
-  apiUrl: 'http://51.83.34.130:8090',
   directoryPath: {
     directory: 'gallery1',
     objectId: '0fe05d72-db8e-4ae1-9852-68ec74fa3b01',
