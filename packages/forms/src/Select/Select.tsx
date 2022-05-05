@@ -208,8 +208,9 @@ export const Select = React.forwardRef(
         const eventValue = event.target.value
         if (Array.isArray(eventValue)) {
           onChangeValues && onChangeValues(eventValue as string[])
+        } else {
+          onChangeValue && onChangeValue(eventValue as string)
         }
-        onChangeValue && onChangeValue(eventValue as string)
       },
       [onChangeValue, onChangeValues]
     )

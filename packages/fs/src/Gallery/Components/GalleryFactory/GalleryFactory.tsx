@@ -41,7 +41,8 @@ export type DropError =
   | 'file-invalid-type'
 
 const defaultErrorMessages: { [key in DropError]?: string } = {
-  'file-invalid-type': 'Les fichier accepté sont: jpg, jpeg, png, gif',
+  'file-invalid-type':
+    'Les types de fichier accepté sont le: jpg, jpeg, png, gif, webp et svg',
   'file-too-large':
     'Un ou plusieurs fichiers sont trop volumineux: ils ne doivent pas dépasser 10Mo'
 }
@@ -293,11 +294,18 @@ export const dropzoneChildren = (
         height: '50px'
       }}
     />
-    <Typography>
+    <Typography align='center'>
       {addImagesString ?? 'Ajouter une ou plusieurs images'}
     </Typography>
-    <Typography variant='body2' color='error'>
-      {error}
-    </Typography>
+    {error && (
+      <Typography
+        sx={{ paddingTop: '15px' }}
+        align='center'
+        variant='body2'
+        color='error'
+      >
+        {error}
+      </Typography>
+    )}
   </Stack>
 )

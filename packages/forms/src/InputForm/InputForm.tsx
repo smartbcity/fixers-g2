@@ -21,6 +21,7 @@ import {
   RadioChoicesStyles,
   RadioChoices
 } from '../RadioChoices'
+import { AutoComplete, AutoCompleteProps } from '../AutoComplete'
 
 interface InputFormClasses {
   label?: string
@@ -37,6 +38,7 @@ export type InputFormTypes =
   | 'textField'
   | 'datePicker'
   | 'radioChoices'
+  | 'autoComplete'
 
 export interface InputFormBasicProps<T extends InputFormTypes = 'textField'>
   extends BasicProps {
@@ -103,6 +105,8 @@ type InputFormComponentProps<
     ? RemoveMainProps<DatePickerProps>
     : [T] extends ['radioChoices']
     ? RemoveMainProps<RadioChoicesProps>
+    : [T] extends ['autoComplete']
+    ? RemoveMainProps<AutoCompleteProps>
     : RemoveMainProps<TextFieldProps>)
 
 interface InputFormComponent {
@@ -119,6 +123,7 @@ export type InputFormProps = InputFormBasicProps &
   Omit<TextFieldProps, keyof InputFormBasicProps> &
   Omit<SelectProps, keyof InputFormBasicProps> &
   Omit<DatePickerProps, keyof InputFormBasicProps> &
+  Omit<AutoCompleteProps, keyof InputFormBasicProps> &
   Omit<RadioChoicesProps, keyof InputFormBasicProps> & {
     inputClasses?: SelectClasses | TextFieldClasses | DatePickerClasses
     inputStyles?: SelectStyles | TextFieldStyles | DatePickerStyles
@@ -204,6 +209,15 @@ export const InputForm: InputFormComponent = React.forwardRef(
           style={styles?.input}
           classes={inputClasses}
           styles={inputStyles}
+          ref={ref}
+          id={id}
+        />
+      ) : inputType === 'autoComplete' ? (
+        //@ts-ignore
+        <AutoComplete
+          {...other}
+          className={classes?.input}
+          style={styles?.input}
           ref={ref}
           id={id}
         />

@@ -14,6 +14,7 @@ import { StackProps, Stack } from '@mui/material'
 import { cx } from '@emotion/css'
 import { FormState } from './useForm'
 import { RadioChoicesProps } from '../RadioChoices'
+import { AutoCompleteProps } from '../AutoComplete'
 
 export type Action = {
   label: React.ReactNode
@@ -40,7 +41,13 @@ export type Field = {
   /**
    * the type of the field
    */
-  type: 'textfield' | 'select' | 'datepicker' | 'radioChoices' | 'checkbox'
+  type:
+    | 'textfield'
+    | 'select'
+    | 'datepicker'
+    | 'radioChoices'
+    | 'checkbox'
+    | 'autoComplete'
   /**
    * the validator that takes the value of the input and return an error or undefined/nothing if the value is valid
    */
@@ -65,6 +72,22 @@ export type Field = {
     Omit<
       SelectProps & InputFormBasicProps<'select'>,
       | 'value'
+      | 'values'
+      | 'onChangeValue'
+      | 'onChangeValues'
+      | 'label'
+      | 'classes'
+      | 'styles'
+    >
+  >
+  /**
+   * the props of the select if you choosed it
+   */
+  autoCompleteProps?: Partial<
+    Omit<
+      AutoCompleteProps & InputFormBasicProps<'autoComplete'>,
+      | 'value'
+      | 'values'
       | 'onChangeValue'
       | 'onChangeValues'
       | 'label'
@@ -272,6 +295,8 @@ const getInput = (
       field.checkBoxProps?.className,
       field.datePickerProps?.className,
       field.selectProps?.className,
+      field.autoCompleteProps?.className,
+      field.radioChoicesProps?.className,
       field.textFieldProps?.className
     ),
     style: {
@@ -279,6 +304,8 @@ const getInput = (
       ...field.checkBoxProps?.style,
       ...field.datePickerProps?.style,
       ...field.selectProps?.style,
+      ...field.autoCompleteProps?.style,
+      ...field.radioChoicesProps?.style,
       ...field.textFieldProps?.style
     }
   }
@@ -309,7 +336,7 @@ const getInput = (
         <InputForm
           inputType='select'
           values={formState.getFieldProps(field.name).value ?? []}
-          onChangeValues={(values) =>
+          onChangeValues={(values: string[]) =>
             formState.setFieldValue(field.name, values, false)
           }
           {...field.selectProps}
@@ -319,10 +346,34 @@ const getInput = (
         <InputForm
           inputType='select'
           value={formState.getFieldProps(field.name).value ?? ''}
-          onChangeValue={(value) =>
+          onChangeValue={(value: string) =>
             formState.setFieldValue(field.name, value, false)
           }
           {...field.selectProps}
+          {...commonProps}
+        />
+      )
+    case 'autoComplete':
+      return field.autoCompleteProps?.multiple === true ? (
+        // @ts-ignore
+        <InputForm
+          inputType='autoComplete'
+          values={formState.getFieldProps(field.name).value ?? []}
+          onChangeValues={(values) =>
+            formState.setFieldValue(field.name, values, false)
+          }
+          {...field.autoCompleteProps}
+          {...commonProps}
+        />
+      ) : (
+        // @ts-ignore
+        <InputForm
+          inputType='autoComplete'
+          value={formState.getFieldProps(field.name).value ?? ''}
+          onChangeValue={(value) =>
+            formState.setFieldValue(field.name, value, false)
+          }
+          {...field.autoCompleteProps}
           {...commonProps}
         />
       )

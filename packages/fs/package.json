@@ -39,7 +39,7 @@
     "@mui/icons-material": "^5.2.5",
     "@smartb/g2-components": "^1.0.0-alpha.32",
     "@smartb/g2-themes": "^1.0.0-alpha.32",
-    "react-query": "^3.34.19",
+    "react-query": "^3.38.1",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
