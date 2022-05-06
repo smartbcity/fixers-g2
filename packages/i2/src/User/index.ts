@@ -37,3 +37,5 @@ export {
   UserResetPasswordFormClasses,
   UserResetPasswordFormStyles
 } from './Components/UserResetPassword'
+
+export { MyProfile } from './Components/MyProfile'

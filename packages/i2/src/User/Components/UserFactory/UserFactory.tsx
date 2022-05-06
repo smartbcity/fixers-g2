@@ -149,9 +149,10 @@ export const UserFactory = (props: UserFactoryProps) => {
         name: 'givenName',
         defaultValue: user?.givenName,
         validator: (value?: string | number) => {
+          if (readonlyFields?.givenName) return undefined
           const string = String(value).trim()
           if (!string || !value)
-            return "Vous devez renseigner le prénom de l'utilisateur" as string
+            return 'Vous devez renseigner le prénom' as string
           return undefined
         }
       },
@@ -159,9 +160,10 @@ export const UserFactory = (props: UserFactoryProps) => {
         name: 'familyName',
         defaultValue: user?.familyName,
         validator: (value?: string | number) => {
+          if (readonlyFields?.familyName) return undefined
           const string = String(value).trim()
           if (!string || !value)
-            return "Vous devez renseigner le nom de famille de l'utilisateur" as string
+            return 'Vous devez renseigner le nom de famille' as string
           return undefined
         }
       },
@@ -184,9 +186,9 @@ export const UserFactory = (props: UserFactoryProps) => {
         name: 'email',
         defaultValue: user?.email,
         validator: (value?: string) => {
+          if (readonlyFields?.email) return undefined
           const trimmed = (value ?? '').trim()
-          if (!trimmed)
-            return "Vous devez renseigner le mail de l'utilisateur" as string
+          if (!trimmed) return 'Vous devez renseigner le mail' as string
           if (!emailRegex.test(trimmed))
             return "L'email renseigner n'est pas correcte"
           return undefined
@@ -196,6 +198,7 @@ export const UserFactory = (props: UserFactoryProps) => {
         name: 'phone',
         defaultValue: user?.phone,
         validator: (value?: string) => {
+          if (readonlyFields?.phone) return undefined
           const trimmed = (value ?? '').trim()
           if (trimmed && trimmed.length !== 10)
             return 'Le numéro de téléphone doit contenir dix chiffres'
@@ -204,9 +207,10 @@ export const UserFactory = (props: UserFactoryProps) => {
       },
       {
         name: 'role',
-        defaultValue: user?.roles.assignedRoles ?? [
-          (rolesOptions ?? [])[0]?.key
-        ]
+        defaultValue:
+          user?.roles?.assignedRoles ?? !isUpdate
+            ? [(rolesOptions ?? [])[0]?.key]
+            : []
       },
       {
         name: 'memberOf',
@@ -221,7 +225,7 @@ export const UserFactory = (props: UserFactoryProps) => {
           ]
         : [])
     ],
-    [user, isUpdate, rolesOptions, readonly, organizationId]
+    [user, isUpdate, rolesOptions, readonly, organizationId, readonlyFields]
   )
 
   const onSubmitMemoized = useCallback(

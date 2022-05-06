@@ -26,3 +26,5 @@ export {
   OrganizationGetByIdQuery,
   OrganizationUpdateCommand
 } from './Domain'
+
+export { MyOrganization } from './Components/MyOrganization'

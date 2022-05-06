@@ -186,6 +186,7 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
         name: 'name',
         defaultValue: organization?.name,
         validator: (value?: string) => {
+          if (readonlyFields?.name) return undefined
           const trimmed = (value ?? '').trim()
           if (!trimmed) return 'Vous devez renseigner le nom' as string
           return undefined
@@ -204,7 +205,7 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
         defaultValue: organization?.roles
       }
     ],
-    [organization, rolesOptions]
+    [organization, rolesOptions, readonlyFields]
   )
 
   const onSubmitMemoized = useCallback(

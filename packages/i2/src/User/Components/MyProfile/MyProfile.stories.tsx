@@ -1,22 +1,20 @@
 import React, { useState } from 'react'
 import { Meta } from '@storybook/react'
-import {
-  AutomatedUserFactory,
-  AutomatedUserFactoryBasicProps as AutomatedUserFactoryProps
-} from './AutomatedUserFactory'
+import { MyProfile } from './MyProfile'
 import { Story } from '@storybook/react/types-6-0'
 import { g2Config, KeycloakProvider } from '@smartb/g2-providers'
 import { Typography } from '@mui/material'
 import { QueryClient, QueryClientProvider } from 'react-query'
+import { AutomatedUserFactoryProps } from '../UserFactory'
 
 export default {
-  title: 'I2/AutomatedUserFactory',
-  component: AutomatedUserFactory
+  title: 'I2/MyProfile',
+  component: MyProfile
 } as Meta
 
 const queryClient = new QueryClient()
 
-export const AutomatedUserFactoryStory: Story<AutomatedUserFactoryProps> = (
+export const MyProfileStory: Story<AutomatedUserFactoryProps> = (
   args: AutomatedUserFactoryProps
 ) => {
   return (
@@ -33,22 +31,9 @@ export const AutomatedUserFactoryStory: Story<AutomatedUserFactoryProps> = (
 }
 
 const Following = (args: AutomatedUserFactoryProps) => {
-  const [userId, setuserId] = useState<string | undefined>(undefined)
-
-  return (
-    <AutomatedUserFactory
-      update={!!userId}
-      createUserOptions={{
-        onSuccess: (data) => {
-          setuserId(data.id)
-        }
-      }}
-      {...args}
-      userId={userId}
-    />
-  )
+  return <MyProfile {...args} />
 }
 
-AutomatedUserFactoryStory.args = {}
+MyProfileStory.args = {}
 
-AutomatedUserFactoryStory.storyName = 'AutomatedUserFactory'
+MyProfileStory.storyName = 'MyProfile'

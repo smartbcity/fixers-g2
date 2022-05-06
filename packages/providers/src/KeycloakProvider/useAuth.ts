@@ -2,6 +2,14 @@ import { useKeycloak } from '@react-keycloak/web'
 import { useCallback, useMemo } from 'react'
 import { KeycloakInstance, KeycloakTokenParsed } from 'keycloak-js'
 
+export type CommonUser = {
+  id: string
+  email: string
+  organizationId?: string
+  firstName?: string
+  lastName?: string
+}
+
 type AuthService<
   Additionnals extends AuthServiceAdditionnal = {},
   Roles extends string = string
@@ -11,6 +19,13 @@ type AuthService<
    * @return {string | undefined} return  the id or undefined if not authenticated
    */
   getUserId: () => string | undefined
+
+  /**
+   * get the common user informations from the token parsed
+   * @return {User | undefined} return the user or undefined if not authenticated
+   */
+  getUser: () => CommonUser | undefined
+
   /**
    * CheckRounded if the current user has one of the roles given in parameter
    * @param {Roles | string}  roles - The roles that you want to check if the user has them
@@ -98,14 +113,35 @@ function useAuth<
 
   const getUserId = useCallback(
     // @ts-ignore
-    (): string | undefined => keycloakWithRoles.tokenParsed?.userId,
+    (): string | undefined => keycloakWithRoles.tokenParsed?.sub,
+    [keycloakWithRoles]
+  )
+
+  const getUser = useCallback(
+    // @ts-ignore
+    (): CommonUser | undefined => {
+      if (!keycloakWithRoles.authenticated) return
+      return {
+        //@ts-ignore
+        id: keycloakWithRoles.tokenParsed?.sub,
+        //@ts-ignore
+        email: keycloakWithRoles.tokenParsed?.email,
+        //@ts-ignore
+        organizationId: keycloakWithRoles.tokenParsed?.memberOf,
+        //@ts-ignore
+        firstName: keycloakWithRoles.tokenParsed?.given_name,
+        //@ts-ignore
+        lastName: keycloakWithRoles.tokenParsed?.family_name
+      }
+    },
     [keycloakWithRoles]
   )
 
   const service: AuthService = useMemo(
     () => ({
       getUserId: getUserId,
-      isAuthorized: isAuthorized
+      isAuthorized: isAuthorized,
+      getUser: getUser
     }),
     [isAuthorized, getUserId]
   )

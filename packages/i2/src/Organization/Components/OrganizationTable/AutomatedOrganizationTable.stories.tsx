@@ -10,7 +10,7 @@ import { Typography } from '@mui/material'
 import { QueryClient, QueryClientProvider } from 'react-query'
 
 export default {
-  title: 'I2/OrganizationTable',
+  title: 'I2/AutomatedOrganizationTable',
   component: AutomatedOrganizationTable
 } as Meta
 
