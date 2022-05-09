@@ -16,15 +16,17 @@ import {
   FsFile
 } from '../Domain'
 
-export type GetGalleryOptions = Omit<
-  UseQueryOptions<
-    { files: FsFile[] } | undefined,
-    unknown,
-    { files: FsFile[] } | undefined,
-    'gallery'
-  >,
-  'queryKey' | 'queryFn'
->
+export type GetGalleryOptions =
+  | Omit<
+      UseQueryOptions<
+        { files: FsFile[] } | undefined,
+        unknown,
+        { files: FsFile[] } | undefined,
+        string[]
+      >,
+      'queryKey' | 'queryFn'
+    >
+  | undefined
 
 export interface getGalleryParams {
   directoryPath: DirectoryPath
@@ -54,7 +56,7 @@ export const useGetGallery = (params: getGalleryParams) => {
     }
   }, [apiUrl, jwt, directoryPath])
 
-  return useQuery(queryKey, getGallery, options)
+  return useQuery([queryKey, directoryPath.objectId], getGallery, options)
 }
 
 export type DeleteFilesOptions = Omit<

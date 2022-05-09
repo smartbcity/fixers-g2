@@ -28,8 +28,8 @@ export const MyProfile = (props: AutomatedUserFactoryProps) => {
           gap: '20px'
         }}
       >
-        <Typography variant='h6'>My profile</Typography>
-        <Button onClick={onEdit}>Editer les données</Button>
+        <Typography variant='h6'>Mon profile</Typography>
+        {!readonly && <Button onClick={onEdit}>Editer les données</Button>}
       </Stack>
       <AutomatedUserFactory
         {...props}

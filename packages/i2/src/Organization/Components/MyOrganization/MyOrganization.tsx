@@ -45,8 +45,8 @@ export const MyOrganization = (props: MyOrganizationProps) => {
           gap: '20px'
         }}
       >
-        <Typography variant='h6'>My organization</Typography>
-        {isAllowedToEdit && (
+        <Typography variant='h6'>Mon organisation</Typography>
+        {isAllowedToEdit && !readonly && (
           <Button onClick={onEdit}>Editer les données</Button>
         )}
       </Stack>
