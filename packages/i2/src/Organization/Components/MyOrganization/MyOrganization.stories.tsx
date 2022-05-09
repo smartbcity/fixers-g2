@@ -1,11 +1,9 @@
-import React, { useState } from 'react'
 import { Meta } from '@storybook/react'
-import { MyOrganization } from './MyOrganization'
+import { MyOrganization, MyOrganizationProps } from './MyOrganization'
 import { Story } from '@storybook/react/types-6-0'
 import { g2Config, KeycloakProvider } from '@smartb/g2-providers'
 import { Typography } from '@mui/material'
 import { QueryClient, QueryClientProvider } from 'react-query'
-import { AutomatedOrganizationFactoryProps } from '../OrganizationFactory'
 
 export default {
   title: 'I2/MyOrganization',
@@ -14,8 +12,8 @@ export default {
 
 const queryClient = new QueryClient()
 
-export const MyOrganizationStory: Story<AutomatedOrganizationFactoryProps> = (
-  args: AutomatedOrganizationFactoryProps
+export const MyOrganizationStory: Story<MyOrganizationProps> = (
+  args: MyOrganizationProps
 ) => {
   return (
     <QueryClientProvider client={queryClient}>
@@ -30,7 +28,7 @@ export const MyOrganizationStory: Story<AutomatedOrganizationFactoryProps> = (
   )
 }
 
-const Following = (args: AutomatedOrganizationFactoryProps) => {
+const Following = (args: MyOrganizationProps) => {
   return <MyOrganization {...args} />
 }
 

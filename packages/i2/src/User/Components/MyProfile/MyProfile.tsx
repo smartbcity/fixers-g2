@@ -37,8 +37,8 @@ export const MyProfile = (props: AutomatedUserFactoryProps) => {
         organizationId={user.organizationId}
         update={!readonly}
         readonly={readonly}
-        getUserOptions={{
-          ...props.getUserOptions,
+        updateUserOptions={{
+          ...props.updateUserOptions,
           onSuccess: () => {
             setReadonly(true)
           }

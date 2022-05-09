@@ -1,13 +1,24 @@
-import React, { useMemo, useState } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import { useAuth } from '@smartb/g2-providers'
 import { Box } from '@mui/system'
-import { Stack, Typography } from '@mui/material'
+import { Button, Stack, Typography } from '@mui/material'
 import {
   AutomatedOrganizationFactory,
   AutomatedOrganizationFactoryProps
 } from '../OrganizationFactory'
+import { MergeMuiElementProps } from '@smartb/g2-themes'
 
-export const MyOrganization = (props: AutomatedOrganizationFactoryProps) => {
+export interface MyOrganizationBasicProps {
+  updateAllowedRoles?: string[]
+}
+
+export type MyOrganizationProps = MergeMuiElementProps<
+  AutomatedOrganizationFactoryProps,
+  MyOrganizationBasicProps
+>
+
+export const MyOrganization = (props: MyOrganizationProps) => {
+  const { updateAllowedRoles, ...other } = props
   const [readonly, setReadonly] = useState(true)
 
   const { service } = useAuth()
@@ -15,6 +26,15 @@ export const MyOrganization = (props: AutomatedOrganizationFactoryProps) => {
   const user = useMemo(() => {
     return service.getUser()
   }, [service.getUser])
+
+  const isAllowedToEdit = useMemo(() => {
+    if (!updateAllowedRoles) return false
+    return service.isAuthorized(updateAllowedRoles)
+  }, [updateAllowedRoles])
+
+  const onEdit = useCallback(() => {
+    setReadonly(false)
+  }, [])
 
   if (!user) return <></>
   return (
@@ -26,12 +46,21 @@ export const MyOrganization = (props: AutomatedOrganizationFactoryProps) => {
         }}
       >
         <Typography variant='h6'>My organization</Typography>
+        {isAllowedToEdit && (
+          <Button onClick={onEdit}>Editer les données</Button>
+        )}
       </Stack>
       <AutomatedOrganizationFactory
-        {...props}
+        {...other}
         organizationId={user.organizationId}
         update={!readonly}
         readonly={readonly}
+        updateOrganizationOptions={{
+          ...props.updateOrganizationOptions,
+          onSuccess: () => {
+            setReadonly(true)
+          }
+        }}
       />
     </Box>
   )
