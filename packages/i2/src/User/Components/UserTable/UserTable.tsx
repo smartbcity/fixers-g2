@@ -3,7 +3,11 @@ import { Link, MenuItem, MoreOptions } from '@smartb/g2-components'
 import { Column, Table, TableProps, CellProps } from '@smartb/g2-layout'
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 import React, { useCallback, useMemo, useState } from 'react'
-import { UserFilters, UserFiltersProps } from './UserFilters'
+import {
+  UserFilters,
+  UserFiltersProps,
+  UserFiltersStrings
+} from './UserFilters'
 import { stringToAvatarAttributs } from '@smartb/g2-utils'
 import { User } from '../../Domain'
 import { Option } from '@smartb/g2-forms'
@@ -17,6 +21,26 @@ export type UserTableBlockedFilters = {
   search?: boolean
   organizationId?: boolean
   role?: boolean
+}
+
+export interface UserTableStrings {
+  /**
+   * @default "Utilisateur"
+   */
+  user?: string
+  /**
+   * @default "Adresse"
+   */
+  adress?: string
+  /**
+   * @default "Email"
+   */
+  email?: string
+  /**
+   * @default "Oganisation"
+   */
+  organization?: string
+  filters: UserFiltersStrings
 }
 
 export interface UserTableBasicProps extends BasicProps {
@@ -66,6 +90,10 @@ export interface UserTableBasicProps extends BasicProps {
    * If you want the columns organization to contain links redirecting to the organization page provide this prop
    */
   getOrganizationUrl?: (organizationId: OrganizationId) => string
+  /**
+   * The prop to use to add custom translation to the component
+   */
+  strings?: UserTableStrings
 }
 
 export type UserTableProps = MergeMuiElementProps<
@@ -87,6 +115,7 @@ export const UserTable = (props: UserTableProps) => {
     rolesOptions,
     tableActions,
     totalPages,
+    strings,
     ...other
   } = props
   const [page, setPage] = useState(initialFiltersValues?.page ?? 1)
@@ -130,7 +159,7 @@ export const UserTable = (props: UserTableProps) => {
   const columns = useMemo(
     (): Column<User>[] => [
       {
-        Header: 'User',
+        Header: strings?.user ?? 'Utilisateur',
         accessor: 'givenName',
         Cell: ({ row }: CellProps<User>) => {
           const attr = stringToAvatarAttributs(
@@ -162,7 +191,7 @@ export const UserTable = (props: UserTableProps) => {
         width: 170
       },
       {
-        Header: 'Adresse',
+        Header: strings?.adress ?? 'Adresse',
         accessor: 'address',
         Cell: ({ row }: CellProps<User>) =>
           row.original.address ? (
@@ -173,7 +202,7 @@ export const UserTable = (props: UserTableProps) => {
         width: 200
       },
       {
-        Header: 'Email',
+        Header: strings?.email ?? 'Email',
         accessor: 'email',
         Cell: ({ row }: CellProps<User>) => (
           <Typography>{row.original.email}</Typography>
@@ -183,7 +212,7 @@ export const UserTable = (props: UserTableProps) => {
       ...(!!users[0] && !!users[0].memberOf
         ? [
             {
-              Header: 'Organization',
+              Header: strings?.organization ?? 'Organisation',
               accessor: 'memberOf',
               Cell: ({ row }: CellProps<User>) => {
                 if (!!getOrganizationUrl && row.original.memberOf?.id) {
@@ -213,7 +242,7 @@ export const UserTable = (props: UserTableProps) => {
           ]
         : [])
     ],
-    [getActions, getOrganizationUrl]
+    [getActions, getOrganizationUrl, strings]
   )
 
   return (
@@ -242,6 +271,7 @@ export const UserTable = (props: UserTableProps) => {
             blockedFilters={blockedFilters}
             rolesOptions={rolesOptions}
             tableActions={tableActions}
+            strings={strings?.filters}
             {...filtersProps}
           />
         }

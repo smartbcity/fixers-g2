@@ -11,7 +11,7 @@ import {
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { FlatUser, FlatUserToUser, User } from '../../Domain'
-import { addressValidation } from '../../../Commons'
+import { addressValidation, AdressValidationStrings } from '../../../Commons'
 import { OrganizationId, OrganizationRef } from '../../../Organization'
 
 const StyledStack = styled(Stack)({
@@ -60,6 +60,73 @@ export interface UserFactoryStyles {
   leftForm?: React.CSSProperties
   rightForm?: React.CSSProperties
   actionsContainer?: React.CSSProperties
+}
+
+export interface UserFactoryStrings extends AdressValidationStrings {
+  /**
+   * @default "Prénom"
+   */
+  givenName?: string
+  /**
+   * @default "Nom de Famille"
+   */
+  familyName?: string
+  /**
+   * @default "Addresse (facultatif)"
+   */
+  street?: string
+  /**
+   * @default "Code postal (facultatif)"
+   */
+  postalCode?: string
+  /**
+   * @default "Ville (facultatif)"
+   */
+  city?: string
+  /**
+   * @default "Adresse mail"
+   */
+  email?: string
+  /**
+   * @default "Numéro de téléphone (facultatif)"
+   */
+  phone?: string
+  /**
+   * @default "Role"
+   */
+  role?: string
+  /**
+   * @default "Organisation"
+   */
+  organization?: string
+  /**
+   * @default "Envoyer un lien d'invitation par mail"
+   */
+  sendEmailLink?: string
+  /**
+   * @default "Vous devez renseigner le prénom"
+   */
+  completeTheGivenName?: string
+  /**
+   * @default "Vous devez renseigner le nom de famille"
+   */
+  completeTheFamilyName?: string
+  /**
+   * @default "Vous devez renseigner le mail"
+   */
+  completeTheEmail?: string
+  /**
+   * @default "L'email renseigner n'est pas correcte"
+   */
+  enterAValidEmail?: string
+  /**
+   * @default "Le numéro de téléphone doit contenir dix chiffres"
+   */
+  enterAValidPhone?: string
+  /**
+   * @default "Valider"
+   */
+  submitButtonLabel?: string
 }
 
 export interface UserFactoryBasicProps extends BasicProps {
@@ -113,6 +180,10 @@ export interface UserFactoryBasicProps extends BasicProps {
    * The styles applied to the different part of the component
    */
   styles?: UserFactoryStyles
+  /**
+   * The prop to use to add custom translation to the component
+   */
+  strings?: UserFactoryStrings
 }
 
 export type UserFactoryProps = MergeMuiElementProps<
@@ -134,6 +205,7 @@ export const UserFactory = (props: UserFactoryProps) => {
     rolesOptions,
     organizationId,
     readonlyFields,
+    strings,
     ...other
   } = props
 
@@ -152,7 +224,10 @@ export const UserFactory = (props: UserFactoryProps) => {
           if (readonlyFields?.givenName) return undefined
           const string = String(value).trim()
           if (!string || !value)
-            return 'Vous devez renseigner le prénom' as string
+            return (
+              strings?.completeTheGivenName ??
+              ('Vous devez renseigner le prénom' as string)
+            )
           return undefined
         }
       },
@@ -163,24 +238,30 @@ export const UserFactory = (props: UserFactoryProps) => {
           if (readonlyFields?.familyName) return undefined
           const string = String(value).trim()
           if (!string || !value)
-            return 'Vous devez renseigner le nom de famille' as string
+            return (
+              strings?.completeTheFamilyName ??
+              ('Vous devez renseigner le nom de famille' as string)
+            )
           return undefined
         }
       },
       {
         name: 'street',
         defaultValue: user?.address?.street,
-        validator: addressValidation.street
+        validator: (value: any, values: any) =>
+          addressValidation.street(value, values, strings)
       },
       {
         name: 'postalCode',
         defaultValue: user?.address?.postalCode,
-        validator: addressValidation.postalCode
+        validator: (value: any, values: any) =>
+          addressValidation.postalCode(value, values, strings)
       },
       {
         name: 'city',
         defaultValue: user?.address?.city,
-        validator: addressValidation.city
+        validator: (value: any, values: any) =>
+          addressValidation.city(value, values, strings)
       },
       {
         name: 'email',
@@ -188,9 +269,16 @@ export const UserFactory = (props: UserFactoryProps) => {
         validator: (value?: string) => {
           if (readonlyFields?.email) return undefined
           const trimmed = (value ?? '').trim()
-          if (!trimmed) return 'Vous devez renseigner le mail' as string
+          if (!trimmed)
+            return (
+              strings?.completeTheGivenName ??
+              ('Vous devez renseigner le mail' as string)
+            )
           if (!emailRegex.test(trimmed))
-            return "L'email renseigner n'est pas correcte"
+            return (
+              strings?.enterAValidEmail ??
+              "L'email renseigner n'est pas correcte"
+            )
           return undefined
         }
       },
@@ -201,7 +289,10 @@ export const UserFactory = (props: UserFactoryProps) => {
           if (readonlyFields?.phone) return undefined
           const trimmed = (value ?? '').trim()
           if (trimmed && trimmed.length !== 10)
-            return 'Le numéro de téléphone doit contenir dix chiffres'
+            return (
+              strings?.enterAValidPhone ??
+              'Le numéro de téléphone doit contenir dix chiffres'
+            )
           return undefined
         }
       },
@@ -225,7 +316,15 @@ export const UserFactory = (props: UserFactoryProps) => {
           ]
         : [])
     ],
-    [user, isUpdate, rolesOptions, readonly, organizationId, readonlyFields]
+    [
+      user,
+      isUpdate,
+      rolesOptions,
+      readonly,
+      organizationId,
+      readonlyFields,
+      strings
+    ]
   )
 
   const onSubmitMemoized = useCallback(
@@ -255,7 +354,7 @@ export const UserFactory = (props: UserFactoryProps) => {
         key: 'givenName',
         name: 'givenName',
         type: 'textfield',
-        label: 'Prénom',
+        label: strings?.givenName ?? 'Prénom',
         textFieldProps: {
           disabled: readonly || readonlyFields?.givenName
         }
@@ -264,7 +363,7 @@ export const UserFactory = (props: UserFactoryProps) => {
         key: 'familyName',
         name: 'familyName',
         type: 'textfield',
-        label: 'Nom de Famille',
+        label: strings?.familyName ?? 'Nom de Famille',
         textFieldProps: {
           disabled: readonly || readonlyFields?.familyName
         }
@@ -273,7 +372,7 @@ export const UserFactory = (props: UserFactoryProps) => {
         key: 'street',
         name: 'street',
         type: 'textfield',
-        label: 'Addresse (facultatif)',
+        label: strings?.street ?? 'Addresse (facultatif)',
         textFieldProps: {
           disabled: readonly || readonlyFields?.address
         }
@@ -282,7 +381,7 @@ export const UserFactory = (props: UserFactoryProps) => {
         key: 'postalCode',
         name: 'postalCode',
         type: 'textfield',
-        label: 'Code postal (facultatif)',
+        label: strings?.postalCode ?? 'Code postal (facultatif)',
         textFieldProps: {
           textFieldType: 'number',
           disabled: readonly || readonlyFields?.address
@@ -292,7 +391,7 @@ export const UserFactory = (props: UserFactoryProps) => {
         key: 'city',
         name: 'city',
         type: 'textfield',
-        label: 'Ville (facultatif)',
+        label: strings?.city ?? 'Ville (facultatif)',
         textFieldProps: {
           disabled: readonly || readonlyFields?.address
         }
@@ -316,7 +415,7 @@ export const UserFactory = (props: UserFactoryProps) => {
         key: 'email',
         name: 'email',
         type: 'textfield',
-        label: 'Adresse mail',
+        label: strings?.email ?? 'Adresse mail',
         textFieldProps: {
           textFieldType: 'email',
           disabled: readonly || readonlyFields?.email
@@ -326,7 +425,7 @@ export const UserFactory = (props: UserFactoryProps) => {
         key: 'phone',
         name: 'phone',
         type: 'textfield',
-        label: 'Numéro de téléphone (facultatif)',
+        label: strings?.phone ?? 'Numéro de téléphone (facultatif)',
         textFieldProps: {
           textFieldType: 'number',
           disabled: readonly || readonlyFields?.phone
@@ -337,7 +436,7 @@ export const UserFactory = (props: UserFactoryProps) => {
             {
               key: 'role',
               name: 'role',
-              label: 'Role',
+              label: strings?.role ?? 'Role',
               type: 'select',
               selectProps: {
                 options: rolesOptions,
@@ -352,7 +451,7 @@ export const UserFactory = (props: UserFactoryProps) => {
             {
               key: 'memberOf',
               name: 'memberOf',
-              label: 'Organisation',
+              label: strings?.organization ?? 'Organisation',
               type: 'select',
               selectProps: {
                 options: orgsOptions,
@@ -367,7 +466,9 @@ export const UserFactory = (props: UserFactoryProps) => {
               key: 'sendEmailLink',
               name: 'sendEmailLink',
               type: 'checkbox',
-              label: "Envoyer un lien d'invitation par mail",
+              label:
+                strings?.sendEmailLink ??
+                "Envoyer un lien d'invitation par mail",
               checkBoxProps: {
                 className: 'AruiUserFactory-sendEmailLink',
                 disabled: readonly || readonlyFields?.sendEmailLink
@@ -385,7 +486,7 @@ export const UserFactory = (props: UserFactoryProps) => {
         : [
             {
               key: 'SubmitForm',
-              label: submitButtonLabel,
+              label: strings?.submitButtonLabel ?? 'Valider',
               success: feedback !== undefined && feedback,
               fail: feedback !== undefined && !feedback,
               onClick: formState.submitForm,

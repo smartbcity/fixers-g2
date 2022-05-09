@@ -13,7 +13,8 @@ import { UserId, UserResetPasswordCommand } from '../../Domain'
 import { FormikHelpers } from 'formik'
 import {
   passwordCheckValidation,
-  passwordValidation
+  passwordValidation,
+  PasswordValidationStrings
 } from '../../Validation/password'
 
 export type Validated = boolean
@@ -24,6 +25,21 @@ export interface UserResetPasswordFormClasses {
 
 export interface UserResetPasswordFormStyles {
   form: React.CSSProperties
+}
+
+export interface UserResetPasswordStrings extends PasswordValidationStrings {
+  /**
+   * @default 'Enregister nouveau mot de passe'
+   */
+  submitButtonLabel?: string
+  /**
+   * @default 'Mot de passe'
+   */
+  password?: string
+  /**
+   * @default 'Vérification du mot de passe'
+   */
+  passwordCheck?: string
 }
 
 export interface UserResetPasswordFormBasicProps extends BasicProps {
@@ -50,6 +66,10 @@ export interface UserResetPasswordFormBasicProps extends BasicProps {
    * The styles applied to the different part of the component
    */
   styles?: UserResetPasswordFormStyles
+  /**
+   * The prop to use to add custom translation to the component
+   */
+  strings?: UserResetPasswordStrings
 }
 
 export type UserResetPasswordFormProps = MergeMuiElementProps<
@@ -65,6 +85,7 @@ export const UserResetPasswordForm = (props: UserResetPasswordFormProps) => {
     classes,
     styles,
     className,
+    strings,
     ...other
   } = props
 
@@ -78,14 +99,15 @@ export const UserResetPasswordForm = (props: UserResetPasswordFormProps) => {
     (): FormPartialField[] => [
       {
         name: 'password',
-        validator: passwordValidation
+        validator: (value) => passwordValidation(value, strings)
       },
       {
         name: 'passwordCheck',
-        validator: passwordCheckValidation
+        validator: (value, values) =>
+          passwordCheckValidation(value, values, strings)
       }
     ],
-    []
+    [strings]
   )
 
   const onSubmitMemoized = useCallback(
@@ -121,7 +143,7 @@ export const UserResetPasswordForm = (props: UserResetPasswordFormProps) => {
         key: 'password',
         name: 'password',
         type: 'textfield',
-        label: 'Mot de passe',
+        label: strings?.password ?? 'Mot de passe',
         textFieldProps: {
           textFieldType: 'password'
         }
@@ -130,7 +152,7 @@ export const UserResetPasswordForm = (props: UserResetPasswordFormProps) => {
         key: 'passwordCheck',
         name: 'passwordCheck',
         type: 'textfield',
-        label: 'Vérification du mot de passe',
+        label: strings?.passwordCheck ?? 'Vérification du mot de passe',
         textFieldProps: {
           textFieldType: 'password'
         }
@@ -143,7 +165,7 @@ export const UserResetPasswordForm = (props: UserResetPasswordFormProps) => {
     (): FormAction[] => [
       {
         key: 'SubmitForm',
-        label: submitButtonLabel,
+        label: strings?.submitButtonLabel ?? 'Enregister nouveau mot de passe',
         success: feedback !== undefined && feedback,
         fail: feedback !== undefined && !feedback,
         onClick: formState.submitForm,

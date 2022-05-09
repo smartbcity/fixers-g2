@@ -17,6 +17,21 @@ export type UserFilters = {
   role?: string
 }
 
+export interface UserFiltersStrings {
+  /**
+   * @default "Rechercher"
+   */
+  search?: string
+  /**
+   * @default "Organisation"
+   */
+  organization?: string
+  /**
+   * @default "Role"
+   */
+  role?: string
+}
+
 export interface UserFiltersBasicProps extends BasicProps {
   onSubmit: (values: any) => void
   initialFiltersValues?: UserFilters
@@ -24,6 +39,7 @@ export interface UserFiltersBasicProps extends BasicProps {
   rolesOptions?: Option[]
   blockedFilters?: UserTableBlockedFilters
   tableActions?: React.ReactNode
+  strings?: UserFiltersStrings
 }
 
 export type UserFiltersProps = MergeMuiElementProps<
@@ -39,6 +55,7 @@ export const UserFilters = (props: UserFiltersProps) => {
     blockedFilters,
     rolesOptions,
     tableActions,
+    strings,
     ...other
   } = props
 
@@ -58,7 +75,7 @@ export const UserFilters = (props: UserFiltersProps) => {
             {
               key: 'search',
               name: 'search',
-              label: 'Rechercher',
+              label: strings?.search ?? 'Rechercher',
               defaultValue: initialFiltersValues?.search,
               type: 'textfield',
               textFieldProps: {
@@ -74,7 +91,7 @@ export const UserFilters = (props: UserFiltersProps) => {
             {
               key: 'organizationId',
               name: 'organizationId',
-              label: 'Organization',
+              label: strings?.organization ?? 'Organisation',
               defaultValue: initialFiltersValues?.organizationId,
               type: 'select',
               selectProps: {
@@ -89,7 +106,7 @@ export const UserFilters = (props: UserFiltersProps) => {
             {
               key: 'role',
               name: 'role',
-              label: 'Role',
+              label: strings?.role ?? 'Role',
               defaultValue: initialFiltersValues?.role,
               type: 'select',
               selectProps: {
@@ -100,7 +117,13 @@ export const UserFilters = (props: UserFiltersProps) => {
           ]
         : [])
     ]
-  }, [organizationsRefs, blockedFilters, rolesOptions, initialFiltersValues])
+  }, [
+    organizationsRefs,
+    blockedFilters,
+    rolesOptions,
+    initialFiltersValues,
+    strings
+  ])
 
   const formState = useFilters({
     fields: fields,
