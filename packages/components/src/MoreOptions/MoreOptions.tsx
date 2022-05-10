@@ -59,18 +59,35 @@ const MoreOptionsBase = <T extends object = {}>(
   props: MoreOptionsProps<T>,
   ref: React.ForwardedRef<HTMLButtonElement>
 ) => {
-  const { options, menuContainerProps, className, classes, styles, ...other } =
-    props
+  const {
+    options,
+    menuContainerProps,
+    className,
+    classes,
+    styles,
+    onClick,
+    ...other
+  } = props
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const defaultStyles = useStyles()
 
-  const handleClick = useCallback((event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget)
-  }, [])
+  const handleClick = useCallback(
+    (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+      setAnchorEl(event.currentTarget)
+      onClick && onClick(event)
+    },
+    []
+  )
 
   const close = useCallback(() => {
     setAnchorEl(null)
   }, [])
+
+  const stopPropagation = useCallback(
+    (event: React.MouseEvent<HTMLElement, MouseEvent>) =>
+      event.stopPropagation(),
+    []
+  )
 
   return (
     <>
@@ -96,6 +113,13 @@ const MoreOptionsBase = <T extends object = {}>(
         anchorEl={anchorEl}
         keepMounted
         open={Boolean(anchorEl)}
+        onClick={stopPropagation}
+        BackdropProps={{
+          onClick: stopPropagation
+        }}
+        MenuListProps={{
+          onClick: stopPropagation
+        }}
         onClose={close}
         PaperProps={{
           className: defaultStyles.classes.menu

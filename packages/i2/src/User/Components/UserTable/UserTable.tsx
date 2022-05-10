@@ -91,6 +91,12 @@ export interface UserTableBasicProps extends BasicProps {
    */
   getOrganizationUrl?: (organizationId: OrganizationId) => string
   /**
+   * Force the display of the organization over the user list (if the first user of the list has no organization)
+   *
+   * @default false
+   */
+  hasOrganizations?: boolean
+  /**
    * The prop to use to add custom translation to the component
    */
   strings?: UserTableStrings
@@ -116,6 +122,7 @@ export const UserTable = (props: UserTableProps) => {
     tableActions,
     totalPages,
     strings,
+    hasOrganizations = false,
     ...other
   } = props
   const [page, setPage] = useState(initialFiltersValues?.page ?? 1)
@@ -209,7 +216,7 @@ export const UserTable = (props: UserTableProps) => {
         ),
         width: 250
       },
-      ...(!!users[0] && !!users[0].memberOf
+      ...((!!users[0] && !!users[0].memberOf) || hasOrganizations
         ? [
             {
               Header: strings?.organization ?? 'Organisation',
@@ -220,6 +227,7 @@ export const UserTable = (props: UserTableProps) => {
                     <Link
                       href={getOrganizationUrl(row.original.memberOf?.id)}
                       target='_blank'
+                      onClick={(e) => e.stopPropagation()}
                     >
                       {row.original.memberOf?.name}
                     </Link>
@@ -236,13 +244,16 @@ export const UserTable = (props: UserTableProps) => {
             {
               id: 'moreoptions',
               Cell: ({ row }: CellProps<User>) => (
-                <MoreOptions options={getActions(row.original)} />
+                <MoreOptions
+                  options={getActions(row.original)}
+                  onClick={(e) => e.stopPropagation()}
+                />
               )
             }
           ]
         : [])
     ],
-    [getActions, getOrganizationUrl, strings]
+    [getActions, getOrganizationUrl, strings, hasOrganizations]
   )
 
   return (

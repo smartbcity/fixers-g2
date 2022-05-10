@@ -160,7 +160,12 @@ export const OrganizationTable = (props: OrganizationTableProps) => {
         Header: 'Site web',
         accessor: 'website',
         Cell: ({ row }: CellProps<Organization>) => (
-          <Link href={row.original.website}>{row.original.website}</Link>
+          <Link
+            href={row.original.website}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {row.original.website}
+          </Link>
         )
       },
       ...(getActions
@@ -168,7 +173,10 @@ export const OrganizationTable = (props: OrganizationTableProps) => {
             {
               id: 'moreoptions',
               Cell: ({ row }: CellProps<Organization>) => (
-                <MoreOptions options={getActions(row.original)} />
+                <MoreOptions
+                  options={getActions(row.original)}
+                  onClick={(e) => e.stopPropagation()}
+                />
               )
             }
           ]

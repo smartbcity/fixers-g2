@@ -29,7 +29,7 @@ export const MyProfile = (props: AutomatedUserFactoryProps) => {
         }}
       >
         <Typography variant='h6'>Mon profile</Typography>
-        {!readonly && <Button onClick={onEdit}>Editer les données</Button>}
+        {readonly && <Button onClick={onEdit}>Editer les données</Button>}
       </Stack>
       <AutomatedUserFactory
         {...props}

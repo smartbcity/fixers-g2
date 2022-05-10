@@ -136,7 +136,7 @@ export const AutomatedUserFactory = (props: AutomatedUserFactoryProps) => {
     [createUser.mutateAsync]
   )
 
-  if (update && !getUser.isSuccess) return <></>
+  if (getUser.isLoading) return <></>
   return (
     <UserFactory
       user={getUser.data}

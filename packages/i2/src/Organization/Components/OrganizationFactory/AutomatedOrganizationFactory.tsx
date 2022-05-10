@@ -87,6 +87,8 @@ export const AutomatedOrganizationFactory = (
     options: getOrganizationOptions
   })
 
+  console.log(getOrganization.data)
+
   const updateOrganization = useUpdateOrganization({
     apiUrl: i2Config().orgUrl,
     jwt: keycloak.token,
@@ -123,7 +125,7 @@ export const AutomatedOrganizationFactory = (
     [createOrganization.mutateAsync]
   )
 
-  if (update && !getOrganization.isSuccess) return <></>
+  if (getOrganization.isLoading) return <></>
   return (
     <OrganizationFactory
       organization={getOrganization.data?.organization}

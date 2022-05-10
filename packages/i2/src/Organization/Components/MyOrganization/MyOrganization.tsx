@@ -46,7 +46,7 @@ export const MyOrganization = (props: MyOrganizationProps) => {
         }}
       >
         <Typography variant='h6'>Mon organisation</Typography>
-        {isAllowedToEdit && !readonly && (
+        {isAllowedToEdit && readonly && (
           <Button onClick={onEdit}>Editer les données</Button>
         )}
       </Stack>
