@@ -39,6 +39,10 @@ export type Field = {
    */
   defaultValue?: any
   /**
+   * the event called when the value of the input change
+   */
+  onChange?: (value: any) => void
+  /**
    * the type of the field
    */
   type:
@@ -278,6 +282,7 @@ const getInput = (
   field: Field,
   formState: FormState,
   fieldClassName: string,
+  onChange?: (value: any) => void,
   classes?: FormClasses,
   styles?: FormStyles
 ) => {
@@ -310,7 +315,7 @@ const getInput = (
     }
   }
   switch (field.type) {
-    case 'datepicker':
+    case 'datepicker': {
       const date = new Date(formState.getFieldProps(field.name).value)
       return (
         <InputForm
@@ -326,19 +331,22 @@ const getInput = (
               date && !isNaN(date.getTime()) ? date : date?.toString(),
               false
             )
+            onChange && onChange(date)
           }}
           {...field.datePickerProps}
           {...commonProps}
         />
       )
+    }
     case 'select':
       return field.selectProps?.multiple === true ? (
         <InputForm
           inputType='select'
           values={formState.getFieldProps(field.name).value ?? []}
-          onChangeValues={(values: string[]) =>
+          onChangeValues={(values: string[]) => {
             formState.setFieldValue(field.name, values, false)
-          }
+            onChange && onChange(values)
+          }}
           {...field.selectProps}
           {...commonProps}
         />
@@ -346,9 +354,10 @@ const getInput = (
         <InputForm
           inputType='select'
           value={formState.getFieldProps(field.name).value ?? ''}
-          onChangeValue={(value: string) =>
+          onChangeValue={(value: string) => {
             formState.setFieldValue(field.name, value, false)
-          }
+            onChange && onChange(value)
+          }}
           {...field.selectProps}
           {...commonProps}
         />
@@ -359,9 +368,10 @@ const getInput = (
         <InputForm
           inputType='autoComplete'
           values={formState.getFieldProps(field.name).value ?? []}
-          onChangeValues={(values) =>
+          onChangeValues={(values) => {
             formState.setFieldValue(field.name, values, false)
-          }
+            onChange && onChange(values)
+          }}
           {...field.autoCompleteProps}
           {...commonProps}
         />
@@ -370,9 +380,10 @@ const getInput = (
         <InputForm
           inputType='autoComplete'
           value={formState.getFieldProps(field.name).value ?? ''}
-          onChangeValue={(value) =>
+          onChangeValue={(value) => {
             formState.setFieldValue(field.name, value, false)
-          }
+            onChange && onChange(value)
+          }}
           {...field.autoCompleteProps}
           {...commonProps}
         />
@@ -381,9 +392,13 @@ const getInput = (
       return (
         <CheckBox
           checked={formState.getFieldProps(field.name).value}
-          onChange={(_: React.ChangeEvent<HTMLInputElement>, value: boolean) =>
+          onChange={(
+            _: React.ChangeEvent<HTMLInputElement>,
+            value: boolean
+          ) => {
             formState.setFieldValue(field.name, value, false)
-          }
+            onChange && onChange(value)
+          }}
           {...field.checkBoxProps}
           {...commonProps}
         />
@@ -393,9 +408,10 @@ const getInput = (
         <InputForm
           inputType='radioChoices'
           value={formState.getFieldProps(field.name).value ?? ''}
-          onChange={(_: React.ChangeEvent<HTMLInputElement>, value: string) =>
+          onChange={(_: React.ChangeEvent<HTMLInputElement>, value: string) => {
             formState.setFieldValue(field.name, value, false)
-          }
+            onChange && onChange(value)
+          }}
           {...field.radioChoicesProps}
           {...commonProps}
         />
@@ -405,9 +421,10 @@ const getInput = (
     <InputForm
       inputType='textField'
       value={formState.getFieldProps(field.name).value ?? ''}
-      onChange={(value: string) =>
+      onChange={(value: string) => {
         formState.setFieldValue(field.name, value, false)
-      }
+        onChange && onChange(value)
+      }}
       {...field.textFieldProps}
       {...commonProps}
     />
