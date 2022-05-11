@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { Meta } from '@storybook/react'
 import {
   AutomatedUserTable,

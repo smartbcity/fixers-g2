@@ -114,9 +114,6 @@ const MoreOptionsBase = <T extends object = {}>(
         keepMounted
         open={Boolean(anchorEl)}
         onClick={stopPropagation}
-        BackdropProps={{
-          onClick: stopPropagation
-        }}
         MenuListProps={{
           onClick: stopPropagation
         }}
