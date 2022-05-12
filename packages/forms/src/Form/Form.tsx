@@ -190,6 +190,7 @@ export const Form = (props: FormProps) => {
     fields,
     onSubmit,
     className,
+    onChange,
     classes,
     styles,
     formState,
@@ -282,7 +283,6 @@ const getInput = (
   field: Field,
   formState: FormState,
   fieldClassName: string,
-  onChange?: (value: any) => void,
   classes?: FormClasses,
   styles?: FormStyles
 ) => {
@@ -331,7 +331,7 @@ const getInput = (
               date && !isNaN(date.getTime()) ? date : date?.toString(),
               false
             )
-            onChange && onChange(date)
+            !!field.onChange && field.onChange(date)
           }}
           {...field.datePickerProps}
           {...commonProps}
@@ -345,7 +345,7 @@ const getInput = (
           values={formState.getFieldProps(field.name).value ?? []}
           onChangeValues={(values: string[]) => {
             formState.setFieldValue(field.name, values, false)
-            onChange && onChange(values)
+            !!field.onChange && field.onChange(values)
           }}
           {...field.selectProps}
           {...commonProps}
@@ -356,7 +356,7 @@ const getInput = (
           value={formState.getFieldProps(field.name).value ?? ''}
           onChangeValue={(value: string) => {
             formState.setFieldValue(field.name, value, false)
-            onChange && onChange(value)
+            !!field.onChange && field.onChange(value)
           }}
           {...field.selectProps}
           {...commonProps}
@@ -370,7 +370,7 @@ const getInput = (
           values={formState.getFieldProps(field.name).value ?? []}
           onChangeValues={(values) => {
             formState.setFieldValue(field.name, values, false)
-            onChange && onChange(values)
+            !!field.onChange && field.onChange(values)
           }}
           {...field.autoCompleteProps}
           {...commonProps}
@@ -382,7 +382,7 @@ const getInput = (
           value={formState.getFieldProps(field.name).value ?? ''}
           onChangeValue={(value) => {
             formState.setFieldValue(field.name, value, false)
-            onChange && onChange(value)
+            !!field.onChange && field.onChange(value)
           }}
           {...field.autoCompleteProps}
           {...commonProps}
@@ -397,7 +397,7 @@ const getInput = (
             value: boolean
           ) => {
             formState.setFieldValue(field.name, value, false)
-            onChange && onChange(value)
+            !!field.onChange && field.onChange(value)
           }}
           {...field.checkBoxProps}
           {...commonProps}
@@ -410,7 +410,7 @@ const getInput = (
           value={formState.getFieldProps(field.name).value ?? ''}
           onChange={(_: React.ChangeEvent<HTMLInputElement>, value: string) => {
             formState.setFieldValue(field.name, value, false)
-            onChange && onChange(value)
+            !!field.onChange && field.onChange(value)
           }}
           {...field.radioChoicesProps}
           {...commonProps}
@@ -423,7 +423,7 @@ const getInput = (
       value={formState.getFieldProps(field.name).value ?? ''}
       onChange={(value: string) => {
         formState.setFieldValue(field.name, value, false)
-        onChange && onChange(value)
+        !!field.onChange && field.onChange(value)
       }}
       {...field.textFieldProps}
       {...commonProps}
