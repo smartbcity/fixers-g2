@@ -109,7 +109,8 @@ export const AutomatedUserFactory = (props: AutomatedUserFactoryProps) => {
   const createUser = useCreateUser({
     apiUrl: i2Config().userUrl,
     jwt: keycloak.token,
-    options: createUserOptions
+    options: createUserOptions,
+    organizationId: organizationId
   })
 
   const updateUserMemoized = useCallback(
@@ -126,6 +127,7 @@ export const AutomatedUserFactory = (props: AutomatedUserFactoryProps) => {
 
   const createUserMemoized = useCallback(
     async (user: User) => {
+      console.log(user)
       const res = await createUser.mutateAsync(user)
       if (res) {
         return true

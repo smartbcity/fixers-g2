@@ -43,6 +43,13 @@ const Following = (args: AutomatedUserFactoryProps) => {
           setuserId(data.id)
         }
       }}
+      organizationId={'1'}
+      organizationsRefs={[
+        {
+          id: '1',
+          name: 'Organization 1'
+        }
+      ]}
       {...args}
       userId={userId}
     />

@@ -203,7 +203,7 @@ export const useCreateUser = (params: CreateUserParams) => {
         body: JSON.stringify({
           ...user,
           roles: user.roles.assignedRoles ?? [],
-          memberOf: organizationId
+          memberOf: user.memberOf?.id ?? organizationId
         } as User),
         jwt: jwt
       })
