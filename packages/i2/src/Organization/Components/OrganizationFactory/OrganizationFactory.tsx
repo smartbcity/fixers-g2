@@ -167,6 +167,11 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
 
   const onCloseSiretInfo = useCallback(() => setOpenSiretInfo(false), [])
 
+  const defaultRoles = useMemo(() => {
+    const givenRoles = rolesOptions?.map((it) => it.key)
+    return organization?.roles?.filter((it) => givenRoles?.includes(it))
+  }, [rolesOptions, organization?.roles])
+
   const partialFields = useMemo(
     (): FormPartialField[] => [
       {
@@ -209,7 +214,7 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
       },
       {
         name: 'roles',
-        defaultValue: organization?.roles
+        defaultValue: defaultRoles
       }
     ],
     [organization, rolesOptions, readonlyFields]
