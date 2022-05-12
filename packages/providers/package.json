@@ -1,6 +1,6 @@
 {
   "name": "@smartb/g2-providers",
-  "version": "1.0.0-alpha.32",
+  "version": "1.0.0-alpha.33",
   "repository": "https://gitlab.smartb.city/fixers/g2.git",
   "author": "Adrien Poupard <adrien@smartb.city>",
   "license": "Apache-2.0",
@@ -38,8 +38,8 @@
   "dependencies": {
     "@react-keycloak/ssr": "^3.3.0",
     "@react-keycloak/web": "^3.4.0",
-    "@smartb/g2-components": "^1.0.0-alpha.32",
-    "@smartb/g2-themes": "^1.0.0-alpha.32",
+    "@smartb/g2-components": "^1.0.0-alpha.33",
+    "@smartb/g2-themes": "^1.0.0-alpha.33",
     "connected-react-router": "^6.9.1",
     "history": "^4.10.1",
     "i18next": "^20.2.2",
