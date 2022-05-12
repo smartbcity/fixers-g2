@@ -22,6 +22,7 @@ export type OrganizationId = string
 export type OrganizationRef = {
   id: OrganizationId
   name: string
+  roles: string[]
 }
 
 export interface Organization {

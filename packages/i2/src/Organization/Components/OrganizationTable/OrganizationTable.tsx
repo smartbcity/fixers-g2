@@ -12,6 +12,7 @@ import {
 
 export type OrganizationTableFilters = {
   page?: number
+  size?: number
 } & OrganizationFilters
 
 export type OrganizationTableBlockedFilters = {

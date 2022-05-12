@@ -68,7 +68,7 @@ export const useGetOrganizations = (params: GetOrganizationsParams) => {
           ...currentParams,
           name: currentParams?.search,
           page: currentParams?.page ? currentParams?.page - 1 : 0,
-          size: 10
+          size: currentParams?.size ?? 10
         } as OrganizationTableFilters),
         jwt: jwt
       })
