@@ -47,10 +47,6 @@ const useStyles = makeG2STyles()({
     '& .sbdocs-a': {
       color: '#4174b0'
     },
-    //@ts-ignore
-    '& em': {
-      fontWeight: '600'
-    },
     '& .sbdocs-wrapper': {
       padding: '2rem 15px'
     },
