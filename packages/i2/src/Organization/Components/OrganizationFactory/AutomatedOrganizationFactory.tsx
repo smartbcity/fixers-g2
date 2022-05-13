@@ -125,7 +125,6 @@ export const AutomatedOrganizationFactory = (
     [createOrganization.mutateAsync]
   )
 
-  if (getOrganization.isLoading) return <></>
   return (
     <OrganizationFactory
       organization={getOrganization.data?.organization}
@@ -139,6 +138,7 @@ export const AutomatedOrganizationFactory = (
           ? { siret: true, roles: true, ...readonlyFieldsPerState?.update }
           : readonlyFieldsPerState?.create
       }
+      isLoading={getOrganization.isLoading}
       {...other}
     />
   )

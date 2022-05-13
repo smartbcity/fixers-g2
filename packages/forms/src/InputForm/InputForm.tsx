@@ -1,4 +1,4 @@
-import { Box, InputLabel } from '@mui/material'
+import { Box, InputLabel, Skeleton } from '@mui/material'
 import React, { useMemo } from 'react'
 import { Select, SelectProps, SelectClasses, SelectStyles } from '../Select'
 import {
@@ -55,6 +55,12 @@ export interface InputFormBasicProps<T extends InputFormTypes = 'textField'>
    * If you want to add additionnals element near to the input use this prop
    */
   createInputContainer?: (input: JSX.Element) => JSX.Element
+  /**
+   * Indicates if the data is currently loading
+   *
+   * @default false
+   */
+  isLoading?: boolean
   /**
    * The classes applied to the different part of the component
    */
@@ -144,7 +150,8 @@ export const InputForm: InputFormComponent = React.forwardRef(
       styles,
       inputClasses,
       inputStyles,
-      size,
+      size = 'medium',
+      isLoading = false,
       createInputContainer,
       ...other
     } = props
@@ -168,7 +175,28 @@ export const InputForm: InputFormComponent = React.forwardRef(
     }, [label, classes?.label, id, styles?.label, size])
 
     const inputUi = useMemo(() => {
-      return readonly ? (
+      return isLoading ? (
+        inputType === 'radioChoices' ? (
+          <Skeleton
+            sx={{
+              width: '150px',
+              height: '100px',
+              transform: 'none'
+            }}
+            animation='wave'
+          />
+        ) : (
+          <Skeleton
+            sx={{
+              width: '100%',
+              height:
+                size === 'small' ? '32px' : size === 'medium' ? '40px' : '48px',
+              transform: 'none'
+            }}
+            animation='wave'
+          />
+        )
+      ) : readonly ? (
         <TextField
           {...other}
           size={size}

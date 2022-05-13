@@ -167,6 +167,12 @@ export interface FormBasicProps extends BasicProps {
    */
   fieldsStackProps?: StackProps
   /**
+   * Indicates if the data is currently loading
+   *
+   * @default false
+   */
+  isLoading?: boolean
+  /**
    * The classes applied to the different part of the component
    */
   classes?: FormClasses
@@ -197,6 +203,7 @@ export const Form = (props: FormProps) => {
     actionsPosition = 'below',
     actionsStackProps,
     fieldsStackProps,
+    isLoading = false,
     ...other
   } = props
   const defaultStyles = useStyles()
@@ -209,7 +216,8 @@ export const Form = (props: FormProps) => {
           formState,
           defaultStyles.classes.field,
           classes,
-          styles
+          styles,
+          isLoading
         )
         if (!!field.customDisplay) {
           return field.customDisplay(input)
@@ -222,7 +230,8 @@ export const Form = (props: FormProps) => {
       formState.handleChange,
       formState.errors,
       classes?.field,
-      styles?.field
+      styles?.field,
+      isLoading
     ]
   )
 
@@ -249,7 +258,7 @@ export const Form = (props: FormProps) => {
       className={cx('AruiForm-root', className)}
       {...other}
     >
-      {actionsPosition === 'above' && (
+      {actionsPosition === 'above' && !isLoading && (
         <Stack
           direction='row'
           {...actionsStackProps}
@@ -266,7 +275,7 @@ export const Form = (props: FormProps) => {
       >
         {fieldsMemoized}
       </Stack>
-      {actionsPosition === 'below' && (
+      {actionsPosition === 'below' && !isLoading && (
         <Stack
           {...actionsStackProps}
           className={cx('AruiForm-actions', classes?.actions)}
@@ -284,7 +293,8 @@ const getInput = (
   formState: FormState,
   fieldClassName: string,
   classes?: FormClasses,
-  styles?: FormStyles
+  styles?: FormStyles,
+  isLoading?: boolean
 ) => {
   const commonProps = {
     key: field.key,
@@ -325,6 +335,7 @@ const getInput = (
               ? date
               : formState.getFieldProps(field.name).value ?? ''
           }
+          isLoading={isLoading}
           onChangeDate={(date) => {
             formState.setFieldValue(
               field.name,
@@ -347,6 +358,7 @@ const getInput = (
             formState.setFieldValue(field.name, values, false)
             !!field.onChange && field.onChange(values)
           }}
+          isLoading={isLoading}
           {...field.selectProps}
           {...commonProps}
         />
@@ -358,6 +370,7 @@ const getInput = (
             formState.setFieldValue(field.name, value, false)
             !!field.onChange && field.onChange(value)
           }}
+          isLoading={isLoading}
           {...field.selectProps}
           {...commonProps}
         />
@@ -372,6 +385,7 @@ const getInput = (
             formState.setFieldValue(field.name, values, false)
             !!field.onChange && field.onChange(values)
           }}
+          isLoading={isLoading}
           {...field.autoCompleteProps}
           {...commonProps}
         />
@@ -384,6 +398,7 @@ const getInput = (
             formState.setFieldValue(field.name, value, false)
             !!field.onChange && field.onChange(value)
           }}
+          isLoading={isLoading}
           {...field.autoCompleteProps}
           {...commonProps}
         />
@@ -399,6 +414,7 @@ const getInput = (
             formState.setFieldValue(field.name, value, false)
             !!field.onChange && field.onChange(value)
           }}
+          isLoading={isLoading}
           {...field.checkBoxProps}
           {...commonProps}
         />
@@ -412,6 +428,7 @@ const getInput = (
             formState.setFieldValue(field.name, value, false)
             !!field.onChange && field.onChange(value)
           }}
+          isLoading={isLoading}
           {...field.radioChoicesProps}
           {...commonProps}
         />
@@ -425,6 +442,7 @@ const getInput = (
         formState.setFieldValue(field.name, value, false)
         !!field.onChange && field.onChange(value)
       }}
+      isLoading={isLoading}
       {...field.textFieldProps}
       {...commonProps}
     />

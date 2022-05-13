@@ -4,7 +4,9 @@ import {
   Checkbox,
   FormControlLabel,
   CheckboxProps,
-  FormHelperText
+  FormHelperText,
+  Box,
+  Skeleton
 } from '@mui/material'
 import {
   BasicProps,
@@ -163,6 +165,12 @@ export interface CheckBoxBasicProps extends BasicProps {
    */
   createInputContainer?: (input: JSX.Element) => JSX.Element
   /**
+   * Indicates if the data is currently loading
+   *
+   * @default false
+   */
+  isLoading?: boolean
+  /**
    * The classes applied to the different part of the component
    */
   classes?: CheckBoxClasses
@@ -192,6 +200,7 @@ const CheckBoxBase = (
     error,
     disabled,
     errorMessage,
+    isLoading = false,
     createInputContainer,
     ...other
   } = props
@@ -267,7 +276,27 @@ const CheckBoxBase = (
       )}
       style={style}
     >
-      {createInputContainer ? createInputContainer(formControl) : formControl}
+      {isLoading && (
+        <Box
+          sx={{
+            display: 'flex',
+            gap: '10px'
+          }}
+        >
+          <Skeleton
+            animation='wave'
+            sx={{ width: '20px', height: '20px', transform: 'none' }}
+          />
+          <Skeleton
+            animation='wave'
+            sx={{ width: '150px', height: '20px', transform: 'none' }}
+          />
+        </Box>
+      )}
+      {!isLoading &&
+        (createInputContainer
+          ? createInputContainer(formControl)
+          : formControl)}
       {errorMessage !== '' && error && (
         <FormHelperText
           className={defaultStyles.cx(

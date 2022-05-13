@@ -173,6 +173,12 @@ export interface UserFactoryBasicProps extends BasicProps {
    */
   readonlyFields?: ReadonlyFields
   /**
+   * Indicates if the data is currently loading
+   *
+   * @default false
+   */
+  isLoading?: boolean
+  /**
    * The classes applied to the different part of the component
    */
   classes?: UserFactoryClasses
@@ -205,6 +211,7 @@ export const UserFactory = (props: UserFactoryProps) => {
     rolesOptions,
     organizationId,
     readonlyFields,
+    isLoading = false,
     strings,
     ...other
   } = props
@@ -515,6 +522,7 @@ export const UserFactory = (props: UserFactoryProps) => {
         style={styles?.leftForm}
         fields={leftForm}
         formState={formState}
+        isLoading={isLoading}
       />
       <Form
         className={cx(
@@ -536,6 +544,7 @@ export const UserFactory = (props: UserFactoryProps) => {
           ),
           style: styles?.actionsContainer
         }}
+        isLoading={isLoading}
       />
     </StyledStack>
   )

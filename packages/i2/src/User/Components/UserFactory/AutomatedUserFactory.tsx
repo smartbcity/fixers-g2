@@ -138,7 +138,6 @@ export const AutomatedUserFactory = (props: AutomatedUserFactoryProps) => {
     [createUser.mutateAsync]
   )
 
-  if (getUser.isLoading) return <></>
   return (
     <UserFactory
       user={getUser.data}
@@ -151,6 +150,7 @@ export const AutomatedUserFactory = (props: AutomatedUserFactoryProps) => {
           : strings?.createButtonLabel ?? 'Créer'
       }}
       isUpdate={update}
+      isLoading={getUser.isLoading}
       organizationId={organizationId}
       readonlyFields={
         update

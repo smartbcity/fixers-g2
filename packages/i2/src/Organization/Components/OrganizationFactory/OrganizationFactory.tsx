@@ -116,6 +116,12 @@ export interface OrganizationFactoryBasicProps extends BasicProps {
    */
   readonlyFields?: ReadonlyFields
   /**
+   * Indicates if the data is currently loading
+   *
+   * @default false
+   */
+  isLoading?: boolean
+  /**
    * The classes applied to the different part of the component
    */
   classes?: OrganizationFactoryClasses
@@ -142,6 +148,7 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
     rolesOptions,
     readonly = false,
     readonlyFields,
+    isLoading = false,
     ...other
   } = props
 
@@ -399,6 +406,7 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
         style={styles?.siretForm}
         fields={siret}
         formState={formState}
+        isLoading={isLoading}
       />
       <Stack
         direction='row'
@@ -415,6 +423,7 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
           style={styles?.leftForm}
           fields={details}
           formState={formState}
+          isLoading={isLoading}
         />
         <Stack>
           <Box
@@ -462,6 +471,7 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
             style={styles?.rightForm}
             fields={description}
             formState={formState}
+            isLoading={isLoading}
           />
         </Stack>
       </Stack>
@@ -475,7 +485,7 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
         justifyContent='flex-end'
         width='100%'
       >
-        {!readonly && (
+        {!readonly && !isLoading && (
           <Button
             success={feedback !== undefined && feedback}
             fail={feedback !== undefined && !feedback}
