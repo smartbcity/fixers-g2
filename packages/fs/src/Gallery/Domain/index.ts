@@ -43,4 +43,5 @@ export interface FileDeletedEvent {
 
 export type TrackedFsFile = FsFile & {
   isNew?: boolean
+  file?: File
 }

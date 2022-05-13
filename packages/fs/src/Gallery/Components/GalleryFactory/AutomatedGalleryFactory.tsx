@@ -53,6 +53,10 @@ export interface AutomatedGalleryFactoryBasicProps {
      */
     gallery?: string
     /**
+     * @default 'Annuler'
+     */
+    cancel?: string
+    /**
      * @default 'Eregistrer'
      */
     save?: string
@@ -128,7 +132,8 @@ export const AutomatedGalleryFactory = (
         }
         uploadFilesOptions?.onSuccess?.(data, varaibles, context)
       }
-    }
+    },
+    directoryPath: directoryPath
   })
 
   useEffect(() => {
@@ -151,7 +156,8 @@ export const AutomatedGalleryFactory = (
             name: name
           },
           url: base64,
-          isNew: true
+          isNew: true,
+          file: file
         }
       })
       Promise.all(fsFiles).then((values) => {
@@ -170,19 +176,22 @@ export const AutomatedGalleryFactory = (
     setHasChanges(true)
   }, [])
 
+  const onCancel = useCallback(() => {
+    setCurrentGallery(gallery.data?.files ?? [])
+    setHasChanges(false)
+  }, [gallery.data?.files])
+
   const onSave = useCallback(async () => {
     setIsSaving(true)
     setIsLoading(true)
     const base = gallery.data?.files || []
     const deleteCommands: FileDeleteCommand[] = []
-    const uploadCommands: FileUploadCommand[] = []
+    let hasUpload = false
+    const formData = new FormData()
     currentGallery.forEach((element) => {
-      if (element.isNew) {
-        uploadCommands.push({
-          content: element.url,
-          path: element.path,
-          metadata: {}
-        })
+      if (element.isNew && !!element.file) {
+        formData.append(element.path.name, element.file, element.path.name)
+        hasUpload = true
       }
     })
     base.forEach((element) => {
@@ -192,8 +201,8 @@ export const AutomatedGalleryFactory = (
         })
       }
     })
-    if (uploadCommands.length > 0) {
-      await uploadFiles.mutateAsync(uploadCommands)
+    if (hasUpload) {
+      await uploadFiles.mutateAsync(formData)
     }
     if (deleteCommands.length > 0) {
       await deleteFiles.mutateAsync(deleteCommands)
@@ -221,9 +230,14 @@ export const AutomatedGalleryFactory = (
       >
         <Typography variant='h6'>{strings?.gallery ?? 'Galerie'}</Typography>
         {hasChanges && (
-          <Button onClick={onSave} isLoading={isSaving}>
-            {strings?.save ?? 'Enregistrer'}
-          </Button>
+          <>
+            <Button onClick={onSave} isLoading={isSaving}>
+              {strings?.save ?? 'Enregistrer'}
+            </Button>
+            {!isSaving && (
+              <Button onClick={onCancel}>{strings?.cancel ?? 'Annuler'}</Button>
+            )}
+          </>
         )}
       </Stack>
       <GalleryFactory

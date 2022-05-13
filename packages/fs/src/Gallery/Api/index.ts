@@ -102,7 +102,7 @@ export type UploadFilesOptions = Omit<
   UseMutationOptions<
     FileUploadedEvent[] | undefined,
     unknown,
-    FileUploadCommand[],
+    FormData,
     unknown
   >,
   'mutationFn'
@@ -112,17 +112,21 @@ export interface uploadFilesParams {
   jwt?: string
   apiUrl: string
   options?: UploadFilesOptions
+  directoryPath: DirectoryPath
 }
 
 export const useUploadFiles = (params: uploadFilesParams) => {
-  const { apiUrl, jwt, options } = params
+  const { apiUrl, jwt, options, directoryPath } = params
 
   const uploadFile = useCallback(
-    async (commands: FileUploadCommand[]) => {
+    async (formData: FormData) => {
+      formData.append('directory', directoryPath.directory)
+      formData.append('objectId', directoryPath.objectId)
+      formData.append('objectType', directoryPath.objectType)
       const res = await request<FileUploadedEvent[]>({
         url: `${apiUrl}/uploadFile`,
         method: 'POST',
-        body: JSON.stringify(commands),
+        formData: formData,
         jwt: jwt
       })
       if (res) {
@@ -131,7 +135,7 @@ export const useUploadFiles = (params: uploadFilesParams) => {
         return undefined
       }
     },
-    [apiUrl, jwt]
+    [apiUrl, jwt, directoryPath]
   )
 
   return useMutation(uploadFile, options)
