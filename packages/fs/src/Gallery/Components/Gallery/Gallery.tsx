@@ -2,7 +2,9 @@ import { ImageList, ImageListItem, Stack } from '@mui/material'
 import React, { useMemo } from 'react'
 import { FsFile } from '../../Domain'
 import { cx } from '@emotion/css'
-import { BasicProps } from '@smartb/g2-themes'
+import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
+import { AutoCompleteBasicProps } from '@smartb/g2-forms/src/AutoComplete'
+import { ImageListProps } from '@mui/material/ImageList/ImageList'
 
 export interface GalleryClasses {
   image?: string
@@ -13,6 +15,11 @@ export interface GalleryStyles {
   image?: React.CSSProperties
   item?: React.CSSProperties
 }
+
+export type GridProps<T = any> = MergeMuiElementProps<
+  ImageListProps,
+  AutoCompleteBasicProps<T>
+>
 
 export interface GalleryProps extends BasicProps {
   /**
@@ -37,6 +44,10 @@ export interface GalleryProps extends BasicProps {
    * The styles applied to the different part of the component
    */
   styles?: GalleryStyles
+  /**
+   * the props of the grid if you choosed it
+   */
+  gridProps?: GridProps
 }
 
 export const Gallery = (props: GalleryProps) => {
@@ -47,6 +58,7 @@ export const Gallery = (props: GalleryProps) => {
     classes,
     styles,
     className,
+    gridProps,
     ...other
   } = props
 
@@ -115,6 +127,7 @@ export const Gallery = (props: GalleryProps) => {
       variant='masonry'
       cols={2}
       gap={20}
+      {...gridProps}
     >
       {images}
     </ImageList>
