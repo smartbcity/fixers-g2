@@ -1,5 +1,5 @@
 import { Roles } from '../../Commons'
-import { OrganizationRef } from '../../Organization/Domain'
+import { OrganizationRef } from '../../Organization'
 
 export const classes = `export interface UserCreationClasses {
   leftForm?: string
@@ -73,7 +73,8 @@ export const FlatUserToUser = (flat: FlatUser): User => {
     },
     memberOf: {
       id: flat.memberOf ?? '',
-      name: ''
+      name: '',
+      roles: []
     },
     roles: {
       assignedRoles: flat.roles,

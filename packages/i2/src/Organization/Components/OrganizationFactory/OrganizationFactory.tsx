@@ -6,17 +6,9 @@ import {
   FormPartialField,
   Option
 } from '@smartb/g2-forms'
-import {
-  Box,
-  InputLabel,
-  Stack,
-  StackProps,
-  styled,
-  Typography
-} from '@mui/material'
-import { Button, DropPicture, DropPictureError } from '@smartb/g2-components'
+import { Stack, StackProps, styled, Typography } from '@mui/material'
+import { Button } from '@smartb/g2-components'
 import { Popover } from '@smartb/g2-notifications'
-import { fileToBase64 } from '@smartb/g2-utils'
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 import { cx } from '@emotion/css'
 import {
@@ -157,8 +149,6 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
   )
   const [siretValid, setSiretValid] = useState(false)
   const [siretRef, setSiretRef] = useState(null)
-  const [imageError, setImageError] = useState<string | undefined>(undefined)
-  const [image, setImage] = useState<string | undefined>(undefined)
   const [feedback, setFeedback] = useState<boolean | undefined>(undefined)
 
   useEffect(() => {
@@ -230,7 +220,7 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
         setFeedback(feedback)
       }
     },
-    [onSubmit, image, organization]
+    [onSubmit, organization]
   )
 
   const formState = useFormWithPartialFields({
@@ -374,28 +364,6 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
     [readonly]
   )
 
-  const onDropError = useCallback((errorType: DropPictureError) => {
-    if (errorType === 'file-too-large') {
-      setImageError("La taille de l'image est limité à 1Mo")
-    } else if (errorType === 'file-invalid-type') {
-      setImageError("L'image doit être au format jpeg ou png")
-    } else if (errorType === 'too-many-files') {
-      setImageError("Ne déposez qu'une seule image à la fois")
-    } else {
-      setImageError("L'image est invalide")
-    }
-  }, [])
-
-  const onPictureDropped = useCallback((image: File) => {
-    fileToBase64(image).then((base64) => {
-      setImage(base64)
-    })
-  }, [])
-
-  const onRemovePicture = useCallback(() => {
-    setImage(undefined)
-  }, [])
-
   return (
     <StyledStack
       alignItems='center'
@@ -431,42 +399,6 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
           isLoading={isLoading}
         />
         <Stack>
-          <Box
-            className={cx(
-              'AruiOrganizationFactory-dropPictureBox',
-              classes?.dropPictureBox
-            )}
-            style={styles?.dropPictureBox}
-            sx={{
-              margin: '20px 0',
-              marginBottom: '23px',
-              '& .AruiDropzone-root': {
-                width: '260px',
-                height: '155px'
-              }
-            }}
-          >
-            <InputLabel
-              sx={{
-                marginBottom: '15px',
-                fontSize: 16,
-                color: '#323338'
-              }}
-            >
-              Logo de l'entreprise (facultatif)
-            </InputLabel>
-            <DropPicture
-              errorMessage={imageError}
-              readonly={readonly}
-              onDropError={onDropError}
-              onRemovePicture={onRemovePicture}
-              initialPicture={organization?.image}
-              onPictureDropped={onPictureDropped}
-              addPictureHelperText='Ajouter une image'
-              removePictureHelperText="Retirer l'image"
-              alt="Le logo de l'entreprise"
-            />
-          </Box>
           <Form
             className={cx(
               'AruiOrganizationFactory-rightForm',
