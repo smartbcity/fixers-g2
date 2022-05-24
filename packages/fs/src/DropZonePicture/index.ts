@@ -1,2 +1,2 @@
-export * from './DropZoneImage'
-export * from './useImageDropZone'
+export * from './DropZonePicture'
+export * from './useDropZonePicture'

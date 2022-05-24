@@ -4,7 +4,8 @@ import { cx } from '@emotion/css'
 import { DropPicture } from '@smartb/g2-components'
 import { DropPictureProps } from '@smartb/g2-components/src'
 
-export const DropZoneImage = (drop: Partial<DropPictureProps>) => {
+// TODO Need to be reviewed
+export const DropZonePicture = (drop: Partial<DropPictureProps>) => {
   return (
     <Box
       className={cx('AruiOrgFactory-dropPictureBox')}

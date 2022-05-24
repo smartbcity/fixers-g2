@@ -1,3 +1,5 @@
+export { useDropZonePicture, DropZonePicture } from './DropZonePicture'
+
 export {
   DirectoryPath,
   FsFile,

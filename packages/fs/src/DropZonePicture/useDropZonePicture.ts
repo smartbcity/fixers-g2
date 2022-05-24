@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react'
 import { DropPictureError } from '@smartb/g2-components'
 import { fileToBase64 } from '@smartb/g2-utils'
 
-export const useImageDropZone = (img?: string) => {
+export const useDropZonePicture = (img?: string) => {
   const [errorMessage, setErrorMessage] = useState<string | undefined>(
     undefined
   )
