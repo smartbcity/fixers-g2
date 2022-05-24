@@ -6,7 +6,7 @@ STORYBOOK_LATEST		:= ${STORYBOOK_NAME}:latest
 docs: package-storybook
 
 package-storybook:
-	@docker build -f ${STORYBOOK_DOCKERFILE} -t ${STORYBOOK_IMG} .
+	@docker build --no-cache=true -f ${STORYBOOK_DOCKERFILE} -t ${STORYBOOK_IMG} .
 	@docker push ${STORYBOOK_IMG}
 
 package-libs:
