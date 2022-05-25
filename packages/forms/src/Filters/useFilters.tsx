@@ -1,15 +1,17 @@
 import { FormikConfig, FormikHelpers, useFormik } from 'formik'
 import { useMemo } from 'react'
-import { Field } from './Filters'
+import { FiltersField } from './Filters'
 
 export type FiltersState = ReturnType<typeof useFormik>
 
-export type PartialField = {
+export type FiltersPartialField = {
   name: string
   defaultValue?: any
 }
 
-interface useFiltersParams<T extends PartialField = PartialField> {
+interface useFiltersParams<
+  T extends FiltersPartialField = FiltersPartialField
+> {
   /**
    * the fields of the form
    */
@@ -32,7 +34,9 @@ interface useFiltersParams<T extends PartialField = PartialField> {
   >
 }
 
-export const useFilters = (params: useFiltersParams<Field>): FiltersState => {
+export const useFilters = (
+  params: useFiltersParams<FiltersField>
+): FiltersState => {
   return useFiltersBase(params)
 }
 
@@ -40,12 +44,14 @@ export const useFilters = (params: useFiltersParams<Field>): FiltersState => {
  * the usefilters with the minimum informations needed to init the useformik state
  */
 export const useFiltersWithPartialFields = (
-  params: useFiltersParams<PartialField>
+  params: useFiltersParams<FiltersPartialField>
 ): FiltersState => {
   return useFiltersBase(params)
 }
 
-export const useFiltersBase = <T extends PartialField = PartialField>(
+export const useFiltersBase = <
+  T extends FiltersPartialField = FiltersPartialField
+>(
   params: useFiltersParams<T>
 ): FiltersState => {
   const { fields, onSubmit, formikConfig } = params

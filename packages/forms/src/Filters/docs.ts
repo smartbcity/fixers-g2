@@ -1,4 +1,3 @@
-
 export const ActionDoc = `
 type Action = {
     label: React.ReactNode
@@ -7,7 +6,7 @@ type Action = {
 `
 
 export const FieldDoc = `
-type Field = {
+type FormField = {
     /**
      * the unique key of the field
      */
@@ -70,4 +69,3 @@ interface FiltersStyles {
 export const FiltersState = `
 export type FiltersState = ReturnType<typeof useFiltersik>
 `
-

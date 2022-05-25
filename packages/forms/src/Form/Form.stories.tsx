@@ -1,5 +1,5 @@
 import React from 'react'
-import { Form, FormBasicProps, Field } from './Form'
+import { Form, FormAction, FormBasicProps, FormField } from './Form'
 import { Meta } from '@storybook/react'
 import { Story } from '@storybook/react/types-6-0'
 import {
@@ -129,10 +129,30 @@ export const FormStory: Story<FormBasicProps> = (args: FormBasicProps) => {
     fields: args.fields,
     onSubmit: (values) => console.log(values)
   })
-  return <Form {...args} formState={formState} style={{ width: '500px' }} />
+  const actions: FormAction[] = [
+    {
+      label: 'reset',
+      key: 'resetFiltersButton',
+      variant: 'text',
+      onClick: () => formState.resetForm()
+    },
+    {
+      label: 'validate',
+      key: 'validateFormButton',
+      type: 'submit'
+    }
+  ]
+  return (
+    <Form
+      {...args}
+      actions={actions}
+      formState={formState}
+      style={{ width: '500px' }}
+    />
+  )
 }
 
-const fields: Field[] = [
+const fields: FormField[] = [
   {
     key: 'storybook-form-field-name',
     name: 'name',
@@ -191,14 +211,7 @@ const fields: Field[] = [
 ]
 
 FormStory.args = {
-  fields: fields,
-  actions: [
-    {
-      label: 'validate',
-      key: 'validateFormButton',
-      type: 'submit'
-    }
-  ]
+  fields: fields
 }
 
 FormStory.storyName = 'Form'

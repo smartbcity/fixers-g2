@@ -1,4 +1,11 @@
 export {
+  Action,
+  Actions,
+  ActionsProps,
+  ActionsStyles,
+  ActionsClasses
+} from './Actions'
+export {
   Button,
   BackButton,
   DeleteButton,

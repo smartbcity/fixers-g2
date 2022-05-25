@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react'
-import { ButtonProps, Button } from '@smartb/g2-components'
+import { Action, Actions } from '@smartb/g2-components'
 import { FilterSelectProps, FilterSelect } from '../FilterSelect'
 import { FilterTextFieldProps, FilterTextField } from '../FilterTextField'
 import { FilterDatePickerProps, FilterDatePicker } from '../FilterDatePicker'
@@ -12,12 +12,9 @@ import { Stack, StackProps } from '@mui/material'
 import { cx } from '@emotion/css'
 import { FiltersState } from './useFilters'
 
-export type Action = {
-  label: React.ReactNode
-  key: string
-} & Omit<ButtonProps, 'children' | 'style'>
+export type FiltersAction = Action
 
-export type Field = {
+export type FiltersField = {
   /**
    * the unique key of the field
    */
@@ -74,7 +71,7 @@ export interface FiltersBasicProps extends BasicProps {
   /**
    * the fields of the form
    */
-  fields: Field[]
+  fields: FiltersField[]
   /**
    * the state of the form provided by the hook `useFilters`
    */
@@ -82,7 +79,7 @@ export interface FiltersBasicProps extends BasicProps {
   /**
    * the actions displayed at the bottom of the component. To make a validation button you have to add an action with `type="submit"`
    */
-  actions?: Action[]
+  actions?: FiltersAction[]
   /**
    * Determine wether the actions are placed above or below the content of the form
    *
@@ -261,48 +258,27 @@ export const Filters = (props: FiltersProps) => {
       defaultSubmitBehavior
     ]
   )
-
   const actionsDisplay = useMemo(() => {
     if (!actions || actions.length === 0) return undefined
-    return actions.map((action) => {
-      const { key, label, className, ...other } = action
-      return (
-        <Button
-          key={key}
-          className={cx(
-            defaultStyles.classes.button,
-            'AruiFilters-button',
-            classes?.button,
-            className
-          )}
-          style={styles?.button}
-          {...other}
-        >
-          {label}
-        </Button>
-      )
-    })
+    return (
+      <Actions
+        direction='row'
+        actions={actions}
+        classes={{
+          actions: 'AruiFilters-actions',
+          button: 'AruiFilters-button'
+        }}
+        styles={{ actions: styles?.actions, button: styles?.button }}
+      />
+    )
   }, [actions, classes?.button, styles?.button])
-
   return (
     <form
       onSubmit={formState.handleSubmit}
       className={cx(defaultStyles.classes?.form, 'AruiFilters-root', className)}
       {...other}
     >
-      {actionsPosition === 'left' && (
-        <Stack
-          {...actionsStackProps}
-          className={cx(
-            defaultStyles.classes.actionContainer,
-            'AruiFilters-actions',
-            classes?.actions
-          )}
-          style={styles?.actions}
-        >
-          {actionsDisplay}
-        </Stack>
-      )}
+      {actionsPosition === 'left' && actionsDisplay}
       <Stack
         direction='row'
         {...fieldsStackProps}
@@ -315,19 +291,7 @@ export const Filters = (props: FiltersProps) => {
       >
         {fieldsMemoized}
       </Stack>
-      {actionsPosition === 'right' && (
-        <Stack
-          {...actionsStackProps}
-          className={cx(
-            defaultStyles.classes.actionContainer,
-            'AruiFilters-actions',
-            classes?.actions
-          )}
-          style={styles?.actions}
-        >
-          {actionsDisplay}
-        </Stack>
-      )}
+      {actionsPosition === 'right' && actionsDisplay}
     </form>
   )
 }

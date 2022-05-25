@@ -1,18 +1,18 @@
 import { FormikConfig, FormikHelpers, useFormik } from 'formik'
 import { useCallback, useMemo } from 'react'
-import { Field } from './Form'
+import { FormField } from './Form'
 
 export type FormState = Omit<ReturnType<typeof useFormik>, 'validateField'> & {
   validateField: (fieldName: string) => string | undefined
 }
 
-export type PartialField = {
+export type FormPartialField = {
   name: string
   defaultValue?: any
   validator?: (value: any, values: any) => string | undefined
 }
 
-interface useFormParams<T extends PartialField = PartialField> {
+interface useFormParams<T extends FormPartialField = FormPartialField> {
   /**
    * the fields of the form
    */
@@ -35,7 +35,7 @@ interface useFormParams<T extends PartialField = PartialField> {
   >
 }
 
-export const useForm = (params: useFormParams<Field>): FormState => {
+export const useForm = (params: useFormParams<FormField>): FormState => {
   return useFormBase(params)
 }
 
@@ -43,12 +43,12 @@ export const useForm = (params: useFormParams<Field>): FormState => {
  * the useForm with the minimum informations needed to init the useformik state
  */
 export const useFormWithPartialFields = (
-  params: useFormParams<PartialField>
+  params: useFormParams<FormPartialField>
 ): FormState => {
   return useFormBase(params)
 }
 
-const useFormBase = <T extends PartialField = PartialField>(
+const useFormBase = <T extends FormPartialField = FormPartialField>(
   params: useFormParams<T>
 ): FormState => {
   const { fields, onSubmit, formikConfig } = params

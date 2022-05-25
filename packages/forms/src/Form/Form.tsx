@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react'
-import { ButtonProps, Button } from '@smartb/g2-components'
+import { Action, Actions } from '@smartb/g2-components'
 import { InputForm, InputFormBasicProps } from '../InputForm'
 import { SelectProps } from '../Select'
 import { TextFieldProps } from '../TextField'
@@ -16,12 +16,9 @@ import { FormState } from './useForm'
 import { RadioChoicesProps } from '../RadioChoices'
 import { AutoCompleteProps } from '../AutoComplete'
 
-export type Action = {
-  label: React.ReactNode
-  key: string
-} & Omit<ButtonProps, 'children' | 'style'>
+export type FormAction = Action
 
-export type Field = {
+export type FormField = {
   /**
    * the unique key of the field
    */
@@ -143,7 +140,7 @@ export interface FormBasicProps extends BasicProps {
   /**
    * the fields of the form
    */
-  fields: Field[]
+  fields: FormField[]
   /**
    * the state of the form provided by the hook `useForm`
    */
@@ -151,7 +148,7 @@ export interface FormBasicProps extends BasicProps {
   /**
    * the actions displayed at the bottom of the component. To make a validation button you have to add an action with `type="submit"`
    */
-  actions?: Action[]
+  actions?: FormAction[]
   /**
    * Determine wether the actions are placed above or below the content of the form
    *
@@ -237,19 +234,16 @@ export const Form = (props: FormProps) => {
 
   const actionsDisplay = useMemo(() => {
     if (!actions || actions.length === 0) return undefined
-    return actions.map((action) => {
-      const { key, label, className, ...other } = action
-      return (
-        <Button
-          key={key}
-          className={cx('AruiForm-button', classes?.button, className)}
-          style={styles?.button}
-          {...other}
-        >
-          {label}
-        </Button>
-      )
-    })
+    return (
+      <Actions
+        actions={actions}
+        classes={{
+          actions: 'AruiForm-actions',
+          button: 'AruiForm-button'
+        }}
+        styles={{ actions: styles?.actions, button: styles?.button }}
+      />
+    )
   }, [actions, classes?.button, styles?.button])
 
   return (
@@ -258,16 +252,7 @@ export const Form = (props: FormProps) => {
       className={cx('AruiForm-root', className)}
       {...other}
     >
-      {actionsPosition === 'above' && !isLoading && (
-        <Stack
-          direction='row'
-          {...actionsStackProps}
-          className={cx('AruiForm-actions', classes?.actions)}
-          style={styles?.actions}
-        >
-          {actionsDisplay}
-        </Stack>
-      )}
+      {actionsPosition === 'above' && !isLoading && actionsDisplay}
       <Stack
         {...fieldsStackProps}
         className={cx('AruiForm-fieldsContainer', classes?.fieldsContainer)}
@@ -275,21 +260,13 @@ export const Form = (props: FormProps) => {
       >
         {fieldsMemoized}
       </Stack>
-      {actionsPosition === 'below' && !isLoading && (
-        <Stack
-          {...actionsStackProps}
-          className={cx('AruiForm-actions', classes?.actions)}
-          style={styles?.actions}
-        >
-          {actionsDisplay}
-        </Stack>
-      )}
+      {actionsPosition === 'below' && !isLoading && actionsDisplay}
     </form>
   )
 }
 
 const getInput = (
-  field: Field,
+  field: FormField,
   formState: FormState,
   fieldClassName: string,
   classes?: FormClasses,

@@ -2,7 +2,7 @@ import React from 'react'
 import { DropZonePicture as AruiDropZonePicture } from './DropZonePicture'
 import { Meta } from '@storybook/react'
 import { Story } from '@storybook/react/types-6-0'
-import { DropPictureBasicProps } from '@smartb/g2-components'
+import { DropPictureProps } from '@smartb/g2-components'
 
 export default {
   title: 'Fs/DropZonePicture',
@@ -15,9 +15,9 @@ export default {
   }
 } as Meta
 
-const Template: Story<DropPictureBasicProps> = (
-  args: DropPictureBasicProps
-) => <AruiDropZonePicture {...args} />
+const Template: Story<DropPictureProps> = (args: DropPictureProps) => (
+  <AruiDropZonePicture {...args} />
+)
 
 export const DropPicture = Template.bind({})
 

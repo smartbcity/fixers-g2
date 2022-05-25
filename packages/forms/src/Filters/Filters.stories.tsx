@@ -1,5 +1,10 @@
 import React, { useMemo } from 'react'
-import { Filters, FiltersBasicProps, Field, Action } from './Filters'
+import {
+  Filters,
+  FiltersBasicProps,
+  FiltersField,
+  FiltersAction
+} from './Filters'
 import { Meta } from '@storybook/react'
 import { Story } from '@storybook/react/types-6-0'
 import {
@@ -30,9 +35,7 @@ export default {
     design: {
       type: 'figma',
       url: 'https://www.figma.com/file/kgphqh0uVhoXt8TK3LlkGj/G2-%2F-Design-System?node-id=1097%3A177'
-    }
-  },
-  parameters: {
+    },
     docs: {
       page: () => (
         <>
@@ -137,21 +140,32 @@ export const FiltersStory: Story<FiltersBasicProps> = (
   })
 
   const actions = useMemo(
-    (): Action[] => [
+    (): FiltersAction[] => [
       {
         label: 'reset',
         key: 'resetFiltersButton',
         variant: 'text',
         onClick: () => formState.resetForm()
+      },
+      {
+        label: 'execute',
+        key: 'executeFiltersButton'
       }
     ],
     [formState.resetForm]
   )
 
-  return <Filters {...args} formState={formState} actions={actions} />
+  return (
+    <Filters
+      {...args}
+      formState={formState}
+      actions={actions}
+      actionsPosition='right'
+    />
+  )
 }
 
-const fields: Field[] = [
+const fields: FiltersField[] = [
   {
     key: 'storybook-filters-field-from',
     name: 'from',
