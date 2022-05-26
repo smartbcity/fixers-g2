@@ -3,6 +3,7 @@ import { AutomatedGallery, AutomatedGalleryProps } from './AutomatedGallery'
 import { Story } from '@storybook/react/types-6-0'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { Box } from '@mui/material'
+import React from 'react'
 
 export default {
   title: 'Fs/AutomatedGallery',

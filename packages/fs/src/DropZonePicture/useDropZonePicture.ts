@@ -1,13 +1,24 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { DropPictureError } from '@smartb/g2-components'
 import { fileToBase64 } from '@smartb/g2-utils'
 
-export const useDropZonePicture = (img?: string) => {
+export interface DropZonePictureActions {
+  errorMessage?: string
+  image?: string
+  initialPicture?: string
+  onDropError: (errorType: DropPictureError) => void
+  onPictureDropped: (image: File) => void
+  onRemovePicture: () => void
+}
+
+export const useDropZonePicture = (img?: string): DropZonePictureActions => {
   const [errorMessage, setErrorMessage] = useState<string | undefined>(
     undefined
   )
   const [image, setImage] = useState<string | undefined>(img)
-
+  useEffect(() => {
+    img && setImage(img)
+  }, [img])
   const onDropError = useCallback((errorType: DropPictureError) => {
     if (errorType === 'file-too-large') {
       setErrorMessage("La taille de l'image est limité à 1Mo")
@@ -30,12 +41,10 @@ export const useDropZonePicture = (img?: string) => {
     setImage(undefined)
   }, [])
 
-  // TODO Remove in next version g2 version onPictureDroped
   return {
     errorMessage,
     image,
     onDropError,
-    onPictureDroped: onPictureDropped,
     onPictureDropped,
     onRemovePicture,
     initialPicture: image

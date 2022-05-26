@@ -1,4 +1,8 @@
-export { useDropZonePicture, DropZonePicture } from './DropZonePicture'
+export {
+  useDropZonePicture,
+  DropZonePictureActions,
+  DropZonePicture
+} from './DropZonePicture'
 
 export {
   DirectoryPath,
