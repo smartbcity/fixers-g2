@@ -45,6 +45,8 @@ import ReactDOM from 'react-dom'
 import Markdown from 'react-markdown'
 import rehypeHighlight from 'rehype-highlight'
 
+[CommonMark](https://commonmark.org)
+
 ReactDOM.render(
   <Markdown rehypePlugins={[rehypeHighlight]}>
     {'# Your markdown here'}

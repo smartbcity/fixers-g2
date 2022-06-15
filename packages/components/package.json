@@ -29,22 +29,21 @@
   "devDependencies": {
     "@smartb/g2-forms": "^1.0.0-alpha.37",
     "@types/react-dropzone": "^5.1.0",
-    "@types/stringify-object": "^3.3.0"
+    "@types/stringify-object": "^4.0.1"
   },
   "peerDependencies": {
-    "@mui/material": "^5.2.7",
-    "@types/react": "^17.0.14",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "@mui/material": "^5.8.4",
+    "@types/react": "^18.0.12",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   },
   "dependencies": {
-    "@mui/icons-material": "^5.2.5",
-    "@mui/lab": "^5.0.0-alpha.63",
+    "@mui/icons-material": "^5.8.4",
+    "@mui/lab": "5.0.0-alpha.86",
     "@smartb/g2-notifications": "^1.0.0-alpha.37",
     "@smartb/g2-themes": "^1.0.0-alpha.37",
     "react-dropzone": "^11.3.2",
-    "react-spinners": "^0.9.0",
-    "stringify-object": "^3.3.0"
+    "stringify-object": "^4.0.1"
   },
   "gitHead": "01582f4b620c1e44cab5a65394e29d95f66ddabb",
   "publishConfig": {

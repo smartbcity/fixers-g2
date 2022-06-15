@@ -6,13 +6,12 @@ import { Button } from '@smartb/g2-components'
 import { Router as AruiRouter } from './Router'
 import { PrivateRoute as AruiPrivateRoute } from './PrivateRoute'
 import { NoMatchPage as AruiNoMatchPage } from './NoMatchPage'
-import { Typography } from  '@mui/material'
+import { Typography } from '@mui/material'
 import { ArgsTable, Title, Primary, Description } from '@storybook/addon-docs'
 import { CodeHighlighter } from '@smartb/g2-documentation'
-import initRedux from './store'
-import { Route, useHistory } from 'react-router'
-import { LinkProps, Link } from 'react-router-dom'
+import { LinkProps, Link, Route, useNavigate } from 'react-router-dom'
 import { i18next, usei18next, redux } from './docs'
+import { QueryClient } from 'react-query'
 
 export default {
   title: 'Providers/AppProvider',
@@ -88,6 +87,8 @@ export default {
   }
 } as Meta
 
+const queryClient = new QueryClient()
+
 const Template: Story = () => {
   interface Languages {
     fr: string
@@ -97,13 +98,11 @@ const Template: Story = () => {
     fr: 'fr-FR',
     en: 'en-US'
   }
-  const { store, history } = initRedux()
   return (
     <AruiAppProvider<Languages>
       languages={languages}
       loadingComponent={<Typography>Loading ...</Typography>}
-      reduxStore={store}
-      history={history}
+      queryClient={queryClient}
     >
       <Router />
     </AruiAppProvider>
@@ -111,46 +110,58 @@ const Template: Story = () => {
 }
 
 const Router = () => {
-  const history = useHistory()
+  const navigate = useNavigate()
   useEffect(() => {
-    history.push('/')
+    navigate('/')
   }, [])
   return (
     <AruiRouter>
-      <Route exact path='/' key='hello'>
-        <Typography>/hello</Typography>
-        <Button<LinkProps>
-          component={Link}
-          componentProps={{ to: '/world' }}
-          variant='outlined'
-        >
-          Go to World
-        </Button>
-        <Button<LinkProps>
-          component={Link}
-          componentProps={{ to: '/nowhere' }}
-          variant='outlined'
-        >
-          Go to nowhere
-        </Button>
-      </Route>
-      <Route exact path='/world' key='world'>
-        <Typography>/world</Typography>
-        <Button<LinkProps>
-          component={Link}
-          componentProps={{ to: '/' }}
-          variant='outlined'
-        >
-          Go to Hello
-        </Button>
-        <Button<LinkProps>
-          component={Link}
-          componentProps={{ to: '/nowhere' }}
-          variant='outlined'
-        >
-          Go to nowhere
-        </Button>
-      </Route>
+      <Route
+        path='/'
+        key='hello'
+        element={
+          <>
+            <Typography>/hello</Typography>
+            <Button<LinkProps>
+              component={Link}
+              componentProps={{ to: '/world' }}
+              variant='outlined'
+            >
+              Go to World
+            </Button>
+            <Button<LinkProps>
+              component={Link}
+              componentProps={{ to: '/nowhere' }}
+              variant='outlined'
+            >
+              Go to nowhere
+            </Button>
+          </>
+        }
+      ></Route>
+      <Route
+        path='/world'
+        key='world'
+        element={
+          <>
+            <Typography>/world</Typography>
+            <Button<LinkProps>
+              component={Link}
+              componentProps={{ to: '/' }}
+              variant='outlined'
+            >
+              Go to Hello
+            </Button>
+            <Button<LinkProps>
+              component={Link}
+              componentProps={{ to: '/nowhere' }}
+              variant='outlined'
+            >
+              Go to nowhere
+            </Button>
+          </>
+        }
+      ></Route>
     </AruiRouter>
   )
 }

@@ -1,4 +1,5 @@
 import {
+  CalendarPickerView,
   DatePicker as MuiDatePicker,
   DatePickerProps as MuiDatePickerProps,
   LocalizationProvider
@@ -16,7 +17,6 @@ import {
   MergeMuiElementProps
 } from '@smartb/g2-themes'
 import { fr, enUS } from 'date-fns/locale'
-import { DatePickerView } from '@mui/lab/DatePicker/shared'
 const dateFnsLocales = [fr, enUS]
 
 const useStyles = makeG2STyles()((theme) => ({
@@ -120,7 +120,7 @@ export type DatePickerProps = MergeMuiElementProps<
   DatePickerBasicProps
 >
 
-const views: DatePickerView[] = ['day', 'month', 'year']
+const views: CalendarPickerView[] = ['day', 'month', 'year']
 
 const DatePickerBase = (
   props: DatePickerProps,
