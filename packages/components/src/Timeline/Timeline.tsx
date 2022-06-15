@@ -226,7 +226,7 @@ const TimelineBase = (
       lines.map((line) => {
         let isPassed = false
         let isActive = false
-        let timeLeft = undefined
+        let timeLeft: number | undefined = undefined
         if (line.startDate) {
           if (line.startDate < Date.now()) isPassed = true
         }

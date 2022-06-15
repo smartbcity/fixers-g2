@@ -31,7 +31,7 @@ export const GroundedLoading = (props: GroundedLoadingProps) => {
   )
 
   const rows = useMemo(() => {
-    const display = []
+    const display: JSX.Element[] = []
     for (let i = 0; i < expectedSize; i++) {
       display.push(
         <TableRow key={i}>
