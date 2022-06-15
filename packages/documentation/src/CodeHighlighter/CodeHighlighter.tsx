@@ -1,21 +1,21 @@
-import React from 'react'
+import { Box, Typography } from '@mui/material'
+import { BasicProps, makeG2STyles } from '@smartb/g2-themes'
+import React, { useMemo } from 'react'
 import SyntaxHighlighter, {
   SyntaxHighlighterProps
 } from 'react-syntax-highlighter'
 import {
-  atomOneDark,
   androidstudio,
+  atomOneDark,
   atomOneLight,
   darcula,
   gruvboxLight,
   hopscotch,
-  tomorrowNight,
-  tomorrow
+  tomorrow,
+  tomorrowNight
 } from 'react-syntax-highlighter/dist/esm/styles/hljs'
 import stringifyObject from 'stringify-object'
-import { useMemo } from 'react'
-import { BasicProps, makeG2STyles } from '@smartb/g2-themes'
-import { Box, Typography } from '@mui/material'
+import { HttpDefinitionHighlighter } from '../HttpDefinitionHighlighter'
 
 const useStyles = makeG2STyles()({
   root: {
@@ -94,6 +94,7 @@ export const CodeHighlighter = (props: CodeHighlighterProps) => {
     style,
     className,
     id,
+    language = 'typescript',
     ...other
   } = props
   const { classes, cx } = useStyles()
@@ -109,6 +110,30 @@ export const CodeHighlighter = (props: CodeHighlighterProps) => {
     () => highlightStyleMap.get(highlightStyle),
     [highlightStyle]
   )
+
+  const body = useMemo(() => {
+    switch (language) {
+      case 'http-definition':
+        return (
+          <HttpDefinitionHighlighter
+            {...other}
+            language={language}
+            style={selectedStyle}
+            httpDefinitions={object as any}
+          />
+        )
+      default:
+        return (
+          <SyntaxHighlighter
+            {...other}
+            language={language}
+            style={selectedStyle}
+          >
+            {code ?? formatedObject ?? children}
+          </SyntaxHighlighter>
+        )
+    }
+  }, [language, code, formatedObject, children, selectedStyle])
 
   return (
     <Box
@@ -136,9 +161,7 @@ export const CodeHighlighter = (props: CodeHighlighterProps) => {
           </Typography>
         </Box>
       )}
-      <SyntaxHighlighter language='typescript' {...other} style={selectedStyle}>
-        {code ?? formatedObject ?? children}
-      </SyntaxHighlighter>
+      {body}
     </Box>
   )
 }

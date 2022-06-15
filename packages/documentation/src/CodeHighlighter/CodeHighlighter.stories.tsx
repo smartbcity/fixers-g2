@@ -62,3 +62,25 @@ export const objectHiglighter: Story = () => (
 )
 
 objectHiglighter.storyName = 'object highlighter'
+
+export const httpDefinition: Story<CodeHighlighterProps> = (
+  args: CodeHighlighterProps
+) => <AruiCodeHighlighter {...args} />
+
+httpDefinition.args = {
+  object: [
+    {
+      method: 'POST',
+      path: '/fileUpload',
+      url: '#fileUpload'
+    },
+    {
+      method: 'DELETE',
+      path: '/fileDelete',
+      url: 'https://docs.smartb.city/g2'
+    }
+  ],
+  language: 'http-definition',
+  title: 'Example'
+}
+httpDefinition.storyName = 'http definition'
