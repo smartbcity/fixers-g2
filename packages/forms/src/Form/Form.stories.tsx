@@ -152,6 +152,40 @@ export const FormStory: Story<FormBasicProps> = (args: FormBasicProps) => {
   )
 }
 
+export const FormRowButtonStory: Story<FormBasicProps> = (
+  args: FormBasicProps
+) => {
+  const formState = useForm({
+    fields: args.fields,
+    onSubmit: (values) => console.log(values)
+  })
+  const actions: FormAction[] = [
+    {
+      label: 'reset',
+      key: 'resetFiltersButton',
+      variant: 'text',
+      onClick: () => formState.resetForm()
+    },
+    {
+      label: 'validate',
+      key: 'validateFormButton',
+      type: 'submit'
+    }
+  ]
+  return (
+    <Form
+      {...args}
+      actions={actions}
+      formState={formState}
+      style={{ width: '500px' }}
+      actionsStackProps={{
+        direction: 'row',
+        justifyContent: 'flex-end'
+      }}
+    />
+  )
+}
+
 const fields: FormField[] = [
   {
     key: 'storybook-form-field-name',
@@ -215,3 +249,8 @@ FormStory.args = {
 }
 
 FormStory.storyName = 'Form'
+
+FormRowButtonStory.args = {
+  fields: fields
+}
+FormRowButtonStory.storyName = 'Form Row Button'

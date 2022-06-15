@@ -48,19 +48,20 @@ export const Actions = (props: ActionsProps) => {
     return actions.map((action) => {
       const { key, label, className, ...other } = action
       return (
-        <Button
-          key={key}
-          className={cx(
-            defaultStyles.classes.button,
-            'AruiActions-button',
-            classes?.button,
-            className
-          )}
-          style={styles?.button}
-          {...other}
-        >
-          {label}
-        </Button>
+        <Stack key={key}>
+          <Button
+            className={cx(
+              defaultStyles.classes.button,
+              'AruiActions-button',
+              classes?.button,
+              className
+            )}
+            style={styles?.button}
+            {...other}
+          >
+            {label}
+          </Button>
+        </Stack>
       )
     })
   }, [actions, classes?.button, styles?.button])

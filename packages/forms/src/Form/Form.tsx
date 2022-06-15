@@ -242,6 +242,7 @@ export const Form = (props: FormProps) => {
           button: 'AruiForm-button'
         }}
         styles={{ actions: styles?.actions, button: styles?.button }}
+        {...actionsStackProps}
       />
     )
   }, [actions, classes?.button, styles?.button])
