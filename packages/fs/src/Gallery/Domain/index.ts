@@ -20,7 +20,6 @@ export interface FsFile {
 export interface FileUploadCommand {
   path: FilePath
   metadata: Record<string, string>
-  content: string
 }
 
 export interface FileDeleteCommand extends FilePath {}
@@ -43,5 +42,6 @@ export interface FileDeletedEvent {
 
 export type TrackedFsFile = FsFile & {
   isNew?: boolean
+  isDeleted?: boolean
   file?: File
 }

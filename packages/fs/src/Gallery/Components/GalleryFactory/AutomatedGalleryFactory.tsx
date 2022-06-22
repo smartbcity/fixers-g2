@@ -1,27 +1,26 @@
 import { Stack, Typography } from '@mui/material'
+import { Button } from '@smartb/g2-components'
+import { fsConfig } from '@smartb/g2-providers'
 import { MergeMuiElementProps } from '@smartb/g2-themes'
-import React, { useCallback, useEffect, useState } from 'react'
 import { fileToBase64 } from '@smartb/g2-utils'
-import { GalleryFactory, GalleryFactoryProps } from './GalleryFactory'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import { useQueryClient } from 'react-query'
 import { v4 as uuidv4 } from 'uuid'
 import {
+  DeleteFilesOptions,
+  GetGalleryOptions,
+  UploadFilesOptions,
+  useDeleteFiles,
+  useGetGallery,
+  useUploadFiles
+} from '../..'
+import {
+  DirectoryPath,
   FileDeleteCommand,
-  FileUploadCommand,
   FsFile,
   TrackedFsFile
 } from '../../Domain'
-import { Button } from '@smartb/g2-components'
-import { DirectoryPath } from '../../Domain'
-import {
-  GetGalleryOptions,
-  useGetGallery,
-  useUploadFiles,
-  useDeleteFiles,
-  DeleteFilesOptions,
-  UploadFilesOptions
-} from '../..'
-import { useQueryClient } from 'react-query'
-import { fsConfig } from '@smartb/g2-providers'
+import { GalleryFactory, GalleryFactoryProps } from './GalleryFactory'
 
 export interface AutomatedGalleryFactoryBasicProps {
   /**
@@ -106,7 +105,7 @@ export const AutomatedGalleryFactory = (
       onSuccess: (data, varaibles, context) => {
         if (data) {
           const removesIds = data.map((event) => event.path.name)
-          const filtered = (gallery.data?.files ?? []).filter(
+          const filtered = (gallery.data?.items ?? []).filter(
             (file) => !removesIds.includes(file.path.name)
           )
           queryClient.setQueryData('gallery', { files: filtered })
@@ -122,8 +121,8 @@ export const AutomatedGalleryFactory = (
       ...uploadFilesOptions,
       onSuccess: (data, varaibles, context) => {
         if (data) {
-          const galleryCopy = !!gallery.data?.files
-            ? [...gallery.data?.files]
+          const galleryCopy = !!gallery.data?.items
+            ? [...gallery.data?.items]
             : []
           data.forEach((event) => {
             galleryCopy.push(event)
@@ -132,13 +131,12 @@ export const AutomatedGalleryFactory = (
         }
         uploadFilesOptions?.onSuccess?.(data, varaibles, context)
       }
-    },
-    directoryPath: directoryPath
+    }
   })
 
   useEffect(() => {
     if (gallery.data) {
-      setCurrentGallery(gallery.data.files)
+      setCurrentGallery(gallery.data.items)
     }
   }, [gallery.data])
 
@@ -171,38 +169,37 @@ export const AutomatedGalleryFactory = (
 
   const onDelete = useCallback((file: FsFile) => {
     setCurrentGallery((oldValues) =>
-      oldValues.filter((element) => file.id !== element.id)
+      oldValues.map((element) => {
+        if (file.id === element.id) {
+          return {
+            ...element,
+            isDeleted: true
+          }
+        }
+        return element
+      })
     )
     setHasChanges(true)
   }, [])
 
   const onCancel = useCallback(() => {
-    setCurrentGallery(gallery.data?.files ?? [])
+    setCurrentGallery(gallery.data?.items ?? [])
     setHasChanges(false)
-  }, [gallery.data?.files])
+  }, [gallery.data?.items])
 
   const onSave = useCallback(async () => {
     setIsSaving(true)
     setIsLoading(true)
-    const base = gallery.data?.files || []
-    const deleteCommands: FileDeleteCommand[] = []
-    let hasUpload = false
-    const formData = new FormData()
-    currentGallery.forEach((element) => {
-      if (element.isNew && !!element.file) {
-        formData.append(element.path.name, element.file, element.path.name)
-        hasUpload = true
-      }
-    })
-    base.forEach((element) => {
-      if (!currentGallery.find((element2) => element2.id === element.id)) {
-        deleteCommands.push({
-          ...element.path
-        })
-      }
-    })
-    if (hasUpload) {
-      await uploadFiles.mutateAsync(formData)
+    const filesToSave = currentGallery.filter(
+      (file) => file.isNew && !file.isDeleted && !!file.file
+    )
+    const deleteCommands: FileDeleteCommand[] = currentGallery
+      .filter((file) => file.isDeleted && !file.isNew)
+      .map((file) => file.path)
+
+    if (filesToSave.length > 0) {
+      await uploadFiles.mutateAsync(filesToSave)
+      filesToSave
     }
     if (deleteCommands.length > 0) {
       await deleteFiles.mutateAsync(deleteCommands)
@@ -214,9 +211,13 @@ export const AutomatedGalleryFactory = (
     currentGallery,
     deleteFiles.mutateAsync,
     uploadFiles.mutateAsync,
-    gallery.data,
-    gallery.refetch
+    gallery.data
   ])
+
+  const displayedGallery = useMemo(
+    () => currentGallery.filter((file) => !file.isDeleted),
+    [currentGallery]
+  )
 
   return (
     <>
@@ -242,7 +243,7 @@ export const AutomatedGalleryFactory = (
       </Stack>
       <GalleryFactory
         {...rest}
-        files={currentGallery}
+        files={displayedGallery}
         onAdd={onAdd}
         onDelete={onDelete}
         isLoading={isLoading}
