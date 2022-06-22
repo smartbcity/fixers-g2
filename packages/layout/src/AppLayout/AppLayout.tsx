@@ -182,6 +182,9 @@ export interface AppLayoutProps {
   styles?: AppLayoutStyles
 }
 
+/**
+ * @legacy
+ */
 export const AppLayout = (props: AppLayoutProps) => {
   const {
     children,
