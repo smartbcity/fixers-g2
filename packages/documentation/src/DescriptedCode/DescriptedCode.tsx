@@ -1,4 +1,4 @@
-import { Box } from '@mui/material'
+import { Box, BoxProps } from '@mui/material'
 import { BasicProps } from '@smartb/g2-themes'
 import { cx } from '@emotion/css'
 import React from 'react'
@@ -9,13 +9,29 @@ export interface DescriptedCodeProps extends BasicProps {
    */
   rightElement?: React.ReactNode
   /**
+   * Props of the container wrapping rightElement
+   */
+  rightContainerProps?: BoxProps
+  /**
    * The code placed in the right sticky container
    */
   leftElement?: React.ReactNode
+  /**
+   * Props of the container wrapping leftElement
+   */
+  leftContainerProps?: BoxProps
 }
 
 export const DescriptedCode = (props: DescriptedCodeProps) => {
-  const { leftElement, rightElement, className, style, id } = props
+  const {
+    leftElement,
+    leftContainerProps,
+    rightElement,
+    rightContainerProps,
+    className,
+    style,
+    id
+  } = props
   return (
     <Box
       className={cx('AruiDescriptedCode-root', className)}
@@ -30,6 +46,7 @@ export const DescriptedCode = (props: DescriptedCodeProps) => {
         width='60%'
         paddingRight='10px'
         boxSizing='border-box'
+        {...leftContainerProps}
       >
         {leftElement}
       </Box>
@@ -42,6 +59,7 @@ export const DescriptedCode = (props: DescriptedCodeProps) => {
         paddingTop='30px'
         top='0'
         alignSelf='flex-start'
+        {...rightContainerProps}
       >
         {rightElement}
       </Box>
