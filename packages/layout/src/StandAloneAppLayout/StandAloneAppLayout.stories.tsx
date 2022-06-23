@@ -11,6 +11,7 @@ import LinkTo from '@storybook/addon-links/react'
 import defaultLogo from '../assets/smartb.png'
 import itemsLogo from '../assets/impactcity-logo-2.png'
 import { AppLogoProps } from '../AppMenu'
+import { styles, classes } from './docs'
 
 export default {
   title: 'Layout/StandAloneAppLayout',
@@ -24,8 +25,14 @@ export default {
           <Box display='flex' flexDirection='column'>
             <Typography variant='body2' style={{ marginBottom: '5px' }}>
               -{' '}
-              <LinkTo kind='Layout' story='AppBarMenu'>
-                appBarMenuProps
+              <LinkTo kind='Layout' story='UserMenu'>
+                UserMenuProps
+              </LinkTo>
+            </Typography>
+            <Typography variant='body2' style={{ marginBottom: '5px' }}>
+              -{' '}
+              <LinkTo kind='Layout' story='AppMenu'>
+                AppMenu
               </LinkTo>
             </Typography>
             <Typography variant='body2' style={{ marginBottom: '5px' }}>
@@ -42,67 +49,62 @@ export default {
       )
     },
     layout: 'fullscreen'
+  },
+  argTypes: {
+    classes: {
+      table: {
+        type: {
+          summary: 'StandAloneAppLayoutClasses',
+          detail: classes
+        }
+      }
+    },
+    styles: {
+      table: {
+        type: {
+          summary: 'StandAloneAppLayoutStyles',
+          detail: styles
+        }
+      }
+    }
   }
-  // argTypes: {
-  //   appBarMenuProps: {
-  //     table: {
-  //       type: {
-  //         summary: 'Partial<AppBarMenuProps>'
-  //       }
-  //     },
-  //     control: null
-  //   },
-  //   drawerProps: {
-  //     table: {
-  //       type: {
-  //         summary: 'Partial<DrawerProps>'
-  //       }
-  //     },
-  //     control: null
-  //   },
-  //   styleProps: {
-  //     table: {
-  //       type: {
-  //         summary: 'StyleProps',
-  //         detail: StyleProps
-  //       }
-  //     },
-  //     control: null
-  //   },
-  //   appBarContent: {
-  //     control: null
-  //   },
-  //   classes: {
-  //     table: {
-  //       type: {
-  //         summary: 'StandAloneAppLayoutClasses',
-  //         detail: classes
-  //       }
-  //     }
-  //   },
-  //   styles: {
-  //     table: {
-  //       type: {
-  //         summary: 'StandAloneAppLayoutStyles',
-  //         detail: styles
-  //       }
-  //     }
-  //   }
-  // }
 } as Meta
 
-const Template: Story<StandAloneAppLayoutProps> = (
+export const StandAloneAppLayout: Story<StandAloneAppLayoutProps> = (
   args: StandAloneAppLayoutProps
 ) => {
   return <AruiStandAloneAppLayout {...args} />
 }
 
-export const StandAloneAppLayout = Template.bind({})
-
 StandAloneAppLayout.args = {
   logo: {
     src: defaultLogo
   } as AppLogoProps,
+  userMenuProps: {
+    defaultOpen: true,
+    currentUser: {
+      givenName: 'John',
+      familyName: 'Doe',
+      role: 'Administrator'
+    },
+    loggedMenu: [
+      {
+        key: 'my-profile',
+        goto: () => {},
+        label: 'My Profile'
+      },
+      {
+        key: 'preferances',
+        goto: () => {},
+        label: 'Preferences'
+      },
+      {
+        key: 'logout',
+        goto: () => {},
+        label: 'Log out'
+      }
+    ]
+  },
   menu: [
     {
       key: 'dashboard',

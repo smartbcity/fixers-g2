@@ -1,16 +1,20 @@
+import { cx } from '@emotion/css'
 import { Menu } from '@mui/icons-material'
 import {
   Box,
   CssBaseline,
   Drawer,
+  DrawerProps,
   IconButton,
   styled,
-  Typography,
+  SxProps,
+  Theme,
   useMediaQuery
 } from '@mui/material'
 import { MenuItem } from '@smartb/g2-components'
 import React, { useCallback, useEffect, useState } from 'react'
 import { AppLogoProps, AppMenu } from '../AppMenu'
+import { UserMenu, UserMenuProps } from '../UserMenu'
 
 const drawerWidth = 236
 
@@ -26,6 +30,22 @@ const Main = styled('main', {
   height: '100vh',
   overflow: 'auto'
 }))
+
+interface StandAloneAppLayoutClasses {
+  drawer?: string
+  scrollableContainer?: string
+  burgerButtonContainer?: string
+  userMenu?: string
+  main?: string
+}
+
+interface StandAloneAppLayoutStyles {
+  drawer?: React.CSSProperties
+  scrollableContainer?: React.CSSProperties
+  burgerButtonContainer?: React.CSSProperties
+  userMenu?: React.CSSProperties
+  main?: React.CSSProperties
+}
 
 export interface StandAloneAppLayoutProps {
   /**
@@ -48,10 +68,46 @@ export interface StandAloneAppLayoutProps {
    * The function that is called when the hamburger button is clicked on mobile
    */
   onToggle?: () => void
+  /**
+   * Use these props to add a user menu to the drawer menu
+   */
+  userMenuProps?: UserMenuProps
+  /**
+   * The drawer component props
+   */
+  drawerProps?: DrawerProps
+  /**
+   * The main component props
+   */
+  mainProps?: React.ComponentPropsWithRef<'main'> & { sx?: SxProps<Theme> }
+  /**
+   * You can add additional content to the drawer menu with this prop
+   */
+  drawerContent?: React.ReactNode
+  /**
+   * The classes applied to the different part of the component
+   */
+  classes?: StandAloneAppLayoutClasses
+  /**
+   * The styles applied to the different part of the component
+   */
+  styles?: StandAloneAppLayoutStyles
 }
 
 export const StandAloneAppLayout = (props: StandAloneAppLayoutProps) => {
-  const { children, menu, logo, open, onToggle } = props
+  const {
+    children,
+    menu,
+    logo,
+    open,
+    onToggle,
+    userMenuProps,
+    drawerProps,
+    mainProps,
+    drawerContent,
+    classes,
+    styles
+  } = props
   const isMobile = useMediaQuery('(max-width:800px)')
   const [openLocal, setOpen] = useState(!isMobile)
 
@@ -73,6 +129,9 @@ export const StandAloneAppLayout = (props: StandAloneAppLayoutProps) => {
   return (
     <>
       <Drawer
+        {...drawerProps}
+        className={cx('AruiStandAloneAppLayout-drawer', classes?.drawer)}
+        style={styles?.drawer}
         sx={{
           width: drawerWidth,
           flexShrink: 0,
@@ -84,7 +143,8 @@ export const StandAloneAppLayout = (props: StandAloneAppLayoutProps) => {
             overflow: 'visible',
 
             visibility: 'visible !important' as 'visible'
-          }
+          },
+          ...drawerProps?.sx
         }}
         variant={isMobile ? 'temporary' : 'persistent'}
         ModalProps={{
@@ -94,9 +154,28 @@ export const StandAloneAppLayout = (props: StandAloneAppLayoutProps) => {
         anchor='left'
         open={currentOpen}
       >
-        <AppMenu menu={menu ?? []} logo={logo} />
+        <Box
+          className={cx(
+            'AruiStandAloneAppLayout-scrollableContainer',
+            classes?.scrollableContainer
+          )}
+          style={styles?.scrollableContainer}
+          sx={{
+            height: '100%',
+            widht: '100%',
+            overflow: 'auto'
+          }}
+        >
+          <AppMenu menu={menu ?? []} logo={logo} />
+          {drawerContent}
+        </Box>
         {isMobile && (
           <Box
+            className={cx(
+              'AruiStandAloneAppLayout-burgerButtonContainer',
+              classes?.burgerButtonContainer
+            )}
+            style={styles?.burgerButtonContainer}
             sx={{
               position: 'absolute',
               border: 'solid 1px #BEC7CC',
@@ -121,44 +200,34 @@ export const StandAloneAppLayout = (props: StandAloneAppLayoutProps) => {
             </IconButton>
           </Box>
         )}
+        {userMenuProps && (
+          <UserMenu
+            {...userMenuProps}
+            className={cx(
+              'AruiStandAloneAppLayout-userMenu',
+              classes?.userMenu
+            )}
+            style={styles?.userMenu}
+            sx={{
+              position: 'absolute',
+              bottom: '0px',
+              width: '100%'
+            }}
+          />
+        )}
       </Drawer>
       <CssBaseline />
       <Main
+        {...mainProps}
+        className={cx('AruiStandAloneAppLayout-main', classes?.main)}
+        style={styles?.main}
         isMobile={isMobile}
         sx={{
-          bgcolor: '#EEEEEE'
+          bgcolor: '#EEEEEE',
+          ...mainProps?.sx
         }}
       >
         {children}
-        <Typography paragraph>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Rhoncus
-          dolor purus non enim praesent elementum facilisis leo vel. Risus at
-          ultrices mi tempus imperdiet. Semper risus in hendrerit gravida rutrum
-          quisque non tellus. Convallis convallis tellus id interdum velit
-          laoreet id donec ultrices. Odio morbi quis commodo odio aenean sed
-          adipiscing. Amet nisl suscipit adipiscing bibendum est ultricies
-          integer quis. Cursus euismod quis viverra nibh cras. Metus vulputate
-          eu scelerisque felis imperdiet proin fermentum leo. Mauris commodo
-          quis imperdiet massa tincidunt. Cras tincidunt lobortis feugiat
-          vivamus at augue. At augue eget arcu dictum varius duis at consectetur
-          lorem. Velit sed ullamcorper morbi tincidunt. Lorem donec massa sapien
-          faucibus et molestie ac.
-        </Typography>
-        <Typography paragraph>
-          Consequat mauris nunc congue nisi vitae suscipit. Fringilla est
-          ullamcorper eget nulla facilisi etiam dignissim diam. Pulvinar
-          elementum integer enim neque volutpat ac tincidunt. Ornare suspendisse
-          sed nisi lacus sed viverra tellus. Purus sit amet volutpat consequat
-          mauris. Elementum eu facilisis sed odio morbi. Euismod lacinia at quis
-          risus sed vulputate odio. Morbi tincidunt ornare massa eget egestas
-          purus viverra accumsan in. In hendrerit gravida rutrum quisque non
-          tellus orci ac. Pellentesque nec nam aliquam sem et tortor. Habitant
-          morbi tristique senectus et. Adipiscing elit duis tristique
-          sollicitudin nibh sit. Ornare aenean euismod elementum nisi quis
-          eleifend. Commodo viverra maecenas accumsan lacus vel facilisis. Nulla
-          posuere sollicitudin aliquam ultrices sagittis orci a.
-        </Typography>
       </Main>
     </>
   )
