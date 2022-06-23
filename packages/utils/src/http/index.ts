@@ -5,6 +5,7 @@ export interface HttpOptions {
   jwt?: string;
   contentType?: "application/json" | "text/plain" | "none";
   returnType?: "json" | "text";
+  formData?: FormData;
   errorHandler?: (error: Error, responseCode?: number) => void;
 }
 
@@ -17,6 +18,7 @@ export const request = <T>(options: HttpOptions): Promise<T | undefined> => {
     jwt,
     errorHandler = () => {},
     returnType = "json",
+    formData,
   } = options;
   return fetch(url, {
     method: method,
@@ -26,23 +28,22 @@ export const request = <T>(options: HttpOptions): Promise<T | undefined> => {
             Authorization: `Bearer ${jwt}`,
           }
         : {}),
-      ...(contentType !== "none"
+      ...(contentType !== "none" && !formData
         ? {
             "Content-Type": contentType,
           }
         : {}),
       "Access-Control-Allow-Origin": "*",
     },
-    body: body,
+    body: formData ?? body,
   })
     .then((response) => {
       if (!response.ok) {
-        response
-          .text()
-          .then((error) => {
-            throw new Error(error);
-          })
-          .catch((error) => errorHandler(error, response.status));
+        response.text().then((error) => {
+          const localError = new Error(error);
+          errorHandler(localError, response.status);
+          throw localError;
+        });
         return;
       } else {
         if (returnType === "json") {
@@ -51,5 +52,8 @@ export const request = <T>(options: HttpOptions): Promise<T | undefined> => {
         return response.text();
       }
     })
-    .catch((error) => errorHandler(error, 600));
+    .catch((error) => {
+      errorHandler(error, 600);
+      throw error;
+    });
 };

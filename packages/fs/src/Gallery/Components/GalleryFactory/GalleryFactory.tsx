@@ -136,7 +136,8 @@ export const GalleryFactory = (props: GalleryFactoryProps) => {
           style={styles?.imageContainer}
           key={file.path.name}
           sx={{
-            position: 'relative'
+            position: 'relative',
+            height: '100%'
           }}
         >
           <IconButton

@@ -36,5 +36,5 @@ export const AutomatedGallery = (props: AutomatedGalleryProps) => {
     queryKey: getGalleryQueryKey
   })
 
-  return <Gallery {...rest} files={gallery.data?.files ?? []} />
+  return <Gallery {...rest} files={gallery.data?.items ?? []} />
 }

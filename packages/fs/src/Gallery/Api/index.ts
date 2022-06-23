@@ -13,15 +13,20 @@ import {
   FileGetListCommand,
   FileUploadCommand,
   FileUploadedEvent,
-  FsFile
+  FsFile,
+  TrackedFsFile
 } from '../Domain'
+
+export interface GetGalleryResult {
+  items: FsFile[]
+}
 
 export type GetGalleryOptions =
   | Omit<
       UseQueryOptions<
-        { files: FsFile[] } | undefined,
+        GetGalleryResult | undefined,
         unknown,
-        { files: FsFile[] } | undefined,
+        GetGalleryResult | undefined,
         string[]
       >,
       'queryKey' | 'queryFn'
@@ -43,12 +48,13 @@ export const useGetGallery = (params: getGalleryParams) => {
   const { apiUrl, jwt, options, directoryPath, queryKey = 'gallery' } = params
 
   const getGallery = useCallback(async () => {
-    const res = await request<{ files: FsFile[] }[]>({
-      url: `${apiUrl}/listFiles`,
+    const res = await request<GetGalleryResult[]>({
+      url: `${apiUrl}/fileList`,
       method: 'POST',
       body: JSON.stringify(directoryPath as FileGetListCommand),
       jwt: jwt
     })
+
     if (res) {
       return res[0]
     } else {
@@ -81,16 +87,13 @@ export const useDeleteFiles = (params: deleteFilesParams) => {
   const deleteFile = useCallback(
     async (commands: FileDeleteCommand[]) => {
       const res = await request<FileDeletedEvent[]>({
-        url: `${apiUrl}/deleteFile`,
+        url: `${apiUrl}/fileDelete`,
         method: 'POST',
         body: JSON.stringify(commands),
         jwt: jwt
       })
-      if (res) {
-        return res
-      } else {
-        return undefined
-      }
+
+      return res || undefined
     },
     [apiUrl, jwt]
   )
@@ -102,7 +105,7 @@ export type UploadFilesOptions = Omit<
   UseMutationOptions<
     FileUploadedEvent[] | undefined,
     unknown,
-    FileUploadCommand[],
+    TrackedFsFile[],
     unknown
   >,
   'mutationFn'
@@ -117,22 +120,32 @@ export interface uploadFilesParams {
 export const useUploadFiles = (params: uploadFilesParams) => {
   const { apiUrl, jwt, options } = params
 
-  const uploadFile = useCallback(
-    async (commands: FileUploadCommand[]) => {
+  const uploadFiles = useCallback(
+    async (files: TrackedFsFile[]) => {
+      const formData = new FormData()
+      const commands: Record<string, FileUploadCommand> = {}
+      files.forEach((file) => {
+        formData.append('file', file.file!, file.path.name)
+        commands[file.path.name] = {
+          path: file.path,
+          metadata: {}
+        }
+      })
+      formData.append(
+        'command',
+        new Blob([JSON.stringify(commands)], { type: 'application/json' })
+      )
+
       const res = await request<FileUploadedEvent[]>({
-        url: `${apiUrl}/uploadFile`,
+        url: `${apiUrl}/fileUploads`,
         method: 'POST',
-        body: JSON.stringify(commands),
+        formData: formData,
         jwt: jwt
       })
-      if (res) {
-        return res
-      } else {
-        return undefined
-      }
+      return res || undefined
     },
-    [apiUrl, jwt]
+    [jwt, apiUrl]
   )
 
-  return useMutation(uploadFile, options)
+  return useMutation(uploadFiles, options)
 }
