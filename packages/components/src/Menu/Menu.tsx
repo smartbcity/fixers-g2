@@ -22,7 +22,10 @@ const useStyles = makeG2STyles<{ paddingLeft: number }>()(
     },
     selectedItem: {
       background: `${theme.colors.primary}33`,
-      color: theme.colors.primary
+      color: theme.colors.primary,
+      '& .MuiListItemIcon-root': {
+        color: theme.colors.primary
+      }
     },
     selectedTitle: {
       '& .MuiTypography-root': {

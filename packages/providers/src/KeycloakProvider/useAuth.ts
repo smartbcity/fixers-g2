@@ -6,8 +6,8 @@ export type CommonUser = {
   id: string
   email: string
   organizationId?: string
-  firstName?: string
-  lastName?: string
+  firstName: string
+  lastName: string
 }
 
 type AuthService<
@@ -64,13 +64,13 @@ interface KeycloakTokenParsedWithRoles<Roles extends string = string>
   }
 }
 
-interface KeycloakWithRoles<Roles extends string = string>
+export interface KeycloakWithRoles<Roles extends string = string>
   extends KeycloakInstance {
   tokenParsed?: KeycloakTokenParsedWithRoles<Roles>
   hasRealmRole: (role: Roles) => boolean
 }
 
-interface Auth<
+export interface Auth<
   Additionnals extends AuthServiceAdditionnal = {},
   Roles extends string = string
 > {

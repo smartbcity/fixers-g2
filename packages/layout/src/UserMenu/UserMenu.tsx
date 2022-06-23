@@ -68,7 +68,7 @@ export const UserMenu = (props: UserMenuProps) => {
     currentUser,
     loggedMenu = [],
     notLoggedMenu = [],
-    defaultOpen,
+    defaultOpen = true,
     classes,
     styles,
     className,

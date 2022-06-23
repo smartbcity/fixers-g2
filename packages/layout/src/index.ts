@@ -32,3 +32,9 @@ export {
   Row,
   TableProps
 } from './Table'
+export { AppMenu, AppLogoProps, AppMenuProps } from './AppMenu'
+export { UserMenu, UserMenuProps } from './UserMenu'
+export {
+  StandAloneAppLayout,
+  StandAloneAppLayoutProps
+} from './StandAloneAppLayout'
