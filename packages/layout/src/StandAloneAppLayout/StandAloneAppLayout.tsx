@@ -9,7 +9,7 @@ import {
   useMediaQuery
 } from '@mui/material'
 import { MenuItem } from '@smartb/g2-components'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { AppLogoProps, AppMenu } from '../AppMenu'
 
 const drawerWidth = 236
@@ -21,7 +21,10 @@ const Main = styled('main', {
 }>(({ theme, isMobile }) => ({
   flexGrow: 1,
   padding: theme.spacing(3),
-  marginLeft: isMobile ? '' : `-${drawerWidth}px`
+  marginLeft: isMobile ? '' : `${drawerWidth}px`,
+  width: isMobile ? '100vw' : `calc(100vw - ${drawerWidth}px)`,
+  height: '100vh',
+  overflow: 'auto'
 }))
 
 export interface StandAloneAppLayoutProps {
@@ -52,6 +55,16 @@ export const StandAloneAppLayout = (props: StandAloneAppLayoutProps) => {
   const isMobile = useMediaQuery('(max-width:800px)')
   const [openLocal, setOpen] = useState(!isMobile)
 
+  useEffect(() => {
+    if (isMobile) {
+      setOpen(false)
+    } else {
+      setOpen(true)
+    }
+  }, [isMobile])
+
+  const currentOpen = open !== undefined ? open : openLocal
+
   const onToggleLocal = useCallback(() => {
     setOpen((prevOpen) => !prevOpen)
     onToggle && onToggle()
@@ -68,13 +81,18 @@ export const StandAloneAppLayout = (props: StandAloneAppLayoutProps) => {
             boxSizing: 'border-box',
             height: `100vh`,
             borderRight: '1px solid #BEC7CC',
-            zIndex: 1000,
-            position: 'relative'
+            overflow: 'visible',
+
+            visibility: 'visible !important' as 'visible'
           }
         }}
-        variant='persistent'
+        variant={isMobile ? 'temporary' : 'persistent'}
+        ModalProps={{
+          keepMounted: true
+        }}
+        onClose={onToggleLocal}
         anchor='left'
-        open={open !== undefined ? open : openLocal}
+        open={currentOpen}
       >
         <AppMenu menu={menu ?? []} logo={logo} />
         {isMobile && (
@@ -86,7 +104,7 @@ export const StandAloneAppLayout = (props: StandAloneAppLayoutProps) => {
               borderWidth: '1px 1px 1px 0px',
               backgroundColor: '#FFFFFF',
               top: '8px',
-              left: drawerWidth,
+              left: drawerWidth - 1,
               display: 'flex',
               padding: '4px 8px',
               justifyContent: 'center',
@@ -105,7 +123,12 @@ export const StandAloneAppLayout = (props: StandAloneAppLayoutProps) => {
         )}
       </Drawer>
       <CssBaseline />
-      <Main isMobile={isMobile}>
+      <Main
+        isMobile={isMobile}
+        sx={{
+          bgcolor: '#EEEEEE'
+        }}
+      >
         {children}
         <Typography paragraph>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
@@ -136,22 +159,6 @@ export const StandAloneAppLayout = (props: StandAloneAppLayoutProps) => {
           eleifend. Commodo viverra maecenas accumsan lacus vel facilisis. Nulla
           posuere sollicitudin aliquam ultrices sagittis orci a.
         </Typography>
-        <Box
-          sx={{
-            opacity: '0.5',
-            position: 'fixed',
-            height: '100vh',
-            width: '100vw',
-            backgroundColor: 'black',
-            top: '0',
-            left: '0',
-            zIndex: 500
-          }}
-          style={{
-            display: isMobile && open ? 'block' : 'none'
-          }}
-          onClick={onToggle}
-        />
       </Main>
     </>
   )

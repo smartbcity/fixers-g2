@@ -40,7 +40,8 @@ export default {
           </Box>
         </>
       )
-    }
+    },
+    layout: 'fullscreen'
   }
   // argTypes: {
   //   appBarMenuProps: {
@@ -93,11 +94,7 @@ export default {
 const Template: Story<StandAloneAppLayoutProps> = (
   args: StandAloneAppLayoutProps
 ) => {
-  return (
-    <div style={{ width: '200px' }}>
-      <AruiStandAloneAppLayout {...args} />
-    </div>
-  )
+  return <AruiStandAloneAppLayout {...args} />
 }
 
 export const StandAloneAppLayout = Template.bind({})
