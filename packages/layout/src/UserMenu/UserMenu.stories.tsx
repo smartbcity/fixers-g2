@@ -1,8 +1,8 @@
 import React from 'react'
-import { AppMenu as AruiAppMenu, AppLogoProps, AppMenuProps } from './AppMenu'
+import { UserMenu as AruiUserMenu, UserMenuProps } from './UserMenu'
 import { Meta } from '@storybook/react'
 import { Story } from '@storybook/react/types-6-0'
-import { Box, Typography } from '@mui/material'
+import itemsLogo from '../assets/impactcity-logo-2.png'
 import {
   ArgsTable,
   PRIMARY_STORY,
@@ -10,14 +10,13 @@ import {
   Primary,
   Stories
 } from '@storybook/addon-docs'
-import { styles, classes } from './types'
+import { styles, classes } from './docs'
+import { Box, Typography } from '@mui/material'
 import LinkTo from '@storybook/addon-links/react'
-import defaultLogo from '../assets/smartb.png'
-import itemsLogo from '../assets/impactcity-logo-2.png'
 
 export default {
-  title: 'Layout/AppMenu',
-  component: AruiAppMenu,
+  title: 'Layout/UserMenu',
+  component: AruiUserMenu,
   parameters: {
     docs: {
       page: () => (
@@ -58,21 +57,21 @@ export default {
   }
 } as Meta
 
-const Template: Story<AppMenuProps> = (args: AppMenuProps) => {
+export const UserMenu: Story<UserMenuProps> = (args: UserMenuProps) => {
   return (
     <div style={{ width: '200px' }}>
-      <AruiAppMenu {...args} />
+      <AruiUserMenu {...args} />
     </div>
   )
 }
 
-export const AppMenu = Template.bind({})
-
-AppMenu.args = {
-  logo: {
-    src: defaultLogo
-  } as AppLogoProps,
-  menu: [
+UserMenu.args = {
+  currentUser: {
+    givenName: 'John',
+    familyName: 'Doe',
+    role: 'Administrator'
+  },
+  loggedMenu: [
     {
       key: 'dashboard',
       goto: () => {},
@@ -94,4 +93,4 @@ AppMenu.args = {
   ]
 }
 
-AppMenu.storyName = 'AppMenu'
+UserMenu.storyName = 'UserMenu'

@@ -21,7 +21,8 @@ const useStyles = makeG2STyles<{ paddingLeft: number }>()(
       paddingLeft: `${paddingLeft}px`
     },
     selectedItem: {
-      background: `${theme.colors.primary}26`
+      background: `${theme.colors.primary}33`,
+      color: theme.colors.primary
     },
     selectedTitle: {
       '& .MuiTypography-root': {

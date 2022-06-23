@@ -50,38 +50,13 @@ export default {
     }
   },
   argTypes: {
-    toolsMenuProps: {
-      table: {
-        type: {
-          summary: 'ToolsMenuProps[]'
-        }
-      },
-      control: null
-    },
-    appBarProps: {
-      table: {
-        type: {
-          summary: 'Partial<AppBarProps>'
-        }
-      },
-      control: null
-    },
-    drawerMenuProps: {
-      table: {
-        type: {
-          summary: 'Partial<DrawerMenuProps>'
-        }
-      },
-      control: null
-    },
     menu: {
       table: {
         type: {
           summary: 'MenuItem[]',
           detail: MenuItem
         }
-      },
-      control: null
+      }
     },
     styleProps: {
       table: {
@@ -89,8 +64,7 @@ export default {
           summary: 'StyleProps',
           detail: StyleProps
         }
-      },
-      control: null
+      }
     },
     navBarContent: {
       control: null
