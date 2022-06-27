@@ -6,7 +6,7 @@ const disabledColor = '#E6E9EF'
 
 export const useInputStyles = makeG2STyles()((theme) => ({
   label: {
-    marginBottom: '15px',
+    marginBottom: theme.spacing,
     fontSize: 16,
     color: `${darkGrey}`
   },
