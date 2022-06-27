@@ -25,6 +25,7 @@ const Main = styled('main', {
 }>(({ theme, isMobile }) => ({
   flexGrow: 1,
   padding: theme.spacing(3),
+  paddingTop: '0',
   marginLeft: isMobile ? '' : `${drawerWidth}px`,
   width: isMobile ? '100vw' : `calc(100vw - ${drawerWidth}px)`,
   height: '100vh',
@@ -141,7 +142,6 @@ export const StandAloneAppLayout = (props: StandAloneAppLayoutProps) => {
             height: `100vh`,
             borderRight: '1px solid #BEC7CC',
             overflow: 'visible',
-
             visibility: 'visible !important' as 'visible'
           },
           ...drawerProps?.sx
@@ -179,13 +179,14 @@ export const StandAloneAppLayout = (props: StandAloneAppLayoutProps) => {
             sx={{
               position: 'absolute',
               border: 'solid 1px #BEC7CC',
-              borderRadius: '0px 5px 5px 0px',
+              borderRadius: (theme) =>
+                `0px ${theme.shape.borderRadius} ${theme.shape.borderRadius} 0px`,
               borderWidth: '1px 1px 1px 0px',
               backgroundColor: '#FFFFFF',
               top: '8px',
               left: drawerWidth - 1,
               display: 'flex',
-              padding: '4px 8px',
+              padding: (theme) => `${theme.spacing(0.5)} ${theme.spacing(1)}`,
               justifyContent: 'center',
               alignItems: 'center'
             }}

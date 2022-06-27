@@ -23,7 +23,7 @@ const useStyles = makeG2STyles()((theme) => ({
   },
   content: {
     background: '#595959',
-    borderRadius: '5px',
+    borderRadius: theme.borderRadius,
     position: 'relative',
     overflow: 'hidden',
     padding: '4px 32px 4px 60px',

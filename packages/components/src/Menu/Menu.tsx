@@ -18,7 +18,11 @@ import {
 const useStyles = makeG2STyles<{ paddingLeft: number }>()(
   (theme, { paddingLeft }) => ({
     item: {
-      paddingLeft: `${paddingLeft}px`
+      paddingLeft: `${paddingLeft}px`,
+      color: 'black',
+      '& .MuiListItemIcon-root': {
+        color: 'black'
+      }
     },
     selectedItem: {
       background: `${theme.colors.primary}33`,

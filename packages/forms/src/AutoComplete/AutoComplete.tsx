@@ -19,16 +19,16 @@ import {
 import { TextField, TextFieldProps } from '../TextField'
 import { CheckBox } from '../CheckBox'
 
-const useStyles = makeG2STyles()({
+const useStyles = makeG2STyles()((theme) => ({
   chip: {
     backgroundColor: '#EBEBEC',
-    borderRadius: '5px',
+    borderRadius: theme.borderRadius,
     border: 'none'
   },
   list: {
     padding: '0px'
   }
-})
+}))
 
 export interface AutoCompleteBasicProps<T> extends BasicProps {
   /**

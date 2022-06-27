@@ -48,7 +48,7 @@ export const Presentation = (props: PresentationProps) => {
 
             '& .presentationImage': {
               width: '50px',
-              borderRadius: '5px'
+              borderRadius: (theme) => `${theme.shape.borderRadius}px`
             }
           }}
         >

@@ -13,7 +13,7 @@ const useStyles = makeG2STyles()((theme) => ({
   root: {
     background: theme.colors.primary,
     fontSize: '13px',
-    padding: '8px',
+    padding: theme.spacing,
     boxShadow: theme.shadows[1]
   },
   arrow: {

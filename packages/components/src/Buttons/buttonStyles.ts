@@ -2,11 +2,6 @@ import { makeG2STyles } from '@smartb/g2-themes'
 
 export const containedUseStyles = makeG2STyles()((theme) => ({
   root: {
-    minWidth: '80px',
-    padding: '7px 12px',
-    fontSize: '0.85rem',
-    borderRadius: '4px',
-    textTransform: 'none',
     boxShadow: theme.shadows[1]
   },
   defaultColor: {
@@ -32,27 +27,12 @@ export const containedUseStyles = makeG2STyles()((theme) => ({
     '&:hover': {
       background: theme.colors.warning
     }
-  },
-  buttonProgress: {
-    color: 'white',
-    marginRight: 5
-  },
-  icon: {
-    marginRight: 5
-  },
-  disabled: {
-    opacity: '0.7'
   }
 }))
 
 export const outlinedUseStyles = makeG2STyles()((theme) => ({
   root: {
-    minWidth: '80px',
-    padding: '7px 12px',
-    fontSize: '0.85rem',
-    textTransform: 'none',
     backgroundColor: '#ffffff',
-    borderRadius: '4px',
     boxShadow: theme.shadows[1],
     '&:hover': {
       backgroundColor: `rgba(0, 0, 0, 0.04)`
@@ -97,27 +77,12 @@ export const outlinedUseStyles = makeG2STyles()((theme) => ({
     '&.Mui-disabled': {
       color: theme.colors.warning
     }
-  },
-  buttonProgress: {
-    color: theme.colors.primary,
-    marginRight: 5
-  },
-  icon: {
-    marginRight: 5
-  },
-  disabled: {
-    opacity: '0.7'
   }
 }))
 
 export const textUseStyles = makeG2STyles()((theme) => ({
   root: {
-    minWidth: '80px',
-    padding: '7px 12px',
-    fontSize: '0.85rem',
-    textTransform: 'none',
     background: 'transparent',
-    borderRadius: '4px',
     '&:hover': {
       backgroundColor: `rgba(0, 0, 0, 0.04)`
     }
@@ -157,15 +122,5 @@ export const textUseStyles = makeG2STyles()((theme) => ({
     '&.Mui-disabled': {
       color: theme.colors.warning
     }
-  },
-  buttonProgress: {
-    color: '#828282',
-    marginRight: 5
-  },
-  icon: {
-    marginRight: 5
-  },
-  disabled: {
-    opacity: '0.7'
   }
 }))

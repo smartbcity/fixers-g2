@@ -34,14 +34,14 @@ const useStyles = makeG2STyles()((theme) => ({
     width: '100%',
     '& .MuiInputBase-root': {
       minWidth: '115px',
-      paddingRight: '8px'
+      paddingRight: `${theme.spacing}px`
     }
   },
   inputWithRemove: {
     width: '100%',
     '& .MuiInputBase-root': {
       minWidth: '130px',
-      paddingRight: '8px'
+      paddingRight: `${theme.spacing}px`
     }
   },
   calendarIcon: {

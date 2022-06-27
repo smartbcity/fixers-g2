@@ -8,7 +8,7 @@ import {
   MergeMuiElementProps
 } from '@smartb/g2-themes'
 
-const useStyles = makeG2STyles()({
+const useStyles = makeG2STyles()((theme) => ({
   menu: {
     maxWidth: '300px',
     maxHeight: '250px',
@@ -17,9 +17,9 @@ const useStyles = makeG2STyles()({
     }
   },
   listItem: {
-    padding: '3px 16px'
+    padding: `${theme.spacing / 2}px ${theme.spacing * 2}px`
   }
-})
+}))
 
 interface MoreOptionsClasses {
   moreOptionsIcon?: string

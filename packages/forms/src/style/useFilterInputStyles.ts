@@ -15,7 +15,7 @@ export const useFilterInputStyles = makeG2STyles()((theme) => ({
       color: 'inherit'
     },
     '& .MuiSelect-root': {
-      borderRadius: '4px',
+      borderRadius: theme.borderRadius,
       textOverflow: 'ellipsis'
     },
     '& .MuiFilledInput-adornedEnd': {
@@ -29,7 +29,7 @@ export const useFilterInputStyles = makeG2STyles()((theme) => ({
       margin: `0px`,
       paddingTop: '0px',
       boxShadow: '0px 0px 0px 1px transparent',
-      borderRadius: '4px',
+      borderRadius: theme.borderRadius,
       color: '#323338',
       minWidth: '100px',
       backgroundColor: 'transparent',

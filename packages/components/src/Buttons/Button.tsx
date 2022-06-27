@@ -3,7 +3,8 @@ import React, {
   useEffect,
   useState,
   forwardRef,
-  useRef
+  useRef,
+  useMemo
 } from 'react'
 import {
   Button as MuiButton,
@@ -74,15 +75,17 @@ export interface ButtonBasicProps<T = {}> extends BasicProps {
    */
   fail?: boolean
   /**
-   * Add the icon at the left of the children4
+   * Add the icon at the left of the children
+   *
+   * @deprecated use the mui native endIcon and startIcon props
    *
    * @default false
    */
   icon?: React.ReactNode
   /**
-   * Remove the icon from the component
+   * Remove the default icon from the component
    */
-  noIcon?: boolean
+  noDefaultIcon?: boolean
   /**
    * By default if your **onClick** function is asynchronous the button will automatically make a loading icon appear and disable the button in order
    * to wait for the end of the action. But if you want to force that state you can set **isLoading** to `true`.
@@ -126,10 +129,11 @@ export const ButtonBase = function <T = {}>(
     fail = false,
     warning = false,
     icon,
-    noIcon,
+    noDefaultIcon,
     isLoading = false,
     component,
     componentProps,
+    startIcon,
     ...other
   } = props
   const { classes, cx } =
@@ -166,6 +170,37 @@ export const ButtonBase = function <T = {}>(
     [onClick]
   )
 
+  const startIconElement = useMemo(() => {
+    if (loading || forcedLoading)
+      return (
+        <CircularProgress
+          size={24}
+          sx={{
+            color: 'currentcolor'
+          }}
+        />
+      )
+    if (startIcon) return startIcon
+    if (icon) return icon
+    if (noDefaultIcon) return undefined
+    return success ? (
+      <CheckRounded />
+    ) : fail ? (
+      <CloseRounded />
+    ) : warning ? (
+      <ReportProblemOutlined />
+    ) : undefined
+  }, [
+    noDefaultIcon,
+    startIcon,
+    icon,
+    success,
+    fail,
+    warning,
+    loading,
+    forcedLoading
+  ])
+
   if (component)
     return (
       <MuiButton<typeof component>
@@ -175,7 +210,6 @@ export const ButtonBase = function <T = {}>(
         className={cx(
           classes.root,
           !fail && !success && !warning && classes.defaultColor,
-          disabled && classes.disabled,
           success && classes.success,
           fail && classes.fail,
           warning && classes.advertissement,
@@ -186,26 +220,10 @@ export const ButtonBase = function <T = {}>(
         component={component}
         href={href}
         id={id}
+        startIcon={startIconElement}
         {...componentProps}
         {...other}
       >
-        {!noIcon &&
-          (loading || forcedLoading ? (
-            <CircularProgress
-              size={variant === 'contained' ? 26 : 20}
-              className={classes.buttonProgress}
-            />
-          ) : success ? (
-            <CheckRounded className={classes.icon} />
-          ) : fail ? (
-            <CloseRounded className={classes.icon} />
-          ) : warning ? (
-            <ReportProblemOutlined className={classes.icon} />
-          ) : icon ? (
-            icon
-          ) : (
-            ''
-          ))}
         {children}
       </MuiButton>
     )
@@ -220,7 +238,6 @@ export const ButtonBase = function <T = {}>(
       className={cx(
         classes.root,
         !fail && !success && !warning && classes.defaultColor,
-        disabled && classes.disabled,
         success && classes.success,
         fail && classes.fail,
         warning && classes.advertissement,
@@ -230,25 +247,9 @@ export const ButtonBase = function <T = {}>(
       onClick={(e) => !href && onClick && onClickMemoisied(e)}
       href={href}
       id={id}
+      startIcon={startIconElement}
       {...other}
     >
-      {!noIcon &&
-        (loading || forcedLoading ? (
-          <CircularProgress
-            size={variant === 'contained' ? 26 : 20}
-            className={classes.buttonProgress}
-          />
-        ) : success ? (
-          <CheckRounded className={classes.icon} />
-        ) : fail ? (
-          <CloseRounded className={classes.icon} />
-        ) : warning ? (
-          <ReportProblemOutlined className={classes.icon} />
-        ) : icon ? (
-          icon
-        ) : (
-          ''
-        ))}
       {children}
     </MuiButton>
   )

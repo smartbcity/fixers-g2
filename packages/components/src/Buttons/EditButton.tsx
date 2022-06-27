@@ -6,8 +6,7 @@ import { Button, ButtonProps } from './Button'
 const useStyles = makeG2STyles()({
   icon: {
     width: '19px',
-    height: '19px',
-    marginRight: '5px'
+    height: '19px'
   }
 })
 
@@ -19,7 +18,7 @@ const EditButtonBase = function <T = {}>(
   return (
     <Button
       variant='text'
-      icon={<Edit color={'#828282'} className={classes.icon} />}
+      startIcon={<Edit color={'#828282'} className={classes.icon} />}
       ref={ref}
       {...props}
     />

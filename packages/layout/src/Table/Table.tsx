@@ -337,8 +337,8 @@ export const Table = <Data extends {}>(props: TableProps<Data>) => {
         sx={
           variant === 'elevated'
             ? {
-                padding: '0 10px',
-                paddingBottom: '10px',
+                padding: (theme) => `0px ${theme.spacing(1.5)}`,
+                paddingBottom: (theme) => `${theme.spacing(1.5)}`,
                 boxSizing: 'border-box',
                 '& .AruiTable-principaleTableRow:hover': !!onRowClicked
                   ? {

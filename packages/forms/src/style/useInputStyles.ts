@@ -20,7 +20,7 @@ export const useInputStyles = makeG2STyles()((theme) => ({
     },
     '& .MuiSelect-root': {
       backgroundColor: 'white',
-      borderRadius: '5px',
+      borderRadius: theme.borderRadius,
       color: '#323338',
       textOverflow: 'ellipsis'
     },
@@ -40,7 +40,7 @@ export const useInputStyles = makeG2STyles()((theme) => ({
       paddingTop: '0px',
       border: `1px solid ${textFieldGrey}`,
       boxShadow: '0px 0px 0px 1px transparent',
-      borderRadius: '4px',
+      borderRadius: theme.borderRadius,
       backgroundColor: 'white'
     },
     '& .MuiSelect-select:focus': {

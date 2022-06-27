@@ -13,12 +13,12 @@ import {
 } from '@smartb/g2-themes'
 import { CloseRounded } from '@mui/icons-material'
 
-const useStyles = makeG2STyles()({
+const useStyles = makeG2STyles()((theme) => ({
   paper: {
     borderRadius: '16px'
   },
   actionsContainer: {
-    padding: '20px',
+    padding: `${theme.spacing * 3}px`,
     paddingTop: '0px'
   },
   closeIcon: {
@@ -31,12 +31,12 @@ const useStyles = makeG2STyles()({
     color: '#676879'
   },
   content: {
-    padding: '40px'
+    padding: `${theme.spacing * 5}px`
   },
   button: {
-    margin: '5px'
+    margin: theme.spacing / 2
   }
-})
+}))
 
 export type Action = {
   label: React.ReactNode

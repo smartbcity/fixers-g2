@@ -28,8 +28,7 @@
   ],
   "devDependencies": {
     "@smartb/g2-forms": "^1.0.0-alpha.40",
-    "@types/react-dropzone": "^5.1.0",
-    "@types/stringify-object": "^4.0.1"
+    "@types/react-dropzone": "^5.1.0"
   },
   "peerDependencies": {
     "@mui/material": "^5.8.4",
@@ -42,8 +41,7 @@
     "@mui/lab": "5.0.0-alpha.86",
     "@smartb/g2-notifications": "^1.0.0-alpha.40",
     "@smartb/g2-themes": "^1.0.0-alpha.40",
-    "react-dropzone": "^11.3.2",
-    "stringify-object": "^4.0.1"
+    "react-dropzone": "^11.3.2"
   },
   "gitHead": "01582f4b620c1e44cab5a65394e29d95f66ddabb",
   "publishConfig": {

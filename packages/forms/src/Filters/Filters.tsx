@@ -114,10 +114,7 @@ export interface FiltersBasicProps extends BasicProps {
   styles?: FiltersStyles
 }
 
-const useStyles = makeG2STyles()({
-  field: {
-    margin: '8px'
-  },
+const useStyles = makeG2STyles()((theme) => ({
   form: {
     display: 'flex',
     justifyContent: 'flex-end',
@@ -132,12 +129,13 @@ const useStyles = makeG2STyles()({
   fieldsContainer: {
     display: 'flex',
     justifyContent: 'flex-end',
-    flexWrap: 'wrap'
+    flexWrap: 'wrap',
+    gap: theme.spacing
   },
   button: {
-    margin: '8px'
+    margin: `${theme.spacing}px`
   }
-})
+}))
 
 export type FiltersProps = MergeReactElementProps<'form', FiltersBasicProps>
 
@@ -167,7 +165,6 @@ export const Filters = (props: FiltersProps) => {
           label: field.label,
           name: field.name,
           className: cx(
-            defaultStyles.classes.field,
             classes?.field,
             'AruiFilters-field',
             field.datePickerProps?.className,
@@ -259,7 +256,7 @@ export const Filters = (props: FiltersProps) => {
     ]
   )
   const actionsDisplay = useMemo(() => {
-    if (!actions || actions.length === 0) return undefined
+    if (!actions || actions.length === 0) return <></>
     return (
       <Actions
         direction='row'

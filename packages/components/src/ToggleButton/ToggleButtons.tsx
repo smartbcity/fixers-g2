@@ -116,7 +116,6 @@ export const ToggleButtons = styled((props: ToggleButtonsProps) => {
     </ToggleButtonGroup>
   )
 })(({ theme }) => ({
-  borderRadius: '5px',
   '& .MuiToggleButtonGroup-grouped': {
     border: `2px solid ${theme.palette.primary.main}`,
     color: theme.palette.primary.main,

@@ -5,9 +5,6 @@ import { Button, ButtonProps } from './Button'
 
 const useStyles = makeG2STyles()({
   arrow: {
-    marginLeft: '-8px',
-    marginRight: '8px',
-    marginTop: '-1px',
     width: '20px',
     height: '20px'
   }
@@ -21,7 +18,7 @@ const BackButtonBase = function <T = {}>(
   return (
     <Button
       variant='text'
-      icon={<Arrow className={classes.arrow} />}
+      startIcon={<Arrow className={classes.arrow} />}
       ref={ref}
       {...props}
     />

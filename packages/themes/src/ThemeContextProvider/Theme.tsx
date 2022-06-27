@@ -9,6 +9,8 @@ import { mergeDeepRight } from 'ramda'
 export interface Theme {
   name?: string
   colors: ThemeColors
+  borderRadius: string
+  spacing: number
   shadows: string[]
 }
 
@@ -24,12 +26,14 @@ export interface ThemeColors {
 
 export const defaultTheme: Theme = {
   name: 'default',
+  borderRadius: '8px',
+  spacing: 8,
   colors: {
     primary: '#EDBA27',
     secondary: '#353945',
     tertiary: '#e0e0e0',
     error: '#E44258',
-    success: '#00CA72',
+    success: '#159D50',
     warning: '#FF9900',
     info: '#3C78D8'
   },
@@ -54,7 +58,7 @@ export const defaultMaterialUiTheme = (
   theme: Theme,
   customMuiTheme?: Partial<ThemeOptions>
 ) => {
-  const isPrimaryTooLight = tinycolor(theme.colors.primary).getLuminance() > 0.6
+  const isPrimaryTooLight = tinycolor(theme.colors.primary).getLuminance() > 0.5
   const themeOverride: ThemeOptions = {
     // @ts-ignore
     shadows: [...theme.shadows, ...Array(12).fill('none')],
@@ -78,8 +82,18 @@ export const defaultMaterialUiTheme = (
           root: {
             color: isPrimaryTooLight ? '#353945' : '#ffffff',
             '&.Mui-disabled': {
-              color: isPrimaryTooLight ? '#353945' : '#ffffff'
+              color: isPrimaryTooLight ? '#353945' : '#ffffff',
+              opacity: 0.7
             }
+          },
+          textSizeLarge: {
+            padding: '12px 16px'
+          },
+          textSizeMedium: {
+            padding: '8px 14px'
+          },
+          textSizeSmall: {
+            padding: '4px 10px'
           }
         }
       },
@@ -118,7 +132,9 @@ export const defaultMaterialUiTheme = (
         fontWeight: 500
       },
       button: {
-        fontWeight: 500
+        fontWeight: 600,
+        textTransform: 'none',
+        fontSize: '0.875rem'
       },
       subtitle2: {
         fontWeight: 600
@@ -126,7 +142,11 @@ export const defaultMaterialUiTheme = (
       subtitle1: {
         fontWeight: 600
       }
-    }
+    },
+    shape: {
+      borderRadius: theme.borderRadius
+    },
+    spacing: theme.spacing
   }
   if (customMuiTheme) {
     return createMuiTheme(

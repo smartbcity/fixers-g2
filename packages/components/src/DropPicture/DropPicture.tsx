@@ -9,7 +9,7 @@ import {
 } from '@smartb/g2-themes'
 import { Tooltip } from '@smartb/g2-notifications'
 
-const useStyles = makeG2STyles()({
+const useStyles = makeG2STyles()((theme) => ({
   root: {
     position: 'relative',
     width: '100%',
@@ -20,7 +20,7 @@ const useStyles = makeG2STyles()({
     height: '100%',
     background: 'rgb(237, 237, 237)',
     border: 'dashed rgba(209,202,203,1) 2px',
-    borderRadius: '5px',
+    borderRadius: theme.borderRadius,
     position: 'relative',
     cursor: 'pointer',
     '&:focus': {
@@ -33,7 +33,7 @@ const useStyles = makeG2STyles()({
   },
   image: {
     width: '100%',
-    borderRadius: '5px',
+    borderRadius: theme.borderRadius,
     objectFit: 'cover',
     height: '100%'
   },
@@ -73,7 +73,7 @@ const useStyles = makeG2STyles()({
     top: 0,
     left: 0
   }
-})
+}))
 
 export type DropPictureError =
   | 'file-too-large'

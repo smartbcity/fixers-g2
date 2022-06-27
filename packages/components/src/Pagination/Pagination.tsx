@@ -68,7 +68,9 @@ export const Pagination = (props: PaginationProps) => {
       position='relative'
       display='flex'
       justifyContent='flex-end'
-      marginTop='10px'
+      sx={{
+        marginTop: (theme) => theme.spacing(2)
+      }}
       className={cx('AruiPagination-root', className)}
       style={style}
       id={id}

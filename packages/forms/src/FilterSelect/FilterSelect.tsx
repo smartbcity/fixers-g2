@@ -47,7 +47,7 @@ export interface FilterSelectStyles {
   menu?: React.CSSProperties
 }
 
-const useStyles = makeG2STyles()({
+const useStyles = makeG2STyles()((theme) => ({
   root: {
     '& .MuiFilledInput-input': {
       margin: '0px 5px'
@@ -69,9 +69,9 @@ const useStyles = makeG2STyles()({
   },
   list: {
     padding: '0px',
-    '& .MuiListItem-root': {
+    '& .MuiMenuItem-root': {
       padding: '2px',
-      paddingRight: '8px'
+      paddingRight: `${theme.spacing}px`
     }
   },
   selectPaddingWithClear: {
@@ -109,7 +109,7 @@ const useStyles = makeG2STyles()({
     cursor: 'pointer',
     lineHeight: 'unset'
   }
-})
+}))
 
 export interface FilterSelectBasicProps extends BasicProps {
   /**

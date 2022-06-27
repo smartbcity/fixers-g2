@@ -9,13 +9,13 @@ import {
 import { Button } from '@smartb/g2-components'
 import { Link, LinkProps } from 'react-router-dom'
 
-const useStyles = makeG2STyles()({
+const useStyles = makeG2STyles()((theme) => ({
   notFoundIcon: {
     maxWidth: '400px',
     width: '80vw'
   },
   title: {
-    margin: '20px',
+    margin: theme.spacing * 2,
     '@media (max-width:800px)': {
       fontSize: '35px'
     },
@@ -23,7 +23,7 @@ const useStyles = makeG2STyles()({
       fontSize: '30px'
     }
   }
-})
+}))
 
 interface NoMatchPageClasses {
   notFoundIcon?: string

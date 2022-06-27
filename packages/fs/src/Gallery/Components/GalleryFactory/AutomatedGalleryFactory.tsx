@@ -226,7 +226,7 @@ export const AutomatedGalleryFactory = (
         alignItems='center'
         sx={{
           gap: '10px',
-          marginBottom: '15px'
+          marginBottom: (theme) => theme.spacing(2)
         }}
       >
         <Typography variant='h6'>{strings?.gallery ?? 'Galerie'}</Typography>

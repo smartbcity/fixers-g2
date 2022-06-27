@@ -19,7 +19,7 @@ export const ElevatedLoading = (props: ElevatedLoadingProps) => {
             height: '42px',
             width: '100%',
             margin: '10px 0',
-            borderRadius: '4px'
+            borderRadius: (theme) => `${theme.shape.borderRadius}px`
           }}
         />
       )

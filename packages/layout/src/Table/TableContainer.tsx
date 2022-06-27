@@ -62,7 +62,7 @@ export const TableContainer = styled(BasicTableContainer)((props) => {
         border: 'unset'
       },
       '& .AruiTable-principaleTableRow, .AruiTable-tableFooterRow': {
-        borderRadius: '4px',
+        borderRadius: theme.shape.borderRadius,
         background: 'white',
         boxShadow: theme.shadows[1],
         margin: '3px 0px',
@@ -75,7 +75,7 @@ export const TableContainer = styled(BasicTableContainer)((props) => {
       },
       '& .AruiTable-tableCell, .AruiTable-tableHeaderCell, .AruiTable-tableFooterCell':
         {
-          padding: '7px 12px',
+          padding: `${theme.spacing(1)} ${theme.spacing(1.5)}`,
           alignSelf: 'center'
         },
       '& .AruiTable-table': {

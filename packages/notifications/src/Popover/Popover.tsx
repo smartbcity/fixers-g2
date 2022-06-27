@@ -9,10 +9,10 @@ import { CloseRounded } from '@mui/icons-material'
 
 const useStyles = makeG2STyles()((theme) => ({
   popper: {
-    borderRadius: '8px',
+    borderRadius: theme.borderRadius,
     background: 'white',
     zIndex: 1,
-    padding: '20px',
+    padding: theme.spacing * 3,
     boxShadow: theme.shadows[3],
     '&[data-popper-placement="bottom"]': {
       marginTop: '25px !important',

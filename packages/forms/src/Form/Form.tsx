@@ -179,11 +179,11 @@ export interface FormBasicProps extends BasicProps {
   styles?: FormStyles
 }
 
-const useStyles = makeG2STyles()({
-  field: {
-    margin: '20px 0'
+const useStyles = makeG2STyles()((theme) => ({
+  fieldContainer: {
+    gap: theme.spacing * 3
   }
-})
+}))
 
 export type FormProps = MergeReactElementProps<'form', FormBasicProps>
 
@@ -208,14 +208,7 @@ export const Form = (props: FormProps) => {
   const fieldsMemoized = useMemo(
     () =>
       fields.map((field) => {
-        const input = getInput(
-          field,
-          formState,
-          defaultStyles.classes.field,
-          classes,
-          styles,
-          isLoading
-        )
+        const input = getInput(field, formState, classes, styles, isLoading)
         if (!!field.customDisplay) {
           return field.customDisplay(input)
         }
@@ -256,7 +249,11 @@ export const Form = (props: FormProps) => {
       {actionsPosition === 'above' && !isLoading && actionsDisplay}
       <Stack
         {...fieldsStackProps}
-        className={cx('AruiForm-fieldsContainer', classes?.fieldsContainer)}
+        className={cx(
+          defaultStyles.classes.fieldContainer,
+          'AruiForm-fieldsContainer',
+          classes?.fieldsContainer
+        )}
         style={styles?.fieldsContainer}
       >
         {fieldsMemoized}
@@ -269,7 +266,6 @@ export const Form = (props: FormProps) => {
 const getInput = (
   field: FormField,
   formState: FormState,
-  fieldClassName: string,
   classes?: FormClasses,
   styles?: FormStyles,
   isLoading?: boolean
@@ -284,7 +280,6 @@ const getInput = (
     className: cx(
       classes?.field,
       'AruiForm-field',
-      fieldClassName,
       field.checkBoxProps?.className,
       field.datePickerProps?.className,
       field.selectProps?.className,

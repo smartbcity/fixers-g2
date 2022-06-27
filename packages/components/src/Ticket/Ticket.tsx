@@ -6,9 +6,9 @@ import {
 } from '@smartb/g2-themes'
 import React, { forwardRef } from 'react'
 
-const useStyles = makeG2STyles()({
+const useStyles = makeG2STyles()((theme) => ({
   root: {
-    padding: '10px 30px',
+    padding: `${theme.spacing * 1.5}px ${theme.spacing * 4}px`,
     display: 'inline-block',
     background: 'transparent',
     borderRadius: '0px',
@@ -17,11 +17,11 @@ const useStyles = makeG2STyles()({
   },
   rootLongText: {
     maxWidth: '300px',
-    padding: '10px 15px'
+    padding: `${theme.spacing * 1.5}px ${theme.spacing * 2}px`
   },
   composedRoot: {
     background: 'white',
-    borderRadius: '9px'
+    borderRadius: theme.borderRadius
   },
   content: {
     fontWeight: 700,
@@ -33,7 +33,7 @@ const useStyles = makeG2STyles()({
     color: '#808A9D',
     lineHeight: '19px'
   }
-})
+}))
 
 interface TicketClasses {
   baseContainer?: string
@@ -143,7 +143,14 @@ const TicketBase = (
             classes?.textContainer
           )}
           style={styles?.textContainer}
-          marginLeft={icon ? (longText ? '15px' : '20px') : undefined}
+          sx={{
+            marginLeft: (theme) =>
+              icon
+                ? longText
+                  ? `${theme.spacing(2)}`
+                  : `${theme.spacing(2.5)}`
+                : undefined
+          }}
           display='flex'
           flexDirection='column'
         >

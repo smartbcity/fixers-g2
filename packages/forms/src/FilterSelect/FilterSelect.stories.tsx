@@ -40,7 +40,7 @@ export const FilterSelectStory: Story<FilterSelectBasicProps> = (
   args: FilterSelectBasicProps
 ) => {
   const [value, setvalue] = useState('')
-  const [values, setvalues] = useState([])
+  const [values, setvalues] = useState<string[]>([])
   return (
     <FilterSelect
       options={[]}
@@ -48,7 +48,7 @@ export const FilterSelectStory: Story<FilterSelectBasicProps> = (
       value={args.multiple ? undefined : value}
       values={args.multiple ? values : undefined}
       onChangeValue={(value) =>
-        setvalue((oldValue) => (oldValue === value ? undefined : value))
+        setvalue((oldValue) => (oldValue === value ? '' : value))
       }
       onChangeValues={(values) => setvalues(values)}
       onRemove={() => {
@@ -70,7 +70,7 @@ export const FilterSelectSizes: Story<FilterSelectBasicProps> = () => {
           variant='outlined'
           value={value}
           onChangeValue={(value) =>
-            setvalue((oldValue) => (oldValue === value ? undefined : value))
+            setvalue((oldValue) => (oldValue === value ? '' : value))
           }
           onRemove={() => {
             setvalue('')
@@ -84,7 +84,7 @@ export const FilterSelectSizes: Story<FilterSelectBasicProps> = () => {
           variant='outlined'
           value={value}
           onChangeValue={(value) =>
-            setvalue((oldValue) => (oldValue === value ? undefined : value))
+            setvalue((oldValue) => (oldValue === value ? '' : value))
           }
           onRemove={() => {
             setvalue('')
@@ -98,7 +98,7 @@ export const FilterSelectSizes: Story<FilterSelectBasicProps> = () => {
           variant='outlined'
           value={value}
           onChangeValue={(value) =>
-            setvalue((oldValue) => (oldValue === value ? undefined : value))
+            setvalue((oldValue) => (oldValue === value ? '' : value))
           }
           onRemove={() => {
             setvalue('')
@@ -114,7 +114,7 @@ export const FilterSelectSizes: Story<FilterSelectBasicProps> = () => {
           variant='filled'
           value={value}
           onChangeValue={(value) =>
-            setvalue((oldValue) => (oldValue === value ? undefined : value))
+            setvalue((oldValue) => (oldValue === value ? '' : value))
           }
           onRemove={() => {
             setvalue('')
@@ -128,7 +128,7 @@ export const FilterSelectSizes: Story<FilterSelectBasicProps> = () => {
           variant='filled'
           value={value}
           onChangeValue={(value) =>
-            setvalue((oldValue) => (oldValue === value ? undefined : value))
+            setvalue((oldValue) => (oldValue === value ? '' : value))
           }
           onRemove={() => {
             setvalue('')
@@ -142,7 +142,7 @@ export const FilterSelectSizes: Story<FilterSelectBasicProps> = () => {
           variant='filled'
           value={value}
           onChangeValue={(value) =>
-            setvalue((oldValue) => (oldValue === value ? undefined : value))
+            setvalue((oldValue) => (oldValue === value ? '' : value))
           }
           onRemove={() => {
             setvalue('')
@@ -177,7 +177,7 @@ export const FilterSelectStates: Story<FilterSelectBasicProps> = () => {
 }
 
 export const MultipleFilterSelect: Story<FilterSelectBasicProps> = () => {
-  const [values, setvalues] = useState([])
+  const [values, setvalues] = useState<string[]>([])
 
   return (
     <Box display='flex' flexDirection='column' alignItems='center'>

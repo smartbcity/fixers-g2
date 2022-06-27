@@ -27,7 +27,7 @@ const useStyles = makeG2STyles()((theme) => ({
   },
   label: {
     color: theme.colors.secondary,
-    marginRight: '5px'
+    marginRight: theme.spacing / 2
   }
 }))
 
