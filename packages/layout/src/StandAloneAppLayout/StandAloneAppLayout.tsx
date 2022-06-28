@@ -22,10 +22,8 @@ const Main = styled('main', {
   shouldForwardProp: (prop) => prop !== 'isMobile'
 })<{
   isMobile?: boolean
-}>(({ theme, isMobile }) => ({
+}>(({ isMobile }) => ({
   flexGrow: 1,
-  padding: theme.spacing(3),
-  paddingTop: '0',
   marginLeft: isMobile ? '' : `${drawerWidth}px`,
   width: isMobile ? '100vw' : `calc(100vw - ${drawerWidth}px)`,
   height: '100vh',
@@ -224,7 +222,7 @@ export const StandAloneAppLayout = (props: StandAloneAppLayoutProps) => {
         style={styles?.main}
         isMobile={isMobile}
         sx={{
-          bgcolor: '#EEEEEE',
+          bgcolor: (theme) => theme.palette.background.default,
           ...mainProps?.sx
         }}
       >

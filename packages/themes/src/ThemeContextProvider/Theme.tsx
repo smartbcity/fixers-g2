@@ -17,7 +17,11 @@ export interface Theme {
 export interface ThemeColors {
   primary: string
   secondary: string
+  /**
+   * Not really used in g2 but transfered to the mui theme as the divider color
+   */
   tertiary: string
+  background: string
   error: string
   success: string
   warning: string
@@ -32,6 +36,7 @@ export const defaultTheme: Theme = {
     primary: '#EDBA27',
     secondary: '#353945',
     tertiary: '#e0e0e0',
+    background: '#EEEEEE',
     error: '#E44258',
     success: '#159D50',
     warning: '#FF9900',
@@ -111,6 +116,9 @@ export const defaultMaterialUiTheme = (
       },
       secondary: {
         main: theme.colors.secondary
+      },
+      background: {
+        default: theme.colors.background
       },
       divider: theme.colors.tertiary,
       success: {

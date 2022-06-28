@@ -230,11 +230,16 @@ export const Form = (props: FormProps) => {
     return (
       <Actions
         actions={actions}
+        className='AruiForm-actions'
+        style={styles?.actions}
         classes={{
-          actions: 'AruiForm-actions',
           button: 'AruiForm-button'
         }}
-        styles={{ actions: styles?.actions, button: styles?.button }}
+        styles={{ button: styles?.button }}
+        sx={{
+          marginTop: (theme) => theme.spacing(2),
+          ...actionsStackProps?.sx
+        }}
         {...actionsStackProps}
       />
     )

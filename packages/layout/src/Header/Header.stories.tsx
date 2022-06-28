@@ -69,10 +69,16 @@ Header.args = {
   ],
   content: [
     {
-      leftPart: [<Typography variant='h4'>Title</Typography>],
+      leftPart: [
+        <Typography key='header-title' variant='h4'>
+          Title
+        </Typography>
+      ],
       rightPart: [
-        <Button variant='text'>Cancel</Button>,
-        <Button>Validate</Button>
+        <Button key='header-cancelButton' variant='text'>
+          Cancel
+        </Button>,
+        <Button key='header-validateButton'>Validate</Button>
       ]
     }
   ]

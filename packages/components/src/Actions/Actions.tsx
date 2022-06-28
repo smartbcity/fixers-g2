@@ -1,10 +1,6 @@
 import React, { useMemo } from 'react'
 import { Button, ButtonProps } from '../Buttons'
-import {
-  BasicProps,
-  makeG2STyles,
-  MergeMuiElementProps
-} from '@smartb/g2-themes'
+import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 import { Stack, StackProps } from '@mui/material'
 import { cx } from '@emotion/css'
 
@@ -14,20 +10,12 @@ export type Action = {
 } & Omit<ButtonProps, 'children' | 'style'>
 
 export interface ActionsClasses {
-  actions?: string
   button?: string
 }
 
 export interface ActionsStyles {
-  actions?: React.CSSProperties
   button?: React.CSSProperties
 }
-
-const useStyles = makeG2STyles()({
-  button: {
-    margin: '8px'
-  }
-})
 
 export interface ActionsBasicProps extends BasicProps {
   actions?: Action[]
@@ -35,41 +23,36 @@ export interface ActionsBasicProps extends BasicProps {
   styles?: ActionsStyles
 }
 
-export type ActionsProps = MergeMuiElementProps<
-  Omit<StackProps, 'classes' | 'styles'>,
-  ActionsBasicProps
->
+export type ActionsProps = MergeMuiElementProps<StackProps, ActionsBasicProps>
 
 export const Actions = (props: ActionsProps) => {
-  const { actions, classes, styles, ...stackProps } = props
-  const defaultStyles = useStyles()
+  const { actions, classes, styles, className, sx, ...stackProps } = props
   const actionsDisplay = useMemo(() => {
     if (!actions || actions.length === 0) return undefined
     return actions.map((action) => {
       const { key, label, className, ...other } = action
       return (
-        <Stack key={key}>
-          <Button
-            className={cx(
-              defaultStyles.classes.button,
-              'AruiActions-button',
-              classes?.button,
-              className
-            )}
-            style={styles?.button}
-            {...other}
-          >
-            {label}
-          </Button>
-        </Stack>
+        <Button
+          key={key}
+          className={cx('AruiActions-button', classes?.button, className)}
+          style={styles?.button}
+          {...other}
+        >
+          {label}
+        </Button>
       )
     })
   }, [actions, classes?.button, styles?.button])
   return (
     <Stack
       {...stackProps}
-      className={cx('AruiActions-actions', classes?.actions)}
-      style={styles?.actions}
+      className={cx('AruiActions-root', className)}
+      sx={{
+        gap: (theme) => theme.spacing(1),
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+        ...sx
+      }}
     >
       {actionsDisplay}
     </Stack>
