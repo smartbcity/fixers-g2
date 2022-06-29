@@ -37,7 +37,6 @@ export interface HeaderBasicProps extends BasicProps {
   content?: HeaderContent[]
   /**
    * The content of the header freely displayed.
-   * @default []
    */
   freeContent?: React.ReactNode
   /**

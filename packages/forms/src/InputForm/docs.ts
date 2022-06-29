@@ -1,13 +1,13 @@
 
-export const InputFormClasses = `
-interface InputFormClasses {
+export const InputLabeledClasses = `
+interface InputLabeledClasses {
     label?: string
     input?: string
 }
 `
 
-export const InputFormStyles = `
-interface InputFormStyles {
+export const InputLabeledStyles = `
+interface InputLabeledStyles {
     label?: React.CSSProperties
     input?: React.CSSProperties
 }

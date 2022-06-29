@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
 import { Action, Actions } from '@smartb/g2-components'
-import { InputForm, InputFormBasicProps } from '../InputForm'
+import { InputLabeled, InputFormBasicProps } from '../InputForm'
 import { SelectProps } from '../Select'
 import { TextFieldProps } from '../TextField'
 import { DatePickerProps } from '../DatePicker'
@@ -306,7 +306,7 @@ const getInput = (
     case 'datepicker': {
       const date = new Date(formState.getFieldProps(field.name).value)
       return (
-        <InputForm
+        <InputLabeled
           inputType='datePicker'
           value={
             !isNaN(date.getTime())
@@ -329,7 +329,7 @@ const getInput = (
     }
     case 'select':
       return field.selectProps?.multiple === true ? (
-        <InputForm
+        <InputLabeled
           inputType='select'
           values={formState.getFieldProps(field.name).value ?? []}
           onChangeValues={(values: string[]) => {
@@ -341,7 +341,7 @@ const getInput = (
           {...commonProps}
         />
       ) : (
-        <InputForm
+        <InputLabeled
           inputType='select'
           value={formState.getFieldProps(field.name).value ?? ''}
           onChangeValue={(value: string) => {
@@ -356,7 +356,7 @@ const getInput = (
     case 'autoComplete':
       return field.autoCompleteProps?.multiple === true ? (
         // @ts-ignore
-        <InputForm
+        <InputLabeled
           inputType='autoComplete'
           values={formState.getFieldProps(field.name).value ?? []}
           onChangeValues={(values) => {
@@ -369,7 +369,7 @@ const getInput = (
         />
       ) : (
         // @ts-ignore
-        <InputForm
+        <InputLabeled
           inputType='autoComplete'
           value={formState.getFieldProps(field.name).value ?? ''}
           onChangeValue={(value) => {
@@ -399,7 +399,7 @@ const getInput = (
       )
     case 'radioChoices':
       return (
-        <InputForm
+        <InputLabeled
           inputType='radioChoices'
           value={formState.getFieldProps(field.name).value ?? ''}
           onChange={(_: React.ChangeEvent<HTMLInputElement>, value: string) => {
@@ -413,7 +413,7 @@ const getInput = (
       )
   }
   return (
-    <InputForm
+    <InputLabeled
       inputType='textField'
       value={formState.getFieldProps(field.name).value ?? ''}
       onChange={(value: string) => {

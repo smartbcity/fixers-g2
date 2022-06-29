@@ -39,4 +39,3 @@ export {
   StandAloneAppLayoutProps
 } from './StandAloneAppLayout'
 export { Header, HeaderProps, HeaderContent, HeaderTab } from './Header'
-export { Header, HeaderProps, HeaderContent, HeaderTab } from './Page'
