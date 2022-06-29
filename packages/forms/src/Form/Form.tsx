@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
 import { Action, Actions } from '@smartb/g2-components'
-import { InputLabeled, InputFormBasicProps } from '../InputForm'
+import { InputLabeled, InputLabeledBasicProps } from '../InputLabeled'
 import { SelectProps } from '../Select'
 import { TextFieldProps } from '../TextField'
 import { DatePickerProps } from '../DatePicker'
@@ -62,7 +62,7 @@ export type FormField = {
    */
   textFieldProps?: Partial<
     Omit<
-      TextFieldProps & InputFormBasicProps<'textField'>,
+      TextFieldProps & InputLabeledBasicProps<'textField'>,
       'value' | 'onChange' | 'label' | 'classes' | 'styles'
     >
   >
@@ -71,7 +71,7 @@ export type FormField = {
    */
   selectProps?: Partial<
     Omit<
-      SelectProps & InputFormBasicProps<'select'>,
+      SelectProps & InputLabeledBasicProps<'select'>,
       | 'value'
       | 'values'
       | 'onChangeValue'
@@ -86,7 +86,7 @@ export type FormField = {
    */
   autoCompleteProps?: Partial<
     Omit<
-      AutoCompleteProps & InputFormBasicProps<'autoComplete'>,
+      AutoCompleteProps & InputLabeledBasicProps<'autoComplete'>,
       | 'value'
       | 'values'
       | 'onChangeValue'
@@ -101,7 +101,7 @@ export type FormField = {
    */
   datePickerProps?: Partial<
     Omit<
-      DatePickerProps & InputFormBasicProps<'datePicker'>,
+      DatePickerProps & InputLabeledBasicProps<'datePicker'>,
       'value' | 'onChangeDate' | 'label' | 'classes' | 'styles'
     >
   >
@@ -116,7 +116,7 @@ export type FormField = {
    */
   radioChoicesProps?: Partial<
     Omit<
-      RadioChoicesProps & InputFormBasicProps<'radioChoices'>,
+      RadioChoicesProps & InputLabeledBasicProps<'radioChoices'>,
       'value' | 'onChange' | 'label' | 'classes' | 'styles'
     >
   >

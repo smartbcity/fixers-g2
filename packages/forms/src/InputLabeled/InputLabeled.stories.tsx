@@ -103,6 +103,24 @@ export const InputLabeledStory: Story<InputLabeledBasicProps> = (
   return <InputLabeled {...args} style={{ width: '500px' }} />
 }
 
+export const InputLabeledReadonly: Story<InputLabeledBasicProps> = (
+  args: InputLabeledBasicProps
+) => {
+  return <InputLabeled {...args} label="Readonly input" value="My value" inputType="textField" style={{ width: '500px' }} readonly />
+}
+
+export const InputLabeledReadonlyChip: Story<InputLabeledBasicProps> = (
+  args: InputLabeledBasicProps
+) => {
+  return <InputLabeled label="Readonly input chip" value="My value" inputType="textField" style={{ width: '500px' }} readonly readonlyType='chip' getReadonlyChipColor={() => "#E56643"}/>
+}
+
+export const InputLabeledLoading: Story<InputLabeledBasicProps> = (
+  args: InputLabeledBasicProps
+) => {
+  return <InputLabeled label="Loading input" value="My value"  style={{ width: '500px' }} isLoading />
+}
+
 export const FormExample: Story<InputLabeledBasicProps> = () => {
   const [form, setform] = useState({
     email: '',
@@ -208,7 +226,8 @@ export const FormExample: Story<InputLabeledBasicProps> = () => {
 
 InputLabeledStory.args = {
   label: 'un input:',
-  id: 'InputLabeledExample'
+  id: 'InputLabeledExample',
+  inputType: 'textField'
 }
 
 InputLabeledStory.storyName = 'InputLabeled'

@@ -46,7 +46,7 @@ export type LinkProps<T extends object = {}> = MergeMuiElementProps<
 >
 
 export const Link = <T extends object = {}>(props: LinkProps<T>) => {
-  const { href, className, component, componentProps, disabled, ...other } =
+  const { href, className, component, componentProps, disabled, variant = "body1", ...other } =
     props
   const { classes, cx } = useStyles()
   if (component)
@@ -60,7 +60,7 @@ export const Link = <T extends object = {}>(props: LinkProps<T>) => {
           className
         )}
         component={component}
-        variant='body2'
+        variant={variant}
         color='inherit'
         {...componentProps}
         {...other}
@@ -75,7 +75,7 @@ export const Link = <T extends object = {}>(props: LinkProps<T>) => {
         'AruiLink-root',
         className
       )}
-      variant='body2'
+      variant={variant}
       color='inherit'
       {...other}
     />
