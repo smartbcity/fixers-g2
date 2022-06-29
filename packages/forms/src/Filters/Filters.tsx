@@ -131,9 +131,6 @@ const useStyles = makeG2STyles()((theme) => ({
     justifyContent: 'flex-end',
     flexWrap: 'wrap',
     gap: theme.spacing
-  },
-  button: {
-    margin: `${theme.spacing}px`
   }
 }))
 
@@ -261,11 +258,12 @@ export const Filters = (props: FiltersProps) => {
       <Actions
         direction='row'
         actions={actions}
+        className='AruiFilters-actions'
+        style={styles?.actions}
         classes={{
-          actions: 'AruiFilters-actions',
           button: 'AruiFilters-button'
         }}
-        styles={{ actions: styles?.actions, button: styles?.button }}
+        styles={{ button: styles?.button }}
       />
     )
   }, [actions, classes?.button, styles?.button])

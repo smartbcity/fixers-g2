@@ -152,7 +152,7 @@ export const FormStory: Story<FormBasicProps> = (args: FormBasicProps) => {
   )
 }
 
-export const FormRowButtonStory: Story<FormBasicProps> = (
+export const FormCollumnButtonStory: Story<FormBasicProps> = (
   args: FormBasicProps
 ) => {
   const formState = useForm({
@@ -178,9 +178,11 @@ export const FormRowButtonStory: Story<FormBasicProps> = (
       actions={actions}
       formState={formState}
       style={{ width: '500px' }}
-      actionsStackProps={{
-        direction: 'row',
-        justifyContent: 'flex-end'
+      styles={{
+        actions: {
+          flexDirection: 'column',
+          justifyContent: 'flex-start'
+        }
       }}
     />
   )
@@ -250,7 +252,7 @@ FormStory.args = {
 
 FormStory.storyName = 'Form'
 
-FormRowButtonStory.args = {
+FormCollumnButtonStory.args = {
   fields: fields
 }
-FormRowButtonStory.storyName = 'Form Row Button'
+FormCollumnButtonStory.storyName = 'Form Column Button'

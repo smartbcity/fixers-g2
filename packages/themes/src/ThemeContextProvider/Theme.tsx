@@ -9,7 +9,7 @@ import { mergeDeepRight } from 'ramda'
 export interface Theme {
   name?: string
   colors: ThemeColors
-  borderRadius: string
+  borderRadius: number
   spacing: number
   shadows: string[]
 }
@@ -17,7 +17,11 @@ export interface Theme {
 export interface ThemeColors {
   primary: string
   secondary: string
+  /**
+   * Not really used in g2 but transfered to the mui theme as the divider color
+   */
   tertiary: string
+  background: string
   error: string
   success: string
   warning: string
@@ -26,12 +30,13 @@ export interface ThemeColors {
 
 export const defaultTheme: Theme = {
   name: 'default',
-  borderRadius: '8px',
+  borderRadius: 8,
   spacing: 8,
   colors: {
     primary: '#EDBA27',
     secondary: '#353945',
     tertiary: '#e0e0e0',
+    background: '#EEEEEE',
     error: '#E44258',
     success: '#159D50',
     warning: '#FF9900',
@@ -112,6 +117,9 @@ export const defaultMaterialUiTheme = (
       secondary: {
         main: theme.colors.secondary
       },
+      background: {
+        default: theme.colors.background
+      },
       divider: theme.colors.tertiary,
       success: {
         main: theme.colors.success
@@ -134,7 +142,8 @@ export const defaultMaterialUiTheme = (
       button: {
         fontWeight: 600,
         textTransform: 'none',
-        fontSize: '0.875rem'
+        fontSize: '0.875rem',
+        lineHeight: 'unset'
       },
       subtitle2: {
         fontWeight: 600

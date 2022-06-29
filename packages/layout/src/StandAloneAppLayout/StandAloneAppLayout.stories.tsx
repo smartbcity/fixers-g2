@@ -5,13 +5,15 @@ import {
 } from './StandAloneAppLayout'
 import { Meta } from '@storybook/react'
 import { Story } from '@storybook/react/types-6-0'
-import { Box, Link, Typography } from '@mui/material'
+import { Box, Link, Paper, Stack, Typography } from '@mui/material'
 import { ArgsTable, PRIMARY_STORY, Subtitle } from '@storybook/addon-docs'
 import LinkTo from '@storybook/addon-links/react'
 import defaultLogo from '../assets/smartb.png'
 import itemsLogo from '../assets/impactcity-logo-2.png'
 import { AppLogoProps } from '../AppMenu'
 import { styles, classes } from './docs'
+import { Button } from '@smartb/g2-components'
+import { Page } from '../Page'
 
 export default {
   title: 'Layout/StandAloneAppLayout',
@@ -124,7 +126,65 @@ StandAloneAppLayout.args = {
       label: 'application',
       icon: <img style={{ width: '30px', height: '30px' }} src={itemsLogo} />
     }
-  ]
+  ],
+  children: (
+    <Page
+      headerProps={{
+        content: [
+          {
+            leftPart: [
+              <Typography key='page-title' variant='h5'>
+                Page Header
+              </Typography>
+            ],
+            rightPart: [<Button key='page-action'>An action</Button>]
+          }
+        ],
+        tabs: [
+          {
+            key: 'tab-1',
+            label: 'Tab 1'
+          },
+          {
+            key: 'tab-2',
+            label: 'Tab 2'
+          },
+          {
+            key: 'tab-3',
+            label: 'Tab 3'
+          },
+          {
+            key: 'tab-4',
+            label: 'Tab 4'
+          },
+          {
+            key: 'tab-5',
+            label: 'Tab 5'
+          }
+        ],
+        currentTab: 'tab-1'
+      }}
+      bottomActionsProps={{
+        actions: [
+          {
+            label: 'Cancel',
+            key: 'cancelButton',
+            variant: 'text'
+          },
+          {
+            label: 'validate',
+            key: 'validateFormButton',
+            type: 'submit'
+          }
+        ]
+      }}
+    >
+      <Stack direction='row' height='120vh' alignItems='strecth' gap='32px'>
+        <Paper sx={{ flexGrow: 1 }} elevation={0} />
+        <Paper sx={{ flexGrow: 1 }} elevation={0} />
+      </Stack>
+    </Page>
+  )
 }
 
 StandAloneAppLayout.storyName = 'StandAloneAppLayout'

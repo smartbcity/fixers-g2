@@ -7,11 +7,12 @@ const disabledColor = '#E6E9EF'
 export const useInputStyles = makeG2STyles()((theme) => ({
   label: {
     marginBottom: theme.spacing,
-    fontSize: 16,
-    color: `${darkGrey}`
+    fontSize: "0.875rem",
+    fontWeight: 600,
+    color: "#000000"
   },
   labelSmall: {
-    fontSize: 14
+    fontSize: "0.813rem",
   },
   input: {
     '& .MuiInputBase-input': {

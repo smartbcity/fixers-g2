@@ -24,7 +24,8 @@
     "publish:npm": "yarn publish --access public --new-version ${VERSION}"
   },
   "devDependencies": {
-    "@smartb/g2-documentation": "^1.0.0-alpha.40"
+    "@smartb/g2-documentation": "^1.0.0-alpha.40",
+    "@smartb/g2-notifications": "^1.0.0-alpha.40"
   },
   "peerDependencies": {
     "@mui/material": "^5.8.4",

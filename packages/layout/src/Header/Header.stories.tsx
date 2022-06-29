@@ -2,9 +2,11 @@ import React, { useState } from 'react'
 import { Header as AruiHeader, HeaderProps } from './Header'
 import { Meta } from '@storybook/react'
 import { Story } from '@storybook/react/types-6-0'
-import { Typography } from '@mui/material'
+import { IconButton, Stack, Typography } from '@mui/material'
+import { Edit, Delete } from '@mui/icons-material'
 import { styles, classes } from './docs'
-import { Button } from '@smartb/g2-components'
+import { BackButton, Button } from '@smartb/g2-components'
+import { StatusTag } from '@smartb/g2-notifications'
 
 export default {
   title: 'Layout/Header',
@@ -40,6 +42,54 @@ export const Header: Story<HeaderProps> = (args: HeaderProps) => {
   )
 }
 
+export const HeaderWithGoBack: Story = () => {
+  return (
+    <AruiHeader
+      content={[
+        {
+          leftPart: [
+            <BackButton key='header-goback'>Go back</BackButton>,
+            <Typography key='header-title' variant='h4'>
+              Title
+            </Typography>
+          ],
+          rightPart: [
+            <IconButton key='header-edit'>
+              <Edit />
+            </IconButton>,
+            <IconButton key='header-delete'>
+              <Delete />
+            </IconButton>,
+          ]
+        }
+      ]}
+    />
+  )
+}
+
+export const HeaderFreeContent: Story = () => {
+  return (
+    <AruiHeader
+      freeContent={(
+        <Stack
+          direction="row"
+          justifyContent="space-between"
+          alignItems="center"
+        >
+          <Typography key='header-title' variant='h4'>
+            My propject
+          </Typography>
+          <StatusTag label='Refused' variant='error' />
+          <Button >
+            Correct
+          </Button>
+        </Stack>
+      )}
+
+    />
+  )
+}
+
 Header.args = {
   tabs: [
     {
@@ -69,10 +119,16 @@ Header.args = {
   ],
   content: [
     {
-      leftPart: [<Typography variant='h4'>Title</Typography>],
+      leftPart: [
+        <Typography key='header-title' variant='h4'>
+          Title
+        </Typography>
+      ],
       rightPart: [
-        <Button variant='text'>Cancel</Button>,
-        <Button>Validate</Button>
+        <Button key='header-cancelButton' variant='text'>
+          Cancel
+        </Button>,
+        <Button >Send A report</Button>
       ]
     }
   ]

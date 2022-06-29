@@ -1,4 +1,4 @@
-import { Box, InputLabel, Skeleton } from '@mui/material'
+import { Box, InputLabel } from '@mui/material'
 import React, { useMemo } from 'react'
 import { Select, SelectProps, SelectClasses, SelectStyles } from '../Select'
 import {
@@ -22,25 +22,27 @@ import {
   RadioChoices
 } from '../RadioChoices'
 import { AutoComplete, AutoCompleteProps } from '../AutoComplete'
+import { LoadingRenderer } from './LoadingRenderer'
+import { ReadonlyRenderer } from './ReadonlyRenderer'
 
-interface InputFormClasses {
+interface InputLabeledClasses {
   label?: string
   input?: string
 }
 
-interface InputFormStyles {
+interface InputLabeledStyles {
   label?: React.CSSProperties
   input?: React.CSSProperties
 }
 
-export type InputFormTypes =
+export type InputLabeledTypes =
   | 'select'
   | 'textField'
   | 'datePicker'
   | 'radioChoices'
   | 'autoComplete'
 
-export interface InputFormBasicProps<T extends InputFormTypes = 'textField'>
+export interface InputLabeledBasicProps<T extends InputLabeledTypes = 'textField'>
   extends BasicProps {
   /**
    * The label of the input
@@ -51,6 +53,21 @@ export interface InputFormBasicProps<T extends InputFormTypes = 'textField'>
    * @default false
    */
   readonly?: boolean
+  /**
+   * The input will be replaced by the solution choosed on readonly.
+   * If you choose the "text it will be displayed in a Typography. 
+   * If you choose "chip" it will be displayed in chips. 
+   * @default "text"
+   */
+  readonlyType?: "text" | "chip"
+  /**
+   * This function is used to attribute a chip color to the value to be displayed (if not provided the default color will be used)
+   */
+  getReadonlyChipColor?: (value: string | number) => string | undefined
+  /**
+   * attribute a link to a readonly text 
+   */
+   readonlyTextUrl?: string
   /**
    * If you want to add additionnals element near to the input use this prop
    */
@@ -64,11 +81,11 @@ export interface InputFormBasicProps<T extends InputFormTypes = 'textField'>
   /**
    * The classes applied to the different part of the component
    */
-  classes?: InputFormClasses
+  classes?: InputLabeledClasses
   /**
    * The styles applied to the different part of the component
    */
-  styles?: InputFormStyles
+  styles?: InputLabeledStyles
   /**
    * The classes applied to the different part of the input
    *
@@ -76,12 +93,12 @@ export interface InputFormBasicProps<T extends InputFormTypes = 'textField'>
    * **See the reference below** ⬇️
    */
   inputClasses?: [T] extends ['textField']
-    ? TextFieldClasses
-    : [T] extends ['select']
-    ? SelectClasses
-    : [T] extends ['datePicker']
-    ? DatePickerClasses
-    : RadioChoicesClasses
+  ? TextFieldClasses
+  : [T] extends ['select']
+  ? SelectClasses
+  : [T] extends ['datePicker']
+  ? DatePickerClasses
+  : RadioChoicesClasses
   /**
    * The styles applied to the different part of the input
    *
@@ -89,20 +106,20 @@ export interface InputFormBasicProps<T extends InputFormTypes = 'textField'>
    * **See the reference below** ⬇️
    */
   inputStyles?: [T] extends ['textField']
-    ? TextFieldStyles
-    : [T] extends ['select']
-    ? SelectStyles
-    : [T] extends ['datePicker']
-    ? DatePickerStyles
-    : RadioChoicesStyles
+  ? TextFieldStyles
+  : [T] extends ['select']
+  ? SelectStyles
+  : [T] extends ['datePicker']
+  ? DatePickerStyles
+  : RadioChoicesStyles
 }
 
-type RemoveMainProps<T> = Omit<T, keyof InputFormBasicProps>
+type RemoveMainProps<T> = Omit<T, keyof InputLabeledBasicProps>
 
-type InputFormComponentProps<
-  T extends InputFormTypes,
-  R extends Boolean = false
-> = InputFormBasicProps<T> &
+type InputLabeledComponentProps<
+  T extends InputLabeledTypes,
+  R extends boolean
+  > = InputLabeledBasicProps<T> &
   ([R] extends [true]
     ? RemoveMainProps<TextFieldProps>
     : [T] extends ['select']
@@ -115,30 +132,30 @@ type InputFormComponentProps<
     ? RemoveMainProps<AutoCompleteProps>
     : RemoveMainProps<TextFieldProps>)
 
-interface InputFormComponent {
-  <T extends InputFormTypes, R extends Boolean = false>(
+interface InputLabeledComponent {
+  <T extends InputLabeledTypes, R extends boolean>(
     props: {
       inputType: T
       readonly?: R
-    } & InputFormComponentProps<T, R>,
+    } & InputLabeledComponentProps<T, R>,
     ref: React.ForwardedRef<HTMLDivElement>
   ): JSX.Element
 }
 
-export type InputFormProps = InputFormBasicProps &
-  Omit<TextFieldProps, keyof InputFormBasicProps> &
-  Omit<SelectProps, keyof InputFormBasicProps> &
-  Omit<DatePickerProps, keyof InputFormBasicProps> &
-  Omit<AutoCompleteProps, keyof InputFormBasicProps> &
-  Omit<RadioChoicesProps, keyof InputFormBasicProps> & {
+export type InputLabeledProps = InputLabeledBasicProps &
+  Omit<TextFieldProps, keyof InputLabeledBasicProps> &
+  Omit<SelectProps, keyof InputLabeledBasicProps> &
+  Omit<DatePickerProps, keyof InputLabeledBasicProps> &
+  Omit<AutoCompleteProps, keyof InputLabeledBasicProps> &
+  Omit<RadioChoicesProps, keyof InputLabeledBasicProps> & {
     inputClasses?: SelectClasses | TextFieldClasses | DatePickerClasses
     inputStyles?: SelectStyles | TextFieldStyles | DatePickerStyles
-    inputType: InputFormTypes
+    inputType: InputLabeledTypes
   }
 
 //@ts-ignore
-export const InputForm: InputFormComponent = React.forwardRef(
-  (props: Partial<InputFormProps>, ref: React.ForwardedRef<HTMLDivElement>) => {
+export const InputLabeled: InputLabeledComponent = React.forwardRef(
+  (props: Partial<InputLabeledProps>, ref: React.ForwardedRef<HTMLDivElement>) => {
     const {
       inputType = 'textField',
       readonly = false,
@@ -176,37 +193,10 @@ export const InputForm: InputFormComponent = React.forwardRef(
 
     const inputUi = useMemo(() => {
       return isLoading ? (
-        inputType === 'radioChoices' ? (
-          <Skeleton
-            sx={{
-              width: '150px',
-              height: '100px',
-              transform: 'none'
-            }}
-            animation='wave'
-          />
-        ) : (
-          <Skeleton
-            sx={{
-              width: '100%',
-              height:
-                size === 'small' ? '32px' : size === 'medium' ? '40px' : '48px',
-              transform: 'none'
-            }}
-            animation='wave'
-          />
-        )
+        <LoadingRenderer {...props} />
       ) : readonly ? (
-        <TextField
-          {...other}
-          size={size}
-          className={classes?.input}
-          style={styles?.input}
-          classes={inputClasses}
-          styles={inputStyles}
-          ref={ref}
-          id={id}
-          disabled={true}
+        <ReadonlyRenderer
+          {...props}
         />
       ) : inputType === 'textField' ? (
         <TextField

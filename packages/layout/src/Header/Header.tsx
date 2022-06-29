@@ -31,10 +31,14 @@ interface HeaderStyles {
 
 export interface HeaderBasicProps extends BasicProps {
   /**
-   * The content of the header
+   * The content of the header strictly displayed as a line with content to the left and right.
    * @default []
    */
   content?: HeaderContent[]
+  /**
+   * The content of the header freely displayed.
+   */
+  freeContent?: React.ReactNode
   /**
    * Provide this props if you want to have tabs in the header. It will disable the bottom padding and put the tabs instead.
    * @default []
@@ -52,11 +56,6 @@ export interface HeaderBasicProps extends BasicProps {
     value: any
   ) => void
   /**
-   * Indicates if the header have horizontal paddinf or not.
-   * @false
-   */
-  withHorizontalPadding?: string
-  /**
    * Indicates whether or not to display the divider at the bottom of the header.
    * @true
    */
@@ -65,6 +64,16 @@ export interface HeaderBasicProps extends BasicProps {
    * The tabs component props
    */
   tabsProps?: TabsProps
+  /**
+   * Define if the header is fixed or not.
+   * @default true
+   */
+  isFixed?: boolean
+  /**
+   * background color of the header
+   * @default theme.colors.background
+   */
+  bgcolor?: string
   /**
    * The classes applied to the different part of the component
    */
@@ -80,10 +89,12 @@ export type HeaderProps = MergeMuiElementProps<BoxProps, HeaderBasicProps>
 export const Header = (props: HeaderProps) => {
   const {
     content = [],
+    freeContent,
     tabs,
     currentTab,
-    withHorizontalPadding = false,
     withBottomDivider = true,
+    isFixed = true,
+    bgcolor,
     sx,
     onTabChange,
     tabsProps,
@@ -93,7 +104,7 @@ export const Header = (props: HeaderProps) => {
     ...rest
   } = props
 
-  const conentDisplay = useMemo(
+  const contentDisplay = useMemo(
     () =>
       content.map((it, index) => (
         <Stack
@@ -119,7 +130,6 @@ export const Header = (props: HeaderProps) => {
                 alignItems: 'center',
                 gap: (theme) => theme.spacing(2)
               }}
-              key={index}
             >
               {it.leftPart}
             </Stack>
@@ -139,7 +149,6 @@ export const Header = (props: HeaderProps) => {
                 gap: (theme) => theme.spacing(2),
                 justifyContent: 'flex-end'
               }}
-              key={index}
             >
               {it.rightPart}
             </Stack>
@@ -156,6 +165,7 @@ export const Header = (props: HeaderProps) => {
       tabs &&
       tabs.map((tab) => (
         <Tab
+          disableRipple
           key={tab.key}
           value={tab.key}
           label={tab.label}
@@ -173,19 +183,22 @@ export const Header = (props: HeaderProps) => {
       sx={{
         padding: (theme) => {
           const p = theme.spacing(2)
-          if (withHorizontalPadding && tabs) {
-            return `${p}px ${p}px 0`
-          }
-          if (withHorizontalPadding) {
-            return `${p}px`
-          }
           if (tabs) {
-            return `${p}px 0 0`
+            return `${p} ${p} 0`
           }
-          return `${p}px 0`
+          return p
         },
         borderBottom: withBottomDivider ? '1px solid #BEC7CC' : 'none',
         width: '100%',
+        boxSizing: 'border-box',
+        bgcolor: (theme) => {
+          const color = bgcolor ? bgcolor : theme.palette.background.default
+          return color + 'B3'
+        },
+        position: isFixed ? 'sticky' : 'relative',
+        top: isFixed ? '0px' : '',
+        backdropFilter: 'blur(15px)',
+        webkitBackdropFilter: 'blur(15px)',
         ...sx
       }}
       {...rest}
@@ -197,7 +210,8 @@ export const Header = (props: HeaderProps) => {
           gap: (theme) => theme.spacing(2)
         }}
       >
-        {conentDisplay}
+        {freeContent}
+        {contentDisplay}
         {tabsDisplay && (
           <Tabs
             {...tabsProps}
@@ -208,7 +222,7 @@ export const Header = (props: HeaderProps) => {
             variant='scrollable'
             scrollButtons='auto'
             sx={{
-              marginTop: (theme) => theme.spacing(1),
+              marginTop: (theme) => `-${theme.spacing(1.5)}`,
               ...tabsProps?.sx
             }}
           >
