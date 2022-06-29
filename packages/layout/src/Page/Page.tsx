@@ -3,18 +3,9 @@ import { Actions, ActionsProps } from '@smartb/g2-components'
 import React, { useMemo } from 'react'
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 import { Header, HeaderProps } from '../Header'
+import { cx } from '@emotion/css'
 
-interface PageClasses {
-  header: string
-  backButton: string
-}
-
-interface PageStyles {
-  header: React.CSSProperties
-  backButton: React.CSSProperties
-}
-
-export interface pageBasicProps extends BasicProps {
+export interface PageBasicProps extends BasicProps {
   /**
    * the page content
    */
@@ -27,29 +18,13 @@ export interface pageBasicProps extends BasicProps {
    * the actions displayed at the bottom of the component.
    */
   bottomActionsProps?: ActionsProps
-  /**
-   * The classes applied to the different part of the component
-   */
-  classes?: PageClasses
-  /**
-   * The styles applied to the different part of the component
-   */
-  styles?: PageStyles
 }
 
-export type PageProps = MergeMuiElementProps<BoxProps, pageBasicProps>
+export type PageProps = MergeMuiElementProps<BoxProps, PageBasicProps>
 
 export const Page = (props: PageProps) => {
-  const {
-    children,
-    headerProps,
-    bottomActionsProps,
-    classes,
-    styles,
-    className,
-    sx,
-    ...other
-  } = props
+  const { children, headerProps, bottomActionsProps, className, sx, ...other } =
+    props
 
   const actionsDisplay = useMemo(() => {
     if (!bottomActionsProps) return undefined
@@ -72,6 +47,7 @@ export const Page = (props: PageProps) => {
     <>
       {headerDisplay}
       <Box
+        className={cx('AruiPage-root', className)}
         sx={{
           padding: (theme) => theme.spacing(3),
           ...sx

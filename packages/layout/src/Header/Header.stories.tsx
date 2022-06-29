@@ -40,6 +40,17 @@ export const Header: Story<HeaderProps> = (args: HeaderProps) => {
   )
 }
 
+export const HeaderWithGoBack: Story<HeaderProps> = (args: HeaderProps) => {
+  const [tab, settab] = useState('1')
+  return (
+    <AruiHeader
+      currentTab={tab}
+      onTabChange={(_, tab) => settab(tab)}
+      {...args}
+    />
+  )
+}
+
 Header.args = {
   tabs: [
     {

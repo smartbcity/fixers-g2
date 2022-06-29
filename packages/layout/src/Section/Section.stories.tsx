@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react'
-import { Page as AruiPage, PageBasicProps } from './Page'
+import { Section as AruiSection, SectionBasicProps } from './Section'
 import { Meta } from '@storybook/react'
 import { Story } from '@storybook/react/types-6-0'
 import { Filters, useFilters, FiltersField } from '@smartb/g2-forms'
@@ -8,8 +8,8 @@ import { Box, Typography } from '@mui/material'
 import { Header, HeaderProps } from '../Header'
 
 export default {
-  title: 'Layout/Page',
-  component: AruiPage,
+  title: 'Layout/Section',
+  component: AruiSection,
   argTypes: {
     headerProps: {
       control: {
@@ -24,32 +24,13 @@ export default {
   }
 } as Meta
 
-export const Page: Story<PageBasicProps> = (args: PageBasicProps) => {
+export const Section: Story<SectionBasicProps> = (args: SectionBasicProps) => {
   const fields = useMemo(
     (): FiltersField[] => [
       {
-        key: 'storybook-filters-field-from',
-        name: 'from',
-        label: 'From',
-        type: 'datepicker'
-      },
-      {
-        key: 'storybook-filters-field-to',
-        name: 'to',
-        label: 'To',
-        type: 'datepicker'
-      },
-      {
-        key: 'storybook-filters-field-keyword',
-        name: 'keyword',
-        label: 'Keyword',
-        type: 'textfield',
-        textFieldProps: { textFieldType: 'search' }
-      },
-      {
-        key: 'storybook-filters-field-country',
-        name: 'country',
-        label: 'Country',
+        key: 'storybook-filters-field-city',
+        name: 'city',
+        label: 'City',
         type: 'select',
         selectProps: {
           options: [
@@ -87,53 +68,49 @@ export const Page: Story<PageBasicProps> = (args: PageBasicProps) => {
     }
   })
 
-  const filtersActions = useMemo(
-    (): Action[] => [
-      {
-        label: 'reset',
-        key: 'resetFiltersButton',
-        variant: 'text',
-        onClick: () => formState.resetForm()
-      }
-    ],
-    [formState.resetForm]
-  )
-
   const headerProps = useMemo((): HeaderProps => {
-    console.log('re-render')
     return {
       content: [
         {
           leftPart: [
-            <Typography key='page-title' variant='h5'>
-              Page Example
+            <Typography key='page-title' variant='h6'>
+              Section Example
             </Typography>,
-            <Filters
-              key='page-filters'
-              fields={fields}
-              formState={formState}
-              actions={filtersActions}
-              actionsPosition='right'
-            />
+            <Filters key='page-filters' fields={fields} formState={formState} />
           ],
           rightPart: [<Button key='page-cerateUser'>Create user</Button>]
         }
       ]
     }
-  }, [formState, filtersActions, fields])
+  }, [formState, fields])
 
   return (
-    <AruiPage
-      headerProps={headerProps}
-      bottomActionsProps={{
-        actions: actions
+    <Box
+      sx={{
+        display: 'flex',
+        height: '95vh',
+        width: '100%',
+        alignItems: 'center',
+        justifyContent: 'center',
+        bgcolor: (theme) => theme.palette.background.default
       }}
-      {...args}
-    />
+    >
+      <AruiSection
+        headerProps={headerProps}
+        bottomActionsProps={{
+          actions: actions
+        }}
+        sx={{
+          maxHeight: '70vh',
+          width: '600px'
+        }}
+        {...args}
+      />
+    </Box>
   )
 }
 
-Page.args = {
+Section.args = {
   children: (
     <Box
       sx={{
@@ -141,18 +118,18 @@ Page.args = {
         justifyContent: 'center',
         alignItems: 'center',
         width: '100%',
-        height: '120vh',
+        height: '90vh',
         background: 'grey'
       }}
     >
-      je suis la page
+      je suis la section
     </Box>
   )
 }
 
-Page.storyName = 'Page'
+Section.storyName = 'Section'
 
-Page.parameters = {
+Section.parameters = {
   docs: {
     source: {
       code: 'no code on this component because it was causing an issue'

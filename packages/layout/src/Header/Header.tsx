@@ -191,6 +191,7 @@ export const Header = (props: HeaderProps) => {
         },
         borderBottom: withBottomDivider ? '1px solid #BEC7CC' : 'none',
         width: '100%',
+        boxSizing: 'border-box',
         bgcolor: (theme) => {
           const color = bgcolor ? bgcolor : theme.palette.background.default
           return color + 'B3'

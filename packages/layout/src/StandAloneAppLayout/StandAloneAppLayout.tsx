@@ -178,7 +178,7 @@ export const StandAloneAppLayout = (props: StandAloneAppLayoutProps) => {
               position: 'absolute',
               border: 'solid 1px #BEC7CC',
               borderRadius: (theme) =>
-                `0px ${theme.shape.borderRadius} ${theme.shape.borderRadius} 0px`,
+                `0px ${theme.shape.borderRadius}px ${theme.shape.borderRadius}px 0px`,
               borderWidth: '1px 1px 1px 0px',
               backgroundColor: '#FFFFFF',
               top: '8px',
