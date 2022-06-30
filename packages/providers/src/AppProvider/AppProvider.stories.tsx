@@ -10,7 +10,7 @@ import { Typography } from '@mui/material'
 import { ArgsTable, Title, Primary, Description } from '@storybook/addon-docs'
 import { CodeHighlighter } from '@smartb/g2-documentation'
 import { LinkProps, Link, Route, useNavigate } from 'react-router-dom'
-import { i18next, usei18next, redux } from './docs'
+import { i18next, usei18next, reactQuery } from './docs'
 import { QueryClient } from 'react-query'
 
 export default {
@@ -28,8 +28,8 @@ export default {
           <Title>AppProvider</Title>
           <Description>
             The appProvider manage the provider of the data storage module
-            **redux**, the translation module **i18next** and the router module
-            **react-router**.
+            **react-query**, the translation module **i18next** and the router
+            module **react-router**.
           </Description>
           <Description>
             All those modules are needed to create a complete modern
@@ -53,11 +53,11 @@ export default {
           </Description>
           <CodeHighlighter code={usei18next} />
           <Description>
-            To instanciate the redux store and to get the State type in your
-            application you have to call statically the `initRedux` function in
-            your application:
+            For react-query instanciate a query client staticly. You can find
+            all the options of the query client here:
+            https://react-query.tanstack.com/reference/useQuery
           </Description>
-          <CodeHighlighter code={redux} />
+          <CodeHighlighter code={reactQuery} />
           <Title>Router</Title>
           <Description>
             This component allow you to declare the routes you to be active in
