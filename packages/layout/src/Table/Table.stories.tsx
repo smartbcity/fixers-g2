@@ -12,14 +12,7 @@ import {
   Stories
 } from '@storybook/addon-docs'
 import { CodeHighlighter } from '@smartb/g2-documentation'
-import {
-  customCellExample,
-  classes,
-  styles,
-  Column,
-  BasicData,
-  CellProps
-} from './types'
+import { customCellExample, classes, styles, Column, CellProps } from './types'
 import { Info } from '@mui/icons-material'
 
 export default {
@@ -87,7 +80,7 @@ export default {
   }
 } as Meta
 
-interface Data extends BasicData {
+interface Data {
   id: string
   name: string
   isRelaxed: boolean
@@ -135,11 +128,11 @@ export const Table: Story<TableBasicProps<Data>> = (
   const [page, setPage] = useState<number>(1)
   return (
     <AruiTable
-      data={page === 1 ? data1 : data2}
       page={page}
       totalPages={2}
       onPageChange={(newPage) => setPage(newPage)}
       {...args}
+      data={page === 1 ? data1 : data2}
     ></AruiTable>
   )
 }
@@ -184,7 +177,8 @@ Table.args = {
 }
 
 export const theVariants: Story = () => {
-  interface DataExample extends BasicData {
+  interface DataExample {
+    id: string
     name: string
     age: number
     gender: 'Male' | 'Female'
@@ -257,11 +251,13 @@ export const theVariants: Story = () => {
         data={dataExample}
         columns={columnsExample}
         variant='grounded'
+        getRowId={(row) => row.id}
       />
       <AruiTable<DataExample>
         data={dataExample}
         columns={columnsExample}
         variant='elevated'
+        getRowId={(row) => row.id}
       />
     </Stack>
   )
@@ -277,7 +273,8 @@ export const LoadingStates: Story = () => {
 }
 
 export const NotificationList: Story = () => {
-  interface Notification extends BasicData {
+  interface Notification {
+    id: string
     message: string
     date: number
   }
@@ -346,13 +343,15 @@ export const NotificationList: Story = () => {
         columns={columnsNotification}
         variant='grounded'
         onRowClicked={() => {}}
+        getRowId={(row) => row.id}
       />
     </Stack>
   )
 }
 
 export const AxessExample: Story = () => {
-  interface AxessData extends BasicData {
+  interface AxessData {
+    id: string
     protocol: string
     sectors: string
     vintage: string
@@ -522,6 +521,7 @@ export const AxessExample: Story = () => {
       <AruiTable<AxessData>
         data={axessData}
         columns={axessColumns}
+        getRowId={(row) => row.id}
         variant='grounded'
         setSelectedRowIds={(rows) => console.log(rows)}
         noToggleAllPageRowsSelected
