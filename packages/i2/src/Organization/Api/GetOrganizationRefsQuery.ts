@@ -2,6 +2,7 @@ import { useCallback } from 'react'
 import { useQuery, UseQueryOptions } from 'react-query'
 import { OrganizationRef } from '../Domain'
 import { request } from '@smartb/g2-utils'
+import { i2Config } from '@smartb/g2-providers'
 
 export interface OrganizationRefsAllQuery {}
 
@@ -22,17 +23,16 @@ export type GetOrganizationRefsOptions = Omit<
 export interface OrganizationRefsAllParams {
   queryKey?: string
   jwt?: string
-  apiUrl: string
   options?: GetOrganizationRefsOptions
 }
 
 export const useGetOrganizationRefs = (params: OrganizationRefsAllParams) => {
-  const { apiUrl, jwt, options, queryKey = 'organizationRefs' } = params
+  const { jwt, options, queryKey = 'organizationRefs' } = params
 
   const getOrganizationRefs =
     useCallback(async (): Promise<OrganizationRefsAllResult> => {
       const res = await request<{ organizations: OrganizationRef[] }[]>({
-        url: `${apiUrl}/getAllOrganizationRefs`,
+        url: `${i2Config().orgUrl}/getAllOrganizationRefs`,
         method: 'POST',
         body: '[{}]',
         jwt: jwt
@@ -46,7 +46,7 @@ export const useGetOrganizationRefs = (params: OrganizationRefsAllParams) => {
           organizations: []
         }
       }
-    }, [apiUrl, jwt])
+    }, [jwt])
 
   return useQuery([queryKey], getOrganizationRefs, options)
 }

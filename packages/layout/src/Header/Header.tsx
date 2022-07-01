@@ -73,7 +73,7 @@ export interface HeaderBasicProps extends BasicProps {
    * Add a strong padding, used in the page headers for example
    * @default false
    */
-   strongPadding?: boolean
+  strongPadding?: boolean
   /**
    * background color of the header
    * @default theme.colors.background
@@ -191,13 +191,15 @@ export const Header = (props: HeaderProps) => {
       sx={{
         padding: (theme) => {
           const topPadding = theme.spacing(2)
-          const horizontalPadding = strongPadding ? theme.spacing(5) : theme.spacing(3)
+          const horizontalPadding = strongPadding
+            ? theme.spacing(5)
+            : theme.spacing(3)
           if (tabs) {
             return `${topPadding} ${horizontalPadding} 0`
           }
           return `${topPadding} ${horizontalPadding}`
         },
-        borderBottom: withBottomDivider ? '1px solid #BEC7CC' : 'none',
+        borderBottom: withBottomDivider ? '1px solid #E0E0E0' : 'none',
         width: '100%',
         boxSizing: 'border-box',
         bgcolor: (theme) => {

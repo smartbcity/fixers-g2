@@ -137,6 +137,7 @@ export const StandAloneAppLayout = (props: StandAloneAppLayoutProps) => {
           '& .MuiDrawer-paper': {
             width: drawerWidth,
             boxSizing: 'border-box',
+            border: 'unset',
             height: `100vh`,
             overflow: 'visible',
             visibility: 'visible !important' as 'visible'

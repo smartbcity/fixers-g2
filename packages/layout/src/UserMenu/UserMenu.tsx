@@ -82,7 +82,7 @@ export const UserMenu = (props: UserMenuProps) => {
         id={other.id}
         style={other.style}
         sx={{
-          borderTop: '1px solid #BEC7CC',
+          borderTop: '1px solid #E0E0E0',
           backgroundColor: 'white',
           ...sx
         }}
@@ -110,7 +110,7 @@ export const UserMenu = (props: UserMenuProps) => {
         aria-controls='panel1a-content'
         id='panel1a-header'
         sx={{
-          borderTop: '1px solid #BEC7CC'
+          borderTop: '1px solid #E0E0E0'
         }}
         className={cx('AruiUserMenu-summary', classes?.summary)}
         style={styles?.summary}
