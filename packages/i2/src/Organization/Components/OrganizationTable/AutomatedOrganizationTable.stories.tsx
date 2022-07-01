@@ -8,6 +8,7 @@ import { Story } from '@storybook/react/types-6-0'
 import { g2Config, KeycloakProvider, useAuth } from '@smartb/g2-providers'
 import { Typography } from '@mui/material'
 import { QueryClient, QueryClientProvider } from 'react-query'
+import { Organization } from '../OrganizationFactory'
 
 export default {
   title: 'I2/AutomatedOrganizationTable',
@@ -22,8 +23,8 @@ const queryClient = new QueryClient({
   }
 })
 
-export const AutomatedOrganizationTableStory: Story<AutomatedOrganizationTableProps> =
-  (args: AutomatedOrganizationTableProps) => {
+export const AutomatedOrganizationTableStory: Story<AutomatedOrganizationTableProps<Organization>> =
+  (args: AutomatedOrganizationTableProps<Organization>) => {
     return (
       <QueryClientProvider client={queryClient}>
         <KeycloakProvider
@@ -37,7 +38,7 @@ export const AutomatedOrganizationTableStory: Story<AutomatedOrganizationTablePr
     )
   }
 
-const Following = (args: AutomatedOrganizationTableProps) => {
+const Following = (args: AutomatedOrganizationTableProps<Organization>) => {
   const { keycloak } = useAuth()
 
   if (!keycloak.authenticated) return <></>

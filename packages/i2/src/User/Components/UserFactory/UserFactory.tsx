@@ -2,14 +2,13 @@ import { cx } from '@emotion/css'
 import { Stack, StackProps, styled } from '@mui/material'
 import {
   Form,
-  FormAction,
   FormField,
   FormPartialField,
   Option,
   useFormWithPartialFields
 } from '@smartb/g2-forms'
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo } from 'react'
 import { FlatUser, FlatUserToUser, User } from '../../Domain'
 import { addressValidation, AdressValidationStrings } from '../../../Commons'
 import { OrganizationId, OrganizationRef } from '../../../Organization'
@@ -123,10 +122,6 @@ export interface UserFactoryStrings extends AdressValidationStrings {
    * @default "Le numéro de téléphone doit contenir dix chiffres"
    */
   enterAValidPhone?: string
-  /**
-   * @default "Valider"
-   */
-  submitButtonLabel?: string
 }
 
 export interface UserFactoryBasicProps extends BasicProps {
@@ -141,15 +136,14 @@ export interface UserFactoryBasicProps extends BasicProps {
    */
   onSubmit?: (user: User) => Promise<Validated> | Validated
   /**
-   * The label placed in the submit button
-   * @default 'Valider'
-   */
-  submitButtonLabel?: string
-  /**
    * Indicates if it's an update
    * @default false
    */
   isUpdate?: boolean
+  /**
+   * The ref of the submit element
+   */
+  SubmitButtonRef?: React.MutableRefObject<HTMLElement | undefined>
   /**
    * To activate Readonly view
    * @default false
@@ -201,7 +195,6 @@ export const UserFactory = (props: UserFactoryProps) => {
   const {
     user,
     onSubmit,
-    submitButtonLabel = 'Valider',
     classes,
     styles,
     isUpdate = false,
@@ -213,14 +206,9 @@ export const UserFactory = (props: UserFactoryProps) => {
     readonlyFields,
     isLoading = false,
     strings,
+    SubmitButtonRef,
     ...other
   } = props
-
-  const [feedback, setFeedback] = useState<boolean | undefined>(undefined)
-
-  useEffect(() => {
-    setFeedback(undefined)
-  }, [onSubmit])
 
   const partialFields = useMemo(
     (): FormPartialField[] => [
@@ -316,11 +304,11 @@ export const UserFactory = (props: UserFactoryProps) => {
       },
       ...(!isUpdate && !readonly
         ? [
-            {
-              name: 'sendEmailLink',
-              defaultValue: true
-            }
-          ]
+          {
+            name: 'sendEmailLink',
+            defaultValue: true
+          }
+        ]
         : [])
     ],
     [
@@ -337,11 +325,10 @@ export const UserFactory = (props: UserFactoryProps) => {
   const onSubmitMemoized = useCallback(
     async (values: FlatUser) => {
       if (onSubmit) {
-        const feedback = await onSubmit({
+        onSubmit({
           ...FlatUserToUser(values),
           id: user?.id ?? ''
         })
-        setFeedback(feedback)
       }
     },
     [onSubmit, user]
@@ -363,7 +350,7 @@ export const UserFactory = (props: UserFactoryProps) => {
         type: 'textfield',
         label: strings?.givenName ?? 'Prénom',
         textFieldProps: {
-          disabled: readonly || readonlyFields?.givenName
+          readonly: readonlyFields?.givenName
         }
       },
       {
@@ -372,7 +359,7 @@ export const UserFactory = (props: UserFactoryProps) => {
         type: 'textfield',
         label: strings?.familyName ?? 'Nom de Famille',
         textFieldProps: {
-          disabled: readonly || readonlyFields?.familyName
+          readonly: readonlyFields?.familyName
         }
       },
       {
@@ -381,7 +368,7 @@ export const UserFactory = (props: UserFactoryProps) => {
         type: 'textfield',
         label: strings?.street ?? 'Addresse (facultatif)',
         textFieldProps: {
-          disabled: readonly || readonlyFields?.address
+          readonly: readonlyFields?.address
         }
       },
       {
@@ -391,7 +378,7 @@ export const UserFactory = (props: UserFactoryProps) => {
         label: strings?.postalCode ?? 'Code postal (facultatif)',
         textFieldProps: {
           textFieldType: 'number',
-          disabled: readonly || readonlyFields?.address
+          readonly: readonlyFields?.address
         }
       },
       {
@@ -400,7 +387,7 @@ export const UserFactory = (props: UserFactoryProps) => {
         type: 'textfield',
         label: strings?.city ?? 'Ville (facultatif)',
         textFieldProps: {
-          disabled: readonly || readonlyFields?.address
+          readonly: readonlyFields?.address
         }
       }
     ],
@@ -411,11 +398,11 @@ export const UserFactory = (props: UserFactoryProps) => {
     const orgsOptions =
       !!organizationsRefs && organizationsRefs.length > 0
         ? organizationsRefs.map(
-            (orgRef): Option => ({
-              key: orgRef.id,
-              label: orgRef.name
-            })
-          )
+          (orgRef): Option => ({
+            key: orgRef.id,
+            label: orgRef.name
+          })
+        )
         : undefined
     return [
       {
@@ -425,7 +412,7 @@ export const UserFactory = (props: UserFactoryProps) => {
         label: strings?.email ?? 'Adresse mail',
         textFieldProps: {
           textFieldType: 'email',
-          disabled: readonly || readonlyFields?.email
+          readonly: readonlyFields?.email
         }
       },
       {
@@ -435,74 +422,64 @@ export const UserFactory = (props: UserFactoryProps) => {
         label: strings?.phone ?? 'Numéro de téléphone (facultatif)',
         textFieldProps: {
           textFieldType: 'number',
-          disabled: readonly || readonlyFields?.phone
+          readonly: readonlyFields?.phone
         }
       },
       ...(rolesOptions
         ? [
-            {
-              key: 'role',
-              name: 'role',
-              label: strings?.role ?? 'Role',
-              type: 'select',
-              selectProps: {
-                options: rolesOptions,
-                disabled: readonly || readonlyFields?.roles,
-                multiple: true
-              }
-            } as FormField
-          ]
+          {
+            key: 'role',
+            name: 'role',
+            label: strings?.role ?? 'Role',
+            type: 'select',
+            selectProps: {
+              options: rolesOptions,
+              readonly: readonlyFields?.roles,
+              multiple: true
+            }
+          } as FormField
+        ]
         : []),
       ...(orgsOptions || organizationId
         ? [
-            {
-              key: 'memberOf',
-              name: 'memberOf',
-              label: strings?.organization ?? 'Organisation',
-              type: 'select',
-              selectProps: {
-                options: orgsOptions,
-                disabled: readonly || readonlyFields?.memberOf
-              }
-            } as FormField
-          ]
+          {
+            key: 'memberOf',
+            name: 'memberOf',
+            label: strings?.organization ?? 'Organisation',
+            type: 'select',
+            selectProps: {
+              options: orgsOptions,
+              readonly: readonlyFields?.memberOf
+            }
+          } as FormField
+        ]
         : []),
       ...(!isUpdate && !readonly
         ? [
-            {
-              key: 'sendEmailLink',
-              name: 'sendEmailLink',
-              type: 'checkbox',
-              label:
-                strings?.sendEmailLink ??
-                "Envoyer un lien d'invitation par mail",
-              checkBoxProps: {
-                className: 'AruiUserFactory-sendEmailLink',
-                disabled: readonly || readonlyFields?.sendEmailLink
-              }
-            } as FormField
-          ]
+          {
+            key: 'sendEmailLink',
+            name: 'sendEmailLink',
+            type: 'checkbox',
+            label:
+              strings?.sendEmailLink ??
+              "Envoyer un lien d'invitation par mail",
+            checkBoxProps: {
+              className: 'AruiUserFactory-sendEmailLink',
+              disabled: readonlyFields?.sendEmailLink
+            }
+          } as FormField
+        ]
         : [])
     ]
   }, [isUpdate, rolesOptions, organizationsRefs, readonly, organizationId])
 
-  const actions = useMemo(
-    (): FormAction[] =>
-      readonly
-        ? []
-        : [
-            {
-              key: 'SubmitForm',
-              label: strings?.submitButtonLabel ?? 'Valider',
-              success: feedback !== undefined && feedback,
-              fail: feedback !== undefined && !feedback,
-              onClick: formState.submitForm,
-              className: 'AruiUserFactory-submitForm'
-            }
-          ],
-    [submitButtonLabel, formState.submitForm, feedback, readonly]
-  )
-
+  useEffect(() => {
+    const element = SubmitButtonRef?.current
+    if (element && !readonly) {
+      element.onclick = formState.submitForm
+    }
+  }, [SubmitButtonRef?.current, formState.submitForm, readonly])
+  
   return (
     <StyledStack
       width='100%'
@@ -523,6 +500,7 @@ export const UserFactory = (props: UserFactoryProps) => {
         fields={leftForm}
         formState={formState}
         isLoading={isLoading}
+        readonly={readonly}
       />
       <Form
         className={cx(
@@ -533,7 +511,6 @@ export const UserFactory = (props: UserFactoryProps) => {
         style={styles?.rightForm}
         fields={rightForm}
         formState={formState}
-        actions={actions}
         actionsStackProps={{
           direction: 'row',
           justifyContent: 'flex-end',
@@ -545,6 +522,7 @@ export const UserFactory = (props: UserFactoryProps) => {
           style: styles?.actionsContainer
         }}
         isLoading={isLoading}
+        readonly={readonly}
       />
     </StyledStack>
   )

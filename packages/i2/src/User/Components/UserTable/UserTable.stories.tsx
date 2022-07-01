@@ -6,7 +6,6 @@ import { ArgsTable, PRIMARY_STORY, Subtitle } from '@storybook/addon-docs'
 import LinkTo from '@storybook/addon-links/react'
 import { Stack, Typography } from '@mui/material'
 import { User } from '../../Domain'
-import { Button } from '@smartb/g2-components'
 
 export default {
   title: 'I2/UserTable',
@@ -94,25 +93,7 @@ const users: User[] = [
 
 UserTableStory.args = {
   users: users,
-  totalPages: 10,
-  onFiltersChanged: (params) => console.log(params),
-  organizationsRefs: [
-    {
-      id: 'smartb',
-      name: 'smartb'
-    }
-  ],
-  rolesOptions: [
-    {
-      key: 'user',
-      label: 'User'
-    },
-    {
-      key: 'admin',
-      label: 'Admin'
-    }
-  ],
-  tableActions: <Button>Créer une organisation</Button>
+  totalPages: 10
 }
 
 UserTableStory.storyName = 'UserTable'

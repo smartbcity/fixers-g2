@@ -70,6 +70,11 @@ export interface HeaderBasicProps extends BasicProps {
    */
   isFixed?: boolean
   /**
+   * Add a strong padding, used in the page headers for example
+   * @default false
+   */
+   strongPadding?: boolean
+  /**
    * background color of the header
    * @default theme.colors.background
    */
@@ -94,6 +99,7 @@ export const Header = (props: HeaderProps) => {
     currentTab,
     withBottomDivider = true,
     isFixed = true,
+    strongPadding = false,
     bgcolor,
     sx,
     onTabChange,
@@ -130,6 +136,7 @@ export const Header = (props: HeaderProps) => {
                 alignItems: 'center',
                 gap: (theme) => theme.spacing(2)
               }}
+              key={`${index}-leftPart`}
             >
               {it.leftPart}
             </Stack>
@@ -149,6 +156,7 @@ export const Header = (props: HeaderProps) => {
                 gap: (theme) => theme.spacing(2),
                 justifyContent: 'flex-end'
               }}
+              key={`${index}-rightPart`}
             >
               {it.rightPart}
             </Stack>
@@ -182,11 +190,12 @@ export const Header = (props: HeaderProps) => {
       className={cx('AruiHeader-root', className)}
       sx={{
         padding: (theme) => {
-          const p = theme.spacing(2)
+          const topPadding = theme.spacing(3)
+          const horizontalPadding = strongPadding ? theme.spacing(5) : theme.spacing(3)
           if (tabs) {
-            return `${p} ${p} 0`
+            return `${topPadding} ${horizontalPadding} 0`
           }
-          return p
+          return `${topPadding} ${horizontalPadding}`
         },
         borderBottom: withBottomDivider ? '1px solid #BEC7CC' : 'none',
         width: '100%',

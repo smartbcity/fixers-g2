@@ -1,13 +1,12 @@
-import { Box, Stack, Typography } from '@mui/material'
-import { Link, MenuItem, MoreOptions } from '@smartb/g2-components'
-import { Option } from '@smartb/g2-forms'
+import { Typography } from '@mui/material'
+import { Link, MenuItem, Presentation } from '@smartb/g2-components'
 import { Column, Table, TableProps, CellProps } from '@smartb/g2-layout'
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useMemo } from 'react'
+import { ExtandedColumnsParams, useExtendedColumns } from '../../../Commons/useExtendedColumns'
 import { Organization } from '../OrganizationFactory'
 import {
   OrganizationFilters,
-  OrganizationFiltersProps
 } from './OrganizationFilters'
 
 export type OrganizationTableFilters = {
@@ -20,137 +19,67 @@ export type OrganizationTableBlockedFilters = {
   role?: boolean
 }
 
-export interface OrganizationTableBasicProps extends BasicProps {
+export interface OrganizationTableBasicProps<T extends Organization> extends BasicProps {
   /**
    * The organizations to pe parsed in the table
    */
-  organizations: Organization[]
+  organizations: T[]
   /**
-   * The initial values of the filters
+   * The current page
    */
-  initialFiltersValues?: OrganizationTableFilters
+  page: number
   /**
-   * The filters that will be used in the Api calls but not rendered for the user.
-   * by default they are all set to false
+   * The current page
    */
-  blockedFilters?: OrganizationTableBlockedFilters
+  setPage: (newPage: number) => void
   /**
    * The actions place on the top near the filters
    */
   tableActions?: React.ReactNode
   /**
-   * The roles options needed to make the roles select.
-   * The default role selected in the form will be the first of the list
-   */
-  rolesOptions?: Option[]
-  /**
    * Used for the pagination
    */
   totalPages?: number
   /**
-   * The event called when the filters are submitted or when the pagination updates
+   * The column extander module 
    */
-  onFetchOrganizations: (params?: OrganizationTableFilters) => void
-  /**
-   * The props passes to the filters component
-   */
-  filtersProps?: Partial<OrganizationFiltersProps>
+  columnsExtander?: Omit<ExtandedColumnsParams<T>, "initialColumns">
   /**
    * The actions available on a organization
    */
   getActions?: (org: Organization) => MenuItem<{}>[]
 }
 
-export type OrganizationTableProps = MergeMuiElementProps<
-  Omit<TableProps<Organization>, 'columns' | 'data' | 'page' | 'onChangePage'>,
-  OrganizationTableBasicProps
+export type OrganizationTableProps<T extends Organization = Organization> = MergeMuiElementProps<
+  Omit<TableProps<T>, 'columns' | 'data' | 'page' | 'onChangePage'>,
+  OrganizationTableBasicProps<T>
 >
 
-// TODO Remove code duplicated with UserTable. Ask Adrien for project Tracabois
-export const OrganizationTable = (props: OrganizationTableProps) => {
+export const OrganizationTable = <T extends Organization = Organization>(props: OrganizationTableProps<T>) => {
   const {
     organizations,
-    initialFiltersValues,
-    onFetchOrganizations,
-    filtersProps,
     getActions,
-    rolesOptions,
-    blockedFilters,
+    page,
+    setPage,
     tableActions,
     totalPages,
+    columnsExtander,
     ...other
   } = props
-  const [page, setPage] = useState(initialFiltersValues?.page ?? 1)
-  const [filters, setFilters] = useState<OrganizationFilters | undefined>(
-    initialFiltersValues
-  )
-
-  const onFetch = useCallback(
-    (pageNumber?: number, params?: OrganizationFilters) => {
-      onFetchOrganizations({
-        page: pageNumber ?? page,
-        role: params?.role ?? filters?.role,
-        search: params?.search ?? filters?.search
-      })
-    },
-    [onFetchOrganizations, filters, page]
-  )
-
-  const onSubmitFilters = useCallback(
-    (values: OrganizationFilters) => {
-      setFilters(values)
-      onFetch(undefined, values)
-    },
-    [onFetch]
-  )
-
-  const onChangePage = useCallback(
-    (page: number) => {
-      setPage(page)
-      onFetch(page)
-    },
-    [onFetch]
-  )
 
   const columns = useMemo(
-    (): Column<Organization>[] => [
+    (): Column<T>[] => [
       {
         Header: 'Organisation',
         accessor: 'name',
-        Cell: ({ row }: CellProps<Organization>) => (
-          <Stack
-            display='flex'
-            justifyContent='space-around'
-            alignItems='center'
-            direction='row'
-          >
-            {row.original.image && (
-              <Box
-                width='50px'
-                marginRight='10px'
-                sx={{
-                  '& .companyImage': {
-                    width: '50px',
-                    marginTop: '3px',
-                    borderRadius: '5px'
-                  }
-                }}
-              >
-                <img
-                  src={row.original.image}
-                  alt={`Le logo de l'entreprise ${row.original.name}`}
-                  className='companyImage'
-                />
-              </Box>
-            )}
-            <Typography align='left'>{row.original.name}</Typography>
-          </Stack>
+        Cell: ({ row }: CellProps<T>) => (
+          <Presentation label={row.original.name} />
         )
       },
       {
         Header: 'Adresse',
         accessor: 'address',
-        Cell: ({ row }: CellProps<Organization>) =>
+        Cell: ({ row }: CellProps<T>) =>
           row.original.address ? (
             <Typography>
               {`${row.original.address.street} ${row.original.address.postalCode} ${row.original.address.city}`}
@@ -160,7 +89,7 @@ export const OrganizationTable = (props: OrganizationTableProps) => {
       {
         Header: 'Site web',
         accessor: 'website',
-        Cell: ({ row }: CellProps<Organization>) => (
+        Cell: ({ row }: CellProps<T>) => (
           <Link
             href={row.original.website}
             onClick={(e) => e.stopPropagation()}
@@ -169,53 +98,24 @@ export const OrganizationTable = (props: OrganizationTableProps) => {
           </Link>
         )
       },
-      ...(getActions
-        ? [
-            {
-              id: 'moreoptions',
-              Cell: ({ row }: CellProps<Organization>) => (
-                <MoreOptions
-                  options={getActions(row.original)}
-                  onClick={(e) => e.stopPropagation()}
-                />
-              )
-            }
-          ]
-        : [])
     ],
-    [getActions]
+    []
   )
 
+  const completeColumns = useExtendedColumns({
+    initialColumns: columns,
+    ...columnsExtander
+  })
+
   return (
-    <Box
-      sx={{
-        '& .AruiTable-root': {
-          borderRadius: '5px',
-          boxShadow: 1,
-          background: 'white',
-          marginBottom: '20px'
-        }
-      }}
-    >
-      <Table<Organization>
-        page={page}
-        handlePageChange={onChangePage}
-        data={organizations}
-        columns={columns}
-        totalPages={totalPages}
-        variant='grounded'
-        header={
-          <OrganizationFilters
-            onSubmit={onSubmitFilters}
-            initialFiltersValues={initialFiltersValues}
-            blockedFilters={blockedFilters}
-            rolesOptions={rolesOptions}
-            tableActions={tableActions}
-            {...filtersProps}
-          />
-        }
-        {...other}
-      />
-    </Box>
+    <Table<T>
+      page={page}
+      handlePageChange={setPage}
+      data={organizations}
+      columns={completeColumns}
+      totalPages={totalPages}
+      variant='grounded'
+      {...other}
+    />
   )
 }

@@ -120,6 +120,12 @@ Header.args = {
   content: [
     {
       leftPart: [
+        <BackButton key='header-goback'>Go back</BackButton>,
+      ],
+      rightPart: [
+      ]
+    },  {
+      leftPart: [
         <Typography key='header-title' variant='h4'>
           Title
         </Typography>

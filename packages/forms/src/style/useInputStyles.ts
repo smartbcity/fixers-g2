@@ -141,7 +141,8 @@ export const useInputStyles = makeG2STyles()((theme) => ({
   },
   inputSmall: {
     '& .MuiInputBase-root': {
-      minHeight: '32px'
+      minHeight: '32px',
+      borderRadius: theme.borderRadius * 0.75,
     },
     '& .MuiSelect-root': {
       height: '32px',

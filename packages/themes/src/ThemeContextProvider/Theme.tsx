@@ -95,10 +95,12 @@ export const defaultMaterialUiTheme = (
             padding: '12px 16px'
           },
           textSizeMedium: {
-            padding: '8px 14px'
+            padding: '8px 14px',
+            borderRadius: theme.borderRadius * 0.75
           },
           textSizeSmall: {
-            padding: '4px 10px'
+            padding: '4px 10px',
+            borderRadius: theme.borderRadius * 0.75
           }
         }
       },

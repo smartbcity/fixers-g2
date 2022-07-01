@@ -16,7 +16,7 @@ import { customCellExample, classes, styles, Column, CellProps } from './types'
 import { Info } from '@mui/icons-material'
 
 export default {
-  title: 'Layout/OrganizationTable',
+  title: 'Layout/Table',
   component: AruiTable,
   parameters: {
     docs: {

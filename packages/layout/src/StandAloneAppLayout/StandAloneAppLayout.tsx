@@ -16,7 +16,7 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { AppLogoProps, AppMenu } from '../AppMenu'
 import { UserMenu, UserMenuProps } from '../UserMenu'
 
-const drawerWidth = 236
+const drawerWidth = 234
 
 const Main = styled('main', {
   shouldForwardProp: (prop) => prop !== 'isMobile'
@@ -138,7 +138,6 @@ export const StandAloneAppLayout = (props: StandAloneAppLayoutProps) => {
             width: drawerWidth,
             boxSizing: 'border-box',
             height: `100vh`,
-            borderRight: '1px solid #BEC7CC',
             overflow: 'visible',
             visibility: 'visible !important' as 'visible'
           },
@@ -176,10 +175,8 @@ export const StandAloneAppLayout = (props: StandAloneAppLayoutProps) => {
             style={styles?.burgerButtonContainer}
             sx={{
               position: 'absolute',
-              border: 'solid 1px #BEC7CC',
               borderRadius: (theme) =>
                 `0px ${theme.shape.borderRadius}px ${theme.shape.borderRadius}px 0px`,
-              borderWidth: '1px 1px 1px 0px',
               backgroundColor: '#FFFFFF',
               top: '8px',
               left: drawerWidth - 1,

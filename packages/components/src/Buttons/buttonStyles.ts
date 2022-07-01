@@ -1,9 +1,6 @@
 import { makeG2STyles } from '@smartb/g2-themes'
 
 export const containedUseStyles = makeG2STyles()((theme) => ({
-  root: {
-    boxShadow: theme.shadows[1]
-  },
   defaultColor: {
     background: theme.colors.primary,
     '&:hover': {
@@ -33,7 +30,6 @@ export const containedUseStyles = makeG2STyles()((theme) => ({
 export const outlinedUseStyles = makeG2STyles()((theme) => ({
   root: {
     backgroundColor: '#ffffff',
-    boxShadow: theme.shadows[1],
     '&:hover': {
       backgroundColor: `rgba(0, 0, 0, 0.04)`
     }

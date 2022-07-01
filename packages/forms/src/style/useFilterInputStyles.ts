@@ -29,7 +29,7 @@ export const useFilterInputStyles = makeG2STyles()((theme) => ({
       margin: `0px`,
       paddingTop: '0px',
       boxShadow: '0px 0px 0px 1px transparent',
-      borderRadius: theme.borderRadius,
+      borderRadius: theme.borderRadius * 0.75,
       color: '#323338',
       minWidth: '100px',
       backgroundColor: 'transparent',

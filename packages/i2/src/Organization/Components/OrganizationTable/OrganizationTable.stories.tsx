@@ -85,18 +85,7 @@ const organizations: Organization[] = [
 OrganizationTableStory.args = {
   organizations: organizations,
   totalPages: 10,
-  onFetchOrganizations: (params) => console.log(params),
-  tableActions: <Button>Créer un utilisateur</Button>,
-  rolesOptions: [
-    {
-      key: 'manager',
-      label: 'Manager'
-    },
-    {
-      key: 'opérateur',
-      label: 'Opérateur'
-    }
-  ]
+  page: 1,
 }
 
 OrganizationTableStory.storyName = 'OrganizationTable'

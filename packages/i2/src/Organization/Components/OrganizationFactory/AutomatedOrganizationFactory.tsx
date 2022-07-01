@@ -134,7 +134,6 @@ export const AutomatedOrganizationFactory = (
       onSubmit={
         update ? updateOrganizationMemoized : createOrganizationMemoized
       }
-      submitButtonLabel={update ? 'Mettre à jour' : 'Créer'}
       readonlyFields={
         update
           ? { siret: true, roles: true, ...readonlyFieldsPerState?.update }

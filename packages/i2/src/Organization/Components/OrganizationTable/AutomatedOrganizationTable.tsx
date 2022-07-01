@@ -1,63 +1,50 @@
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
-import React, { useCallback, useState } from 'react'
-import { OrganizationTableFilters } from './index'
+import React, { useState } from 'react'
 import { OrganizationTable, OrganizationTableProps } from './OrganizationTable'
 import { useGetOrganizations, GetOrganizationsOptions } from '../../Api'
 import { i2Config, useAuth } from '@smartb/g2-providers'
+import { Organization } from '../OrganizationFactory'
 
-export interface AutomatedOrganizationTableBasicProps extends BasicProps {
+export interface AutomatedOrganizationTableBasicProps<T extends Organization> extends BasicProps {
   /**
    * The getOrganizations hook options
    */
-  getOrganizationsOptions?: GetOrganizationsOptions
+  getOrganizationsOptions?: GetOrganizationsOptions<T>
   /**
-   * The initial states of the filters
+   * Pass the current state of the filters
    */
-  initialFiltersValues?: OrganizationTableFilters
-  /**
-   * The event called when the filters changes
-   */
-  onSubmitFilters?: (params?: OrganizationTableFilters) => void
+   filters?: any
 }
 
-export type AutomatedOrganizationTableProps = MergeMuiElementProps<
-  Omit<OrganizationTableProps, 'organizations' | 'onFetchOrganizations'>,
-  AutomatedOrganizationTableBasicProps
+export type AutomatedOrganizationTableProps<T extends Organization = Organization> = MergeMuiElementProps<
+  Omit<OrganizationTableProps<T>, 'organizations' | 'onFetchOrganizations' | 'totalPages' | 'page' | 'setPage'>,
+  AutomatedOrganizationTableBasicProps<T>
 >
 
-export const AutomatedOrganizationTable = (
-  props: AutomatedOrganizationTableProps
+export const AutomatedOrganizationTable = <T extends Organization = Organization>(
+  props: AutomatedOrganizationTableProps<T>
 ) => {
   const {
-    initialFiltersValues,
-    onSubmitFilters,
+    filters,
     getOrganizationsOptions,
     ...other
   } = props
 
+  const [page, setPage] = useState<number>(filters?.page ?? 1)
   const { keycloak } = useAuth()
 
-  const [queryParams, setQueryParams] = useState<
-    OrganizationTableFilters | undefined
-  >(initialFiltersValues)
-
-  const getOrganizations = useGetOrganizations({
+  const getOrganizations = useGetOrganizations<T>({
     apiUrl: i2Config().orgUrl,
     jwt: keycloak.token,
-    queryParams: queryParams,
+    queryParams: {
+      page,
+      ...filters
+    },
     options: getOrganizationsOptions
   })
 
-  const onSubmitFiltersMemoized = useCallback(
-    (params: OrganizationTableFilters) => {
-      setQueryParams(params)
-      onSubmitFilters && onSubmitFilters(params)
-    },
-    [onSubmitFilters]
-  )
-
   return (
-    <OrganizationTable
+    <OrganizationTable<T>
       isLoading={!getOrganizations.isSuccess}
       organizations={getOrganizations.data?.organizations ?? []}
       totalPages={
@@ -65,8 +52,8 @@ export const AutomatedOrganizationTable = (
           ? getOrganizations.data?.total
           : undefined
       }
-      onFetchOrganizations={onSubmitFiltersMemoized}
-      initialFiltersValues={initialFiltersValues}
+      page={page}
+      setPage={setPage}
       {...other}
     />
   )

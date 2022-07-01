@@ -17,33 +17,33 @@ import {
 import { OrganizationTableFilters } from '../Components/OrganizationTable'
 export * from './GetOrganizationRefsQuery'
 
-export interface OrganizationPageQueryResult {
-  organizations: Organization[]
+export interface OrganizationPageQueryResult<T extends Organization> {
+  organizations: T[]
   total: number
 }
 
-export type GetOrganizationsOptions = Omit<
+export type GetOrganizationsOptions<T extends Organization> = Omit<
   UseQueryOptions<
-    OrganizationPageQueryResult,
+    OrganizationPageQueryResult<T>,
     unknown,
-    OrganizationPageQueryResult,
+    OrganizationPageQueryResult<T>,
     (string | OrganizationTableFilters | undefined)[]
   >,
   'queryKey' | 'queryFn'
 >
 
-export interface GetOrganizationsParams {
+export interface GetOrganizationsParams<T extends Organization> {
   /**
    * @default "organization"
    */
   queryKey?: string
   jwt?: string
   apiUrl: string
-  options?: GetOrganizationsOptions
-  queryParams?: OrganizationTableFilters
+  options?: GetOrganizationsOptions<T>
+  queryParams?: object
 }
 
-export const useGetOrganizations = (params: GetOrganizationsParams) => {
+export const useGetOrganizations = <T extends Organization = Organization>(params: GetOrganizationsParams<T>) => {
   const {
     apiUrl,
     jwt,
@@ -57,10 +57,10 @@ export const useGetOrganizations = (params: GetOrganizationsParams) => {
       queryKey
     }: QueryFunctionContext<
       [string, OrganizationTableFilters | undefined]
-    >): Promise<OrganizationPageQueryResult> => {
+    >): Promise<OrganizationPageQueryResult<T>> => {
       const [_key, currentParams] = queryKey
       const res = await request<
-        { organizations: Organization[]; total: number }[]
+        { organizations: T[]; total: number }[]
       >({
         url: `${apiUrl}/getAllOrganizations`,
         method: 'POST',

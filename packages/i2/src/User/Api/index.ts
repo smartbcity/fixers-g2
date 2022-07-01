@@ -41,7 +41,7 @@ export interface GetUsersParams {
   queryParams?: UserTableFilters
 }
 
-export const useGetUsers = (params: GetUsersParams) => {
+export const useGetUsers = <T extends User = User>(params: GetUsersParams) => {
   const { apiUrl, jwt, options, queryKey = 'users', queryParams } = params
 
   const getUsers = useCallback(
@@ -49,7 +49,7 @@ export const useGetUsers = (params: GetUsersParams) => {
       queryKey
     }: QueryFunctionContext<[string, UserTableFilters | undefined]>) => {
       const [_key, currentParams] = queryKey
-      const res = await request<UserGetAllQueryResult[]>({
+      const res = await request<UserGetAllQueryResult<T>[]>({
         url: `${apiUrl}/getAllUsers`,
         method: 'POST',
         body: JSON.stringify({

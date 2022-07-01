@@ -170,6 +170,12 @@ export interface FormBasicProps extends BasicProps {
    */
   isLoading?: boolean
   /**
+   * Indicates if the data is on readonly mode
+   *
+   * @default false
+   */
+   readonly?: boolean
+  /**
    * The classes applied to the different part of the component
    */
   classes?: FormClasses
@@ -201,6 +207,7 @@ export const Form = (props: FormProps) => {
     actionsStackProps,
     fieldsStackProps,
     isLoading = false,
+    readonly = false,
     ...other
   } = props
   const defaultStyles = useStyles()
@@ -221,7 +228,8 @@ export const Form = (props: FormProps) => {
       formState.errors,
       classes?.field,
       styles?.field,
-      isLoading
+      isLoading,
+      readonly
     ]
   )
 
@@ -273,7 +281,8 @@ const getInput = (
   formState: FormState,
   classes?: FormClasses,
   styles?: FormStyles,
-  isLoading?: boolean
+  isLoading?: boolean,
+  readonly?: boolean,
 ) => {
   const commonProps = {
     key: field.key,
@@ -282,6 +291,8 @@ const getInput = (
     name: field.name,
     error: !!formState.errors[field.name],
     errorMessage: formState.errors[field.name] as string,
+    isLoading: isLoading,
+    readonly: readonly,
     className: cx(
       classes?.field,
       'AruiForm-field',
@@ -313,7 +324,6 @@ const getInput = (
               ? date
               : formState.getFieldProps(field.name).value ?? ''
           }
-          isLoading={isLoading}
           onChangeDate={(date) => {
             formState.setFieldValue(
               field.name,
@@ -322,8 +332,8 @@ const getInput = (
             )
             !!field.onChange && field.onChange(date)
           }}
-          {...field.datePickerProps}
           {...commonProps}
+          {...field.datePickerProps}
         />
       )
     }
@@ -336,9 +346,8 @@ const getInput = (
             formState.setFieldValue(field.name, values, false)
             !!field.onChange && field.onChange(values)
           }}
-          isLoading={isLoading}
-          {...field.selectProps}
           {...commonProps}
+          {...field.selectProps}
         />
       ) : (
         <InputLabeled
@@ -348,9 +357,8 @@ const getInput = (
             formState.setFieldValue(field.name, value, false)
             !!field.onChange && field.onChange(value)
           }}
-          isLoading={isLoading}
-          {...field.selectProps}
           {...commonProps}
+          {...field.selectProps}
         />
       )
     case 'autoComplete':
@@ -363,9 +371,8 @@ const getInput = (
             formState.setFieldValue(field.name, values, false)
             !!field.onChange && field.onChange(values)
           }}
-          isLoading={isLoading}
-          {...field.autoCompleteProps}
           {...commonProps}
+          {...field.autoCompleteProps}
         />
       ) : (
         // @ts-ignore
@@ -376,9 +383,8 @@ const getInput = (
             formState.setFieldValue(field.name, value, false)
             !!field.onChange && field.onChange(value)
           }}
-          isLoading={isLoading}
-          {...field.autoCompleteProps}
           {...commonProps}
+          {...field.autoCompleteProps}
         />
       )
     case 'checkbox':
@@ -392,9 +398,8 @@ const getInput = (
             formState.setFieldValue(field.name, value, false)
             !!field.onChange && field.onChange(value)
           }}
-          isLoading={isLoading}
-          {...field.checkBoxProps}
           {...commonProps}
+          {...field.checkBoxProps}
         />
       )
     case 'radioChoices':
@@ -406,9 +411,8 @@ const getInput = (
             formState.setFieldValue(field.name, value, false)
             !!field.onChange && field.onChange(value)
           }}
-          isLoading={isLoading}
-          {...field.radioChoicesProps}
           {...commonProps}
+          {...field.radioChoicesProps}
         />
       )
   }
@@ -420,9 +424,8 @@ const getInput = (
         formState.setFieldValue(field.name, value, false)
         !!field.onChange && field.onChange(value)
       }}
-      isLoading={isLoading}
-      {...field.textFieldProps}
       {...commonProps}
+      {...field.textFieldProps}
     />
   )
 }

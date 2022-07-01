@@ -32,7 +32,7 @@ export const Page = (props: PageProps) => {
       <Actions
         {...bottomActionsProps}
         sx={{
-          marginTop: (theme) => theme.spacing(2)
+          marginTop: (theme) => theme.spacing(5)
         }}
       />
     )
@@ -40,7 +40,7 @@ export const Page = (props: PageProps) => {
 
   const headerDisplay = useMemo(() => {
     if (!headerProps) return undefined
-    return <Header {...headerProps} />
+    return <Header strongPadding {...headerProps} />
   }, [headerProps])
 
   return (
@@ -49,7 +49,7 @@ export const Page = (props: PageProps) => {
       <Box
         className={cx('AruiPage-root', className)}
         sx={{
-          padding: (theme) => theme.spacing(3),
+          padding: (theme) => theme.spacing(5),
           ...sx
         }}
         {...other}

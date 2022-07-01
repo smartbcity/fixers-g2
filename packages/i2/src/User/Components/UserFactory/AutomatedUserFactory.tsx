@@ -87,7 +87,6 @@ export const AutomatedUserFactory = (props: AutomatedUserFactoryProps) => {
     getUserOptions,
     updateUserOptions,
     createUserOptions,
-    strings,
     ...other
   } = props
 
@@ -142,13 +141,6 @@ export const AutomatedUserFactory = (props: AutomatedUserFactoryProps) => {
     <UserFactory
       user={getUser.data}
       onSubmit={update ? updateUserMemoized : createUserMemoized}
-      submitButtonLabel={update ? 'Mettre à jour' : 'Créer'}
-      strings={{
-        ...strings,
-        submitButtonLabel: update
-          ? strings?.updateButtonLabel ?? 'Mettre à jour'
-          : strings?.createButtonLabel ?? 'Créer'
-      }}
       isUpdate={update}
       isLoading={getUser.isLoading}
       organizationId={organizationId}

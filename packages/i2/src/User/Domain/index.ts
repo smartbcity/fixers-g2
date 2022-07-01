@@ -94,8 +94,8 @@ export interface UserGetAllQuery {
   size?: number
 }
 
-export interface UserGetAllQueryResult {
-  users: User[]
+export interface UserGetAllQueryResult<T extends User> {
+  users: T[]
   total: number
 }
 

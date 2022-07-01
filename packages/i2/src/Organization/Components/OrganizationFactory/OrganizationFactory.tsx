@@ -7,7 +7,6 @@ import {
   Option
 } from '@smartb/g2-forms'
 import { Stack, StackProps, styled, Typography } from '@mui/material'
-import { Button } from '@smartb/g2-components'
 import { Popover } from '@smartb/g2-notifications'
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 import { cx } from '@emotion/css'
@@ -89,10 +88,9 @@ export interface OrganizationFactoryBasicProps extends BasicProps {
    */
   onSubmit?: (organization: Organization) => Promise<Validated> | Validated
   /**
-   * The label placed in the submit button
-   * @default 'Valider'
-   */
-  submitButtonLabel?: string
+    * The ref of the submit element
+    */
+  SubmitButtonRef?: React.MutableRefObject<HTMLElement | undefined>
   /**
    * The roles options needed to make the roles select.
    * The default role selected in the form will be the first of the list
@@ -133,7 +131,7 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
     organization,
     onSubmit,
     getInseeOrganization,
-    submitButtonLabel = 'Valider',
+    SubmitButtonRef,
     className,
     classes,
     styles,
@@ -149,11 +147,6 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
   )
   const [siretValid, setSiretValid] = useState(false)
   const [siretRef, setSiretRef] = useState(null)
-  const [feedback, setFeedback] = useState<boolean | undefined>(undefined)
-
-  useEffect(() => {
-    setFeedback(undefined)
-  }, [onSubmit])
 
   const onCloseSiretInfo = useCallback(() => setOpenSiretInfo(false), [])
 
@@ -213,11 +206,10 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
   const onSubmitMemoized = useCallback(
     async (values: FlatOrganization) => {
       if (onSubmit) {
-        const feedback = await onSubmit({
+        onSubmit({
           ...flatOrganizationToOrganization(values),
           id: organization?.id ?? ''
         })
-        setFeedback(feedback)
       }
     },
     [onSubmit, organization]
@@ -267,7 +259,7 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
               fetchOrganization()
             }
           },
-          disabled: readonly || readonlyFields?.siret
+          disabled: readonlyFields?.siret
         }
       }
     ],
@@ -288,7 +280,7 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
         type: 'textfield',
         label: 'Nom',
         textFieldProps: {
-          disabled: readonly || readonlyFields?.name
+          disabled: readonlyFields?.name
         }
       },
       {
@@ -297,7 +289,7 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
         type: 'textfield',
         label: 'Addresse (facultatif)',
         textFieldProps: {
-          disabled: readonly || readonlyFields?.address
+          disabled: readonlyFields?.address
         }
       },
       {
@@ -307,7 +299,7 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
         label: 'Code postal (facultatif)',
         textFieldProps: {
           textFieldType: 'number',
-          disabled: readonly || readonlyFields?.address
+          disabled: readonlyFields?.address
         }
       },
       {
@@ -316,23 +308,23 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
         type: 'textfield',
         label: 'Ville (facultatif)',
         textFieldProps: {
-          disabled: readonly || readonlyFields?.address
+          disabled: readonlyFields?.address
         }
       },
       ...(rolesOptions
         ? [
-            {
-              key: 'roles',
-              name: 'roles',
-              label: 'Type',
-              type: 'select',
-              selectProps: {
-                options: rolesOptions,
-                disabled: readonly || readonlyFields?.roles,
-                multiple: true
-              }
-            } as FormField
-          ]
+          {
+            key: 'roles',
+            name: 'roles',
+            label: 'Type',
+            type: 'select',
+            selectProps: {
+              options: rolesOptions,
+              disabled: readonlyFields?.roles,
+              multiple: true
+            }
+          } as FormField
+        ]
         : [])
     ],
     [readonly, readonlyFields?.siret]
@@ -346,7 +338,7 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
         type: 'textfield',
         label: 'Site web (facultatif)',
         textFieldProps: {
-          disabled: readonly || readonlyFields?.website
+          disabled: readonlyFields?.website
         }
       },
       {
@@ -357,12 +349,19 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
         textFieldProps: {
           multiline: true,
           rows: 6,
-          disabled: readonly || readonlyFields?.description
+          disabled: readonlyFields?.description
         }
       }
     ],
     [readonly]
   )
+
+  useEffect(() => {
+    const element = SubmitButtonRef?.current
+    if (element && !readonly) {
+      element.onclick = formState.submitForm
+    }
+  }, [SubmitButtonRef?.current, formState.submitForm, readonly])
 
   return (
     <StyledStack
@@ -397,6 +396,7 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
           fields={details}
           formState={formState}
           isLoading={isLoading}
+          readonly={readonly}
         />
         <Stack>
           <Form
@@ -409,28 +409,9 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
             fields={description}
             formState={formState}
             isLoading={isLoading}
+            readonly={readonly}
           />
         </Stack>
-      </Stack>
-      <Stack
-        className={cx(
-          'AruiOrganizationFactory-actionsContainer',
-          classes?.actionsContainer
-        )}
-        style={styles?.actionsContainer}
-        direction='row'
-        justifyContent='flex-end'
-        width='100%'
-      >
-        {!readonly && !isLoading && (
-          <Button
-            success={feedback !== undefined && feedback}
-            fail={feedback !== undefined && !feedback}
-            onClick={formState.submitForm}
-          >
-            {submitButtonLabel}
-          </Button>
-        )}
       </Stack>
 
       {siretRef && (

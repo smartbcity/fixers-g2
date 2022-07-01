@@ -101,7 +101,7 @@ export const Section = (props: SectionProps) => {
         {headerDisplay}
         <Box
           sx={{
-            padding: (theme) => theme.spacing(2)
+            padding: (theme) => theme.spacing(3)
           }}
           className={cx('AruiPage-contentContainer', classes?.contentContainer)}
           style={styles?.contentContainer}
