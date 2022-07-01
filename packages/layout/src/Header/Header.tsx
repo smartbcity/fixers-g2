@@ -190,7 +190,7 @@ export const Header = (props: HeaderProps) => {
       className={cx('AruiHeader-root', className)}
       sx={{
         padding: (theme) => {
-          const topPadding = theme.spacing(3)
+          const topPadding = theme.spacing(2)
           const horizontalPadding = strongPadding ? theme.spacing(5) : theme.spacing(3)
           if (tabs) {
             return `${topPadding} ${horizontalPadding} 0`

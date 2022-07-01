@@ -1,6 +1,6 @@
 {
   "name": "@smartb/g2-providers",
-  "version": "1.0.0-alpha.40",
+  "version": "1.0.0-alpha.41",
   "repository": "https://gitlab.smartb.city/fixers/g2.git",
   "author": "Adrien Poupard <adrien@smartb.city>",
   "license": "Apache-2.0",
@@ -38,16 +38,16 @@
   },
   "dependencies": {
     "@react-keycloak/web": "^3.4.0",
-    "@smartb/g2-components": "^1.0.0-alpha.40",
-    "@smartb/g2-themes": "^1.0.0-alpha.40",
+    "@smartb/g2-components": "^1.0.0-alpha.41",
+    "@smartb/g2-themes": "^1.0.0-alpha.41",
     "i18next": "^21.8.9",
     "i18next-browser-languagedetector": "^6.1.4",
     "i18next-xhr-backend": "^3.2.2",
     "keycloak-js": "^18.0.0",
     "react-i18next": "^11.17.2",
     "react-query": "^3.39.1",
-    "react-router-dom": "^6.3.0",
     "react-redux": "^7.2.4",
+    "react-router-dom": "^6.3.0",
     "redux": "^4.1.0"
   },
   "gitHead": "01582f4b620c1e44cab5a65394e29d95f66ddabb",
