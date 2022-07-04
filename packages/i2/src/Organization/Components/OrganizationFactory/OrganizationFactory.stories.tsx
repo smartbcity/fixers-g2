@@ -1,5 +1,5 @@
 import { Meta } from '@storybook/react'
-import React from 'react'
+import React, { useRef, useState } from 'react'
 import {
   OrganizationFactory,
   OrganizationFactoryProps
@@ -9,6 +9,7 @@ import { ArgsTable, PRIMARY_STORY, Subtitle } from '@storybook/addon-docs'
 import LinkTo from '@storybook/addon-links/react'
 import { Stack, Typography } from '@mui/material'
 import { styles, classes } from '../../Domain'
+import { Button } from '@smartb/g2-components'
 
 export default {
   title: 'I2/OrganizationFactory',
@@ -60,11 +61,18 @@ export default {
 export const OrganizationFactoryStory: Story<OrganizationFactoryProps> = (
   args: OrganizationFactoryProps
 ) => {
+  const ref = useRef<HTMLButtonElement>(null)
   return (
-    <OrganizationFactory
-      {...args}
-      organization={{ roles: ['Manager'], name: 'SmartB' }}
-    />
+    <>
+      <OrganizationFactory
+        {...args}
+        organization={{ roles: ['Manager'], name: 'SmartB' }}
+        SubmitButtonRef={ref}
+      />
+      <Button sx={{ marginTop: '16px' }} ref={ref}>
+        Sauvegarder
+      </Button>
+    </>
   )
 }
 

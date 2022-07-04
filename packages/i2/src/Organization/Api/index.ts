@@ -1,8 +1,10 @@
 import {
   Organization,
   OrganizationCreateCommand,
-  OrganizationGetByIdQuery,
+  OrganizationGetQuery,
+  OrganizationGetResult,
   OrganizationId,
+  OrganizationPageResult,
   OrganizationUpdateCommand
 } from '../Domain'
 import { useCallback } from 'react'
@@ -17,16 +19,11 @@ import {
 import { OrganizationTableFilters } from '../Components/OrganizationTable'
 export * from './GetOrganizationRefsQuery'
 
-export interface OrganizationPageQueryResult<T extends Organization> {
-  organizations: T[]
-  total: number
-}
-
 export type GetOrganizationsOptions<T extends Organization> = Omit<
   UseQueryOptions<
-    OrganizationPageQueryResult<T>,
+    OrganizationPageResult<T>,
     unknown,
-    OrganizationPageQueryResult<T>,
+    OrganizationPageResult<T>,
     (string | OrganizationTableFilters | undefined)[]
   >,
   'queryKey' | 'queryFn'
@@ -43,7 +40,9 @@ export interface GetOrganizationsParams<T extends Organization> {
   queryParams?: object
 }
 
-export const useGetOrganizations = <T extends Organization = Organization>(params: GetOrganizationsParams<T>) => {
+export const useGetOrganizations = <T extends Organization = Organization>(
+  params: GetOrganizationsParams<T>
+) => {
   const {
     apiUrl,
     jwt,
@@ -57,12 +56,10 @@ export const useGetOrganizations = <T extends Organization = Organization>(param
       queryKey
     }: QueryFunctionContext<
       [string, OrganizationTableFilters | undefined]
-    >): Promise<OrganizationPageQueryResult<T>> => {
+    >): Promise<OrganizationPageResult<T>> => {
       const [_key, currentParams] = queryKey
-      const res = await request<
-        { organizations: T[]; total: number }[]
-      >({
-        url: `${apiUrl}/getAllOrganizations`,
+      const res = await request<OrganizationPageResult<T>[]>({
+        url: `${apiUrl}/organizationPage`,
         method: 'POST',
         body: JSON.stringify({
           ...currentParams,
@@ -74,12 +71,12 @@ export const useGetOrganizations = <T extends Organization = Organization>(param
       })
       if (res) {
         return {
-          organizations: res[0]?.organizations,
+          items: res[0]?.items,
           total: res[0]?.total ? Math.ceil(res[0]?.total / 10) : 0
         }
       } else {
         return {
-          organizations: [],
+          items: [],
           total: 0
         }
       }
@@ -92,9 +89,9 @@ export const useGetOrganizations = <T extends Organization = Organization>(param
 
 export type GetOrganizationOptions = Omit<
   UseQueryOptions<
-    { organization: Organization } | undefined,
+    OrganizationGetResult | undefined,
     unknown,
-    { organization: Organization } | undefined,
+    OrganizationGetResult | undefined,
     (string | undefined)[]
   >,
   'queryKey' | 'queryFn'
@@ -123,12 +120,12 @@ export const useGetOrganization = (params: GetOrganizationParams) => {
   const getOrganization = useCallback(
     async ({ queryKey }: QueryFunctionContext<[string, string]>) => {
       const [_key, organizationId] = queryKey
-      const res = await request<{ organization: Organization }[]>({
-        url: `${apiUrl}/getOrganization`,
+      const res = await request<OrganizationGetResult[]>({
+        url: `${apiUrl}/organizationGet`,
         method: 'POST',
         body: JSON.stringify({
           id: organizationId
-        } as OrganizationGetByIdQuery),
+        } as OrganizationGetQuery),
         jwt: jwt
       })
       if (res) {
@@ -151,8 +148,8 @@ export const getInseeOrganization = async (
   apiUrl: string,
   jwt?: string
 ) => {
-  const res = await request<{ organization?: Organization }[]>({
-    url: `${apiUrl}/getInseeOrganization`,
+  const res = await request<{ item?: Organization }[]>({
+    url: `${apiUrl}/organizationGetFromInsee`,
     method: 'POST',
     body: JSON.stringify({
       siret: siret
@@ -160,7 +157,7 @@ export const getInseeOrganization = async (
     jwt: jwt
   })
   if (res) {
-    return res[0].organization
+    return res[0].item
   } else {
     return undefined
   }
@@ -188,7 +185,7 @@ export const useUpdateOrganization = (params: UpdateOrganizationParams) => {
   const updateOrganization = useCallback(
     async (organization: Organization) => {
       const res = await request<{ id: string }[]>({
-        url: `${apiUrl}/updateOrganization`,
+        url: `${apiUrl}/organizationUpdate`,
         method: 'POST',
         body: JSON.stringify({
           ...organization
@@ -229,7 +226,7 @@ export const useCreateOrganization = (params: CreateOrganizationParams) => {
   const createOrganization = useCallback(
     async (organization: Organization) => {
       const res = await request<{ id: string }[]>({
-        url: `${apiUrl}/createOrganization`,
+        url: `${apiUrl}/organizationCreate`,
         method: 'POST',
         body: JSON.stringify({
           ...organization

@@ -1,5 +1,10 @@
-import { useCallback } from 'react'
-import { useQuery, UseQueryOptions } from 'react-query'
+import { useCallback, useMemo } from 'react'
+import {
+  QueryKey,
+  useQuery,
+  useQueryClient,
+  UseQueryOptions
+} from 'react-query'
 import { OrganizationRef } from '../Domain'
 import { request } from '@smartb/g2-utils'
 import { i2Config } from '@smartb/g2-providers'
@@ -7,46 +12,73 @@ import { i2Config } from '@smartb/g2-providers'
 export interface OrganizationRefsAllQuery {}
 
 export interface OrganizationRefsAllResult {
-  organizations: OrganizationRef[]
+  items: OrganizationRef[]
 }
 
-export type GetOrganizationRefsOptions = Omit<
+export type GetOrganizationRefsOptions<
+  R extends QueryKey = OrganizationRefsAllQuery[]
+> = Omit<
   UseQueryOptions<
     OrganizationRefsAllResult,
     unknown,
     OrganizationRefsAllResult,
-    OrganizationRefsAllQuery[]
+    R
   >,
   'queryKey' | 'queryFn'
 >
 
-export interface OrganizationRefsAllParams {
+export interface OrganizationRefsAllParams<
+  R extends QueryKey = OrganizationRefsAllQuery[]
+> {
   queryKey?: string
   jwt?: string
-  options?: GetOrganizationRefsOptions
+  options?: GetOrganizationRefsOptions<R>
 }
 
-export const useGetOrganizationRefs = (params: OrganizationRefsAllParams) => {
-  const { jwt, options, queryKey = 'organizationRefs' } = params
+export const useGetOrganizationRefs = (params?: OrganizationRefsAllParams) => {
+  const { jwt, options, queryKey = 'organizationRefs' } = params ?? {}
 
-  const getOrganizationRefs =
-    useCallback(async (): Promise<OrganizationRefsAllResult> => {
-      const res = await request<{ organizations: OrganizationRef[] }[]>({
-        url: `${i2Config().orgUrl}/getAllOrganizationRefs`,
-        method: 'POST',
-        body: '[{}]',
-        jwt: jwt
-      })
-      if (res) {
-        return {
-          organizations: res[0]?.organizations || []
-        }
-      } else {
-        return {
-          organizations: []
-        }
+  const getOrganizationRefs = useCallback(fetchOrganizationRefs(jwt), [jwt])
+
+  const query = useQuery([queryKey], getOrganizationRefs, options)
+
+  const map = useMemo(() => {
+    if (query.data?.items) {
+      return new Map(query.data.items.map((o) => [o.id, o]))
+    }
+    return new Map<string, OrganizationRef>()
+  }, [query.data])
+
+  return {
+    query: query,
+    map: map
+  }
+}
+
+export const usePrefetchOrganizationRefs = async (
+  params?: OrganizationRefsAllParams<string>
+) => {
+  const { jwt, options, queryKey = 'organizationRefs' } = params ?? {}
+  const getOrganizationRefs = useCallback(fetchOrganizationRefs(jwt), [jwt])
+  const queryClient = useQueryClient()
+  queryClient.prefetchQuery(queryKey, getOrganizationRefs, options)
+}
+
+const fetchOrganizationRefs =
+  (jwt?: string) => async (): Promise<OrganizationRefsAllResult> => {
+    const res = await request<OrganizationRefsAllResult[]>({
+      url: `${i2Config().orgUrl}/organizationRefGetAll`,
+      method: 'POST',
+      body: '[{}]',
+      jwt: jwt
+    })
+    if (res) {
+      return {
+        items: res[0]?.items || []
       }
-    }, [jwt])
-
-  return useQuery([queryKey], getOrganizationRefs, options)
-}
+    } else {
+      return {
+        items: []
+      }
+    }
+  }

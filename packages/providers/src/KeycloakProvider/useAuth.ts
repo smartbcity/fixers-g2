@@ -10,6 +10,17 @@ export type CommonUser = {
   lastName: string
 }
 
+type ComputeRolesServicesNames<Roles extends string> = {
+  [key in Roles]: `is_${key}`
+}
+
+type RolesServicesNames<Roles extends string> =
+  ComputeRolesServicesNames<Roles>[keyof ComputeRolesServicesNames<Roles>]
+
+type RolesServices<Roles extends string> = {
+  [K in RolesServicesNames<Roles>]: () => boolean
+}
+
 type AuthService<
   Additionnals extends AuthServiceAdditionnal = {},
   Roles extends string = string
@@ -27,12 +38,12 @@ type AuthService<
   getUser: () => CommonUser | undefined
 
   /**
-   * CheckRounded if the current user has one of the roles given in parameter
-   * @param {Roles | string}  roles - The roles that you want to check if the user has them
-   * @return {boolean} Return true if the user has one of the roles of if no roles are provided
+   * will check if the user has the role you passed in parameter in his assigned roles
+   * @return {User | undefined} return the user or undefined if not authenticated
    */
-  isAuthorized: (roles: Roles[]) => boolean
-} & Additionnals
+  hasRole: (role: Roles) => boolean
+} & RolesServices<Roles> &
+  Additionnals
 
 type KeycloackInjector<
   Roles extends string = string,
@@ -79,15 +90,17 @@ export interface Auth<
 }
 
 function useAuth<AdditionnalServices, Roles extends string = string>(
+  roles: Roles[],
   additionnalServices: KeycloackService<AdditionnalServices, Roles>
 ): Auth<AuthServiceAdditionnal<AdditionnalServices>, Roles>
 
-function useAuth<Roles extends string = string>(): Auth<{}, Roles>
+function useAuth<Roles extends string = string>(roles: Roles[]): Auth<{}, Roles>
 
 function useAuth<
   AdditionnalServices = undefined,
   Roles extends string = string
 >(
+  roles: Roles[],
   additionnalServices?: KeycloackService<AdditionnalServices, Roles>
 ): Auth<AuthServiceAdditionnal<AdditionnalServices>, Roles> {
   const { keycloak } = useKeycloak()
@@ -97,16 +110,11 @@ function useAuth<
     [keycloak]
   )
 
-  const isAuthorized = useCallback(
-    (roles: Roles[]): boolean => {
-      if (!roles || roles.length === 0) return true
-      let authorization = false
-      roles.forEach((r) => {
-        const realm = keycloakWithRoles.hasRealmRole(r)
-        const resource = keycloakWithRoles.hasResourceRole(r)
-        if (realm || resource) authorization = true
-      })
-      return authorization
+  const hasRole = useCallback(
+    (role: string): boolean => {
+      const userRoles =
+        keycloakWithRoles.tokenParsed?.roles?.assignedRoles ?? []
+      return userRoles.includes(role)
     },
     [keycloakWithRoles]
   )
@@ -137,13 +145,23 @@ function useAuth<
     [keycloakWithRoles]
   )
 
+  const rolesServices: RolesServices<Roles> = useMemo(() => {
+    const object: RolesServices<Roles> = {} as RolesServices<Roles>
+    for (let role in roles) {
+      const fn = () => hasRole(role)
+      object[`is_${role}`] = fn
+    }
+    return object
+  }, [hasRole, roles])
+
   const service: AuthService = useMemo(
     () => ({
       getUserId: getUserId,
-      isAuthorized: isAuthorized,
-      getUser: getUser
+      hasRole: hasRole,
+      getUser: getUser,
+      ...rolesServices
     }),
-    [isAuthorized, getUserId]
+    [hasRole, getUserId, getUser, rolesServices]
   )
 
   const additionnals: AuthServiceAdditionnal<AdditionnalServices> =
@@ -156,7 +174,7 @@ function useAuth<
         object[serviceName.toString()] = fn
       }
       return object
-    }, [additionnalServices, keycloakWithRoles])
+    }, [additionnalServices, keycloakWithRoles, hasRole, roles])
 
   return {
     service: Object.assign(service, additionnals),

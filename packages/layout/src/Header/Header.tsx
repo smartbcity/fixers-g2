@@ -210,6 +210,7 @@ export const Header = (props: HeaderProps) => {
         top: isFixed ? '0px' : '',
         backdropFilter: 'blur(15px)',
         webkitBackdropFilter: 'blur(15px)',
+        zIndex: 300,
         ...sx
       }}
       {...rest}
@@ -234,6 +235,7 @@ export const Header = (props: HeaderProps) => {
             scrollButtons='auto'
             sx={{
               marginTop: (theme) => `-${theme.spacing(1.5)}`,
+              marginBottom: '-1px',
               ...tabsProps?.sx
             }}
           >

@@ -62,10 +62,12 @@ interface KeycloakConfig {
 `
 
 export const informRoles = `
-type Roles = "admin" | "user"
+type Roles = 'admin' | 'user'
+
+const roles: Roles[] = ['admin', 'user']
 
 type StaticServices = {
-  getRoles: { returnType: Roles[] | undefined},
+  getRoles: { returnType: Roles[] | undefined; paramsType: { test: boolean } }
 }
 
 const staticServices: KeycloackService<StaticServices, Roles> = {
@@ -75,7 +77,12 @@ const staticServices: KeycloackService<StaticServices, Roles> = {
 }
 
 const useExtendedAuth = () => {
-  return useAuth<StaticServices, Roles>(staticServices)
+  return useAuth<StaticServices, Roles>(roles, staticServices)
 }
 `
 
+export const checkRoles = `
+const { keycloak, service } = useExtendedAuth()
+service.is_user()
+service.is_admin()
+`

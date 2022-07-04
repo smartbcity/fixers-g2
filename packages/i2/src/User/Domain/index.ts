@@ -87,15 +87,17 @@ export const FlatUserToUser = (flat: FlatUser): User => {
   return user
 }
 
-export interface UserGetAllQuery {
+export interface UserPageQuery {
   name?: string
   role?: string
   page?: number
   size?: number
+  email?: string
+  organizationId?: string
 }
 
-export interface UserGetAllQueryResult<T extends User> {
-  users: T[]
+export interface UserPageResult<T extends User> {
+  items: T[]
   total: number
 }
 

@@ -66,6 +66,11 @@ export default {
             Your additionnal services should be inform of those roles as well:
           </Description>
           <CodeHighlighter code={informRoles} />
+          <Description>
+            in return you will get few services that will allow you to check the
+            role of the current user.
+          </Description>
+          <CodeHighlighter code={checkRoles} />
         </>
       )
     }
@@ -100,6 +105,8 @@ export const KeycloakProvider: Story = () => {
 
 type Roles = 'admin' | 'user'
 
+const roles: Roles[] = ['admin', 'user']
+
 type StaticServices = {
   getRoles: { returnType: Roles[] | undefined; paramsType: { test: boolean } }
 }
@@ -111,7 +118,7 @@ const staticServices: KeycloackService<StaticServices, Roles> = {
 }
 
 const useExtendedAuth = () => {
-  return useAuth<StaticServices, Roles>(staticServices)
+  return useAuth<StaticServices, Roles>(roles, staticServices)
 }
 
 const ConnectButton = () => {

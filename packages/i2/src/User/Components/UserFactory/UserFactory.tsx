@@ -143,7 +143,7 @@ export interface UserFactoryBasicProps extends BasicProps {
   /**
    * The ref of the submit element
    */
-  SubmitButtonRef?: React.MutableRefObject<HTMLElement | undefined>
+  SubmitButtonRef?: React.RefObject<HTMLElement | undefined>
   /**
    * To activate Readonly view
    * @default false
@@ -304,11 +304,11 @@ export const UserFactory = (props: UserFactoryProps) => {
       },
       ...(!isUpdate && !readonly
         ? [
-          {
-            name: 'sendEmailLink',
-            defaultValue: true
-          }
-        ]
+            {
+              name: 'sendEmailLink',
+              defaultValue: true
+            }
+          ]
         : [])
     ],
     [
@@ -398,11 +398,11 @@ export const UserFactory = (props: UserFactoryProps) => {
     const orgsOptions =
       !!organizationsRefs && organizationsRefs.length > 0
         ? organizationsRefs.map(
-          (orgRef): Option => ({
-            key: orgRef.id,
-            label: orgRef.name
-          })
-        )
+            (orgRef): Option => ({
+              key: orgRef.id,
+              label: orgRef.name
+            })
+          )
         : undefined
     return [
       {
@@ -427,48 +427,48 @@ export const UserFactory = (props: UserFactoryProps) => {
       },
       ...(rolesOptions
         ? [
-          {
-            key: 'role',
-            name: 'role',
-            label: strings?.role ?? 'Role',
-            type: 'select',
-            selectProps: {
-              options: rolesOptions,
-              readonly: readonlyFields?.roles,
-              multiple: true
-            }
-          } as FormField
-        ]
+            {
+              key: 'role',
+              name: 'role',
+              label: strings?.role ?? 'Role',
+              type: 'select',
+              selectProps: {
+                options: rolesOptions,
+                readonly: readonlyFields?.roles,
+                multiple: true
+              }
+            } as FormField
+          ]
         : []),
       ...(orgsOptions || organizationId
         ? [
-          {
-            key: 'memberOf',
-            name: 'memberOf',
-            label: strings?.organization ?? 'Organisation',
-            type: 'select',
-            selectProps: {
-              options: orgsOptions,
-              readonly: readonlyFields?.memberOf
-            }
-          } as FormField
-        ]
+            {
+              key: 'memberOf',
+              name: 'memberOf',
+              label: strings?.organization ?? 'Organisation',
+              type: 'select',
+              selectProps: {
+                options: orgsOptions,
+                readonly: readonlyFields?.memberOf
+              }
+            } as FormField
+          ]
         : []),
       ...(!isUpdate && !readonly
         ? [
-          {
-            key: 'sendEmailLink',
-            name: 'sendEmailLink',
-            type: 'checkbox',
-            label:
-              strings?.sendEmailLink ??
-              "Envoyer un lien d'invitation par mail",
-            checkBoxProps: {
-              className: 'AruiUserFactory-sendEmailLink',
-              disabled: readonlyFields?.sendEmailLink
-            }
-          } as FormField
-        ]
+            {
+              key: 'sendEmailLink',
+              name: 'sendEmailLink',
+              type: 'checkbox',
+              label:
+                strings?.sendEmailLink ??
+                "Envoyer un lien d'invitation par mail",
+              checkBoxProps: {
+                className: 'AruiUserFactory-sendEmailLink',
+                disabled: readonlyFields?.sendEmailLink
+              }
+            } as FormField
+          ]
         : [])
     ]
   }, [isUpdate, rolesOptions, organizationsRefs, readonly, organizationId])
@@ -479,7 +479,7 @@ export const UserFactory = (props: UserFactoryProps) => {
       element.onclick = formState.submitForm
     }
   }, [SubmitButtonRef?.current, formState.submitForm, readonly])
-  
+
   return (
     <StyledStack
       width='100%'

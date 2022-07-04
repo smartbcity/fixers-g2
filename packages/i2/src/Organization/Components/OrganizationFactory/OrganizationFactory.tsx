@@ -88,9 +88,9 @@ export interface OrganizationFactoryBasicProps extends BasicProps {
    */
   onSubmit?: (organization: Organization) => Promise<Validated> | Validated
   /**
-    * The ref of the submit element
-    */
-  SubmitButtonRef?: React.MutableRefObject<HTMLElement | undefined>
+   * The ref of the submit element
+   */
+  SubmitButtonRef?: React.RefObject<HTMLElement | undefined>
   /**
    * The roles options needed to make the roles select.
    * The default role selected in the form will be the first of the list
@@ -313,18 +313,18 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
       },
       ...(rolesOptions
         ? [
-          {
-            key: 'roles',
-            name: 'roles',
-            label: 'Type',
-            type: 'select',
-            selectProps: {
-              options: rolesOptions,
-              disabled: readonlyFields?.roles,
-              multiple: true
-            }
-          } as FormField
-        ]
+            {
+              key: 'roles',
+              name: 'roles',
+              label: 'Type',
+              type: 'select',
+              selectProps: {
+                options: rolesOptions,
+                disabled: readonlyFields?.roles,
+                multiple: true
+              }
+            } as FormField
+          ]
         : [])
     ],
     [readonly, readonlyFields?.siret]

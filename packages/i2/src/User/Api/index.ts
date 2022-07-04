@@ -14,7 +14,7 @@ import {
 } from 'react-query'
 import { UserTableFilters } from '../Components/UserTable'
 import { OrganizationId, OrganizationRef } from '../../Organization'
-import { UserGetAllQueryResult } from '../Domain'
+import { UserPageResult } from '../Domain'
 
 type UserGetAllQueryResultOptional =
   | { users: any; totalPages: number }
@@ -49,8 +49,8 @@ export const useGetUsers = <T extends User = User>(params: GetUsersParams) => {
       queryKey
     }: QueryFunctionContext<[string, UserTableFilters | undefined]>) => {
       const [_key, currentParams] = queryKey
-      const res = await request<UserGetAllQueryResult<T>[]>({
-        url: `${apiUrl}/getAllUsers`,
+      const res = await request<UserPageResult<T>[]>({
+        url: `${apiUrl}/userPage`,
         method: 'POST',
         body: JSON.stringify({
           ...currentParams,
@@ -61,7 +61,7 @@ export const useGetUsers = <T extends User = User>(params: GetUsersParams) => {
       })
       if (res) {
         return {
-          users: res[0]?.users,
+          users: res[0]?.items,
           totalPages: Math.ceil(res[0]?.total / 10)
         }
       } else {
@@ -111,8 +111,8 @@ export const useGetUser = (params: GetUserParams) => {
       queryKey
     }: QueryFunctionContext<[string, string]>): Promise<User | undefined> => {
       const [_key, userId] = queryKey
-      const res = await request<{ user: User }[]>({
-        url: `${apiUrl}/getUser`,
+      const res = await request<{ item: User }[]>({
+        url: `${apiUrl}/userGet`,
         method: 'POST',
         body: JSON.stringify({
           id: userId
@@ -122,9 +122,9 @@ export const useGetUser = (params: GetUserParams) => {
       if (res) {
         // @ts-ignore
         return {
-          ...res[0].user,
+          ...res[0].item,
           memberOf:
-            res[0]?.user?.memberOf ??
+            res[0]?.item?.memberOf ??
             ({ id: organizationId, name: '' } as OrganizationRef)
         }
       } else {
@@ -157,7 +157,7 @@ export const useUpdateUser = (params: UpdateUserParams) => {
   const updateUser = useCallback(
     async (user: User) => {
       const res = await request<{ id: string }[]>({
-        url: `${apiUrl}/updateUser`,
+        url: `${apiUrl}/userUpdate`,
         method: 'POST',
         body: JSON.stringify({
           ...user,
@@ -197,7 +197,7 @@ export const useCreateUser = (params: CreateUserParams) => {
   const createUser = useCallback(
     async (user: User) => {
       const res = await request<{ id: string }[]>({
-        url: `${apiUrl}/createUser`,
+        url: `${apiUrl}/userCreate`,
         method: 'POST',
         // @ts-ignore
         body: JSON.stringify({
@@ -243,7 +243,7 @@ export const useResetUserPassword = (params: ResetUserPasswordParams) => {
       cmd?: UserResetPasswordCommand
     ): Promise<UserResetPasswordResult | undefined> => {
       const res = await request<UserResetPasswordResult[]>({
-        url: `${apiUrl}/resetUserPassword`,
+        url: `${apiUrl}/userResetPassword`,
         method: 'POST',
         body: JSON.stringify(cmd),
         jwt: jwt

@@ -71,7 +71,9 @@ export const Section = (props: SectionProps) => {
         bgcolor='#ffffff'
         sx={{
           borderRadius: (theme) =>
-            `${theme.shape.borderRadius}px ${theme.shape.borderRadius}px 0 0`
+            `${(theme.shape.borderRadius as number) * 1.5}px ${
+              (theme.shape.borderRadius as number) * 1.5
+            }px 0 0`
         }}
         {...headerProps}
       />
@@ -85,6 +87,8 @@ export const Section = (props: SectionProps) => {
       sx={{
         overflow: 'hidden',
         display: 'flex',
+        borderRadius: (theme) =>
+          `${(theme.shape.borderRadius as number) * 1.5}px`,
         ...sx
       }}
       {...other}

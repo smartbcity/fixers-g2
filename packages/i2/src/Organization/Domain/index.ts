@@ -52,14 +52,24 @@ export interface FlatOrganization {
 export type OrganizationCreateCommand = Organization
 export type OrganizationUpdateCommand = Organization
 
-export type OrganizationGetAllQuery = {
+export type OrganizationPageQuery = {
   search?: string
+  type?: string
   page: number
   size: number
 }
 
-export type OrganizationGetByIdQuery = {
+export interface OrganizationPageResult<T extends Organization> {
+  items: T[]
+  total: number
+}
+
+export type OrganizationGetQuery = {
   id: OrganizationId
+}
+
+export type OrganizationGetResult = {
+  Item: Organization
 }
 
 export const organizationToFlatOrganization = (
