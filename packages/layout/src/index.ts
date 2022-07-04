@@ -38,5 +38,5 @@ export {
   StandAloneAppLayout,
   StandAloneAppLayoutProps
 } from './StandAloneAppLayout'
-export { Header, HeaderProps, HeaderContent, HeaderTab } from './Header'
 export { Section, SectionProps } from './Section'
+export { Header, HeaderProps, HeaderContent, HeaderTab } from './Header'
