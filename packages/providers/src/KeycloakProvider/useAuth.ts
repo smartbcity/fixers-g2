@@ -39,9 +39,15 @@ type AuthService<
 
   /**
    * will check if the user has the role you passed in parameter in his assigned roles
-   * @return {User | undefined} return the user or undefined if not authenticated
+   * @return {boolean}
    */
   hasRole: (role: Roles) => boolean
+
+  /**
+   * It will return the principale role of the user. This function only works if you have construct the array role in the correct order (from the most important to the less important)
+   * @return {Roles | undefined} return the role or undefined if not authenticated
+   */
+  getUserPrincipalRole: () => Roles | undefined
 } & RolesServices<Roles> &
   Additionnals
 
@@ -110,8 +116,18 @@ function useAuth<
     [keycloak]
   )
 
+  const getUserPrincipalRole = useCallback((): Roles | undefined => {
+    const userRoles = keycloakWithRoles.tokenParsed?.roles?.assignedRoles ?? []
+    for (let role in roles) {
+      if (userRoles.includes(role)) {
+        return role as Roles
+      }
+    }
+    return
+  }, [keycloakWithRoles, roles])
+
   const hasRole = useCallback(
-    (role: string): boolean => {
+    (role: Roles): boolean => {
       const userRoles =
         keycloakWithRoles.tokenParsed?.roles?.assignedRoles ?? []
       return userRoles.includes(role)
@@ -148,20 +164,21 @@ function useAuth<
   const rolesServices: RolesServices<Roles> = useMemo(() => {
     const object: RolesServices<Roles> = {} as RolesServices<Roles>
     for (let role in roles) {
-      const fn = () => hasRole(role)
+      const fn = () => hasRole(role as Roles)
       object[`is_${role}`] = fn
     }
     return object
   }, [hasRole, roles])
 
-  const service: AuthService = useMemo(
+  const service: AuthService<{}, Roles> = useMemo(
     () => ({
       getUserId: getUserId,
       hasRole: hasRole,
       getUser: getUser,
+      getUserPrincipalRole: getUserPrincipalRole,
       ...rolesServices
     }),
-    [hasRole, getUserId, getUser, rolesServices]
+    [hasRole, getUserId, getUser, getUserPrincipalRole, rolesServices]
   )
 
   const additionnals: AuthServiceAdditionnal<AdditionnalServices> =
