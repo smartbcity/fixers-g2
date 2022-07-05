@@ -27,7 +27,7 @@ export const PrivateRoute = <Roles extends string = string>(
 ): JSX.Element => {
   const { roles, unauthorizedComponent, ...other } = props
   const { service } = useAuth<Roles>()
-  return service.isAuthorized(roles) ? (
+  return service.hasRole(roles) ? (
     <Route {...other} />
   ) : (
     unauthorizedComponent || <NoMatchPage />

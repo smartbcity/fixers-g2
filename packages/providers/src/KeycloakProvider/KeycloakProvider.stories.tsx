@@ -118,6 +118,10 @@ const staticServices: KeycloackService<StaticServices, Roles> = {
   }
 }
 
+type Try<T extends Function> = T
+
+const test: Try<(role: Roles[]) => boolean> = (role) => true
+
 const useExtendedAuth = () => {
   return useAuth<StaticServices, Roles>(roles, staticServices)
 }

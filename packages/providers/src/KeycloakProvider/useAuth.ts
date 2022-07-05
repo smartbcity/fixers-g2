@@ -41,7 +41,7 @@ type AuthService<
    * will check if the user has the role you passed in parameter in his assigned roles
    * @return {boolean}
    */
-  hasRole: (role: Roles) => boolean
+  hasRole: (role: Roles | Roles[]) => boolean
 
   /**
    * It will return the principale role of the user. This function only works if you have construct the array role in the correct order (from the most important to the less important)
@@ -55,7 +55,11 @@ type KeycloackInjector<
   Roles extends string = string,
   T = undefined,
   R = any
-> = (keycloak: KeycloakWithRoles<Roles>, params?: T) => R
+> = (
+  keycloak: KeycloakWithRoles<Roles>,
+  services: AuthService<{}, Roles>,
+  params?: T
+) => R
 
 type AuthFnc<T = undefined, R = any> = (params?: T) => R
 
@@ -121,8 +125,8 @@ function useAuth<
 
   const getUserPrincipalRole = useCallback((): Roles | undefined => {
     //@ts-ignore
-    const userRoles: Roles[] = keycloakWithRoles.resourceAccess?.roles ?? []
-    console.log(userRoles)
+    const userRoles: Roles[] =
+      keycloakWithRoles.tokenParsed.realm_access?.roles ?? []
     for (let it in roles) {
       if (userRoles.includes(roles[it])) {
         return roles[it]
@@ -132,8 +136,15 @@ function useAuth<
   }, [keycloakWithRoles, roles])
 
   const hasRole = useCallback(
-    (role: Roles): boolean => {
-      return keycloakWithRoles.hasRealmRole(role)
+    (role: Roles | Roles[]): boolean => {
+      if (Array.isArray(role)) {
+        for (let it in role) {
+          if (keycloakWithRoles.hasRealmRole(role[it])) return true
+        }
+        return false
+      } else {
+        return keycloakWithRoles.hasRealmRole(role)
+      }
     },
     [keycloakWithRoles]
   )
@@ -190,11 +201,15 @@ function useAuth<
         {} as AuthServiceAdditionnal<AdditionnalServices>
       for (let serviceName in additionnalServices) {
         const fn: AuthFnc = (params) =>
-          additionnalServices[serviceName.toString()](keycloakWithRoles, params)
+          additionnalServices[serviceName.toString()](
+            keycloakWithRoles,
+            service,
+            params
+          )
         object[serviceName.toString()] = fn
       }
       return object
-    }, [additionnalServices, keycloakWithRoles, hasRole, roles])
+    }, [additionnalServices, keycloakWithRoles, hasRole, roles, service])
 
   return {
     service: Object.assign(service, additionnals),
