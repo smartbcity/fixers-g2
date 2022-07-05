@@ -100,13 +100,16 @@ function useAuth<AdditionnalServices, Roles extends string = string>(
   additionnalServices: KeycloackService<AdditionnalServices, Roles>
 ): Auth<AuthServiceAdditionnal<AdditionnalServices>, Roles>
 
-function useAuth<Roles extends string = string>(roles: Roles[]): Auth<{}, Roles>
+function useAuth<Roles extends string = string>(): Auth<{}, Roles>
+function useAuth<Roles extends string = string>(
+  roles?: Roles[]
+): Auth<{}, Roles>
 
 function useAuth<
   AdditionnalServices = undefined,
   Roles extends string = string
 >(
-  roles: Roles[],
+  roles: Roles[] = [],
   additionnalServices?: KeycloackService<AdditionnalServices, Roles>
 ): Auth<AuthServiceAdditionnal<AdditionnalServices>, Roles> {
   const { keycloak } = useKeycloak()
@@ -117,10 +120,12 @@ function useAuth<
   )
 
   const getUserPrincipalRole = useCallback((): Roles | undefined => {
-    const userRoles = keycloakWithRoles.tokenParsed?.roles?.assignedRoles ?? []
-    for (let role in roles) {
-      if (userRoles.includes(role)) {
-        return role as Roles
+    //@ts-ignore
+    const userRoles: Roles[] = keycloakWithRoles.resourceAccess?.roles ?? []
+    console.log(userRoles)
+    for (let it in roles) {
+      if (userRoles.includes(roles[it])) {
+        return roles[it]
       }
     }
     return
@@ -128,9 +133,7 @@ function useAuth<
 
   const hasRole = useCallback(
     (role: Roles): boolean => {
-      const userRoles =
-        keycloakWithRoles.tokenParsed?.roles?.assignedRoles ?? []
-      return userRoles.includes(role)
+      return keycloakWithRoles.hasRealmRole(role)
     },
     [keycloakWithRoles]
   )
@@ -163,9 +166,9 @@ function useAuth<
 
   const rolesServices: RolesServices<Roles> = useMemo(() => {
     const object: RolesServices<Roles> = {} as RolesServices<Roles>
-    for (let role in roles) {
-      const fn = () => hasRole(role as Roles)
-      object[`is_${role}`] = fn
+    for (let it in roles) {
+      const fn = () => hasRole(roles[it])
+      object[`is_${roles[it]}`] = fn
     }
     return object
   }, [hasRole, roles])

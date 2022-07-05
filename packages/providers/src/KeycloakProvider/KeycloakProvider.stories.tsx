@@ -17,7 +17,8 @@ import {
   localUseAuth,
   staticUseAuth,
   keycloakConfig,
-  informRoles
+  informRoles,
+  checkRoles
 } from './docs'
 
 export default {
@@ -122,7 +123,8 @@ const useExtendedAuth = () => {
 }
 
 const ConnectButton = () => {
-  const { keycloak } = useExtendedAuth()
+  const { keycloak, service } = useExtendedAuth()
+  console.log(service.getUserPrincipalRole())
   if (keycloak.authenticated) {
     return (
       <>

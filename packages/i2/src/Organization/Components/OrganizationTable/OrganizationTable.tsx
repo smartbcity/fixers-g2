@@ -3,11 +3,12 @@ import { Link, MenuItem, Presentation } from '@smartb/g2-components'
 import { Column, Table, TableProps, CellProps } from '@smartb/g2-layout'
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 import React, { useMemo } from 'react'
-import { ExtandedColumnsParams, useExtendedColumns } from '../../../Commons/useExtendedColumns'
-import { Organization } from '../OrganizationFactory'
 import {
-  OrganizationFilters,
-} from './OrganizationFilters'
+  ExtandedColumnsParams,
+  useExtendedColumns
+} from '../../../Commons/useExtendedColumns'
+import { Organization } from '../OrganizationFactory'
+import { OrganizationFilters } from './OrganizationFilters'
 
 export type OrganizationTableFilters = {
   page?: number
@@ -19,7 +20,8 @@ export type OrganizationTableBlockedFilters = {
   role?: boolean
 }
 
-export interface OrganizationTableBasicProps<T extends Organization> extends BasicProps {
+export interface OrganizationTableBasicProps<T extends Organization>
+  extends BasicProps {
   /**
    * The organizations to pe parsed in the table
    */
@@ -41,21 +43,24 @@ export interface OrganizationTableBasicProps<T extends Organization> extends Bas
    */
   totalPages?: number
   /**
-   * The column extander module 
+   * The column extander module
    */
-  columnsExtander?: Omit<ExtandedColumnsParams<T>, "initialColumns">
+  columnsExtander?: Omit<ExtandedColumnsParams<T>, 'initialColumns'>
   /**
    * The actions available on a organization
    */
   getActions?: (org: Organization) => MenuItem<{}>[]
 }
 
-export type OrganizationTableProps<T extends Organization = Organization> = MergeMuiElementProps<
-  Omit<TableProps<T>, 'columns' | 'data' | 'page' | 'onChangePage'>,
-  OrganizationTableBasicProps<T>
->
+export type OrganizationTableProps<T extends Organization = Organization> =
+  MergeMuiElementProps<
+    Omit<TableProps<T>, 'columns' | 'data' | 'page' | 'onChangePage'>,
+    OrganizationTableBasicProps<T>
+  >
 
-export const OrganizationTable = <T extends Organization = Organization>(props: OrganizationTableProps<T>) => {
+export const OrganizationTable = <T extends Organization = Organization>(
+  props: OrganizationTableProps<T>
+) => {
   const {
     organizations,
     getActions,
@@ -73,7 +78,7 @@ export const OrganizationTable = <T extends Organization = Organization>(props: 
         Header: 'Organisation',
         accessor: 'name',
         Cell: ({ row }: CellProps<T>) => (
-          <Presentation label={row.original.name} />
+          <Presentation displayAvatar={false} label={row.original.name} />
         )
       },
       {
@@ -97,7 +102,7 @@ export const OrganizationTable = <T extends Organization = Organization>(props: 
             {row.original.website}
           </Link>
         )
-      },
+      }
     ],
     []
   )

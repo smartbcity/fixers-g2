@@ -67,8 +67,9 @@ export const stringToColor = (str: string) => {
 };
 
 export const stringToAvatarAttributs = (name: string) => {
+  const splited = name.split(" ");
   return {
     color: stringToColor(name),
-    label: `${name.split(" ")[0][0]}${name.split(" ")[1][0]}`,
+    label: `${splited[0][0]}${splited[1] ? splited[1][0] : ""}`,
   };
 };

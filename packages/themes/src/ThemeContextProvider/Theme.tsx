@@ -110,6 +110,13 @@ export const defaultMaterialUiTheme = (
             color: isPrimaryTooLight ? '#353945' : '#ffffff'
           }
         }
+      },
+      MuiTableCell: {
+        styleOverrides: {
+          root: {
+            padding: '12px'
+          }
+        }
       }
     },
     palette: {
