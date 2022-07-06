@@ -97,7 +97,7 @@ lerna publish from-package --no-git-reset
 - Release experimental Version on gitlab from develop
 
 ```
-lerna version 1.0.0-alpha.1 --no-git-tag-version
+lerna version 1.0.0-alpha.1 --no-git-tag-version --exact
 
 yarn publishWorkspaces:gitlab
 ```

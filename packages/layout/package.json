@@ -1,6 +1,6 @@
 {
   "name": "@smartb/g2-layout",
-  "version": "1.0.0-alpha.44",
+  "version": "1.0.0-alpha.45",
   "repository": "https://gitlab.smartb.city/fixers/g2.git",
   "author": "Adrien Poupard <adrien@smartb.city>",
   "license": "Apache-2.0",
@@ -24,8 +24,8 @@
     "publish:npm": "yarn publish --access public --new-version ${VERSION}"
   },
   "devDependencies": {
-    "@smartb/g2-documentation": "^1.0.0-alpha.44",
-    "@smartb/g2-notifications": "^1.0.0-alpha.44"
+    "@smartb/g2-documentation": "1.0.0-alpha.45",
+    "@smartb/g2-notifications": "1.0.0-alpha.45"
   },
   "peerDependencies": {
     "@mui/material": "^5.8.4",
@@ -36,9 +36,9 @@
   "dependencies": {
     "@mui/icons-material": "^5.8.4",
     "@mui/lab": "5.0.0-alpha.86",
-    "@smartb/g2-components": "^1.0.0-alpha.44",
-    "@smartb/g2-forms": "^1.0.0-alpha.44",
-    "@smartb/g2-themes": "^1.0.0-alpha.44",
+    "@smartb/g2-components": "1.0.0-alpha.45",
+    "@smartb/g2-forms": "1.0.0-alpha.45",
+    "@smartb/g2-themes": "1.0.0-alpha.45",
     "@types/react-table": "^7.7.12",
     "react-table": "^7.8.0"
   },
