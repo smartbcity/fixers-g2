@@ -1,9 +1,9 @@
 import { cx } from '@emotion/css'
-import { Stack, StackProps, styled } from '@mui/material'
 import {
   Form,
   FormField,
   FormPartialField,
+  FormProps,
   Option,
   useFormWithPartialFields
 } from '@smartb/g2-forms'
@@ -13,52 +13,12 @@ import { FlatUser, FlatUserToUser, User } from '../../Domain'
 import { addressValidation, AdressValidationStrings } from '../../../Commons'
 import { OrganizationId, OrganizationRef } from '../../../Organization'
 
-const StyledStack = styled(Stack)({
-  '& input::-webkit-outer-spin-button, input::-webkit-inner-spin-button': {
-    WebkitAppearance: 'none',
-    appearance: 'none',
-    margin: 0
-  },
-  '& input[type=number]': {
-    MozAppearance: 'textfield'
-  },
-  '& .mainFormLeft': {
-    marginRight: '30px',
-    width: '260px'
-  },
-  '& .mainFormRight': {
-    width: '300px'
-  },
-  '& .MuiInputLabel-root': {
-    whiteSpace: 'break-spaces'
-  },
-  '& .AruiUserFactory-submitForm': {
-    marginTop: '20px'
-  },
-  '& .AruiUserFactory-sendEmailLink': {
-    margin: '20px 0',
-    marginTop: '30px'
-  }
-})
-
 export type Validated = boolean
 
 const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}/i
 
 export type ReadonlyFields = {
   [k in keyof User]?: boolean
-}
-
-export interface UserFactoryClasses {
-  leftForm?: string
-  rightForm?: string
-  actionsContainer?: string
-}
-
-export interface UserFactoryStyles {
-  leftForm?: React.CSSProperties
-  rightForm?: React.CSSProperties
-  actionsContainer?: React.CSSProperties
 }
 
 export interface UserFactoryStrings extends AdressValidationStrings {
@@ -173,21 +133,13 @@ export interface UserFactoryBasicProps extends BasicProps {
    */
   isLoading?: boolean
   /**
-   * The classes applied to the different part of the component
-   */
-  classes?: UserFactoryClasses
-  /**
-   * The styles applied to the different part of the component
-   */
-  styles?: UserFactoryStyles
-  /**
    * The prop to use to add custom translation to the component
    */
   strings?: UserFactoryStrings
 }
 
 export type UserFactoryProps = MergeMuiElementProps<
-  StackProps,
+  FormProps,
   UserFactoryBasicProps
 >
 
@@ -342,8 +294,17 @@ export const UserFactory = (props: UserFactoryProps) => {
     }
   })
 
-  const leftForm = useMemo(
-    (): FormField[] => [
+  const userForm = useMemo((): FormField[] => {
+    const orgsOptions =
+      !!organizationsRefs && organizationsRefs.length > 0
+        ? organizationsRefs.map(
+            (orgRef): Option => ({
+              key: orgRef.id,
+              label: orgRef.name
+            })
+          )
+        : undefined
+    return [
       {
         key: 'givenName',
         name: 'givenName',
@@ -389,22 +350,7 @@ export const UserFactory = (props: UserFactoryProps) => {
         textFieldProps: {
           readonly: readonlyFields?.address
         }
-      }
-    ],
-    [readonly, readonlyFields]
-  )
-
-  const rightForm = useMemo((): FormField[] => {
-    const orgsOptions =
-      !!organizationsRefs && organizationsRefs.length > 0
-        ? organizationsRefs.map(
-            (orgRef): Option => ({
-              key: orgRef.id,
-              label: orgRef.name
-            })
-          )
-        : undefined
-    return [
+      },
       {
         key: 'email',
         name: 'email',
@@ -481,49 +427,17 @@ export const UserFactory = (props: UserFactoryProps) => {
   }, [SubmitButtonRef?.current, formState.submitForm, readonly])
 
   return (
-    <StyledStack
-      width='100%'
-      maxWidth='650px'
-      flexWrap='wrap'
-      justifyContent='space-between'
-      direction='row'
-      className={cx('AruiUserFactory-root', className)}
+    <Form
       {...other}
-    >
-      <Form
-        className={cx(
-          'AruiUserFactory-leftForm',
-          'mainFormLeft',
-          classes?.leftForm
-        )}
-        style={styles?.leftForm}
-        fields={leftForm}
-        formState={formState}
-        isLoading={isLoading}
-        readonly={readonly}
-      />
-      <Form
-        className={cx(
-          'AruiUserFactory-rightForm',
-          'mainFormRight',
-          classes?.rightForm
-        )}
-        style={styles?.rightForm}
-        fields={rightForm}
-        formState={formState}
-        actionsStackProps={{
-          direction: 'row',
-          justifyContent: 'flex-end',
-          width: '100%',
-          className: cx(
-            'AruiUserFactory-actionsContainer',
-            classes?.actionsContainer
-          ),
-          style: styles?.actionsContainer
-        }}
-        isLoading={isLoading}
-        readonly={readonly}
-      />
-    </StyledStack>
+      className={cx('AruiUserFactory-root', className)}
+      fields={userForm}
+      formState={formState}
+      isLoading={isLoading}
+      readonly={readonly}
+      sx={{
+        width: '100%',
+        ...other.sx
+      }}
+    />
   )
 }

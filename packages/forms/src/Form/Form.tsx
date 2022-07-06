@@ -8,13 +8,15 @@ import { CheckBox, CheckBoxProps } from '../CheckBox'
 import {
   BasicProps,
   makeG2STyles,
-  MergeReactElementProps
+  MergeMuiElementProps
 } from '@smartb/g2-themes'
-import { StackProps, Stack } from '@mui/material'
+import { StackProps, Stack, styled, SxProps, Theme } from '@mui/material'
 import { cx } from '@emotion/css'
 import { FormState } from './useForm'
 import { RadioChoicesProps } from '../RadioChoices'
 import { AutoCompleteProps } from '../AutoComplete'
+
+const FormComponent = styled('form')()
 
 export type FormAction = Action
 
@@ -191,7 +193,10 @@ const useStyles = makeG2STyles()((theme) => ({
   }
 }))
 
-export type FormProps = MergeReactElementProps<'form', FormBasicProps>
+export type FormProps = MergeMuiElementProps<
+  React.ComponentPropsWithRef<'form'> & { sx?: SxProps<Theme> },
+  FormBasicProps
+>
 
 export const Form = (props: FormProps) => {
   const {
@@ -261,7 +266,7 @@ export const Form = (props: FormProps) => {
   }, [actions, classes?.button, styles?.button])
 
   return (
-    <form
+    <FormComponent
       onSubmit={formState.handleSubmit}
       className={cx('AruiForm-root', className)}
       {...other}
@@ -279,7 +284,7 @@ export const Form = (props: FormProps) => {
         {fieldsMemoized}
       </Stack>
       {actionsPosition === 'below' && !isLoading && actionsDisplay}
-    </form>
+    </FormComponent>
   )
 }
 
@@ -339,8 +344,8 @@ const getInput = (
             )
             !!field.onChange && field.onChange(date)
           }}
-          {...commonProps}
           {...field.datePickerProps}
+          {...commonProps}
         />
       )
     }
@@ -353,8 +358,8 @@ const getInput = (
             formState.setFieldValue(field.name, values, false)
             !!field.onChange && field.onChange(values)
           }}
-          {...commonProps}
           {...field.selectProps}
+          {...commonProps}
         />
       ) : (
         <InputLabeled
@@ -364,8 +369,8 @@ const getInput = (
             formState.setFieldValue(field.name, value, false)
             !!field.onChange && field.onChange(value)
           }}
-          {...commonProps}
           {...field.selectProps}
+          {...commonProps}
         />
       )
     case 'autoComplete':
@@ -378,8 +383,8 @@ const getInput = (
             formState.setFieldValue(field.name, values, false)
             !!field.onChange && field.onChange(values)
           }}
-          {...commonProps}
           {...field.autoCompleteProps}
+          {...commonProps}
         />
       ) : (
         // @ts-ignore
@@ -390,8 +395,8 @@ const getInput = (
             formState.setFieldValue(field.name, value, false)
             !!field.onChange && field.onChange(value)
           }}
-          {...commonProps}
           {...field.autoCompleteProps}
+          {...commonProps}
         />
       )
     case 'checkbox':
@@ -406,8 +411,8 @@ const getInput = (
             !!field.onChange && field.onChange(value)
           }}
           disabled={readonly}
-          {...commonProps}
           {...field.checkBoxProps}
+          {...commonProps}
         />
       )
     case 'radioChoices':
@@ -419,8 +424,8 @@ const getInput = (
             formState.setFieldValue(field.name, value, false)
             !!field.onChange && field.onChange(value)
           }}
-          {...commonProps}
           {...field.radioChoicesProps}
+          {...commonProps}
         />
       )
   }
@@ -432,8 +437,8 @@ const getInput = (
         formState.setFieldValue(field.name, value, false)
         !!field.onChange && field.onChange(value)
       }}
-      {...commonProps}
       {...field.textFieldProps}
+      {...commonProps}
     />
   )
 }

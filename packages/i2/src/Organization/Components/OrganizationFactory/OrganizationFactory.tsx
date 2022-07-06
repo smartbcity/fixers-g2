@@ -4,9 +4,10 @@ import {
   FormField,
   useFormWithPartialFields,
   FormPartialField,
-  Option
+  Option,
+  FormProps
 } from '@smartb/g2-forms'
-import { Stack, StackProps, styled, Typography } from '@mui/material'
+import { styled, Typography } from '@mui/material'
 import { Popover } from '@smartb/g2-notifications'
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 import { cx } from '@emotion/css'
@@ -18,28 +19,6 @@ import {
 } from '../../Domain'
 import { siretValidation } from '../../Validation/siret'
 import { addressValidation } from '../../../Commons'
-
-const StyledStack = styled(Stack)({
-  '& .AruiPopover-root': {
-    width: '80vw',
-    maxWidth: '450px'
-  },
-  '& input::-webkit-outer-spin-button, input::-webkit-inner-spin-button': {
-    WebkitAppearance: 'none',
-    appearance: 'none',
-    margin: 0
-  },
-  '& input[type=number]': {
-    MozAppearance: 'textfield'
-  },
-  '& .mainFormLeft': {
-    marginRight: '30px',
-    width: '260px'
-  },
-  '& .mainFormRight': {
-    width: '260px'
-  }
-})
 
 export type Validated = boolean
 
@@ -54,20 +33,12 @@ const StyledPopover = styled(Popover)({
 })
 
 export interface OrganizationFactoryClasses {
-  siretForm?: string
-  leftForm?: string
-  rightForm?: string
   dropPictureBox?: string
-  actionsContainer?: string
   infoPopover?: string
 }
 
 export interface OrganizationFactoryStyles {
-  siretForm?: React.CSSProperties
-  leftForm?: React.CSSProperties
-  rightForm?: React.CSSProperties
   dropPictureBox?: React.CSSProperties
-  actionsContainer?: React.CSSProperties
   infoPopover?: React.CSSProperties
 }
 
@@ -122,7 +93,7 @@ export interface OrganizationFactoryBasicProps extends BasicProps {
 }
 
 export type OrganizationFactoryProps = MergeMuiElementProps<
-  StackProps,
+  FormProps,
   OrganizationFactoryBasicProps
 >
 
@@ -240,7 +211,7 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
     getInseeOrganization
   ])
 
-  const siret = useMemo(
+  const organizationForm = useMemo(
     (): FormField[] => [
       {
         key: 'siret',
@@ -259,28 +230,16 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
               fetchOrganization()
             }
           },
-          disabled: readonlyFields?.siret
+          readonly: readonlyFields?.siret
         }
-      }
-    ],
-    [
-      formState.validateField,
-      fetchOrganization,
-      siretValid,
-      readonly,
-      readonlyFields?.siret
-    ]
-  )
-
-  const details = useMemo(
-    (): FormField[] => [
+      },
       {
         key: 'name',
         name: 'name',
         type: 'textfield',
         label: 'Nom',
         textFieldProps: {
-          disabled: readonlyFields?.name
+          readonly: readonlyFields?.name
         }
       },
       {
@@ -289,7 +248,7 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
         type: 'textfield',
         label: 'Addresse (facultatif)',
         textFieldProps: {
-          disabled: readonlyFields?.address
+          readonly: readonlyFields?.address
         }
       },
       {
@@ -299,7 +258,7 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
         label: 'Code postal (facultatif)',
         textFieldProps: {
           textFieldType: 'number',
-          disabled: readonlyFields?.address
+          readonly: readonlyFields?.address
         }
       },
       {
@@ -308,7 +267,7 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
         type: 'textfield',
         label: 'Ville (facultatif)',
         textFieldProps: {
-          disabled: readonlyFields?.address
+          readonly: readonlyFields?.address
         }
       },
       ...(rolesOptions
@@ -320,25 +279,19 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
               type: 'select',
               selectProps: {
                 options: rolesOptions,
-                disabled: readonlyFields?.roles,
+                readonly: readonlyFields?.roles,
                 multiple: true
               }
             } as FormField
           ]
-        : [])
-    ],
-    [readonly, readonlyFields?.siret]
-  )
-
-  const description = useMemo(
-    (): FormField[] => [
+        : []),
       {
         key: 'website',
         name: 'website',
         type: 'textfield',
         label: 'Site web (facultatif)',
         textFieldProps: {
-          disabled: readonlyFields?.website
+          readonly: readonlyFields?.website
         }
       },
       {
@@ -349,11 +302,11 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
         textFieldProps: {
           multiline: true,
           rows: 6,
-          disabled: readonlyFields?.description
+          readonly: readonlyFields?.description
         }
       }
     ],
-    [readonly]
+    [formState.validateField, fetchOrganization, siretValid, readonlyFields]
   )
 
   useEffect(() => {
@@ -364,57 +317,20 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
   }, [SubmitButtonRef?.current, formState.submitForm, readonly])
 
   return (
-    <StyledStack
-      alignItems='center'
-      width='100%'
-      maxWidth='650px'
-      spacing={2}
-      onFocus={onCloseSiretInfo}
-      className={cx('AruiOrganizationFactory-root', className)}
-      {...other}
-    >
+    <>
       <Form
-        className={cx('AruiOrganizationFactory-siretForm', classes?.siretForm)}
-        style={styles?.siretForm}
-        fields={siret}
+        {...other}
+        className={cx('AruiOrganizationFactory-root', className)}
+        fields={organizationForm}
         formState={formState}
         isLoading={isLoading}
         readonly={readonly}
+        onFocus={onCloseSiretInfo}
+        sx={{
+          width: '100%',
+          ...other.sx
+        }}
       />
-      <Stack
-        direction='row'
-        flexWrap='wrap'
-        justifyContent='space-between'
-        width='100%'
-      >
-        <Form
-          className={cx(
-            'AruiOrganizationFactory-leftForm',
-            'mainFormLeft',
-            classes?.leftForm
-          )}
-          style={styles?.leftForm}
-          fields={details}
-          formState={formState}
-          isLoading={isLoading}
-          readonly={readonly}
-        />
-        <Stack>
-          <Form
-            className={cx(
-              'AruiOrganizationFactory-rightForm',
-              'mainFormRight',
-              classes?.rightForm
-            )}
-            style={styles?.rightForm}
-            fields={description}
-            formState={formState}
-            isLoading={isLoading}
-            readonly={readonly}
-          />
-        </Stack>
-      </Stack>
-
       {siretRef && (
         <StyledPopover
           // @ts-ignore
@@ -434,6 +350,6 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
           </Typography>
         </StyledPopover>
       )}
-    </StyledStack>
+    </>
   )
 }
