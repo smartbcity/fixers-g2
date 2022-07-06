@@ -1,6 +1,6 @@
 {
   "name": "@smartb/g2-components",
-  "version": "1.0.0-alpha.40",
+  "version": "1.0.0-tracabois.45",
   "repository": "https://gitlab.smartb.city/fixers/g2.git",
   "author": "Adrien Poupard <adrien@smartb.city>",
   "license": "Apache-2.0",
@@ -27,7 +27,7 @@
     "dist"
   ],
   "devDependencies": {
-    "@smartb/g2-forms": "^1.0.0-alpha.40",
+    "@smartb/g2-forms": "^1.0.0-tracabois.45",
     "@types/react-dropzone": "^5.1.0",
     "@types/stringify-object": "^4.0.1"
   },
@@ -40,8 +40,8 @@
   "dependencies": {
     "@mui/icons-material": "^5.8.4",
     "@mui/lab": "5.0.0-alpha.86",
-    "@smartb/g2-notifications": "^1.0.0-alpha.40",
-    "@smartb/g2-themes": "^1.0.0-alpha.40",
+    "@smartb/g2-notifications": "^1.0.0-tracabois.45",
+    "@smartb/g2-themes": "^1.0.0-tracabois.45",
     "react-dropzone": "^11.3.2",
     "stringify-object": "^4.0.1"
   },
