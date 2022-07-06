@@ -64,6 +64,11 @@ export const defaultMaterialUiTheme = (
   customMuiTheme?: Partial<ThemeOptions>
 ) => {
   const isPrimaryTooLight = tinycolor(theme.colors.primary).getLuminance() > 0.5
+  const isSecondaryTooLight =
+    tinycolor(theme.colors.secondary).getLuminance() > 0.5
+  const isWarningTooLight = tinycolor(theme.colors.warning).getLuminance() > 0.5
+  const isErrorTooLight = tinycolor(theme.colors.error).getLuminance() > 0.5
+  const isSuccessTooLight = tinycolor(theme.colors.success).getLuminance() > 0.5
   const themeOverride: ThemeOptions = {
     // @ts-ignore
     shadows: [...theme.shadows, ...Array(12).fill('none')],
@@ -84,21 +89,70 @@ export const defaultMaterialUiTheme = (
       },
       MuiButton: {
         styleOverrides: {
-          root: {
+          containedPrimary: {
             color: isPrimaryTooLight ? '#353945' : '#ffffff',
+            '&:hover': {
+              backgroundColor: theme.colors.primary
+            }
+          },
+          containedSecondary: {
+            color: isSecondaryTooLight ? '#353945' : '#ffffff',
+            '&:hover': {
+              backgroundColor: theme.colors.secondary
+            }
+          },
+          containedWarning: {
+            color: isWarningTooLight ? '#353945' : '#ffffff',
+            '&:hover': {
+              backgroundColor: theme.colors.warning
+            }
+          },
+          containedError: {
+            color: isErrorTooLight ? '#353945' : '#ffffff',
+            '&:hover': {
+              backgroundColor: theme.colors.error
+            }
+          },
+          containedSuccess: {
+            color: isSuccessTooLight ? '#353945' : '#ffffff',
+            '&:hover': {
+              backgroundColor: theme.colors.success
+            }
+          },
+          contained: {
+            boxShadow: 'unset',
+            '&:hover': {
+              boxShadow: theme.shadows[1]
+            }
+          },
+          text: {
+            background: 'transparent',
+            '&:hover': {
+              backgroundColor: `rgba(0, 0, 0, 0.04)`
+            },
+            color: '#828282',
             '&.Mui-disabled': {
-              color: isPrimaryTooLight ? '#353945' : '#ffffff',
+              color: '#828282',
               opacity: 0.7
             }
           },
-          textSizeLarge: {
+          textError: {
+            color: theme.colors.error
+          },
+          textWarning: {
+            color: theme.colors.warning
+          },
+          textSuccess: {
+            color: theme.colors.success
+          },
+          sizeLarge: {
             padding: '12px 16px'
           },
-          textSizeMedium: {
+          sizeMedium: {
             padding: '8px 14px',
             borderRadius: theme.borderRadius * 0.75
           },
-          textSizeSmall: {
+          sizeSmall: {
             padding: '4px 10px',
             borderRadius: theme.borderRadius * 0.75
           }

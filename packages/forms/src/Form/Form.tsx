@@ -174,7 +174,7 @@ export interface FormBasicProps extends BasicProps {
    *
    * @default false
    */
-   readonly?: boolean
+  readonly?: boolean
   /**
    * The classes applied to the different part of the component
    */
@@ -215,7 +215,14 @@ export const Form = (props: FormProps) => {
   const fieldsMemoized = useMemo(
     () =>
       fields.map((field) => {
-        const input = getInput(field, formState, classes, styles, isLoading)
+        const input = getInput(
+          field,
+          formState,
+          classes,
+          styles,
+          isLoading,
+          readonly
+        )
         if (!!field.customDisplay) {
           return field.customDisplay(input)
         }
@@ -282,7 +289,7 @@ const getInput = (
   classes?: FormClasses,
   styles?: FormStyles,
   isLoading?: boolean,
-  readonly?: boolean,
+  readonly?: boolean
 ) => {
   const commonProps = {
     key: field.key,
@@ -398,6 +405,7 @@ const getInput = (
             formState.setFieldValue(field.name, value, false)
             !!field.onChange && field.onChange(value)
           }}
+          disabled={readonly}
           {...commonProps}
           {...field.checkBoxProps}
         />

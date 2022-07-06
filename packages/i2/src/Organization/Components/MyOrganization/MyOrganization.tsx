@@ -5,9 +5,13 @@ import {
   AutomatedOrganizationFactoryProps
 } from '../OrganizationFactory'
 import { MergeMuiElementProps } from '@smartb/g2-themes'
+import { Typography } from '@mui/material'
 
 export interface MyOrganizationBasicProps {
-  updateAllowedRoles?: string[]
+  /**
+   * @default "Vous n'êtes pas inclut dans une organisation"
+   */
+  noOrganizationMessage?: string
 }
 
 export type MyOrganizationProps = MergeMuiElementProps<
@@ -16,7 +20,11 @@ export type MyOrganizationProps = MergeMuiElementProps<
 >
 
 export const MyOrganization = (props: MyOrganizationProps) => {
-  const { updateAllowedRoles, readonly, ...other } = props
+  const {
+    readonly,
+    noOrganizationMessage = "Vous n'êtes pas inclut dans une organisation",
+    ...other
+  } = props
 
   const { service } = useAuth()
 
@@ -25,6 +33,12 @@ export const MyOrganization = (props: MyOrganizationProps) => {
   }, [service.getUser])
 
   if (!user) return <></>
+  if (!user.organizationId)
+    return (
+      <Typography align='center' variant='h6'>
+        {noOrganizationMessage}
+      </Typography>
+    )
   return (
     <AutomatedOrganizationFactory
       {...other}

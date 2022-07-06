@@ -103,7 +103,7 @@ export const useGetUser = (params: GetUserParams) => {
     options,
     userId,
     organizationId,
-    queryKey = 'organization'
+    queryKey = 'user'
   } = params
 
   const getUser = useCallback(

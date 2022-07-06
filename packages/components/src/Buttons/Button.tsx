@@ -17,11 +17,7 @@ import {
   CloseRounded,
   ReportProblemOutlined
 } from '@mui/icons-material'
-import {
-  containedUseStyles,
-  outlinedUseStyles,
-  textUseStyles
-} from './buttonStyles'
+import { cx } from '@emotion/css'
 
 export type Variant = 'contained' | 'outlined' | 'text'
 
@@ -134,14 +130,10 @@ export const ButtonBase = function <T = {}>(
     component,
     componentProps,
     startIcon,
+    color,
     ...other
   } = props
-  const { classes, cx } =
-    variant === 'contained'
-      ? containedUseStyles()
-      : variant === 'outlined'
-      ? outlinedUseStyles()
-      : textUseStyles()
+
   const forcedLoading = isLoading
   const [loading, setloading] = useState(false)
   const isMounted = useRef(false)
@@ -201,26 +193,27 @@ export const ButtonBase = function <T = {}>(
     forcedLoading
   ])
 
+  const colorSelected = useMemo(() => {
+    if (warning) return 'warning'
+    if (success) return 'success'
+    if (fail) return 'error'
+    return color
+  }, [color, warning, fail, success])
+
   if (component)
     return (
       <MuiButton<typeof component>
         ref={ref}
         style={style}
+        color={colorSelected}
         disabled={loading || disabled || forcedLoading}
-        className={cx(
-          classes.root,
-          !fail && !success && !warning && classes.defaultColor,
-          success && classes.success,
-          fail && classes.fail,
-          warning && classes.advertissement,
-          'AruiButton-root ',
-          className
-        )}
+        className={cx('AruiButton-root ', className)}
         onClick={(e: any) => !href && onClick && onClickMemoisied(e)}
         component={component}
         href={href}
         id={id}
         startIcon={startIconElement}
+        variant={variant}
         {...componentProps}
         {...other}
       >
@@ -234,20 +227,14 @@ export const ButtonBase = function <T = {}>(
       //@ts-ignore
       ref={ref}
       style={style}
+      color={colorSelected}
       disabled={loading || disabled || forcedLoading}
-      className={cx(
-        classes.root,
-        !fail && !success && !warning && classes.defaultColor,
-        success && classes.success,
-        fail && classes.fail,
-        warning && classes.advertissement,
-        'AruiButton-root ',
-        className
-      )}
+      className={cx('AruiButton-root ', className)}
       onClick={(e) => !href && onClick && onClickMemoisied(e)}
       href={href}
       id={id}
       startIcon={startIconElement}
+      variant={variant}
       {...other}
     >
       {children}

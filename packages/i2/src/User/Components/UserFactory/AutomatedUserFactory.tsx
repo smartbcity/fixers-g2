@@ -1,5 +1,5 @@
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
-import React, { useCallback } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import { OrganizationId } from '../../../Organization'
 import { User } from '../../Domain'
 import {
@@ -17,6 +17,7 @@ import {
   useUpdateUser
 } from '../../Api'
 import { i2Config, useAuth } from '@smartb/g2-providers'
+import { useQueryClient } from 'react-query'
 
 export type ReadonlyUserFieldsPerState = {
   create?: ReadonlyFields
@@ -91,6 +92,7 @@ export const AutomatedUserFactory = (props: AutomatedUserFactoryProps) => {
   } = props
 
   const { keycloak } = useAuth()
+  const queryClient = useQueryClient()
 
   const getUser = useGetUser({
     apiUrl: i2Config().userUrl,
@@ -99,16 +101,41 @@ export const AutomatedUserFactory = (props: AutomatedUserFactoryProps) => {
     options: getUserOptions
   })
 
+  const updateUserOptionsMemo = useMemo(
+    () => ({
+      ...updateUserOptions,
+      onSuccess: (data, variables, context) => {
+        getUser.refetch()
+        queryClient.invalidateQueries('users')
+        updateUserOptions?.onSuccess &&
+          updateUserOptions.onSuccess(data, variables, context)
+      }
+    }),
+    [updateUserOptions, getUser, queryClient.invalidateQueries]
+  )
+
+  const createUserOptionsMemo = useMemo(
+    () => ({
+      ...createUserOptions,
+      onSuccess: (data, variables, context) => {
+        queryClient.invalidateQueries('users')
+        createUserOptions?.onSuccess &&
+          createUserOptions.onSuccess(data, variables, context)
+      }
+    }),
+    [createUserOptions, queryClient.invalidateQueries]
+  )
+
   const updateUser = useUpdateUser({
     apiUrl: i2Config().userUrl,
     jwt: keycloak.token,
-    options: updateUserOptions
+    options: updateUserOptionsMemo
   })
 
   const createUser = useCreateUser({
     apiUrl: i2Config().userUrl,
     jwt: keycloak.token,
-    options: createUserOptions,
+    options: createUserOptionsMemo,
     organizationId: organizationId
   })
 

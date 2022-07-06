@@ -11,7 +11,7 @@ const useStyles = makeG2STyles()((theme) => ({
   popper: {
     borderRadius: theme.borderRadius,
     background: 'white',
-    zIndex: 1,
+    zIndex: 2000,
     padding: theme.spacing * 3,
     boxShadow: theme.shadows[3],
     '&[data-popper-placement="bottom"]': {

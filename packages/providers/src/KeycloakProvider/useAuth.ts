@@ -126,7 +126,7 @@ function useAuth<
   const getUserPrincipalRole = useCallback((): Roles | undefined => {
     //@ts-ignore
     const userRoles: Roles[] =
-      keycloakWithRoles.tokenParsed.realm_access?.roles ?? []
+      keycloakWithRoles.tokenParsed?.realm_access?.roles ?? []
     for (let it in roles) {
       if (userRoles.includes(roles[it])) {
         return roles[it]

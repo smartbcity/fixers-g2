@@ -1,5 +1,5 @@
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
-import React, { useCallback } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import { Organization } from '../../Domain'
 import {
   OrganizationFactory,
@@ -16,6 +16,7 @@ import {
   useUpdateOrganization
 } from '../../Api'
 import { useAuth, i2Config } from '@smartb/g2-providers'
+import { useQueryClient } from 'react-query'
 
 export type ReadonlyOrgFieldsPerState = {
   create?: ReadonlyFields
@@ -72,6 +73,7 @@ export const AutomatedOrganizationFactory = (
   } = props
 
   const { keycloak } = useAuth()
+  const queryClient = useQueryClient()
 
   const getInseeOrganizationMemoized = useCallback(
     async (siret: string) => {
@@ -87,16 +89,43 @@ export const AutomatedOrganizationFactory = (
     options: getOrganizationOptions
   })
 
+  const updateOrganizationOptionsMemo = useMemo(
+    () => ({
+      ...updateOrganizationOptions,
+      onSuccess: (data, variables, context) => {
+        getOrganization.refetch()
+        queryClient.invalidateQueries('organizationRefs')
+        queryClient.invalidateQueries('organizations')
+        updateOrganizationOptions?.onSuccess &&
+          updateOrganizationOptions.onSuccess(data, variables, context)
+      }
+    }),
+    [updateOrganizationOptions, getOrganization, queryClient.invalidateQueries]
+  )
+
+  const createOrganizationOptionsMemo = useMemo(
+    () => ({
+      ...createOrganizationOptions,
+      onSuccess: (data, variables, context) => {
+        queryClient.invalidateQueries('organizationRefs')
+        queryClient.invalidateQueries('organizations')
+        createOrganizationOptions?.onSuccess &&
+          createOrganizationOptions.onSuccess(data, variables, context)
+      }
+    }),
+    [createOrganizationOptions, queryClient.invalidateQueries]
+  )
+
   const updateOrganization = useUpdateOrganization({
     apiUrl: i2Config().orgUrl,
     jwt: keycloak.token,
-    options: updateOrganizationOptions
+    options: updateOrganizationOptionsMemo
   })
 
   const createOrganization = useCreateOrganization({
     apiUrl: i2Config().orgUrl,
     jwt: keycloak.token,
-    options: createOrganizationOptions
+    options: createOrganizationOptionsMemo
   })
 
   const updateOrganizationMemoized = useCallback(
@@ -129,7 +158,7 @@ export const AutomatedOrganizationFactory = (
 
   return (
     <OrganizationFactory
-      organization={getOrganization.data?.organization}
+      organization={getOrganization.data?.item}
       getInseeOrganization={getInseeOrganizationMemoized}
       onSubmit={
         update ? updateOrganizationMemoized : createOrganizationMemoized

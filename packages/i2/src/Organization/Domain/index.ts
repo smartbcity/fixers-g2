@@ -69,7 +69,7 @@ export type OrganizationGetQuery = {
 }
 
 export type OrganizationGetResult = {
-  Item: Organization
+  item: Organization
 }
 
 export const organizationToFlatOrganization = (
