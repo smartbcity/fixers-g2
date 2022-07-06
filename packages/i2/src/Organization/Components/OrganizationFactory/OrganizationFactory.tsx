@@ -295,7 +295,7 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
         key: 'street',
         name: 'street',
         type: 'textfield',
-        label: 'Addresse (facultatif)',
+        label: 'Adresse (facultatif)',
         textFieldProps: {
           disabled: readonly || readonlyFields?.address
         }

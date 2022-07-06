@@ -10,7 +10,7 @@ export type CommonUser = {
   lastName: string
 }
 
-type AuthService<
+export type AuthService<
   Additionnals extends AuthServiceAdditionnal = {},
   Roles extends string = string
 > = {

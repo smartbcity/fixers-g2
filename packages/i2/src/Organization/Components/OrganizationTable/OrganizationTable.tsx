@@ -120,7 +120,7 @@ export const OrganizationTable = (props: OrganizationTableProps) => {
         Cell: ({ row }: CellProps<Organization>) => (
           <Stack
             display='flex'
-            justifyContent='space-around'
+            justifyContent='flex-start'
             alignItems='center'
             direction='row'
           >
