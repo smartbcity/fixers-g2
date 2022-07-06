@@ -23,6 +23,7 @@ export const MyProfile = (props: AutomatedUserFactoryProps) => {
         }
       }}
       update={!props.readonly}
+      readonly={props.readonly}
     />
   )
 }

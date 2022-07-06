@@ -42,8 +42,9 @@ export type InputLabeledTypes =
   | 'radioChoices'
   | 'autoComplete'
 
-export interface InputLabeledBasicProps<T extends InputLabeledTypes = 'textField'>
-  extends BasicProps {
+export interface InputLabeledBasicProps<
+  T extends InputLabeledTypes = 'textField'
+> extends BasicProps {
   /**
    * The label of the input
    */
@@ -55,19 +56,19 @@ export interface InputLabeledBasicProps<T extends InputLabeledTypes = 'textField
   readonly?: boolean
   /**
    * The input will be replaced by the solution choosed on readonly.
-   * If you choose the "text it will be displayed in a Typography. 
-   * If you choose "chip" it will be displayed in chips. 
+   * If you choose the "text it will be displayed in a Typography.
+   * If you choose "chip" it will be displayed in chips.
    * @default "text"
    */
-  readonlyType?: "text" | "chip"
+  readonlyType?: 'text' | 'chip'
   /**
    * This function is used to attribute a chip color to the value to be displayed (if not provided the default color will be used)
    */
   getReadonlyChipColor?: (value: string | number) => string | undefined
   /**
-   * attribute a link to a readonly text 
+   * attribute a link to a readonly text
    */
-   readonlyTextUrl?: string
+  readonlyTextUrl?: string
   /**
    * If you want to add additionnals element near to the input use this prop
    */
@@ -93,12 +94,12 @@ export interface InputLabeledBasicProps<T extends InputLabeledTypes = 'textField
    * **See the reference below** ⬇️
    */
   inputClasses?: [T] extends ['textField']
-  ? TextFieldClasses
-  : [T] extends ['select']
-  ? SelectClasses
-  : [T] extends ['datePicker']
-  ? DatePickerClasses
-  : RadioChoicesClasses
+    ? TextFieldClasses
+    : [T] extends ['select']
+    ? SelectClasses
+    : [T] extends ['datePicker']
+    ? DatePickerClasses
+    : RadioChoicesClasses
   /**
    * The styles applied to the different part of the input
    *
@@ -106,12 +107,12 @@ export interface InputLabeledBasicProps<T extends InputLabeledTypes = 'textField
    * **See the reference below** ⬇️
    */
   inputStyles?: [T] extends ['textField']
-  ? TextFieldStyles
-  : [T] extends ['select']
-  ? SelectStyles
-  : [T] extends ['datePicker']
-  ? DatePickerStyles
-  : RadioChoicesStyles
+    ? TextFieldStyles
+    : [T] extends ['select']
+    ? SelectStyles
+    : [T] extends ['datePicker']
+    ? DatePickerStyles
+    : RadioChoicesStyles
 }
 
 type RemoveMainProps<T> = Omit<T, keyof InputLabeledBasicProps>
@@ -119,7 +120,7 @@ type RemoveMainProps<T> = Omit<T, keyof InputLabeledBasicProps>
 type InputLabeledComponentProps<
   T extends InputLabeledTypes,
   R extends boolean
-  > = InputLabeledBasicProps<T> &
+> = InputLabeledBasicProps<T> &
   ([R] extends [true]
     ? RemoveMainProps<TextFieldProps>
     : [T] extends ['select']
@@ -155,7 +156,10 @@ export type InputLabeledProps = InputLabeledBasicProps &
 
 //@ts-ignore
 export const InputLabeled: InputLabeledComponent = React.forwardRef(
-  (props: Partial<InputLabeledProps>, ref: React.ForwardedRef<HTMLDivElement>) => {
+  (
+    props: Partial<InputLabeledProps>,
+    ref: React.ForwardedRef<HTMLDivElement>
+  ) => {
     const {
       inputType = 'textField',
       readonly = false,
@@ -195,9 +199,7 @@ export const InputLabeled: InputLabeledComponent = React.forwardRef(
       return isLoading ? (
         <LoadingRenderer {...props} />
       ) : readonly ? (
-        <ReadonlyRenderer
-          {...props}
-        />
+        <ReadonlyRenderer {...props} />
       ) : inputType === 'textField' ? (
         <TextField
           {...other}
@@ -268,6 +270,12 @@ export const InputLabeled: InputLabeledComponent = React.forwardRef(
       [createInputContainer, inputUi]
     )
 
+    if (
+      readonly &&
+      !props.value &&
+      (!props.values || props.values.length === 0)
+    )
+      return <></>
     return (
       <Box className={className} style={style}>
         {labelUi}

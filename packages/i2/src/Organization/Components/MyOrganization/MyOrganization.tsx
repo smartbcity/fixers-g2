@@ -34,11 +34,7 @@ export const MyOrganization = (props: MyOrganizationProps) => {
 
   if (!user) return <></>
   if (!user.organizationId)
-    return (
-      <Typography align='center' variant='h6'>
-        {noOrganizationMessage}
-      </Typography>
-    )
+    return <Typography align='center'>{noOrganizationMessage}</Typography>
   return (
     <AutomatedOrganizationFactory
       {...other}

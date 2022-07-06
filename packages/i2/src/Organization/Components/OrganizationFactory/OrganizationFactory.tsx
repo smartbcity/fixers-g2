@@ -379,6 +379,7 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
         fields={siret}
         formState={formState}
         isLoading={isLoading}
+        readonly={readonly}
       />
       <Stack
         direction='row'

@@ -47,15 +47,25 @@ export const Page = (props: PageProps) => {
     <>
       {headerDisplay}
       <Box
-        className={cx('AruiPage-root', className)}
+        className='AruiPage-pageCenterer'
         sx={{
-          padding: (theme) => theme.spacing(5),
-          ...sx
+          display: 'flex',
+          justifyContent: 'center'
         }}
-        {...other}
       >
-        {children}
-        {actionsDisplay}
+        <Box
+          className={cx('AruiPage-root', className)}
+          sx={{
+            padding: (theme) => theme.spacing(5),
+            maxWidth: '1700px',
+            flexGrow: 1,
+            ...sx
+          }}
+          {...other}
+        >
+          {children}
+          {actionsDisplay}
+        </Box>
       </Box>
     </>
   )

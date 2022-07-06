@@ -31,7 +31,7 @@ export const MyProfileStory: Story<AutomatedUserFactoryProps> = (
 }
 
 const Following = (args: AutomatedUserFactoryProps) => {
-  return <MyProfile {...args} />
+  return <MyProfile readonly {...args} />
 }
 
 MyProfileStory.args = {}
