@@ -16,7 +16,7 @@ import { FormState } from './useForm'
 import { RadioChoicesProps } from '../RadioChoices'
 import { AutoCompleteProps } from '../AutoComplete'
 
-const FormComponent = styled('form')()
+const FormComponent = styled('form')({})
 
 export type FormAction = Action
 
@@ -304,7 +304,6 @@ const getInput = (
     error: !!formState.errors[field.name],
     errorMessage: formState.errors[field.name] as string,
     isLoading: isLoading,
-    readonly: readonly,
     className: cx(
       classes?.field,
       'AruiForm-field',
@@ -344,6 +343,7 @@ const getInput = (
             )
             !!field.onChange && field.onChange(date)
           }}
+          readonly={readonly ?? field.datePickerProps?.readonly}
           {...field.datePickerProps}
           {...commonProps}
         />
@@ -358,6 +358,7 @@ const getInput = (
             formState.setFieldValue(field.name, values, false)
             !!field.onChange && field.onChange(values)
           }}
+          readonly={readonly ?? field.selectProps?.readonly}
           {...field.selectProps}
           {...commonProps}
         />
@@ -369,6 +370,7 @@ const getInput = (
             formState.setFieldValue(field.name, value, false)
             !!field.onChange && field.onChange(value)
           }}
+          readonly={readonly ?? field.selectProps?.readonly}
           {...field.selectProps}
           {...commonProps}
         />
@@ -383,6 +385,7 @@ const getInput = (
             formState.setFieldValue(field.name, values, false)
             !!field.onChange && field.onChange(values)
           }}
+          readonly={readonly ?? field.autoCompleteProps?.readonly}
           {...field.autoCompleteProps}
           {...commonProps}
         />
@@ -395,6 +398,7 @@ const getInput = (
             formState.setFieldValue(field.name, value, false)
             !!field.onChange && field.onChange(value)
           }}
+          readonly={readonly ?? field.autoCompleteProps?.readonly}
           {...field.autoCompleteProps}
           {...commonProps}
         />
@@ -410,7 +414,7 @@ const getInput = (
             formState.setFieldValue(field.name, value, false)
             !!field.onChange && field.onChange(value)
           }}
-          disabled={readonly}
+          disabled={readonly ?? field.checkBoxProps?.disabled}
           {...field.checkBoxProps}
           {...commonProps}
         />
@@ -424,6 +428,7 @@ const getInput = (
             formState.setFieldValue(field.name, value, false)
             !!field.onChange && field.onChange(value)
           }}
+          readonly={readonly ?? field.radioChoicesProps?.readonly}
           {...field.radioChoicesProps}
           {...commonProps}
         />

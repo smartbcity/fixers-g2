@@ -93,9 +93,10 @@ export interface OrganizationFactoryBasicProps extends BasicProps {
 }
 
 export type OrganizationFactoryProps = MergeMuiElementProps<
-  FormProps,
+  Omit<FormProps, "fields" | "formState">,
   OrganizationFactoryBasicProps
 >
+
 
 export const OrganizationFactory = (props: OrganizationFactoryProps) => {
   const {

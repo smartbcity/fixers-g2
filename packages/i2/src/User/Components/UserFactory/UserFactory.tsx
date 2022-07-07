@@ -356,7 +356,7 @@ export const UserFactory = (props: UserFactoryProps) => {
             selectProps: {
               options: orgsOptions,
               readonly: readonlyFields?.memberOf,
-              getReadonlyChipColor: getOrganizationUrl
+              getReadonlyTextUrl: getOrganizationUrl
             }
           } as FormField
         ]
@@ -446,7 +446,7 @@ export const UserFactory = (props: UserFactoryProps) => {
       justifyContent="center"
       sx={{
         width: '100%',
-        gap: (theme) => width < 450 ? theme.spacing(3) : theme.spacing(6)
+        gap: (theme) => width < 450 ? theme.spacing(3) : theme.spacing(12)
       }}
     >
       <UserSummary onlyAvatar={width < 450} fullName={`${formState.values.givenName ?? ""} ${formState.values.familyName ?? ""}`} roles={formState.values.role} rolesOptions={rolesOptions} />

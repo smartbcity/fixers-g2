@@ -204,7 +204,7 @@ export const Header = (props: HeaderProps) => {
         boxSizing: 'border-box',
         bgcolor: (theme) => {
           const color = bgcolor ? bgcolor : theme.palette.background.default
-          return color + 'B3'
+          return color + '99'
         },
         position: isFixed ? 'sticky' : 'relative',
         top: isFixed ? '0px' : '',

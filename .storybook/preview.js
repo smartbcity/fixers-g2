@@ -27,17 +27,17 @@ export const parameters = {
 
 G2ConfigBuilder({
   i2: {
-    orgUrl: "http://localhost:8002",
-    userUrl: "http://localhost:8002",
+    orgUrl: "https://dev.app.alveoleplus.fr/im",
+    userUrl: "https://dev.app.alveoleplus.fr/im", 
+  },
+  keycloak: {
+    realm: "alveole-dev",
+    clientId: "alveole-web",
+    url: "https://auth.smart-b.io/auth"
   },
   fs: {
     url: "http://51.83.34.130:8090",
-  },
-  keycloak: {
-    clientId: "admin-cli",
-    realm: "test",
-    url: "https://auth.smart-b.io/auth",
-  },
+  }
 });
 
 export const withThemeProvider = (Story) => {

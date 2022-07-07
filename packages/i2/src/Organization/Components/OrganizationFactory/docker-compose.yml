@@ -1,9 +1,0 @@
-version: '3.3'
-
-services:
-  i2-gateway:
-    image: smartbcity/i2-gateway:experimental
-    environment:
-      - i2_jwt-issuer-uri=
-    ports:
-      - 8002:8009

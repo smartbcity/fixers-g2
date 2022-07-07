@@ -174,6 +174,9 @@ export const InputLabeled: InputLabeledComponent = React.forwardRef(
       size = 'medium',
       isLoading = false,
       createInputContainer,
+      getReadonlyChipColor,
+      readonlyType,
+      getReadonlyTextUrl,
       ...other
     } = props
 
@@ -274,6 +277,7 @@ export const InputLabeled: InputLabeledComponent = React.forwardRef(
       readonly &&
       !props.value &&
       (!props.values || props.values.length === 0)
+      && !isLoading
     )
       return <></>
     return (

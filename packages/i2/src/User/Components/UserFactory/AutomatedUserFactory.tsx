@@ -153,7 +153,6 @@ export const AutomatedUserFactory = (props: AutomatedUserFactoryProps) => {
 
   const createUserMemoized = useCallback(
     async (user: User) => {
-      console.log(user)
       const res = await createUser.mutateAsync(user)
       if (res) {
         return true
@@ -163,6 +162,8 @@ export const AutomatedUserFactory = (props: AutomatedUserFactoryProps) => {
     },
     [createUser.mutateAsync]
   )
+
+  console.log(update)
 
   return (
     <UserFactory

@@ -37,7 +37,7 @@ const Following = (args: AutomatedUserFactoryProps) => {
 
   return (
     <AutomatedUserFactory
-      update={!!userId}
+      update={userId}
       createUserOptions={{
         onSuccess: (data) => {
           setuserId(data.id)

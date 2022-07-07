@@ -55,7 +55,7 @@ export const UserSummary = (props: UserSummaryProps) => {
                         gap: (theme) => theme.spacing(0.5),
                     }}
                     >
-                        <Typography variant="subtitle2">{fullName}</Typography>
+                        <Typography variant="subtitle1">{fullName}</Typography>
                         <Stack
                             direction="row"
                             sx={{

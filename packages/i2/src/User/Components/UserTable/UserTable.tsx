@@ -1,5 +1,5 @@
-import {  Typography } from '@mui/material'
-import { Link, Presentation } from '@smartb/g2-components'
+import { Typography } from '@mui/material'
+import { Link as G2Link, Presentation } from '@smartb/g2-components'
 import { Column, Table, TableProps, CellProps } from '@smartb/g2-layout'
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 import React, { useMemo } from 'react'
@@ -9,6 +9,7 @@ import {
 import { User } from '../../Domain'
 import { OrganizationId } from '../../../Organization'
 import { ExtandedColumnsParams, useExtendedColumns } from '../../../Commons/useExtendedColumns'
+import {Link, LinkProps} from "react-router-dom"
 
 export type UserTableFilters = {
   page?: number
@@ -133,13 +134,9 @@ export const UserTable = <T extends User = User>(props: UserTableProps<T>) => {
             Cell: ({ row }: CellProps<T>) => {
               if (!!getOrganizationUrl && row.original.memberOf?.id) {
                 return (
-                  <Link
-                    href={getOrganizationUrl(row.original.memberOf?.id)}
-                    target='_blank'
-                    onClick={(e) => e.stopPropagation()}
-                  >
+                  <G2Link<LinkProps> componentProps={{ to: getOrganizationUrl(row.original.memberOf?.id) }} onClick={(e) => e.stopPropagation()} component={Link} sx={{ color: "#676879" }}>
                     {row.original.memberOf?.name}
-                  </Link>
+                  </G2Link>
                 )
               }
               return <Typography>{row.original.memberOf?.name}</Typography>
@@ -158,14 +155,14 @@ export const UserTable = <T extends User = User>(props: UserTableProps<T>) => {
   })
 
   return (
-      <Table<T>
-        page={page}
-        handlePageChange={setPage}
-        totalPages={totalPages}
-        data={users}
-        columns={completeColumns}
-        variant='grounded'
-        {...other}
-      />
+    <Table<T>
+      page={page}
+      handlePageChange={setPage}
+      totalPages={totalPages}
+      data={users}
+      columns={completeColumns}
+      variant='grounded'
+      {...other}
+    />
   )
 }

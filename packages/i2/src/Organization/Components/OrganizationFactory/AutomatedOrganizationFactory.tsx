@@ -152,10 +152,6 @@ export const AutomatedOrganizationFactory = (
     [createOrganization.mutateAsync]
   )
 
-  if (getOrganization.isLoading) {
-    return <></>
-  }
-
   return (
     <OrganizationFactory
       organization={getOrganization.data?.item}
