@@ -3,7 +3,7 @@ import { MenuItem, MoreOptions } from "@smartb/g2-components";
 import { CellProps, Column } from "@smartb/g2-layout";
 import { useMemo } from "react";
 
-export interface ExtandedColumnsParams<T> {
+export interface ExtandedColumnsParams<T extends object> {
     initialColumns: Column<T>[];
     /**
      * The additional columns to add to the table
