@@ -23,7 +23,7 @@ const useStyles = makeG2STyles()((theme) => ({
   },
   root: {
     borderRadius: 20,
-    padding: '5px 10px'
+    padding: `${theme.spacing / 2}px ${theme.spacing * 1.25}px`
   },
   container: {
     marginLeft: '0px',
@@ -100,7 +100,7 @@ const useStyles = makeG2STyles()((theme) => ({
     position: 'absolute',
     top: '100%',
     marginTop: '-2px',
-    marginLeft: '14px',
+    marginLeft: '12px',
     color: theme.colors.error,
     width: 'max-content'
   }

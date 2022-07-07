@@ -33,15 +33,18 @@ const useStyles = makeG2STyles()((theme) => ({
   input: {
     width: '100%',
     '& .MuiInputBase-root': {
-      minWidth: '115px',
-      paddingRight: '8px'
+      minWidth: '120px',
+      paddingRight: '12px'
     }
   },
   inputWithRemove: {
     width: '100%',
     '& .MuiInputBase-root': {
-      minWidth: '130px',
-      paddingRight: '8px'
+      minWidth: '150px',
+      paddingRight: `12px`
+    },
+    '& .MuiInputBase-input': {
+      paddingRight: `20px`
     }
   },
   calendarIcon: {
@@ -62,7 +65,7 @@ const useStyles = makeG2STyles()((theme) => ({
     }
   },
   clear: {
-    right: '26px'
+    right: '30px'
   }
 }))
 

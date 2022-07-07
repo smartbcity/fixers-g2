@@ -9,13 +9,13 @@ export const useFilterInputStyles = makeG2STyles()((theme) => ({
   },
   input: {
     '& .MuiInputBase-input': {
-      padding: '5px 7px',
+      padding: '6px 16px',
       fontSize: '14px',
       height: 'unset',
       color: 'inherit'
     },
     '& .MuiSelect-root': {
-      borderRadius: '4px',
+      borderRadius: theme.borderRadius,
       textOverflow: 'ellipsis'
     },
     '& .MuiFilledInput-adornedEnd': {
@@ -29,7 +29,7 @@ export const useFilterInputStyles = makeG2STyles()((theme) => ({
       margin: `0px`,
       paddingTop: '0px',
       boxShadow: '0px 0px 0px 1px transparent',
-      borderRadius: '4px',
+      borderRadius: theme.borderRadius * 0.75,
       color: '#323338',
       minWidth: '100px',
       backgroundColor: 'transparent',
@@ -66,8 +66,7 @@ export const useFilterInputStyles = makeG2STyles()((theme) => ({
       color: '#323338'
     },
     '& .MuiInputLabel-outlined': {
-      transform: 'translate(14px, 6.5px) scale(1)',
-      top: '-2px'
+      transform: 'translate(14px, 6.5px) scale(1)'
     },
     '& .MuiInputLabel-outlined.MuiInputLabel-shrink': {
       transform: 'translate(14px, -6px) scale(0.75)',
@@ -92,6 +91,9 @@ export const useFilterInputStyles = makeG2STyles()((theme) => ({
       fontSize: '14px',
       color: 'inherit',
       opacity: 1
+    },
+    '& .MuiInputAdornment-root': {
+      color: '#000000'
     },
     '& .MuiInputAdornment-filled.MuiInputAdornment-positionStart:not(.MuiInputAdornment-hiddenLabel)':
       {
@@ -191,7 +193,7 @@ export const useFilterInputStyles = makeG2STyles()((theme) => ({
   },
   clear: {
     position: 'absolute',
-    right: '4px',
+    right: '12px',
     top: '50%',
     marginTop: '-10px',
     cursor: 'pointer',

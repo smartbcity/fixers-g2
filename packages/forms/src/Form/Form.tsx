@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
 import { Action, Actions } from '@smartb/g2-components'
-import { InputForm, InputFormBasicProps } from '../InputForm'
+import { InputLabeled, InputLabeledBasicProps } from '../InputLabeled'
 import { SelectProps } from '../Select'
 import { TextFieldProps } from '../TextField'
 import { DatePickerProps } from '../DatePicker'
@@ -8,13 +8,15 @@ import { CheckBox, CheckBoxProps } from '../CheckBox'
 import {
   BasicProps,
   makeG2STyles,
-  MergeReactElementProps
+  MergeMuiElementProps
 } from '@smartb/g2-themes'
-import { StackProps, Stack } from '@mui/material'
+import { StackProps, Stack, styled, SxProps, Theme } from '@mui/material'
 import { cx } from '@emotion/css'
 import { FormState } from './useForm'
 import { RadioChoicesProps } from '../RadioChoices'
 import { AutoCompleteProps } from '../AutoComplete'
+
+const FormComponent = styled('form')()
 
 export type FormAction = Action
 
@@ -62,7 +64,7 @@ export type FormField = {
    */
   textFieldProps?: Partial<
     Omit<
-      TextFieldProps & InputFormBasicProps<'textField'>,
+      TextFieldProps & InputLabeledBasicProps<'textField'>,
       'value' | 'onChange' | 'label' | 'classes' | 'styles'
     >
   >
@@ -71,7 +73,7 @@ export type FormField = {
    */
   selectProps?: Partial<
     Omit<
-      SelectProps & InputFormBasicProps<'select'>,
+      SelectProps & InputLabeledBasicProps<'select'>,
       | 'value'
       | 'values'
       | 'onChangeValue'
@@ -86,7 +88,7 @@ export type FormField = {
    */
   autoCompleteProps?: Partial<
     Omit<
-      AutoCompleteProps & InputFormBasicProps<'autoComplete'>,
+      AutoCompleteProps & InputLabeledBasicProps<'autoComplete'>,
       | 'value'
       | 'values'
       | 'onChangeValue'
@@ -101,7 +103,7 @@ export type FormField = {
    */
   datePickerProps?: Partial<
     Omit<
-      DatePickerProps & InputFormBasicProps<'datePicker'>,
+      DatePickerProps & InputLabeledBasicProps<'datePicker'>,
       'value' | 'onChangeDate' | 'label' | 'classes' | 'styles'
     >
   >
@@ -116,7 +118,7 @@ export type FormField = {
    */
   radioChoicesProps?: Partial<
     Omit<
-      RadioChoicesProps & InputFormBasicProps<'radioChoices'>,
+      RadioChoicesProps & InputLabeledBasicProps<'radioChoices'>,
       'value' | 'onChange' | 'label' | 'classes' | 'styles'
     >
   >
@@ -170,6 +172,12 @@ export interface FormBasicProps extends BasicProps {
    */
   isLoading?: boolean
   /**
+   * Indicates if the data is on readonly mode
+   *
+   * @default false
+   */
+  readonly?: boolean
+  /**
    * The classes applied to the different part of the component
    */
   classes?: FormClasses
@@ -179,13 +187,16 @@ export interface FormBasicProps extends BasicProps {
   styles?: FormStyles
 }
 
-const useStyles = makeG2STyles()({
-  field: {
-    margin: '20px 0'
+const useStyles = makeG2STyles()((theme) => ({
+  fieldContainer: {
+    gap: theme.spacing * 3
   }
-})
+}))
 
-export type FormProps = MergeReactElementProps<'form', FormBasicProps>
+export type FormProps = MergeMuiElementProps<
+  React.ComponentPropsWithRef<'form'> & { sx?: SxProps<Theme> },
+  FormBasicProps
+>
 
 export const Form = (props: FormProps) => {
   const {
@@ -201,6 +212,7 @@ export const Form = (props: FormProps) => {
     actionsStackProps,
     fieldsStackProps,
     isLoading = false,
+    readonly = false,
     ...other
   } = props
   const defaultStyles = useStyles()
@@ -211,10 +223,10 @@ export const Form = (props: FormProps) => {
         const input = getInput(
           field,
           formState,
-          defaultStyles.classes.field,
           classes,
           styles,
-          isLoading
+          isLoading,
+          readonly
         )
         if (!!field.customDisplay) {
           return field.customDisplay(input)
@@ -228,7 +240,8 @@ export const Form = (props: FormProps) => {
       formState.errors,
       classes?.field,
       styles?.field,
-      isLoading
+      isLoading,
+      readonly
     ]
   )
 
@@ -237,18 +250,23 @@ export const Form = (props: FormProps) => {
     return (
       <Actions
         actions={actions}
+        className='AruiForm-actions'
+        style={styles?.actions}
         classes={{
-          actions: 'AruiForm-actions',
           button: 'AruiForm-button'
         }}
-        styles={{ actions: styles?.actions, button: styles?.button }}
+        styles={{ button: styles?.button }}
+        sx={{
+          marginTop: (theme) => theme.spacing(2),
+          ...actionsStackProps?.sx
+        }}
         {...actionsStackProps}
       />
     )
   }, [actions, classes?.button, styles?.button])
 
   return (
-    <form
+    <FormComponent
       onSubmit={formState.handleSubmit}
       className={cx('AruiForm-root', className)}
       {...other}
@@ -256,23 +274,27 @@ export const Form = (props: FormProps) => {
       {actionsPosition === 'above' && !isLoading && actionsDisplay}
       <Stack
         {...fieldsStackProps}
-        className={cx('AruiForm-fieldsContainer', classes?.fieldsContainer)}
+        className={cx(
+          defaultStyles.classes.fieldContainer,
+          'AruiForm-fieldsContainer',
+          classes?.fieldsContainer
+        )}
         style={styles?.fieldsContainer}
       >
         {fieldsMemoized}
       </Stack>
       {actionsPosition === 'below' && !isLoading && actionsDisplay}
-    </form>
+    </FormComponent>
   )
 }
 
 const getInput = (
   field: FormField,
   formState: FormState,
-  fieldClassName: string,
   classes?: FormClasses,
   styles?: FormStyles,
-  isLoading?: boolean
+  isLoading?: boolean,
+  readonly?: boolean
 ) => {
   const commonProps = {
     key: field.key,
@@ -281,10 +303,11 @@ const getInput = (
     name: field.name,
     error: !!formState.errors[field.name],
     errorMessage: formState.errors[field.name] as string,
+    isLoading: isLoading,
+    readonly: readonly,
     className: cx(
       classes?.field,
       'AruiForm-field',
-      fieldClassName,
       field.checkBoxProps?.className,
       field.datePickerProps?.className,
       field.selectProps?.className,
@@ -306,14 +329,13 @@ const getInput = (
     case 'datepicker': {
       const date = new Date(formState.getFieldProps(field.name).value)
       return (
-        <InputForm
+        <InputLabeled
           inputType='datePicker'
           value={
             !isNaN(date.getTime())
               ? date
               : formState.getFieldProps(field.name).value ?? ''
           }
-          isLoading={isLoading}
           onChangeDate={(date) => {
             formState.setFieldValue(
               field.name,
@@ -329,26 +351,24 @@ const getInput = (
     }
     case 'select':
       return field.selectProps?.multiple === true ? (
-        <InputForm
+        <InputLabeled
           inputType='select'
           values={formState.getFieldProps(field.name).value ?? []}
           onChangeValues={(values: string[]) => {
             formState.setFieldValue(field.name, values, false)
             !!field.onChange && field.onChange(values)
           }}
-          isLoading={isLoading}
           {...field.selectProps}
           {...commonProps}
         />
       ) : (
-        <InputForm
+        <InputLabeled
           inputType='select'
           value={formState.getFieldProps(field.name).value ?? ''}
           onChangeValue={(value: string) => {
             formState.setFieldValue(field.name, value, false)
             !!field.onChange && field.onChange(value)
           }}
-          isLoading={isLoading}
           {...field.selectProps}
           {...commonProps}
         />
@@ -356,27 +376,25 @@ const getInput = (
     case 'autoComplete':
       return field.autoCompleteProps?.multiple === true ? (
         // @ts-ignore
-        <InputForm
+        <InputLabeled
           inputType='autoComplete'
           values={formState.getFieldProps(field.name).value ?? []}
           onChangeValues={(values) => {
             formState.setFieldValue(field.name, values, false)
             !!field.onChange && field.onChange(values)
           }}
-          isLoading={isLoading}
           {...field.autoCompleteProps}
           {...commonProps}
         />
       ) : (
         // @ts-ignore
-        <InputForm
+        <InputLabeled
           inputType='autoComplete'
           value={formState.getFieldProps(field.name).value ?? ''}
           onChangeValue={(value) => {
             formState.setFieldValue(field.name, value, false)
             !!field.onChange && field.onChange(value)
           }}
-          isLoading={isLoading}
           {...field.autoCompleteProps}
           {...commonProps}
         />
@@ -392,35 +410,33 @@ const getInput = (
             formState.setFieldValue(field.name, value, false)
             !!field.onChange && field.onChange(value)
           }}
-          isLoading={isLoading}
+          disabled={readonly}
           {...field.checkBoxProps}
           {...commonProps}
         />
       )
     case 'radioChoices':
       return (
-        <InputForm
+        <InputLabeled
           inputType='radioChoices'
           value={formState.getFieldProps(field.name).value ?? ''}
           onChange={(_: React.ChangeEvent<HTMLInputElement>, value: string) => {
             formState.setFieldValue(field.name, value, false)
             !!field.onChange && field.onChange(value)
           }}
-          isLoading={isLoading}
           {...field.radioChoicesProps}
           {...commonProps}
         />
       )
   }
   return (
-    <InputForm
+    <InputLabeled
       inputType='textField'
       value={formState.getFieldProps(field.name).value ?? ''}
       onChange={(value: string) => {
         formState.setFieldValue(field.name, value, false)
         !!field.onChange && field.onChange(value)
       }}
-      isLoading={isLoading}
       {...field.textFieldProps}
       {...commonProps}
     />

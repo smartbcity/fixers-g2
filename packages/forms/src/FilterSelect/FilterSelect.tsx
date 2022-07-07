@@ -11,7 +11,7 @@ import {
   SelectChangeEvent,
   SelectProps as MuiSelectProps
 } from '@mui/material'
-import { ClearRounded } from '@mui/icons-material'
+import { ClearRounded, KeyboardArrowDownRounded } from '@mui/icons-material'
 import {
   BasicProps,
   makeG2STyles,
@@ -47,19 +47,27 @@ export interface FilterSelectStyles {
   menu?: React.CSSProperties
 }
 
-const useStyles = makeG2STyles()({
+const useStyles = makeG2STyles()((theme) => ({
+  input: {
+    '& .MuiInputLabel-outlined': {
+      maxWidth: 'calc(100% - 50px)'
+    },
+    '& .MuiInputLabel-outlined.MuiInputLabel-shrink': {
+      maxWidth: 'unset'
+    }
+  },
   root: {
     '& .MuiFilledInput-input': {
       margin: '0px 5px'
     },
     '& .MuiSelect-icon': {
-      right: '4px',
+      right: '12px',
       color: 'inherit'
     }
   },
   clear: {
     position: 'absolute',
-    right: '22px',
+    right: '32px',
     top: '50%',
     width: '21px',
     height: '21px',
@@ -69,19 +77,19 @@ const useStyles = makeG2STyles()({
   },
   list: {
     padding: '0px',
-    '& .MuiListItem-root': {
+    '& .MuiMenuItem-root': {
       padding: '2px',
-      paddingRight: '8px'
+      paddingRight: `${theme.spacing}px`
     }
   },
   selectPaddingWithClear: {
     '& .MuiSelect-select': {
-      paddingRight: '44px !important'
+      paddingRight: '52px !important'
     }
   },
   selectPadding: {
     '& .MuiSelect-select': {
-      paddingRight: '28px !important',
+      paddingRight: '40px !important',
       margin: '0px'
     }
   },
@@ -109,7 +117,7 @@ const useStyles = makeG2STyles()({
     cursor: 'pointer',
     lineHeight: 'unset'
   }
-})
+}))
 
 export interface FilterSelectBasicProps extends BasicProps {
   /**
@@ -404,6 +412,7 @@ export const FilterSelect = React.forwardRef(
         color={color !== 'default' ? color : undefined}
         className={defaultStyles.cx(
           defaultStyles.classes.input,
+          localStyles.classes.input,
           variant !== 'outlined' && defaultStyles.classes.inputWithoutLabel,
           getVariantColorClass(),
           'AruiFilterSelect-root',
@@ -439,6 +448,7 @@ export const FilterSelect = React.forwardRef(
           value={multiple ? values : value}
           multiple={multiple}
           onChange={onChangeMemoized}
+          IconComponent={KeyboardArrowDownRounded}
           inputProps={inputProp}
           renderValue={renderValue}
           displayEmpty

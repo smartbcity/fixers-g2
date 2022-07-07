@@ -1,14 +1,11 @@
 import {
-  AutocompleteRenderOptionState,
-  Chip,
-  ListItem,
-  ListItemText
-} from '@mui/material'
-import {
   Autocomplete as MuiAutocomplete,
   AutocompleteProps as MuiAutocompleteProps,
   AutocompleteGetTagProps,
-  AutocompleteRenderInputParams
+  AutocompleteRenderInputParams,
+  AutocompleteRenderOptionState,
+  ListItem,
+  ListItemText
 } from '@mui/material'
 import React, { forwardRef, useCallback } from 'react'
 import {
@@ -18,13 +15,9 @@ import {
 } from '@smartb/g2-themes'
 import { TextField, TextFieldProps } from '../TextField'
 import { CheckBox } from '../CheckBox'
+import { Chip } from '@smartb/g2-components'
 
 const useStyles = makeG2STyles()({
-  chip: {
-    backgroundColor: '#EBEBEC',
-    borderRadius: '5px',
-    border: 'none'
-  },
   list: {
     padding: '0px'
   }
@@ -127,16 +120,7 @@ const AutoCompleteBase = function <T>(
   const renderTags = useCallback(
     (value: T[], getTagProps: AutocompleteGetTagProps) =>
       value.map((option: T, index: number) => (
-        <Chip
-          classes={{
-            root: defaultStyles.cx(
-              defaultStyles.classes.chip,
-              'AruiAutoComplete-chip'
-            )
-          }}
-          label={getOptionLabel(option)}
-          {...getTagProps({ index })}
-        />
+        <Chip label={getOptionLabel(option)} {...getTagProps({ index })} />
       )),
     [getOptionLabel]
   )

@@ -36,14 +36,14 @@ const useStyles = makeG2STyles()({
   },
   withIconEndOnRemove: {
     '& .MuiInputBase-input': {
-      paddingRight: '22px'
+      paddingRight: '22px !important'
     }
   },
   inputWithEndAbornment: {
     paddingRight: '20px'
   },
   clearWithEndAbornment: {
-    right: 32
+    right: 33
   }
 })
 

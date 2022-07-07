@@ -6,12 +6,13 @@ const disabledColor = '#E6E9EF'
 
 export const useInputStyles = makeG2STyles()((theme) => ({
   label: {
-    marginBottom: '15px',
-    fontSize: 16,
-    color: `${darkGrey}`
+    marginBottom: theme.spacing,
+    fontSize: '0.875rem',
+    fontWeight: 600,
+    color: '#000000'
   },
   labelSmall: {
-    fontSize: 14
+    fontSize: '0.813rem'
   },
   input: {
     '& .MuiInputBase-input': {
@@ -20,7 +21,7 @@ export const useInputStyles = makeG2STyles()((theme) => ({
     },
     '& .MuiSelect-root': {
       backgroundColor: 'white',
-      borderRadius: '5px',
+      borderRadius: theme.borderRadius,
       color: '#323338',
       textOverflow: 'ellipsis'
     },
@@ -40,7 +41,7 @@ export const useInputStyles = makeG2STyles()((theme) => ({
       paddingTop: '0px',
       border: `1px solid ${textFieldGrey}`,
       boxShadow: '0px 0px 0px 1px transparent',
-      borderRadius: '4px',
+      borderRadius: theme.borderRadius,
       backgroundColor: 'white'
     },
     '& .MuiSelect-select:focus': {
@@ -140,7 +141,8 @@ export const useInputStyles = makeG2STyles()((theme) => ({
   },
   inputSmall: {
     '& .MuiInputBase-root': {
-      minHeight: '32px'
+      minHeight: '32px',
+      borderRadius: theme.borderRadius * 0.75
     },
     '& .MuiSelect-root': {
       height: '32px',

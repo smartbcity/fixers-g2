@@ -9,13 +9,19 @@ import { mergeDeepRight } from 'ramda'
 export interface Theme {
   name?: string
   colors: ThemeColors
+  borderRadius: number
+  spacing: number
   shadows: string[]
 }
 
 export interface ThemeColors {
   primary: string
   secondary: string
+  /**
+   * Not really used in g2 but transfered to the mui theme as the divider color
+   */
   tertiary: string
+  background: string
   error: string
   success: string
   warning: string
@@ -24,12 +30,15 @@ export interface ThemeColors {
 
 export const defaultTheme: Theme = {
   name: 'default',
+  borderRadius: 8,
+  spacing: 8,
   colors: {
     primary: '#EDBA27',
     secondary: '#353945',
     tertiary: '#e0e0e0',
+    background: '#EEEEEE',
     error: '#E44258',
-    success: '#00CA72',
+    success: '#159D50',
     warning: '#FF9900',
     info: '#3C78D8'
   },
@@ -54,7 +63,12 @@ export const defaultMaterialUiTheme = (
   theme: Theme,
   customMuiTheme?: Partial<ThemeOptions>
 ) => {
-  const isPrimaryTooLight = tinycolor(theme.colors.primary).getLuminance() > 0.6
+  const isPrimaryTooLight = tinycolor(theme.colors.primary).getLuminance() > 0.5
+  const isSecondaryTooLight =
+    tinycolor(theme.colors.secondary).getLuminance() > 0.5
+  const isWarningTooLight = tinycolor(theme.colors.warning).getLuminance() > 0.5
+  const isErrorTooLight = tinycolor(theme.colors.error).getLuminance() > 0.5
+  const isSuccessTooLight = tinycolor(theme.colors.success).getLuminance() > 0.5
   const themeOverride: ThemeOptions = {
     // @ts-ignore
     shadows: [...theme.shadows, ...Array(12).fill('none')],
@@ -75,11 +89,72 @@ export const defaultMaterialUiTheme = (
       },
       MuiButton: {
         styleOverrides: {
-          root: {
+          containedPrimary: {
             color: isPrimaryTooLight ? '#353945' : '#ffffff',
-            '&.Mui-disabled': {
-              color: isPrimaryTooLight ? '#353945' : '#ffffff'
+            '&:hover': {
+              backgroundColor: theme.colors.primary
             }
+          },
+          containedSecondary: {
+            color: isSecondaryTooLight ? '#353945' : '#ffffff',
+            '&:hover': {
+              backgroundColor: theme.colors.secondary
+            }
+          },
+          containedWarning: {
+            color: isWarningTooLight ? '#353945' : '#ffffff',
+            '&:hover': {
+              backgroundColor: theme.colors.warning
+            }
+          },
+          containedError: {
+            color: isErrorTooLight ? '#353945' : '#ffffff',
+            '&:hover': {
+              backgroundColor: theme.colors.error
+            }
+          },
+          containedSuccess: {
+            color: isSuccessTooLight ? '#353945' : '#ffffff',
+            '&:hover': {
+              backgroundColor: theme.colors.success
+            }
+          },
+          contained: {
+            boxShadow: 'unset',
+            '&:hover': {
+              boxShadow: theme.shadows[1]
+            }
+          },
+          text: {
+            background: 'transparent',
+            '&:hover': {
+              backgroundColor: `rgba(0, 0, 0, 0.04)`
+            },
+            color: '#828282',
+            '&.Mui-disabled': {
+              color: '#828282',
+              opacity: 0.7
+            }
+          },
+          textError: {
+            color: theme.colors.error
+          },
+          textWarning: {
+            color: theme.colors.warning
+          },
+          textSuccess: {
+            color: theme.colors.success
+          },
+          sizeLarge: {
+            padding: '12px 16px'
+          },
+          sizeMedium: {
+            padding: '8px 14px',
+            borderRadius: theme.borderRadius * 0.75
+          },
+          sizeSmall: {
+            padding: '4px 10px',
+            borderRadius: theme.borderRadius * 0.75
           }
         }
       },
@@ -87,6 +162,13 @@ export const defaultMaterialUiTheme = (
         styleOverrides: {
           tooltip: {
             color: isPrimaryTooLight ? '#353945' : '#ffffff'
+          }
+        }
+      },
+      MuiTableCell: {
+        styleOverrides: {
+          root: {
+            padding: '12px'
           }
         }
       }
@@ -97,6 +179,9 @@ export const defaultMaterialUiTheme = (
       },
       secondary: {
         main: theme.colors.secondary
+      },
+      background: {
+        default: theme.colors.background
       },
       divider: theme.colors.tertiary,
       success: {
@@ -118,7 +203,10 @@ export const defaultMaterialUiTheme = (
         fontWeight: 500
       },
       button: {
-        fontWeight: 500
+        fontWeight: 600,
+        textTransform: 'none',
+        fontSize: '0.875rem',
+        lineHeight: 'unset'
       },
       subtitle2: {
         fontWeight: 600
@@ -126,7 +214,11 @@ export const defaultMaterialUiTheme = (
       subtitle1: {
         fontWeight: 600
       }
-    }
+    },
+    shape: {
+      borderRadius: theme.borderRadius
+    },
+    spacing: theme.spacing
   }
   if (customMuiTheme) {
     return createMuiTheme(
