@@ -45,12 +45,12 @@ export type FormField = {
    * the type of the field
    */
   type:
-    | 'textfield'
-    | 'select'
-    | 'datepicker'
-    | 'radioChoices'
-    | 'checkbox'
-    | 'autoComplete'
+  | 'textfield'
+  | 'select'
+  | 'datepicker'
+  | 'radioChoices'
+  | 'checkbox'
+  | 'autoComplete'
   /**
    * the validator that takes the value of the input and return an error or undefined/nothing if the value is valid
    */
@@ -343,9 +343,10 @@ const getInput = (
             )
             !!field.onChange && field.onChange(date)
           }}
-          readonly={readonly ?? field.datePickerProps?.readonly}
+
           {...field.datePickerProps}
           {...commonProps}
+          readonly={readonly === true ? readonly : field.datePickerProps?.readonly}
         />
       )
     }
@@ -358,9 +359,10 @@ const getInput = (
             formState.setFieldValue(field.name, values, false)
             !!field.onChange && field.onChange(values)
           }}
-          readonly={readonly ?? field.selectProps?.readonly}
+
           {...field.selectProps}
           {...commonProps}
+          readonly={readonly === true ? readonly : field.selectProps?.readonly}
         />
       ) : (
         <InputLabeled
@@ -370,9 +372,10 @@ const getInput = (
             formState.setFieldValue(field.name, value, false)
             !!field.onChange && field.onChange(value)
           }}
-          readonly={readonly ?? field.selectProps?.readonly}
+
           {...field.selectProps}
           {...commonProps}
+          readonly={readonly === true ? readonly : field.selectProps?.readonly}
         />
       )
     case 'autoComplete':
@@ -385,9 +388,10 @@ const getInput = (
             formState.setFieldValue(field.name, values, false)
             !!field.onChange && field.onChange(values)
           }}
-          readonly={readonly ?? field.autoCompleteProps?.readonly}
+
           {...field.autoCompleteProps}
           {...commonProps}
+          readonly={readonly === true ? readonly : field.autoCompleteProps?.readonly}
         />
       ) : (
         // @ts-ignore
@@ -398,9 +402,10 @@ const getInput = (
             formState.setFieldValue(field.name, value, false)
             !!field.onChange && field.onChange(value)
           }}
-          readonly={readonly ?? field.autoCompleteProps?.readonly}
+
           {...field.autoCompleteProps}
           {...commonProps}
+          readonly={readonly === true ? readonly : field.autoCompleteProps?.readonly}
         />
       )
     case 'checkbox':
@@ -414,9 +419,10 @@ const getInput = (
             formState.setFieldValue(field.name, value, false)
             !!field.onChange && field.onChange(value)
           }}
-          disabled={readonly ?? field.checkBoxProps?.disabled}
+
           {...field.checkBoxProps}
           {...commonProps}
+          disabled={readonly === true ? readonly : field.checkBoxProps?.disabled}
         />
       )
     case 'radioChoices':
@@ -428,9 +434,10 @@ const getInput = (
             formState.setFieldValue(field.name, value, false)
             !!field.onChange && field.onChange(value)
           }}
-          readonly={readonly ?? field.radioChoicesProps?.readonly}
+
           {...field.radioChoicesProps}
           {...commonProps}
+          readonly={readonly === true ? readonly : field.radioChoicesProps?.readonly}
         />
       )
   }
@@ -444,6 +451,7 @@ const getInput = (
       }}
       {...field.textFieldProps}
       {...commonProps}
+      readonly={readonly === true ? readonly : field.textFieldProps?.readonly}
     />
   )
 }

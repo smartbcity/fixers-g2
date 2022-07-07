@@ -163,8 +163,6 @@ export const AutomatedUserFactory = (props: AutomatedUserFactoryProps) => {
     [createUser.mutateAsync]
   )
 
-  console.log(update)
-
   return (
     <UserFactory
       user={getUser.data}

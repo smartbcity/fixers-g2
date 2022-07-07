@@ -426,7 +426,7 @@ export const UserFactory = (props: UserFactoryProps) => {
         ]
         : [])
     ]
-  }, [isUpdate, rolesOptions, organizationsRefs, readonly, organizationId, getOrganizationUrl])
+  }, [isUpdate, rolesOptions, organizationsRefs, readonlyFields, readonly, organizationId, getOrganizationUrl])
 
   useEffect(() => {
     const element = SubmitButtonRef?.current
