@@ -242,6 +242,22 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
           readonly: readonlyFields?.name
         }
       },
+      ...(rolesOptions
+        ? [
+            {
+              key: 'roles',
+              name: 'roles',
+              label: 'Type',
+              type: 'select',
+              selectProps: {
+                options: rolesOptions,
+                readonly: readonlyFields?.roles,
+                readonlyType: "chip",
+                multiple: true
+              }
+            } as FormField
+          ]
+        : []),
       {
         key: 'street',
         name: 'street',
@@ -270,21 +286,6 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
           readonly: readonlyFields?.address
         }
       },
-      ...(rolesOptions
-        ? [
-            {
-              key: 'roles',
-              name: 'roles',
-              label: 'Type',
-              type: 'select',
-              selectProps: {
-                options: rolesOptions,
-                readonly: readonlyFields?.roles,
-                multiple: true
-              }
-            } as FormField
-          ]
-        : []),
       {
         key: 'website',
         name: 'website',

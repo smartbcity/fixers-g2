@@ -68,7 +68,7 @@ export interface InputLabeledBasicProps<
   /**
    * attribute a link to a readonly text
    */
-  readonlyTextUrl?: string
+  getReadonlyTextUrl?: (value: string | number) => string | undefined
   /**
    * If you want to add additionnals element near to the input use this prop
    */

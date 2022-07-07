@@ -6,7 +6,7 @@ import {Link, LinkProps} from "react-router-dom"
 
 
 export const ReadonlyRenderer = (props: Partial<InputLabeledProps>) => {
-    const { readonlyType = "text", inputType, value, values, choices, options, multiple, getReadonlyChipColor, readonlyTextUrl, size } = props
+    const { readonlyType = "text", inputType, value, values, choices, options, multiple, getReadonlyChipColor, getReadonlyTextUrl, size } = props
 
     const textToDisplay = useMemo(() => {
         if (inputType === "datePicker") return new Date(value).toLocaleDateString()
@@ -19,24 +19,32 @@ export const ReadonlyRenderer = (props: Partial<InputLabeledProps>) => {
             if (options && value) return options.find(c => c.key === value)?.label
         }
         return value
-    }, [inputType, value, values, choices, multiple])
+    }, [inputType, value, values, choices, multiple, options])
 
     const renderTag = useMemo(() => {
         if (readonlyType === "text") return undefined
-        if (!multiple) return <Chip label={textToDisplay} color={getReadonlyChipColor && getReadonlyChipColor(textToDisplay)} />
+        if (!multiple) {
+            const option = options?.find(o => o.key === value)
+            return <Chip label={textToDisplay} color={option?.color ?? (getReadonlyChipColor && getReadonlyChipColor(textToDisplay))} />
+        }
         else if (options && values) {
-            return values.map((value, index) => {
-                const label = options.find(o => o.key === value)?.label
-                if (!label) return undefined
-                return <Chip key={index} label={`${label}`} color={getReadonlyChipColor && getReadonlyChipColor(label)} />
+            return values.map((value) => {
+                const option = options.find(o => o.key === value)
+                if (!option?.label) return undefined
+                return <Chip key={option.key} label={`${option?.label}`} color={option?.color ?? (getReadonlyChipColor && getReadonlyChipColor(option?.label))} />
             })
         }
         return
-    }, [readonlyType, textToDisplay])
+    }, [readonlyType, textToDisplay, value, options])
+
+    const url = useMemo(() => {
+        if (!value || !getReadonlyTextUrl) return undefined
+        return getReadonlyTextUrl(value)
+    }, [value, getReadonlyTextUrl])
 
     if (readonlyType === "text")  {
-        if (readonlyTextUrl) return (
-            <G2Link<LinkProps> componentProps={{to: readonlyTextUrl}} component={Link} sx={{color: "#676879"}} variant={size === "small" ? "body2" : "body1"}>
+        if (url) return (
+            <G2Link<LinkProps> componentProps={{to: url}} component={Link} sx={{color: "#676879"}} variant={size === "small" ? "body2" : "body1"}>
                 {textToDisplay}
             </G2Link>
         )

@@ -7,7 +7,7 @@ export interface UserAvatarBasicProps extends BasicProps {
   /**
    * The name of the user composed like this: `${givenName} ${familyName}`.
    */
-  name: string
+  name?: string
   /**
    * The size of the avatar.
    *  @default 'small'
@@ -21,9 +21,11 @@ export type UserAvatarProps = MergeMuiElementProps<
 >
 
 export const UserAvatar = (props: UserAvatarProps) => {
-  const { name, size = 'small', sx, ...other } = props
+  const { name = "", size = 'small', sx, ...other } = props
 
-  const attr = useMemo(() => stringToAvatarAttributs(name), [name])
+  const nameTrimmed = useMemo(() => name.trim(), [name])
+
+  const attr = useMemo(() => nameTrimmed ? stringToAvatarAttributs(name) : {color: "#6768791A", label: ""}, [name])
   const sizeNumber =
     size === 'small' ? '40px' : size === 'medium' ? '60px' : '100px'
 

@@ -3,7 +3,6 @@ import {
   Form,
   FormField,
   FormPartialField,
-  FormProps,
   Option,
   useFormWithPartialFields
 } from '@smartb/g2-forms'
@@ -12,6 +11,9 @@ import React, { useCallback, useEffect, useMemo } from 'react'
 import { FlatUser, FlatUserToUser, User } from '../../Domain'
 import { addressValidation, AdressValidationStrings } from '../../../Commons'
 import { OrganizationId, OrganizationRef } from '../../../Organization'
+import { Stack, StackProps } from '@mui/material'
+import { useElementSize } from '@mantine/hooks'
+import { UserSummary } from '../UserSummary'
 
 export type Validated = boolean
 
@@ -123,6 +125,10 @@ export interface UserFactoryBasicProps extends BasicProps {
    */
   organizationId?: OrganizationId
   /**
+   * If you want the organization to transform to a link
+   */
+   getOrganizationUrl?: (organizationId: OrganizationId) => string
+  /**
    * Use this prop if you want only some fields to be readonly
    */
   readonlyFields?: ReadonlyFields
@@ -139,7 +145,7 @@ export interface UserFactoryBasicProps extends BasicProps {
 }
 
 export type UserFactoryProps = MergeMuiElementProps<
-  FormProps,
+  StackProps,
   UserFactoryBasicProps
 >
 
@@ -147,8 +153,6 @@ export const UserFactory = (props: UserFactoryProps) => {
   const {
     user,
     onSubmit,
-    classes,
-    styles,
     isUpdate = false,
     className,
     readonly = false,
@@ -159,8 +163,11 @@ export const UserFactory = (props: UserFactoryProps) => {
     isLoading = false,
     strings,
     SubmitButtonRef,
+    getOrganizationUrl,
     ...other
   } = props
+
+  const { ref, width } = useElementSize()
 
   const partialFields = useMemo(
     (): FormPartialField[] => [
@@ -256,11 +263,11 @@ export const UserFactory = (props: UserFactoryProps) => {
       },
       ...(!isUpdate && !readonly
         ? [
-            {
-              name: 'sendEmailLink',
-              defaultValue: true
-            }
-          ]
+          {
+            name: 'sendEmailLink',
+            defaultValue: true
+          }
+        ]
         : [])
     ],
     [
@@ -298,11 +305,11 @@ export const UserFactory = (props: UserFactoryProps) => {
     const orgsOptions =
       !!organizationsRefs && organizationsRefs.length > 0
         ? organizationsRefs.map(
-            (orgRef): Option => ({
-              key: orgRef.id,
-              label: orgRef.name
-            })
-          )
+          (orgRef): Option => ({
+            key: orgRef.id,
+            label: orgRef.name
+          })
+        )
         : undefined
     return [
       {
@@ -323,6 +330,37 @@ export const UserFactory = (props: UserFactoryProps) => {
           readonly: readonlyFields?.familyName
         }
       },
+      ...(rolesOptions
+        ? [
+          {
+            key: 'role',
+            name: 'role',
+            label: strings?.role ?? 'Role',
+            type: 'select',
+            selectProps: {
+              options: rolesOptions,
+              readonly: readonlyFields?.roles,
+              readonlyType: "chip",
+              multiple: true
+            }
+          } as FormField
+        ]
+        : []),
+      ...(orgsOptions || organizationId
+        ? [
+          {
+            key: 'memberOf',
+            name: 'memberOf',
+            label: strings?.organization ?? 'Organisation',
+            type: 'select',
+            selectProps: {
+              options: orgsOptions,
+              readonly: readonlyFields?.memberOf,
+              getReadonlyChipColor: getOrganizationUrl
+            }
+          } as FormField
+        ]
+        : []),
       {
         key: 'street',
         name: 'street',
@@ -371,53 +409,24 @@ export const UserFactory = (props: UserFactoryProps) => {
           readonly: readonlyFields?.phone
         }
       },
-      ...(rolesOptions
-        ? [
-            {
-              key: 'role',
-              name: 'role',
-              label: strings?.role ?? 'Role',
-              type: 'select',
-              selectProps: {
-                options: rolesOptions,
-                readonly: readonlyFields?.roles,
-                multiple: true
-              }
-            } as FormField
-          ]
-        : []),
-      ...(orgsOptions || organizationId
-        ? [
-            {
-              key: 'memberOf',
-              name: 'memberOf',
-              label: strings?.organization ?? 'Organisation',
-              type: 'select',
-              selectProps: {
-                options: orgsOptions,
-                readonly: readonlyFields?.memberOf
-              }
-            } as FormField
-          ]
-        : []),
       ...(!isUpdate && !readonly
         ? [
-            {
-              key: 'sendEmailLink',
-              name: 'sendEmailLink',
-              type: 'checkbox',
-              label:
-                strings?.sendEmailLink ??
-                "Envoyer un lien d'invitation par mail",
-              checkBoxProps: {
-                className: 'AruiUserFactory-sendEmailLink',
-                disabled: readonlyFields?.sendEmailLink
-              }
-            } as FormField
-          ]
+          {
+            key: 'sendEmailLink',
+            name: 'sendEmailLink',
+            type: 'checkbox',
+            label:
+              strings?.sendEmailLink ??
+              "Envoyer un lien d'invitation par mail",
+            checkBoxProps: {
+              className: 'AruiUserFactory-sendEmailLink',
+              disabled: readonlyFields?.sendEmailLink
+            }
+          } as FormField
+        ]
         : [])
     ]
-  }, [isUpdate, rolesOptions, organizationsRefs, readonly, organizationId])
+  }, [isUpdate, rolesOptions, organizationsRefs, readonly, organizationId, getOrganizationUrl])
 
   useEffect(() => {
     const element = SubmitButtonRef?.current
@@ -427,17 +436,33 @@ export const UserFactory = (props: UserFactoryProps) => {
   }, [SubmitButtonRef?.current, formState.submitForm, readonly])
 
   return (
-    <Form
+    <Stack
       {...other}
       className={cx('AruiUserFactory-root', className)}
-      fields={userForm}
-      formState={formState}
-      isLoading={isLoading}
-      readonly={readonly}
+      ref={ref}
+      flexDirection={
+        width < 450 ? 'column' : 'row'
+      }
+      justifyContent="center"
       sx={{
         width: '100%',
-        ...other.sx
+        gap: (theme) => width < 450 ? theme.spacing(3) : theme.spacing(6)
       }}
-    />
+    >
+      <UserSummary onlyAvatar={width < 450} fullName={`${formState.values.givenName ?? ""} ${formState.values.familyName ?? ""}`} roles={formState.values.role} rolesOptions={rolesOptions} />
+      <Form
+        className='AruiUserFactory-form'
+        fields={userForm}
+        formState={formState}
+        isLoading={isLoading}
+        readonly={readonly}
+        sx={{
+          width: '100%',
+          flexGrow: 1,
+          maxWidth: "450px"
+        }}
+      />
+    </Stack>
+
   )
 }

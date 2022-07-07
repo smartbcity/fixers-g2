@@ -38,3 +38,8 @@ export {
 } from './Components/UserResetPassword'
 
 export { MyProfile } from './Components/MyProfile'
+
+export {
+  UserSummary,
+  UserSummaryProps
+} from './Components/UserSummary'
