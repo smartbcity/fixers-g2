@@ -1,7 +1,7 @@
 export {
   User,
-  UserGetAllQuery,
-  UserGetAllQueryResult,
+  UserPageQuery,
+  UserPageResult,
   UserResetPasswordCommand,
   UserResetPasswordResult,
   UserId
@@ -16,8 +16,7 @@ export {
   AutomatedUserFactoryProps,
   ReadonlyUserFieldsPerState,
   ReadonlyFields,
-  UserFactoryClasses,
-  UserFactoryStyles
+  
 } from './Components/UserFactory'
 
 export {

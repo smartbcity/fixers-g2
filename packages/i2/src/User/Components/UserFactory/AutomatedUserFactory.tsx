@@ -176,6 +176,7 @@ export const AutomatedUserFactory = (props: AutomatedUserFactoryProps) => {
           ? {
               memberOf: true,
               email: true,
+              roles: true,
               ...readonlyFieldsPerState?.update
             }
           : readonlyFieldsPerState?.create

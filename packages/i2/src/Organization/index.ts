@@ -21,9 +21,11 @@ export {
   OrganizationRef,
   OrganizationId,
   Organization,
-  OrganizationGetAllQuery,
+  OrganizationPageQuery,
   OrganizationCreateCommand,
-  OrganizationGetByIdQuery,
+  OrganizationGetQuery,
+  OrganizationGetResult,
+  OrganizationPageResult,
   OrganizationUpdateCommand
 } from './Domain'
 
