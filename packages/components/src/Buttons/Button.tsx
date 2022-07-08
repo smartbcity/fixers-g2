@@ -131,6 +131,7 @@ export const ButtonBase = function <T = {}>(
     componentProps,
     startIcon,
     color,
+    size = 'medium',
     ...other
   } = props
 
@@ -166,9 +167,10 @@ export const ButtonBase = function <T = {}>(
     if (loading || forcedLoading)
       return (
         <CircularProgress
-          size={24}
+          size={size === 'small' ? 23 : size === 'medium' ? 24 : 25}
           sx={{
-            color: 'currentcolor'
+            color: 'currentcolor',
+            margin: '-4px 0'
           }}
         />
       )
@@ -214,6 +216,7 @@ export const ButtonBase = function <T = {}>(
         id={id}
         startIcon={startIconElement}
         variant={variant}
+        size={size}
         {...componentProps}
         {...other}
       >
@@ -235,6 +238,7 @@ export const ButtonBase = function <T = {}>(
       id={id}
       startIcon={startIconElement}
       variant={variant}
+      size={size}
       {...other}
     >
       {children}

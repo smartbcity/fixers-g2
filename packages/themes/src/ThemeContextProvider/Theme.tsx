@@ -146,15 +146,29 @@ export const defaultMaterialUiTheme = (
             color: theme.colors.success
           },
           sizeLarge: {
-            padding: '12px 16px'
+            padding: '13px 16px'
           },
           sizeMedium: {
-            padding: '8px 14px',
+            padding: '9px 14px',
             borderRadius: theme.borderRadius * 0.75
           },
           sizeSmall: {
-            padding: '4px 10px',
+            padding: '5px 10px',
             borderRadius: theme.borderRadius * 0.75
+          },
+          outlinedSizeLarge: {
+            padding: '12px 16px'
+          },
+          outlinedSizeMedium: {
+            padding: '8px 14px'
+          },
+          outlinedSizeSmall: {
+            padding: '4px 10px'
+          },
+          root: {
+            '& .MuiSvgIcon-root ': {
+              margin: '-2px 0'
+            }
           }
         }
       },

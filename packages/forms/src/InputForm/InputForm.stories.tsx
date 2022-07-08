@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { InputLabeled, InputLabeledBasicProps } from './InputLabeled'
+import { InputForm, InputFormBasicProps } from './InputForm'
 import { Meta } from '@storybook/react'
 import { Story } from '@storybook/react/types-6-0'
 import {
@@ -12,11 +12,11 @@ import {
 } from '@storybook/addon-docs'
 import LinkTo from '@storybook/addon-links/react'
 import { Box, Typography } from '@mui/material'
-import { InputLabeledClasses, InputLabeledStyles } from './docs'
+import { InputFormClasses, InputFormStyles } from './docs'
 
 export default {
-  title: 'Forms/InputLabeled',
-  component: InputLabeled,
+  title: 'Forms/InputForm',
+  component: InputForm,
   parameters: {
     docs: {
       page: () => (
@@ -67,16 +67,16 @@ export default {
     classes: {
       table: {
         type: {
-          summary: 'InputLabeledClasses',
-          detail: InputLabeledClasses
+          summary: 'InputFormClasses',
+          detail: InputFormClasses
         }
       }
     },
     styles: {
       table: {
         type: {
-          summary: 'InputLabeledStyles',
-          detail: InputLabeledStyles
+          summary: 'InputFormStyles',
+          detail: InputFormStyles
         }
       }
     },
@@ -97,31 +97,57 @@ export default {
   }
 } as Meta
 
-export const InputLabeledStory: Story<InputLabeledBasicProps> = (
-  args: InputLabeledBasicProps
+export const InputFormStory: Story<InputFormBasicProps> = (
+  args: InputFormBasicProps
 ) => {
-  return <InputLabeled {...args} style={{ width: '500px' }} />
+  return <InputForm {...args} style={{ width: '500px' }} />
 }
 
-export const InputLabeledReadonly: Story<InputLabeledBasicProps> = (
-  args: InputLabeledBasicProps
+export const InputFormReadonly: Story<InputFormBasicProps> = (
+  args: InputFormBasicProps
 ) => {
-  return <InputLabeled {...args} label="Readonly input" value="My value" inputType="textField" style={{ width: '500px' }} readonly />
+  return (
+    <InputForm
+      {...args}
+      label='Readonly input'
+      value='My value'
+      inputType='textField'
+      style={{ width: '500px' }}
+      readonly
+    />
+  )
 }
 
-export const InputLabeledReadonlyChip: Story<InputLabeledBasicProps> = (
-  args: InputLabeledBasicProps
+export const InputFormReadonlyChip: Story<InputFormBasicProps> = (
+  args: InputFormBasicProps
 ) => {
-  return <InputLabeled label="Readonly input chip" value="My value" inputType="textField" style={{ width: '500px' }} readonly readonlyType='chip' getReadonlyChipColor={() => "#E56643"}/>
+  return (
+    <InputForm
+      label='Readonly input chip'
+      value='My value'
+      inputType='textField'
+      style={{ width: '500px' }}
+      readonly
+      readonlyType='chip'
+      getReadonlyChipColor={() => '#E56643'}
+    />
+  )
 }
 
-export const InputLabeledLoading: Story<InputLabeledBasicProps> = (
-  args: InputLabeledBasicProps
+export const InputFormLoading: Story<InputFormBasicProps> = (
+  args: InputFormBasicProps
 ) => {
-  return <InputLabeled label="Loading input" value="My value"  style={{ width: '500px' }} isLoading />
+  return (
+    <InputForm
+      label='Loading input'
+      value='My value'
+      style={{ width: '500px' }}
+      isLoading
+    />
+  )
 }
 
-export const FormExample: Story<InputLabeledBasicProps> = () => {
+export const FormExample: Story<InputFormBasicProps> = () => {
   const [form, setform] = useState({
     email: '',
     password: '',
@@ -131,7 +157,7 @@ export const FormExample: Story<InputLabeledBasicProps> = () => {
   })
   return (
     <Box display='flex' flexDirection='column' alignItems='center'>
-      <InputLabeled
+      <InputForm
         label='email:'
         value={form.email}
         onChange={(value) => setform({ ...form, email: value })}
@@ -149,7 +175,7 @@ export const FormExample: Story<InputLabeledBasicProps> = () => {
         }}
         styles={{ label: { marginBottom: '0px' }, input: { width: '60%' } }}
       />
-      <InputLabeled
+      <InputForm
         value={form.password}
         onChange={(value) => setform({ ...form, password: value })}
         onRemove={() => setform({ ...form, password: '' })}
@@ -166,7 +192,7 @@ export const FormExample: Story<InputLabeledBasicProps> = () => {
         }}
         styles={{ label: { marginBottom: '0px' }, input: { width: '60%' } }}
       />
-      <InputLabeled
+      <InputForm
         value={form.gender}
         label='gender:'
         inputType='select'
@@ -185,7 +211,7 @@ export const FormExample: Story<InputLabeledBasicProps> = () => {
         }}
         styles={{ label: { marginBottom: '0px' }, input: { width: '60%' } }}
       />
-      <InputLabeled
+      <InputForm
         value={form.birthday}
         label='birthday:'
         inputType='datePicker'
@@ -200,7 +226,7 @@ export const FormExample: Story<InputLabeledBasicProps> = () => {
         }}
         styles={{ label: { marginBottom: '0px' }, input: { width: '60%' } }}
       />
-      <InputLabeled
+      <InputForm
         value={form.nationality}
         label='nationality:'
         inputType='radioChoices'
@@ -224,11 +250,11 @@ export const FormExample: Story<InputLabeledBasicProps> = () => {
   )
 }
 
-InputLabeledStory.args = {
+InputFormStory.args = {
   label: 'un input:',
-  id: 'InputLabeledExample',
+  id: 'InputFormExample',
   inputType: 'textField'
 }
 
-InputLabeledStory.storyName = 'InputLabeled'
+InputFormStory.storyName = 'InputForm'
 FormExample.storyName = 'Form example'

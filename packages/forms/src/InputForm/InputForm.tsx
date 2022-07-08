@@ -25,26 +25,25 @@ import { AutoComplete, AutoCompleteProps } from '../AutoComplete'
 import { LoadingRenderer } from './LoadingRenderer'
 import { ReadonlyRenderer } from './ReadonlyRenderer'
 
-interface InputLabeledClasses {
+interface InputFormClasses {
   label?: string
   input?: string
 }
 
-interface InputLabeledStyles {
+interface InputFormStyles {
   label?: React.CSSProperties
   input?: React.CSSProperties
 }
 
-export type InputLabeledTypes =
+export type InputFormTypes =
   | 'select'
   | 'textField'
   | 'datePicker'
   | 'radioChoices'
   | 'autoComplete'
 
-export interface InputLabeledBasicProps<
-  T extends InputLabeledTypes = 'textField'
-> extends BasicProps {
+export interface InputFormBasicProps<T extends InputFormTypes = 'textField'>
+  extends BasicProps {
   /**
    * The label of the input
    */
@@ -82,11 +81,11 @@ export interface InputLabeledBasicProps<
   /**
    * The classes applied to the different part of the component
    */
-  classes?: InputLabeledClasses
+  classes?: InputFormClasses
   /**
    * The styles applied to the different part of the component
    */
-  styles?: InputLabeledStyles
+  styles?: InputFormStyles
   /**
    * The classes applied to the different part of the input
    *
@@ -115,12 +114,12 @@ export interface InputLabeledBasicProps<
     : RadioChoicesStyles
 }
 
-type RemoveMainProps<T> = Omit<T, keyof InputLabeledBasicProps>
+type RemoveMainProps<T> = Omit<T, keyof InputFormBasicProps>
 
-type InputLabeledComponentProps<
-  T extends InputLabeledTypes,
+type InputFormComponentProps<
+  T extends InputFormTypes,
   R extends boolean
-> = InputLabeledBasicProps<T> &
+> = InputFormBasicProps<T> &
   ([R] extends [true]
     ? RemoveMainProps<TextFieldProps>
     : [T] extends ['select']
@@ -133,33 +132,30 @@ type InputLabeledComponentProps<
     ? RemoveMainProps<AutoCompleteProps>
     : RemoveMainProps<TextFieldProps>)
 
-interface InputLabeledComponent {
-  <T extends InputLabeledTypes, R extends boolean>(
+interface InputFormComponent {
+  <T extends InputFormTypes, R extends boolean>(
     props: {
       inputType: T
       readonly?: R
-    } & InputLabeledComponentProps<T, R>,
+    } & InputFormComponentProps<T, R>,
     ref: React.ForwardedRef<HTMLDivElement>
   ): JSX.Element
 }
 
-export type InputLabeledProps = InputLabeledBasicProps &
-  Omit<TextFieldProps, keyof InputLabeledBasicProps> &
-  Omit<SelectProps, keyof InputLabeledBasicProps> &
-  Omit<DatePickerProps, keyof InputLabeledBasicProps> &
-  Omit<AutoCompleteProps, keyof InputLabeledBasicProps> &
-  Omit<RadioChoicesProps, keyof InputLabeledBasicProps> & {
+export type InputFormProps = InputFormBasicProps &
+  Omit<TextFieldProps, keyof InputFormBasicProps> &
+  Omit<SelectProps, keyof InputFormBasicProps> &
+  Omit<DatePickerProps, keyof InputFormBasicProps> &
+  Omit<AutoCompleteProps, keyof InputFormBasicProps> &
+  Omit<RadioChoicesProps, keyof InputFormBasicProps> & {
     inputClasses?: SelectClasses | TextFieldClasses | DatePickerClasses
     inputStyles?: SelectStyles | TextFieldStyles | DatePickerStyles
-    inputType: InputLabeledTypes
+    inputType: InputFormTypes
   }
 
 //@ts-ignore
-export const InputLabeled: InputLabeledComponent = React.forwardRef(
-  (
-    props: Partial<InputLabeledProps>,
-    ref: React.ForwardedRef<HTMLDivElement>
-  ) => {
+export const InputForm: InputFormComponent = React.forwardRef(
+  (props: Partial<InputFormProps>, ref: React.ForwardedRef<HTMLDivElement>) => {
     const {
       inputType = 'textField',
       readonly = false,
@@ -276,8 +272,8 @@ export const InputLabeled: InputLabeledComponent = React.forwardRef(
     if (
       readonly &&
       !props.value &&
-      (!props.values || props.values.length === 0)
-      && !isLoading
+      (!props.values || props.values.length === 0) &&
+      !isLoading
     )
       return <></>
     return (

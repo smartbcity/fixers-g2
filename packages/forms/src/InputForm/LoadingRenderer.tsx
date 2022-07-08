@@ -1,8 +1,8 @@
 import { Skeleton } from '@mui/material'
 import React from 'react'
-import { InputLabeledProps } from './InputLabeled'
+import { InputFormProps } from './InputForm'
 
-export const LoadingRenderer = (props: Partial<InputLabeledProps>) => {
+export const LoadingRenderer = (props: Partial<InputFormProps>) => {
   const { inputType, size = 'medium' } = props
 
   return inputType === 'radioChoices' ? (
