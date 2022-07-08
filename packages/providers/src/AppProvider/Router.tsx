@@ -7,7 +7,7 @@ interface RouterBasicProps {
   /**
    * The component display by the root if the user is authorized and if the current route match the one you gave
    */
-  children?: React.ReactElement | React.ReactElement[]
+  children?: React.ReactElement | React.ReactElement[] | React.ReactNode
   /**
    * By default the noMatch redirection goes to the `NoMatchPage` component but you can override it with this prop
    *
