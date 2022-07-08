@@ -1,4 +1,4 @@
-import { Box, InputLabel, Skeleton } from '@mui/material'
+import { Box, InputLabel } from '@mui/material'
 import React, { useMemo } from 'react'
 import { Select, SelectProps, SelectClasses, SelectStyles } from '../Select'
 import {
@@ -22,6 +22,8 @@ import {
   RadioChoices
 } from '../RadioChoices'
 import { AutoComplete, AutoCompleteProps } from '../AutoComplete'
+import { LoadingRenderer } from './LoadingRenderer'
+import { ReadonlyRenderer } from './ReadonlyRenderer'
 
 interface InputFormClasses {
   label?: string
@@ -51,6 +53,21 @@ export interface InputFormBasicProps<T extends InputFormTypes = 'textField'>
    * @default false
    */
   readonly?: boolean
+  /**
+   * The input will be replaced by the solution choosed on readonly.
+   * If you choose the "text it will be displayed in a Typography.
+   * If you choose "chip" it will be displayed in chips.
+   * @default "text"
+   */
+  readonlyType?: 'text' | 'chip'
+  /**
+   * This function is used to attribute a chip color to the value to be displayed (if not provided the default color will be used)
+   */
+  getReadonlyChipColor?: (value: string | number) => string | undefined
+  /**
+   * attribute a link to a readonly text
+   */
+  getReadonlyTextUrl?: (value: string | number) => string | undefined
   /**
    * If you want to add additionnals element near to the input use this prop
    */
@@ -101,7 +118,7 @@ type RemoveMainProps<T> = Omit<T, keyof InputFormBasicProps>
 
 type InputFormComponentProps<
   T extends InputFormTypes,
-  R extends Boolean = false
+  R extends boolean
 > = InputFormBasicProps<T> &
   ([R] extends [true]
     ? RemoveMainProps<TextFieldProps>
@@ -116,7 +133,7 @@ type InputFormComponentProps<
     : RemoveMainProps<TextFieldProps>)
 
 interface InputFormComponent {
-  <T extends InputFormTypes, R extends Boolean = false>(
+  <T extends InputFormTypes, R extends boolean>(
     props: {
       inputType: T
       readonly?: R
@@ -153,6 +170,9 @@ export const InputForm: InputFormComponent = React.forwardRef(
       size = 'medium',
       isLoading = false,
       createInputContainer,
+      getReadonlyChipColor,
+      readonlyType,
+      getReadonlyTextUrl,
       ...other
     } = props
 
@@ -176,38 +196,9 @@ export const InputForm: InputFormComponent = React.forwardRef(
 
     const inputUi = useMemo(() => {
       return isLoading ? (
-        inputType === 'radioChoices' ? (
-          <Skeleton
-            sx={{
-              width: '150px',
-              height: '100px',
-              transform: 'none'
-            }}
-            animation='wave'
-          />
-        ) : (
-          <Skeleton
-            sx={{
-              width: '100%',
-              height:
-                size === 'small' ? '32px' : size === 'medium' ? '40px' : '48px',
-              transform: 'none'
-            }}
-            animation='wave'
-          />
-        )
+        <LoadingRenderer {...props} />
       ) : readonly ? (
-        <TextField
-          {...other}
-          size={size}
-          className={classes?.input}
-          style={styles?.input}
-          classes={inputClasses}
-          styles={inputStyles}
-          ref={ref}
-          id={id}
-          disabled={true}
-        />
+        <ReadonlyRenderer {...props} />
       ) : inputType === 'textField' ? (
         <TextField
           {...other}
@@ -278,6 +269,13 @@ export const InputForm: InputFormComponent = React.forwardRef(
       [createInputContainer, inputUi]
     )
 
+    if (
+      readonly &&
+      !props.value &&
+      (!props.values || props.values.length === 0) &&
+      !isLoading
+    )
+      return <></>
     return (
       <Box className={className} style={style}>
         {labelUi}

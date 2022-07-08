@@ -4,13 +4,13 @@ const darkGrey = '#BDBDBD'
 
 export const useFilterInputStyles = makeG2STyles()((theme) => ({
   label: {
-    fontSize: '14px',
+    fontSize: '0.875rem',
     color: '#323338'
   },
   input: {
     '& .MuiInputBase-input': {
-      padding: '6px 16px',
-      fontSize: '14px',
+      padding: '6.5px 16px',
+      fontSize: '0.875rem',
       height: 'unset',
       color: 'inherit'
     },
@@ -88,7 +88,7 @@ export const useFilterInputStyles = makeG2STyles()((theme) => ({
       padding: '0px 0px 0px 10px'
     },
     '& .MuiOutlinedInput-input::placeholder': {
-      fontSize: '14px',
+      fontSize: '0.875rem',
       color: 'inherit',
       opacity: 1
     },

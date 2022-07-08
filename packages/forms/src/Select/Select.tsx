@@ -22,6 +22,7 @@ import { CheckBox } from '../CheckBox'
 export type Option = {
   key: string | number
   label: string | number
+  color?: string
 }
 
 export interface SelectClasses {

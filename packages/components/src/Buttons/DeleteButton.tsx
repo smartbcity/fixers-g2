@@ -6,8 +6,7 @@ import { Button, ButtonProps } from './Button'
 const useStyles = makeG2STyles()({
   icon: {
     width: '20px',
-    height: '20px',
-    marginRight: '5px'
+    height: '20px'
   }
 })
 
@@ -19,7 +18,7 @@ const DeleteButtonBase = function <T = {}>(
   return (
     <Button<T>
       variant='text'
-      icon={<Delete color={'#828282'} className={classes.icon} />}
+      startIcon={<Delete color={'#828282'} className={classes.icon} />}
       ref={ref}
       {...props}
     />

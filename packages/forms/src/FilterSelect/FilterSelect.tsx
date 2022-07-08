@@ -21,11 +21,7 @@ import {
 import { CheckBox } from '../CheckBox'
 import { useFilterInputStyles } from '../style'
 import tinycolor from 'tinycolor2'
-
-export type Option = {
-  key: string | number
-  label: string | number
-}
+import { Option } from '../Select'
 
 export interface FilterSelectClasses {
   label?: string

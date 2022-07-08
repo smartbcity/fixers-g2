@@ -3,7 +3,8 @@ import React, {
   useEffect,
   useState,
   forwardRef,
-  useRef
+  useRef,
+  useMemo
 } from 'react'
 import {
   Button as MuiButton,
@@ -16,11 +17,7 @@ import {
   CloseRounded,
   ReportProblemOutlined
 } from '@mui/icons-material'
-import {
-  containedUseStyles,
-  outlinedUseStyles,
-  textUseStyles
-} from './buttonStyles'
+import { cx } from '@emotion/css'
 
 export type Variant = 'contained' | 'outlined' | 'text'
 
@@ -74,15 +71,17 @@ export interface ButtonBasicProps<T = {}> extends BasicProps {
    */
   fail?: boolean
   /**
-   * Add the icon at the left of the children4
+   * Add the icon at the left of the children
+   *
+   * @deprecated use the mui native endIcon and startIcon props
    *
    * @default false
    */
   icon?: React.ReactNode
   /**
-   * Remove the icon from the component
+   * Remove the default icon from the component
    */
-  noIcon?: boolean
+  noDefaultIcon?: boolean
   /**
    * By default if your **onClick** function is asynchronous the button will automatically make a loading icon appear and disable the button in order
    * to wait for the end of the action. But if you want to force that state you can set **isLoading** to `true`.
@@ -126,18 +125,16 @@ export const ButtonBase = function <T = {}>(
     fail = false,
     warning = false,
     icon,
-    noIcon,
+    noDefaultIcon,
     isLoading = false,
     component,
     componentProps,
+    startIcon,
+    color,
+    size = 'medium',
     ...other
   } = props
-  const { classes, cx } =
-    variant === 'contained'
-      ? containedUseStyles()
-      : variant === 'outlined'
-      ? outlinedUseStyles()
-      : textUseStyles()
+
   const forcedLoading = isLoading
   const [loading, setloading] = useState(false)
   const isMounted = useRef(false)
@@ -166,46 +163,63 @@ export const ButtonBase = function <T = {}>(
     [onClick]
   )
 
+  const startIconElement = useMemo(() => {
+    if (loading || forcedLoading)
+      return (
+        <CircularProgress
+          size={size === 'small' ? 23 : size === 'medium' ? 24 : 25}
+          sx={{
+            color: 'currentcolor',
+            margin: '-4px 0'
+          }}
+        />
+      )
+    if (startIcon) return startIcon
+    if (icon) return icon
+    if (noDefaultIcon) return undefined
+    return success ? (
+      <CheckRounded />
+    ) : fail ? (
+      <CloseRounded />
+    ) : warning ? (
+      <ReportProblemOutlined />
+    ) : undefined
+  }, [
+    noDefaultIcon,
+    startIcon,
+    icon,
+    success,
+    fail,
+    warning,
+    loading,
+    forcedLoading
+  ])
+
+  const colorSelected = useMemo(() => {
+    if (warning) return 'warning'
+    if (success) return 'success'
+    if (fail) return 'error'
+    return color
+  }, [color, warning, fail, success])
+
   if (component)
     return (
       <MuiButton<typeof component>
         ref={ref}
         style={style}
+        color={colorSelected}
         disabled={loading || disabled || forcedLoading}
-        className={cx(
-          classes.root,
-          !fail && !success && !warning && classes.defaultColor,
-          disabled && classes.disabled,
-          success && classes.success,
-          fail && classes.fail,
-          warning && classes.advertissement,
-          'AruiButton-root ',
-          className
-        )}
+        className={cx('AruiButton-root ', className)}
         onClick={(e: any) => !href && onClick && onClickMemoisied(e)}
         component={component}
         href={href}
         id={id}
+        startIcon={startIconElement}
+        variant={variant}
+        size={size}
         {...componentProps}
         {...other}
       >
-        {!noIcon &&
-          (loading || forcedLoading ? (
-            <CircularProgress
-              size={variant === 'contained' ? 26 : 20}
-              className={classes.buttonProgress}
-            />
-          ) : success ? (
-            <CheckRounded className={classes.icon} />
-          ) : fail ? (
-            <CloseRounded className={classes.icon} />
-          ) : warning ? (
-            <ReportProblemOutlined className={classes.icon} />
-          ) : icon ? (
-            icon
-          ) : (
-            ''
-          ))}
         {children}
       </MuiButton>
     )
@@ -216,39 +230,17 @@ export const ButtonBase = function <T = {}>(
       //@ts-ignore
       ref={ref}
       style={style}
+      color={colorSelected}
       disabled={loading || disabled || forcedLoading}
-      className={cx(
-        classes.root,
-        !fail && !success && !warning && classes.defaultColor,
-        disabled && classes.disabled,
-        success && classes.success,
-        fail && classes.fail,
-        warning && classes.advertissement,
-        'AruiButton-root ',
-        className
-      )}
+      className={cx('AruiButton-root ', className)}
       onClick={(e) => !href && onClick && onClickMemoisied(e)}
       href={href}
       id={id}
+      startIcon={startIconElement}
+      variant={variant}
+      size={size}
       {...other}
     >
-      {!noIcon &&
-        (loading || forcedLoading ? (
-          <CircularProgress
-            size={variant === 'contained' ? 26 : 20}
-            className={classes.buttonProgress}
-          />
-        ) : success ? (
-          <CheckRounded className={classes.icon} />
-        ) : fail ? (
-          <CloseRounded className={classes.icon} />
-        ) : warning ? (
-          <ReportProblemOutlined className={classes.icon} />
-        ) : icon ? (
-          icon
-        ) : (
-          ''
-        ))}
       {children}
     </MuiButton>
   )

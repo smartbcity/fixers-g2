@@ -1,10 +1,10 @@
 import { Stack, Typography } from '@mui/material'
 import { Link as G2Link, Chip } from '@smartb/g2-components'
 import React, { useMemo } from 'react'
-import { InputLabeledProps } from './InputLabeled'
+import { InputFormProps } from './InputForm'
 import { Link, LinkProps } from 'react-router-dom'
 
-export const ReadonlyRenderer = (props: Partial<InputLabeledProps>) => {
+export const ReadonlyRenderer = (props: Partial<InputFormProps>) => {
   const {
     readonlyType = 'text',
     inputType,
@@ -14,7 +14,7 @@ export const ReadonlyRenderer = (props: Partial<InputLabeledProps>) => {
     options,
     multiple,
     getReadonlyChipColor,
-    readonlyTextUrl,
+    getReadonlyTextUrl,
     size
   } = props
 
@@ -32,38 +32,50 @@ export const ReadonlyRenderer = (props: Partial<InputLabeledProps>) => {
       if (options && value) return options.find((c) => c.key === value)?.label
     }
     return value
-  }, [inputType, value, values, choices, multiple])
+  }, [inputType, value, values, choices, multiple, options])
 
   const renderTag = useMemo(() => {
     if (readonlyType === 'text') return undefined
-    if (!multiple)
+    if (!multiple) {
+      const option = options?.find((o) => o.key === value)
       return (
         <Chip
           label={textToDisplay}
-          color={getReadonlyChipColor && getReadonlyChipColor(textToDisplay)}
+          color={
+            option?.color ??
+            (getReadonlyChipColor && getReadonlyChipColor(textToDisplay))
+          }
         />
       )
-    else if (options && values) {
-      return values.map((value, index) => {
-        const label = options.find((o) => o.key === value)?.label
-        if (!label) return undefined
+    } else if (options && values) {
+      return values.map((value) => {
+        const option = options.find((o) => o.key === value)
+        if (!option?.label) return undefined
         return (
           <Chip
-            key={index}
-            label={`${label}`}
-            color={getReadonlyChipColor && getReadonlyChipColor(label)}
+            key={option.key}
+            label={`${option?.label}`}
+            color={
+              option?.color ??
+              (getReadonlyChipColor && getReadonlyChipColor(option?.label))
+            }
           />
         )
       })
     }
     return
-  }, [readonlyType, textToDisplay])
+  }, [readonlyType, textToDisplay, value, options])
+
+  const url = useMemo(() => {
+    if (!value || !getReadonlyTextUrl) return undefined
+    return getReadonlyTextUrl(value)
+  }, [value, getReadonlyTextUrl])
 
   if (readonlyType === 'text') {
-    if (readonlyTextUrl)
+    if (url)
       return (
         <G2Link<LinkProps>
-          componentProps={{ to: readonlyTextUrl }}
+          componentProps={{ to: url }}
           component={Link}
           sx={{ color: '#676879' }}
           variant={size === 'small' ? 'body2' : 'body1'}

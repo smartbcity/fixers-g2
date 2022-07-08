@@ -21,16 +21,15 @@ export default {
   }
 } as Meta
 
-const Template: Story<ButtonBasicProps> = (args: ButtonBasicProps) => (
+export const Button: Story<ButtonBasicProps> = (args: ButtonBasicProps) => (
   <AruiButton {...args}>{args.children}</AruiButton>
 )
 
-export const Button = Template.bind({})
 Button.args = {
   children: 'Mon Bouton'
 }
 
-const Template2: Story = () => (
+export const ButtonVariant: Story = () => (
   <Box display='flex' justifyContent='space-around'>
     <AruiButton variant='contained'>contained</AruiButton>
     <AruiButton variant='outlined'>outlined</AruiButton>
@@ -38,7 +37,7 @@ const Template2: Story = () => (
   </Box>
 )
 
-const Template3: Story = () => (
+export const ButtonVariantSeverity: Story = () => (
   <Box display='flex' justifyContent='space-around'>
     <Box
       display='flex'
@@ -101,7 +100,7 @@ const Template3: Story = () => (
   </Box>
 )
 
-const Template4: Story = () => (
+export const ButtonVariantDisabled: Story = () => (
   <Box display='flex' justifyContent='space-around'>
     <AruiButton variant='contained' disabled>
       contained disabled
@@ -115,19 +114,31 @@ const Template4: Story = () => (
   </Box>
 )
 
-const Template5: Story = () => (
-  <AruiButton icon={<SwapHoriz style={{ marginRight: '5px' }} />}>
-    custom icon
-  </AruiButton>
+export const ButtonSizes: Story = () => (
+  <Box display='flex' justifyContent='space-around' alignItems='center'>
+    <AruiButton variant='contained' size='large'>
+      large
+    </AruiButton>
+    <AruiButton variant='contained' size='medium'>
+      medium
+    </AruiButton>
+    <AruiButton variant='contained' size='small'>
+      small
+    </AruiButton>
+  </Box>
 )
 
-const Template6: Story = () => (
-  <AruiButton success noIcon>
+export const CustomIcon: Story = () => (
+  <AruiButton startIcon={<SwapHoriz />}>custom icon</AruiButton>
+)
+
+export const NoDefaultIcon: Story = () => (
+  <AruiButton success noDefaultIcon>
     no icon
   </AruiButton>
 )
 
-const Template7: Story = () => (
+export const preConfigured: Story = () => (
   <Box display='flex' justifyContent='space-around'>
     <BackButton>BackButton</BackButton>
     <EditButton>EditButton</EditButton>
@@ -135,7 +146,7 @@ const Template7: Story = () => (
   </Box>
 )
 
-const Template8: Story = () => {
+export const buttonExtend: Story = () => {
   type ComponentPropsType = React.ComponentPropsWithRef<'a'>
   const componentProps: ComponentPropsType = {
     href: '/?path=/docs/components-button--button-extend'
@@ -150,7 +161,7 @@ const Template8: Story = () => {
   )
 }
 
-const Template9: Story = () => {
+export const asynchronousButton: Story = () => {
   const [success, setSuccess] = useState(false)
   const asyncFucntion = async () => {
     return new Promise((resolve) => {
@@ -167,27 +178,12 @@ const Template9: Story = () => {
   )
 }
 
-export const ButtonVariant = Template2.bind({})
-
-export const ButtonVariantSeverity = Template3.bind({})
-
-export const ButtonVariantDisabled = Template4.bind({})
-
-export const CustomIcon = Template5.bind({})
-
-export const NoIcon = Template6.bind({})
-
-export const preConfigured = Template7.bind({})
-
-export const buttonExtend = Template8.bind({})
-
-export const asynchronousButton = Template9.bind({})
-
 ButtonVariant.storyName = 'button variants'
 ButtonVariantSeverity.storyName = 'button variants severity'
 ButtonVariantDisabled.storyName = 'button variants disabled'
+ButtonSizes.storyName = 'button sizes'
 CustomIcon.storyName = 'custom icon'
-NoIcon.storyName = 'no icon'
+NoDefaultIcon.storyName = 'no default icon'
 preConfigured.storyName = 'pre-configured buttons'
 buttonExtend.storyName = 'extend a button with another component'
 asynchronousButton.storyName = 'call to an asynchronous action'

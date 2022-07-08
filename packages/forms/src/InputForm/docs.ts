@@ -1,4 +1,3 @@
-
 export const InputFormClasses = `
 interface InputFormClasses {
     label?: string

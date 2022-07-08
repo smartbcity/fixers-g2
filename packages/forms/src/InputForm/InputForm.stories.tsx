@@ -103,6 +103,50 @@ export const InputFormStory: Story<InputFormBasicProps> = (
   return <InputForm {...args} style={{ width: '500px' }} />
 }
 
+export const InputFormReadonly: Story<InputFormBasicProps> = (
+  args: InputFormBasicProps
+) => {
+  return (
+    <InputForm
+      {...args}
+      label='Readonly input'
+      value='My value'
+      inputType='textField'
+      style={{ width: '500px' }}
+      readonly
+    />
+  )
+}
+
+export const InputFormReadonlyChip: Story<InputFormBasicProps> = (
+  args: InputFormBasicProps
+) => {
+  return (
+    <InputForm
+      label='Readonly input chip'
+      value='My value'
+      inputType='textField'
+      style={{ width: '500px' }}
+      readonly
+      readonlyType='chip'
+      getReadonlyChipColor={() => '#E56643'}
+    />
+  )
+}
+
+export const InputFormLoading: Story<InputFormBasicProps> = (
+  args: InputFormBasicProps
+) => {
+  return (
+    <InputForm
+      label='Loading input'
+      value='My value'
+      style={{ width: '500px' }}
+      isLoading
+    />
+  )
+}
+
 export const FormExample: Story<InputFormBasicProps> = () => {
   const [form, setform] = useState({
     email: '',
@@ -208,7 +252,8 @@ export const FormExample: Story<InputFormBasicProps> = () => {
 
 InputFormStory.args = {
   label: 'un input:',
-  id: 'InputFormExample'
+  id: 'InputFormExample',
+  inputType: 'textField'
 }
 
 InputFormStory.storyName = 'InputForm'
