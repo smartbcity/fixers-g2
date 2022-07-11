@@ -189,7 +189,10 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
 
   const formState = useFormWithPartialFields({
     fields: partialFields,
-    onSubmit: onSubmitMemoized
+    onSubmit: onSubmitMemoized,
+    formikConfig: {
+      enableReinitialize: true
+    }
   })
 
   const fetchOrganization = useCallback(() => {
