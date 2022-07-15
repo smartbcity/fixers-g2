@@ -18,7 +18,7 @@ import {
   organizationToFlatOrganization
 } from '../../Domain'
 import { siretValidation } from '../../Validation/siret'
-import { addressValidation } from '../../../Commons'
+import { addressValidation, AdressValidationStrings } from '../../../Commons'
 import { useDeletableForm } from '../../../Commons/useDeletableForm'
 
 export type Validated = boolean
@@ -41,6 +41,53 @@ export interface OrganizationFactoryClasses {
 export interface OrganizationFactoryStyles {
   dropPictureBox?: React.CSSProperties
   infoPopover?: React.CSSProperties
+}
+
+export interface OrganizationFactoryStrings extends AdressValidationStrings {
+  /**
+   * @default "Numéro de siret"
+   */
+  siret?: string
+  /**
+   * @default "Nom"
+   */
+  name?: string
+  /**
+   * @default "Type"
+   */
+  roles?: string
+  /**
+   * @default "Addresse (facultatif)"
+   */
+  street?: string
+  /**
+   * @default "Code postal (facultatif)"
+   */
+  postalCode?: string
+  /**
+   * @default "Ville (facultatif)"
+   */
+  city?: string
+  /**
+   * @default "Site web (facultatif)"
+   */
+  website?: string
+  /**
+   * @default "Description (facultatif)"
+   */
+  description?: string
+  /**
+   * @default "Vous devez renseigner le nom"
+   */
+  completeName?: string
+  /**
+   * @default "Aucune information trouvé. Saisissez les informations ci-dessous manuellement"
+   */
+  siretNotFound?: string
+  /**
+   * @default "Le numéro de siret permettra de remplir automatiquement une partie des champs suivant"
+   */
+  siretDescription?: string
 }
 
 export interface OrganizationFactoryBasicProps extends BasicProps {
@@ -95,6 +142,10 @@ export interface OrganizationFactoryBasicProps extends BasicProps {
    * The names of the fields to block
    */
   blockedFields?: string[]
+  /**
+   * The prop to use to add custom translation to the component
+   */
+  strings?: OrganizationFactoryStrings
 }
 
 export type OrganizationFactoryProps = MergeMuiElementProps<
@@ -116,6 +167,7 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
     readonlyFields,
     isLoading = false,
     blockedFields,
+    strings,
     ...other
   } = props
 
@@ -142,17 +194,20 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
       {
         name: 'street',
         defaultValue: organization?.address?.street,
-        validator: addressValidation.street
+        validator: (value: any, values: any) =>
+          addressValidation.street(value, values, strings)
       },
       {
         name: 'postalCode',
         defaultValue: organization?.address?.postalCode,
-        validator: addressValidation.postalCode
+        validator: (value: any, values: any) =>
+          addressValidation.postalCode(value, values, strings)
       },
       {
         name: 'city',
         defaultValue: organization?.address?.city,
-        validator: addressValidation.city
+        validator: (value: any, values: any) =>
+          addressValidation.city(value, values, strings)
       },
       {
         name: 'name',
@@ -160,7 +215,11 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
         validator: (value?: string) => {
           if (readonlyFields?.name) return undefined
           const trimmed = (value ?? '').trim()
-          if (!trimmed) return 'Vous devez renseigner le nom' as string
+          if (!trimmed)
+            return (
+              strings?.completeName ??
+              ('Vous devez renseigner le nom' as string)
+            )
           return undefined
         }
       },
@@ -177,7 +236,7 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
         defaultValue: defaultRoles
       }
     ],
-    [organization, rolesOptions, readonlyFields]
+    [organization, rolesOptions, readonlyFields, strings?.completeName]
   )
 
   const onSubmitMemoized = useCallback(
@@ -209,7 +268,8 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
         } else {
           formState.setFieldError(
             'siret',
-            'Aucune information trouvé. Saisissez les informations ci-dessous manuellement'
+            strings?.siretNotFound ??
+              'Aucune information trouvé. Saisissez les informations ci-dessous manuellement'
           )
         }
       })
@@ -217,7 +277,8 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
     formState.values.siret,
     formState.setValues,
     formState.setFieldError,
-    getInseeOrganization
+    getInseeOrganization,
+    strings?.siretNotFound
   ])
 
   const organizationForm = useMemo(
@@ -225,7 +286,7 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
       {
         key: 'siret',
         name: 'siret',
-        label: 'Numéro de siret',
+        label: strings?.siret ?? 'Numéro de siret',
         type: 'textfield',
         textFieldProps: {
           textFieldType: 'search-number',
@@ -246,7 +307,7 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
         key: 'name',
         name: 'name',
         type: 'textfield',
-        label: 'Nom',
+        label: strings?.name ?? 'Nom',
         textFieldProps: {
           readonly: readonlyFields?.name
         }
@@ -256,7 +317,7 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
             {
               key: 'roles',
               name: 'roles',
-              label: 'Type',
+              label: strings?.roles ?? 'Type',
               type: 'select',
               selectProps: {
                 options: rolesOptions,
@@ -271,7 +332,7 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
         key: 'street',
         name: 'street',
         type: 'textfield',
-        label: 'Addresse (facultatif)',
+        label: strings?.street ?? 'Addresse (facultatif)',
         textFieldProps: {
           readonly: readonlyFields?.address
         }
@@ -280,7 +341,7 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
         key: 'postalCode',
         name: 'postalCode',
         type: 'textfield',
-        label: 'Code postal (facultatif)',
+        label: strings?.postalCode ?? 'Code postal (facultatif)',
         textFieldProps: {
           textFieldType: 'number',
           readonly: readonlyFields?.address
@@ -290,7 +351,7 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
         key: 'city',
         name: 'city',
         type: 'textfield',
-        label: 'Ville (facultatif)',
+        label: strings?.city ?? 'Ville (facultatif)',
         textFieldProps: {
           readonly: readonlyFields?.address
         }
@@ -299,7 +360,7 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
         key: 'website',
         name: 'website',
         type: 'textfield',
-        label: 'Site web (facultatif)',
+        label: strings?.website ?? 'Site web (facultatif)',
         textFieldProps: {
           readonly: readonlyFields?.website
         }
@@ -308,7 +369,7 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
         key: 'description',
         name: 'description',
         type: 'textfield',
-        label: 'Description (facultatif)',
+        label: strings?.description ?? 'Description (facultatif)',
         textFieldProps: {
           multiline: true,
           rows: 6,
@@ -316,7 +377,13 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
         }
       }
     ],
-    [formState.validateField, fetchOrganization, siretValid, readonlyFields]
+    [
+      formState.validateField,
+      fetchOrganization,
+      siretValid,
+      readonlyFields,
+      strings
+    ]
   )
 
   const finalFields = useDeletableForm({
@@ -360,8 +427,8 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
           style={styles?.infoPopover}
         >
           <Typography variant='body1'>
-            Le numéro de siret permettra de remplir automatiquement une partie
-            des champs suivant
+            {strings?.siretDescription ??
+              'Le numéro de siret permettra de remplir automatiquement une partie des champs suivant'}
           </Typography>
         </StyledPopover>
       )}

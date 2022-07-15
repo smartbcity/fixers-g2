@@ -2,12 +2,7 @@ import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 import React, { useCallback, useMemo } from 'react'
 import { OrganizationId } from '../../../Organization'
 import { User } from '../../Domain'
-import {
-  ReadonlyFields,
-  UserFactory,
-  UserFactoryProps,
-  UserFactoryStrings
-} from './UserFactory'
+import { ReadonlyFields, UserFactory, UserFactoryProps } from './UserFactory'
 import {
   CreateUserOptions,
   GetUserOptions,
@@ -25,17 +20,6 @@ export type ReadonlyUserFieldsPerState = {
    * @default {memberOf: true, email: true, roles:true }
    */
   update?: ReadonlyFields
-}
-
-export interface AutomatedUserFactoryStrings extends UserFactoryStrings {
-  /**
-   * @default "Mettre à jour"
-   */
-  updateButtonLabel?: string
-  /**
-   * @default "Créer"
-   */
-  createButtonLabel?: string
 }
 
 export interface AutomatedUserFactoryBasicProps extends BasicProps {
@@ -68,10 +52,6 @@ export interface AutomatedUserFactoryBasicProps extends BasicProps {
    * The fields readonly attributes for the current state
    */
   readonlyFieldsPerState?: ReadonlyUserFieldsPerState
-  /**
-   * The prop to use to add custom translation to the component
-   */
-  strings?: AutomatedUserFactoryStrings
 }
 
 export type AutomatedUserFactoryProps = MergeMuiElementProps<

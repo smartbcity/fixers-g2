@@ -17,9 +17,9 @@ export interface PresentationBasicProps extends BasicProps {
    */
   imgSrc?: string
   /**
-  * Indicates whether the avatar is active or not.
-  * @default true
-  */
+   * Indicates whether the avatar is active or not.
+   * @default true
+   */
   displayAvatar?: boolean
   /**
    * The presentation description used for the `alt` attribute of the image. And the aria-label of the `Presentation`.
@@ -33,7 +33,15 @@ export type PresentationProps = MergeMuiElementProps<
 >
 
 export const Presentation = (props: PresentationProps) => {
-  const { label, subLabel, imgSrc, sx, description, displayAvatar = true, ...other } = props
+  const {
+    label,
+    subLabel,
+    imgSrc,
+    sx,
+    description,
+    displayAvatar = true,
+    ...other
+  } = props
   return (
     <Stack
       display='flex'
@@ -59,11 +67,11 @@ export const Presentation = (props: PresentationProps) => {
         >
           <img src={imgSrc} alt={description} className='presentationImage' />
         </Box>
-      ) : displayAvatar && (
-        <UserAvatar name={label} aria-label={description} />
+      ) : (
+        displayAvatar && <UserAvatar name={label} aria-label={description} />
       )}
       <Stack>
-        <Typography align='left' variant='body2'>
+        <Typography align='left' variant='subtitle2'>
           {label}
         </Typography>
         {subLabel && (

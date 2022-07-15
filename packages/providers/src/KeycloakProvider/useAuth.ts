@@ -48,6 +48,12 @@ type AuthService<
    * @return {Roles | undefined} return the role or undefined if not authenticated
    */
   getUserPrincipalRole: () => Roles | undefined
+
+  /**
+   * It will return the principale role of the given list. This function only works if you have construct the array role in the correct order (from the most important to the less important)
+   * @return {Roles | undefined} return the role or undefined if not authenticated
+   */
+  getPrincipalRole: (roles: Roles[]) => Roles | undefined
 } & RolesServices<Roles> &
   Additionnals
 
@@ -123,17 +129,24 @@ function useAuth<
     [keycloak]
   )
 
+  const getPrincipalRole = useCallback(
+    (givenRoles: Roles[]): Roles | undefined => {
+      for (let it in roles) {
+        if (givenRoles.includes(roles[it])) {
+          return roles[it]
+        }
+      }
+      return
+    },
+    [roles]
+  )
+
   const getUserPrincipalRole = useCallback((): Roles | undefined => {
     //@ts-ignore
     const userRoles: Roles[] =
       keycloakWithRoles.tokenParsed?.realm_access?.roles ?? []
-    for (let it in roles) {
-      if (userRoles.includes(roles[it])) {
-        return roles[it]
-      }
-    }
-    return
-  }, [keycloakWithRoles, roles])
+    return getPrincipalRole(userRoles)
+  }, [keycloakWithRoles, getPrincipalRole])
 
   const hasRole = useCallback(
     (role: Roles | Roles[]): boolean => {
@@ -190,9 +203,17 @@ function useAuth<
       hasRole: hasRole,
       getUser: getUser,
       getUserPrincipalRole: getUserPrincipalRole,
+      getPrincipalRole: getPrincipalRole,
       ...rolesServices
     }),
-    [hasRole, getUserId, getUser, getUserPrincipalRole, rolesServices]
+    [
+      hasRole,
+      getUserId,
+      getUser,
+      getUserPrincipalRole,
+      rolesServices,
+      getPrincipalRole
+    ]
   )
 
   const additionnals: AuthServiceAdditionnal<AdditionnalServices> =

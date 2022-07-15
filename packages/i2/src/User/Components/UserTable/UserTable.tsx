@@ -98,6 +98,7 @@ export const UserTable = <T extends User = User>(props: UserTableProps<T>) => {
     page,
     setPage,
     noDataComponent,
+    isLoading,
     ...other
   } = props
 
@@ -113,7 +114,7 @@ export const UserTable = <T extends User = User>(props: UserTableProps<T>) => {
         ),
         maxWidth: 220,
         width: 170
-      },
+      } as Column<T>,
       {
         Header: strings?.adress ?? 'Adresse',
         accessor: 'address',
@@ -124,7 +125,7 @@ export const UserTable = <T extends User = User>(props: UserTableProps<T>) => {
             </Typography>
           ) : undefined,
         width: 200
-      },
+      } as Column<T>,
       {
         Header: strings?.email ?? 'Email',
         accessor: 'email',
@@ -132,7 +133,7 @@ export const UserTable = <T extends User = User>(props: UserTableProps<T>) => {
           <Typography>{row.original.email}</Typography>
         ),
         width: 250
-      },
+      } as Column<T>,
       ...((!!users[0] && !!users[0].memberOf) || hasOrganizations
         ? [
             {
@@ -168,7 +169,8 @@ export const UserTable = <T extends User = User>(props: UserTableProps<T>) => {
     ...columnsExtander
   })
 
-  if (users.length === 0 && noDataComponent) return noDataComponent
+  if (users.length === 0 && noDataComponent && !isLoading)
+    return noDataComponent
   return (
     <Table<T>
       page={page}
@@ -177,6 +179,7 @@ export const UserTable = <T extends User = User>(props: UserTableProps<T>) => {
       data={users}
       columns={completeColumns}
       variant='grounded'
+      isLoading={isLoading}
       {...other}
     />
   )

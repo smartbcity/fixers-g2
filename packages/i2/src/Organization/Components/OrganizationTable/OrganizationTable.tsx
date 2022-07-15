@@ -20,6 +20,21 @@ export type OrganizationTableBlockedFilters = {
   role?: boolean
 }
 
+export interface OrganizationTableStrings {
+  /**
+   * @default "Oganisation"
+   */
+  organization?: string
+  /**
+   * @default "Adresse"
+   */
+  adress?: string
+  /**
+   * @default "Site web"
+   */
+  website?: string
+}
+
 export interface OrganizationTableBasicProps<T extends Organization>
   extends BasicProps {
   /**
@@ -54,6 +69,10 @@ export interface OrganizationTableBasicProps<T extends Organization>
    * The component to displauy if no user is found
    */
   noDataComponent?: JSX.Element
+  /**
+   * The prop to use to add custom translation to the component
+   */
+  strings?: OrganizationTableStrings
 }
 
 export type OrganizationTableProps<T extends Organization = Organization> =
@@ -74,20 +93,22 @@ export const OrganizationTable = <T extends Organization = Organization>(
     totalPages,
     columnsExtander,
     noDataComponent,
+    isLoading,
+    strings,
     ...other
   } = props
 
   const columns = useMemo(
     (): Column<T>[] => [
       {
-        Header: 'Organisation',
+        Header: strings?.organization ?? 'Organisation',
         accessor: 'name',
         Cell: ({ row }: CellProps<T>) => (
           <Presentation displayAvatar={false} label={row.original.name} />
         )
-      },
+      } as Column<T>,
       {
-        Header: 'Adresse',
+        Header: strings?.adress ?? 'Adresse',
         accessor: 'address',
         Cell: ({ row }: CellProps<T>) =>
           row.original.address ? (
@@ -95,9 +116,9 @@ export const OrganizationTable = <T extends Organization = Organization>(
               {`${row.original.address.street} ${row.original.address.postalCode} ${row.original.address.city}`}
             </Typography>
           ) : undefined
-      },
+      } as Column<T>,
       {
-        Header: 'Site web',
+        Header: strings?.website ?? 'Site web',
         accessor: 'website',
         Cell: ({ row }: CellProps<T>) => (
           <Link
@@ -107,9 +128,9 @@ export const OrganizationTable = <T extends Organization = Organization>(
             {row.original.website}
           </Link>
         )
-      }
+      } as Column<T>
     ],
-    []
+    [strings]
   )
 
   const completeColumns = useExtendedColumns({
@@ -117,7 +138,8 @@ export const OrganizationTable = <T extends Organization = Organization>(
     ...columnsExtander
   })
 
-  if (organizations.length === 0 && noDataComponent) return noDataComponent
+  if (organizations.length === 0 && noDataComponent && !isLoading)
+    return noDataComponent
   return (
     <Table<T>
       page={page}
@@ -126,6 +148,7 @@ export const OrganizationTable = <T extends Organization = Organization>(
       columns={completeColumns}
       totalPages={totalPages}
       variant='grounded'
+      isLoading={isLoading}
       {...other}
     />
   )

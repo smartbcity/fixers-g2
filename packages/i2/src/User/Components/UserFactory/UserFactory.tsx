@@ -259,9 +259,7 @@ export const UserFactory = (props: UserFactoryProps) => {
       {
         name: 'role',
         defaultValue:
-          user?.roles?.assignedRoles ?? !isUpdate
-            ? [(rolesOptions ?? [])[0]?.key]
-            : []
+          user?.roles?.assignedRoles ?? !isUpdate ? [rolesOptions] : []
       },
       {
         name: 'memberOf',
@@ -336,6 +334,21 @@ export const UserFactory = (props: UserFactoryProps) => {
           readonly: readonlyFields?.familyName
         }
       },
+      ...(orgsOptions || organizationId
+        ? [
+            {
+              key: 'memberOf',
+              name: 'memberOf',
+              label: strings?.organization ?? 'Organisation',
+              type: 'select',
+              selectProps: {
+                options: orgsOptions,
+                readonly: readonlyFields?.memberOf,
+                getReadonlyTextUrl: getOrganizationUrl
+              }
+            } as FormField
+          ]
+        : []),
       ...(rolesOptions
         ? [
             {
@@ -348,21 +361,6 @@ export const UserFactory = (props: UserFactoryProps) => {
                 readonly: readonlyFields?.roles,
                 readonlyType: 'chip',
                 multiple: true
-              }
-            } as FormField
-          ]
-        : []),
-      ...(orgsOptions || organizationId
-        ? [
-            {
-              key: 'memberOf',
-              name: 'memberOf',
-              label: strings?.organization ?? 'Organisation',
-              type: 'select',
-              selectProps: {
-                options: orgsOptions,
-                readonly: readonlyFields?.memberOf,
-                getReadonlyTextUrl: getOrganizationUrl
               }
             } as FormField
           ]
