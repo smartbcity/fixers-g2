@@ -53,9 +53,14 @@ export interface CompleteTableInstance<Data extends object>
   selectedFlatRows: Row<Data>[]
 }
 
-export type Column<Data extends object> = BasicColumn<Data> & {
+export type Column<Data extends object> = Omit<
+  BasicColumn<Data>,
+  'accessor' | 'Cell'
+> & {
   className?: string
   style?: React.CSSProperties
+  accessor?: keyof Data | string
+  Cell?: (props: CellProps<Data>) => React.ReactNode
 }
 
 export const UseCompleteTable = <Data extends object>(

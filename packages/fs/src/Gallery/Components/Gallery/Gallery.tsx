@@ -117,17 +117,18 @@ export const Gallery = (props: GalleryProps) => {
   return (
     <ImageList
       {...other}
-      className={cx('AruiGallery-root', className)}
-      sx={{
-        '& .AruiGallery-image': {
-          borderRadius: '20px',
-          height: '100%'
-        }
-      }}
       variant='masonry'
       cols={2}
       gap={20}
       {...gridProps}
+      className={cx('AruiGallery-root', className, gridProps?.className)}
+      sx={{
+        '& .AruiGallery-image': {
+          borderRadius: '20px',
+          height: '100%'
+        },
+        ...gridProps?.sx
+      }}
     >
       {images}
     </ImageList>

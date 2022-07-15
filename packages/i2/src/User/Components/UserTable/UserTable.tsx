@@ -3,13 +3,14 @@ import { Link as G2Link, Presentation } from '@smartb/g2-components'
 import { Column, Table, TableProps, CellProps } from '@smartb/g2-layout'
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 import React, { useMemo } from 'react'
-import {
-  UserFilters,
-} from './UserFilters'
+import { UserFilters } from './UserFilters'
 import { User } from '../../Domain'
 import { OrganizationId } from '../../../Organization'
-import { ExtandedColumnsParams, useExtendedColumns } from '../../../Commons/useExtendedColumns'
-import {Link, LinkProps} from "react-router-dom"
+import {
+  ExtandedColumnsParams,
+  useExtendedColumns
+} from '../../../Commons/useExtendedColumns'
+import { Link, LinkProps } from 'react-router-dom'
 
 export type UserTableFilters = {
   page?: number
@@ -50,17 +51,17 @@ export interface UserTableBasicProps<T extends User> extends BasicProps {
    */
   totalPages?: number
   /**
-  * The current page
-  */
+   * The current page
+   */
   page: number
   /**
    * The current page
    */
   setPage: (newPage: number) => void
   /**
-   * The column extander module 
+   * The column extander module
    */
-  columnsExtander?: Omit<ExtandedColumnsParams<T>, "initialColumns">
+  columnsExtander?: Omit<ExtandedColumnsParams<T>, 'initialColumns'>
   /**
    * If you want the columns organization to contain links redirecting to the organization page provide this prop
    */
@@ -75,6 +76,10 @@ export interface UserTableBasicProps<T extends User> extends BasicProps {
    * The prop to use to add custom translation to the component
    */
   strings?: UserTableStrings
+  /**
+   * The component to displauy if no user is found
+   */
+  noDataComponent?: JSX.Element
 }
 
 export type UserTableProps<T extends User = User> = MergeMuiElementProps<
@@ -92,9 +97,9 @@ export const UserTable = <T extends User = User>(props: UserTableProps<T>) => {
     columnsExtander,
     page,
     setPage,
+    noDataComponent,
     ...other
   } = props
-
 
   const columns = useMemo(
     (): Column<T>[] => [
@@ -102,7 +107,9 @@ export const UserTable = <T extends User = User>(props: UserTableProps<T>) => {
         Header: strings?.user ?? 'Utilisateur',
         accessor: 'givenName',
         Cell: ({ row }: CellProps<T>) => (
-          <Presentation label={`${row.original.givenName} ${row.original.familyName}`} />
+          <Presentation
+            label={`${row.original.givenName} ${row.original.familyName}`}
+          />
         ),
         maxWidth: 220,
         width: 170
@@ -128,23 +135,30 @@ export const UserTable = <T extends User = User>(props: UserTableProps<T>) => {
       },
       ...((!!users[0] && !!users[0].memberOf) || hasOrganizations
         ? [
-          {
-            Header: strings?.organization ?? 'Organisation',
-            accessor: 'memberOf',
-            Cell: ({ row }: CellProps<T>) => {
-              if (!!getOrganizationUrl && row.original.memberOf?.id) {
-                return (
-                  <G2Link<LinkProps> componentProps={{ to: getOrganizationUrl(row.original.memberOf?.id) }} onClick={(e) => e.stopPropagation()} component={Link} sx={{ color: "#676879" }}>
-                    {row.original.memberOf?.name}
-                  </G2Link>
-                )
-              }
-              return <Typography>{row.original.memberOf?.name}</Typography>
-            },
-            width: 150
-          } as Column<T>
-        ]
-        : []),
+            {
+              Header: strings?.organization ?? 'Organisation',
+              accessor: 'memberOf',
+              Cell: ({ row }: CellProps<T>) => {
+                if (!!getOrganizationUrl && row.original.memberOf?.id) {
+                  return (
+                    <G2Link<LinkProps>
+                      componentProps={{
+                        to: getOrganizationUrl(row.original.memberOf?.id)
+                      }}
+                      onClick={(e) => e.stopPropagation()}
+                      component={Link}
+                      sx={{ color: '#676879' }}
+                    >
+                      {row.original.memberOf?.name}
+                    </G2Link>
+                  )
+                }
+                return <Typography>{row.original.memberOf?.name}</Typography>
+              },
+              width: 150
+            } as Column<T>
+          ]
+        : [])
     ],
     [getOrganizationUrl, strings, hasOrganizations]
   )
@@ -154,6 +168,7 @@ export const UserTable = <T extends User = User>(props: UserTableProps<T>) => {
     ...columnsExtander
   })
 
+  if (users.length === 0 && noDataComponent) return noDataComponent
   return (
     <Table<T>
       page={page}

@@ -306,7 +306,7 @@ export const NotificationList: Story = () => {
     {
       Header: 'Notification list',
       id: 'notifications',
-      Cell: ({ row }: CellProps<Notification>) => (
+      Cell: ({ row }) => (
         <Stack direction='row' alignItems='center' spacing={2}>
           <Divider
             orientation='vertical'

@@ -62,7 +62,7 @@ export const useGetGallery = (params: getGalleryParams) => {
     }
   }, [apiUrl, jwt, directoryPath])
 
-  return useQuery([queryKey, directoryPath.objectId], getGallery, options)
+  return useQuery([queryKey, directoryPath], getGallery, options)
 }
 
 export type DeleteFilesOptions = Omit<

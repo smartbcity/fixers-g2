@@ -19,6 +19,7 @@ import {
 } from '../../Domain'
 import { siretValidation } from '../../Validation/siret'
 import { addressValidation } from '../../../Commons'
+import { useDeletableForm } from '../../../Commons/useDeletableForm'
 
 export type Validated = boolean
 
@@ -90,13 +91,16 @@ export interface OrganizationFactoryBasicProps extends BasicProps {
    * The styles applied to the different part of the component
    */
   styles?: OrganizationFactoryStyles
+  /**
+   * The names of the fields to block
+   */
+  blockedFields?: string[]
 }
 
 export type OrganizationFactoryProps = MergeMuiElementProps<
-  Omit<FormProps, "fields" | "formState">,
+  Omit<FormProps, 'fields' | 'formState'>,
   OrganizationFactoryBasicProps
 >
-
 
 export const OrganizationFactory = (props: OrganizationFactoryProps) => {
   const {
@@ -111,6 +115,7 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
     readonly = false,
     readonlyFields,
     isLoading = false,
+    blockedFields,
     ...other
   } = props
 
@@ -256,7 +261,7 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
               selectProps: {
                 options: rolesOptions,
                 readonly: readonlyFields?.roles,
-                readonlyType: "chip",
+                readonlyType: 'chip',
                 multiple: true
               }
             } as FormField
@@ -314,6 +319,11 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
     [formState.validateField, fetchOrganization, siretValid, readonlyFields]
   )
 
+  const finalFields = useDeletableForm({
+    initialFields: organizationForm,
+    blockedFields: blockedFields
+  })
+
   useEffect(() => {
     const element = SubmitButtonRef?.current
     if (element && !readonly) {
@@ -326,7 +336,7 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
       <Form
         {...other}
         className={cx('AruiOrganizationFactory-root', className)}
-        fields={organizationForm}
+        fields={finalFields}
         formState={formState}
         isLoading={isLoading}
         readonly={readonly}

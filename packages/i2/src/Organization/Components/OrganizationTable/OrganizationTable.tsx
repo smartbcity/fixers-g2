@@ -50,6 +50,10 @@ export interface OrganizationTableBasicProps<T extends Organization>
    * The actions available on a organization
    */
   getActions?: (org: Organization) => MenuItem<{}>[]
+  /**
+   * The component to displauy if no user is found
+   */
+  noDataComponent?: JSX.Element
 }
 
 export type OrganizationTableProps<T extends Organization = Organization> =
@@ -69,6 +73,7 @@ export const OrganizationTable = <T extends Organization = Organization>(
     tableActions,
     totalPages,
     columnsExtander,
+    noDataComponent,
     ...other
   } = props
 
@@ -112,6 +117,7 @@ export const OrganizationTable = <T extends Organization = Organization>(
     ...columnsExtander
   })
 
+  if (organizations.length === 0 && noDataComponent) return noDataComponent
   return (
     <Table<T>
       page={page}

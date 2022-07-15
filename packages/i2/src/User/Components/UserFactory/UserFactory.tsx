@@ -14,6 +14,7 @@ import { OrganizationId, OrganizationRef } from '../../../Organization'
 import { Stack, StackProps } from '@mui/material'
 import { useElementSize } from '@mantine/hooks'
 import { UserSummary } from '../UserSummary'
+import { useDeletableForm } from '../../../Commons/useDeletableForm'
 
 export type Validated = boolean
 
@@ -127,7 +128,7 @@ export interface UserFactoryBasicProps extends BasicProps {
   /**
    * If you want the organization to transform to a link
    */
-   getOrganizationUrl?: (organizationId: OrganizationId) => string
+  getOrganizationUrl?: (organizationId: OrganizationId) => string
   /**
    * Use this prop if you want only some fields to be readonly
    */
@@ -142,6 +143,10 @@ export interface UserFactoryBasicProps extends BasicProps {
    * The prop to use to add custom translation to the component
    */
   strings?: UserFactoryStrings
+  /**
+   * The names of the fields to block
+   */
+  blockedFields?: string[]
 }
 
 export type UserFactoryProps = MergeMuiElementProps<
@@ -164,6 +169,7 @@ export const UserFactory = (props: UserFactoryProps) => {
     strings,
     SubmitButtonRef,
     getOrganizationUrl,
+    blockedFields,
     ...other
   } = props
 
@@ -263,11 +269,11 @@ export const UserFactory = (props: UserFactoryProps) => {
       },
       ...(!isUpdate && !readonly
         ? [
-          {
-            name: 'sendEmailLink',
-            defaultValue: true
-          }
-        ]
+            {
+              name: 'sendEmailLink',
+              defaultValue: true
+            }
+          ]
         : [])
     ],
     [
@@ -305,11 +311,11 @@ export const UserFactory = (props: UserFactoryProps) => {
     const orgsOptions =
       !!organizationsRefs && organizationsRefs.length > 0
         ? organizationsRefs.map(
-          (orgRef): Option => ({
-            key: orgRef.id,
-            label: orgRef.name
-          })
-        )
+            (orgRef): Option => ({
+              key: orgRef.id,
+              label: orgRef.name
+            })
+          )
         : undefined
     return [
       {
@@ -332,34 +338,34 @@ export const UserFactory = (props: UserFactoryProps) => {
       },
       ...(rolesOptions
         ? [
-          {
-            key: 'role',
-            name: 'role',
-            label: strings?.role ?? 'Role',
-            type: 'select',
-            selectProps: {
-              options: rolesOptions,
-              readonly: readonlyFields?.roles,
-              readonlyType: "chip",
-              multiple: true
-            }
-          } as FormField
-        ]
+            {
+              key: 'role',
+              name: 'role',
+              label: strings?.role ?? 'Role',
+              type: 'select',
+              selectProps: {
+                options: rolesOptions,
+                readonly: readonlyFields?.roles,
+                readonlyType: 'chip',
+                multiple: true
+              }
+            } as FormField
+          ]
         : []),
       ...(orgsOptions || organizationId
         ? [
-          {
-            key: 'memberOf',
-            name: 'memberOf',
-            label: strings?.organization ?? 'Organisation',
-            type: 'select',
-            selectProps: {
-              options: orgsOptions,
-              readonly: readonlyFields?.memberOf,
-              getReadonlyTextUrl: getOrganizationUrl
-            }
-          } as FormField
-        ]
+            {
+              key: 'memberOf',
+              name: 'memberOf',
+              label: strings?.organization ?? 'Organisation',
+              type: 'select',
+              selectProps: {
+                options: orgsOptions,
+                readonly: readonlyFields?.memberOf,
+                getReadonlyTextUrl: getOrganizationUrl
+              }
+            } as FormField
+          ]
         : []),
       {
         key: 'street',
@@ -411,22 +417,35 @@ export const UserFactory = (props: UserFactoryProps) => {
       },
       ...(!isUpdate && !readonly
         ? [
-          {
-            key: 'sendEmailLink',
-            name: 'sendEmailLink',
-            type: 'checkbox',
-            label:
-              strings?.sendEmailLink ??
-              "Envoyer un lien d'invitation par mail",
-            checkBoxProps: {
-              className: 'AruiUserFactory-sendEmailLink',
-              disabled: readonlyFields?.sendEmailLink
-            }
-          } as FormField
-        ]
+            {
+              key: 'sendEmailLink',
+              name: 'sendEmailLink',
+              type: 'checkbox',
+              label:
+                strings?.sendEmailLink ??
+                "Envoyer un lien d'invitation par mail",
+              checkBoxProps: {
+                className: 'AruiUserFactory-sendEmailLink',
+                disabled: readonlyFields?.sendEmailLink
+              }
+            } as FormField
+          ]
         : [])
     ]
-  }, [isUpdate, rolesOptions, organizationsRefs, readonlyFields, readonly, organizationId, getOrganizationUrl])
+  }, [
+    isUpdate,
+    rolesOptions,
+    organizationsRefs,
+    readonlyFields,
+    readonly,
+    organizationId,
+    getOrganizationUrl
+  ])
+
+  const finalFields = useDeletableForm({
+    initialFields: userForm,
+    blockedFields: blockedFields
+  })
 
   useEffect(() => {
     const element = SubmitButtonRef?.current
@@ -440,29 +459,33 @@ export const UserFactory = (props: UserFactoryProps) => {
       {...other}
       className={cx('AruiUserFactory-root', className)}
       ref={ref}
-      flexDirection={
-        width < 450 ? 'column' : 'row'
-      }
-      justifyContent="center"
+      flexDirection={width < 450 ? 'column' : 'row'}
+      justifyContent='center'
       sx={{
         width: '100%',
-        gap: (theme) => width < 450 ? theme.spacing(3) : theme.spacing(12)
+        gap: (theme) => (width < 450 ? theme.spacing(3) : theme.spacing(12))
       }}
     >
-      <UserSummary onlyAvatar={width < 450} fullName={`${formState.values.givenName ?? ""} ${formState.values.familyName ?? ""}`} roles={formState.values.role} rolesOptions={rolesOptions} />
+      <UserSummary
+        onlyAvatar={width < 450}
+        fullName={`${formState.values.givenName ?? ''} ${
+          formState.values.familyName ?? ''
+        }`}
+        roles={formState.values.role}
+        rolesOptions={rolesOptions}
+      />
       <Form
         className='AruiUserFactory-form'
-        fields={userForm}
+        fields={finalFields}
         formState={formState}
         isLoading={isLoading}
         readonly={readonly}
         sx={{
           width: '100%',
           flexGrow: 1,
-          maxWidth: "450px"
+          maxWidth: '450px'
         }}
       />
     </Stack>
-
   )
 }
