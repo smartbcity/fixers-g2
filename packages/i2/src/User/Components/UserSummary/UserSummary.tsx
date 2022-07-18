@@ -12,7 +12,7 @@ export interface UserSummaryBasicProps extends BasicProps {
   /**
    * The role of the user
    */
-  roles?: string[]
+  roles?: string[] | string
   /**
    * The roles options needed to display the label of the role
    */
@@ -35,17 +35,24 @@ export const UserSummary = (props: UserSummaryProps) => {
 
   const renderTag = useMemo(() => {
     if (!roles || !rolesOptions) return undefined
-    return roles.map((value) => {
-      const option = rolesOptions.find((o) => o.key === value)
-      if (!option?.label) return undefined
-      return (
-        <Chip
-          key={option.key}
-          label={`${option?.label}`}
-          color={option?.color}
-        />
-      )
-    })
+    if (Array.isArray(roles)) {
+      return roles.map((value) => {
+        const option = rolesOptions.find((o) => o.key === value)
+        if (!option?.label) return undefined
+        return (
+          <Chip
+            key={option.key}
+            label={`${option?.label}`}
+            color={option?.color}
+          />
+        )
+      })
+    }
+    const option = rolesOptions.find((o) => o.key === roles)
+    if (!option?.label) return undefined
+    return (
+      <Chip key={option.key} label={`${option?.label}`} color={option?.color} />
+    )
   }, [roles, rolesOptions])
 
   return (

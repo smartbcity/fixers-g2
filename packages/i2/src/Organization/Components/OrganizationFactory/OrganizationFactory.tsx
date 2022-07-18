@@ -131,6 +131,12 @@ export interface OrganizationFactoryBasicProps extends BasicProps {
    */
   isLoading?: boolean
   /**
+   * Allow the user to have multipe roles
+   *
+   * @default true
+   */
+  multipleRoles?: boolean
+  /**
    * The classes applied to the different part of the component
    */
   classes?: OrganizationFactoryClasses
@@ -168,6 +174,7 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
     isLoading = false,
     blockedFields,
     strings,
+    multipleRoles = true,
     ...other
   } = props
 
@@ -181,8 +188,9 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
 
   const defaultRoles = useMemo(() => {
     const givenRoles = rolesOptions?.map((it) => it.key)
-    return organization?.roles?.filter((it) => givenRoles?.includes(it))
-  }, [rolesOptions, organization?.roles])
+    const roles = organization?.roles?.filter((it) => givenRoles?.includes(it))
+    return multipleRoles ? roles : roles?.[0]
+  }, [rolesOptions, organization?.roles, multipleRoles])
 
   const partialFields = useMemo(
     (): FormPartialField[] => [
@@ -236,19 +244,25 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
         defaultValue: defaultRoles
       }
     ],
-    [organization, rolesOptions, readonlyFields, strings?.completeName]
+    [
+      organization,
+      rolesOptions,
+      readonlyFields,
+      strings?.completeName,
+      defaultRoles
+    ]
   )
 
   const onSubmitMemoized = useCallback(
     async (values: FlatOrganization) => {
       if (onSubmit) {
         onSubmit({
-          ...flatOrganizationToOrganization(values),
+          ...flatOrganizationToOrganization(values, multipleRoles),
           id: organization?.id ?? ''
         })
       }
     },
-    [onSubmit, organization]
+    [onSubmit, organization, multipleRoles]
   )
 
   const formState = useFormWithPartialFields({
@@ -317,13 +331,13 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
             {
               key: 'roles',
               name: 'roles',
-              label: strings?.roles ?? 'Type',
+              label: strings?.roles ?? 'Rôle',
               type: 'select',
               selectProps: {
                 options: rolesOptions,
                 readonly: readonlyFields?.roles,
                 readonlyType: 'chip',
-                multiple: true
+                multiple: multipleRoles
               }
             } as FormField
           ]
@@ -382,7 +396,8 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
       fetchOrganization,
       siretValid,
       readonlyFields,
-      strings
+      strings,
+      multipleRoles
     ]
   )
 

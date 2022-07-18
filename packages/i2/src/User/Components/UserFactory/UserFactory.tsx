@@ -56,7 +56,7 @@ export interface UserFactoryStrings extends AdressValidationStrings {
   /**
    * @default "Role"
    */
-  role?: string
+  roles?: string
   /**
    * @default "Organisation"
    */
@@ -122,6 +122,10 @@ export interface UserFactoryBasicProps extends BasicProps {
    */
   rolesOptions?: Option[]
   /**
+   * Use This props if you have roles that you don't want the user to be able to select but able to see in readonly use this prop
+   */
+  readonlyRolesOptions?: Option[]
+  /**
    * The organizationId of the user. Needed if you want to preSelect it when you are creating a user
    */
   organizationId?: OrganizationId
@@ -133,6 +137,12 @@ export interface UserFactoryBasicProps extends BasicProps {
    * Use this prop if you want only some fields to be readonly
    */
   readonlyFields?: ReadonlyFields
+  /**
+   * Allow the user to have multipe roles
+   *
+   * @default true
+   */
+  multipleRoles?: boolean
   /**
    * Indicates if the data is currently loading
    *
@@ -170,6 +180,8 @@ export const UserFactory = (props: UserFactoryProps) => {
     SubmitButtonRef,
     getOrganizationUrl,
     blockedFields,
+    readonlyRolesOptions,
+    multipleRoles = true,
     ...other
   } = props
 
@@ -257,9 +269,10 @@ export const UserFactory = (props: UserFactoryProps) => {
         }
       },
       {
-        name: 'role',
-        defaultValue:
-          user?.roles?.assignedRoles ?? !isUpdate ? [rolesOptions] : []
+        name: 'roles',
+        defaultValue: multipleRoles
+          ? user?.roles?.assignedRoles
+          : user?.roles?.assignedRoles[0]
       },
       {
         name: 'memberOf',
@@ -281,7 +294,8 @@ export const UserFactory = (props: UserFactoryProps) => {
       readonly,
       organizationId,
       readonlyFields,
-      strings
+      strings,
+      multipleRoles
     ]
   )
 
@@ -289,12 +303,12 @@ export const UserFactory = (props: UserFactoryProps) => {
     async (values: FlatUser) => {
       if (onSubmit) {
         onSubmit({
-          ...FlatUserToUser(values),
+          ...FlatUserToUser(values, multipleRoles),
           id: user?.id ?? ''
         })
       }
     },
-    [onSubmit, user]
+    [onSubmit, user, multipleRoles]
   )
 
   const formState = useFormWithPartialFields({
@@ -352,15 +366,18 @@ export const UserFactory = (props: UserFactoryProps) => {
       ...(rolesOptions
         ? [
             {
-              key: 'role',
-              name: 'role',
-              label: strings?.role ?? 'Role',
+              key: 'roles',
+              name: 'roles',
+              label: strings?.roles ?? 'Role',
               type: 'select',
               selectProps: {
-                options: rolesOptions,
+                options:
+                  readonlyFields?.roles === true || readonly
+                    ? readonlyRolesOptions
+                    : rolesOptions,
                 readonly: readonlyFields?.roles,
                 readonlyType: 'chip',
-                multiple: true
+                multiple: multipleRoles
               }
             } as FormField
           ]
@@ -437,7 +454,8 @@ export const UserFactory = (props: UserFactoryProps) => {
     readonlyFields,
     readonly,
     organizationId,
-    getOrganizationUrl
+    getOrganizationUrl,
+    multipleRoles
   ])
 
   const finalFields = useDeletableForm({
@@ -469,8 +487,8 @@ export const UserFactory = (props: UserFactoryProps) => {
         fullName={`${formState.values.givenName ?? ''} ${
           formState.values.familyName ?? ''
         }`}
-        roles={formState.values.role}
-        rolesOptions={rolesOptions}
+        roles={formState.values.roles}
+        rolesOptions={readonlyRolesOptions}
       />
       <Form
         className='AruiUserFactory-form'

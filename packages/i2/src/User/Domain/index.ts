@@ -59,7 +59,10 @@ export const userToFlatUser = (user: User): FlatUser => {
   return flat
 }
 
-export const FlatUserToUser = (flat: FlatUser): User => {
+export const FlatUserToUser = (
+  flat: FlatUser,
+  multipleRoles: boolean
+): User => {
   const user: User & {
     street?: string
     city?: string
@@ -77,7 +80,8 @@ export const FlatUserToUser = (flat: FlatUser): User => {
       roles: []
     },
     roles: {
-      assignedRoles: flat.roles,
+      //@ts-ignore
+      assignedRoles: multipleRoles ? flat.roles : [flat.roles],
       effectiveRoles: []
     }
   }

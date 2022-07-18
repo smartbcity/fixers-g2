@@ -83,7 +83,7 @@ export const Section = (props: SectionProps) => {
   return (
     <Paper
       elevation={0}
-      className={cx('AruiPage-root', className)}
+      className={cx('AruiSection-root', className)}
       sx={{
         overflow: 'hidden',
         display: 'flex',
@@ -94,20 +94,26 @@ export const Section = (props: SectionProps) => {
       {...other}
     >
       <Box
-        className={cx('AruiPage-overflowWrapper', classes?.overflowWrapper)}
+        className={cx('AruiSection-overflowWrapper', classes?.overflowWrapper)}
         style={styles?.overflowWrapper}
         sx={{
           maxHeight: '100%',
           overflow: 'auto',
-          width: '100%'
+          width: '100%',
+          display: 'flex',
+          flexDirection: 'column'
         }}
       >
         {headerDisplay}
         <Box
           sx={{
-            padding: (theme) => theme.spacing(3)
+            padding: (theme) => theme.spacing(3),
+            flexGrow: 1
           }}
-          className={cx('AruiPage-contentContainer', classes?.contentContainer)}
+          className={cx(
+            'AruiSection-contentContainer',
+            classes?.contentContainer
+          )}
           style={styles?.contentContainer}
         >
           {children}

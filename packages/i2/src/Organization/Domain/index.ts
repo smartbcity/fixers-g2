@@ -87,7 +87,8 @@ export const organizationToFlatOrganization = (
 }
 
 export const flatOrganizationToOrganization = (
-  flat: FlatOrganization
+  flat: FlatOrganization,
+  multipleRoles: boolean
 ): Organization => {
   const org: Organization & {
     street?: string
@@ -100,7 +101,8 @@ export const flatOrganizationToOrganization = (
       city: flat.city ?? '',
       postalCode: flat.postalCode ?? ''
     },
-    roles: flat.roles
+    //@ts-ignore
+    roles: multipleRoles ? flat.roles : [flat.roles]
   }
   delete org.street
   delete org.city

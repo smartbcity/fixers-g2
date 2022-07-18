@@ -163,7 +163,7 @@ export const useUpdateUser = (params: UpdateUserParams) => {
           ...user,
           memberOf: user.memberOf?.id,
           // @ts-ignore
-          roles: user.role
+          roles: user.roles.assignedRoles ?? []
         }),
         jwt: jwt
       })
