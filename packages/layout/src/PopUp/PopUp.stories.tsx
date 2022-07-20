@@ -1,9 +1,5 @@
 import React, { useState } from 'react'
-import {
-  PopUp as AruiPopUp,
-  PopUpBasicProps,
-  Action as PopUpAction
-} from './PopUp'
+import { PopUp as AruiPopUp, PopUpBasicProps } from './PopUp'
 import {
   ConfirmationPopUp as AruiConfirmationPopUp,
   ConfirmationPopUpBasicProps
@@ -15,7 +11,7 @@ import { ArgsTable, Title, Primary, Stories } from '@storybook/addon-docs'
 import { styles, classes, Action } from './types'
 import { Box, Typography } from '@mui/material'
 import imageHolder from '../assets/imageHolder.jpg'
-import { Button } from '@smartb/g2-components'
+import { Action, Button } from '@smartb/g2-components'
 import { withDesign } from 'storybook-addon-designs'
 
 export default {
@@ -56,7 +52,7 @@ export const PopUp: Story<PopUpBasicProps> = (args: PopUpBasicProps) => {
 
 export const alternativePopUp: Story = () => {
   const [open, setOpen] = useState(false)
-  const actions: PopUpAction[] = [
+  const actions: Action[] = [
     {
       label: 'continuer',
       key: 'continuPopupButton',

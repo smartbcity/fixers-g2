@@ -9,10 +9,17 @@ import {
   UpdateUserOptions,
   useCreateUser,
   useGetUser,
-  useUpdateUser
+  userExistsByEmail,
+  UserUpdateEmailOptions,
+  useUpdateUser,
+  useUserUpdateEmail
 } from '../../Api'
 import { i2Config, useAuth } from '@smartb/g2-providers'
 import { useQueryClient } from 'react-query'
+import {
+  ChoicedResetPassword,
+  ChoicedResetPasswordProps
+} from '../UserResetPassword'
 
 export type ReadonlyUserFieldsPerState = {
   create?: ReadonlyFields
@@ -36,6 +43,10 @@ export interface AutomatedUserFactoryBasicProps extends BasicProps {
    */
   createUserOptions?: CreateUserOptions
   /**
+   * The userUpdateEmail hook options
+   */
+  userUpdateEmailOptions?: UserUpdateEmailOptions
+  /**
    * Define whether the object is updated or created
    * @default false
    */
@@ -52,6 +63,14 @@ export interface AutomatedUserFactoryBasicProps extends BasicProps {
    * The fields readonly attributes for the current state
    */
   readonlyFieldsPerState?: ReadonlyUserFieldsPerState
+  /**
+   * The props passed to the component ChoicedResetPassword
+   */
+  choicedResetPasswordProps?: ChoicedResetPasswordProps
+  /**
+   * The type of the reset password. If not provided the component will not be rendered
+   */
+  resetPasswordType?: 'email' | 'forced'
 }
 
 export type AutomatedUserFactoryProps = MergeMuiElementProps<
@@ -68,6 +87,9 @@ export const AutomatedUserFactory = (props: AutomatedUserFactoryProps) => {
     getUserOptions,
     updateUserOptions,
     createUserOptions,
+    choicedResetPasswordProps,
+    resetPasswordType,
+    userUpdateEmailOptions,
     ...other
   } = props
 
@@ -119,16 +141,32 @@ export const AutomatedUserFactory = (props: AutomatedUserFactoryProps) => {
     organizationId: organizationId
   })
 
+  const updateEmail = useUserUpdateEmail({
+    apiUrl: i2Config().userUrl,
+    jwt: keycloak.token,
+    options: userUpdateEmailOptions
+  })
+
   const updateUserMemoized = useCallback(
     async (user: User) => {
-      const res = await updateUser.mutateAsync(user)
-      if (res) {
-        return true
-      } else {
-        return false
+      const results: Promise<any>[] = []
+      results.push(updateUser.mutateAsync(user))
+      if (getUser.data?.email !== user.email) {
+        results.push(
+          updateEmail.mutateAsync({
+            email: user.email,
+            id: user.id
+          })
+        )
       }
+      const res = await Promise.all(results)
+      for (let it in res) {
+        const result = res[it]
+        if (!result) return false
+      }
+      return true
     },
-    [updateUser.mutateAsync]
+    [updateUser.mutateAsync, updateEmail.mutateAsync, getUser.data]
   )
 
   const createUserMemoized = useCallback(
@@ -143,6 +181,13 @@ export const AutomatedUserFactory = (props: AutomatedUserFactoryProps) => {
     [createUser.mutateAsync]
   )
 
+  const checkEmailValidity = useCallback(
+    async (email: string) => {
+      return userExistsByEmail(email, i2Config().userUrl, keycloak.token)
+    },
+    [keycloak.token]
+  )
+
   return (
     <UserFactory
       user={getUser.data}
@@ -150,11 +195,22 @@ export const AutomatedUserFactory = (props: AutomatedUserFactoryProps) => {
       isUpdate={update}
       isLoading={getUser.isLoading}
       organizationId={organizationId}
+      checkEmailValidity={checkEmailValidity}
+      formExtension={
+        userId &&
+        resetPasswordType && (
+          <ChoicedResetPassword
+            resetPasswordType={resetPasswordType}
+            userId={userId}
+            {...choicedResetPasswordProps}
+          />
+        )
+      }
       readonlyFields={
         update
           ? {
               memberOf: true,
-              email: true,
+              email: false,
               roles: true,
               ...readonlyFieldsPerState?.update
             }

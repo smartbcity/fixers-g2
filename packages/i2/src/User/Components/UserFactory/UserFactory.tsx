@@ -85,6 +85,14 @@ export interface UserFactoryStrings extends AdressValidationStrings {
    * @default "Le numéro de téléphone doit contenir dix chiffres"
    */
   enterAValidPhone?: string
+  /**
+   * @default 'Vous devez renseigner le rôle'
+   */
+  chooseTheRole?: string
+  /**
+   * @default 'Cette addresse email est déjà utilisée'
+   */
+  emailAlreadyUsed?: string
 }
 
 export interface UserFactoryBasicProps extends BasicProps {
@@ -134,6 +142,10 @@ export interface UserFactoryBasicProps extends BasicProps {
    */
   getOrganizationUrl?: (organizationId: OrganizationId) => string
   /**
+   * The event called to check if the email is available
+   */
+  checkEmailValidity?: (email: string) => Promise<boolean | undefined>
+  /**
    * Use this prop if you want only some fields to be readonly
    */
   readonlyFields?: ReadonlyFields
@@ -149,6 +161,10 @@ export interface UserFactoryBasicProps extends BasicProps {
    * @default false
    */
   isLoading?: boolean
+  /**
+   * The nodes put at the bottom of the form
+   */
+  formExtension?: React.ReactNode
   /**
    * The prop to use to add custom translation to the component
    */
@@ -182,6 +198,8 @@ export const UserFactory = (props: UserFactoryProps) => {
     blockedFields,
     readonlyRolesOptions,
     multipleRoles = true,
+    checkEmailValidity,
+    formExtension,
     ...other
   } = props
 
@@ -272,7 +290,13 @@ export const UserFactory = (props: UserFactoryProps) => {
         name: 'roles',
         defaultValue: multipleRoles
           ? user?.roles?.assignedRoles
-          : user?.roles?.assignedRoles[0]
+          : user?.roles?.assignedRoles[0],
+        validator: (value?: string | string[]) => {
+          if (readonlyFields?.roles) return undefined
+          if (!value)
+            return strings?.chooseTheRole ?? 'Vous devez renseigner le rôle'
+          return undefined
+        }
       },
       {
         name: 'memberOf',
@@ -417,7 +441,18 @@ export const UserFactory = (props: UserFactoryProps) => {
         label: strings?.email ?? 'Adresse mail',
         textFieldProps: {
           textFieldType: 'email',
-          readonly: readonlyFields?.email
+          readonly: readonlyFields?.email,
+          onBlur: async () => {
+            if (user?.email !== formState.values.email && checkEmailValidity) {
+              const isValid = await checkEmailValidity(formState.values.email)
+              if (isValid === true) {
+                formState.setFieldError(
+                  'email',
+                  strings?.emailAlreadyUsed ?? 'Cet email est déjà utilisé'
+                )
+              }
+            }
+          }
         }
       },
       {
@@ -455,7 +490,9 @@ export const UserFactory = (props: UserFactoryProps) => {
     readonly,
     organizationId,
     getOrganizationUrl,
-    multipleRoles
+    multipleRoles,
+    formState.values.email,
+    user?.email
   ])
 
   const finalFields = useDeletableForm({
@@ -490,18 +527,25 @@ export const UserFactory = (props: UserFactoryProps) => {
         roles={formState.values.roles}
         rolesOptions={readonlyRolesOptions}
       />
-      <Form
-        className='AruiUserFactory-form'
-        fields={finalFields}
-        formState={formState}
-        isLoading={isLoading}
-        readonly={readonly}
+      <Stack
         sx={{
-          width: '100%',
-          flexGrow: 1,
-          maxWidth: '450px'
+          gap: (theme) => theme.spacing(3)
         }}
-      />
+      >
+        <Form
+          className='AruiUserFactory-form'
+          fields={finalFields}
+          formState={formState}
+          isLoading={isLoading}
+          readonly={readonly}
+          sx={{
+            width: '100%',
+            flexGrow: 1,
+            maxWidth: '450px'
+          }}
+        />
+        {formExtension}
+      </Stack>
     </Stack>
   )
 }

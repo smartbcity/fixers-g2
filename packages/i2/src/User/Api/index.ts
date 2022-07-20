@@ -1,7 +1,10 @@
 import {
   User,
   UserResetPasswordCommand,
-  UserResetPasswordResult
+  UserUpdatedEmailEvent,
+  UserUpdateEmailCommand,
+  UserUpdatePasswordCommand,
+  UserUpdatePasswordResult
 } from '../Domain'
 import { useCallback } from 'react'
 import { request } from '@smartb/g2-utils'
@@ -219,9 +222,50 @@ export const useCreateUser = (params: CreateUserParams) => {
   return useMutation(createUser, options)
 }
 
-export type ResetUserPasswordOptions = Omit<
+export type UserUpdatePasswordOptions = Omit<
   UseMutationOptions<
-    UserResetPasswordResult | undefined,
+    UserUpdatePasswordResult | undefined,
+    unknown,
+    UserUpdatePasswordCommand | undefined,
+    unknown
+  >,
+  'mutationFn'
+>
+
+export interface UserUpdatePasswordParams {
+  jwt?: string
+  apiUrl: string
+  options?: UserUpdatePasswordOptions
+}
+
+export const useUserUpdatePassword = (params: UserUpdatePasswordParams) => {
+  const { apiUrl, jwt, options } = params
+
+  const resetUserPassword = useCallback(
+    async (
+      cmd?: UserUpdatePasswordCommand
+    ): Promise<UserUpdatePasswordResult | undefined> => {
+      const res = await request<UserUpdatePasswordResult[]>({
+        url: `${apiUrl}/userUpdatePassword`,
+        method: 'POST',
+        body: JSON.stringify(cmd),
+        jwt: jwt
+      })
+      if (res) {
+        return res[0]
+      } else {
+        return undefined
+      }
+    },
+    [apiUrl, jwt]
+  )
+
+  return useMutation(resetUserPassword, options)
+}
+
+export type UserResetPasswordOptions = Omit<
+  UseMutationOptions<
+    UserUpdatePasswordResult | undefined,
     unknown,
     UserResetPasswordCommand | undefined,
     unknown
@@ -229,20 +273,20 @@ export type ResetUserPasswordOptions = Omit<
   'mutationFn'
 >
 
-export interface ResetUserPasswordParams {
+export interface UserResetPasswordParams {
   jwt?: string
   apiUrl: string
-  options?: ResetUserPasswordOptions
+  options?: UserResetPasswordOptions
 }
 
-export const useResetUserPassword = (params: ResetUserPasswordParams) => {
+export const useUserResetPassword = (params: UserResetPasswordParams) => {
   const { apiUrl, jwt, options } = params
 
   const resetUserPassword = useCallback(
-    async (
-      cmd?: UserResetPasswordCommand
-    ): Promise<UserResetPasswordResult | undefined> => {
-      const res = await request<UserResetPasswordResult[]>({
+    async (cmd?: {
+      id: string
+    }): Promise<UserUpdatePasswordResult | undefined> => {
+      const res = await request<UserUpdatePasswordResult[]>({
         url: `${apiUrl}/userResetPassword`,
         method: 'POST',
         body: JSON.stringify(cmd),
@@ -258,4 +302,65 @@ export const useResetUserPassword = (params: ResetUserPasswordParams) => {
   )
 
   return useMutation(resetUserPassword, options)
+}
+
+export type UserUpdateEmailOptions = Omit<
+  UseMutationOptions<
+    UserUpdatedEmailEvent | undefined,
+    unknown,
+    UserUpdateEmailCommand | undefined,
+    unknown
+  >,
+  'mutationFn'
+>
+
+export interface UserUpdateEmailParams {
+  jwt?: string
+  apiUrl: string
+  options?: UserUpdateEmailOptions
+}
+
+export const useUserUpdateEmail = (params: UserUpdateEmailParams) => {
+  const { apiUrl, jwt, options } = params
+
+  const updateEmail = useCallback(
+    async (
+      cmd?: UserUpdateEmailCommand
+    ): Promise<UserUpdatedEmailEvent | undefined> => {
+      const res = await request<UserUpdatedEmailEvent[]>({
+        url: `${apiUrl}/userUpdateEmail`,
+        method: 'POST',
+        body: JSON.stringify(cmd),
+        jwt: jwt
+      })
+      if (res) {
+        return res[0]
+      } else {
+        return undefined
+      }
+    },
+    [apiUrl, jwt]
+  )
+
+  return useMutation(updateEmail, options)
+}
+
+export const userExistsByEmail = async (
+  email: string,
+  apiUrl: string,
+  jwt?: string
+) => {
+  const res = await request<{ item?: boolean }[]>({
+    url: `${apiUrl}/userExistsByEmail`,
+    method: 'POST',
+    body: JSON.stringify({
+      email: email
+    }),
+    jwt: jwt
+  })
+  if (res) {
+    return res[0].item
+  } else {
+    return undefined
+  }
 }

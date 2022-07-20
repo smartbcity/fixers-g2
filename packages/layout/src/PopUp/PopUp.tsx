@@ -5,7 +5,7 @@ import {
   DialogContent,
   DialogProps
 } from '@mui/material'
-import { Button, ButtonProps } from '@smartb/g2-components'
+import { Action, Button } from '@smartb/g2-components'
 import {
   MergeMuiElementProps,
   BasicProps,
@@ -37,11 +37,6 @@ const useStyles = makeG2STyles()((theme) => ({
     margin: theme.spacing / 2
   }
 }))
-
-export type Action = {
-  label: React.ReactNode
-  key: string
-} & Omit<ButtonProps, 'children' | 'style'>
 
 interface PopUpClasses {
   content?: string

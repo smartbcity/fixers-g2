@@ -88,6 +88,10 @@ export interface OrganizationFactoryStrings extends AdressValidationStrings {
    * @default "Le numéro de siret permettra de remplir automatiquement une partie des champs suivant"
    */
   siretDescription?: string
+  /**
+   * @default 'Vous devez renseigner le rôle'
+   */
+  chooseTheRole?: string
 }
 
 export interface OrganizationFactoryBasicProps extends BasicProps {
@@ -241,7 +245,13 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
       },
       {
         name: 'roles',
-        defaultValue: defaultRoles
+        defaultValue: defaultRoles,
+        validator: (value?: string | string[]) => {
+          if (readonlyFields?.roles) return undefined
+          if (!value)
+            return strings?.chooseTheRole ?? 'Vous devez renseigner le rôle'
+          return undefined
+        }
       }
     ],
     [

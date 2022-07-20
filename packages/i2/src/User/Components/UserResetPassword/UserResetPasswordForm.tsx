@@ -2,14 +2,13 @@ import { cx } from '@emotion/css'
 import { Stack, StackProps } from '@mui/material'
 import {
   Form,
-  FormAction,
   FormField,
   FormPartialField,
   useFormWithPartialFields
 } from '@smartb/g2-forms'
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import { UserId, UserResetPasswordCommand } from '../../Domain'
+import React, { useCallback, useEffect, useMemo } from 'react'
+import { UserId, UserUpdatePasswordCommand } from '../../Domain'
 import { FormikHelpers } from 'formik'
 import {
   passwordCheckValidation,
@@ -29,13 +28,9 @@ export interface UserResetPasswordFormStyles {
 
 export interface UserResetPasswordStrings extends PasswordValidationStrings {
   /**
-   * @default 'Enregister nouveau mot de passe'
+   * @default 'Nouveau mot de passe'
    */
-  submitButtonLabel?: string
-  /**
-   * @default 'Mot de passe'
-   */
-  password?: string
+  newPassword?: string
   /**
    * @default 'Vérification du mot de passe'
    */
@@ -48,16 +43,15 @@ export interface UserResetPasswordFormBasicProps extends BasicProps {
    */
   userId: UserId
   /**
+   * The ref of the submit element
+   */
+  SubmitButtonRef?: React.RefObject<HTMLElement | undefined>
+  /**
    * The submit event
    * @param user command to reset a password
    * @returns true if the Api call has been successfull
    */
-  onSubmit?: (cmd: UserResetPasswordCommand) => Promise<boolean> | boolean
-  /**
-   * The label placed in the submit button
-   * @default 'Valider'
-   */
-  submitButtonLabel?: string
+  onSubmit?: (cmd: UserUpdatePasswordCommand) => Promise<boolean> | boolean
   /**
    * The classes applied to the different part of the component
    */
@@ -81,19 +75,13 @@ export const UserResetPasswordForm = (props: UserResetPasswordFormProps) => {
   const {
     userId,
     onSubmit,
-    submitButtonLabel = 'Enregister nouveau mot de passe',
     classes,
     styles,
     className,
     strings,
+    SubmitButtonRef,
     ...other
   } = props
-
-  const [feedback, setFeedback] = useState<boolean | undefined>(undefined)
-
-  useEffect(() => {
-    setFeedback(undefined)
-  }, [onSubmit])
 
   const partialFields = useMemo(
     (): FormPartialField[] => [
@@ -120,7 +108,6 @@ export const UserResetPasswordForm = (props: UserResetPasswordFormProps) => {
           id: userId,
           password: values.password
         })
-        setFeedback(feedback)
         if (feedback) {
           formikHelpers.resetForm()
         }
@@ -137,13 +124,20 @@ export const UserResetPasswordForm = (props: UserResetPasswordFormProps) => {
     }
   })
 
+  useEffect(() => {
+    const element = SubmitButtonRef?.current
+    if (element) {
+      element.onclick = formState.submitForm
+    }
+  }, [SubmitButtonRef?.current, formState.submitForm])
+
   const form = useMemo(
     (): FormField[] => [
       {
         key: 'password',
         name: 'password',
         type: 'textfield',
-        label: strings?.password ?? 'Mot de passe',
+        label: strings?.newPassword ?? 'Nouveau mot de passe',
         textFieldProps: {
           textFieldType: 'password'
         }
@@ -159,20 +153,6 @@ export const UserResetPasswordForm = (props: UserResetPasswordFormProps) => {
       }
     ],
     []
-  )
-
-  const actions = useMemo(
-    (): FormAction[] => [
-      {
-        key: 'SubmitForm',
-        label: strings?.submitButtonLabel ?? 'Enregister nouveau mot de passe',
-        success: feedback !== undefined && feedback,
-        fail: feedback !== undefined && !feedback,
-        onClick: formState.submitForm,
-        className: 'AruiUserResetPassword-submitForm'
-      }
-    ],
-    [submitButtonLabel, formState.submitForm, feedback]
   )
 
   return (
@@ -192,7 +172,6 @@ export const UserResetPasswordForm = (props: UserResetPasswordFormProps) => {
         style={styles?.form}
         fields={form}
         formState={formState}
-        actions={actions}
       />
     </Stack>
   )

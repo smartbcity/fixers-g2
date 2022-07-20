@@ -105,11 +105,23 @@ export interface UserPageResult<T extends User> {
   total: number
 }
 
-export interface UserResetPasswordCommand {
+export interface UserUpdatePasswordCommand {
   id: UserId
   password: string
 }
 
-export interface UserResetPasswordResult {
+export interface UserUpdatePasswordResult {
+  id: UserId
+}
+export interface UserResetPasswordCommand {
+  id: UserId
+}
+
+export interface UserUpdateEmailCommand {
+  id: UserId
+  email: string
+}
+
+export interface UserUpdatedEmailEvent {
   id: UserId
 }

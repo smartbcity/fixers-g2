@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { Meta } from '@storybook/react'
 import {
   AutomatedUserFactory,
@@ -8,6 +8,7 @@ import { Story } from '@storybook/react/types-6-0'
 import { g2Config, KeycloakProvider } from '@smartb/g2-providers'
 import { Typography } from '@mui/material'
 import { QueryClient, QueryClientProvider } from 'react-query'
+import { Button } from '@smartb/g2-components'
 
 export default {
   title: 'I2/AutomatedUserFactory',
@@ -33,26 +34,33 @@ export const AutomatedUserFactoryStory: Story<AutomatedUserFactoryProps> = (
 }
 
 const Following = (args: AutomatedUserFactoryProps) => {
-  const [userId, setuserId] = useState<string | undefined>(undefined)
-
+  const [userId, setuserId] = useState<string | undefined>(
+    'b78ce604-72ce-4bf5-99a2-f0b0d5f06b2a'
+  )
+  const submitRef = useRef<HTMLButtonElement>(null)
   return (
-    <AutomatedUserFactory
-      update={userId}
-      createUserOptions={{
-        onSuccess: (data) => {
-          setuserId(data.id)
-        }
-      }}
-      organizationId={'1'}
-      organizationsRefs={[
-        {
-          id: '1',
-          name: 'Organization 1'
-        }
-      ]}
-      {...args}
-      userId={userId}
-    />
+    <>
+      <AutomatedUserFactory
+        update={userId}
+        createUserOptions={{
+          onSuccess: (data) => {
+            setuserId(data.id)
+          }
+        }}
+        organizationId={'1'}
+        organizationsRefs={[
+          {
+            id: '1',
+            name: 'Organization 1'
+          }
+        ]}
+        resetPasswordType='forced'
+        SubmitButtonRef={submitRef}
+        {...args}
+        userId={userId}
+      />
+      <Button ref={submitRef}>Validate</Button>
+    </>
   )
 }
 
