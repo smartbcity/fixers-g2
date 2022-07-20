@@ -3,7 +3,10 @@ export {
   UserPageQuery,
   UserPageResult,
   UserResetPasswordCommand,
-  UserResetPasswordResult,
+  UserUpdateEmailCommand,
+  UserUpdatePasswordCommand,
+  UserUpdatePasswordResult,
+  UserUpdatedEmailEvent,
   UserId
 } from './Domain'
 
@@ -15,8 +18,7 @@ export {
   AutomatedUserFactory,
   AutomatedUserFactoryProps,
   ReadonlyUserFieldsPerState,
-  ReadonlyFields,
-  
+  ReadonlyFields
 } from './Components/UserFactory'
 
 export {
@@ -39,7 +41,4 @@ export {
 
 export { MyProfile } from './Components/MyProfile'
 
-export {
-  UserSummary,
-  UserSummaryProps
-} from './Components/UserSummary'
+export { UserSummary, UserSummaryProps } from './Components/UserSummary'
