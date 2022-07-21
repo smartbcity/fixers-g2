@@ -17,7 +17,8 @@ export const useInputStyles = makeG2STyles()((theme) => ({
   input: {
     '& .MuiInputBase-input': {
       padding: '6px 7px',
-      backgroundColor: 'unset'
+      backgroundColor: 'unset',
+      borderRadius: 0
     },
     '& .MuiSelect-root': {
       backgroundColor: 'white',
@@ -190,7 +191,16 @@ export const useInputStyles = makeG2STyles()((theme) => ({
     color: darkGrey
   },
   clearError: {
-    color: theme.colors.error
+    color: theme.colors.error,
+    cursor: 'normal',
+  },
+  loading: {
+    position: 'absolute',
+    right: '10px',
+    top: '50%',
+    marginTop: '-10px',
+    cursor: 'pointer',
+    color: darkGrey
   },
   validated: {
     position: 'absolute',

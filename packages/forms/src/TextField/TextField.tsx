@@ -1,5 +1,6 @@
-import React, { useCallback, useMemo } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import {
+  CircularProgress,
   InputAdornment,
   TextField as MuiTextField,
   TextFieldProps as MuiTextFieldProps
@@ -22,19 +23,22 @@ const useStyles = makeG2STyles()({
   },
   withIconStart: {
     '& .MuiInputBase-input': {
-      paddingLeft: '0px',
-      paddingRight: '8px'
+      paddingLeft: '0px'
     }
   },
   withIconEnd: {
     '& .MuiInputBase-input': {
-      paddingLeft: '5px'
+      paddingRight: '0px'
     }
   },
   withIconEndOnRemove: {
     '& .MuiInputBase-input': {
-      paddingLeft: '5px',
       paddingRight: '20px'
+    }
+  },
+  withOnRemove: {
+    '& .MuiInputBase-input': {
+      paddingRight: '35px'
     }
   },
   searchIcon: {
@@ -47,10 +51,7 @@ const useStyles = makeG2STyles()({
     fill: 'rgba(0, 0, 0, 0.26)'
   },
   endAdornmentWithInputIcon: {
-    right: '30px'
-  },
-  inputWithClear: {
-    paddingRight: '27px'
+    right: '36px'
   },
   paddingMultiline: {
     '& .MuiInputBase-root': {
@@ -65,6 +66,7 @@ export interface TextFieldClasses {
   helperText?: string
   clearIcon?: string
   validIcon?: string
+  loadingIcon?: string
   searchIcon?: string
 }
 
@@ -74,6 +76,7 @@ export interface TextFieldStyles {
   helperText?: React.CSSProperties
   clearIcon?: React.CSSProperties
   validIcon?: React.CSSProperties
+  loadingIcon?: React.CSSProperties
   searchIcon?: React.CSSProperties
 }
 
@@ -89,12 +92,12 @@ export interface TextFieldBasicProps extends BasicProps {
    * @default 'text'
    */
   textFieldType?:
-    | 'number'
-    | 'text'
-    | 'email'
-    | 'password'
-    | 'search'
-    | 'search-number'
+  | 'number'
+  | 'text'
+  | 'email'
+  | 'password'
+  | 'search'
+  | 'search-number'
 
   /**
    * The size of the input
@@ -109,6 +112,14 @@ export interface TextFieldBasicProps extends BasicProps {
    * @default false
    */
   validated?: boolean
+
+  /**
+   * By default if your **onSearch** function is asynchronous the textfield will automatically make a loading icon appear in order
+   * to indicate the loading status. But if you want to force that state you can set **isLoading** to `true`.
+   *
+   * @default false
+   */
+  searchLoading?: boolean
 
   /**
    * The event called when the value of the input change
@@ -158,7 +169,7 @@ export interface TextFieldBasicProps extends BasicProps {
   /**
    * The position of the icon
    *
-   * @default 'start'
+   * @default 'end'
    */
   iconPosition?: 'start' | 'end'
 
@@ -207,24 +218,38 @@ export const TextField = React.forwardRef(
       onRemove,
       classes,
       styles,
-      iconPosition = 'start',
+      iconPosition = 'end',
       size = 'medium',
       validated = false,
       onSearch,
       InputProps,
       noCheckOrClearIcon = false,
       multiline = false,
+      searchLoading = false,
       ...other
     } = props
 
     const defaultStyles = useInputStyles()
     const localStyles = useStyles()
 
+    const [loading, setloading] = useState(false)
+
     const onChangeMemoized = useCallback(
       (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         onChange && onChange(e.target.value)
       },
       [onChange]
+    )
+
+    const onSearchMemoisied = useCallback(
+      async () => {
+        if (!!onSearch) {
+          setloading(true)
+          await onSearch()
+          setloading(false)
+        }
+      },
+      [onSearch]
     )
 
     const downHandler = useCallback(
@@ -234,29 +259,40 @@ export const TextField = React.forwardRef(
           event.key === 'Enter'
         ) {
           event.currentTarget.blur()
-          onSearch && onSearch()
+          onSearchMemoisied && onSearchMemoisied()
         }
       },
-      [onSearch, textFieldType]
+      [onSearchMemoisied, textFieldType]
     )
 
     const inputAdornment = useMemo(() => {
-      if (textFieldType === 'search' || textFieldType === 'search-number') {
+      const getIcon = () => {
+        if (textFieldType === 'search' || textFieldType === 'search-number') {
+          return (
+            <SearchIcon
+              color='#323338'
+              onClick={!disabled ? onSearchMemoisied : undefined}
+              className={defaultStyles.cx(
+                localStyles.classes.searchIcon,
+                disabled && localStyles.classes.searchIconDisabled,
+                'AruiTextfield-searchIcon',
+                classes?.searchIcon
+              )}
+              style={styles?.searchIcon}
+            />
+          )
+        }
+        return inputIcon
+      }
+
+      const icon = getIcon()
+
+      if (icon) {
         if (iconPosition === 'start') {
           return {
             startAdornment: (
               <InputAdornment component='div' position='start'>
-                <SearchIcon
-                  color='#323338'
-                  onClick={!disabled ? onSearch : undefined}
-                  className={defaultStyles.cx(
-                    localStyles.classes.searchIcon,
-                    disabled && localStyles.classes.searchIconDisabled,
-                    'AruiTextfield-searchIcon',
-                    classes?.searchIcon
-                  )}
-                  style={styles?.searchIcon}
-                />
+                {icon}
               </InputAdornment>
             )
           }
@@ -264,41 +300,13 @@ export const TextField = React.forwardRef(
           return {
             endAdornment: (
               <InputAdornment component='div' position='end'>
-                <SearchIcon
-                  color='#323338'
-                  onClick={!disabled ? onSearch : undefined}
-                  className={defaultStyles.cx(
-                    localStyles.classes.searchIcon,
-                    disabled && localStyles.classes.searchIconDisabled,
-                    'AruiTextfield-searchIcon',
-                    classes?.searchIcon
-                  )}
-                  style={styles?.searchIcon}
-                />
+                {icon}
               </InputAdornment>
             )
           }
         }
-      } else {
-        if (inputIcon && iconPosition === 'start') {
-          return {
-            startAdornment: (
-              <InputAdornment component='div' position='start'>
-                {inputIcon}
-              </InputAdornment>
-            )
-          }
-        } else if (inputIcon) {
-          return {
-            endAdornment: (
-              <InputAdornment component='div' position='end'>
-                {inputIcon}
-              </InputAdornment>
-            )
-          }
-        }
-        return {}
       }
+      return {}
     }, [
       textFieldType,
       inputIcon,
@@ -306,7 +314,7 @@ export const TextField = React.forwardRef(
       classes?.searchIcon,
       styles?.searchIcon,
       disabled,
-      onSearch
+      onSearchMemoisied,
     ])
 
     const formHelperProps = useMemo(() => {
@@ -322,19 +330,33 @@ export const TextField = React.forwardRef(
 
     const rightIcon = useMemo(() => {
       if (noCheckOrClearIcon) return
+      if (loading || searchLoading) {
+        return (
+          <CircularProgress
+            size={20}
+            className={defaultStyles.cx(
+              defaultStyles.classes.clear,
+              defaultStyles.classes.loading,
+              inputAdornment.endAdornment &&
+              localStyles.classes.endAdornmentWithInputIcon,
+              'AruiTextfield-loadingIcon',
+              classes?.loadingIcon
+            )}
+            style={styles?.loadingIcon}
+          />
+        )
+      }
       if (validated)
         return (
           <CheckRounded
             className={defaultStyles.cx(
               defaultStyles.classes.validated,
               inputAdornment.endAdornment &&
-                localStyles.classes.endAdornmentWithInputIcon,
+              localStyles.classes.endAdornmentWithInputIcon,
               'AruiTextfield-validIcon',
               classes?.validIcon
             )}
-            style={{
-              ...styles?.validIcon
-            }}
+            style={styles?.validIcon}
           />
         )
       if ((!value || value === '') && !error) return undefined
@@ -345,14 +367,12 @@ export const TextField = React.forwardRef(
             className={defaultStyles.cx(
               defaultStyles.classes.clear,
               inputAdornment.endAdornment &&
-                localStyles.classes.endAdornmentWithInputIcon,
+              localStyles.classes.endAdornmentWithInputIcon,
               error && defaultStyles.classes.clearError,
               'AruiTextfield-clearIcon',
               classes?.clearIcon
             )}
-            style={{
-              ...styles?.clearIcon
-            }}
+            style={styles?.clearIcon}
           />
         )
       }
@@ -367,18 +387,18 @@ export const TextField = React.forwardRef(
       inputAdornment.endAdornment,
       noCheckOrClearIcon,
       error,
-      disabled
+      disabled,
+      searchLoading,
+      loading
     ])
 
     const inputClasses = () => {
-      if (inputIcon && iconPosition === 'start') {
-        return localStyles.classes.withIconStart
-      }
-      if (inputIcon && iconPosition === 'end') {
-        if ((onRemove || validated) && !noCheckOrClearIcon) {
+      if (!!rightIcon) {
+        if (inputAdornment.endAdornment) {
           return localStyles.classes.withIconEndOnRemove
+        } else {
+          return localStyles.classes.withOnRemove
         }
-        return localStyles.classes.withIconEnd
       }
       return ''
     }
@@ -403,8 +423,8 @@ export const TextField = React.forwardRef(
             textFieldType === 'search'
               ? 'text'
               : textFieldType === 'search-number'
-              ? 'number'
-              : textFieldType
+                ? 'number'
+                : textFieldType
           }
           defaultValue={defaultValue}
           className={defaultStyles.cx(
@@ -417,11 +437,9 @@ export const TextField = React.forwardRef(
             multiline && localStyles.classes.paddingMultiline,
             disabled && defaultStyles.classes.inputDisabled,
             error && defaultStyles.classes.inputError,
-            onRemove &&
-              inputAdornment.endAdornment &&
-              (textFieldType === 'search' ||
-                textFieldType === 'search-number') &&
-              defaultStyles.classes.inputWithClear,
+            inputAdornment.startAdornment && localStyles.classes.withIconStart,
+            inputAdornment.endAdornment && localStyles.classes.withIconEnd,
+            inputClasses(),
             'AruiTextfield-Textfield',
             classes?.textfield
           )}
@@ -439,12 +457,6 @@ export const TextField = React.forwardRef(
               ...styles?.input
             },
             className: defaultStyles.cx(
-              inputClasses(),
-              (!!onRemove || !!validated) &&
-                !!value &&
-                value !== '' &&
-                !inputAdornment.endAdornment &&
-                localStyles.classes.inputWithClear,
               'AruiTextfield-input',
               classes?.input
             ),

@@ -109,7 +109,7 @@ export const AutomatedGalleryFactory = (
             (file) => !removesIds.includes(file.path.name)
           )
           queryClient.setQueryData(['gallery', directoryPath], {
-            files: filtered
+            items: filtered
           })
         }
         deleteFilesOptions?.onSuccess?.(data, varaibles, context)
@@ -130,7 +130,7 @@ export const AutomatedGalleryFactory = (
             galleryCopy.push(event)
           })
           queryClient.setQueryData(['gallery', directoryPath], {
-            files: galleryCopy
+            items: galleryCopy
           })
         }
         uploadFilesOptions?.onSuccess?.(data, varaibles, context)

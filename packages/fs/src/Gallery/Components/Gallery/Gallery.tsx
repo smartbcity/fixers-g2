@@ -70,9 +70,8 @@ export const Gallery = (props: GalleryProps) => {
             className={cx('AruiGallery-image', classes?.image)}
             key={file.path.name}
             src={file.url}
-            alt={`The image ${
-              file.path.name.split('_')[1]
-            } of the gallery ${galleryName}`}
+            alt={`The image ${file.path.name.split('_')[1]
+              } of the gallery ${galleryName}`}
             loading='lazy'
           />
         )
@@ -84,9 +83,8 @@ export const Gallery = (props: GalleryProps) => {
             <img
               className={cx('AruiGallery-image', classes?.image)}
               src={file.url}
-              alt={`The image ${
-                file.path.name.split('_')[1]
-              } of the gallery ${galleryName}`}
+              alt={`The image ${file.path.name.split('_')[1]
+                } of the gallery ${galleryName}`}
               loading='lazy'
             />
           </ImageListItem>
@@ -127,6 +125,8 @@ export const Gallery = (props: GalleryProps) => {
           borderRadius: '20px',
           height: '100%'
         },
+        orphans: 1,
+        widows: 1,
         ...gridProps?.sx
       }}
     >

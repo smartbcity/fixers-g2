@@ -3,13 +3,13 @@ import { useCallback, useMemo } from 'react'
 import { FormField } from './Form'
 
 export type FormState = Omit<ReturnType<typeof useFormik>, 'validateField'> & {
-  validateField: (fieldName: string) => string | undefined
+  validateField: (fieldName: string) => string | undefined | Promise<string | undefined>
 }
 
 export type FormPartialField = {
   name: string
   defaultValue?: any
-  validator?: (value: any, values: any) => string | undefined
+  validator?: (value: any, values: any) => string | undefined | Promise<string | undefined>
 }
 
 interface useFormParams<T extends FormPartialField = FormPartialField> {
@@ -61,14 +61,14 @@ const useFormBase = <T extends FormPartialField = FormPartialField>(
   }, [fields])
 
   const validate = useCallback(
-    (values) => {
+    async (values) => {
       const errors = {}
-      fields.forEach((field) => {
-        if (field.validator) {
-          const error = field.validator(values[field.name], values)
-          if (error) errors[field.name] = error
+      for (const field of fields) {
+        const error = await field.validator?.(values[field.name], values)
+        if (error) {
+          errors[field.name] = error
         }
-      })
+      }
       return errors
     },
     [fields]
@@ -84,10 +84,10 @@ const useFormBase = <T extends FormPartialField = FormPartialField>(
   })
 
   const validateField = useCallback(
-    (fieldName: string) => {
+    async (fieldName: string) => {
       const field = fields.find((field) => field.name === fieldName)
       const error = field?.validator
-        ? field?.validator(formik.values[fieldName], formik.values)
+        ? await field?.validator(formik.values[fieldName], formik.values)
         : undefined
       formik.setFieldError(fieldName, error)
       return error

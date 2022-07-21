@@ -54,7 +54,7 @@ export type FormField = {
   /**
    * the validator that takes the value of the input and return an error or undefined/nothing if the value is valid
    */
-  validator?: (value: any, values: any) => string | undefined
+  validator?: (value: any, values: any) => string | undefined | Promise<string | undefined>
   /**
    * if you want to add other nodes around the input use this function
    */

@@ -283,9 +283,9 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
     }
   })
 
-  const fetchOrganization = useCallback(() => {
-    getInseeOrganization &&
-      getInseeOrganization(formState.values.siret).then((values) => {
+  const fetchOrganization = useCallback(async () => {
+    if (getInseeOrganization) {
+      await getInseeOrganization(formState.values.siret).then((values) => {
         if (values) {
           formState.setValues(organizationToFlatOrganization(values), false)
           setSiretValid(true)
@@ -293,10 +293,11 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
           formState.setFieldError(
             'siret',
             strings?.siretNotFound ??
-              'Aucune information trouvé. Saisissez les informations ci-dessous manuellement'
+            'Aucune information trouvé. Saisissez les informations ci-dessous manuellement'
           )
         }
       })
+    }
   }, [
     formState.values.siret,
     formState.setValues,
@@ -319,9 +320,9 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
           validated: siretValid,
           // @ts-ignore
           ref: setSiretRef,
-          onSearch: () => {
+          onSearch: async () => {
             if (!formState.validateField('siret')) {
-              fetchOrganization()
+              await fetchOrganization()
             }
           },
           readonly: readonlyFields?.siret
@@ -338,19 +339,19 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
       },
       ...(rolesOptions
         ? [
-            {
-              key: 'roles',
-              name: 'roles',
-              label: strings?.roles ?? 'Rôle',
-              type: 'select',
-              selectProps: {
-                options: rolesOptions,
-                readonly: readonlyFields?.roles,
-                readonlyType: 'chip',
-                multiple: multipleRoles
-              }
-            } as FormField
-          ]
+          {
+            key: 'roles',
+            name: 'roles',
+            label: strings?.roles ?? 'Rôle',
+            type: 'select',
+            selectProps: {
+              options: rolesOptions,
+              readonly: readonlyFields?.roles,
+              readonlyType: 'chip',
+              multiple: multipleRoles
+            }
+          } as FormField
+        ]
         : []),
       {
         key: 'street',

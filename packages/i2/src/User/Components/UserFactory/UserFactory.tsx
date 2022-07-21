@@ -7,7 +7,7 @@ import {
   useFormWithPartialFields
 } from '@smartb/g2-forms'
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
-import React, { useCallback, useEffect, useMemo } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { FlatUser, FlatUserToUser, User } from '../../Domain'
 import { addressValidation, AdressValidationStrings } from '../../../Commons'
 import { OrganizationId, OrganizationRef } from '../../../Organization'
@@ -205,6 +205,27 @@ export const UserFactory = (props: UserFactoryProps) => {
 
   const { ref, width } = useElementSize()
 
+  const [emailValid, setEmailValid] = useState(false)
+  const [emailLoading, setEmailLoading] = useState(false)
+
+  const onCheckEmail = useCallback(
+    async (email: string) => {
+      if (user?.email !== email && checkEmailValidity) {
+        setEmailLoading(true)
+        const isTaken = await checkEmailValidity(email)
+        setEmailLoading(false)
+        if (isTaken === true) {
+          setEmailValid(false)
+          return strings?.emailAlreadyUsed ?? 'Cet email est déjà utilisé'
+        } else if (isTaken === false) {
+          setEmailValid(true)
+        }
+      }
+      return
+    },
+    [user?.email, checkEmailValidity],
+  )
+
   const partialFields = useMemo(
     (): FormPartialField[] => [
       {
@@ -256,7 +277,7 @@ export const UserFactory = (props: UserFactoryProps) => {
       {
         name: 'email',
         defaultValue: user?.email,
-        validator: (value?: string) => {
+        validator: async (value?: string) => {
           if (readonlyFields?.email) return undefined
           const trimmed = (value ?? '').trim()
           if (!trimmed)
@@ -264,12 +285,11 @@ export const UserFactory = (props: UserFactoryProps) => {
               strings?.completeTheGivenName ??
               ('Vous devez renseigner le mail' as string)
             )
-          if (!emailRegex.test(trimmed))
-            return (
+          if (!emailRegex.test(trimmed)) return (
               strings?.enterAValidEmail ??
               "L'email renseigner n'est pas correcte"
             )
-          return undefined
+          return (await onCheckEmail(trimmed))
         }
       },
       {
@@ -319,7 +339,8 @@ export const UserFactory = (props: UserFactoryProps) => {
       organizationId,
       readonlyFields,
       strings,
-      multipleRoles
+      multipleRoles,
+      onCheckEmail
     ]
   )
 
@@ -342,7 +363,7 @@ export const UserFactory = (props: UserFactoryProps) => {
       enableReinitialize: true
     }
   })
-
+  
   const userForm = useMemo((): FormField[] => {
     const orgsOptions =
       !!organizationsRefs && organizationsRefs.length > 0
@@ -442,17 +463,8 @@ export const UserFactory = (props: UserFactoryProps) => {
         textFieldProps: {
           textFieldType: 'email',
           readonly: readonlyFields?.email,
-          onBlur: async () => {
-            if (user?.email !== formState.values.email && checkEmailValidity) {
-              const isValid = await checkEmailValidity(formState.values.email)
-              if (isValid === true) {
-                formState.setFieldError(
-                  'email',
-                  strings?.emailAlreadyUsed ?? 'Cet email est déjà utilisé'
-                )
-              }
-            }
-          }
+          searchLoading: emailLoading,
+          validated: emailValid
         }
       },
       {
@@ -491,8 +503,8 @@ export const UserFactory = (props: UserFactoryProps) => {
     organizationId,
     getOrganizationUrl,
     multipleRoles,
-    formState.values.email,
-    user?.email
+    emailLoading,
+    emailValid
   ])
 
   const finalFields = useDeletableForm({

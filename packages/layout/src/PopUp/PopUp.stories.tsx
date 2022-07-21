@@ -11,7 +11,7 @@ import { ArgsTable, Title, Primary, Stories } from '@storybook/addon-docs'
 import { styles, classes, Action } from './types'
 import { Box, Typography } from '@mui/material'
 import imageHolder from '../assets/imageHolder.jpg'
-import { Action, Button } from '@smartb/g2-components'
+import { Action as PopUpAtion, Button } from '@smartb/g2-components'
 import { withDesign } from 'storybook-addon-designs'
 
 export default {
@@ -52,7 +52,7 @@ export const PopUp: Story<PopUpBasicProps> = (args: PopUpBasicProps) => {
 
 export const alternativePopUp: Story = () => {
   const [open, setOpen] = useState(false)
-  const actions: Action[] = [
+  const actions: PopUpAtion[] = [
     {
       label: 'continuer',
       key: 'continuPopupButton',

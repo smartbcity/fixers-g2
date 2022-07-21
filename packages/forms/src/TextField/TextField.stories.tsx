@@ -91,6 +91,12 @@ export const TextFieldStates: Story<TextFieldProps> = () => {
         style={{ width: 350, margin: 20 }}
       />
       <TextField
+        placeholder='loading'
+        id='validatedTextField'
+        searchLoading
+        style={{ width: 350, margin: 20 }}
+      />
+      <TextField
         placeholder='disabled'
         id='disabledTextField'
         disabled
@@ -103,6 +109,13 @@ export const TextFieldStates: Story<TextFieldProps> = () => {
 export const SerchTextField: Story<TextFieldProps> = () => {
   const [value, setValue] = useState('')
   const [search, setSearch] = useState(undefined)
+  const asyncFucntion = async () => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve('resolved')
+      }, 2000)
+    })
+  }
 
   return (
     <Box display='flex' flexDirection='column' alignItems='center'>
@@ -110,7 +123,7 @@ export const SerchTextField: Story<TextFieldProps> = () => {
         placeholder='search something here'
         value={value}
         onChange={(value) => setValue(value)}
-        onSearch={() => setSearch(value)}
+        onSearch={async () => {await asyncFucntion(); setSearch(value)}}
         onRemove={() => setValue('')}
         id='searchTextField'
         textFieldType='search'
@@ -127,6 +140,7 @@ export const CustomIcon: Story<TextFieldProps> = () => {
       <TextField
         inputIcon={<CreditCard />}
         id='creditTextField'
+        iconPosition='start'
         placeholder='Add your credit card informations'
         style={{ width: 350, margin: 20 }}
       />
