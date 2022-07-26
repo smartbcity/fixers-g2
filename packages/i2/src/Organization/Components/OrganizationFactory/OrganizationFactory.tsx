@@ -1,25 +1,16 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import {
-  Form,
-  FormField,
-  useFormWithPartialFields,
-  FormPartialField,
-  Option,
-  FormProps
-} from '@smartb/g2-forms'
+import { Form, FormField, FormProps } from '@smartb/g2-forms'
 import { styled, Typography } from '@mui/material'
 import { Popover } from '@smartb/g2-notifications'
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 import { cx } from '@emotion/css'
-import {
-  FlatOrganization,
-  flatOrganizationToOrganization,
-  Organization,
-  organizationToFlatOrganization
-} from '../../Domain'
-import { siretValidation } from '../../Validation/siret'
-import { addressValidation, AdressValidationStrings } from '../../../Commons'
+import { Organization, organizationToFlatOrganization } from '../../Domain'
+import { AdressValidationStrings } from '../../../Commons'
 import { useDeletableForm } from '../../../Commons/useDeletableForm'
+import {
+  useOrganizationFormState,
+  useOrganizationFormStateProps
+} from './useOrganizationFormState'
 
 export type Validated = boolean
 
@@ -88,13 +79,11 @@ export interface OrganizationFactoryStrings extends AdressValidationStrings {
    * @default "Le numéro de siret permettra de remplir automatiquement une partie des champs suivant"
    */
   siretDescription?: string
-  /**
-   * @default 'Vous devez renseigner le rôle'
-   */
-  chooseTheRole?: string
 }
 
-export interface OrganizationFactoryBasicProps extends BasicProps {
+export interface OrganizationFactoryBasicProps
+  extends BasicProps,
+    useOrganizationFormStateProps<Organization> {
   /**
    * The base organization. If it's given the component should be considered as an updater of the object
    */
@@ -115,31 +104,16 @@ export interface OrganizationFactoryBasicProps extends BasicProps {
    */
   SubmitButtonRef?: React.RefObject<HTMLElement | undefined>
   /**
-   * The roles options needed to make the roles select.
-   * The default role selected in the form will be the first of the list
-   */
-  rolesOptions?: Option[]
-  /**
    * To activate Readonly view
    * @default false
    */
   readonly?: boolean
-  /**
-   * Use this prop if you want only some fields to be readonly
-   */
-  readonlyFields?: ReadonlyFields
   /**
    * Indicates if the data is currently loading
    *
    * @default false
    */
   isLoading?: boolean
-  /**
-   * Allow the user to have multipe roles
-   *
-   * @default true
-   */
-  multipleRoles?: boolean
   /**
    * The classes applied to the different part of the component
    */
@@ -148,10 +122,6 @@ export interface OrganizationFactoryBasicProps extends BasicProps {
    * The styles applied to the different part of the component
    */
   styles?: OrganizationFactoryStyles
-  /**
-   * The names of the fields to block
-   */
-  blockedFields?: string[]
   /**
    * The prop to use to add custom translation to the component
    */
@@ -190,98 +160,7 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
 
   const onCloseSiretInfo = useCallback(() => setOpenSiretInfo(false), [])
 
-  const defaultRoles = useMemo(() => {
-    const givenRoles = rolesOptions?.map((it) => it.key)
-    const roles = organization?.roles?.filter((it) => givenRoles?.includes(it))
-    return multipleRoles ? roles : roles?.[0]
-  }, [rolesOptions, organization?.roles, multipleRoles])
-
-  const partialFields = useMemo(
-    (): FormPartialField[] => [
-      {
-        name: 'siret',
-        defaultValue: organization?.siret,
-        validator: siretValidation
-      },
-      {
-        name: 'street',
-        defaultValue: organization?.address?.street,
-        validator: (value: any, values: any) =>
-          addressValidation.street(value, values, strings)
-      },
-      {
-        name: 'postalCode',
-        defaultValue: organization?.address?.postalCode,
-        validator: (value: any, values: any) =>
-          addressValidation.postalCode(value, values, strings)
-      },
-      {
-        name: 'city',
-        defaultValue: organization?.address?.city,
-        validator: (value: any, values: any) =>
-          addressValidation.city(value, values, strings)
-      },
-      {
-        name: 'name',
-        defaultValue: organization?.name,
-        validator: (value?: string) => {
-          if (readonlyFields?.name) return undefined
-          const trimmed = (value ?? '').trim()
-          if (!trimmed)
-            return (
-              strings?.completeName ??
-              ('Vous devez renseigner le nom' as string)
-            )
-          return undefined
-        }
-      },
-      {
-        name: 'description',
-        defaultValue: organization?.description
-      },
-      {
-        name: 'website',
-        defaultValue: organization?.website
-      },
-      {
-        name: 'roles',
-        defaultValue: defaultRoles,
-        validator: (value?: string | string[]) => {
-          if (readonlyFields?.roles) return undefined
-          if (!value)
-            return strings?.chooseTheRole ?? 'Vous devez renseigner le rôle'
-          return undefined
-        }
-      }
-    ],
-    [
-      organization,
-      rolesOptions,
-      readonlyFields,
-      strings?.completeName,
-      defaultRoles
-    ]
-  )
-
-  const onSubmitMemoized = useCallback(
-    async (values: FlatOrganization) => {
-      if (onSubmit) {
-        onSubmit({
-          ...flatOrganizationToOrganization(values, multipleRoles),
-          id: organization?.id ?? ''
-        })
-      }
-    },
-    [onSubmit, organization, multipleRoles]
-  )
-
-  const formState = useFormWithPartialFields({
-    fields: partialFields,
-    onSubmit: onSubmitMemoized,
-    formikConfig: {
-      enableReinitialize: true
-    }
-  })
+  const formState = useOrganizationFormState(props)
 
   const fetchOrganization = useCallback(async () => {
     if (getInseeOrganization) {
@@ -293,7 +172,7 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
           formState.setFieldError(
             'siret',
             strings?.siretNotFound ??
-            'Aucune information trouvé. Saisissez les informations ci-dessous manuellement'
+              'Aucune information trouvé. Saisissez les informations ci-dessous manuellement'
           )
         }
       })
@@ -339,19 +218,19 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
       },
       ...(rolesOptions
         ? [
-          {
-            key: 'roles',
-            name: 'roles',
-            label: strings?.roles ?? 'Rôle',
-            type: 'select',
-            selectProps: {
-              options: rolesOptions,
-              readonly: readonlyFields?.roles,
-              readonlyType: 'chip',
-              multiple: multipleRoles
-            }
-          } as FormField
-        ]
+            {
+              key: 'roles',
+              name: 'roles',
+              label: strings?.roles ?? 'Rôle',
+              type: 'select',
+              selectProps: {
+                options: rolesOptions,
+                readonly: readonlyFields?.roles,
+                readonlyType: 'chip',
+                multiple: multipleRoles
+              }
+            } as FormField
+          ]
         : []),
       {
         key: 'street',

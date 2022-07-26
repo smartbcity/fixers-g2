@@ -21,6 +21,7 @@ export interface Address {
 }
 
 export interface User {
+  attributes?: any
   id: UserId
   memberOf?: OrganizationRef
   familyName: string

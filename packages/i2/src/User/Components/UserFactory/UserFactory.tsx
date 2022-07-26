@@ -1,24 +1,17 @@
 import { cx } from '@emotion/css'
-import {
-  Form,
-  FormField,
-  FormPartialField,
-  Option,
-  useFormWithPartialFields
-} from '@smartb/g2-forms'
+import { Form, FormField, Option } from '@smartb/g2-forms'
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import { FlatUser, FlatUserToUser, User } from '../../Domain'
-import { addressValidation, AdressValidationStrings } from '../../../Commons'
+import React, { useEffect, useMemo } from 'react'
+import { User } from '../../Domain'
+import { AdressValidationStrings } from '../../../Commons'
 import { OrganizationId, OrganizationRef } from '../../../Organization'
 import { Stack, StackProps } from '@mui/material'
 import { useElementSize } from '@mantine/hooks'
 import { UserSummary } from '../UserSummary'
 import { useDeletableForm } from '../../../Commons/useDeletableForm'
+import { useUserFormState, useUserFormStateProps } from './useUserFormState'
 
 export type Validated = boolean
-
-const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}/i
 
 export type ReadonlyFields = {
   [k in keyof User]?: boolean
@@ -95,7 +88,9 @@ export interface UserFactoryStrings extends AdressValidationStrings {
   emailAlreadyUsed?: string
 }
 
-export interface UserFactoryBasicProps extends BasicProps {
+export interface UserFactoryBasicProps
+  extends BasicProps,
+    useUserFormStateProps<User> {
   /**
    * The base user
    */
@@ -107,54 +102,21 @@ export interface UserFactoryBasicProps extends BasicProps {
    */
   onSubmit?: (user: User) => Promise<Validated> | Validated
   /**
-   * Indicates if it's an update
-   * @default false
-   */
-  isUpdate?: boolean
-  /**
    * The ref of the submit element
    */
   SubmitButtonRef?: React.RefObject<HTMLElement | undefined>
-  /**
-   * To activate Readonly view
-   * @default false
-   */
-  readonly?: boolean
   /**
    * The organizations refs needed to make the orgnization select
    */
   organizationsRefs?: OrganizationRef[]
   /**
-   * The roles options needed to make the roles select.
-   * The default role selected in the form will be the first of the list
-   */
-  rolesOptions?: Option[]
-  /**
    * Use This props if you have roles that you don't want the user to be able to select but able to see in readonly use this prop
    */
   readonlyRolesOptions?: Option[]
   /**
-   * The organizationId of the user. Needed if you want to preSelect it when you are creating a user
-   */
-  organizationId?: OrganizationId
-  /**
    * If you want the organization to transform to a link
    */
   getOrganizationUrl?: (organizationId: OrganizationId) => string
-  /**
-   * The event called to check if the email is available
-   */
-  checkEmailValidity?: (email: string) => Promise<boolean | undefined>
-  /**
-   * Use this prop if you want only some fields to be readonly
-   */
-  readonlyFields?: ReadonlyFields
-  /**
-   * Allow the user to have multipe roles
-   *
-   * @default true
-   */
-  multipleRoles?: boolean
   /**
    * Indicates if the data is currently loading
    *
@@ -169,10 +131,6 @@ export interface UserFactoryBasicProps extends BasicProps {
    * The prop to use to add custom translation to the component
    */
   strings?: UserFactoryStrings
-  /**
-   * The names of the fields to block
-   */
-  blockedFields?: string[]
 }
 
 export type UserFactoryProps = MergeMuiElementProps<
@@ -205,165 +163,8 @@ export const UserFactory = (props: UserFactoryProps) => {
 
   const { ref, width } = useElementSize()
 
-  const [emailValid, setEmailValid] = useState(false)
-  const [emailLoading, setEmailLoading] = useState(false)
+  const { formState, emailLoading, emailValid } = useUserFormState(props)
 
-  const onCheckEmail = useCallback(
-    async (email: string) => {
-      if (user?.email !== email && checkEmailValidity) {
-        setEmailLoading(true)
-        const isTaken = await checkEmailValidity(email)
-        setEmailLoading(false)
-        if (isTaken === true) {
-          setEmailValid(false)
-          return strings?.emailAlreadyUsed ?? 'Cet email est déjà utilisé'
-        } else if (isTaken === false) {
-          setEmailValid(true)
-        }
-      }
-      return
-    },
-    [user?.email, checkEmailValidity],
-  )
-
-  const partialFields = useMemo(
-    (): FormPartialField[] => [
-      {
-        name: 'givenName',
-        defaultValue: user?.givenName,
-        validator: (value?: string | number) => {
-          if (readonlyFields?.givenName) return undefined
-          const string = String(value).trim()
-          if (!string || !value)
-            return (
-              strings?.completeTheGivenName ??
-              ('Vous devez renseigner le prénom' as string)
-            )
-          return undefined
-        }
-      },
-      {
-        name: 'familyName',
-        defaultValue: user?.familyName,
-        validator: (value?: string | number) => {
-          if (readonlyFields?.familyName) return undefined
-          const string = String(value).trim()
-          if (!string || !value)
-            return (
-              strings?.completeTheFamilyName ??
-              ('Vous devez renseigner le nom de famille' as string)
-            )
-          return undefined
-        }
-      },
-      {
-        name: 'street',
-        defaultValue: user?.address?.street,
-        validator: (value: any, values: any) =>
-          addressValidation.street(value, values, strings)
-      },
-      {
-        name: 'postalCode',
-        defaultValue: user?.address?.postalCode,
-        validator: (value: any, values: any) =>
-          addressValidation.postalCode(value, values, strings)
-      },
-      {
-        name: 'city',
-        defaultValue: user?.address?.city,
-        validator: (value: any, values: any) =>
-          addressValidation.city(value, values, strings)
-      },
-      {
-        name: 'email',
-        defaultValue: user?.email,
-        validator: async (value?: string) => {
-          if (readonlyFields?.email) return undefined
-          const trimmed = (value ?? '').trim()
-          if (!trimmed)
-            return (
-              strings?.completeTheGivenName ??
-              ('Vous devez renseigner le mail' as string)
-            )
-          if (!emailRegex.test(trimmed)) return (
-              strings?.enterAValidEmail ??
-              "L'email renseigner n'est pas correcte"
-            )
-          return (await onCheckEmail(trimmed))
-        }
-      },
-      {
-        name: 'phone',
-        defaultValue: user?.phone,
-        validator: (value?: string) => {
-          if (readonlyFields?.phone) return undefined
-          const trimmed = (value ?? '').trim()
-          if (trimmed && trimmed.length !== 10)
-            return (
-              strings?.enterAValidPhone ??
-              'Le numéro de téléphone doit contenir dix chiffres'
-            )
-          return undefined
-        }
-      },
-      {
-        name: 'roles',
-        defaultValue: multipleRoles
-          ? user?.roles?.assignedRoles
-          : user?.roles?.assignedRoles[0],
-        validator: (value?: string | string[]) => {
-          if (readonlyFields?.roles) return undefined
-          if (!value)
-            return strings?.chooseTheRole ?? 'Vous devez renseigner le rôle'
-          return undefined
-        }
-      },
-      {
-        name: 'memberOf',
-        defaultValue: user?.memberOf?.id ?? organizationId
-      },
-      ...(!isUpdate && !readonly
-        ? [
-            {
-              name: 'sendEmailLink',
-              defaultValue: true
-            }
-          ]
-        : [])
-    ],
-    [
-      user,
-      isUpdate,
-      rolesOptions,
-      readonly,
-      organizationId,
-      readonlyFields,
-      strings,
-      multipleRoles,
-      onCheckEmail
-    ]
-  )
-
-  const onSubmitMemoized = useCallback(
-    async (values: FlatUser) => {
-      if (onSubmit) {
-        onSubmit({
-          ...FlatUserToUser(values, multipleRoles),
-          id: user?.id ?? ''
-        })
-      }
-    },
-    [onSubmit, user, multipleRoles]
-  )
-
-  const formState = useFormWithPartialFields({
-    fields: partialFields,
-    onSubmit: onSubmitMemoized,
-    formikConfig: {
-      enableReinitialize: true
-    }
-  })
-  
   const userForm = useMemo((): FormField[] => {
     const orgsOptions =
       !!organizationsRefs && organizationsRefs.length > 0

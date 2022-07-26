@@ -26,6 +26,7 @@ export type OrganizationRef = {
 }
 
 export interface Organization {
+  attributes?: any
   id: OrganizationId
   siret: string
   name: string

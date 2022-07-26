@@ -2,14 +2,18 @@ import { FormikConfig, FormikHelpers, useFormik } from 'formik'
 import { useCallback, useMemo } from 'react'
 import { FormField } from './Form'
 
+export type PotentialError = string | undefined | Promise<string | undefined>
+
+export type ValidatorFnc = (value: any, values: any) => PotentialError
+
 export type FormState = Omit<ReturnType<typeof useFormik>, 'validateField'> & {
-  validateField: (fieldName: string) => string | undefined | Promise<string | undefined>
+  validateField: (fieldName: string) => PotentialError
 }
 
 export type FormPartialField = {
   name: string
   defaultValue?: any
-  validator?: (value: any, values: any) => string | undefined | Promise<string | undefined>
+  validator?: ValidatorFnc
 }
 
 interface useFormParams<T extends FormPartialField = FormPartialField> {

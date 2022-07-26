@@ -20,8 +20,11 @@ export interface AdressValidationStrings {
 const street = (
   value: string,
   values?: any,
-  strings?: AdressValidationStrings
+  strings?: AdressValidationStrings,
+  readonlyFields?: any,
+  additionnalValidators?: any
 ) => {
+  if (readonlyFields?.street) return undefined
   const city = values.city?.trim()
   const postalCode = values.postalCode?.trim()
   const trimmed = value?.trim()
@@ -30,14 +33,19 @@ const street = (
       strings?.completeTheStreet ??
       ("Vous devez renseigner l'addresse en plus de la ville et du code postal" as string)
     )
-  return undefined
+  return additionnalValidators?.street
+    ? additionnalValidators.street(trimmed, values)
+    : undefined
 }
 
-const codePostal = (
+const postalCode = (
   value?: string,
   values?: any,
-  strings?: AdressValidationStrings
+  strings?: AdressValidationStrings,
+  readonlyFields?: any,
+  additionnalValidators?: any
 ) => {
+  if (readonlyFields?.postalCode) return undefined
   const street = !!values.street?.trim()
   const city = !!values.city?.trim()
   const trimmed = value?.trim()
@@ -51,14 +59,19 @@ const codePostal = (
       strings?.postalCodeLongerThan5 ??
       ('Un code postal doit être composé de 5 chiffres' as string)
     )
-  return undefined
+  return additionnalValidators?.postalCode
+    ? additionnalValidators.postalCode(trimmed, values)
+    : undefined
 }
 
 const city = (
   value?: string,
   values?: any,
-  strings?: AdressValidationStrings
+  strings?: AdressValidationStrings,
+  readonlyFields?: any,
+  additionnalValidators?: any
 ) => {
+  if (readonlyFields?.city) return undefined
   const street = values.street?.trim()
   const postalCode = values.postalCode?.trim()
   const trimmed = value?.trim()
@@ -67,11 +80,29 @@ const city = (
       strings?.completeTheCity ??
       ('Vous devez renseigner la ville pour avoir une adresse complète' as string)
     )
-  return undefined
+  return additionnalValidators?.city
+    ? additionnalValidators.city(trimmed, values)
+    : undefined
 }
 
 export const addressValidation = {
   street,
-  postalCode: codePostal,
+  postalCode: postalCode,
   city
+}
+
+export const requiredString = (
+  fieldName: string,
+  errorMessage: string,
+  value?: string | number,
+  values?: any,
+  readonlyFields?: any,
+  additionnalValidators?: any
+) => {
+  if (readonlyFields[fieldName]) return undefined
+  const string = String(value).trim()
+  if (!string || !value) return errorMessage
+  return additionnalValidators && additionnalValidators[fieldName]
+    ? additionnalValidators[fieldName](string, values)
+    : undefined
 }

@@ -10,7 +10,7 @@ export interface ExtandedColumnsParams<T extends object> {
    */
   additionnalColumns?: Column<T>[]
   /**
-   * The i or the accessor of the columns you want to lock
+   * The id or the accessor of the columns you want to block
    */
   blockedColumns?: string[]
   /**

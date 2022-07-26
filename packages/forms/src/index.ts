@@ -12,7 +12,9 @@ export {
   FormState,
   useForm,
   FormPartialField,
-  useFormWithPartialFields
+  useFormWithPartialFields,
+  ValidatorFnc,
+  PotentialError
 } from './Form'
 export { FilterDatePicker, FilterDatePickerProps } from './FilterDatePicker'
 export { FilterSelect, FilterSelectProps } from './FilterSelect'

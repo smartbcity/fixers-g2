@@ -52,6 +52,10 @@ export interface AutomatedOrganizationFactoryBasicProps extends BasicProps {
    * The fields readonly attributes for the current state
    */
   readonlyFieldsPerState?: ReadonlyOrgFieldsPerState
+  /**
+   * The attributes to add in the user object on submission
+   */
+  attributes?: any
 }
 
 export type AutomatedOrganizationFactoryProps = MergeMuiElementProps<
@@ -69,6 +73,7 @@ export const AutomatedOrganizationFactory = (
     getOrganizationOptions,
     updateOrganizationOptions,
     createOrganizationOptions,
+    attributes,
     ...other
   } = props
 
@@ -130,7 +135,10 @@ export const AutomatedOrganizationFactory = (
 
   const updateOrganizationMemoized = useCallback(
     async (organization: Organization) => {
-      const res = await updateOrganization.mutateAsync(organization)
+      const res = await updateOrganization.mutateAsync({
+        ...organization,
+        attributes
+      })
       if (res) {
         return true
       } else {
@@ -142,14 +150,17 @@ export const AutomatedOrganizationFactory = (
 
   const createOrganizationMemoized = useCallback(
     async (organization: Organization) => {
-      const res = await createOrganization.mutateAsync(organization)
+      const res = await createOrganization.mutateAsync({
+        ...organization,
+        attributes
+      })
       if (res) {
         return true
       } else {
         return false
       }
     },
-    [createOrganization.mutateAsync]
+    [createOrganization.mutateAsync, attributes]
   )
 
   return (

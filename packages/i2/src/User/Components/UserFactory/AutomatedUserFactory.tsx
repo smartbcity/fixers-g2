@@ -71,6 +71,10 @@ export interface AutomatedUserFactoryBasicProps extends BasicProps {
    * The type of the reset password. If not provided the component will not be rendered
    */
   resetPasswordType?: 'email' | 'forced'
+  /**
+   * The attributes to add in the user object on submission
+   */
+  attributes?: any
 }
 
 export type AutomatedUserFactoryProps = MergeMuiElementProps<
@@ -90,6 +94,7 @@ export const AutomatedUserFactory = (props: AutomatedUserFactoryProps) => {
     choicedResetPasswordProps,
     resetPasswordType,
     userUpdateEmailOptions,
+    attributes,
     ...other
   } = props
 
@@ -150,7 +155,7 @@ export const AutomatedUserFactory = (props: AutomatedUserFactoryProps) => {
   const updateUserMemoized = useCallback(
     async (user: User) => {
       const results: Promise<any>[] = []
-      results.push(updateUser.mutateAsync(user))
+      results.push(updateUser.mutateAsync({ ...user, attributes }))
       if (getUser.data?.email !== user.email) {
         results.push(
           updateEmail.mutateAsync({
@@ -166,19 +171,24 @@ export const AutomatedUserFactory = (props: AutomatedUserFactoryProps) => {
       }
       return true
     },
-    [updateUser.mutateAsync, updateEmail.mutateAsync, getUser.data]
+    [
+      updateUser.mutateAsync,
+      updateEmail.mutateAsync,
+      getUser.data?.email,
+      attributes
+    ]
   )
 
   const createUserMemoized = useCallback(
     async (user: User) => {
-      const res = await createUser.mutateAsync(user)
+      const res = await createUser.mutateAsync({ ...user, attributes })
       if (res) {
         return true
       } else {
         return false
       }
     },
-    [createUser.mutateAsync]
+    [createUser.mutateAsync, attributes]
   )
 
   const checkEmailValidity = useCallback(
