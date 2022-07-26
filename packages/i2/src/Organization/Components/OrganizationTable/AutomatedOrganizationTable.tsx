@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { OrganizationTable, OrganizationTableProps } from './OrganizationTable'
 import { useGetOrganizations, GetOrganizationsOptions } from '../../Api'
 import { i2Config, useAuth } from '@smartb/g2-providers'
-import { Organization } from '../OrganizationFactory'
+import { Organization } from '../../Domain'
 
 export interface AutomatedOrganizationTableBasicProps<T extends Organization>
   extends BasicProps {

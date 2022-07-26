@@ -7,7 +7,7 @@ import {
   ExtandedColumnsParams,
   useExtendedColumns
 } from '../../../Commons/useExtendedColumns'
-import { Organization } from '../OrganizationFactory'
+import { Organization } from '../../Domain'
 import { OrganizationFilters } from './OrganizationFilters'
 
 export type OrganizationTableFilters = {
