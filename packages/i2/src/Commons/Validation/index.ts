@@ -93,15 +93,15 @@ export const addressValidation = {
 
 export const requiredString = (
   fieldName: string,
-  errorMessage: string,
+  errorMessage?: string,
   value?: string | number,
   values?: any,
   readonlyFields?: any,
   additionnalValidators?: any
 ) => {
-  if (readonlyFields[fieldName]) return undefined
+  if (readonlyFields && readonlyFields[fieldName]) return undefined
   const string = String(value).trim()
-  if (!string || !value) return errorMessage
+  if (!string || !value) return errorMessage ?? 'le champ est obligatoire'
   return additionnalValidators && additionnalValidators[fieldName]
     ? additionnalValidators[fieldName](string, values)
     : undefined

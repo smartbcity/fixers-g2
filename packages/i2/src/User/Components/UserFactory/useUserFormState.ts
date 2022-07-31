@@ -9,7 +9,7 @@ import { addressValidation, requiredString } from '../../../Commons'
 import { useDeletableForm } from '../../../Commons/useDeletableForm'
 import { OrganizationId } from '../../../Organization'
 import { FlatUser, FlatUserToUser, User } from '../../Domain'
-import { UserFactoryStrings, ReadonlyFields, Validated } from './UserFactory'
+import { UserFactoryStrings, ReadonlyFields } from './UserFactory'
 
 const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}/i
 
@@ -57,7 +57,7 @@ export interface useUserFormStateProps<T extends User> {
    * @param user the complete user object after form Validation
    * @returns true if the Api call has been successfull
    */
-  onSubmit?: (user: T) => Promise<Validated> | Validated
+  onSubmit?: (user: T) => void
   /**
    * Indicates if it's an update
    * @default false
@@ -122,7 +122,7 @@ export const useUserFormState = <T extends User = User>(
         validator: (value?: string, values?: any) =>
           requiredString(
             'givenName',
-            strings?.completeTheGivenName ?? 'Vous devez renseigner le prénom',
+            strings?.requiredField,
             value,
             values,
             readonlyFields,
@@ -135,8 +135,7 @@ export const useUserFormState = <T extends User = User>(
         validator: (value?: string, values?: any) =>
           requiredString(
             'familyName',
-            strings?.completeTheFamilyName ??
-              'Vous devez renseigner le nom de famille',
+            strings?.requiredField,
             value,
             values,
             readonlyFields,
@@ -187,7 +186,7 @@ export const useUserFormState = <T extends User = User>(
           const trimmed = (value ?? '').trim()
           if (!trimmed)
             return (
-              strings?.completeTheGivenName ??
+              strings?.completeTheEmail ??
               ('Vous devez renseigner le mail' as string)
             )
           if (!emailRegex.test(trimmed))

@@ -59,13 +59,9 @@ export interface UserFactoryStrings extends AdressValidationStrings {
    */
   sendEmailLink?: string
   /**
-   * @default "Vous devez renseigner le prénom"
+   * @default "le champ est obligatoire"
    */
-  completeTheGivenName?: string
-  /**
-   * @default "Vous devez renseigner le nom de famille"
-   */
-  completeTheFamilyName?: string
+  requiredField?: string
   /**
    * @default "Vous devez renseigner le mail"
    */
@@ -78,10 +74,7 @@ export interface UserFactoryStrings extends AdressValidationStrings {
    * @default "Le numéro de téléphone doit contenir dix chiffres"
    */
   enterAValidPhone?: string
-  /**
-   * @default 'Vous devez renseigner le rôle'
-   */
-  chooseTheRole?: string
+
   /**
    * @default 'Cette addresse email est déjà utilisée'
    */

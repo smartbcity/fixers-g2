@@ -9,12 +9,26 @@ export const objToArray = <T>(obj: {
 };
 
 export const fileToBase64 = (file: File) =>
-  new Promise<string>((resolve, reject) => {
+  new Promise<string>((resolve) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = () => resolve(reader.result as string);
-    reader.onerror = (error) => reject(error);
   });
+
+export const Base64ToFile = (base64: string, fileName?: string) => {
+  var arr = base64.split(","),
+    //@ts-ignore
+    mime = arr[0].match(/:(.*?);/)[1],
+    bstr = atob(arr[1]),
+    n = bstr.length,
+    u8arr = new Uint8Array(n);
+
+  while (n--) {
+    u8arr[n] = bstr.charCodeAt(n);
+  }
+
+  return new File([u8arr], fileName ?? "", { type: mime });
+};
 
 export const formatNumber = (
   num: number,

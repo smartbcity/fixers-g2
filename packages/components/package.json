@@ -37,6 +37,9 @@
     "react-dom": "^18.2.0"
   },
   "dependencies": {
+    "@mantine/core": "^4.1.3",
+    "@mantine/dropzone": "^4.1.3",
+    "@mantine/hooks": "^4.1.3",
     "@mui/icons-material": "^5.8.4",
     "@mui/lab": "5.0.0-alpha.86",
     "@smartb/g2-notifications": "1.0.0-alpha.55",

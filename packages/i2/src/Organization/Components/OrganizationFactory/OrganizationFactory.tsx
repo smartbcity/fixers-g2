@@ -68,9 +68,9 @@ export interface OrganizationFactoryStrings extends AdressValidationStrings {
    */
   description?: string
   /**
-   * @default "Vous devez renseigner le nom"
+   * @default "le champ est obligatoire"
    */
-  completeName?: string
+  requiredField?: string
   /**
    * @default "Aucune information trouvé. Saisissez les informations ci-dessous manuellement"
    */

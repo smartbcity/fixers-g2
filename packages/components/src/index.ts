@@ -27,3 +27,11 @@ export { ToggleButtons, ToggleOption, ToggleButtonsProps } from './ToggleButton'
 export { Presentation, PresentationProps } from './Presentation'
 export { UserAvatar, UserAvatarProps } from './UserAvatar'
 export { Chip, ChipProps } from './Chip'
+export {
+  DocumentHandler,
+  DropError,
+  DropzoneChildren,
+  useLocalDocumentHandler,
+  useLocalStorageDocumentHandler,
+  DocumentHandlerProps
+} from './DocumentHandler'

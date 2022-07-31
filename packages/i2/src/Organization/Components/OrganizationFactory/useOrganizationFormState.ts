@@ -15,8 +15,7 @@ import {
 import { siretValidation } from '../../Validation/siret'
 import {
   OrganizationFactoryStrings,
-  ReadonlyFields,
-  Validated
+  ReadonlyFields
 } from './OrganizationFactory'
 
 export interface useOrganizationFormStateProps<T extends Organization> {
@@ -59,7 +58,7 @@ export interface useOrganizationFormStateProps<T extends Organization> {
    * @param organization the complete organization object after form Validation
    * @returns true if the Api call has been successfull
    */
-  onSubmit?: (organization: T) => Promise<Validated> | Validated
+  onSubmit?: (organization: T) => void
 }
 
 export const useOrganizationFormState = <T extends Organization = Organization>(
@@ -125,7 +124,7 @@ export const useOrganizationFormState = <T extends Organization = Organization>(
                 value,
                 values,
                 strings,
-                additionnalValidators?.city
+                additionnalValidators
               )
       },
       {
@@ -134,7 +133,7 @@ export const useOrganizationFormState = <T extends Organization = Organization>(
         validator: (value?: string, values?: any) =>
           requiredString(
             'name',
-            strings?.completeName ?? 'Vous devez renseigner le nom',
+            strings?.requiredField,
             value,
             values,
             readonlyFields,
