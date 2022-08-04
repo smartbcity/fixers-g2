@@ -111,13 +111,13 @@ export type UploadFilesOptions = Omit<
   'mutationFn'
 >
 
-export interface uploadFilesParams {
+export interface UploadFilesParams {
   jwt?: string
   apiUrl: string
   options?: UploadFilesOptions
 }
 
-export const useUploadFiles = (params: uploadFilesParams) => {
+export const useUploadFiles = (params: UploadFilesParams) => {
   const { apiUrl, jwt, options } = params
 
   const uploadFiles = useCallback(

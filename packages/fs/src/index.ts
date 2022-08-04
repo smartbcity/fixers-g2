@@ -12,7 +12,7 @@ export {
   GalleryProps,
   deleteFilesParams,
   getGalleryParams,
-  uploadFilesParams,
+  UploadFilesParams,
   useDeleteFiles,
   useGetGallery,
   useUploadFiles,
