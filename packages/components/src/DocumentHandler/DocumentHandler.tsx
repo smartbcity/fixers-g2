@@ -214,8 +214,8 @@ export const DocumentHandler = (props: DocumentHandlerProps) => {
 
   if (!!fileUrl) {
     return (
+      //@ts-ignore
       <Stack
-        //@ts-ignore
         {...otherProps}
         className={cx('AruiDocumentHandler-root', className)}
         style={style}
