@@ -19,32 +19,34 @@ import { UserTableFilters } from '../Components/UserTable'
 import { OrganizationId, OrganizationRef } from '../../Organization'
 import { UserPageResult } from '../Domain'
 
-type UserGetAllQueryResultOptional =
-  | { users: any; totalPages: number }
+type UserGetAllQueryResultOptional<T extends User> =
+  | { users: T[]; totalPages: number }
   | undefined
 
-export type GetUsersOptions = Omit<
+export type GetUsersOptions<T extends User> = Omit<
   UseQueryOptions<
-    UserGetAllQueryResultOptional,
+    UserGetAllQueryResultOptional<T>,
     unknown,
-    UserGetAllQueryResultOptional,
+    UserGetAllQueryResultOptional<T>,
     (string | UserTableFilters | undefined)[]
   >,
   'queryKey' | 'queryFn'
 >
 
-export interface GetUsersParams {
+export interface GetUsersParams<T extends User> {
   /**
    * @default "organization"
    */
   queryKey?: string
   jwt?: string
   apiUrl: string
-  options?: GetUsersOptions
+  options?: GetUsersOptions<T>
   queryParams?: UserTableFilters
 }
 
-export const useGetUsers = <T extends User = User>(params: GetUsersParams) => {
+export const useGetUsers = <T extends User = User>(
+  params: GetUsersParams<T>
+) => {
   const { apiUrl, jwt, options, queryKey = 'users', queryParams } = params
 
   const getUsers = useCallback(
@@ -77,17 +79,17 @@ export const useGetUsers = <T extends User = User>(params: GetUsersParams) => {
   return useQuery([queryKey, queryParams], getUsers, options)
 }
 
-export type GetUserOptions = Omit<
+export type GetUserOptions<T extends User> = Omit<
   UseQueryOptions<
-    User | undefined,
+    T | undefined,
     unknown,
-    User | undefined,
+    T | undefined,
     (string | undefined)[]
   >,
   'queryKey' | 'queryFn'
 >
 
-export interface GetUserParams {
+export interface GetUserParams<T extends User> {
   /**
    * @default "organization"
    */
@@ -96,10 +98,10 @@ export interface GetUserParams {
   userId?: string
   organizationId?: OrganizationId
   apiUrl: string
-  options?: GetUserOptions
+  options?: GetUserOptions<T>
 }
 
-export const useGetUser = (params: GetUserParams) => {
+export const useGetUser = <T extends User = User>(params: GetUserParams<T>) => {
   const {
     apiUrl,
     jwt,
@@ -112,9 +114,9 @@ export const useGetUser = (params: GetUserParams) => {
   const getUser = useCallback(
     async ({
       queryKey
-    }: QueryFunctionContext<[string, string]>): Promise<User | undefined> => {
+    }: QueryFunctionContext<[string, string]>): Promise<T | undefined> => {
       const [_key, userId] = queryKey
-      const res = await request<{ item: User }[]>({
+      const res = await request<{ item: T }[]>({
         url: `${apiUrl}/userGet`,
         method: 'POST',
         body: JSON.stringify({
@@ -143,22 +145,24 @@ export const useGetUser = (params: GetUserParams) => {
   })
 }
 
-export type UpdateUserOptions = Omit<
-  UseMutationOptions<{ id: string } | undefined, unknown, User, unknown>,
+export type UpdateUserOptions<T extends User> = Omit<
+  UseMutationOptions<{ id: string } | undefined, unknown, T, unknown>,
   'mutationFn'
 >
 
-export interface UpdateUserParams {
+export interface UpdateUserParams<T extends User> {
   jwt?: string
   apiUrl: string
-  options?: UpdateUserOptions
+  options?: UpdateUserOptions<T>
 }
 
-export const useUpdateUser = (params: UpdateUserParams) => {
+export const useUpdateUser = <T extends User = User>(
+  params: UpdateUserParams<T>
+) => {
   const { apiUrl, jwt, options } = params
 
   const updateUser = useCallback(
-    async (user: User) => {
+    async (user: T) => {
       const res = await request<{ id: string }[]>({
         url: `${apiUrl}/userUpdate`,
         method: 'POST',
@@ -182,23 +186,25 @@ export const useUpdateUser = (params: UpdateUserParams) => {
   return useMutation(updateUser, options)
 }
 
-export type CreateUserOptions = Omit<
-  UseMutationOptions<{ id: string } | undefined, unknown, User, unknown>,
+export type CreateUserOptions<T extends User> = Omit<
+  UseMutationOptions<{ id: string } | undefined, unknown, T, unknown>,
   'mutationFn'
 >
 
-export interface CreateUserParams {
+export interface CreateUserParams<T extends User> {
   jwt?: string
   apiUrl: string
   organizationId?: OrganizationId
-  options?: CreateUserOptions
+  options?: CreateUserOptions<T>
 }
 
-export const useCreateUser = (params: CreateUserParams) => {
+export const useCreateUser = <T extends User = User>(
+  params: CreateUserParams<T>
+) => {
   const { apiUrl, jwt, options, organizationId } = params
 
   const createUser = useCallback(
-    async (user: User) => {
+    async (user: T) => {
       const res = await request<{ id: string }[]>({
         url: `${apiUrl}/userCreate`,
         method: 'POST',
@@ -207,7 +213,7 @@ export const useCreateUser = (params: CreateUserParams) => {
           ...user,
           roles: user.roles.assignedRoles ?? [],
           memberOf: user.memberOf?.id ?? organizationId
-        } as User),
+        } as T),
         jwt: jwt
       })
       if (res) {

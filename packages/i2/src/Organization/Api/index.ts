@@ -87,17 +87,17 @@ export const useGetOrganizations = <T extends Organization = Organization>(
   return useQuery([queryKey, queryParams], getOrganizations, options)
 }
 
-export type GetOrganizationOptions = Omit<
+export type GetOrganizationOptions<T extends Organization> = Omit<
   UseQueryOptions<
-    OrganizationGetResult | undefined,
+    OrganizationGetResult<T> | undefined,
     unknown,
-    OrganizationGetResult | undefined,
+    OrganizationGetResult<T> | undefined,
     (string | undefined)[]
   >,
   'queryKey' | 'queryFn'
 >
 
-export interface GetOrganizationParams {
+export interface GetOrganizationParams<T extends Organization> {
   /**
    * @default "organization"
    */
@@ -105,10 +105,12 @@ export interface GetOrganizationParams {
   jwt?: string
   organizationId?: OrganizationId
   apiUrl: string
-  options?: GetOrganizationOptions
+  options?: GetOrganizationOptions<T>
 }
 
-export const useGetOrganization = (params: GetOrganizationParams) => {
+export const useGetOrganization = <T extends Organization = Organization>(
+  params: GetOrganizationParams<T>
+) => {
   const {
     apiUrl,
     jwt,
@@ -120,7 +122,7 @@ export const useGetOrganization = (params: GetOrganizationParams) => {
   const getOrganization = useCallback(
     async ({ queryKey }: QueryFunctionContext<[string, string]>) => {
       const [_key, organizationId] = queryKey
-      const res = await request<OrganizationGetResult[]>({
+      const res = await request<OrganizationGetResult<T>[]>({
         url: `${apiUrl}/organizationGet`,
         method: 'POST',
         body: JSON.stringify({
@@ -143,12 +145,14 @@ export const useGetOrganization = (params: GetOrganizationParams) => {
   })
 }
 
-export const getInseeOrganization = async (
+export const getInseeOrganization = async <
+  T extends Organization = Organization
+>(
   siret: string,
   apiUrl: string,
   jwt?: string
 ) => {
-  const res = await request<{ item?: Organization }[]>({
+  const res = await request<{ item?: T }[]>({
     url: `${apiUrl}/organizationGetFromInsee`,
     method: 'POST',
     body: JSON.stringify({
@@ -163,27 +167,24 @@ export const getInseeOrganization = async (
   }
 }
 
-export type UpdateOrganizationOptions = Omit<
-  UseMutationOptions<
-    undefined | { id: string },
-    unknown,
-    Organization,
-    unknown
-  >,
+export type UpdateOrganizationOptions<T extends Organization> = Omit<
+  UseMutationOptions<undefined | { id: string }, unknown, T, unknown>,
   'mutationFn'
 >
 
-export interface UpdateOrganizationParams {
+export interface UpdateOrganizationParams<T extends Organization> {
   jwt?: string
   apiUrl: string
-  options?: UpdateOrganizationOptions
+  options?: UpdateOrganizationOptions<T>
 }
 
-export const useUpdateOrganization = (params: UpdateOrganizationParams) => {
+export const useUpdateOrganization = <T extends Organization = Organization>(
+  params: UpdateOrganizationParams<T>
+) => {
   const { apiUrl, jwt, options } = params
   // TODO Remove all duplicated code with other request
   const updateOrganization = useCallback(
-    async (organization: Organization) => {
+    async (organization: T) => {
       const res = await request<{ id: string }[]>({
         url: `${apiUrl}/organizationUpdate`,
         method: 'POST',
@@ -204,27 +205,24 @@ export const useUpdateOrganization = (params: UpdateOrganizationParams) => {
   return useMutation(updateOrganization, options)
 }
 
-export type CreateOrganizationOptions = Omit<
-  UseMutationOptions<
-    undefined | { id: string },
-    unknown,
-    Organization,
-    unknown
-  >,
+export type CreateOrganizationOptions<T extends Organization> = Omit<
+  UseMutationOptions<undefined | { id: string }, unknown, T, unknown>,
   'mutationFn'
 >
 
-export interface CreateOrganizationParams {
+export interface CreateOrganizationParams<T extends Organization> {
   jwt?: string
   apiUrl: string
-  options?: CreateOrganizationOptions
+  options?: CreateOrganizationOptions<T>
 }
 
-export const useCreateOrganization = (params: CreateOrganizationParams) => {
+export const useCreateOrganization = <T extends Organization = Organization>(
+  params: CreateOrganizationParams<T>
+) => {
   const { apiUrl, jwt, options } = params
   // TODO Remove all duplicated code with other request
   const createOrganization = useCallback(
-    async (organization: Organization) => {
+    async (organization: T) => {
       const res = await request<{ id: string }[]>({
         url: `${apiUrl}/organizationCreate`,
         method: 'POST',

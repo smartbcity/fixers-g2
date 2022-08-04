@@ -28,7 +28,7 @@ export type OrganizationRef = {
 export interface Organization {
   attributes?: any
   id: OrganizationId
-  siret: string
+  siret?: string
   name: string
   roles: RoleType[]
   description?: string
@@ -39,7 +39,7 @@ export interface Organization {
 
 export interface FlatOrganization {
   id: OrganizationId
-  siret: string
+  siret?: string
   name: string
   roles: string[]
   description?: string
@@ -69,8 +69,8 @@ export type OrganizationGetQuery = {
   id: OrganizationId
 }
 
-export type OrganizationGetResult = {
-  item: Organization
+export type OrganizationGetResult<T extends Organization> = {
+  item: T
 }
 
 export const organizationToFlatOrganization = (

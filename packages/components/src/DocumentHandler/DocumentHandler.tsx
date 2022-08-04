@@ -14,6 +14,7 @@ import {
   UploadRounded,
   VisibilityRounded
 } from '@mui/icons-material'
+import { openBase64InNewWindow } from '@smartb/g2-utils'
 
 export type DropError =
   | 'file-too-large'
@@ -134,7 +135,7 @@ export const DocumentHandler = (props: DocumentHandlerProps) => {
     if (onView) {
       onView()
     } else if (fileUrl) {
-      window.open(fileUrl, '_blank')
+      openBase64InNewWindow(fileUrl)
     }
   }, [onView, fileUrl])
 
@@ -152,8 +153,6 @@ export const DocumentHandler = (props: DocumentHandlerProps) => {
   const onRejectMemoized = useCallback(
     (fileRejections: FileRejection[]) => {
       const code = fileRejections[0].errors[0].code as DropError
-      console.log(errorMessages)
-      console.log(errorMessages && errorMessages[code])
       setError(
         !!errorMessages && !!errorMessages[code]
           ? errorMessages[code]
@@ -216,6 +215,7 @@ export const DocumentHandler = (props: DocumentHandlerProps) => {
   if (!!fileUrl) {
     return (
       <Stack
+        //@ts-ignore
         {...otherProps}
         className={cx('AruiDocumentHandler-root', className)}
         style={style}
@@ -223,7 +223,8 @@ export const DocumentHandler = (props: DocumentHandlerProps) => {
           width: '100%',
           borderRadius: theme.borderRadius + 'px',
           background: '#F5F5F5',
-          cursor: 'pointer'
+          cursor: 'pointer',
+          ...otherProps?.sx
         }}
         onClick={onViewMemoized}
       >
@@ -235,14 +236,6 @@ export const DocumentHandler = (props: DocumentHandlerProps) => {
     <Dropzone
       className={cx('AruiDocumentHandler-root', className)}
       style={style}
-      sx={{
-        width: '100%',
-        borderRadius: theme.borderRadius + 'px',
-        borderColor: error ? theme.colors.error : '#BDBDBD',
-        padding: '0px',
-        pointerEvents: isLoading ? 'none' : 'auto',
-        opacity: isLoading ? 0.8 : 1
-      }}
       onDrop={onDrop}
       onReject={onRejectMemoized}
       accept={accept}
@@ -250,6 +243,15 @@ export const DocumentHandler = (props: DocumentHandlerProps) => {
       multiple={multiple && !isRequired}
       disabled={isLoading}
       {...dropzoneProps}
+      sx={{
+        width: '100%',
+        borderRadius: theme.borderRadius + 'px',
+        borderColor: error ? theme.colors.error : '#BDBDBD',
+        padding: '0px',
+        pointerEvents: isLoading ? 'none' : 'auto',
+        opacity: isLoading ? 0.8 : 1,
+        ...dropzoneProps?.sx
+      }}
     >
       {dropzoneContent}
     </Dropzone>

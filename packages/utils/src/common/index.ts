@@ -30,6 +30,18 @@ export const Base64ToFile = (base64: string, fileName?: string) => {
   return new File([u8arr], fileName ?? "", { type: mime });
 };
 
+export const openBase64InNewWindow = (base64URL: string) => {
+  var win = window.open();
+  if (win) {
+    win.document.write(
+      '<iframe src="' +
+        base64URL +
+        '" frameborder="0" style="border:0; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%;" allowfullscreen></iframe>'
+    );
+    win.document.body.style.margin = "0px";
+  }
+};
+
 export const formatNumber = (
   num: number,
   language: string,
