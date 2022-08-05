@@ -2,6 +2,9 @@ import { useLocalStorage } from '@mantine/hooks'
 import { Base64ToFile, fileToBase64 } from '@smartb/g2-utils'
 import { useCallback, useEffect, useState } from 'react'
 
+/**
+ * TODO Add interface for the return type.
+ */
 export const useLocalStorageDocumentHandler = (fileKey: string) => {
   const [file, setFile] = useState<File | undefined>(undefined)
   const [fileUrl, setFileUrl] = useLocalStorage<string | undefined>({
