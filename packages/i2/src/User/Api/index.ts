@@ -33,7 +33,7 @@ export type GetUsersOptions<T extends User> = Omit<
   'queryKey' | 'queryFn'
 >
 
-export interface GetUsersParams<T extends User> {
+export interface GetUsersParams<T extends User = User> {
   /**
    * @default "organization"
    */
@@ -79,7 +79,7 @@ export const useGetUsers = <T extends User = User>(
   return useQuery([queryKey, queryParams], getUsers, options)
 }
 
-export type GetUserOptions<T extends User> = Omit<
+export type GetUserOptions<T extends User = User> = Omit<
   UseQueryOptions<
     T | undefined,
     unknown,
@@ -89,7 +89,7 @@ export type GetUserOptions<T extends User> = Omit<
   'queryKey' | 'queryFn'
 >
 
-export interface GetUserParams<T extends User> {
+export interface GetUserParams<T extends User = User> {
   /**
    * @default "organization"
    */
@@ -145,7 +145,7 @@ export const useGetUser = <T extends User = User>(params: GetUserParams<T>) => {
   })
 }
 
-export type UpdateUserOptions<T extends User> = Omit<
+export type UpdateUserOptions<T extends User = User> = Omit<
   UseMutationOptions<{ id: string } | undefined, unknown, T, unknown>,
   'mutationFn'
 >
@@ -186,7 +186,7 @@ export const useUpdateUser = <T extends User = User>(
   return useMutation(updateUser, options)
 }
 
-export type CreateUserOptions<T extends User> = Omit<
+export type CreateUserOptions<T extends User = User> = Omit<
   UseMutationOptions<{ id: string } | undefined, unknown, T, unknown>,
   'mutationFn'
 >
@@ -211,7 +211,7 @@ export const useCreateUser = <T extends User = User>(
         // @ts-ignore
         body: JSON.stringify({
           ...user,
-          roles: user.roles.assignedRoles ?? [],
+          roles: user.roles?.assignedRoles ?? [],
           memberOf: user.memberOf?.id ?? organizationId
         } as T),
         jwt: jwt

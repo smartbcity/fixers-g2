@@ -29,7 +29,7 @@ export type GetOrganizationsOptions<T extends Organization> = Omit<
   'queryKey' | 'queryFn'
 >
 
-export interface GetOrganizationsParams<T extends Organization> {
+export interface GetOrganizationsParams<T extends Organization = Organization> {
   /**
    * @default "organization"
    */
@@ -87,15 +87,16 @@ export const useGetOrganizations = <T extends Organization = Organization>(
   return useQuery([queryKey, queryParams], getOrganizations, options)
 }
 
-export type GetOrganizationOptions<T extends Organization> = Omit<
-  UseQueryOptions<
-    OrganizationGetResult<T> | undefined,
-    unknown,
-    OrganizationGetResult<T> | undefined,
-    (string | undefined)[]
-  >,
-  'queryKey' | 'queryFn'
->
+export type GetOrganizationOptions<T extends Organization = Organization> =
+  Omit<
+    UseQueryOptions<
+      OrganizationGetResult<T> | undefined,
+      unknown,
+      OrganizationGetResult<T> | undefined,
+      (string | undefined)[]
+    >,
+    'queryKey' | 'queryFn'
+  >
 
 export interface GetOrganizationParams<T extends Organization> {
   /**
@@ -167,10 +168,11 @@ export const getInseeOrganization = async <
   }
 }
 
-export type UpdateOrganizationOptions<T extends Organization> = Omit<
-  UseMutationOptions<undefined | { id: string }, unknown, T, unknown>,
-  'mutationFn'
->
+export type UpdateOrganizationOptions<T extends Organization = Organization> =
+  Omit<
+    UseMutationOptions<undefined | { id: string }, unknown, T, unknown>,
+    'mutationFn'
+  >
 
 export interface UpdateOrganizationParams<T extends Organization> {
   jwt?: string
@@ -205,10 +207,11 @@ export const useUpdateOrganization = <T extends Organization = Organization>(
   return useMutation(updateOrganization, options)
 }
 
-export type CreateOrganizationOptions<T extends Organization> = Omit<
-  UseMutationOptions<undefined | { id: string }, unknown, T, unknown>,
-  'mutationFn'
->
+export type CreateOrganizationOptions<T extends Organization = Organization> =
+  Omit<
+    UseMutationOptions<undefined | { id: string }, unknown, T, unknown>,
+    'mutationFn'
+  >
 
 export interface CreateOrganizationParams<T extends Organization> {
   jwt?: string

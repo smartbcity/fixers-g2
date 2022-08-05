@@ -54,11 +54,6 @@ const postalCode = (
       strings?.completeThePostalCode ??
       ('Vous devez renseigner le code postal pour avoir une adresse complète' as string)
     )
-  if (!!trimmed && trimmed?.length !== 5)
-    return (
-      strings?.postalCodeLongerThan5 ??
-      ('Un code postal doit être composé de 5 chiffres' as string)
-    )
   return additionnalValidators?.postalCode
     ? additionnalValidators.postalCode(trimmed, values)
     : undefined

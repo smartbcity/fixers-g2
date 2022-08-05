@@ -4,7 +4,11 @@ import { styled, Typography } from '@mui/material'
 import { Popover } from '@smartb/g2-notifications'
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 import { cx } from '@emotion/css'
-import { Organization, organizationToFlatOrganization } from '../../Domain'
+import {
+  FlatOrganization,
+  Organization,
+  organizationToFlatOrganization
+} from '../../Domain'
 import { AdressValidationStrings } from '../../../Commons'
 import { useDeletableForm } from '../../../Commons/useDeletableForm'
 import {
@@ -94,6 +98,10 @@ export interface OrganizationFactoryBasicProps
    */
   getInseeOrganization?: (siret: string) => Promise<Organization | undefined>
   /**
+   * The event called after the insee api call.
+   */
+  setInseeOrganization?: (organization: any) => void
+  /**
    * The submit event
    * @param organization the complete organization object after form Validation
    * @returns true if the Api call has been successfull
@@ -103,6 +111,10 @@ export interface OrganizationFactoryBasicProps
    * The ref of the submit element
    */
   SubmitButtonRef?: React.RefObject<HTMLElement | undefined>
+  /**
+   * If you want to access the organization state from the form use this function
+   */
+  setOrganizationState?: (organization: FlatOrganization) => void
   /**
    * To activate Readonly view
    * @default false
@@ -149,6 +161,8 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
     blockedFields,
     strings,
     multipleRoles = true,
+    setOrganizationState,
+    setInseeOrganization,
     ...other
   } = props
 
@@ -162,12 +176,18 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
 
   const formState = useOrganizationFormState(props)
 
+  useEffect(() => {
+    setOrganizationState &&
+      setOrganizationState(formState.values as FlatOrganization)
+  }, [formState.values, setOrganizationState])
+
   const fetchOrganization = useCallback(async () => {
     if (getInseeOrganization) {
       await getInseeOrganization(formState.values.siret).then((values) => {
         if (values) {
           formState.setValues(organizationToFlatOrganization(values), false)
           setSiretValid(true)
+          setInseeOrganization && setInseeOrganization(values)
         } else {
           formState.setFieldError(
             'siret',
@@ -182,7 +202,8 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
     formState.setValues,
     formState.setFieldError,
     getInseeOrganization,
-    strings?.siretNotFound
+    strings?.siretNotFound,
+    setInseeOrganization
   ])
 
   const organizationForm = useMemo(
@@ -193,7 +214,7 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
         label: strings?.siret ?? 'Numéro de siret',
         type: 'textfield',
         textFieldProps: {
-          textFieldType: 'search-number',
+          textFieldType: 'search',
           iconPosition: 'end',
           noCheckOrClearIcon: true,
           validated: siretValid,
@@ -247,7 +268,6 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
         type: 'textfield',
         label: strings?.postalCode ?? 'Code postal (facultatif)',
         textFieldProps: {
-          textFieldType: 'number',
           readonly: readonlyFields?.address
         }
       },

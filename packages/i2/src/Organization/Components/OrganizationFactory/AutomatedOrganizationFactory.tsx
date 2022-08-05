@@ -137,7 +137,7 @@ export const AutomatedOrganizationFactory = (
     async (organization: Organization) => {
       const res = await updateOrganization.mutateAsync({
         ...organization,
-        attributes
+        ...attributes
       })
       if (res) {
         return true
@@ -145,14 +145,14 @@ export const AutomatedOrganizationFactory = (
         return false
       }
     },
-    [updateOrganization.mutateAsync]
+    [updateOrganization.mutateAsync, attributes]
   )
 
   const createOrganizationMemoized = useCallback(
     async (organization: Organization) => {
       const res = await createOrganization.mutateAsync({
         ...organization,
-        attributes
+        ...attributes
       })
       if (res) {
         return true

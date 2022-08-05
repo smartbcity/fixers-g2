@@ -30,7 +30,7 @@ export interface Organization {
   id: OrganizationId
   siret?: string
   name: string
-  roles: RoleType[]
+  roles?: RoleType[]
   description?: string
   website?: string
   address?: Address
@@ -41,7 +41,7 @@ export interface FlatOrganization {
   id: OrganizationId
   siret?: string
   name: string
-  roles: string[]
+  roles?: string[]
   description?: string
   website?: string
   image?: string

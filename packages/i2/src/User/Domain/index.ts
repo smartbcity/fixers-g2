@@ -28,7 +28,7 @@ export interface User {
   givenName: string
   address?: Address
   email: string
-  roles: Roles
+  roles?: Roles
   phone?: string
   sendEmailLink?: boolean
 }
@@ -39,7 +39,7 @@ export interface FlatUser {
   familyName: string
   givenName: string
   email: string
-  roles: string[]
+  roles?: string[]
   phone?: string
   sendEmailLink?: boolean
   street?: string
@@ -54,7 +54,7 @@ export const userToFlatUser = (user: User): FlatUser => {
     city: user.address?.city,
     postalCode: user.address?.postalCode,
     memberOf: user.memberOf?.id,
-    roles: user.roles.assignedRoles
+    roles: user.roles?.assignedRoles
   }
   delete flat.address
   return flat

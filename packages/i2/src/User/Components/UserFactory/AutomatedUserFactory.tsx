@@ -155,7 +155,7 @@ export const AutomatedUserFactory = (props: AutomatedUserFactoryProps) => {
   const updateUserMemoized = useCallback(
     async (user: User) => {
       const results: Promise<any>[] = []
-      results.push(updateUser.mutateAsync({ ...user, attributes }))
+      results.push(updateUser.mutateAsync({ ...user, ...attributes }))
       if (getUser.data?.email !== user.email) {
         results.push(
           updateEmail.mutateAsync({
@@ -181,7 +181,7 @@ export const AutomatedUserFactory = (props: AutomatedUserFactoryProps) => {
 
   const createUserMemoized = useCallback(
     async (user: User) => {
-      const res = await createUser.mutateAsync({ ...user, attributes })
+      const res = await createUser.mutateAsync({ ...user, ...attributes })
       if (res) {
         return true
       } else {

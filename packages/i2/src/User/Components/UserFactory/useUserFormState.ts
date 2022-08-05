@@ -202,7 +202,7 @@ export const useUserFormState = <T extends User = User>(
         defaultValue: user?.phone,
         validator: (value?: string, values?: any) => {
           if (readonlyFields?.phone) return undefined
-          const trimmed = (value ?? '').trim()
+          const trimmed = (value ?? '').trim().replace(' ', '')
           if (trimmed && trimmed.length !== 10)
             return (
               strings?.enterAValidPhone ??

@@ -2,7 +2,7 @@ import { cx } from '@emotion/css'
 import { Form, FormField, Option } from '@smartb/g2-forms'
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 import React, { useEffect, useMemo } from 'react'
-import { User } from '../../Domain'
+import { FlatUser, User } from '../../Domain'
 import { AdressValidationStrings } from '../../../Commons'
 import { OrganizationId, OrganizationRef } from '../../../Organization'
 import { Stack, StackProps } from '@mui/material'
@@ -111,6 +111,10 @@ export interface UserFactoryBasicProps
    */
   getOrganizationUrl?: (organizationId: OrganizationId) => string
   /**
+   * If you want to access the user state from the form use this function
+   */
+  setUserState?: (user: FlatUser) => void
+  /**
    * Indicates if the data is currently loading
    *
    * @default false
@@ -151,12 +155,17 @@ export const UserFactory = (props: UserFactoryProps) => {
     multipleRoles = true,
     checkEmailValidity,
     formExtension,
+    setUserState,
     ...other
   } = props
 
   const { ref, width } = useElementSize()
 
   const { formState, emailLoading, emailValid } = useUserFormState(props)
+
+  useEffect(() => {
+    setUserState && setUserState(formState.values as FlatUser)
+  }, [formState.values, setUserState])
 
   const userForm = useMemo((): FormField[] => {
     const orgsOptions =
@@ -236,7 +245,6 @@ export const UserFactory = (props: UserFactoryProps) => {
         type: 'textfield',
         label: strings?.postalCode ?? 'Code postal (facultatif)',
         textFieldProps: {
-          textFieldType: 'number',
           readonly: readonlyFields?.address
         }
       },
@@ -267,7 +275,6 @@ export const UserFactory = (props: UserFactoryProps) => {
         type: 'textfield',
         label: strings?.phone ?? 'Numéro de téléphone (facultatif)',
         textFieldProps: {
-          textFieldType: 'number',
           readonly: readonlyFields?.phone
         }
       },
