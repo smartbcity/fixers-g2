@@ -103,6 +103,7 @@ const AutoCompleteBase = function <T>(
     getOptionLabel,
     textFieldProps,
     disabled,
+    isOptionEqualToValue,
     ...other
   } = props
 
@@ -122,10 +123,7 @@ const AutoCompleteBase = function <T>(
   const renderTags = useCallback(
     (value: T[], getTagProps: AutocompleteGetTagProps) =>
       value.map((option: T, index: number) => (
-        <Chip
-          label={getOptionLabel(option)}
-          {...getTagProps({ index })}
-        />
+        <Chip label={getOptionLabel(option)} {...getTagProps({ index })} />
       )),
     [getOptionLabel]
   )
@@ -156,6 +154,14 @@ const AutoCompleteBase = function <T>(
     [getOptionLabel]
   )
 
+  const defaultIsOptionEqualToValue = useCallback(
+    //@ts-ignore
+    (option: T, value: T) => option.key === value.key,
+    []
+  )
+  //@ts-ignore
+  const hasKey = values ? !!values[0]?.key : !!value?.key
+
   return (
     <MuiAutocomplete<T, boolean, undefined, undefined>
       id={id}
@@ -174,6 +180,9 @@ const AutoCompleteBase = function <T>(
       renderTags={renderTags}
       renderInput={renderInput}
       renderOption={renderOption}
+      isOptionEqualToValue={
+        isOptionEqualToValue ?? hasKey ? defaultIsOptionEqualToValue : undefined
+      }
       classes={{
         listbox: defaultStyles.classes.list
       }}

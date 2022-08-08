@@ -67,7 +67,7 @@ export const usePrefetchOrganizationRefs = async (
 const fetchOrganizationRefs =
   (jwt?: string) => async (): Promise<OrganizationRefsAllResult> => {
     const res = await request<OrganizationRefsAllResult[]>({
-      url: `${i2Config().orgUrl}/organizationRefGetAll`,
+      url: `${i2Config().orgUrl}/organizationRefList`,
       method: 'POST',
       body: '[{}]',
       jwt: jwt
