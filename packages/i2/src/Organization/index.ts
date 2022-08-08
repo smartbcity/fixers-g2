@@ -24,6 +24,7 @@ export {
   OrganizationRef,
   OrganizationId,
   Organization,
+  FlatOrganization,
   OrganizationPageQuery,
   OrganizationCreateCommand,
   OrganizationGetQuery,
