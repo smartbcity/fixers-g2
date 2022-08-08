@@ -95,6 +95,7 @@ export const AutomatedUserFactory = (props: AutomatedUserFactoryProps) => {
     resetPasswordType,
     userUpdateEmailOptions,
     attributes,
+    formExtension,
     ...other
   } = props
 
@@ -209,11 +210,14 @@ export const AutomatedUserFactory = (props: AutomatedUserFactoryProps) => {
       formExtension={
         userId &&
         resetPasswordType && (
-          <ChoicedResetPassword
-            resetPasswordType={resetPasswordType}
-            userId={userId}
-            {...choicedResetPasswordProps}
-          />
+          <>
+            {formExtension}
+            <ChoicedResetPassword
+              resetPasswordType={resetPasswordType}
+              userId={userId}
+              {...choicedResetPasswordProps}
+            />
+          </>
         )
       }
       readonlyFields={

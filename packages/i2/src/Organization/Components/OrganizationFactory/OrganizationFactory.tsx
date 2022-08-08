@@ -175,6 +175,8 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
   const onCloseSiretInfo = useCallback(() => setOpenSiretInfo(false), [])
 
   const formState = useOrganizationFormState(props)
+  delete other.additionnalValidators
+  delete other.additionalFields
 
   useEffect(() => {
     setOrganizationState &&

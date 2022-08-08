@@ -162,6 +162,8 @@ export const UserFactory = (props: UserFactoryProps) => {
   const { ref, width } = useElementSize()
 
   const { formState, emailLoading, emailValid } = useUserFormState(props)
+  delete other.additionnalValidators
+  delete other.additionalFields
 
   useEffect(() => {
     setUserState && setUserState(formState.values as FlatUser)

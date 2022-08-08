@@ -172,7 +172,7 @@ export const AutomatedOrganizationFactory = (
       }
       readonlyFields={
         update
-          ? { siret: true, roles: true, ...readonlyFieldsPerState?.update }
+          ? { roles: true, ...readonlyFieldsPerState?.update }
           : readonlyFieldsPerState?.create
       }
       isLoading={getOrganization.isLoading}
