@@ -1,7 +1,7 @@
 include:
-  - project: "fixers/cicd"
+  - project: "framework/fixers/cicd"
     file: "fixers/.gitlab-ci-base.yml"
-  - project: "fixers/cicd"
+  - project: "framework/fixers/cicd"
     file: "fixers/.gitlab-ci-docs.yml"
 
 npm-package:
