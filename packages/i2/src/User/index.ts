@@ -7,6 +7,7 @@ export {
   UserUpdatePasswordCommand,
   UserUpdatePasswordResult,
   UserUpdatedEmailEvent,
+  FlatUser,
   UserId
 } from './Domain'
 
