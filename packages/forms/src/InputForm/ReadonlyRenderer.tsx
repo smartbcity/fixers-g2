@@ -4,6 +4,17 @@ import React, { useMemo } from 'react'
 import { InputFormProps } from './InputForm'
 import { Link, LinkProps } from 'react-router-dom'
 
+const getLabelOfOption = (
+  option: any,
+  getOptionLabel?: (option: any) => string
+) => {
+  if (option) {
+    if (getOptionLabel) return getOptionLabel(option)
+    if (option.label) return option.label
+  }
+  return ''
+}
+
 export const ReadonlyRenderer = (props: Partial<InputFormProps>) => {
   const {
     readonlyType = 'text',
@@ -15,6 +26,7 @@ export const ReadonlyRenderer = (props: Partial<InputFormProps>) => {
     multiple,
     getReadonlyChipColor,
     getReadonlyTextUrl,
+    getOptionLabel,
     size
   } = props
 
@@ -25,14 +37,20 @@ export const ReadonlyRenderer = (props: Partial<InputFormProps>) => {
     if (multiple) {
       if (options && values) {
         return values
-          .map((v) => options.find((o) => o.key === v)?.label)
+          .map((v: any) =>
+            getLabelOfOption(
+              options.find((o) => o.key === v || o.key === v.key),
+              getOptionLabel
+            )
+          )
           .join(', ')
       }
-    } else {
-      if (options && value) return options.find((c) => c.key === value)?.label
+    } else if (options && value) {
+      const option = options.find((c) => c.key === value || c.key === value.key)
+      return getLabelOfOption(option, getOptionLabel)
     }
-    return value
-  }, [inputType, value, values, choices, multiple, options])
+    return typeof value === 'string' ? value : ''
+  }, [inputType, value, values, choices, multiple, options, getOptionLabel])
 
   const renderTag = useMemo(() => {
     if (readonlyType === 'text') return undefined

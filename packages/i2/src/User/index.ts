@@ -2,6 +2,8 @@ export {
   User,
   UserPageQuery,
   UserPageResult,
+  FlatUserToUser,
+  userToFlatUser,
   UserResetPasswordCommand,
   UserUpdateEmailCommand,
   UserUpdatePasswordCommand,

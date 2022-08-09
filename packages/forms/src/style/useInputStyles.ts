@@ -7,12 +7,13 @@ const disabledColor = '#E6E9EF'
 export const useInputStyles = makeG2STyles()((theme) => ({
   label: {
     marginBottom: theme.spacing,
-    fontSize: "0.875rem",
+    fontSize: '0.875rem',
     fontWeight: 600,
-    color: "#000000"
+    color: '#000000',
+    flexShrink: 0
   },
   labelSmall: {
-    fontSize: "0.813rem",
+    fontSize: '0.813rem'
   },
   input: {
     '& .MuiInputBase-input': {
@@ -143,7 +144,7 @@ export const useInputStyles = makeG2STyles()((theme) => ({
   inputSmall: {
     '& .MuiInputBase-root': {
       minHeight: '32px',
-      borderRadius: theme.borderRadius * 0.75,
+      borderRadius: theme.borderRadius * 0.75
     },
     '& .MuiSelect-root': {
       height: '32px',
@@ -192,7 +193,7 @@ export const useInputStyles = makeG2STyles()((theme) => ({
   },
   clearError: {
     color: theme.colors.error,
-    cursor: 'normal',
+    cursor: 'normal'
   },
   loading: {
     position: 'absolute',

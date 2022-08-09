@@ -156,7 +156,7 @@ const AutoCompleteBase = function <T>(
 
   const defaultIsOptionEqualToValue = useCallback(
     //@ts-ignore
-    (option: T, value: T) => option.key === value.key,
+    (option: T, value: T) => option.key === value.key || option.key === value,
     []
   )
   //@ts-ignore
