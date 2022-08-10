@@ -37,7 +37,11 @@ export interface DocumentHandlerBasicProps extends BasicProps {
   /**
    * provide it if the file is already uploaded
    */
-  fileUrl?: string
+  getFileUrl?: () => string | Promise<string> | void | undefined | Promise<undefined>
+  /**
+   * Define if the file is uploaded or not
+   */
+  uploaded: boolean
   /**
    * Indicates if the file is mandatory or not
    *
@@ -106,7 +110,7 @@ export type DocumentHandlerProps = MergeMuiElementProps<
 export const DocumentHandler = (props: DocumentHandlerProps) => {
   const {
     label,
-    fileUrl,
+    getFileUrl,
     isRequired = false,
     isRequiredLabel,
     fileTypesAllowed,
@@ -122,33 +126,43 @@ export const DocumentHandler = (props: DocumentHandlerProps) => {
     className,
     style,
     dropzoneProps,
+    uploaded,
     ...otherProps
   } = props
   const [error, setError] = useState(customErrorMessage)
+  const [loading, setLoading] = useState(false)
   const theme = useTheme()
 
   useEffect(() => {
     setError(customErrorMessage)
   }, [customErrorMessage])
 
-  const onViewMemoized = useCallback(() => {
+  const onViewMemoized = useCallback(async () => {
     if (onView) {
       onView()
-    } else if (fileUrl) {
-      openBase64InNewWindow(fileUrl)
+    } else if (getFileUrl) {
+      setLoading(true)
+      const url = await getFileUrl()
+      if (url) openBase64InNewWindow(url)
+      setLoading(false)
     }
-  }, [onView, fileUrl])
+  }, [onView, getFileUrl])
 
-  const onDownloadMemoized = useCallback(() => {
+  const onDownloadMemoized = useCallback(async () => {
     if (onDownload) {
       onDownload()
-    } else if (fileUrl && label) {
-      var link = document.createElement('a')
-      link.href = fileUrl
-      link.download = label
-      link.click()
+    } else if (getFileUrl && label) {
+      setLoading(true)
+      const url = await getFileUrl()
+      if (url) {
+        var link = document.createElement('a')
+        link.href = url
+        link.download = label
+        link.click()
+      }
+      setLoading(false)
     }
-  }, [onDownload, fileUrl, label])
+  }, [onDownload, getFileUrl, label])
 
   const onRejectMemoized = useCallback(
     (fileRejections: FileRejection[]) => {
@@ -179,7 +193,7 @@ export const DocumentHandler = (props: DocumentHandlerProps) => {
 
   const dropzoneContent = useCallback(() => {
     const props = {
-      uploaded: !!fileUrl,
+      uploaded,
       error,
       label,
       isRequired,
@@ -189,11 +203,10 @@ export const DocumentHandler = (props: DocumentHandlerProps) => {
       onDownload: onDownloadMemoized,
       onView: onViewMemoized,
       fileTypesAllowed,
-      isLoading
+      isLoading: isLoading || loading,
     }
     return <DropzoneChildren {...props} />
   }, [
-    fileUrl,
     label,
     isRequired,
     isRequiredLabel,
@@ -204,7 +217,8 @@ export const DocumentHandler = (props: DocumentHandlerProps) => {
     onDownloadMemoized,
     error,
     fileTypesAllowed,
-    isLoading
+    isLoading,
+    loading
   ])
 
   const dropzoneContentMemo = useMemo(
@@ -212,7 +226,7 @@ export const DocumentHandler = (props: DocumentHandlerProps) => {
     [dropzoneContent]
   )
 
-  if (!!fileUrl) {
+  if (uploaded) {
     return (
       //@ts-ignore
       <Stack
@@ -241,15 +255,15 @@ export const DocumentHandler = (props: DocumentHandlerProps) => {
       accept={accept}
       maxSize={50 * 1024 * 1024}
       multiple={multiple && !isRequired}
-      disabled={isLoading}
+      disabled={isLoading || loading}
       {...dropzoneProps}
       sx={{
         width: '100%',
         borderRadius: theme.borderRadius + 'px',
         borderColor: error ? theme.colors.error : '#BDBDBD',
         padding: '0px',
-        pointerEvents: isLoading ? 'none' : 'auto',
-        opacity: isLoading ? 0.8 : 1,
+        pointerEvents: isLoading || loading ? 'none' : 'auto',
+        opacity: isLoading || loading ? 0.8 : 1,
         ...dropzoneProps?.sx
       }}
     >

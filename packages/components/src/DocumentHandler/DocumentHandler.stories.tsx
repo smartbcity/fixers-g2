@@ -41,15 +41,17 @@ export const DocumentHandlerVariant: Story = () => (
       gap: '30px'
     }}
   >
-    <AruiDocumentHandler label='mandatory.pdf' isRequired />
+    <AruiDocumentHandler uploaded={false} label='mandatory.pdf' isRequired />
     <AruiDocumentHandler
+      uploaded={false}
       label='error.pdf'
       customErrorMessage='Your file is wrong'
     />
-    <AruiDocumentHandler label='loading.pdf' isLoading />
+    <AruiDocumentHandler uploaded={false} label='loading.pdf' isLoading />
     <AruiDocumentHandler
+      uploaded
       label='uploaded.pdf'
-      fileUrl='https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf'
+      getFileUrl={() => 'https://www.google.com/file/d/1/view'}
     />
   </Stack>
 )
@@ -75,9 +77,8 @@ export const useLocalDocumentHandlerExample: Story = () => {
 }
 
 export const useLocalStorageDocumentHandlerExample: Story = () => {
-  const { file, docmentHandlerProps } =
+  const { fileName, docmentHandlerProps } =
     useLocalStorageDocumentHandler('fileExample')
-  console.log(file)
   return (
     <Box
       sx={{
@@ -87,7 +88,7 @@ export const useLocalStorageDocumentHandlerExample: Story = () => {
     >
       <AruiDocumentHandler
         fileTypesAllowed={['pdf']}
-        label={file?.name ?? 'Add your pdf file'}
+        label={fileName ?? 'Add your pdf file'}
         isRequired
         {...docmentHandlerProps}
       />
@@ -97,9 +98,9 @@ export const useLocalStorageDocumentHandlerExample: Story = () => {
 
 DocumentHandler.args = {
   label: 'Specifications.pdf',
-  onDelete: () => {},
-  onView: () => {},
-  onDownload: () => {},
+  onDelete: () => { },
+  onView: () => { },
+  onDownload: () => { },
   fileTypesAllowed: ['pdf', 'jpeg', 'png']
 }
 

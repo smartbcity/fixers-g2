@@ -3,28 +3,30 @@ import { useCallback, useState } from 'react'
 
 export const useLocalDocumentHandler = () => {
   const [file, setFile] = useState<File | undefined>(undefined)
-  const [fileUrl, setFileUrl] = useState<string | undefined>(undefined)
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
   const onAdd = useCallback(async (files: File[]) => {
     setIsLoading(true)
     const file = files[0]
     setFile(file)
-    const url = await fileToBase64(file)
-    setFileUrl(url)
     setIsLoading(false)
   }, [])
 
   const onDelete = useCallback(() => {
     setFile(undefined)
-    setFileUrl(undefined)
   }, [])
+
+  const getFileUrl = useCallback(
+    async () => file ? fileToBase64(file) : "",
+    [file],
+  )
 
   return {
     file,
-    fileUrl,
+    getFileUrl,
     docmentHandlerProps: {
-      fileUrl,
+      uploaded: !!file,
+      getFileUrl,
       isLoading,
       onAdd,
       onDelete,

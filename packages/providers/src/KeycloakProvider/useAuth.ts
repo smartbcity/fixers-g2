@@ -1,6 +1,6 @@
 import { useKeycloak } from '@react-keycloak/web'
 import { useCallback, useMemo } from 'react'
-import { KeycloakInstance, KeycloakTokenParsed } from 'keycloak-js'
+import Keycloak, { KeycloakTokenParsed } from 'keycloak-js'
 
 export type CommonUser = {
   id: string
@@ -24,48 +24,54 @@ type RolesServices<Roles extends string> = {
 type AuthService<
   Additionnals extends AuthServiceAdditionnal = {},
   Roles extends string = string
-> = {
-  /**
-   * get the variable userId from the token parsed
-   * @return {string | undefined} return  the id or undefined if not authenticated
-   */
-  getUserId: () => string | undefined
+  > = {
+    /**
+     * get the variable userId from the token parsed
+     * @return {string | undefined} return  the id or undefined if not authenticated
+     */
+    getUserId: () => string | undefined
 
-  /**
-   * get the common user informations from the token parsed
-   * @return {User | undefined} return the user or undefined if not authenticated
-   */
-  getUser: () => CommonUser | undefined
+    /**
+     * get the common user informations from the token parsed
+     * @return {User | undefined} return the user or undefined if not authenticated
+     */
+    getUser: () => CommonUser | undefined
 
-  /**
-   * will check if the user has the role you passed in parameter in his assigned roles
-   * @return {boolean}
-   */
-  hasRole: (role: Roles | Roles[]) => boolean
+    /**
+     * will check if the user has the role you passed in parameter in his effective roles. If you pass an array of roles, it will return true if the user has at least one of the roles.
+     * @return {boolean}
+     */
+    hasRole: (role: Roles | Roles[]) => boolean
 
-  /**
-   * It will return the principale role of the user. This function only works if you have construct the array role in the correct order (from the most important to the less important)
-   * @return {Roles | undefined} return the role or undefined if not authenticated
-   */
-  getUserPrincipalRole: () => Roles | undefined
+    /**
+     * will check if the user has all the roles you passed in parameter in his effective roles.
+     * @return {boolean}
+     */
+    hasAllRoles: (roles: Roles[]) => boolean
 
-  /**
-   * It will return the principale role of the given list. This function only works if you have construct the array role in the correct order (from the most important to the less important)
-   * @return {Roles | undefined} return the role or undefined if not authenticated
-   */
-  getPrincipalRole: (roles: Roles[]) => Roles | undefined
-} & RolesServices<Roles> &
+    /**
+     * It will return the principale role of the user. This function only works if you have construct the array role in the correct order (from the most important to the less important)
+     * @return {Roles | undefined} return the role or undefined if not authenticated
+     */
+    getUserPrincipalRole: () => Roles | undefined
+
+    /**
+     * It will return the principale role of the given list. This function only works if you have construct the array role in the correct order (from the most important to the less important)
+     * @return {Roles | undefined} return the role or undefined if not authenticated
+     */
+    getPrincipalRole: (roles: Roles[]) => Roles | undefined
+  } & RolesServices<Roles> &
   Additionnals
 
 type KeycloackInjector<
   Roles extends string = string,
   T = undefined,
   R = any
-> = (
-  keycloak: KeycloakWithRoles<Roles>,
-  services: AuthService<{}, Roles>,
-  params?: T
-) => R
+  > = (
+    keycloak: KeycloakWithRoles<Roles>,
+    services: AuthService<{}, Roles>,
+    params?: T
+  ) => R
 
 type AuthFnc<T = undefined, R = any> = (params?: T) => R
 
@@ -92,7 +98,7 @@ interface KeycloakTokenParsedWithRoles<Roles extends string = string>
 }
 
 export interface KeycloakWithRoles<Roles extends string = string>
-  extends KeycloakInstance {
+  extends Keycloak {
   tokenParsed?: KeycloakTokenParsedWithRoles<Roles>
   hasRealmRole: (role: Roles) => boolean
 }
@@ -100,7 +106,7 @@ export interface KeycloakWithRoles<Roles extends string = string>
 export interface Auth<
   Additionnals extends AuthServiceAdditionnal = {},
   Roles extends string = string
-> {
+  > {
   service: AuthService<Additionnals, Roles>
   keycloak: KeycloakWithRoles<Roles>
 }
@@ -162,6 +168,20 @@ function useAuth<
     [keycloakWithRoles]
   )
 
+  const hasAllRoles = useCallback(
+    (roles: Roles[]): boolean => {
+      let hasAll = true
+      roles.forEach(role => {
+        if (!hasRole(role)) {
+          hasAll = false
+        }
+      }
+      )
+      return hasAll
+    },
+    [keycloakWithRoles, hasRole]
+  )
+
   const getUserId = useCallback(
     // @ts-ignore
     (): string | undefined => keycloakWithRoles.tokenParsed?.sub,
@@ -204,6 +224,7 @@ function useAuth<
       getUser: getUser,
       getUserPrincipalRole: getUserPrincipalRole,
       getPrincipalRole: getPrincipalRole,
+      hasAllRoles: hasAllRoles,
       ...rolesServices
     }),
     [
@@ -212,7 +233,8 @@ function useAuth<
       getUser,
       getUserPrincipalRole,
       rolesServices,
-      getPrincipalRole
+      getPrincipalRole,
+      hasAllRoles
     ]
   )
 

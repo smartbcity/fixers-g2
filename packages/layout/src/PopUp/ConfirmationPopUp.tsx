@@ -1,18 +1,14 @@
 import React, { useCallback, useMemo, useState } from 'react'
 import { Typography } from '@mui/material'
-import { PopUp, PopUpProps, Action } from './PopUp'
+import { PopUp, PopUpProps } from './PopUp'
 import {
   BasicProps,
-  makeG2STyles,
   MergeMuiElementProps
 } from '@smartb/g2-themes'
 import { TextField } from '@smartb/g2-forms'
+import { Action } from '@smartb/g2-components'
+import { cx } from '@emotion/css'
 
-const useStyles = makeG2STyles()({
-  cancel: {
-    marginRight: '50px'
-  }
-})
 
 interface ConfirmationPopUpClasses {
   strongConfirmationText?: string
@@ -118,7 +114,6 @@ export const ConfirmationPopUp = (props: ConfirmationPopUpProps) => {
   } = props
   const [value, setValue] = useState('')
   const [error, setError] = useState(strongConfirmation)
-  const defaultStyles = useStyles()
 
   const onValueChange = useCallback(
     (value: string) => {
@@ -143,8 +138,7 @@ export const ConfirmationPopUp = (props: ConfirmationPopUpProps) => {
         key: 'ConfirmationPopUp-' + cancelText,
         label: cancelText,
         variant: 'text',
-        onClick: handleClose,
-        className: defaultStyles.classes.cancel
+        onClick: handleClose
       },
       {
         key: 'ConfirmationPopUp-' + validateText,
@@ -161,7 +155,7 @@ export const ConfirmationPopUp = (props: ConfirmationPopUpProps) => {
       open={open}
       actions={actions}
       onClose={handleClose}
-      className={defaultStyles.cx(
+      className={cx(
         'AruiConfirmationPopUp-strongConfirmationText',
         className
       )}
@@ -170,7 +164,7 @@ export const ConfirmationPopUp = (props: ConfirmationPopUpProps) => {
       {strongConfirmation ? (
         <>
           <Typography
-            className={defaultStyles.cx(
+            className={cx(
               'AruiConfirmationPopUp-strongConfirmationText',
               classes?.strongConfirmationText
             )}
@@ -185,7 +179,7 @@ export const ConfirmationPopUp = (props: ConfirmationPopUpProps) => {
             size='small'
             error={error}
             errorMessage={strongConfirmationErrorText}
-            className={defaultStyles.cx(
+            className={cx(
               'AruiConfirmationPopUp-textField',
               classes?.textField
             )}

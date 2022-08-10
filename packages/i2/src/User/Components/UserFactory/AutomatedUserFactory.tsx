@@ -208,26 +208,26 @@ export const AutomatedUserFactory = (props: AutomatedUserFactoryProps) => {
       organizationId={organizationId}
       checkEmailValidity={checkEmailValidity}
       formExtension={
-        userId &&
-        resetPasswordType && (
+        (
           <>
             {formExtension}
-            <ChoicedResetPassword
-              resetPasswordType={resetPasswordType}
-              userId={userId}
-              {...choicedResetPasswordProps}
-            />
+            {userId &&
+              resetPasswordType && (<ChoicedResetPassword
+                resetPasswordType={resetPasswordType}
+                userId={userId}
+                {...choicedResetPasswordProps}
+              />)}
           </>
         )
       }
       readonlyFields={
         update
           ? {
-              memberOf: true,
-              email: false,
-              roles: true,
-              ...readonlyFieldsPerState?.update
-            }
+            memberOf: true,
+            email: false,
+            roles: true,
+            ...readonlyFieldsPerState?.update
+          }
           : readonlyFieldsPerState?.create
       }
       {...other}

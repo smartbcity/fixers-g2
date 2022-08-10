@@ -19,11 +19,11 @@ import { UserTableFilters } from '../Components/UserTable'
 import { OrganizationId, OrganizationRef } from '../../Organization'
 import { UserPageResult } from '../Domain'
 
-type UserGetAllQueryResultOptional<T extends User> =
+type UserGetAllQueryResultOptional<T extends User = User> =
   | { users: T[]; totalPages: number }
   | undefined
 
-export type GetUsersOptions<T extends User> = Omit<
+export type GetUsersOptions<T extends User = User> = Omit<
   UseQueryOptions<
     UserGetAllQueryResultOptional<T>,
     unknown,
