@@ -1,4 +1,3 @@
-import { fileToBase64 } from '@smartb/g2-utils'
 import { useCallback, useState } from 'react'
 
 export const useLocalDocumentHandler = () => {
@@ -17,7 +16,7 @@ export const useLocalDocumentHandler = () => {
   }, [])
 
   const getFileUrl = useCallback(
-    async () => file ? fileToBase64(file) : "",
+    async () => file ? URL.createObjectURL(file) : "",
     [file],
   )
 
