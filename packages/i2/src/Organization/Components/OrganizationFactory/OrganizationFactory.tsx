@@ -355,7 +355,7 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
         >
           <Typography variant='body1'>
             {strings?.siretDescription ??
-              'Le numéro de siret permettra de remplir automatiquement une partie des champs suivant'}
+              'Le numéro de siret permettra de remplir automatiquement une partie des champs suivants'}
           </Typography>
         </StyledPopover>
       )}
