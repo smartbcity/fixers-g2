@@ -1,7 +1,7 @@
 import React, { forwardRef, useCallback } from 'react'
 import { SnackbarProvider, useSnackbar, SnackbarProviderProps, SharedProps } from 'notistack'
 import { Alert, AlertProps } from '../Alert/Alert'
-import { Grow } from '@mui/material'
+// import { Grow } from '@mui/material'
 import { makeG2STyles } from '@smartb/g2-themes'
 
 const useSytles = makeG2STyles()({
@@ -41,7 +41,7 @@ export const AlertHub = (props: AlertHubProps) => {
       }}
       maxSnack={3}
       //@ts-ignore
-      TransitionComponent={Grow}
+      // TransitionComponent={Grow} transition component is bugged in notistack 3.0.0-alpha.7
       {...other}
     >
       {children}

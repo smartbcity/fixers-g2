@@ -75,6 +75,7 @@ export const Section = (props: SectionProps) => {
               (theme.shape.borderRadius as number) * 1.5
             }px 0 0`
         }}
+        zIndex={200}
         {...headerProps}
       />
     )

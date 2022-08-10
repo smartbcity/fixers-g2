@@ -80,6 +80,11 @@ export interface HeaderBasicProps extends BasicProps {
    */
   bgcolor?: string
   /**
+   * usually not needed, but if you have 2 headers on top of each others they might overlap each other in a weird way if they have the same z index
+   * @default 300
+   */
+   zIndex?: number
+  /**
    * The classes applied to the different part of the component
    */
   classes?: HeaderClasses
@@ -107,6 +112,7 @@ export const Header = (props: HeaderProps) => {
     classes,
     styles,
     className,
+    zIndex = 300,
     ...rest
   } = props
 
@@ -210,7 +216,7 @@ export const Header = (props: HeaderProps) => {
         top: isFixed ? '0px' : '',
         backdropFilter: 'blur(15px)',
         webkitBackdropFilter: 'blur(15px)',
-        zIndex: 300,
+        zIndex: zIndex,
         ...sx
       }}
       {...rest}
