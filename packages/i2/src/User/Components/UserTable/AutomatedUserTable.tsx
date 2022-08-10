@@ -9,28 +9,31 @@ import { User } from '../../Domain'
 // we could use a parameter to disable organizationsRefs if needed
 // jwt should be get by useAuth
 // apiUrl should be a configuration out side of the components
-export interface AutomatedUserTableBasicProps extends BasicProps {
+export interface AutomatedUserTableBasicProps<T extends User = User>
+  extends BasicProps {
   /**
    * The getUsers hook options
    */
-  getUsersOptions?: GetUsersOptions
+  getUsersOptions?: GetUsersOptions<T>
   /**
    * Pass the current state of the filters
    */
   filters?: any
 }
 
-export type AutomatedUserTableProps<T extends User = User> = MergeMuiElementProps<
-  Omit<UserTableProps<T>, 'users' | 'onFiltersChanged' | 'totalPages' | 'page' | 'setPage'>,
-  AutomatedUserTableBasicProps
->
+export type AutomatedUserTableProps<T extends User = User> =
+  MergeMuiElementProps<
+    Omit<
+      UserTableProps<T>,
+      'users' | 'onFiltersChanged' | 'totalPages' | 'page' | 'setPage'
+    >,
+    AutomatedUserTableBasicProps<T>
+  >
 
-export const AutomatedUserTable = <T extends User = User>(props: AutomatedUserTableProps<T>) => {
-  const {
-    filters,
-    getUsersOptions,
-    ...other
-  } = props
+export const AutomatedUserTable = <T extends User = User>(
+  props: AutomatedUserTableProps<T>
+) => {
+  const { filters, getUsersOptions, ...other } = props
 
   const [page, setPage] = useState<number>(filters?.page ?? 1)
 
