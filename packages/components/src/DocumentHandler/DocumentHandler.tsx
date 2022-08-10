@@ -37,7 +37,7 @@ export interface DocumentHandlerBasicProps extends BasicProps {
   /**
    * provide it if the file is already uploaded
    */
-  getFileUrl?: () => string | Promise<string> | void | undefined | Promise<undefined>
+  getFileUrl?: () => string | Promise<string | undefined> | void | undefined
   /**
    * Define if the file is uploaded or not
    */

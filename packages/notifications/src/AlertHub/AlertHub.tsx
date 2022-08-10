@@ -1,5 +1,5 @@
 import React, { forwardRef, useCallback } from 'react'
-import { SnackbarProvider, useSnackbar, SnackbarProviderProps } from 'notistack'
+import { SnackbarProvider, useSnackbar, SnackbarProviderProps, SharedProps } from 'notistack'
 import { Alert, AlertProps } from '../Alert/Alert'
 import { Grow } from '@mui/material'
 import { makeG2STyles } from '@smartb/g2-themes'
@@ -21,6 +21,13 @@ export interface AlertHubProps extends SnackbarProviderProps {
   children: React.ReactNode
 }
 
+
+declare module "notistack" {
+  interface VariantOverrides {
+    G2Alert: true;
+  }
+}
+
 export const AlertHub = (props: AlertHubProps) => {
   const { children, ...other } = props
   return (
@@ -30,7 +37,7 @@ export const AlertHub = (props: AlertHubProps) => {
         horizontal: 'left'
       }}
       Components={{
-        customAlert: ClosableAlert
+        G2Alert: ClosableAlert
       }}
       maxSnack={3}
       //@ts-ignore
@@ -42,9 +49,9 @@ export const AlertHub = (props: AlertHubProps) => {
   )
 }
 
-const ClosableAlert = forwardRef<HTMLElement, Omit<AlertProps, 'onClose'>>(
+const ClosableAlert = forwardRef<HTMLElement, Omit<AlertProps & SharedProps & {persist: boolean, iconVariant: any}, 'onClose'>>(
   (props, ref) => {
-    const { key, id = key, className, ...other } = props
+    const { key, id = key, className, persist, autoHideDuration, hideIconVariant, iconVariant, ...other } = props
     const { classes, cx } = useSytles()
     const { closeSnackbar } = useSnackbar()
     const handleClose = useCallback(() => closeSnackbar(id), [id])

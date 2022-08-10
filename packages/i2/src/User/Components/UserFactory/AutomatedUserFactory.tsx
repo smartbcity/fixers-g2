@@ -211,12 +211,13 @@ export const AutomatedUserFactory = (props: AutomatedUserFactoryProps) => {
         (
           <>
             {formExtension}
-            {userId &&
-              resetPasswordType && (<ChoicedResetPassword
+            {userId && resetPasswordType && (
+              <ChoicedResetPassword
                 resetPasswordType={resetPasswordType}
                 userId={userId}
                 {...choicedResetPasswordProps}
-              />)}
+              />
+            )}
           </>
         )
       }
