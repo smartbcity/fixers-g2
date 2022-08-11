@@ -14,7 +14,6 @@ import {
   tomorrow,
   tomorrowNight
 } from 'react-syntax-highlighter/dist/esm/styles/hljs'
-import stringifyObject from 'stringify-object'
 import { HttpDefinitionHighlighter } from '../HttpDefinitionHighlighter'
 
 const useStyles = makeG2STyles()({
@@ -100,10 +99,7 @@ export const CodeHighlighter = (props: CodeHighlighterProps) => {
   const { classes, cx } = useStyles()
   const formatedObject = useMemo(() => {
     if (!object) return
-    return stringifyObject(object, {
-      indent: '  ',
-      singleQuotes: false
-    })
+    return JSON.stringify(object, undefined, 2)
   }, [object])
 
   const selectedStyle = useMemo(
@@ -156,7 +152,7 @@ export const CodeHighlighter = (props: CodeHighlighterProps) => {
           padding='0.4em 0.5em'
           boxSizing='border-box'
         >
-          <Typography className={'AruiCodeHighlighter-title'} variant='body2'>
+          <Typography className='AruiCodeHighlighter-title' variant='body2'>
             {title}
           </Typography>
         </Box>

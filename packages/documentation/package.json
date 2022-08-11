@@ -39,8 +39,7 @@
     "react-syntax-highlighter": "^15.4.3",
     "rehype-raw": "^5.1.0",
     "rehype-sanitize": "^4.0.0",
-    "remark-gfm": "^1.0.0",
-    "stringify-object": "^4.0.1"
+    "remark-gfm": "^1.0.0"
   },
   "publishConfig": {
     "@smartb:registry": "https://gitlab.smartb.city/api/v4/projects/127/packages/npm/"
