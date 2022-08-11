@@ -143,10 +143,10 @@ export const DocumentHandler = (props: DocumentHandlerProps) => {
     } else if (getFileUrl) {
       setLoading(true)
       const url = await getFileUrl()
-      if (url) openBase64InNewWindow(url)
+      if (url) openBase64InNewWindow(url, label ?? '')
       setLoading(false)
     }
-  }, [onView, getFileUrl])
+  }, [onView, getFileUrl, label])
 
   const onDownloadMemoized = useCallback(async () => {
     if (onDownload) {
@@ -203,7 +203,7 @@ export const DocumentHandler = (props: DocumentHandlerProps) => {
       onDownload: onDownloadMemoized,
       onView: onViewMemoized,
       fileTypesAllowed,
-      isLoading: isLoading || loading,
+      isLoading: isLoading || loading
     }
     return <DropzoneChildren {...props} />
   }, [
