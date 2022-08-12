@@ -2,13 +2,13 @@ import React, { useMemo } from 'react'
 import {
   ComposableElementFactory,
   ElementFactories,
-  ElementProps
+  ElementRenderProps
 } from './ElementFactory'
 
 interface ComponentFactoryProps<
   TYPE extends string,
   PROPS,
-  COMPONENT_PROPS extends ElementProps<TYPE, PROPS>
+  COMPONENT_PROPS extends ElementRenderProps<TYPE, PROPS>
 > {
   elements: COMPONENT_PROPS[]
   factories: ElementFactories<TYPE, PROPS, COMPONENT_PROPS>
@@ -18,7 +18,7 @@ interface ComponentFactoryProps<
 export const ComposableFactory = <
   TYPE extends string,
   PROPS,
-  COMPONENT_PROPS extends ElementProps<TYPE, PROPS>
+  COMPONENT_PROPS extends ElementRenderProps<TYPE, PROPS>
 >(
   props: ComponentFactoryProps<TYPE, PROPS, COMPONENT_PROPS>
 ) => {

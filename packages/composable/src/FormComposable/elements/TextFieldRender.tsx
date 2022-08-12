@@ -4,7 +4,7 @@ import {
   InputForm
 } from '@smartb/g2-forms'
 import React, { FunctionComponent } from 'react'
-import { FieldProps } from '../factories/FormElementsFactories'
+import { FieldRenderProps } from '../factories/FormElementsFactories'
 
 export type TextFieldExtendProps = Partial<
   Omit<
@@ -13,7 +13,7 @@ export type TextFieldExtendProps = Partial<
   >
 >
 
-type TextFieldElementProps = FieldProps<'textField', TextFieldExtendProps>
+type TextFieldElementProps = FieldRenderProps<'textField', TextFieldExtendProps>
 
 export const TextFieldRender: FunctionComponent<TextFieldElementProps> = (
   props: TextFieldElementProps

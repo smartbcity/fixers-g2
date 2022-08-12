@@ -4,7 +4,7 @@ import {
   InputForm,
   InputFormBasicProps
 } from '@smartb/g2-forms'
-import { FieldProps } from '../factories/FormElementsFactories'
+import { FieldRenderProps } from '../factories/FormElementsFactories'
 
 export type RadioChoicesExtendProps = Partial<
   Omit<
@@ -13,7 +13,7 @@ export type RadioChoicesExtendProps = Partial<
   >
 >
 
-type RadioChoicesRenderPros = FieldProps<
+type RadioChoicesRenderPros = FieldRenderProps<
   'radioChoices',
   RadioChoicesExtendProps
 >

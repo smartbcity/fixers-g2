@@ -4,7 +4,7 @@ import {
   InputForm
 } from '@smartb/g2-forms'
 import React, { FunctionComponent } from 'react'
-import { FieldProps } from '../factories/FormElementsFactories'
+import { FieldRenderProps } from '../factories/FormElementsFactories'
 
 export type DatePickerExtendProps = Partial<
   Omit<
@@ -13,7 +13,10 @@ export type DatePickerExtendProps = Partial<
   >
 >
 
-type DatePickerRenderPros = FieldProps<'datePicker', DatePickerExtendProps>
+type DatePickerRenderPros = FieldRenderProps<
+  'datePicker',
+  DatePickerExtendProps
+>
 
 export const DatePickerRender: FunctionComponent<DatePickerRenderPros> = (
   props: DatePickerRenderPros

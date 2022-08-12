@@ -1,6 +1,6 @@
 import React, { FunctionComponent, ReactElement } from 'react'
 import { SelectProps, InputForm, InputFormBasicProps } from '@smartb/g2-forms'
-import { FieldProps } from '../factories/FormElementsFactories'
+import { FieldRenderProps } from '../factories/FormElementsFactories'
 
 export type FormSelectExtendProps = Partial<
   Omit<
@@ -15,7 +15,7 @@ export type FormSelectExtendProps = Partial<
   >
 >
 
-type SelectFieldProps = FieldProps<'select', FormSelectExtendProps>
+type SelectFieldProps = FieldRenderProps<'select', FormSelectExtendProps>
 
 export const SelectRender: FunctionComponent<SelectFieldProps> = (
   props: SelectFieldProps

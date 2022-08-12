@@ -5,7 +5,7 @@ import { Stack, StackProps } from '@mui/material'
 import { FormAction } from '@smartb/g2-forms'
 import { FormikProvider } from 'formik'
 import { FormActionComposable } from './FormActionComposable'
-import { withFieldElements } from './factories/withFieldElements'
+import { useFieldRenderProps } from './factories/useFieldRenderProps'
 import {
   DefaultFactories,
   FieldFactories
@@ -94,7 +94,7 @@ export const FormComposable: FunctionComponent<FormComposableProps> = (
     isLoading = false,
     ...other
   } = props
-  const fieldElements = withFieldElements(props)
+  const fieldElements = useFieldRenderProps(props)
   return (
     <FormikProvider value={formState}>
       <form

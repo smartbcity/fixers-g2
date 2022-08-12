@@ -18,7 +18,7 @@ import {
 } from '../elements/RadioChoicesRender'
 import {
   ElementFactories,
-  ElementProps,
+  ElementRenderProps,
   ElementType
 } from '../../ComposableFactory/ElementFactory'
 import { ComposableForm } from '../type/ComposableForm'
@@ -41,8 +41,10 @@ export type FieldRenderType = FieldTypeMap[keyof FieldTypeMap]
 
 // export type FieldTypeConfigMap = ComposableConfigMap<FieldTypeMap>
 
-export interface FieldProps<TYPE extends FieldType, PROPS = FieldRenderType>
-  extends ElementProps<TYPE, PROPS> {
+export interface FieldRenderProps<
+  TYPE extends FieldType,
+  PROPS = FieldRenderType
+> extends ElementRenderProps<TYPE, PROPS> {
   element: ElementType<TYPE, PROPS>
   formState: ComposableFormState
   formProps: ComposableForm
@@ -51,7 +53,7 @@ export interface FieldProps<TYPE extends FieldType, PROPS = FieldRenderType>
 export type FieldFactories<
   TYPE extends FieldType,
   PROPS = FieldRenderType
-> = ElementFactories<TYPE, PROPS, FieldProps<TYPE, PROPS>>
+> = ElementFactories<TYPE, PROPS, FieldRenderProps<TYPE, PROPS>>
 
 export const DefaultFactories: FieldFactories<any, any> = {
   textField: {

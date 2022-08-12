@@ -17,14 +17,14 @@ export interface ElementType<TYPE extends string, PROPS> {
   props?: PROPS
 }
 
-export interface ElementProps<TYPE extends string, PROPS> {
+export interface ElementRenderProps<TYPE extends string, PROPS> {
   element: ElementType<TYPE, PROPS>
 }
 
 export interface ElementFactory<
   TYPE extends string,
   PROPS,
-  ELEMENT_PROPS extends ElementProps<TYPE, PROPS>
+  ELEMENT_PROPS extends ElementRenderProps<TYPE, PROPS>
 > {
   factory: FunctionComponent<ELEMENT_PROPS> | ComponentClass<ELEMENT_PROPS>
 }
@@ -32,13 +32,13 @@ export interface ElementFactory<
 export type ElementFactories<
   TYPE extends string,
   PROPS,
-  ELEMENT_PROPS extends ElementProps<TYPE, PROPS>
+  ELEMENT_PROPS extends ElementRenderProps<TYPE, PROPS>
 > = Record<TYPE, ElementFactory<TYPE, PROPS, ELEMENT_PROPS>>
 
 export type ComposableElementFactoryType = <
   TYPE extends string,
   PROPS,
-  COMPONENT_PROPS extends ElementProps<TYPE, PROPS>
+  COMPONENT_PROPS extends ElementRenderProps<TYPE, PROPS>
 >(
   componentProps: COMPONENT_PROPS,
   factories?: ElementFactories<TYPE, PROPS, any>

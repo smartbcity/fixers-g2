@@ -4,7 +4,7 @@ import {
   InputForm
 } from '@smartb/g2-forms'
 import React, { FunctionComponent } from 'react'
-import { FieldProps } from '../factories/FormElementsFactories'
+import { FieldRenderProps } from '../factories/FormElementsFactories'
 
 export type AutoCompleteExtendProps = Partial<
   Omit<
@@ -19,7 +19,7 @@ export type AutoCompleteExtendProps = Partial<
   >
 >
 
-type AutoCompleteRenderPros = FieldProps<
+type AutoCompleteRenderPros = FieldRenderProps<
   'autoComplete',
   AutoCompleteExtendProps
 >
