@@ -1,0 +1,48 @@
+{
+  "name": "@smartb/g2-composable",
+  "version": "1.0.0-alpha.59",
+  "description": "Components for documentation",
+  "author": "SmartB",
+  "license": "Apache-2.0",
+  "private": false,
+  "main": "dist/index.js",
+  "source": "src/index.ts",
+  "types": "dist/index.d.ts",
+  "module": "dist/index.es.js",
+  "engines": {
+    "node": ">=10"
+  },
+  "scripts": {
+    "build": "rollup -c",
+    "test": "run-s test:unit test:lint test:build",
+    "test:build": "run-s build",
+    "test:lint": "eslint .",
+    "test:unit": "cross-env CI=1 react-scripts test --env=jsdom",
+    "test:watch": "react-scripts test --env=jsdom",
+    "publish:gitlab": "npm publish",
+    "publish:npm": "yarn publish --access public --new-version ${VERSION}"
+  },
+  "files": [
+    "dist"
+  ],
+  "peerDependencies": {
+    "@mui/material": "^5.8.4",
+    "@types/react": "^18.0.12",
+    "@types/stringify-object": "^4.0.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "dependencies": {
+    "@smartb/g2-themes": "1.0.0-alpha.59",
+    "github-markdown-css": "^4.0.0",
+    "react-markdown": "^6.0.2",
+    "react-syntax-highlighter": "^15.4.3",
+    "rehype-raw": "^5.1.0",
+    "rehype-sanitize": "^4.0.0",
+    "remark-gfm": "^1.0.0",
+    "stringify-object": "^4.0.1"
+  },
+  "publishConfig": {
+    "@smartb:registry": "https://gitlab.smartb.city/api/v4/projects/127/packages/npm/"
+  }
+}
