@@ -10,18 +10,18 @@ import {
   DefaultFactories,
   FieldFactories
 } from './factories/FormElementsFactories'
-import { ComposableFormFieldParams } from './type/ComposableFormFieldParams'
+import { FormComposableFieldProps } from './type/FormComposableFieldProps'
 import { MergeReactElementProps } from '@smartb/g2-utils'
-import { ComposableFormState } from './type/ComposableFormState'
+import { FormComposableState } from './type/FormComposableState'
 
-export interface FormClasses {
+export interface FormComposableClasses {
   actions?: string
   button?: string
   field?: string
   fieldsContainer?: string
 }
 
-export interface FormStyles {
+export interface FormComposableStyles {
   actions?: React.CSSProperties
   button?: React.CSSProperties
   field?: React.CSSProperties
@@ -31,11 +31,11 @@ export interface FormStyles {
 interface FormComposableBasicProps {
   customFactories?: FieldFactories<any, any>
 
-  fields: ComposableFormFieldParams[]
+  fields: FormComposableFieldProps[]
   /**
    * the state of the form provided by the hook `useForm`
    */
-  formState: ComposableFormState
+  formState: FormComposableState
   /**
    * the actions displayed at the bottom of the component. To make a validation button you have to add an action with `type="submit"`
    */
@@ -63,11 +63,11 @@ interface FormComposableBasicProps {
   /**
    * The classes applied to the different part of the component
    */
-  classes?: FormClasses
+  classes?: FormComposableClasses
   /**
    * The styles applied to the different part of the component
    */
-  styles?: FormStyles
+  styles?: FormComposableStyles
 }
 
 export type FormComposableProps = MergeReactElementProps<

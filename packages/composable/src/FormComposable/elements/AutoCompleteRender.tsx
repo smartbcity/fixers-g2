@@ -27,30 +27,30 @@ type AutoCompleteRenderPros = FieldRenderProps<
 export const AutoCompleteRender: FunctionComponent<AutoCompleteRenderPros> = (
   props: AutoCompleteRenderPros
 ) => {
-  const { element, formState, formProps } = props
+  const { element, formState, basicProps } = props
   return element.props?.multiple === true ? (
     // @ts-ignore
     <InputForm
       inputType='autoComplete'
-      values={formState.getFieldProps(formProps.name).value ?? []}
+      values={formState.getFieldProps(basicProps.name).value ?? []}
       onChangeValues={(values: any) => {
-        formState.setFieldValue(formProps.name, values, false)
-        !!formProps.onChange && formProps.onChange(values)
+        formState.setFieldValue(basicProps.name, values, false)
+        !!basicProps.onChange && basicProps.onChange(values)
       }}
       {...element.props}
-      {...formProps}
+      {...basicProps}
     />
   ) : (
     // @ts-ignore
     <InputForm
       inputType='autoComplete'
-      value={formState.getFieldProps(formProps.name).value ?? ''}
+      value={formState.getFieldProps(basicProps.name).value ?? ''}
       onChangeValue={(value: any) => {
-        formState.setFieldValue(formProps.name, value, false)
-        !!formProps.onChange && formProps.onChange(value)
+        formState.setFieldValue(basicProps.name, value, false)
+        !!basicProps.onChange && basicProps.onChange(value)
       }}
       {...element?.props}
-      {...formProps}
+      {...basicProps}
     />
   )
 }

@@ -11,17 +11,17 @@ type CheckBoxRenderPros = FieldRenderProps<'checkBox', CheckBoxExtendProps>
 export const CheckBoxRender: FunctionComponent<CheckBoxRenderPros> = (
   props: CheckBoxRenderPros
 ) => {
-  const { element, formState, formProps } = props
+  const { element, formState, basicProps } = props
   return (
     <CheckBox
-      checked={formState.getFieldProps(formProps.name).value}
+      checked={formState.getFieldProps(basicProps.name).value}
       onChange={(_: React.ChangeEvent<HTMLInputElement>, value: boolean) => {
-        formState.setFieldValue(formProps.name, value, false)
-        !!formProps.onChange && formProps.onChange(value)
+        formState.setFieldValue(basicProps.name, value, false)
+        !!basicProps.onChange && basicProps.onChange(value)
       }}
       disabled={element.props?.disabled}
       {...element.props}
-      {...formProps}
+      {...basicProps}
     />
   )
 }

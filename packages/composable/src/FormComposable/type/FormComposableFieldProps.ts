@@ -1,6 +1,6 @@
 import { FieldRenderType } from '../factories/FormElementsFactories'
 
-export type ComposableFormFieldParams = {
+export type FormComposableFieldProps = {
   /**
    * the unique key of the field
    */

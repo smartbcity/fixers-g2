@@ -21,8 +21,8 @@ import {
   ElementRenderProps,
   ElementType
 } from '../../ComposableFactory/ElementFactory'
-import { ComposableForm } from '../type/ComposableForm'
-import { ComposableFormState } from '../type/ComposableFormState'
+import { FieldRender } from './FieldRenderProps'
+import { FormComposableState } from '../type/FormComposableState'
 
 /**
  * Map a field type to  Props type.
@@ -46,8 +46,8 @@ export interface FieldRenderProps<
   PROPS = FieldRenderType
 > extends ElementRenderProps<TYPE, PROPS> {
   element: ElementType<TYPE, PROPS>
-  formState: ComposableFormState
-  formProps: ComposableForm
+  formState: FormComposableState
+  basicProps: FieldRender
 }
 
 export type FieldFactories<

@@ -18,20 +18,29 @@ type TextFieldElementProps = FieldRenderProps<'textField', TextFieldExtendProps>
 export const TextFieldRender: FunctionComponent<TextFieldElementProps> = (
   props: TextFieldElementProps
 ) => {
-  const { element, formState, formProps } = props
-  const value = formState.getFieldProps(formProps.name).value
+  const { element, formState, basicProps } = props
+  const elementProps = element.props
+  const value = formState.getFieldProps(basicProps.name).value
+  console.log('////////////////////////')
+  console.log('////////////////////////')
+  console.log(value)
+  console.log('////////////////////////')
+  console.log('////////////////////////')
   return (
-    // @ts-ignore
     <InputForm
       inputType='textField'
       value={value}
-      {...formProps}
-      {...element.props}
+      {...elementProps}
+      {...basicProps}
       onChange={(value: string) => {
-        formState.setFieldValue(formProps.name, value, false)
-        !!formProps.onChange && formProps.onChange(value)
+        formState.setFieldValue(basicProps.name, value, false)
+        !!basicProps.onChange && basicProps.onChange(value)
       }}
-      isLoading={formProps.isLoading}
+      readonly={
+        basicProps.readonly === true
+          ? basicProps.readonly
+          : elementProps?.readonly
+      }
     />
   )
 }

@@ -1,5 +1,5 @@
 export * from './useFormFieldComposable'
 export * from './useFormComposable'
-export * from './type/ComposableFormFieldParams'
+export * from './type/FormComposableFieldProps'
 export * from './FormComposable'
 export * from './FormActionComposable'

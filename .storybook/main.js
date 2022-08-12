@@ -2,6 +2,7 @@ module.exports = {
   stories: [
     "../docs/**/*.stories.mdx",
     "../packages/components/src/**/*.stories.@(ts|tsx|mdx)",
+    "../packages/composable/src/**/*.stories.@(ts|tsx|mdx)",
     "../packages/documentation/src/**/*.stories.@(ts|tsx|mdx)",
     "../packages/forms/src/**/*.stories.@(ts|tsx|mdx)",
     "../packages/layout/src/**/*.stories.@(ts|tsx|mdx)",

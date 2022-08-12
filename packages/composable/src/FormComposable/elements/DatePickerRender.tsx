@@ -21,25 +21,25 @@ type DatePickerRenderPros = FieldRenderProps<
 export const DatePickerRender: FunctionComponent<DatePickerRenderPros> = (
   props: DatePickerRenderPros
 ) => {
-  const { element, formState, formProps } = props
-  const date = new Date(formState.getFieldProps(formProps.name).value)
+  const { element, formState, basicProps } = props
+  const date = new Date(formState.getFieldProps(basicProps.name).value)
   return (
     <InputForm
       inputType='datePicker'
       value={
         !isNaN(date.getTime())
           ? date
-          : formState.getFieldProps(formProps.name).value ?? ''
+          : formState.getFieldProps(basicProps.name).value ?? ''
       }
       onChangeDate={(date) => {
         formState.setFieldValue(
-          formProps.name,
+          basicProps.name,
           date && !isNaN(date.getTime()) ? date : date?.toString(),
           false
         )
-        !!formProps.onChange && formProps.onChange(date)
+        !!basicProps.onChange && basicProps.onChange(date)
       }}
-      {...formProps}
+      {...basicProps}
       {...element.props}
     />
   )

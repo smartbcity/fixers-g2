@@ -1,12 +1,12 @@
 import { DependencyList, useMemo } from 'react'
-import { ComposableFormFieldParams } from './type/ComposableFormFieldParams'
+import { FormComposableFieldProps } from './type/FormComposableFieldProps'
 
 interface FormFieldParams {
-  fields: ComposableFormFieldParams[]
+  fields: FormComposableFieldProps[]
 }
 
 interface FormFieldResult {
-  fields: ComposableFormFieldParams[]
+  fields: FormComposableFieldProps[]
 }
 
 export const useFormFieldComposable = (
@@ -14,7 +14,7 @@ export const useFormFieldComposable = (
   deps?: DependencyList
 ): FormFieldResult => {
   const { fields } = params
-  const fieldsMemo = useMemo((): ComposableFormFieldParams[] => fields, deps)
+  const fieldsMemo = useMemo((): FormComposableFieldProps[] => fields, deps)
   return {
     fields: fieldsMemo
   }

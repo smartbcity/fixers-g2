@@ -1,7 +1,7 @@
 import { FormikConfig, FormikHelpers, useFormik } from 'formik'
 import { FormAction } from '@smartb/g2-forms'
-import { ComposableFormState } from './useFormFieldComposable'
 import { useActionFeedback } from '../../../components/src/Actions/useActionFeedback'
+import { FormComposableState } from './FormComposable'
 
 export interface ActionProps {
   validate?: Partial<FormAction>
@@ -22,12 +22,12 @@ export interface FormikFormParams<T> {
    * this prop allow you to add you custom config to the useFormik hook
    */
   formikConfig?: Omit<FormikConfig<any>, 'onSubmit'>
-  actions: ActionProps
+  actions?: ActionProps
 }
 
 export const useFormComposable = <T extends {}>(
   params: FormikFormParams<T>
-): ComposableFormState => {
+): FormComposableState => {
   const feedback = useActionFeedback()
   const { onSubmit, formikConfig } = params
   const formik = useFormik({
@@ -47,7 +47,7 @@ export const useFormComposable = <T extends {}>(
       key: 'cancel',
       label: 'Annuler',
       variant: 'text',
-      ...(params.actions.cancel || {})
+      ...(params.actions?.cancel || {})
     },
     {
       key: 'create',
@@ -55,7 +55,7 @@ export const useFormComposable = <T extends {}>(
       success: feedback.success,
       fail: feedback.fail,
       onClick: formik.submitForm,
-      ...(params.actions.validate || {})
+      ...(params.actions?.validate || {})
     }
   ]
 

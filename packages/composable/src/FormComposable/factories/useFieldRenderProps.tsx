@@ -1,30 +1,23 @@
-import { FormClasses, FormComposableProps, FormStyles } from '../FormComposable'
-import { useMemo } from 'react'
+import { FormComposableProps } from '../FormComposable'
+import { useEffect, useMemo } from 'react'
 import { cx } from '@emotion/css'
 import { FieldRenderProps } from './FormElementsFactories'
-import { ComposableFormFieldParams } from '../type/ComposableFormFieldParams'
-import { ComposableForm } from '../type/ComposableForm'
-import { ComposableFormState } from '../type/ComposableFormState'
+import { FormComposableFieldProps } from '../type/FormComposableFieldProps'
+import { FieldRender } from './FieldRenderProps'
 
 export const useFieldRenderProps = (
   props: FormComposableProps
 ): FieldRenderProps<any, any>[] => {
   const { fields, formState, classes, styles, isLoading } = props
-  return useMemo<FieldRenderProps<any, any>[]>(() => {
+  const memo = useMemo<FieldRenderProps<any, any>[]>(() => {
     return fields.map((field) => {
-      const formProps: ComposableForm = getFormProps(
-        field,
-        formState,
-        classes,
-        styles,
-        isLoading
-      )
+      const formProps = useFormProps(field, props)
       const { registerField } = formState
       registerField(formProps.name, {
         validate: field.validator
       })
       return {
-        formProps: formProps,
+        basicProps: formProps,
         formState: formState,
         element: field
       } as FieldRenderProps<any, any>
@@ -38,15 +31,20 @@ export const useFieldRenderProps = (
     styles?.field,
     isLoading
   ])
+  const { setFieldValue } = formState
+  useEffect(() => {
+    fields.map((field) => {
+      field.defaultValue && setFieldValue(field.name, field.defaultValue)
+    })
+  }, [])
+  return memo
 }
 
-const getFormProps = (
-  field: ComposableFormFieldParams,
-  formState: ComposableFormState,
-  classes?: FormClasses,
-  styles?: FormStyles,
-  isLoading?: boolean
-): ComposableForm => {
+const useFormProps = (
+  field: FormComposableFieldProps,
+  props: FormComposableProps
+): FieldRender => {
+  const { formState, classes, styles, isLoading } = props
   return {
     key: field.key,
     id: field.key,
