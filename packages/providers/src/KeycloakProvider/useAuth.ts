@@ -2,13 +2,22 @@ import { useKeycloak } from '@react-keycloak/web'
 import { useCallback, useMemo } from 'react'
 import Keycloak, { KeycloakTokenParsed } from 'keycloak-js'
 
-export type CommonUser = {
+export type AuthedUser = {
   id: string
   email: string
-  organizationId?: string
+  memberOf?: string
   firstName: string
+  fullName: string
   lastName: string
+  roles: string[]
 }
+
+export type isAuthorized = boolean
+
+export type AuthFunction = <U extends AuthedUser>(
+  authedUser: U,
+  ...args
+) => isAuthorized
 
 type ComputeRolesServicesNames<Roles extends string> = {
   [key in Roles]: `is_${key}`
@@ -24,54 +33,71 @@ type RolesServices<Roles extends string> = {
 type AuthService<
   Additionnals extends AuthServiceAdditionnal = {},
   Roles extends string = string
-  > = {
-    /**
-     * get the variable userId from the token parsed
-     * @return {string | undefined} return  the id or undefined if not authenticated
-     */
-    getUserId: () => string | undefined
+> = {
+  /**
+   * get the variable userId from the token parsed
+   * @return {string | undefined} return  the id or undefined if not authenticated
+   */
+  getUserId: () => string | undefined
 
-    /**
-     * get the common user informations from the token parsed
-     * @return {User | undefined} return the user or undefined if not authenticated
-     */
-    getUser: () => CommonUser | undefined
+  /**
+   * get the authed user informations from the token parsed
+   * @return {User | undefined} return the user or undefined if not authenticated
+   */
+  getUser: () => AuthedUser | undefined
 
-    /**
-     * will check if the user has the role you passed in parameter in his effective roles. If you pass an array of roles, it will return true if the user has at least one of the roles.
-     * @return {boolean}
-     */
-    hasRole: (role: Roles | Roles[]) => boolean
+  /**
+   * get the user roles from the token parsed
+   * @return {Roles[]  | undefined} return the user roles or undefined if not authenticated
+   */
+  getUserRoles: () => Roles[] | undefined
 
-    /**
-     * will check if the user has all the roles you passed in parameter in his effective roles.
-     * @return {boolean}
-     */
-    hasAllRoles: (roles: Roles[]) => boolean
+  /**
+   * will check if the user has the role you passed in parameter in his effective roles. If you pass an array of roles, it will return true if the user has at least one of the roles.
+   * @return {boolean}
+   */
+  hasRole: (role: Roles | Roles[]) => boolean
 
-    /**
-     * It will return the principale role of the user. This function only works if you have construct the array role in the correct order (from the most important to the less important)
-     * @return {Roles | undefined} return the role or undefined if not authenticated
-     */
-    getUserPrincipalRole: () => Roles | undefined
+  /**
+   * will check if the user has all the roles you passed in parameter in his effective roles.
+   * @return {boolean}
+   */
+  hasAllRoles: (roles: Roles[]) => boolean
 
-    /**
-     * It will return the principale role of the given list. This function only works if you have construct the array role in the correct order (from the most important to the less important)
-     * @return {Roles | undefined} return the role or undefined if not authenticated
-     */
-    getPrincipalRole: (roles: Roles[]) => Roles | undefined
-  } & RolesServices<Roles> &
+  /**
+   * will check if the current user is a memeber of the organization.
+   * @return {boolean}
+   */
+  isMemberOf: (organizationId: string) => boolean
+
+  /**
+   * It will return the principale role of the user. This function only works if you have construct the array role in the correct order (from the most important to the less important)
+   * @return {Roles | undefined} return the role or undefined if not authenticated
+   */
+  getUserPrincipalRole: () => Roles | undefined
+
+  /**
+   * It will return the principale role of the given list. This function only works if you have construct the array role in the correct order (from the most important to the less important)
+   * @return {Roles | undefined} return the role or undefined if not authenticated
+   */
+  getPrincipalRole: (roles: Roles[]) => Roles | undefined
+
+  /**
+   * It will exececute the auth function by passing it the authenticated user and return the boolean result
+   */
+  executeAuthFunction: (authFunction: AuthFunction, ...args) => isAuthorized
+} & RolesServices<Roles> &
   Additionnals
 
 type KeycloackInjector<
   Roles extends string = string,
   T = undefined,
   R = any
-  > = (
-    keycloak: KeycloakWithRoles<Roles>,
-    services: AuthService<{}, Roles>,
-    params?: T
-  ) => R
+> = (
+  keycloak: KeycloakWithRoles<Roles>,
+  services: AuthService<{}, Roles>,
+  params?: T
+) => R
 
 type AuthFnc<T = undefined, R = any> = (params?: T) => R
 
@@ -106,7 +132,7 @@ export interface KeycloakWithRoles<Roles extends string = string>
 export interface Auth<
   Additionnals extends AuthServiceAdditionnal = {},
   Roles extends string = string
-  > {
+> {
   service: AuthService<Additionnals, Roles>
   keycloak: KeycloakWithRoles<Roles>
 }
@@ -171,12 +197,11 @@ function useAuth<
   const hasAllRoles = useCallback(
     (roles: Roles[]): boolean => {
       let hasAll = true
-      roles.forEach(role => {
+      roles.forEach((role) => {
         if (!hasRole(role)) {
           hasAll = false
         }
-      }
-      )
+      })
       return hasAll
     },
     [keycloakWithRoles, hasRole]
@@ -188,24 +213,43 @@ function useAuth<
     [keycloakWithRoles]
   )
 
+  const getUserRoles = useCallback(
+    // @ts-ignore
+    (): Roles[] | undefined =>
+      keycloakWithRoles.tokenParsed?.realm_access?.roles,
+    [keycloakWithRoles]
+  )
+
   const getUser = useCallback(
     // @ts-ignore
     (): CommonUser | undefined => {
       if (!keycloakWithRoles.authenticated) return
       return {
-        //@ts-ignore
         id: keycloakWithRoles.tokenParsed?.sub,
-        //@ts-ignore
         email: keycloakWithRoles.tokenParsed?.email,
-        //@ts-ignore
-        organizationId: keycloakWithRoles.tokenParsed?.memberOf,
-        //@ts-ignore
+        memberOf: keycloakWithRoles.tokenParsed?.memberOf,
         firstName: keycloakWithRoles.tokenParsed?.given_name,
-        //@ts-ignore
-        lastName: keycloakWithRoles.tokenParsed?.family_name
+        lastName: keycloakWithRoles.tokenParsed?.family_name,
+        role: keycloakWithRoles.tokenParsed?.realm_access?.roles,
+        fullName: keycloakWithRoles.tokenParsed?.name
       }
     },
     [keycloakWithRoles]
+  )
+
+  const isMemberOf = useCallback(
+    (organizationId: string): boolean =>
+      keycloakWithRoles.tokenParsed?.memberOf === organizationId,
+    [keycloakWithRoles]
+  )
+
+  const executeAuthFunction = useCallback(
+    (authFunction: AuthFunction, ...args) => {
+      const user = getUser()
+      if (!user) return false
+      return authFunction(user, ...args)
+    },
+    [getUser]
   )
 
   const rolesServices: RolesServices<Roles> = useMemo(() => {
@@ -225,6 +269,9 @@ function useAuth<
       getUserPrincipalRole: getUserPrincipalRole,
       getPrincipalRole: getPrincipalRole,
       hasAllRoles: hasAllRoles,
+      isMemberOf: isMemberOf,
+      getUserRoles: getUserRoles,
+      executeAuthFunction,
       ...rolesServices
     }),
     [
@@ -234,7 +281,10 @@ function useAuth<
       getUserPrincipalRole,
       rolesServices,
       getPrincipalRole,
-      hasAllRoles
+      hasAllRoles,
+      isMemberOf,
+      getUserRoles,
+      executeAuthFunction
     ]
   )
 
