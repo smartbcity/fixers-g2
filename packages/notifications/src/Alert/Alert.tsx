@@ -19,7 +19,8 @@ import {
 
 const useStyles = makeG2STyles()((theme) => ({
   root: {
-    maxWidth: '400px'
+    maxWidth: '600px',
+    width: 'fit-content'
   },
   content: {
     background: '#595959',
@@ -27,6 +28,7 @@ const useStyles = makeG2STyles()((theme) => ({
     position: 'relative',
     overflow: 'hidden',
     padding: '4px 32px 4px 60px',
+    width: '100%',
     '& .MuiSnackbarContent-message': {
       padding: '3px 0',
       minHeight: '29px',
