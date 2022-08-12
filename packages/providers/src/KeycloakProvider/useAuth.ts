@@ -183,6 +183,7 @@ function useAuth<
   const hasRole = useCallback(
     (role: Roles | Roles[]): boolean => {
       if (Array.isArray(role)) {
+        if (role.length === 0) return true
         for (let it in role) {
           if (keycloakWithRoles.hasRealmRole(role[it])) return true
         }
