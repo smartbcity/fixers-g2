@@ -10,9 +10,9 @@ import {
   DefaultFactories,
   FieldFactories
 } from './factories/FormElementsFactories'
-import { ComposableFormState } from './useFormFieldComposable'
-import { ComposableFormField } from './type/FormField'
+import { ComposableFormFieldParams } from './type/ComposableFormFieldParams'
 import { MergeReactElementProps } from '@smartb/g2-utils'
+import { ComposableFormState } from './type/ComposableFormState'
 
 export interface FormClasses {
   actions?: string
@@ -31,7 +31,7 @@ export interface FormStyles {
 interface FormComposableBasicProps {
   customFactories?: FieldFactories<any, any>
 
-  fields: ComposableFormField[]
+  fields: ComposableFormFieldParams[]
   /**
    * the state of the form provided by the hook `useForm`
    */

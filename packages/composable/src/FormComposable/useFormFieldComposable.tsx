@@ -1,18 +1,12 @@
-import { useFormik } from 'formik'
 import { DependencyList, useMemo } from 'react'
-import { FormAction } from '@smartb/g2-forms'
-import { ComposableFormField } from './type/FormField'
-
-export type ComposableFormState = ReturnType<typeof useFormik> & {
-  actions: FormAction[]
-}
+import { ComposableFormFieldParams } from './type/ComposableFormFieldParams'
 
 interface FormFieldParams {
-  fields: ComposableFormField[]
+  fields: ComposableFormFieldParams[]
 }
 
 interface FormFieldResult {
-  fields: ComposableFormField[]
+  fields: ComposableFormFieldParams[]
 }
 
 export const useFormFieldComposable = (
@@ -20,7 +14,7 @@ export const useFormFieldComposable = (
   deps?: DependencyList
 ): FormFieldResult => {
   const { fields } = params
-  const fieldsMemo = useMemo((): ComposableFormField[] => fields, deps)
+  const fieldsMemo = useMemo((): ComposableFormFieldParams[] => fields, deps)
   return {
     fields: fieldsMemo
   }

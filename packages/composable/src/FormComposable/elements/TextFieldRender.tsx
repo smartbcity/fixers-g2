@@ -3,7 +3,7 @@ import {
   TextFieldProps,
   InputForm
 } from '@smartb/g2-forms'
-import { FunctionComponent } from 'react'
+import React, { FunctionComponent } from 'react'
 import { FieldProps } from '../factories/FormElementsFactories'
 
 export type TextFieldExtendProps = Partial<

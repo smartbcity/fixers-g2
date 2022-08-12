@@ -17,13 +17,12 @@ import {
   RadioChoicesRender
 } from '../elements/RadioChoicesRender'
 import {
-  ComposableConfigMap,
   ElementFactories,
   ElementProps,
   ElementType
 } from '../../ComposableFactory/ElementFactory'
-import { ComposableFormState } from '../useFormFieldComposable'
-import { ComposableFormProps } from '../type/FormField'
+import { ComposableForm } from '../type/ComposableForm'
+import { ComposableFormState } from '../type/ComposableFormState'
 
 /**
  * Map a field type to  Props type.
@@ -40,13 +39,13 @@ export interface FieldTypeMap {
 export type FieldType = keyof FieldTypeMap
 export type FieldRenderType = FieldTypeMap[keyof FieldTypeMap]
 
-export type FieldTypeConfigMap = ComposableConfigMap<FieldTypeMap>
+// export type FieldTypeConfigMap = ComposableConfigMap<FieldTypeMap>
 
 export interface FieldProps<TYPE extends FieldType, PROPS = FieldRenderType>
   extends ElementProps<TYPE, PROPS> {
   element: ElementType<TYPE, PROPS>
   formState: ComposableFormState
-  formProps: ComposableFormProps
+  formProps: ComposableForm
 }
 
 export type FieldFactories<
