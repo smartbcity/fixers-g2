@@ -22,6 +22,12 @@ const useStyles = makeG2STyles()((theme) => ({
     maxWidth: '600px',
     width: 'fit-content'
   },
+  relativeRoot: {
+    position: 'relative',
+    transform: 'unset',
+    left: 0,
+    bottom: 0
+  },
   content: {
     background: '#595959',
     borderRadius: theme.borderRadius,
@@ -132,6 +138,12 @@ export interface AlertBasicProps extends BasicProps {
    */
   colorBase?: 'light' | 'dark'
   /**
+   * Define wether or not the alert is in relative position
+   *
+   * @default false
+   */
+  isRelative?: boolean
+  /**
    * The classes applied to the different part of the component
    */
   classes?: AlertClasses
@@ -154,6 +166,7 @@ const AlertBase = (props: AlertProps, ref: React.ForwardedRef<HTMLElement>) => {
     message,
     classes,
     styles,
+    isRelative = false,
     ...other
   } = props
 
@@ -203,6 +216,7 @@ const AlertBase = (props: AlertProps, ref: React.ForwardedRef<HTMLElement>) => {
     <MuiSnackbar
       className={defaultStyles.cx(
         defaultStyles.classes.root,
+        isRelative && defaultStyles.classes.relativeRoot,
         'AruiAlert-root',
         className
       )}

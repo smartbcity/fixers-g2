@@ -39,10 +39,7 @@ export default {
 export const Alert: Story<AlertBasicProps> = (args: AlertBasicProps) => {
   return (
     <>
-      <AruiAlert
-        style={{ position: 'relative', transform: 'unset', left: 0, bottom: 0 }}
-        {...args}
-      />
+      <AruiAlert isRelative {...args} />
     </>
   )
 }
@@ -52,45 +49,33 @@ export const AlertSeverity: Story<AlertBasicProps> = () => {
     <Box display='flex' justifyContent='center' flexDirection='column'>
       <AruiAlert
         style={{
-          position: 'relative',
-          transform: 'unset',
-          left: 0,
-          bottom: 0,
           margin: 10
         }}
+        isRelative
         severity='info'
         message='info'
       />
       <AruiAlert
         style={{
-          position: 'relative',
-          transform: 'unset',
-          left: 0,
-          bottom: 0,
           margin: 10
         }}
+        isRelative
         severity='warning'
         message='warning'
       />
       <AruiAlert
         style={{
-          position: 'relative',
-          transform: 'unset',
-          left: 0,
-          bottom: 0,
           margin: 10
         }}
+        isRelative
         severity='success'
         message='success'
       />
       <AruiAlert
         style={{
-          position: 'relative',
-          transform: 'unset',
-          left: 0,
-          bottom: 0,
           margin: 10
         }}
+        isRelative
         severity='error'
         message='error'
       />
@@ -103,24 +88,18 @@ export const AlertColorBase: Story<AlertBasicProps> = () => {
     <Box display='flex' justifyContent='center' flexDirection='column'>
       <AruiAlert
         style={{
-          position: 'relative',
-          transform: 'unset',
-          left: 0,
-          bottom: 0,
           margin: 10
         }}
+        isRelative
         colorBase='light'
         onClose={() => {}}
         message='light'
       />
       <AruiAlert
         style={{
-          position: 'relative',
-          transform: 'unset',
-          left: 0,
-          bottom: 0,
           margin: 10
         }}
+        isRelative
         colorBase='dark'
         onClose={() => {}}
         message='dark'
