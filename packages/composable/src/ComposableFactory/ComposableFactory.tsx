@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react'
-import { ComposableElementFactory } from './ElementFactory'
+import { ComposableElementFactory } from './ComposableElementFactory'
 import { ElementRenderers, ElementRenderProps } from './ElementRenderer'
 
 interface ComponentFactoryProps<
