@@ -4,7 +4,7 @@ import {
   InputForm
 } from '@smartb/g2-forms'
 import React, { FunctionComponent } from 'react'
-import { FieldRenderProps } from '../factories/FormElementsFactories'
+import { FieldRenderProps } from '../factories/FormElementsRenderer'
 
 export type DatePickerExtendProps = Partial<
   Omit<
@@ -23,6 +23,7 @@ export const DatePickerRender: FunctionComponent<DatePickerRenderPros> = (
 ) => {
   const { element, formState, basicProps } = props
   const date = new Date(formState.getFieldProps(basicProps.name).value)
+  delete basicProps.onChange
   return (
     <InputForm
       inputType='datePicker'
@@ -31,6 +32,8 @@ export const DatePickerRender: FunctionComponent<DatePickerRenderPros> = (
           ? date
           : formState.getFieldProps(basicProps.name).value ?? ''
       }
+      {...basicProps}
+      {...element.props}
       onChangeDate={(date) => {
         formState.setFieldValue(
           basicProps.name,
@@ -39,8 +42,6 @@ export const DatePickerRender: FunctionComponent<DatePickerRenderPros> = (
         )
         !!basicProps.onChange && basicProps.onChange(date)
       }}
-      {...basicProps}
-      {...element.props}
     />
   )
 }

@@ -1,6 +1,6 @@
 import React, { FunctionComponent, ReactElement } from 'react'
 import { SelectProps, InputForm, InputFormBasicProps } from '@smartb/g2-forms'
-import { FieldRenderProps } from '../factories/FormElementsFactories'
+import { FieldRenderProps } from '../factories/FormElementsRenderer'
 
 export type FormSelectExtendProps = Partial<
   Omit<

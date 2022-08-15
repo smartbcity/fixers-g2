@@ -1,7 +1,7 @@
 import { FormikConfig, FormikHelpers, useFormik } from 'formik'
 import { FormAction } from '@smartb/g2-forms'
 import { useActionFeedback } from '../../../components/src/Actions/useActionFeedback'
-import { FormComposableState } from './FormComposable'
+import { FormComposableState } from './type/FormComposableState'
 
 export interface ActionProps {
   validate?: Partial<FormAction>

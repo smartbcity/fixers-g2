@@ -1,6 +1,6 @@
-import { FieldRenderType } from '../factories/FormElementsFactories'
+import { FieldRenderType } from '../factories/FormElementsRenderer'
 
-export type FormComposableFieldProps = {
+export type FormComposableField = {
   /**
    * the unique key of the field
    */
@@ -29,4 +29,10 @@ export type FormComposableFieldProps = {
    * the event called when the value of the input change
    */
   onChange?: (value: any) => void
+  /**
+   * Indicates if the data is on readonly mode
+   *
+   * @default false
+   */
+  readonly?: boolean
 } & FieldRenderType

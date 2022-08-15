@@ -1,9 +1,6 @@
 import React, { useMemo } from 'react'
-import {
-  ComposableElementFactory,
-  ElementFactories,
-  ElementRenderProps
-} from './ElementFactory'
+import { ComposableElementFactory } from './ElementFactory'
+import { ElementRenderers, ElementRenderProps } from './ElementRenderer'
 
 interface ComponentFactoryProps<
   TYPE extends string,
@@ -11,8 +8,8 @@ interface ComponentFactoryProps<
   COMPONENT_PROPS extends ElementRenderProps<TYPE, PROPS>
 > {
   elements: COMPONENT_PROPS[]
-  factories: ElementFactories<TYPE, PROPS, COMPONENT_PROPS>
-  customFactories?: ElementFactories<TYPE, PROPS, COMPONENT_PROPS>
+  factories: ElementRenderers<TYPE, PROPS, COMPONENT_PROPS>
+  customFactories?: ElementRenderers<TYPE, PROPS, COMPONENT_PROPS>
 }
 
 export const ComposableFactory = <
@@ -26,10 +23,7 @@ export const ComposableFactory = <
   const comps = useMemo(() => {
     const factoryClasses = { ...factories, ...(customFactories ?? []) }
     return elements.map((component: COMPONENT_PROPS) => {
-      return ComposableElementFactory<TYPE, PROPS, COMPONENT_PROPS>(
-        component,
-        factoryClasses
-      )
+      return ComposableElementFactory(component, factoryClasses)
     })
   }, [elements, factories, customFactories])
 

@@ -1,8 +1,8 @@
 import { FormComposableProps } from '../FormComposable'
 import { useEffect, useMemo } from 'react'
 import { cx } from '@emotion/css'
-import { FieldRenderProps } from './FormElementsFactories'
-import { FormComposableFieldProps } from '../type/FormComposableFieldProps'
+import { FieldRenderProps } from './FormElementsRenderer'
+import { FormComposableField } from '../type/FormComposableField'
 import { FieldRender } from './FieldRenderProps'
 
 export const useFieldRenderProps = (
@@ -41,7 +41,7 @@ export const useFieldRenderProps = (
 }
 
 const useFormProps = (
-  field: FormComposableFieldProps,
+  field: FormComposableField,
   props: FormComposableProps
 ): FieldRender => {
   const { formState, classes, styles, isLoading } = props
@@ -58,6 +58,7 @@ const useFormProps = (
       ...styles?.field,
       ...field.props?.style
     },
-    onChange: field.onChange
+    onChange: field.onChange,
+    readonly: field.readonly === true ? field.readonly : props?.readonly
   }
 }

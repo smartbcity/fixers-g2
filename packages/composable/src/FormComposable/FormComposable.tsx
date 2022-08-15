@@ -2,17 +2,21 @@ import React, { FunctionComponent } from 'react'
 import { ComposableFactory } from '../ComposableFactory'
 import { cx } from '@emotion/css'
 import { Stack, StackProps } from '@mui/material'
-import { FormAction } from '@smartb/g2-forms'
 import { FormikProvider } from 'formik'
-import { FormActionComposable } from './FormActionComposable'
 import { useFieldRenderProps } from './factories/useFieldRenderProps'
 import {
-  DefaultFactories,
-  FieldFactories
-} from './factories/FormElementsFactories'
-import { FormComposableFieldProps } from './type/FormComposableFieldProps'
+  DefaultRenderer,
+  FieldRenderer
+} from './factories/FormElementsRenderer'
+import { FormComposableField } from './type/FormComposableField'
 import { MergeReactElementProps } from '@smartb/g2-utils'
 import { FormComposableState } from './type/FormComposableState'
+import { makeG2STyles } from '@smartb/g2-themes'
+import {
+  ActionsWrapper,
+  ActionsWrapperProps
+} from '@smartb/g2-components/src/Actions/ActionsWrapper'
+import { FormAction } from '@smartb/g2-forms'
 
 export interface FormComposableClasses {
   actions?: string
@@ -28,28 +32,26 @@ export interface FormComposableStyles {
   fieldsContainer?: React.CSSProperties
 }
 
-interface FormComposableBasicProps {
-  customFactories?: FieldFactories<any, any>
+export type FormComposableActionsProps = Omit<ActionsWrapperProps, 'actions'>
 
-  fields: FormComposableFieldProps[]
-  /**
-   * the state of the form provided by the hook `useForm`
-   */
-  formState: FormComposableState
+interface FormComposableBasicProps {
+  customFactories?: FieldRenderer<any, any>
   /**
    * the actions displayed at the bottom of the component. To make a validation button you have to add an action with `type="submit"`
    */
   actions?: FormAction[]
   /**
-   * Determine wether the actions are placed above or below the content of the form
-   *
-   * @default "below"
+   * the props given to the actions
    */
-  actionsPosition?: 'above' | 'below'
+  actionsProps: FormComposableActionsProps
   /**
-   * the props given to the actions stack container
+   * the fields of the form
    */
-  actionsStackProps?: StackProps
+  fields: FormComposableField[]
+  /**
+   * the state of the form provided by the hook `useForm`
+   */
+  formState: FormComposableState
   /**
    * the props given to the fields stack container
    */
@@ -61,6 +63,12 @@ interface FormComposableBasicProps {
    */
   isLoading?: boolean
   /**
+   * Indicates if the data is on readonly mode
+   *
+   * @default false
+   */
+  readonly?: boolean
+  /**
    * The classes applied to the different part of the component
    */
   classes?: FormComposableClasses
@@ -69,6 +77,12 @@ interface FormComposableBasicProps {
    */
   styles?: FormComposableStyles
 }
+
+const useStyles = makeG2STyles()((theme) => ({
+  fieldContainer: {
+    gap: theme.spacing * 3
+  }
+}))
 
 export type FormComposableProps = MergeReactElementProps<
   'form',
@@ -80,6 +94,7 @@ export const FormComposable: FunctionComponent<FormComposableProps> = (
 ) => {
   const {
     actions,
+    actionsProps,
     fields,
     customFactories,
     onSubmit,
@@ -88,12 +103,12 @@ export const FormComposable: FunctionComponent<FormComposableProps> = (
     classes,
     styles,
     formState,
-    actionsPosition = 'below',
-    actionsStackProps,
     fieldsStackProps,
     isLoading = false,
+    readonly = false,
     ...other
   } = props
+  const defaultStyles = useStyles()
   const fieldElements = useFieldRenderProps(props)
   return (
     <FormikProvider value={formState}>
@@ -102,19 +117,23 @@ export const FormComposable: FunctionComponent<FormComposableProps> = (
         className={cx('AruiForm-root', className)}
         {...other}
       >
-        <FormActionComposable {...props}>
+        <ActionsWrapper actions={actions} {...actionsProps}>
           <Stack
             {...fieldsStackProps}
-            className={cx('AruiForm-fieldsContainer', classes?.fieldsContainer)}
+            className={cx(
+              defaultStyles.classes.fieldContainer,
+              'AruiForm-fieldsContainer',
+              classes?.fieldsContainer
+            )}
             style={styles?.fieldsContainer}
           >
             <ComposableFactory
-              factories={DefaultFactories}
+              factories={DefaultRenderer}
               customFactories={customFactories}
               elements={fieldElements}
             />
           </Stack>
-        </FormActionComposable>
+        </ActionsWrapper>
       </form>
     </FormikProvider>
   )

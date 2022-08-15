@@ -16,13 +16,13 @@ import {
   RadioChoicesExtendProps,
   RadioChoicesRender
 } from '../elements/RadioChoicesRender'
-import {
-  ElementFactories,
-  ElementRenderProps,
-  ElementType
-} from '../../ComposableFactory/ElementFactory'
 import { FieldRender } from './FieldRenderProps'
 import { FormComposableState } from '../type/FormComposableState'
+import {
+  ElementRenderers,
+  ElementRenderProps,
+  ElementType
+} from '../../ComposableFactory/ElementRenderer'
 
 /**
  * Map a field type to  Props type.
@@ -50,12 +50,12 @@ export interface FieldRenderProps<
   basicProps: FieldRender
 }
 
-export type FieldFactories<
+export type FieldRenderer<
   TYPE extends FieldType,
   PROPS = FieldRenderType
-> = ElementFactories<TYPE, PROPS, FieldRenderProps<TYPE, PROPS>>
+> = ElementRenderers<TYPE, PROPS, FieldRenderProps<TYPE, PROPS>>
 
-export const DefaultFactories: FieldFactories<any, any> = {
+export const DefaultRenderer: FieldRenderer<any, any> = {
   textField: {
     factory: TextFieldRender
   },

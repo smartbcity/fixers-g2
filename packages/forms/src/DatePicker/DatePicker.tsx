@@ -241,7 +241,7 @@ const DatePickerBase = (
         clearable
         DialogProps={{ className: localStyles.classes.dialog }}
         disabled={disabled}
-        value={value ? value : null}
+        value={value || null}
         onChange={onChange}
         renderInput={renderInput}
         {...other}

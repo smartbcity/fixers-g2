@@ -4,7 +4,7 @@ import {
   InputForm
 } from '@smartb/g2-forms'
 import React, { FunctionComponent } from 'react'
-import { FieldRenderProps } from '../factories/FormElementsFactories'
+import { FieldRenderProps } from '../factories/FormElementsRenderer'
 
 export type TextFieldExtendProps = Partial<
   Omit<
@@ -36,11 +36,7 @@ export const TextFieldRender: FunctionComponent<TextFieldElementProps> = (
         formState.setFieldValue(basicProps.name, value, false)
         !!basicProps.onChange && basicProps.onChange(value)
       }}
-      readonly={
-        basicProps.readonly === true
-          ? basicProps.readonly
-          : elementProps?.readonly
-      }
+      readonly={basicProps.readonly}
     />
   )
 }
