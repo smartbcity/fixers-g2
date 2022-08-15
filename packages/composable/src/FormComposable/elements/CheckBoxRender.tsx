@@ -1,6 +1,6 @@
 import { CheckBox, CheckBoxProps } from '@smartb/g2-forms'
 import React, { FunctionComponent } from 'react'
-import { FieldRenderProps } from '../factories/FormElementsRenderer'
+import { FieldRenderProps } from '../factories/FieldRenderProps'
 
 export type CheckBoxExtendProps = Partial<
   Omit<CheckBoxProps, 'checked' | 'onChange' | 'label' | 'classes' | 'styles'>

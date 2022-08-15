@@ -1,16 +1,12 @@
 import { ComponentClass, FunctionComponent } from 'react'
 
-export type ComposableConfigMap<CONFIG> = {
-  type: keyof CONFIG
-  props: CONFIG[keyof CONFIG]
-}
+export type ComposableElementConfig = Record<string, ElementType<any, any>>
 
-// export type ComposableConfigMap<CONFIG> = (keyof CONFIG & CONFIG[keyof CONFIG])
+export type ComposableConfigKeys<CONFIG extends ComposableElementConfig> =
+  Extract<keyof CONFIG, string>
 
-export interface RenderTypeTT<CONFIG extends ComposableConfigMap<any>> {
-  type: CONFIG['type']
-  props?: CONFIG['props']
-}
+export type ComposableConfigProps<CONFIG extends ComposableElementConfig> =
+  CONFIG[ComposableConfigKeys<CONFIG>]
 
 export interface ElementType<TYPE extends string, PROPS> {
   type: TYPE
@@ -21,16 +17,13 @@ export interface ElementRenderProps<TYPE extends string, PROPS> {
   element: ElementType<TYPE, PROPS>
 }
 
-export interface ElementFactory<
-  TYPE extends string,
-  PROPS,
-  ELEMENT_PROPS extends ElementRenderProps<TYPE, PROPS>
-> {
-  factory: FunctionComponent<ELEMENT_PROPS> | ComponentClass<ELEMENT_PROPS>
-}
-
 export type ElementRenderers<
-  TYPE extends string,
-  PROPS,
-  ELEMENT_PROPS extends ElementRenderProps<TYPE, PROPS>
-> = Record<TYPE, ElementFactory<TYPE, PROPS, ELEMENT_PROPS>>
+  CONFIG extends ComposableElementConfig,
+  ELEMENT_PROPS extends ElementRenderProps<
+    ComposableConfigKeys<CONFIG>,
+    ComposableConfigProps<CONFIG>
+  >
+> = Record<
+  ComposableConfigKeys<CONFIG>,
+  FunctionComponent<ELEMENT_PROPS> | ComponentClass<ELEMENT_PROPS>
+>

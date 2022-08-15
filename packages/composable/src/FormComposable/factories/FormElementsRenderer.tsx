@@ -16,18 +16,21 @@ import {
   RadioChoicesExtendProps,
   RadioChoicesRender
 } from '../elements/RadioChoicesRender'
-import { FieldRender } from './FieldRenderProps'
-import { FormComposableState } from '../type/FormComposableState'
+import { FieldRenderProps } from './FieldRenderProps'
 import {
+  ComposableConfigKeys,
+  ComposableElementConfig,
   ElementRenderers,
-  ElementRenderProps,
   ElementType
 } from '../../ComposableFactory/ElementRenderer'
 
 /**
  * Map a field type to  Props type.
  */
-export interface FieldTypeMap {
+/**
+ * Map a field type to  Props type.
+ */
+export interface FieldTypeMap extends ComposableElementConfig {
   autoComplete: ElementType<'autoComplete', AutoCompleteExtendProps>
   checkBox: ElementType<'checkBox', CheckBoxExtendProps>
   textField: ElementType<'textField', TextFieldExtendProps>
@@ -36,42 +39,16 @@ export interface FieldTypeMap {
   radioChoices: ElementType<'radioChoices', RadioChoicesExtendProps>
 }
 
-export type FieldType = keyof FieldTypeMap
-export type FieldRenderType = FieldTypeMap[keyof FieldTypeMap]
+export type FieldRenderType = FieldTypeMap[ComposableConfigKeys<FieldTypeMap>]
 
-// export type FieldTypeConfigMap = ComposableConfigMap<FieldTypeMap>
-
-export interface FieldRenderProps<
-  TYPE extends FieldType,
-  PROPS = FieldRenderType
-> extends ElementRenderProps<TYPE, PROPS> {
-  element: ElementType<TYPE, PROPS>
-  formState: FormComposableState
-  basicProps: FieldRender
-}
-
-export type FieldRenderer<
-  TYPE extends FieldType,
-  PROPS = FieldRenderType
-> = ElementRenderers<TYPE, PROPS, FieldRenderProps<TYPE, PROPS>>
-
-export const DefaultRenderer: FieldRenderer<any, any> = {
-  textField: {
-    factory: TextFieldRender
-  },
-  select: {
-    factory: SelectRender
-  },
-  autoComplete: {
-    factory: AutoCompleteRender
-  },
-  checkBox: {
-    factory: CheckBoxRender
-  },
-  datePicker: {
-    factory: DatePickerRender
-  },
-  radioChoices: {
-    factory: RadioChoicesRender
-  }
+export const DefaultRenderer: ElementRenderers<
+  FieldTypeMap,
+  FieldRenderProps<string, any>
+> = {
+  textField: TextFieldRender,
+  select: SelectRender,
+  autoComplete: AutoCompleteRender,
+  checkBox: CheckBoxRender,
+  datePicker: DatePickerRender,
+  radioChoices: RadioChoicesRender
 }

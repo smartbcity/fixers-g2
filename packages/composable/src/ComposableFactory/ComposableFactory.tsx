@@ -1,28 +1,38 @@
 import React, { useMemo } from 'react'
 import { ComposableElementFactory } from './ComposableElementFactory'
-import { ElementRenderers, ElementRenderProps } from './ElementRenderer'
+import {
+  ComposableConfigKeys,
+  ComposableConfigProps,
+  ComposableElementConfig,
+  ElementRenderers,
+  ElementRenderProps
+} from './ElementRenderer'
 
 interface ComponentFactoryProps<
-  TYPE extends string,
-  PROPS,
-  COMPONENT_PROPS extends ElementRenderProps<TYPE, PROPS>
+  CONFIG extends ComposableElementConfig,
+  ELEMENT_PROPS extends ElementRenderProps<
+    ComposableConfigKeys<CONFIG>,
+    ComposableConfigProps<CONFIG>
+  >
 > {
-  elements: COMPONENT_PROPS[]
-  factories: ElementRenderers<TYPE, PROPS, COMPONENT_PROPS>
-  customFactories?: ElementRenderers<TYPE, PROPS, COMPONENT_PROPS>
+  elements: ELEMENT_PROPS[]
+  factories: ElementRenderers<CONFIG, ELEMENT_PROPS>
+  customFactories?: ElementRenderers<CONFIG, ELEMENT_PROPS>
 }
 
 export const ComposableFactory = <
-  TYPE extends string,
-  PROPS,
-  COMPONENT_PROPS extends ElementRenderProps<TYPE, PROPS>
+  CONFIG extends ComposableElementConfig,
+  ELEMENT_PROPS extends ElementRenderProps<
+    ComposableConfigKeys<CONFIG>,
+    ComposableConfigProps<CONFIG>
+  >
 >(
-  props: ComponentFactoryProps<TYPE, PROPS, COMPONENT_PROPS>
+  props: ComponentFactoryProps<CONFIG, ELEMENT_PROPS>
 ) => {
   const { elements, factories, customFactories } = props
   const comps = useMemo(() => {
     const factoryClasses = { ...factories, ...(customFactories ?? []) }
-    return elements.map((component: COMPONENT_PROPS) => {
+    return elements.map((component: ELEMENT_PROPS) => {
       return ComposableElementFactory(component, factoryClasses)
     })
   }, [elements, factories, customFactories])

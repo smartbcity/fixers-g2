@@ -150,7 +150,7 @@ SelectForm.args = {
 }
 
 export const RadioSelectForm = FormComposableStory.bind({})
-SelectForm.args = {
+RadioSelectForm.args = {
   fields: [
     {
       key: 'storybook-form-radioChoices-from',
