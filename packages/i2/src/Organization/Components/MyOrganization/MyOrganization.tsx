@@ -33,12 +33,12 @@ export const MyOrganization = (props: MyOrganizationProps) => {
   }, [service.getUser])
 
   if (!user) return <></>
-  if (!user.organizationId)
+  if (!user.memberOf)
     return <Typography align='center'>{noOrganizationMessage}</Typography>
   return (
     <AutomatedOrganizationFactory
       {...other}
-      organizationId={user.organizationId}
+      organizationId={user.memberOf}
       update={!readonly}
       readonly={readonly}
     />

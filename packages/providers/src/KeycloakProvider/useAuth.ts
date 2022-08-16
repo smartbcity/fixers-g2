@@ -231,7 +231,7 @@ function useAuth<
         memberOf: keycloakWithRoles.tokenParsed?.memberOf,
         firstName: keycloakWithRoles.tokenParsed?.given_name,
         lastName: keycloakWithRoles.tokenParsed?.family_name,
-        role: keycloakWithRoles.tokenParsed?.realm_access?.roles,
+        roles: keycloakWithRoles.tokenParsed?.realm_access?.roles,
         fullName: keycloakWithRoles.tokenParsed?.name
       }
     },
@@ -245,7 +245,7 @@ function useAuth<
   )
 
   const executeAuthFunction = useCallback(
-    (authFunction: AuthFunction, ...args) => {
+    function (authFunction: AuthFunction, ...args) {
       const user = getUser()
       if (!user) return false
       return authFunction(user, ...args)

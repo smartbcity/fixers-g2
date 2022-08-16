@@ -124,6 +124,7 @@ export const useOrganizationFormState = <T extends Organization = Organization>(
                 value,
                 values,
                 strings,
+                readonlyFields,
                 additionnalValidators
               )
       },
