@@ -397,7 +397,7 @@ const getInput = (
         // @ts-ignore
         <InputForm
           inputType='autoComplete'
-          value={formState.getFieldProps(field.name).value ?? ''}
+          value={formState.getFieldProps(field.name).value}
           onChangeValue={(value) => {
             formState.setFieldValue(field.name, value, false)
             !!field.onChange && field.onChange(value)
