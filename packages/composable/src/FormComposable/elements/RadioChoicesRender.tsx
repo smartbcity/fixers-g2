@@ -21,12 +21,12 @@ type RadioChoicesRenderPros = FieldRenderProps<
 export const RadioChoicesRender: FunctionComponent<RadioChoicesRenderPros> = (
   props: RadioChoicesRenderPros
 ): ReactElement => {
-  const { element, formState, basicProps } = props
+  const { params, formState, basicProps } = props
   return (
     <InputForm
       inputType='radioChoices'
       value={formState.getFieldProps(basicProps.name).value ?? ''}
-      {...element.params}
+      {...params}
       {...basicProps}
       onChange={(_: React.ChangeEvent<HTMLInputElement>, value: string) => {
         formState.setFieldValue(basicProps.name, value, false)

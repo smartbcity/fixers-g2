@@ -33,7 +33,7 @@ export interface FormComposableStyles {
 export type FormComposableActionsProps = Omit<ActionsWrapperProps, 'actions'>
 
 interface FormComposableBasicProps {
-  customFactories?: ElementRenderers<any, any>
+  customFactories?: ElementRenderers<any>
   /**
    * the actions displayed at the bottom of the component. To make a validation button you have to add an action with `type="submit"`
    */

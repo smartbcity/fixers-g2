@@ -1,6 +1,6 @@
 import { FormikConfig, FormikHelpers, useFormik } from 'formik'
 import { FormAction } from '@smartb/g2-forms'
-import { useActionFeedback } from '../../../components/src/Actions/useActionFeedback'
+import { useActionFeedback } from '@smartb/g2-components'
 import { FormComposableState } from './type/FormComposableState'
 
 export interface ActionProps {

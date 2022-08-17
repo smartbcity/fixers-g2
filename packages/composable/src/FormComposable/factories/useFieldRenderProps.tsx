@@ -18,7 +18,8 @@ export const useFieldRenderProps = (
       return {
         basicProps: formProps,
         formState: formState,
-        element: field
+        params: field.params,
+        type: field.type
       } as FieldRenderProps<any, any>
     })
   }, [

@@ -66,9 +66,3 @@ export const DefaultRenderer: ElementRenderers<FieldTypeMap> = {
   datePicker: DatePickerRender,
   radioChoices: RadioChoicesRender
 }
-
-// FunctionComponent<TextFieldRenderProps>' is not assignable to type 'ElementRenderersFcn<FieldTypeMap>'.
-
-// ElementType<"textField", Partial<Omit<Omit<Omit<TextFieldProps, "ref">, keyof TextFieldBasicProps> & TextFieldBasicProps & InputFormBasicProps<...>, "classes" | ... 3 more ... | "styles">>>
-// is not assignable to type
-// ElementType<string, ElementType<any, any>>

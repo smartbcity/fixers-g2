@@ -5,23 +5,22 @@ export interface ElementType<TYPE extends string, PARAMS> {
   params?: PARAMS
 }
 
-export interface ElementRendererProps<TYPE extends string, PARAMS> {
-  element: ElementType<TYPE, PARAMS>
-}
-
 export type ComposableElementConfig = Record<string, ElementType<any, any>>
 
 export type ComposableConfigKeys<CONFIG extends ComposableElementConfig> =
   Extract<keyof CONFIG, string>
 
-export type ComposableConfigProps<CONFIG extends ComposableElementConfig> =
-  CONFIG[ComposableConfigKeys<CONFIG>]
+// export type ComposableConfigType<CONFIG extends ComposableElementConfig> =
+//   CONFIG[ComposableConfigKeys<CONFIG>]['type']
+
+export type ComposableConfigParams<CONFIG extends ComposableElementConfig> =
+  CONFIG[ComposableConfigKeys<CONFIG>]['params']
 
 export interface ElementRenderPropsConfig<
   CONFIG extends ComposableElementConfig
-> extends ElementRendererProps<
+> extends ElementType<
     ComposableConfigKeys<CONFIG>,
-    ComposableConfigProps<CONFIG>['params']
+    ComposableConfigParams<CONFIG>
   > {}
 
 export type ElementRenderersFcn<CONFIG extends ComposableElementConfig> =

@@ -20,8 +20,8 @@ type SelectFieldProps = FieldRenderProps<'select', FormSelectExtendProps>
 export const SelectRender: FunctionComponent<SelectFieldProps> = (
   props: SelectFieldProps
 ): ReactElement => {
-  const { element, formState, basicProps } = props
-  return element.params?.multiple === true ? (
+  const { params, formState, basicProps } = props
+  return params?.multiple === true ? (
     <InputForm
       inputType='select'
       values={formState.getFieldProps(basicProps.name).value ?? []}
@@ -29,7 +29,7 @@ export const SelectRender: FunctionComponent<SelectFieldProps> = (
         formState.setFieldValue(basicProps.name, values, false)
         !!basicProps.onChange && basicProps.onChange(values)
       }}
-      {...element.params}
+      {...params}
       {...basicProps}
     />
   ) : (
@@ -40,7 +40,7 @@ export const SelectRender: FunctionComponent<SelectFieldProps> = (
         formState.setFieldValue(basicProps.name, value, false)
         !!basicProps.onChange && basicProps.onChange(value)
       }}
-      {...element.params}
+      {...params}
       {...basicProps}
     />
   )

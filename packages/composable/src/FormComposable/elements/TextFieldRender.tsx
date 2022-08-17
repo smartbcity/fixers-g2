@@ -18,14 +18,13 @@ type TextFieldRenderProps = FieldRenderProps<'textField', TextFieldExtendProps>
 export const TextFieldRender: FunctionComponent<TextFieldRenderProps> = (
   props: TextFieldRenderProps
 ) => {
-  const { element, formState, basicProps } = props
-  const elementProps = element.params
+  const { params, formState, basicProps } = props
   const value = formState.getFieldProps(basicProps.name).value
   return (
     <InputForm
       inputType='textField'
       value={value}
-      {...elementProps}
+      {...params}
       {...basicProps}
       onChange={(value: string) => {
         formState.setFieldValue(basicProps.name, value, false)
