@@ -1,12 +1,12 @@
 import { createElement } from 'react'
 import { ElementRenderers, ElementRenderProps } from './ElementRenderer'
 
-export type ComposableElementFactoryType = (
+export type ElementFactoryType = (
   componentProps: ElementRenderProps<any, any>,
-  renderers?: ElementRenderers<any, any>
+  renderers?: ElementRenderers<any>
 ) => JSX.Element | null
 
-export const ComposableElementFactory: ComposableElementFactoryType = (
+export const ElementFactory: ElementFactoryType = (
   componentProps,
   renderers?
 ) => {

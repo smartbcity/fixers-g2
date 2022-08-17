@@ -16,22 +16,18 @@ export interface ElementType<TYPE extends string, PROPS> {
 export interface ElementRenderProps<TYPE extends string, PROPS> {
   element: ElementType<TYPE, PROPS>
 }
-
-export type ElementRenderersFcn<
-  CONFIG extends ComposableElementConfig,
-  ELEMENT_PROPS extends ElementRenderProps<
+export interface ElementRenderPropsConfig<
+  CONFIG extends ComposableElementConfig
+> extends ElementRenderProps<
     ComposableConfigKeys<CONFIG>,
-    ComposableConfigProps<CONFIG>
-  >
-> = FunctionComponent<ELEMENT_PROPS> | ComponentClass<ELEMENT_PROPS>
+    ComposableConfigProps<CONFIG>['props']
+  > {}
 
-export type ElementRenderers<
-  CONFIG extends ComposableElementConfig,
-  ELEMENT_PROPS extends ElementRenderProps<
-    ComposableConfigKeys<CONFIG>,
-    ComposableConfigProps<CONFIG>
-  >
-> = Record<
+export type ElementRenderersFcn<CONFIG extends ComposableElementConfig> =
+  | FunctionComponent<ElementRenderPropsConfig<CONFIG>>
+  | ComponentClass<ElementRenderPropsConfig<CONFIG>>
+
+export type ElementRenderers<CONFIG extends ComposableElementConfig> = Record<
   ComposableConfigKeys<CONFIG>,
-  ElementRenderersFcn<CONFIG, ELEMENT_PROPS>
+  ElementRenderersFcn<CONFIG>
 >

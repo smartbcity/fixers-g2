@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from 'react'
-import { ComposableFactory } from '../ComposableFactory'
+import { ContainerRenderer } from '../ComposableRender'
 import { cx } from '@emotion/css'
 import { Stack, StackProps } from '@mui/material'
 import { FormikProvider } from 'formik'
@@ -14,7 +14,7 @@ import {
   ActionsWrapperProps
 } from '@smartb/g2-components/src/Actions/ActionsWrapper'
 import { FormAction } from '@smartb/g2-forms'
-import { ElementRenderers } from '../ComposableFactory/ElementRenderer'
+import { ElementRenderers } from '../ComposableRender/ElementRenderer'
 
 export interface FormComposableClasses {
   actions?: string
@@ -125,7 +125,7 @@ export const FormComposable: FunctionComponent<FormComposableProps> = (
             )}
             style={styles?.fieldsContainer}
           >
-            <ComposableFactory
+            <ContainerRenderer
               factories={DefaultRenderer}
               customFactories={customFactories}
               elements={fieldElements}

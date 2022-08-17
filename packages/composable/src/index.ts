@@ -1,2 +1,2 @@
-export * from './ComposableFactory'
+export * from './ComposableRender'
 export * from './FormComposable'

@@ -16,13 +16,13 @@ import {
   RadioChoicesExtendProps,
   RadioChoicesRender
 } from '../elements/RadioChoicesRender'
-import { FieldRenderProps } from './FieldRenderProps'
 import {
   ComposableConfigKeys,
   ComposableElementConfig,
   ElementRenderers,
+  ElementRenderersFcn,
   ElementType
-} from '../../ComposableFactory/ElementRenderer'
+} from '../../ComposableRender/ElementRenderer'
 
 /**
  * Map a field type to  Props type.
@@ -41,10 +41,24 @@ export interface FieldTypeMap extends ComposableElementConfig {
 
 export type FieldRenderType = FieldTypeMap[ComposableConfigKeys<FieldTypeMap>]
 
-export const DefaultRenderer: ElementRenderers<
-  FieldTypeMap,
-  FieldRenderProps<string, any>
-> = {
+type TT = (e: ElementType<any, any>) => ElementRenderersFcn<any>
+
+export type ComposableElementConfigTT = Record<string, TT>
+export const DefaultRendererF: ComposableElementConfigTT = {
+  autoComplete: (_: ElementType<'autoComplete', AutoCompleteExtendProps>) =>
+    TextFieldRender,
+  checkBox: (_: ElementType<'checkBox', AutoCompleteExtendProps>) =>
+    CheckBoxRender,
+  datePicker: (_: ElementType<'datePicker', AutoCompleteExtendProps>) =>
+    DatePickerRender,
+  radioChoices: (_: ElementType<'radioChoices', AutoCompleteExtendProps>) =>
+    RadioChoicesRender,
+  select: (_: ElementType<'select', AutoCompleteExtendProps>) => SelectRender,
+  textField: (_: ElementType<'textField', AutoCompleteExtendProps>) =>
+    TextFieldRender
+}
+
+export const DefaultRenderer: ElementRenderers<FieldTypeMap> = {
   textField: TextFieldRender,
   select: SelectRender,
   autoComplete: AutoCompleteRender,
@@ -52,3 +66,9 @@ export const DefaultRenderer: ElementRenderers<
   datePicker: DatePickerRender,
   radioChoices: RadioChoicesRender
 }
+
+// FunctionComponent<TextFieldRenderProps>' is not assignable to type 'ElementRenderersFcn<FieldTypeMap>'.
+
+// ElementType<"textField", Partial<Omit<Omit<Omit<TextFieldProps, "ref">, keyof TextFieldBasicProps> & TextFieldBasicProps & InputFormBasicProps<...>, "classes" | ... 3 more ... | "styles">>>
+// is not assignable to type
+// ElementType<string, ElementType<any, any>>
