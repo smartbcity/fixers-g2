@@ -52,10 +52,10 @@ const useFormProps = (
     error: !!formState.errors[field.name],
     errorMessage: formState.errors[field.name] as string,
     isLoading: isLoading,
-    className: cx(classes?.field, 'AruiForm-field', field.props?.className),
+    className: cx(classes?.field, 'AruiForm-field', field.params?.className),
     style: {
       ...styles?.field,
-      ...field.props?.style
+      ...field.params?.style
     },
     onChange: field.onChange,
     readonly: field.readonly === true ? field.readonly : props?.readonly

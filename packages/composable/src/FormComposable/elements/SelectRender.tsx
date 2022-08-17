@@ -21,7 +21,7 @@ export const SelectRender: FunctionComponent<SelectFieldProps> = (
   props: SelectFieldProps
 ): ReactElement => {
   const { element, formState, basicProps } = props
-  return element.props?.multiple === true ? (
+  return element.params?.multiple === true ? (
     <InputForm
       inputType='select'
       values={formState.getFieldProps(basicProps.name).value ?? []}
@@ -29,7 +29,7 @@ export const SelectRender: FunctionComponent<SelectFieldProps> = (
         formState.setFieldValue(basicProps.name, values, false)
         !!basicProps.onChange && basicProps.onChange(values)
       }}
-      {...element.props}
+      {...element.params}
       {...basicProps}
     />
   ) : (
@@ -40,7 +40,7 @@ export const SelectRender: FunctionComponent<SelectFieldProps> = (
         formState.setFieldValue(basicProps.name, value, false)
         !!basicProps.onChange && basicProps.onChange(value)
       }}
-      {...element.props}
+      {...element.params}
       {...basicProps}
     />
   )

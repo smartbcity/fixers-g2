@@ -1,5 +1,14 @@
 import { ComponentClass, FunctionComponent } from 'react'
 
+export interface ElementType<TYPE extends string, PARAMS> {
+  type: TYPE
+  params?: PARAMS
+}
+
+export interface ElementRendererProps<TYPE extends string, PARAMS> {
+  element: ElementType<TYPE, PARAMS>
+}
+
 export type ComposableElementConfig = Record<string, ElementType<any, any>>
 
 export type ComposableConfigKeys<CONFIG extends ComposableElementConfig> =
@@ -8,19 +17,11 @@ export type ComposableConfigKeys<CONFIG extends ComposableElementConfig> =
 export type ComposableConfigProps<CONFIG extends ComposableElementConfig> =
   CONFIG[ComposableConfigKeys<CONFIG>]
 
-export interface ElementType<TYPE extends string, PROPS> {
-  type: TYPE
-  props?: PROPS
-}
-
-export interface ElementRenderProps<TYPE extends string, PROPS> {
-  element: ElementType<TYPE, PROPS>
-}
 export interface ElementRenderPropsConfig<
   CONFIG extends ComposableElementConfig
-> extends ElementRenderProps<
+> extends ElementRendererProps<
     ComposableConfigKeys<CONFIG>,
-    ComposableConfigProps<CONFIG>['props']
+    ComposableConfigProps<CONFIG>['params']
   > {}
 
 export type ElementRenderersFcn<CONFIG extends ComposableElementConfig> =

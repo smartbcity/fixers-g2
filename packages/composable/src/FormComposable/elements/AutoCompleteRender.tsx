@@ -28,7 +28,7 @@ export const AutoCompleteRender: FunctionComponent<AutoCompleteRenderPros> = (
   props: AutoCompleteRenderPros
 ) => {
   const { element, formState, basicProps } = props
-  return element.props?.multiple === true ? (
+  return element.params?.multiple === true ? (
     // @ts-ignore
     <InputForm
       inputType='autoComplete'
@@ -37,7 +37,7 @@ export const AutoCompleteRender: FunctionComponent<AutoCompleteRenderPros> = (
         formState.setFieldValue(basicProps.name, values, false)
         !!basicProps.onChange && basicProps.onChange(values)
       }}
-      {...element.props}
+      {...element.params}
       {...basicProps}
     />
   ) : (
@@ -49,7 +49,7 @@ export const AutoCompleteRender: FunctionComponent<AutoCompleteRenderPros> = (
         formState.setFieldValue(basicProps.name, value, false)
         !!basicProps.onChange && basicProps.onChange(value)
       }}
-      {...element?.props}
+      {...element?.params}
       {...basicProps}
     />
   )

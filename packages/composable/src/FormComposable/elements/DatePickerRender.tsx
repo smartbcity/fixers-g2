@@ -33,7 +33,7 @@ export const DatePickerRender: FunctionComponent<DatePickerRenderPros> = (
           : formState.getFieldProps(basicProps.name).value ?? ''
       }
       {...basicProps}
-      {...element.props}
+      {...element.params}
       onChangeDate={(date) => {
         formState.setFieldValue(
           basicProps.name,

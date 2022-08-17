@@ -1,8 +1,8 @@
-import { ElementRenderProps } from '../../ComposableRender/ElementRenderer'
+import { ElementRendererProps } from '../../ComposableRender/ElementRenderer'
 import { FormComposableState } from '../type/FormComposableState'
 
 export interface FieldRenderProps<TYPE extends string, PROPS>
-  extends ElementRenderProps<TYPE, PROPS> {
+  extends ElementRendererProps<TYPE, PROPS> {
   formState: FormComposableState
   basicProps: FieldRender
 }

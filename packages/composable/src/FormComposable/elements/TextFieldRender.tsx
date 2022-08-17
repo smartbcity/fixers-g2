@@ -19,13 +19,8 @@ export const TextFieldRender: FunctionComponent<TextFieldRenderProps> = (
   props: TextFieldRenderProps
 ) => {
   const { element, formState, basicProps } = props
-  const elementProps = element.props
+  const elementProps = element.params
   const value = formState.getFieldProps(basicProps.name).value
-  console.log('////////////////////////')
-  console.log('////////////////////////')
-  console.log(value)
-  console.log('////////////////////////')
-  console.log('////////////////////////')
   return (
     <InputForm
       inputType='textField'

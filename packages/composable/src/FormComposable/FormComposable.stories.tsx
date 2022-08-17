@@ -76,7 +76,7 @@ TextFieldForm.args = {
       name: 'name',
       label: 'Name',
       type: 'textField',
-      props: {},
+      params: {},
       validator: (value) =>
         value === undefined || value === ''
           ? 'The name is required'
@@ -88,7 +88,7 @@ TextFieldForm.args = {
       name: 'description',
       label: 'Description',
       type: 'textField',
-      props: {
+      params: {
         disabled: true
       },
       defaultValue: 'The description'
@@ -104,7 +104,7 @@ SelectForm.args = {
       name: 'from',
       label: 'From',
       type: 'select',
-      props: {
+      params: {
         options: [
           { key: 'dollar', label: '$' },
           { key: 'euro', label: '€' }
@@ -120,7 +120,7 @@ SelectForm.args = {
       name: 'to',
       label: 'to',
       type: 'select',
-      props: {
+      params: {
         multiple: true,
         options: [
           { key: 'dollar', label: '$' },
@@ -137,7 +137,7 @@ SelectForm.args = {
       name: 'value',
       label: 'Value',
       type: 'textField',
-      props: {
+      params: {
         options: [
           { key: '100', label: '100' },
           { key: '200', label: '200' }
@@ -157,7 +157,7 @@ RadioSelectForm.args = {
       name: 'from',
       label: 'From',
       type: 'radioChoices',
-      props: {
+      params: {
         choices: [
           { key: 'dollar', label: '$' },
           { key: 'euro', label: '€' }
@@ -173,7 +173,7 @@ RadioSelectForm.args = {
       name: 'to',
       label: 'to',
       type: 'radioChoices',
-      props: {
+      params: {
         multiple: true,
         choices: [
           { key: 'dollar', label: '$' },
@@ -190,7 +190,7 @@ RadioSelectForm.args = {
       name: 'value',
       label: 'Value',
       type: 'radioChoices',
-      props: {
+      params: {
         choices: [
           { key: '100', label: '100' },
           { key: '200', label: '200' }
@@ -221,7 +221,7 @@ const fullFields: FormComposableField[] = [
       value === undefined || value === ''
         ? 'The gender is required'
         : undefined,
-    props: {
+    params: {
       options: [
         { key: 'male', label: 'male' },
         { key: 'female', label: 'female' }
@@ -243,7 +243,7 @@ const fullFields: FormComposableField[] = [
     defaultValue: '',
     validator: (value) =>
       value === undefined || value === '' ? 'answer the question' : undefined,
-    props: {
+    params: {
       choices: [
         { key: 'yes', label: 'Yes' },
         { key: 'no', label: 'No' }

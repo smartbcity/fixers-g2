@@ -12,18 +12,13 @@ export const CheckBoxRender: FunctionComponent<CheckBoxRenderPros> = (
   props: CheckBoxRenderPros
 ) => {
   const { element, formState, basicProps } = props
-  const elementProps = element.props
+  const elementProps = element.params
   const value = formState.getFieldProps(basicProps.name).value
-  console.log('///////////////////////////')
-  console.log('///////////////////////////')
-  console.log(value)
-  console.log('///////////////////////////')
-  console.log('///////////////////////////')
   return (
     <CheckBox
       checked={value}
       disabled={elementProps?.disabled}
-      {...element.props}
+      {...element.params}
       {...basicProps}
       readOnly={
         basicProps.readonly === true
