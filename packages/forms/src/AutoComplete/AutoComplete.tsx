@@ -92,6 +92,7 @@ export type AutoCompleteProps<T = any> = MergeMuiElementProps<
 >
 
 const defaultFilterOptions = createFilterOptions()
+const defaultGetOptionLabel = (option: any) => option.label ?? ""
 
 const AutoCompleteBase = function <T>(
   props: AutoCompleteProps<T>,
@@ -109,7 +110,7 @@ const AutoCompleteBase = function <T>(
     onChangeValues,
     defaultValue = null,
     onSearch,
-    getOptionLabel,
+    getOptionLabel = defaultGetOptionLabel,
     textFieldProps,
     disabled,
     isOptionEqualToValue,
@@ -137,7 +138,7 @@ const AutoCompleteBase = function <T>(
         const {key, ...other} = getTagProps({ index })
         return (
           //@ts-ignore
-          <Chip key={option.key ?? key} label={getOptionLabel ? getOptionLabel(option) : option.label ?? ""} {...other} />
+          <Chip key={option.key ?? key} label={getOptionLabel(option)} {...other} />
         )
       }),
     [getOptionLabel]
@@ -166,8 +167,7 @@ const AutoCompleteBase = function <T>(
           {...other}
         >
           <CheckBox checked={selected} />
-          {/* @ts-ignore */}
-          <ListItemText primary={getOptionLabel ? getOptionLabel(option) : option.label ?? ""} />
+          <ListItemText primary={getOptionLabel(option)} />
         </ListItem>
       )
     },
