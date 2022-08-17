@@ -20,7 +20,7 @@ export const useLocalStorageDocumentHandler = (fileKey: string) => {
   )
 
   const getFileUrl = useCallback(
-    () => fileUrl,
+    () => fileUrl ? URL.createObjectURL(Base64ToFile(fileUrl, fileName)) : undefined,
     [fileUrl],
   )
   

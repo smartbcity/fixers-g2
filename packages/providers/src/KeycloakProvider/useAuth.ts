@@ -5,7 +5,7 @@ import Keycloak, { KeycloakTokenParsed } from 'keycloak-js'
 export type AuthedUser = {
   id: string
   email: string
-  memberOf?: string
+  memberOf?: string | undefined
   firstName: string
   fullName: string
   lastName: string

@@ -192,7 +192,7 @@ export const useUserFormState = <T extends User = User>(
           if (!emailRegex.test(trimmed))
             return (
               strings?.enterAValidEmail ??
-              "L'email renseigner n'est pas correcte"
+              "L'email renseigné n'est pas correct"
             )
           return await onCheckEmail(trimmed)
         }

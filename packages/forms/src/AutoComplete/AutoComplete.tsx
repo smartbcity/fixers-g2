@@ -1,5 +1,7 @@
 import {
   AutocompleteRenderOptionState,
+  createFilterOptions,
+  FilterOptionsState,
   ListItem,
   ListItemText
 } from '@mui/material'
@@ -58,14 +60,20 @@ export interface AutoCompleteBasicProps<T> extends BasicProps {
    */
   onSearch?: (value: string) => void
   /**
-   * Message displayed when select has no options
-   */
-  noOptionsText?: string
-  /**
-   * this props name need to be changed
+   * return the label of the option
    * @param option
    */
-  getOptionLabel: (option: T) => string
+  getOptionLabel?: (option: T) => string
+  /**
+   * pass this prop to false if your list is too big and creating performance issues
+   * @default true
+   */
+  noFilterDisplayOptions?: boolean
+  /**
+   * This props will tell how many options are alowed to be displayed in the result list. If you want no sie restriction pass a negative number
+   * @default -1
+   */
+   optionsResultLimit?: number
   /**
    * If true the input will be disabled
    *
@@ -83,6 +91,8 @@ export type AutoCompleteProps<T = any> = MergeMuiElementProps<
   AutoCompleteBasicProps<T>
 >
 
+const defaultFilterOptions = createFilterOptions()
+
 const AutoCompleteBase = function <T>(
   props: AutoCompleteProps<T>,
   ref: React.ForwardedRef<HTMLElement>
@@ -99,11 +109,12 @@ const AutoCompleteBase = function <T>(
     onChangeValues,
     defaultValue = null,
     onSearch,
-    noOptionsText,
     getOptionLabel,
     textFieldProps,
     disabled,
     isOptionEqualToValue,
+    noFilterDisplayOptions = true,
+    optionsResultLimit = -1,
     ...other
   } = props
 
@@ -122,9 +133,13 @@ const AutoCompleteBase = function <T>(
 
   const renderTags = useCallback(
     (value: T[], getTagProps: AutocompleteGetTagProps) =>
-      value.map((option: T, index: number) => (
-        <Chip label={getOptionLabel(option)} {...getTagProps({ index })} />
-      )),
+      value.map((option: T, index: number) => {
+        const {key, ...other} = getTagProps({ index })
+        return (
+          //@ts-ignore
+          <Chip key={option.key ?? key} label={getOptionLabel ? getOptionLabel(option) : option.label ?? ""} {...other} />
+        )
+      }),
     [getOptionLabel]
   )
 
@@ -141,18 +156,37 @@ const AutoCompleteBase = function <T>(
       option: T,
       { selected }: AutocompleteRenderOptionState
     ) => {
+      //@ts-ignore
+      const {key, ...other} = props
       return (
         <ListItem
+        //@ts-ignore
+          key={option.key ?? key}
           className={defaultStyles.cx('AruiAutoComplete-option')}
-          {...props}
+          {...other}
         >
           <CheckBox checked={selected} />
-          <ListItemText primary={getOptionLabel(option)} />
+          {/* @ts-ignore */}
+          <ListItemText primary={getOptionLabel ? getOptionLabel(option) : option.label ?? ""} />
         </ListItem>
       )
     },
     [getOptionLabel]
   )
+
+  const filterOptions = useCallback(
+    (options: T[], state: FilterOptionsState<T>): T[] => {
+      const inputTrimmed = state.inputValue.trim()
+      if (!noFilterDisplayOptions && !inputTrimmed) return []
+      const result = defaultFilterOptions(options, state) as T[]
+      if (optionsResultLimit >= 0) {
+        return result.splice(0, optionsResultLimit)
+      }
+      return result
+    },
+    [noFilterDisplayOptions, optionsResultLimit],
+  )
+  
 
   const defaultIsOptionEqualToValue = useCallback(
     //@ts-ignore
@@ -174,7 +208,6 @@ const AutoCompleteBase = function <T>(
       getOptionLabel={getOptionLabel}
       style={style}
       disabled={disabled}
-      noOptionsText={noOptionsText}
       disableCloseOnSelect={multiple}
       onChange={onChangeMemoized}
       renderTags={renderTags}
@@ -183,6 +216,7 @@ const AutoCompleteBase = function <T>(
       isOptionEqualToValue={
         isOptionEqualToValue ?? hasKey ? defaultIsOptionEqualToValue : undefined
       }
+      filterOptions={filterOptions}
       classes={{
         listbox: defaultStyles.classes.list
       }}

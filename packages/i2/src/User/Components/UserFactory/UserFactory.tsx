@@ -67,7 +67,7 @@ export interface UserFactoryStrings extends AdressValidationStrings {
    */
   completeTheEmail?: string
   /**
-   * @default "L'email renseigner n'est pas correcte"
+   * @default "L'email renseigné n'est pas correct"
    */
   enterAValidEmail?: string
   /**

@@ -14,7 +14,6 @@ import {
   UploadRounded,
   VisibilityRounded
 } from '@mui/icons-material'
-import { openBase64InNewWindow } from '@smartb/g2-utils'
 
 export type DropError =
   | 'file-too-large'
@@ -143,7 +142,7 @@ export const DocumentHandler = (props: DocumentHandlerProps) => {
     } else if (getFileUrl) {
       setLoading(true)
       const url = await getFileUrl()
-      if (url) openBase64InNewWindow(url, label ?? '')
+      if (url) window.open(url, "_blank");
       setLoading(false)
     }
   }, [onView, getFileUrl, label])
