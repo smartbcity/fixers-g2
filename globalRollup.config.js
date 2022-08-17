@@ -38,7 +38,7 @@ const getGlobal = (localPackageJson) => {
       commonjs({
         include: /\/node_modules\//,
       }),
-      typescript(),
+      typescript({clean: true}),
       image(),
       json(),
       svgr(),
