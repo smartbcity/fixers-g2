@@ -1,33 +1,28 @@
-import { ComponentClass, FunctionComponent } from 'react'
+import { FieldRenderProps } from '../FormComposable/type/FieldRenderProps'
+import { FunctionComponent } from 'react'
 
-export interface ElementType<TYPE extends string, PARAMS> {
+export interface ElementProps<TYPE extends string, PARAMS> {
   type: TYPE
   params?: PARAMS
 }
 
-export type ComposableElementConfig = Record<string, ElementType<any, any>>
+export type ElementRendererFunction<
+  PROPS extends FieldRenderProps<string, {}>
+> = FunctionComponent<PROPS>
 
-export type ComposableConfigKeys<CONFIG extends ComposableElementConfig> =
-  Extract<keyof CONFIG, string>
+export interface RenderersConfig
+  extends Record<string, ElementRendererFunction<any>> {}
 
-// export type ComposableConfigType<CONFIG extends ComposableElementConfig> =
-//   CONFIG[ComposableConfigKeys<CONFIG>]['type']
-
-export type ComposableConfigParams<CONFIG extends ComposableElementConfig> =
-  CONFIG[ComposableConfigKeys<CONFIG>]['params']
-
-export interface ElementRenderPropsConfig<
-  CONFIG extends ComposableElementConfig
-> extends ElementType<
-    ComposableConfigKeys<CONFIG>,
-    ComposableConfigParams<CONFIG>
-  > {}
-
-export type ElementRenderersFcn<CONFIG extends ComposableElementConfig> =
-  | FunctionComponent<ElementRenderPropsConfig<CONFIG>>
-  | ComponentClass<ElementRenderPropsConfig<CONFIG>>
-
-export type ElementRenderers<CONFIG extends ComposableElementConfig> = Record<
-  ComposableConfigKeys<CONFIG>,
-  ElementRenderersFcn<CONFIG>
+export type ComposableRendererKeys<RENDERER extends RenderersConfig> = Extract<
+  keyof RENDERER,
+  string
 >
+
+export type ComposableRendererFunction<RENDERER extends RenderersConfig> =
+  RENDERER[ComposableRendererKeys<RENDERER>]
+
+export type ComposableRendererFunctionProps<RENDERER extends RenderersConfig> =
+  FunctionRendererTypeGetter<RENDERER[ComposableRendererKeys<RENDERER>]>
+
+export type FunctionRendererTypeGetter<T extends ElementRendererFunction<any>> =
+  T extends ElementRendererFunction<infer R> ? R : unknown

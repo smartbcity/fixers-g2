@@ -3,8 +3,9 @@ import {
   AutoCompleteProps,
   InputForm
 } from '@smartb/g2-forms'
-import React, { FunctionComponent } from 'react'
-import { FieldRenderProps } from '../factories/FieldRenderProps'
+import React from 'react'
+import { FieldRenderProps } from '../type/FieldRenderProps'
+import { ElementRendererFunction } from '../../ComposableRender/ElementRenderer'
 
 export type AutoCompleteExtendProps = Partial<
   Omit<
@@ -19,14 +20,14 @@ export type AutoCompleteExtendProps = Partial<
   >
 >
 
-type AutoCompleteRenderPros = FieldRenderProps<
+export type AutoCompleteRenderProps = FieldRenderProps<
   'autoComplete',
   AutoCompleteExtendProps
 >
 
-export const AutoCompleteRender: FunctionComponent<AutoCompleteRenderPros> = (
-  props: AutoCompleteRenderPros
-) => {
+export const AutoCompleteRender: ElementRendererFunction<
+  AutoCompleteRenderProps
+> = (props: AutoCompleteRenderProps) => {
   const { params, formState, basicProps } = props
   return params?.multiple === true ? (
     // @ts-ignore

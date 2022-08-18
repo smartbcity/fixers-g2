@@ -3,7 +3,6 @@ import { ContainerRenderer } from '../ComposableRender'
 import { cx } from '@emotion/css'
 import { Stack, StackProps } from '@mui/material'
 import { FormikProvider } from 'formik'
-import { useFieldRenderProps } from './factories/useFieldRenderProps'
 import { DefaultRenderer } from './factories/FormElementsRenderer'
 import { FormComposableField } from './type/FormComposableField'
 import { MergeReactElementProps } from '@smartb/g2-utils'
@@ -14,7 +13,8 @@ import {
   ActionsWrapperProps
 } from '@smartb/g2-components/src/Actions/ActionsWrapper'
 import { FormAction } from '@smartb/g2-forms'
-import { ElementRenderers } from '../ComposableRender/ElementRenderer'
+import { useFieldRenderProps } from './type/FieldRenderProps'
+import { RenderersConfig } from '../ComposableRender/ElementRenderer'
 
 export interface FormComposableClasses {
   actions?: string
@@ -32,8 +32,10 @@ export interface FormComposableStyles {
 
 export type FormComposableActionsProps = Omit<ActionsWrapperProps, 'actions'>
 
-interface FormComposableBasicProps {
-  customFactories?: ElementRenderers<any>
+interface FormComposableBasicProps<
+  T extends RenderersConfig | undefined = undefined
+> {
+  customFactories?: T
   /**
    * the actions displayed at the bottom of the component. To make a validation button you have to add an action with `type="submit"`
    */

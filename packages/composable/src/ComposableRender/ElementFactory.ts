@@ -1,8 +1,8 @@
 import { createElement } from 'react'
-import { ElementRenderers, ElementType } from './ElementRenderer'
+import { ElementRenderers, ElementProps } from './ElementRenderer'
 
 export type ElementFactoryType = (
-  componentProps: ElementType<any, any>,
+  componentProps: ElementProps<any, any>,
   renderers?: ElementRenderers<any>
 ) => JSX.Element | null
 

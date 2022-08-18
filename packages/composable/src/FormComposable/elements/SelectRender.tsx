@@ -1,6 +1,7 @@
-import React, { FunctionComponent, ReactElement } from 'react'
+import React, { ReactElement } from 'react'
 import { SelectProps, InputForm, InputFormBasicProps } from '@smartb/g2-forms'
-import { FieldRenderProps } from '../factories/FieldRenderProps'
+import { FieldRenderProps } from '../type/FieldRenderProps'
+import { ElementRendererFunction } from '../../ComposableRender/ElementRenderer'
 
 export type FormSelectExtendProps = Partial<
   Omit<
@@ -15,10 +16,13 @@ export type FormSelectExtendProps = Partial<
   >
 >
 
-type SelectFieldProps = FieldRenderProps<'select', FormSelectExtendProps>
+export type SelectRenderProps = FieldRenderProps<
+  'select',
+  FormSelectExtendProps
+>
 
-export const SelectRender: FunctionComponent<SelectFieldProps> = (
-  props: SelectFieldProps
+export const SelectRender: ElementRendererFunction<SelectRenderProps> = (
+  props: SelectRenderProps
 ): ReactElement => {
   const { params, formState, basicProps } = props
   return params?.multiple === true ? (

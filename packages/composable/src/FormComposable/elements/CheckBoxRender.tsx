@@ -1,15 +1,19 @@
 import { CheckBox, CheckBoxProps } from '@smartb/g2-forms'
-import React, { FunctionComponent } from 'react'
-import { FieldRenderProps } from '../factories/FieldRenderProps'
+import React from 'react'
+import { FieldRenderProps } from '../type/FieldRenderProps'
+import { ElementRendererFunction } from '../../ComposableRender/ElementRenderer'
 
 export type CheckBoxExtendProps = Partial<
   Omit<CheckBoxProps, 'checked' | 'onChange' | 'label' | 'classes' | 'styles'>
 >
 
-type CheckBoxRenderPros = FieldRenderProps<'checkBox', CheckBoxExtendProps>
+export type CheckBoxRenderProps = FieldRenderProps<
+  'checkBox',
+  CheckBoxExtendProps
+>
 
-export const CheckBoxRender: FunctionComponent<CheckBoxRenderPros> = (
-  props: CheckBoxRenderPros
+export const CheckBoxRender: ElementRendererFunction<CheckBoxRenderProps> = (
+  props: CheckBoxRenderProps
 ) => {
   const { params, formState, basicProps } = props
   const value = formState.getFieldProps(basicProps.name).value

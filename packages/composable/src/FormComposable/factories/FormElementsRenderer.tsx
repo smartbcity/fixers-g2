@@ -1,64 +1,37 @@
 import {
-  TextFieldExtendProps,
-  TextFieldRender
+  TextFieldRender,
+  TextFieldRenderProps
 } from '../elements/TextFieldRender'
-import { FormSelectExtendProps, SelectRender } from '../elements/SelectRender'
+import { SelectRender, SelectRenderProps } from '../elements/SelectRender'
 import {
-  DatePickerExtendProps,
-  DatePickerRender
+  DatePickerRender,
+  DatePickerRenderProps
 } from '../elements/DatePickerRender'
 import {
-  AutoCompleteExtendProps,
-  AutoCompleteRender
+  AutoCompleteRender,
+  AutoCompleteRenderProps
 } from '../elements/AutoCompleteRender'
-import { CheckBoxExtendProps, CheckBoxRender } from '../elements/CheckBoxRender'
+import { CheckBoxRender, CheckBoxRenderProps } from '../elements/CheckBoxRender'
 import {
-  RadioChoicesExtendProps,
-  RadioChoicesRender
+  RadioChoicesRender,
+  RadioChoicesRenderProps
 } from '../elements/RadioChoicesRender'
 import {
-  ComposableConfigKeys,
-  ComposableElementConfig,
-  ElementRenderers,
-  ElementRenderersFcn,
-  ElementType
+  ComposableRendererFunctionProps,
+  ElementRendererFunction,
+  RenderersConfig
 } from '../../ComposableRender/ElementRenderer'
 
-/**
- * Map a field type to  Props type.
- */
-/**
- * Map a field type to  Props type.
- */
-export interface FieldTypeMap extends ComposableElementConfig {
-  autoComplete: ElementType<'autoComplete', AutoCompleteExtendProps>
-  checkBox: ElementType<'checkBox', CheckBoxExtendProps>
-  textField: ElementType<'textField', TextFieldExtendProps>
-  select: ElementType<'select', FormSelectExtendProps>
-  datePicker: ElementType<'datePicker', DatePickerExtendProps>
-  radioChoices: ElementType<'radioChoices', RadioChoicesExtendProps>
+export interface FormRenderersConfig extends RenderersConfig {
+  autoComplete: ElementRendererFunction<AutoCompleteRenderProps>
+  checkBox: ElementRendererFunction<CheckBoxRenderProps>
+  datePicker: ElementRendererFunction<DatePickerRenderProps>
+  radioChoices: ElementRendererFunction<RadioChoicesRenderProps>
+  select: ElementRendererFunction<SelectRenderProps>
+  textField: ElementRendererFunction<TextFieldRenderProps>
 }
 
-export type FieldRenderType = FieldTypeMap[ComposableConfigKeys<FieldTypeMap>]
-
-type TT = (e: ElementType<any, any>) => ElementRenderersFcn<any>
-
-export type ComposableElementConfigTT = Record<string, TT>
-export const DefaultRendererF: ComposableElementConfigTT = {
-  autoComplete: (_: ElementType<'autoComplete', AutoCompleteExtendProps>) =>
-    TextFieldRender,
-  checkBox: (_: ElementType<'checkBox', AutoCompleteExtendProps>) =>
-    CheckBoxRender,
-  datePicker: (_: ElementType<'datePicker', AutoCompleteExtendProps>) =>
-    DatePickerRender,
-  radioChoices: (_: ElementType<'radioChoices', AutoCompleteExtendProps>) =>
-    RadioChoicesRender,
-  select: (_: ElementType<'select', AutoCompleteExtendProps>) => SelectRender,
-  textField: (_: ElementType<'textField', AutoCompleteExtendProps>) =>
-    TextFieldRender
-}
-
-export const DefaultRenderer: ElementRenderers<FieldTypeMap> = {
+export const DefaultRenderer: FormRenderersConfig = {
   textField: TextFieldRender,
   select: SelectRender,
   autoComplete: AutoCompleteRender,
@@ -66,3 +39,7 @@ export const DefaultRenderer: ElementRenderers<FieldTypeMap> = {
   datePicker: DatePickerRender,
   radioChoices: RadioChoicesRender
 }
+
+export type FieldRenderType = ComposableRendererFunctionProps<
+  typeof DefaultRenderer
+>

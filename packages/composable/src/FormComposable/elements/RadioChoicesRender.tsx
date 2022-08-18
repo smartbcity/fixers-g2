@@ -1,10 +1,11 @@
-import React, { FunctionComponent, ReactElement } from 'react'
+import React, { ReactElement } from 'react'
 import {
   RadioChoicesProps,
   InputForm,
   InputFormBasicProps
 } from '@smartb/g2-forms'
-import { FieldRenderProps } from '../factories/FieldRenderProps'
+import { FieldRenderProps } from '../type/FieldRenderProps'
+import { ElementRendererFunction } from '../../ComposableRender/ElementRenderer'
 
 export type RadioChoicesExtendProps = Partial<
   Omit<
@@ -13,14 +14,14 @@ export type RadioChoicesExtendProps = Partial<
   >
 >
 
-type RadioChoicesRenderPros = FieldRenderProps<
+export type RadioChoicesRenderProps = FieldRenderProps<
   'radioChoices',
   RadioChoicesExtendProps
 >
 
-export const RadioChoicesRender: FunctionComponent<RadioChoicesRenderPros> = (
-  props: RadioChoicesRenderPros
-): ReactElement => {
+export const RadioChoicesRender: ElementRendererFunction<
+  RadioChoicesRenderProps
+> = (props: RadioChoicesRenderProps): ReactElement => {
   const { params, formState, basicProps } = props
   return (
     <InputForm

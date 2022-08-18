@@ -1,8 +1,39 @@
+import { ElementProps } from '../../ComposableRender/ElementRenderer'
+import { FormComposableState } from './FormComposableState'
 import { FormComposableProps } from '../FormComposable'
 import { useEffect, useMemo } from 'react'
+import { FormComposableField } from './FormComposableField'
 import { cx } from '@emotion/css'
-import { FormComposableField } from '../type/FormComposableField'
-import { FieldRender, FieldRenderProps } from './FieldRenderProps'
+
+export interface FieldRenderProps<TYPE extends string, PROPS>
+  extends ElementProps<TYPE, PROPS> {
+  formState: FormComposableState
+  basicProps: FieldRender
+}
+
+export interface FieldRender {
+  key: string
+  id: string
+  label?: string
+  name: string
+  error: boolean
+  errorMessage: string
+  className: any
+  style: any
+  /**
+   * Indicates if the data is currently loading
+   *
+   * @default false
+   */
+  isLoading?: boolean
+  /**
+   * Indicates if the data is on readonly mode
+   *
+   * @default false
+   */
+  readonly?: boolean
+  onChange?: (value: any) => void
+}
 
 export const useFieldRenderProps = (
   props: FormComposableProps
