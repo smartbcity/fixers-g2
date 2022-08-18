@@ -3,7 +3,7 @@ import { Form, FormField, Option } from '@smartb/g2-forms'
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 import React, { useEffect, useMemo } from 'react'
 import { FlatUser, User } from '../../Domain'
-import { AdressValidationStrings } from '../../../Commons'
+import { AdressValidationStrings, useAdressFields } from '../../../Commons'
 import { OrganizationId, OrganizationRef } from '../../../Organization'
 import { Stack, StackProps } from '@mui/material'
 import { useElementSize } from '@mantine/hooks'
@@ -156,18 +156,25 @@ export const UserFactory = (props: UserFactoryProps) => {
     checkEmailValidity,
     formExtension,
     setUserState,
+    additionnalValidators,
     ...other
   } = props
 
   const { ref, width } = useElementSize()
 
   const { formState, emailLoading, emailValid } = useUserFormState(props)
-  delete other.additionnalValidators
   delete other.additionalFields
 
   useEffect(() => {
     setUserState && setUserState(formState.values as FlatUser)
   }, [formState.values, setUserState])
+
+  const { addressFields } = useAdressFields({
+    address: user?.address,
+    strings,
+    additionnalValidators,
+    readonly: readonlyFields?.address
+  })
 
   const userForm = useMemo((): FormField[] => {
     const orgsOptions =
@@ -232,33 +239,9 @@ export const UserFactory = (props: UserFactoryProps) => {
             } as FormField
           ]
         : []),
-      {
-        key: 'street',
-        name: 'street',
-        type: 'textfield',
-        label: strings?.street ?? 'Addresse (facultatif)',
-        textFieldProps: {
-          readonly: readonlyFields?.address
-        }
-      },
-      {
-        key: 'postalCode',
-        name: 'postalCode',
-        type: 'textfield',
-        label: strings?.postalCode ?? 'Code postal (facultatif)',
-        textFieldProps: {
-          readonly: readonlyFields?.address
-        }
-      },
-      {
-        key: 'city',
-        name: 'city',
-        type: 'textfield',
-        label: strings?.city ?? 'Ville (facultatif)',
-        textFieldProps: {
-          readonly: readonlyFields?.address
-        }
-      },
+      addressFields.street,
+      addressFields.postalCode,
+      addressFields.city,
       {
         key: 'email',
         name: 'email',
@@ -307,7 +290,8 @@ export const UserFactory = (props: UserFactoryProps) => {
     getOrganizationUrl,
     multipleRoles,
     emailLoading,
-    emailValid
+    emailValid,
+    addressFields
   ])
 
   const finalFields = useDeletableForm({

@@ -9,7 +9,7 @@ import {
   Organization,
   organizationToFlatOrganization
 } from '../../Domain'
-import { AdressValidationStrings } from '../../../Commons'
+import { AdressValidationStrings, useAdressFields } from '../../../Commons'
 import { useDeletableForm } from '../../../Commons/useDeletableForm'
 import {
   useOrganizationFormState,
@@ -163,6 +163,7 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
     multipleRoles = true,
     setOrganizationState,
     setInseeOrganization,
+    additionnalValidators,
     ...other
   } = props
 
@@ -175,7 +176,6 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
   const onCloseSiretInfo = useCallback(() => setOpenSiretInfo(false), [])
 
   const formState = useOrganizationFormState(props)
-  delete other.additionnalValidators
   delete other.additionalFields
 
   useEffect(() => {
@@ -207,6 +207,13 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
     strings?.siretNotFound,
     setInseeOrganization
   ])
+
+  const { addressFields } = useAdressFields({
+    address: organization?.address,
+    strings,
+    additionnalValidators,
+    readonly: readonlyFields?.address
+  })
 
   const organizationForm = useMemo(
     (): FormField[] => [
@@ -255,33 +262,9 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
             } as FormField
           ]
         : []),
-      {
-        key: 'street',
-        name: 'street',
-        type: 'textfield',
-        label: strings?.street ?? 'Addresse (facultatif)',
-        textFieldProps: {
-          readonly: readonlyFields?.address
-        }
-      },
-      {
-        key: 'postalCode',
-        name: 'postalCode',
-        type: 'textfield',
-        label: strings?.postalCode ?? 'Code postal (facultatif)',
-        textFieldProps: {
-          readonly: readonlyFields?.address
-        }
-      },
-      {
-        key: 'city',
-        name: 'city',
-        type: 'textfield',
-        label: strings?.city ?? 'Ville (facultatif)',
-        textFieldProps: {
-          readonly: readonlyFields?.address
-        }
-      },
+      addressFields.street,
+      addressFields.postalCode,
+      addressFields.city,
       {
         key: 'website',
         name: 'website',
@@ -309,7 +292,8 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
       siretValid,
       readonlyFields,
       strings,
-      multipleRoles
+      multipleRoles,
+      addressFields
     ]
   )
 

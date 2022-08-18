@@ -21,10 +21,8 @@ const street = (
   value: string,
   values?: any,
   strings?: AdressValidationStrings,
-  readonlyFields?: any,
   additionnalValidators?: any
 ) => {
-  if (readonlyFields?.street) return undefined
   const city = values.city?.trim()
   const postalCode = values.postalCode?.trim()
   const trimmed = value?.trim()
@@ -42,10 +40,8 @@ const postalCode = (
   value?: string,
   values?: any,
   strings?: AdressValidationStrings,
-  readonlyFields?: any,
   additionnalValidators?: any
 ) => {
-  if (readonlyFields?.postalCode) return undefined
   const street = !!values.street?.trim()
   const city = !!values.city?.trim()
   const trimmed = value?.trim()
@@ -63,10 +59,8 @@ const city = (
   value?: string,
   values?: any,
   strings?: AdressValidationStrings,
-  readonlyFields?: any,
   additionnalValidators?: any
 ) => {
-  if (readonlyFields?.city) return undefined
   const street = values.street?.trim()
   const postalCode = values.postalCode?.trim()
   const trimmed = value?.trim()

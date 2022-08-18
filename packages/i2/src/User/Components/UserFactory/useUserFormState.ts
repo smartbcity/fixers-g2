@@ -5,7 +5,7 @@ import {
 } from '@smartb/g2-forms'
 import { ValidatorFnc } from '@smartb/g2-forms'
 import { useCallback, useMemo, useState } from 'react'
-import { addressValidation, requiredString } from '../../../Commons'
+import { requiredString, useAdressFields } from '../../../Commons'
 import { useDeletableForm } from '../../../Commons/useDeletableForm'
 import { OrganizationId } from '../../../Organization'
 import { FlatUser, FlatUserToUser, User } from '../../Domain'
@@ -114,6 +114,13 @@ export const useUserFormState = <T extends User = User>(
     [user?.email, checkEmailValidity]
   )
 
+  const { addressPartialFields } = useAdressFields({
+    address: user?.address,
+    strings,
+    additionnalValidators,
+    readonly: readonlyFields?.address
+  })
+
   const initialFields = useMemo(
     (): FormPartialField[] => [
       {
@@ -142,42 +149,9 @@ export const useUserFormState = <T extends User = User>(
             additionnalValidators
           )
       },
-      {
-        name: 'street',
-        defaultValue: user?.address?.street,
-        validator: (value: any, values: any) =>
-          addressValidation.street(
-            value,
-            values,
-            strings,
-            readonlyFields,
-            additionnalValidators
-          )
-      },
-      {
-        name: 'postalCode',
-        defaultValue: user?.address?.postalCode,
-        validator: (value: any, values: any) =>
-          addressValidation.postalCode(
-            value,
-            values,
-            strings,
-            readonlyFields,
-            additionnalValidators
-          )
-      },
-      {
-        name: 'city',
-        defaultValue: user?.address?.city,
-        validator: (value: any, values: any) =>
-          addressValidation.city(
-            value,
-            values,
-            strings,
-            readonlyFields,
-            additionnalValidators
-          )
-      },
+      addressPartialFields.street,
+      addressPartialFields.postalCode,
+      addressPartialFields.city,
       {
         name: 'email',
         defaultValue: user?.email,
@@ -191,8 +165,7 @@ export const useUserFormState = <T extends User = User>(
             )
           if (!emailRegex.test(trimmed))
             return (
-              strings?.enterAValidEmail ??
-              "L'email renseigné n'est pas correct"
+              strings?.enterAValidEmail ?? "L'email renseigné n'est pas correct"
             )
           return await onCheckEmail(trimmed)
         }
@@ -254,7 +227,8 @@ export const useUserFormState = <T extends User = User>(
       readonlyFields,
       strings,
       multipleRoles,
-      onCheckEmail
+      onCheckEmail,
+      addressPartialFields
     ]
   )
 

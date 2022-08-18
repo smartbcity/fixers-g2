@@ -5,7 +5,7 @@ import {
 } from '@smartb/g2-forms'
 import { ValidatorFnc } from '@smartb/g2-forms'
 import { useCallback, useMemo } from 'react'
-import { addressValidation, requiredString } from '../../../Commons'
+import { requiredString, useAdressFields } from '../../../Commons'
 import { useDeletableForm } from '../../../Commons/useDeletableForm'
 import {
   FlatOrganization,
@@ -82,6 +82,13 @@ export const useOrganizationFormState = <T extends Organization = Organization>(
     return multipleRoles ? roles : roles?.[0]
   }, [rolesOptions, organization?.roles, multipleRoles])
 
+  const { addressPartialFields } = useAdressFields({
+    address: organization?.address,
+    strings,
+    additionnalValidators,
+    readonly: readonlyFields?.address
+  })
+
   const initialFields = useMemo(
     (): FormPartialField[] => [
       {
@@ -90,44 +97,9 @@ export const useOrganizationFormState = <T extends Organization = Organization>(
         validator: (value: any, values: any) =>
           siretValidation(value, values, readonlyFields, additionnalValidators)
       },
-      {
-        name: 'street',
-        defaultValue: organization?.address?.street,
-        validator: (value: any, values: any) =>
-          addressValidation.street(
-            value,
-            values,
-            strings,
-            readonlyFields,
-            additionnalValidators
-          )
-      },
-      {
-        name: 'postalCode',
-        defaultValue: organization?.address?.postalCode,
-        validator: (value: any, values: any) =>
-          addressValidation.postalCode(
-            value,
-            values,
-            strings,
-            readonlyFields,
-            additionnalValidators
-          )
-      },
-      {
-        name: 'city',
-        defaultValue: organization?.address?.city,
-        validator: readonlyFields?.address
-          ? undefined
-          : (value: any, values: any) =>
-              addressValidation.city(
-                value,
-                values,
-                strings,
-                readonlyFields,
-                additionnalValidators
-              )
-      },
+      addressPartialFields.street,
+      addressPartialFields.postalCode,
+      addressPartialFields.city,
       {
         name: 'name',
         defaultValue: organization?.name,
@@ -172,7 +144,8 @@ export const useOrganizationFormState = <T extends Organization = Organization>(
       readonlyFields,
       strings,
       defaultRoles,
-      additionnalValidators
+      additionnalValidators,
+      addressPartialFields
     ]
   )
 
