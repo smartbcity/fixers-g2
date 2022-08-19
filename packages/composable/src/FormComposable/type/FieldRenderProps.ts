@@ -35,6 +35,29 @@ export interface FieldRender {
   onChange?: (value: any) => void
 }
 
+const useFormProps = (
+  field: FormComposableField,
+  props: FormComposableProps
+): FieldRender => {
+  const { formState, classes, styles, isLoading } = props
+  return {
+    key: field.key,
+    id: field.key,
+    label: field.label,
+    name: field.name,
+    error: !!formState.errors[field.name],
+    errorMessage: formState.errors[field.name] as string,
+    isLoading: isLoading,
+    className: cx(classes?.field, 'AruiForm-field', field.params?.className),
+    style: {
+      ...styles?.field,
+      ...field.params?.style
+    },
+    onChange: field.onChange,
+    readonly: field.readonly === true ? field.readonly : props?.readonly
+  }
+}
+
 export const useFieldRenderProps = (
   props: FormComposableProps
 ): FieldRenderProps<any, any>[] => {
@@ -69,27 +92,4 @@ export const useFieldRenderProps = (
     })
   }, [])
   return memo
-}
-
-const useFormProps = (
-  field: FormComposableField,
-  props: FormComposableProps
-): FieldRender => {
-  const { formState, classes, styles, isLoading } = props
-  return {
-    key: field.key,
-    id: field.key,
-    label: field.label,
-    name: field.name,
-    error: !!formState.errors[field.name],
-    errorMessage: formState.errors[field.name] as string,
-    isLoading: isLoading,
-    className: cx(classes?.field, 'AruiForm-field', field.params?.className),
-    style: {
-      ...styles?.field,
-      ...field.params?.style
-    },
-    onChange: field.onChange,
-    readonly: field.readonly === true ? field.readonly : props?.readonly
-  }
 }

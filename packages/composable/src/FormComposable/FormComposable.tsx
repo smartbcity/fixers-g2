@@ -128,8 +128,8 @@ export const FormComposable: FunctionComponent<FormComposableProps> = (
             style={styles?.fieldsContainer}
           >
             <ContainerRenderer
-              factories={DefaultRenderer}
-              customFactories={customFactories}
+              renderer={DefaultRenderer}
+              rendererCustom={customFactories}
               elements={fieldElements}
             />
           </Stack>

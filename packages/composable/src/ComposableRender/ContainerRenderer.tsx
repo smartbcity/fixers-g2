@@ -1,27 +1,22 @@
 import React, { useMemo } from 'react'
 import { ElementFactory } from './ElementFactory'
-import {
-  ComposableElementConfig,
-  ElementRenderers,
-  ElementRenderPropsConfig
-} from './ElementRenderer'
+import { RenderersConfig } from './ElementRenderer'
+import { FieldRenderProps } from '../FormComposable/type/FieldRenderProps'
 
-interface ContainerRendererProps<CONFIG extends ComposableElementConfig> {
-  elements: ElementRenderPropsConfig<CONFIG>[]
-  factories: ElementRenderers<CONFIG>
-  customFactories?: ElementRenderers<CONFIG>
+interface ContainerRendererProps {
+  elements: FieldRenderProps<any, any>[]
+  renderer: RenderersConfig
+  rendererCustom?: RenderersConfig
 }
 
-export const ContainerRenderer = <CONFIG extends ComposableElementConfig>(
-  props: ContainerRendererProps<CONFIG>
-) => {
-  const { elements, factories, customFactories } = props
+export const ContainerRenderer = (props: ContainerRendererProps) => {
+  const { elements, renderer, rendererCustom } = props
   const comps = useMemo(() => {
-    const factoryClasses = { ...factories, ...(customFactories ?? []) }
-    return elements.map((component: ElementRenderPropsConfig<CONFIG>) => {
+    const factoryClasses = { ...renderer, ...(rendererCustom ?? {}) }
+    return elements.map((component: FieldRenderProps<any, any>) => {
       return ElementFactory(component, factoryClasses)
     })
-  }, [elements, factories, customFactories])
+  }, [elements, renderer, rendererCustom])
 
   return <>{comps}</>
 }
