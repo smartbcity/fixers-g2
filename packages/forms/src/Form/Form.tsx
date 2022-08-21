@@ -54,7 +54,10 @@ export type FormField = {
   /**
    * the validator that takes the value of the input and return an error or undefined/nothing if the value is valid
    */
-  validator?: (value: any, values: any) => string | undefined | Promise<string | undefined>
+  validator?: (
+    value: any,
+    values: any
+  ) => string | undefined | Promise<string | undefined>
   /**
    * if you want to add other nodes around the input use this function
    */
@@ -397,7 +400,7 @@ const getInput = (
         // @ts-ignore
         <InputForm
           inputType='autoComplete'
-          value={formState.getFieldProps(field.name).value}
+          value={formState.getFieldProps(field.name).value ?? null}
           onChangeValue={(value) => {
             formState.setFieldValue(field.name, value, false)
             !!field.onChange && field.onChange(value)
