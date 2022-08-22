@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react'
+import React from 'react'
 import { ContainerRenderer } from '../ComposableRender'
 import { cx } from '@emotion/css'
 import { Stack, StackProps } from '@mui/material'
@@ -32,9 +32,7 @@ export interface FormComposableStyles {
 
 export type FormComposableActionsProps = Omit<ActionsWrapperProps, 'actions'>
 
-interface FormComposableBasicProps<
-  T extends RenderersConfig | undefined = undefined
-> {
+interface FormComposableBasicProps<T extends RenderersConfig = {}> {
   customFactories?: T
   /**
    * the actions displayed at the bottom of the component. To make a validation button you have to add an action with `type="submit"`
@@ -84,13 +82,11 @@ const useStyles = makeG2STyles()((theme) => ({
   }
 }))
 
-export type FormComposableProps = MergeReactElementProps<
-  'form',
-  FormComposableBasicProps
->
+export type FormComposableProps<T extends RenderersConfig = {}> =
+  MergeReactElementProps<'form', FormComposableBasicProps<T>>
 
-export const FormComposable: FunctionComponent<FormComposableProps> = (
-  props: FormComposableProps
+export const FormComposable = <T extends RenderersConfig = {}>(
+  props: FormComposableProps<T>
 ) => {
   const {
     actions,

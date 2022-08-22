@@ -1,8 +1,6 @@
 import { FieldRenderType } from '../factories/FormElementsRenderer'
 
-export type FormComposableField<
-  TYPE extends FieldRenderType = FieldRenderType
-> = {
+export interface FormComposableField extends FieldRenderType {
   /**
    * the unique key of the field
    */
@@ -37,4 +35,4 @@ export type FormComposableField<
    * @default false
    */
   readonly?: boolean
-} & TYPE
+}

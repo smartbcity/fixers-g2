@@ -5,8 +5,8 @@ import { useEffect, useMemo } from 'react'
 import { FormComposableField } from './FormComposableField'
 import { cx } from '@emotion/css'
 
-export interface FieldRenderProps<TYPE extends string, PROPS>
-  extends ElementProps<TYPE, PROPS> {
+export interface FieldRenderProps<TYPE extends string, PROPS> {
+  elements: ElementProps<TYPE, PROPS>
   formState: FormComposableState
   basicProps: FieldRender
 }
@@ -37,7 +37,7 @@ export interface FieldRender {
 
 const useFormProps = (
   field: FormComposableField,
-  props: FormComposableProps
+  props: FormComposableProps<any>
 ): FieldRender => {
   const { formState, classes, styles, isLoading } = props
   return {
@@ -59,7 +59,7 @@ const useFormProps = (
 }
 
 export const useFieldRenderProps = (
-  props: FormComposableProps
+  props: FormComposableProps<any>
 ): FieldRenderProps<any, any>[] => {
   const { fields, formState, classes, styles, isLoading } = props
   const memo = useMemo<FieldRenderProps<string, any>[]>(() => {
@@ -72,8 +72,10 @@ export const useFieldRenderProps = (
       return {
         basicProps: formProps,
         formState: formState,
-        params: field.params,
-        type: field.type
+        elements: {
+          params: field.params,
+          type: field.type
+        }
       } as FieldRenderProps<any, any>
     })
   }, [

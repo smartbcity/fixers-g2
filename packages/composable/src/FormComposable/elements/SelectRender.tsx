@@ -24,7 +24,8 @@ export type SelectRenderProps = FieldRenderProps<
 export const SelectRender: ElementRendererFunction<SelectRenderProps> = (
   props: SelectRenderProps
 ): ReactElement => {
-  const { params, formState, basicProps } = props
+  const { elements, formState, basicProps } = props
+  const { params } = elements
   return params?.multiple === true ? (
     <InputForm
       inputType='select'

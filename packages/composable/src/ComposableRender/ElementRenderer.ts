@@ -21,8 +21,8 @@ export type ComposableRendererKeys<RENDERER extends RenderersConfig> = Extract<
 export type ComposableRendererFunction<RENDERER extends RenderersConfig> =
   RENDERER[ComposableRendererKeys<RENDERER>]
 
-export type ComposableRendererFunctionProps<RENDERER extends RenderersConfig> =
-  FunctionRendererTypeGetter<RENDERER[ComposableRendererKeys<RENDERER>]>
+export type ComposableElementRendererProps<RENDERER extends RenderersConfig> =
+  FunctionRendererTypeGetter<ComposableRendererFunction<RENDERER>>['elements']
 
 export type FunctionRendererTypeGetter<T extends ElementRendererFunction<any>> =
   T extends ElementRendererFunction<infer R> ? R : unknown

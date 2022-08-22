@@ -1,8 +1,9 @@
 import { createElement } from 'react'
-import { ElementProps, RenderersConfig } from './ElementRenderer'
+import { RenderersConfig } from './ElementRenderer'
+import { FieldRenderProps } from '../FormComposable/type/FieldRenderProps'
 
 export type ElementFactoryType = (
-  componentProps: ElementProps<any, any>,
+  componentProps: FieldRenderProps<any, any>,
   renderers?: RenderersConfig
 ) => JSX.Element | null
 
@@ -10,8 +11,8 @@ export const ElementFactory: ElementFactoryType = (
   componentProps,
   renderers?
 ) => {
-  if (!renderers || !(componentProps.type in renderers)) return null
-  const factoryInstance = renderers[componentProps.type]
+  if (!renderers || !(componentProps.elements.type in renderers)) return null
+  const factoryInstance = renderers[componentProps.elements.type]
   if (!factoryInstance) {
     console.warn('Debug: Using custom message type without factory!')
     return null

@@ -15,7 +15,8 @@ export type CheckBoxRenderProps = FieldRenderProps<
 export const CheckBoxRender: ElementRendererFunction<CheckBoxRenderProps> = (
   props: CheckBoxRenderProps
 ) => {
-  const { params, formState, basicProps } = props
+  const { elements, formState, basicProps } = props
+  const { params } = elements
   const value = formState.getFieldProps(basicProps.name).value
   return (
     <CheckBox

@@ -28,7 +28,8 @@ export type AutoCompleteRenderProps = FieldRenderProps<
 export const AutoCompleteRender: ElementRendererFunction<
   AutoCompleteRenderProps
 > = (props: AutoCompleteRenderProps) => {
-  const { params, formState, basicProps } = props
+  const { elements, formState, basicProps } = props
+  const { params } = elements
   return params?.multiple === true ? (
     // @ts-ignore
     <InputForm

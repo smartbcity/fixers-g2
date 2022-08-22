@@ -22,7 +22,8 @@ export type TextFieldRenderProps = FieldRenderProps<
 export const TextFieldRender: ElementRendererFunction<TextFieldRenderProps> = (
   props: TextFieldRenderProps
 ) => {
-  const { params, formState, basicProps } = props
+  const { elements, formState, basicProps } = props
+  const { params } = elements
   const value = formState.getFieldProps(basicProps.name).value
   return (
     <InputForm

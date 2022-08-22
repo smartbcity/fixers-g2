@@ -22,7 +22,8 @@ export type RadioChoicesRenderProps = FieldRenderProps<
 export const RadioChoicesRender: ElementRendererFunction<
   RadioChoicesRenderProps
 > = (props: RadioChoicesRenderProps): ReactElement => {
-  const { params, formState, basicProps } = props
+  const { elements, formState, basicProps } = props
+  const { params } = elements
   return (
     <InputForm
       inputType='radioChoices'

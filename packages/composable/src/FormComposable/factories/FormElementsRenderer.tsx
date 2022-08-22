@@ -17,7 +17,7 @@ import {
   RadioChoicesRenderProps
 } from '../elements/RadioChoicesRender'
 import {
-  ComposableRendererFunctionProps,
+  ComposableElementRendererProps,
   ElementRendererFunction,
   RenderersConfig
 } from '../../ComposableRender/ElementRenderer'
@@ -40,6 +40,6 @@ export const DefaultRenderer: FormRenderersConfig = {
   radioChoices: RadioChoicesRender
 }
 
-export type FieldRenderType = ComposableRendererFunctionProps<
+export type FieldRenderType = ComposableElementRendererProps<
   typeof DefaultRenderer
 >

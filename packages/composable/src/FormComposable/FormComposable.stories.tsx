@@ -12,6 +12,13 @@ import { FormComposable, FormComposableProps } from './FormComposable'
 import { useFormComposable } from './useFormComposable'
 import { FormAction } from '@smartb/g2-forms'
 import { FormComposableField } from './type/FormComposableField'
+import { FieldRenderProps } from './type/FieldRenderProps'
+import {
+  ComposableElementRendererProps,
+  ElementRendererFunction,
+  RenderersConfig
+} from '../ComposableRender/ElementRenderer'
+import { Typography } from '@mui/material'
 
 export default {
   title: 'Composable/FormComposable',
@@ -32,6 +39,39 @@ export default {
     }
   }
 } as Meta
+
+export type DebugExtendProps = {
+  formName: string
+}
+
+type DebugRenderProps = FieldRenderProps<'debug', DebugExtendProps>
+const DebugRender: ElementRendererFunction<DebugRenderProps> = (
+  props: DebugRenderProps
+) => {
+  const { elements, formState, basicProps } = props
+  const { params } = elements
+  return (
+    <>
+      <Typography>
+        {basicProps.label} {params?.formName}
+      </Typography>
+      <Typography>{JSON.stringify(formState.values)}</Typography>
+    </>
+  )
+}
+
+export interface CustomFormRenderersConfig extends RenderersConfig {
+  debug: ElementRendererFunction<DebugRenderProps>
+}
+
+const CustomRenderer: CustomFormRenderersConfig = {
+  debug: DebugRender
+}
+export type CustomFieldRenderType = ComposableElementRendererProps<
+  typeof CustomRenderer
+>
+
+export type AllFormComposableField = FormComposableField
 
 const FormComposableStory: Story<FormComposableProps> = (
   args: FormComposableProps
@@ -58,9 +98,11 @@ const FormComposableStory: Story<FormComposableProps> = (
       type: 'submit'
     }
   ]
+
   return (
-    <FormComposable
+    <FormComposable<typeof CustomRenderer>
       {...args}
+      customFactories={CustomRenderer}
       actions={actions}
       formState={formState}
       style={{ width: '500px' }}
@@ -89,11 +131,22 @@ TextFieldForm.args = {
       label: 'Description',
       type: 'textField',
       params: {
+        choices: [],
         disabled: true
       },
       defaultValue: 'The description'
+    },
+    {
+      key: 'storybook-form-field-debug',
+      name: 'debug',
+      label: 'Debug',
+      type: 'debug',
+      params: {
+        formName: 'TextFieldForm'
+      },
+      defaultValue: 'The description'
     }
-  ]
+  ] as AllFormComposableField[]
 }
 
 export const SelectForm = FormComposableStory.bind({})
@@ -145,8 +198,18 @@ SelectForm.args = {
         disabled: true
       },
       defaultValue: '200'
+    },
+    {
+      key: 'storybook-form-field-debug',
+      name: 'debug',
+      label: 'Debug',
+      type: 'debug',
+      params: {
+        formName: 'Select Form'
+      },
+      defaultValue: 'The description'
     }
-  ]
+  ] as AllFormComposableField[]
 }
 
 export const RadioSelectForm = FormComposableStory.bind({})
@@ -198,11 +261,21 @@ RadioSelectForm.args = {
         disabled: true
       },
       defaultValue: '200'
+    },
+    {
+      key: 'storybook-form-field-debug',
+      name: 'debug',
+      label: 'Debug',
+      type: 'debug',
+      params: {
+        formName: 'Radio Select Form'
+      },
+      defaultValue: 'The description'
     }
-  ]
+  ] as AllFormComposableField[]
 }
 
-const fullFields: FormComposableField[] = [
+const fullFields: AllFormComposableField[] = [
   {
     key: 'storybook-form-field-name',
     name: 'name',
@@ -257,12 +330,20 @@ const fullFields: FormComposableField[] = [
     type: 'checkBox',
     defaultValue: false,
     validator: (value) => (value !== true ? 'You have to agree' : undefined)
+  },
+  {
+    key: 'storybook-form-field-debug',
+    name: 'debug',
+    label: 'Debug',
+    type: 'debug',
+    params: {
+      formName: 'Full Fields'
+    },
+    defaultValue: 'The description'
   }
-]
+] as AllFormComposableField[]
 
 export const FullForm = FormComposableStory.bind({})
 FullForm.args = {
   fields: fullFields
 }
-
-// FormComposableStory.storyName = 'Form'
