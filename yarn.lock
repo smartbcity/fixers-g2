@@ -3758,6 +3758,58 @@
     estree-walker "^2.0.1"
     picomatch "^2.2.2"
 
+"@smartb/g2-components@1.0.0-alpha.59":
+  version "1.0.0-alpha.59"
+  resolved "https://gitlab.smartb.city/api/v4/projects/127/packages/npm/@smartb/g2-components/-/@smartb/g2-components-1.0.0-alpha.59.tgz#bcaabdfd5c26cfd8d11a436028f3e2c93d1c4f78"
+  integrity sha1-vKq9/Vwmz9jRGkNgKPPiyT0cT3g=
+  dependencies:
+    "@mantine/core" "^4.1.3"
+    "@mantine/dropzone" "^4.1.3"
+    "@mantine/hooks" "^4.1.3"
+    "@mui/icons-material" "^5.8.4"
+    "@mui/lab" "5.0.0-alpha.86"
+    "@smartb/g2-notifications" "1.0.0-alpha.59"
+    "@smartb/g2-themes" "1.0.0-alpha.59"
+    react-dropzone "^11.3.2"
+
+"@smartb/g2-forms@1.0.0-alpha.59":
+  version "1.0.0-alpha.59"
+  resolved "https://gitlab.smartb.city/api/v4/projects/127/packages/npm/@smartb/g2-forms/-/@smartb/g2-forms-1.0.0-alpha.59.tgz#5c3e3720ebd7952c4b784df9855a1a7fab17625b"
+  integrity sha1-XD43IOvXlSxLeE35hVoaf6sXYls=
+  dependencies:
+    "@mui/icons-material" "^5.8.4"
+    "@mui/lab" "5.0.0-alpha.86"
+    "@smartb/g2-components" "1.0.0-alpha.59"
+    "@smartb/g2-themes" "1.0.0-alpha.59"
+    "@types/tinycolor2" "^1.4.3"
+    date-fns "^2.28.0"
+    formik "^2.2.9"
+    react-router-dom "^6.3.0"
+    tinycolor2 "^1.4.2"
+
+"@smartb/g2-notifications@1.0.0-alpha.59":
+  version "1.0.0-alpha.59"
+  resolved "https://gitlab.smartb.city/api/v4/projects/127/packages/npm/@smartb/g2-notifications/-/@smartb/g2-notifications-1.0.0-alpha.59.tgz#92e8bff15f0470bf8a8ab0c251c03515f8ddff1e"
+  integrity sha1-kui/8V8EcL+KirDCUcA1Ffjd/x4=
+  dependencies:
+    "@mui/icons-material" "^5.8.4"
+    "@smartb/g2-themes" "1.0.0-alpha.59"
+    notistack "3.0.0-alpha.7"
+
+"@smartb/g2-themes@1.0.0-alpha.59":
+  version "1.0.0-alpha.59"
+  resolved "https://gitlab.smartb.city/api/v4/projects/127/packages/npm/@smartb/g2-themes/-/@smartb/g2-themes-1.0.0-alpha.59.tgz#f977fcade42d49f2f08928eaa554846c0157e3f8"
+  integrity sha1-+Xf8reQtSfLwiSjqpVSEbAFX4/g=
+  dependencies:
+    ramda "^0.28.0"
+    tinycolor2 "^1.4.2"
+    tss-react "^3.7.0"
+
+"@smartb/g2-utils@1.0.0-alpha.59":
+  version "1.0.0-alpha.59"
+  resolved "https://gitlab.smartb.city/api/v4/projects/127/packages/npm/@smartb/g2-utils/-/@smartb/g2-utils-1.0.0-alpha.59.tgz#da2c416a383e1b29829060fd827eab8a15b1e00e"
+  integrity sha1-2ixBajg+GymCkGD9gn6rihWx4A4=
+
 "@storybook/addon-actions@6.5.10", "@storybook/addon-actions@^6.5.10":
   version "6.5.10"
   resolved "https://registry.yarnpkg.com/@storybook/addon-actions/-/addon-actions-6.5.10.tgz#83ec807a899e0412cf98037647f256c45cc32bf5"

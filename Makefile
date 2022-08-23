@@ -18,6 +18,7 @@ package-libs:
 	@yarn workspace @smartb/g2-forms run build
 	@yarn workspace @smartb/g2-documentation run build
 	@yarn workspace @smartb/g2-layout run build
+	@yarn workspace @smartb/g2-composable run build
 	@yarn workspace @smartb/g2-providers run build
 	@yarn workspace @smartb/g2-s2 run build
 	@yarn workspace @smartb/g2-i2 run build
