@@ -1,37 +1,27 @@
 import {
-  TextFieldRender,
-  TextFieldRenderProps
+  TextFieldExtendProps,
+  TextFieldRender
 } from '../elements/TextFieldRender'
-import { SelectRender, SelectRenderProps } from '../elements/SelectRender'
+import { FormSelectExtendProps, SelectRender } from '../elements/SelectRender'
 import {
-  DatePickerRender,
-  DatePickerRenderProps
+  DatePickerExtendProps,
+  DatePickerRender
 } from '../elements/DatePickerRender'
 import {
-  AutoCompleteRender,
-  AutoCompleteRenderProps
+  AutoCompleteExtendProps,
+  AutoCompleteRender
 } from '../elements/AutoCompleteRender'
-import { CheckBoxRender, CheckBoxRenderProps } from '../elements/CheckBoxRender'
+import { CheckBoxExtendProps, CheckBoxRender } from '../elements/CheckBoxRender'
 import {
-  RadioChoicesRender,
-  RadioChoicesRenderProps
+  RadioChoicesExtendProps,
+  RadioChoicesRender
 } from '../elements/RadioChoicesRender'
 import {
-  ComposableElementRendererProps,
-  ElementRendererFunction,
+  ElementParams,
   RenderersConfig
 } from '../../ComposableRender/ElementRenderer'
 
-export interface FormRenderersConfig extends RenderersConfig {
-  autoComplete: ElementRendererFunction<AutoCompleteRenderProps>
-  checkBox: ElementRendererFunction<CheckBoxRenderProps>
-  datePicker: ElementRendererFunction<DatePickerRenderProps>
-  radioChoices: ElementRendererFunction<RadioChoicesRenderProps>
-  select: ElementRendererFunction<SelectRenderProps>
-  textField: ElementRendererFunction<TextFieldRenderProps>
-}
-
-export const DefaultRenderer: FormRenderersConfig = {
+export const DefaultRenderer: RenderersConfig = {
   textField: TextFieldRender,
   select: SelectRender,
   autoComplete: AutoCompleteRender,
@@ -40,6 +30,10 @@ export const DefaultRenderer: FormRenderersConfig = {
   radioChoices: RadioChoicesRender
 }
 
-export type FieldRenderType = ComposableElementRendererProps<
-  typeof DefaultRenderer
->
+export type FieldRenderType =
+  | ElementParams<'autoComplete', AutoCompleteExtendProps>
+  | ElementParams<'checkBox', CheckBoxExtendProps>
+  | ElementParams<'datePicker', DatePickerExtendProps>
+  | ElementParams<'radioChoices', RadioChoicesExtendProps>
+  | ElementParams<'select', FormSelectExtendProps>
+  | ElementParams<'textField', TextFieldExtendProps>

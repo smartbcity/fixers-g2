@@ -32,8 +32,11 @@ export interface FormComposableStyles {
 
 export type FormComposableActionsProps = Omit<ActionsWrapperProps, 'actions'>
 
-interface FormComposableBasicProps<T extends RenderersConfig = {}> {
-  customFactories?: T
+interface FormComposableBasicProps<
+  RENDERER extends RenderersConfig = {},
+  ELEMENT_PARAMS = {}
+> {
+  customFactories?: RENDERER
   /**
    * the actions displayed at the bottom of the component. To make a validation button you have to add an action with `type="submit"`
    */
@@ -45,7 +48,7 @@ interface FormComposableBasicProps<T extends RenderersConfig = {}> {
   /**
    * the fields of the form
    */
-  fields: FormComposableField[]
+  fields: FormComposableField<ELEMENT_PARAMS>[]
   /**
    * the state of the form provided by the hook `useForm`
    */
@@ -82,11 +85,19 @@ const useStyles = makeG2STyles()((theme) => ({
   }
 }))
 
-export type FormComposableProps<T extends RenderersConfig = {}> =
-  MergeReactElementProps<'form', FormComposableBasicProps<T>>
+export type FormComposableProps<
+  RENDERER extends RenderersConfig = {},
+  ELEMENT_PARAMS = {}
+> = MergeReactElementProps<
+  'form',
+  FormComposableBasicProps<RENDERER, ELEMENT_PARAMS>
+>
 
-export const FormComposable = <T extends RenderersConfig = {}>(
-  props: FormComposableProps<T>
+export const FormComposable = <
+  RENDERER extends RenderersConfig = {},
+  ELEMENT_PARAMS = {}
+>(
+  props: FormComposableProps<RENDERER, ELEMENT_PARAMS>
 ) => {
   const {
     actions,

@@ -1,4 +1,4 @@
-import { ElementProps } from '../../ComposableRender/ElementRenderer'
+import { ElementParams } from '../../ComposableRender/ElementRenderer'
 import { FormComposableState } from './FormComposableState'
 import { FormComposableProps } from '../FormComposable'
 import { useEffect, useMemo } from 'react'
@@ -6,7 +6,7 @@ import { FormComposableField } from './FormComposableField'
 import { cx } from '@emotion/css'
 
 export interface FieldRenderProps<TYPE extends string, PROPS> {
-  elements: ElementProps<TYPE, PROPS>
+  elements: ElementParams<TYPE, PROPS>
   formState: FormComposableState
   basicProps: FieldRender
 }

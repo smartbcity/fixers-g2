@@ -11,14 +11,14 @@ import {
 import { FormComposable, FormComposableProps } from './FormComposable'
 import { useFormComposable } from './useFormComposable'
 import { FormAction } from '@smartb/g2-forms'
-import { FormComposableField } from './type/FormComposableField'
 import { FieldRenderProps } from './type/FieldRenderProps'
 import {
-  ComposableElementRendererProps,
+  ElementParams,
   ElementRendererFunction,
   RenderersConfig
 } from '../ComposableRender/ElementRenderer'
 import { Typography } from '@mui/material'
+import { FormComposableField } from './type/FormComposableField'
 
 export default {
   title: 'Composable/FormComposable',
@@ -60,18 +60,13 @@ const DebugRender: ElementRendererFunction<DebugRenderProps> = (
   )
 }
 
-export interface CustomFormRenderersConfig extends RenderersConfig {
-  debug: ElementRendererFunction<DebugRenderProps>
-}
-
-const CustomRenderer: CustomFormRenderersConfig = {
+const CustomRenderer: RenderersConfig = {
   debug: DebugRender
 }
-export type CustomFieldRenderType = ComposableElementRendererProps<
-  typeof CustomRenderer
->
 
-export type AllFormComposableField = FormComposableField
+export type CustomFieldRenderType = ElementParams<'debug', DebugExtendProps>
+
+export type AllFormComposableField = FormComposableField | CustomFieldRenderType
 
 const FormComposableStory: Story<FormComposableProps> = (
   args: FormComposableProps
