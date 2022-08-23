@@ -231,9 +231,7 @@ export const Table = <Data extends {}>(props: TableProps<Data>) => {
                     display: 'flex'
                   }}
                 >
-                  {expandIcon ? (
-                    expandIcon
-                  ) : (
+                  {expandIcon || (
                     <Arrow
                       key='expanderIcon'
                       color='#353945'
@@ -252,6 +250,7 @@ export const Table = <Data extends {}>(props: TableProps<Data>) => {
         maxWidth: 50,
         className: 'AruiTable-actionColumn'
       } as Column<Data>
+      // @ts-ignore
       hooks.allColumns.push((columns) => [
         ...(isExpandable && expandIconPosition === 'start'
           ? [expanderRow]
@@ -262,7 +261,7 @@ export const Table = <Data extends {}>(props: TableProps<Data>) => {
                 id: 'selection',
                 accessor: 'selection',
                 Header: ({
-                  //@ts-ignore
+                  // @ts-ignore
                   getToggleAllPageRowsSelectedProps
                 }: HeaderProps<Data>) => {
                   return noToggleAllPageRowsSelected ? (
@@ -315,6 +314,7 @@ export const Table = <Data extends {}>(props: TableProps<Data>) => {
       pageCount: totalPages,
       autoResetSelectedRows: false,
       getRowId: getRowId,
+      // @ts-ignore
       defaultColumn: defaultColumn as Partial<Column<Data>>,
       ...tableOptions
     },
@@ -340,7 +340,7 @@ export const Table = <Data extends {}>(props: TableProps<Data>) => {
                 padding: (theme) => `0px ${theme.spacing(1.5)}`,
                 paddingBottom: (theme) => `${theme.spacing(1.5)}`,
                 boxSizing: 'border-box',
-                '& .AruiTable-principaleTableRow:hover': !!onRowClicked
+                '& .AruiTable-principaleTableRow:hover': onRowClicked
                   ? {
                       borderColor: 'secondary.main',
                       cursor: 'pointer'
@@ -348,7 +348,7 @@ export const Table = <Data extends {}>(props: TableProps<Data>) => {
                   : {}
               }
             : {
-                '& .AruiTable-principaleTableRow:hover': !!onRowClicked
+                '& .AruiTable-principaleTableRow:hover': onRowClicked
                   ? {
                       background: '#D9DBE14D',
                       cursor: 'pointer'
