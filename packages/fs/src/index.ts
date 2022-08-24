@@ -20,7 +20,6 @@ export {
   AutomatedGalleryProps,
   AutomatedGalleryFactory,
   AutomatedGalleryFactoryProps,
-  DropError,
   GalleryFactory,
   GalleryFactoryProps,
   GetGalleryOptions,

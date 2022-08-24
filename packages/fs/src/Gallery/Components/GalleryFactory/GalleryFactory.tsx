@@ -18,6 +18,7 @@ import {
 import { FileRejection } from 'react-dropzone'
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 import { StackProps } from '@mantine/core'
+import { DropError } from '@smartb/g2-components'
 
 export interface GalleryFactoryClasses {
   image?: string
@@ -34,11 +35,6 @@ export interface GalleryFactoryStyles {
   closeIcon?: React.CSSProperties
   dropzone?: React.CSSProperties
 }
-
-export type DropError =
-  | 'file-too-large'
-  | 'too-many-files'
-  | 'file-invalid-type'
 
 const defaultErrorMessages: { [key in DropError]?: string } = {
   'file-invalid-type':

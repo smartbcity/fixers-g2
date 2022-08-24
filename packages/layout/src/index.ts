@@ -19,7 +19,6 @@ export { ToolsPanel, ToolsPanelProps } from './ToolsPanel'
 export { Page, PageProps } from './Page'
 export {
   PopUp,
-  Action as PopUpAction,
   PopUpProps,
   ConfirmationPopUp,
   ConfirmationPopUpProps
