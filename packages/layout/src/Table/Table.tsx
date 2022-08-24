@@ -252,6 +252,7 @@ export const Table = <Data extends {}>(props: TableProps<Data>) => {
         maxWidth: 50,
         className: 'AruiTable-actionColumn'
       } as Column<Data>
+      //@ts-ignore
       hooks.allColumns.push((columns) => [
         ...(isExpandable && expandIconPosition === 'start'
           ? [expanderRow]
@@ -315,6 +316,7 @@ export const Table = <Data extends {}>(props: TableProps<Data>) => {
       pageCount: totalPages,
       autoResetSelectedRows: false,
       getRowId: getRowId,
+      //@ts-ignore
       defaultColumn: defaultColumn as Partial<Column<Data>>,
       ...tableOptions
     },

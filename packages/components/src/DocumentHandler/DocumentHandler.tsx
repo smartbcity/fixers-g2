@@ -4,7 +4,13 @@ import { Dropzone, DropzoneProps, MIME_TYPES } from '@mantine/dropzone'
 import { StackProps } from '@mantine/core'
 import { FileRejection } from 'react-dropzone'
 import { cx } from '@emotion/css'
-import { CircularProgress, Divider, Stack, Typography } from '@mui/material'
+import {
+  CircularProgress,
+  Divider,
+  InputLabel,
+  Stack,
+  Typography
+} from '@mui/material'
 import {
   CloudDoneRounded,
   CloudUploadRounded,
@@ -33,6 +39,10 @@ export interface DocumentHandlerBasicProps extends BasicProps {
    * you may provide the name with the file type at the end which will be cut and displayed a part.
    */
   label?: string
+  /**
+   * The label displayed on top of the document handler if wanted
+   */
+  outterLabel?: string
   /**
    * provide it if the file is already uploaded
    */
@@ -126,6 +136,8 @@ export const DocumentHandler = (props: DocumentHandlerProps) => {
     style,
     dropzoneProps,
     uploaded,
+    outterLabel,
+    id,
     ...otherProps
   } = props
   const [error, setError] = useState(customErrorMessage)
@@ -142,7 +154,7 @@ export const DocumentHandler = (props: DocumentHandlerProps) => {
     } else if (getFileUrl) {
       setLoading(true)
       const url = await getFileUrl()
-      if (url) window.open(url, "_blank");
+      if (url) window.open(url, '_blank')
       setLoading(false)
     }
   }, [onView, getFileUrl, label])
@@ -227,47 +239,80 @@ export const DocumentHandler = (props: DocumentHandlerProps) => {
 
   if (uploaded) {
     return (
-      //@ts-ignore
-      <Stack
-        {...otherProps}
-        className={cx('AruiDocumentHandler-root', className)}
-        style={style}
-        sx={{
-          width: '100%',
-          borderRadius: theme.borderRadius + 'px',
-          background: '#F5F5F5',
-          cursor: 'pointer',
-          ...otherProps?.sx
-        }}
-        onClick={onViewMemoized}
-      >
-        {dropzoneContentMemo}
-      </Stack>
+      <>
+        {outterLabel && (
+          <InputLabel
+            htmlFor={id}
+            sx={{
+              marginBottom: (theme) => theme.spacing(1),
+              fontSize: '0.875rem',
+              fontWeight: 600,
+              color: '#000000',
+              flexShrink: 0
+            }}
+          >
+            {outterLabel}
+          </InputLabel>
+        )}
+        {/* @ts-ignore */}
+        <Stack
+          {...otherProps}
+          id={id}
+          className={cx('AruiDocumentHandler-root', className)}
+          style={style}
+          sx={{
+            width: '100%',
+            borderRadius: theme.borderRadius + 'px',
+            background: '#F5F5F5',
+            cursor: 'pointer',
+            ...otherProps?.sx
+          }}
+          onClick={onViewMemoized}
+        >
+          {dropzoneContentMemo}
+        </Stack>
+      </>
     )
   }
   return (
-    <Dropzone
-      className={cx('AruiDocumentHandler-root', className)}
-      style={style}
-      onDrop={onDrop}
-      onReject={onRejectMemoized}
-      accept={accept}
-      maxSize={50 * 1024 * 1024}
-      multiple={multiple && !isRequired}
-      disabled={isLoading || loading}
-      {...dropzoneProps}
-      sx={{
-        width: '100%',
-        borderRadius: theme.borderRadius + 'px',
-        borderColor: error ? theme.colors.error : '#BDBDBD',
-        padding: '0px',
-        pointerEvents: isLoading || loading ? 'none' : 'auto',
-        opacity: isLoading || loading ? 0.8 : 1,
-        ...dropzoneProps?.sx
-      }}
-    >
-      {dropzoneContent}
-    </Dropzone>
+    <>
+      {outterLabel && (
+        <InputLabel
+          htmlFor={id}
+          sx={{
+            marginBottom: (theme) => theme.spacing(1),
+            fontSize: '0.875rem',
+            fontWeight: 600,
+            color: '#000000',
+            flexShrink: 0
+          }}
+        >
+          {outterLabel}
+        </InputLabel>
+      )}
+      <Dropzone
+        className={cx('AruiDocumentHandler-root', className)}
+        style={style}
+        onDrop={onDrop}
+        onReject={onRejectMemoized}
+        accept={accept}
+        maxSize={50 * 1024 * 1024}
+        multiple={multiple && !isRequired}
+        disabled={isLoading || loading}
+        {...dropzoneProps}
+        sx={{
+          width: '100%',
+          borderRadius: theme.borderRadius + 'px',
+          borderColor: error ? theme.colors.error : '#BDBDBD',
+          padding: '0px',
+          pointerEvents: isLoading || loading ? 'none' : 'auto',
+          opacity: isLoading || loading ? 0.8 : 1,
+          ...dropzoneProps?.sx
+        }}
+      >
+        {dropzoneContent}
+      </Dropzone>
+    </>
   )
 }
 
