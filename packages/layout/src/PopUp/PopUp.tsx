@@ -5,7 +5,7 @@ import {
   DialogContent,
   DialogProps
 } from '@mui/material'
-import { Action, Button } from '@smartb/g2-components'
+import { Action, Actions } from '@smartb/g2-components'
 import {
   MergeMuiElementProps,
   BasicProps,
@@ -101,24 +101,17 @@ const PopUpBase = (
 
   const actionsDisplay = useMemo(() => {
     if (actions.length === 0) return undefined
-    return actions.map((action) => {
-      const { key, label, className, ...other } = action
-      return (
-        <Button
-          key={key}
-          className={defaultStyles.cx(
-            defaultStyles.classes.button,
-            'AruiPopUp-button',
-            classes?.button,
-            className
-          )}
-          style={styles?.button}
-          {...other}
-        >
-          {label}
-        </Button>
+    const styledAction = actions.map((action) => ({
+      ...action,
+      style: styles?.button,
+      className: defaultStyles.cx(
+        defaultStyles.classes.button,
+        'AruiPopUp-button',
+        classes?.button,
+        className
       )
-    })
+    }))
+    return <Actions actions={styledAction} />
   }, [actions, classes?.button, styles?.button])
 
   return (

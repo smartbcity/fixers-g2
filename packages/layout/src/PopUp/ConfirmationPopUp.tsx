@@ -1,14 +1,10 @@
 import React, { useCallback, useMemo, useState } from 'react'
 import { Typography } from '@mui/material'
 import { PopUp, PopUpProps } from './PopUp'
-import {
-  BasicProps,
-  MergeMuiElementProps
-} from '@smartb/g2-themes'
+import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 import { TextField } from '@smartb/g2-forms'
 import { Action } from '@smartb/g2-components'
 import { cx } from '@emotion/css'
-
 
 interface ConfirmationPopUpClasses {
   strongConfirmationText?: string
@@ -19,6 +15,8 @@ interface ConfirmationPopUpStyles {
   strongConfirmationText?: React.CSSProperties
   textField?: React.CSSProperties
 }
+
+export type ConfirmationPopUpVariant = 'validation' | 'deletion'
 
 export interface ConfirmationPopUpBasicProps extends BasicProps {
   /**
@@ -83,6 +81,11 @@ export interface ConfirmationPopUpBasicProps extends BasicProps {
    * The styles applied to the different part of the component
    */
   styles?: ConfirmationPopUpStyles
+  /**
+   * The styles variations options.
+   * @default 'validation'
+   */
+  variant?: ConfirmationPopUpVariant
 }
 
 export type ConfirmationPopUpProps = MergeMuiElementProps<
@@ -110,6 +113,7 @@ export const ConfirmationPopUp = (props: ConfirmationPopUpProps) => {
     classes,
     styles,
     className,
+    variant,
     ...other
   } = props
   const [value, setValue] = useState('')
@@ -144,10 +148,11 @@ export const ConfirmationPopUp = (props: ConfirmationPopUpProps) => {
         key: 'ConfirmationPopUp-' + validateText,
         label: validateText,
         onClick: onConfirm,
+        variant: variant === 'deletion' ? 'deletion' : 'contained',
         disabled: error
       }
     ],
-    [validateText, cancelText, handleClose, onConfirm, error]
+    [validateText, cancelText, handleClose, onConfirm, error, variant]
   )
 
   return (
@@ -155,10 +160,7 @@ export const ConfirmationPopUp = (props: ConfirmationPopUpProps) => {
       open={open}
       actions={actions}
       onClose={handleClose}
-      className={cx(
-        'AruiConfirmationPopUp-strongConfirmationText',
-        className
-      )}
+      className={cx('AruiConfirmationPopUp-strongConfirmationText', className)}
       {...other}
     >
       {strongConfirmation ? (

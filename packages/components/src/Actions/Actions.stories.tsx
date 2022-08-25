@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Actions as AruiActions, ActionsBasicProps } from './Actions'
 import { Meta } from '@storybook/react'
 import { Story } from '@storybook/react/types-6-0'
@@ -29,8 +29,36 @@ Actions.args = {
     },
     {
       key: 'action2',
-      label: 'Action2'
+      label: 'Cancel',
+      variant: 'cancellation'
+    },
+    {
+      key: 'action2',
+      label: 'Delete',
+      variant: 'deletion'
     }
   ]
 }
 Actions.storyName = 'Actions'
+
+export const ActionsDisable: Story<ActionsBasicProps> = () => {
+  const [enable, setEnable] = useState(false)
+  const word = enable ? 'disable' : 'enable'
+  return (
+    <AruiActions
+      actions={[
+        {
+          key: 'action2',
+          label: 'Second Action',
+          showIf: () => enable
+        },
+        {
+          key: 'action1',
+          label: `Click to ${word} second action`,
+          showIf: () => true,
+          onClick: () => setEnable(!enable)
+        }
+      ]}
+    />
+  )
+}

@@ -113,6 +113,23 @@ export const ConfirmationPopUp: Story<ConfirmationPopUpBasicProps> = (
   )
 }
 
+export const ConfirmationDeletionPopUp: Story<ConfirmationPopUpBasicProps> = (
+  args: ConfirmationPopUpBasicProps
+) => {
+  const [open, setOpen] = useState(false)
+  return (
+    <>
+      <Button onClick={() => setOpen(!open)}>Open the popup</Button>
+      <AruiConfirmationPopUp
+        {...args}
+        open={open}
+        variant='deletion'
+        onClose={() => setOpen(!open)}
+      />
+    </>
+  )
+}
+
 PopUp.args = {
   children: (
     <>

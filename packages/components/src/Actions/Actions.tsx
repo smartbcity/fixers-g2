@@ -7,7 +7,9 @@ import { cx } from '@emotion/css'
 export type Action = {
   label: React.ReactNode
   key: string
-} & Omit<ButtonProps, 'children' | 'style'>
+  variant?: 'contained' | 'outlined' | 'text' | 'deletion' | 'cancellation'
+  showIf?: () => boolean
+} & Omit<ButtonProps, 'children' | 'style' | 'variant'>
 
 export interface ActionsClasses {
   button?: string
@@ -29,19 +31,37 @@ export const Actions = (props: ActionsProps) => {
   const { actions, classes, styles, className, sx, ...stackProps } = props
   const actionsDisplay = useMemo(() => {
     if (!actions || actions.length === 0) return undefined
-    return actions.map((action) => {
-      const { key, label, className, ...other } = action
-      return (
-        <Button
-          key={key}
-          className={cx('AruiActions-button', classes?.button, className)}
-          style={styles?.button}
-          {...other}
-        >
-          {label}
-        </Button>
-      )
-    })
+    return actions
+      .filter(({ showIf = () => true }) => {
+        return showIf()
+      })
+      .map((action) => {
+        const { key, label, showIf, className, variant, ...other } = action
+        const variantProps: Partial<ButtonProps> =
+          variant === 'deletion'
+            ? {
+                variant: 'outlined',
+                color: 'error'
+              }
+            : variant === 'cancellation'
+            ? {
+                variant: 'text'
+              }
+            : {
+                variant: variant
+              }
+        return (
+          <Button
+            key={key}
+            className={cx('AruiActions-button', classes?.button, className)}
+            style={styles?.button}
+            {...variantProps}
+            {...other}
+          >
+            {label}
+          </Button>
+        )
+      })
   }, [actions, classes?.button, styles?.button])
   return (
     <Stack
