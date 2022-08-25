@@ -141,7 +141,7 @@ export const ConfirmationPopUp = (props: ConfirmationPopUpProps) => {
       {
         key: 'ConfirmationPopUp-' + cancelText,
         label: cancelText,
-        variant: 'cancellation',
+        variant: 'text',
         onClick: handleClose
       },
       {

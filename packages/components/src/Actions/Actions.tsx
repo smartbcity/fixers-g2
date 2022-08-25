@@ -45,10 +45,10 @@ export const Actions = (props: ActionsProps) => {
               }
             : variant === 'cancellation'
             ? {
-                variant: 'outlined'
+                variant: 'text'
               }
             : {
-                variant: 'contained'
+                variant: variant
               }
         return (
           <Button
