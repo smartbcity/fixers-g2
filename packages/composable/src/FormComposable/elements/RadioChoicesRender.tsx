@@ -4,8 +4,8 @@ import {
   InputForm,
   InputFormBasicProps
 } from '@smartb/g2-forms'
-import { FieldRenderProps } from '../type/FieldRenderProps'
-import { ElementRendererFunction } from '../../ComposableRender/ElementRenderer'
+import { FieldRenderProps } from '../type'
+import { ElementRendererFunction } from '../../ComposableRender'
 
 export type RadioChoicesExtendProps = Partial<
   Omit<
@@ -22,8 +22,8 @@ export type RadioChoicesRenderProps = FieldRenderProps<
 export const RadioChoicesRender: ElementRendererFunction<
   RadioChoicesRenderProps
 > = (props: RadioChoicesRenderProps): ReactElement => {
-  const { elements, formState, basicProps } = props
-  const { params } = elements
+  const { element, formState, basicProps } = props
+  const { params } = element
   return (
     <InputForm
       inputType='radioChoices'

@@ -1,5 +1,5 @@
 import { DependencyList, useMemo } from 'react'
-import { FormComposableField } from './type/FormComposableField'
+import { FormComposableField } from './type'
 
 interface FormFieldParams {
   fields: FormComposableField[]

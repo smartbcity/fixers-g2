@@ -1,6 +1,7 @@
 {
   "packages": [
     "packages/components",
+    "packages/composable",
     "packages/documentation",
     "packages/forms",
     "packages/g2",

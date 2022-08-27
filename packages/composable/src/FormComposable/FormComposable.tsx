@@ -1,20 +1,18 @@
 import React from 'react'
-import { ContainerRenderer } from '../ComposableRender'
+import { ContainerRenderer, ElementRenderersConfig } from '../ComposableRender'
 import { cx } from '@emotion/css'
 import { Stack, StackProps } from '@mui/material'
 import { FormikProvider } from 'formik'
-import { DefaultRenderer } from './factories/FormElementsRenderer'
-import { FormComposableField } from './type/FormComposableField'
-import { MergeReactElementProps } from '@smartb/g2-utils'
-import { FormComposableState } from './type/FormComposableState'
-import { makeG2STyles } from '@smartb/g2-themes'
 import {
-  ActionsWrapper,
-  ActionsWrapperProps
-} from '@smartb/g2-components/src/Actions/ActionsWrapper'
+  FormComposableField,
+  FormComposableState,
+  useFieldRenderProps
+} from './type'
+import { MergeReactElementProps } from '@smartb/g2-utils'
+import { makeG2STyles } from '@smartb/g2-themes'
+import { ActionsWrapper, ActionsWrapperProps } from '@smartb/g2-components'
 import { FormAction } from '@smartb/g2-forms'
-import { useFieldRenderProps } from './type/FieldRenderProps'
-import { RenderersConfig } from '../ComposableRender/ElementRenderer'
+import { DefaultRenderer } from './factories/FormElementsRenderer'
 
 export interface FormComposableClasses {
   actions?: string
@@ -33,10 +31,9 @@ export interface FormComposableStyles {
 export type FormComposableActionsProps = Omit<ActionsWrapperProps, 'actions'>
 
 interface FormComposableBasicProps<
-  RENDERER extends RenderersConfig = {},
-  ELEMENT_PARAMS = {}
+  ELEMENT_PARAMS extends ElementRenderersConfig
 > {
-  customFactories?: RENDERER
+  customFactories?: ELEMENT_PARAMS
   /**
    * the actions displayed at the bottom of the component. To make a validation button you have to add an action with `type="submit"`
    */
@@ -44,7 +41,7 @@ interface FormComposableBasicProps<
   /**
    * the props given to the actions
    */
-  actionsProps: FormComposableActionsProps
+  actionsProps?: FormComposableActionsProps
   /**
    * the fields of the form
    */
@@ -85,19 +82,11 @@ const useStyles = makeG2STyles()((theme) => ({
   }
 }))
 
-export type FormComposableProps<
-  RENDERER extends RenderersConfig = {},
-  ELEMENT_PARAMS = {}
-> = MergeReactElementProps<
-  'form',
-  FormComposableBasicProps<RENDERER, ELEMENT_PARAMS>
->
+export type FormComposableProps<RENDERER extends ElementRenderersConfig = {}> =
+  MergeReactElementProps<'form', FormComposableBasicProps<RENDERER>>
 
-export const FormComposable = <
-  RENDERER extends RenderersConfig = {},
-  ELEMENT_PARAMS = {}
->(
-  props: FormComposableProps<RENDERER, ELEMENT_PARAMS>
+export const FormComposable = <RENDERER extends ElementRenderersConfig>(
+  props: FormComposableProps<RENDERER>
 ) => {
   const {
     actions,
@@ -116,7 +105,7 @@ export const FormComposable = <
     ...other
   } = props
   const defaultStyles = useStyles()
-  const fieldElements = useFieldRenderProps(props)
+  const fieldElement = useFieldRenderProps(props)
   return (
     <FormikProvider value={formState}>
       <form
@@ -137,7 +126,7 @@ export const FormComposable = <
             <ContainerRenderer
               renderer={DefaultRenderer}
               rendererCustom={customFactories}
-              elements={fieldElements}
+              elements={fieldElement}
             />
           </Stack>
         </ActionsWrapper>

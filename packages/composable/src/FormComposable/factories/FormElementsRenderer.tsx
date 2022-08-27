@@ -1,27 +1,12 @@
-import {
-  TextFieldExtendProps,
-  TextFieldRender
-} from '../elements/TextFieldRender'
-import { FormSelectExtendProps, SelectRender } from '../elements/SelectRender'
-import {
-  DatePickerExtendProps,
-  DatePickerRender
-} from '../elements/DatePickerRender'
-import {
-  AutoCompleteExtendProps,
-  AutoCompleteRender
-} from '../elements/AutoCompleteRender'
-import { CheckBoxExtendProps, CheckBoxRender } from '../elements/CheckBoxRender'
-import {
-  RadioChoicesExtendProps,
-  RadioChoicesRender
-} from '../elements/RadioChoicesRender'
-import {
-  ElementParams,
-  RenderersConfig
-} from '../../ComposableRender/ElementRenderer'
+import { TextFieldRender } from '../elements/TextFieldRender'
+import { SelectRender } from '../elements/SelectRender'
+import { DatePickerRender } from '../elements/DatePickerRender'
+import { AutoCompleteRender } from '../elements/AutoCompleteRender'
+import { CheckBoxRender } from '../elements/CheckBoxRender'
+import { RadioChoicesRender } from '../elements/RadioChoicesRender'
+import { ComposableElementRendererProps } from '../../ComposableRender'
 
-export const DefaultRenderer: RenderersConfig = {
+export const DefaultRenderer = {
   textField: TextFieldRender,
   select: SelectRender,
   autoComplete: AutoCompleteRender,
@@ -30,10 +15,6 @@ export const DefaultRenderer: RenderersConfig = {
   radioChoices: RadioChoicesRender
 }
 
-export type FieldRenderType =
-  | ElementParams<'autoComplete', AutoCompleteExtendProps>
-  | ElementParams<'checkBox', CheckBoxExtendProps>
-  | ElementParams<'datePicker', DatePickerExtendProps>
-  | ElementParams<'radioChoices', RadioChoicesExtendProps>
-  | ElementParams<'select', FormSelectExtendProps>
-  | ElementParams<'textField', TextFieldExtendProps>
+export type FieldRenderType = ComposableElementRendererProps<
+  typeof DefaultRenderer
+>

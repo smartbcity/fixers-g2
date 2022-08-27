@@ -1,7 +1,7 @@
 import { FormikConfig, FormikHelpers, useFormik } from 'formik'
 import { FormAction } from '@smartb/g2-forms'
 import { useActionFeedback } from '@smartb/g2-components'
-import { FormComposableState } from './type/FormComposableState'
+import { FormComposableState } from './type'
 
 export interface ActionProps {
   validate?: Partial<FormAction>
@@ -38,7 +38,7 @@ export const useFormComposable = <T extends {}>(
     validateOnBlur: false,
     validateOnChange: false,
     enableReinitialize: true,
-    initialValues: formikConfig?.initialValues,
+    initialValues: formikConfig?.initialValues || {},
     ...formikConfig
   })
 

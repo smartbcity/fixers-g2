@@ -3,7 +3,13 @@ export {
   Actions,
   ActionsProps,
   ActionsStyles,
-  ActionsClasses
+  ActionsClasses,
+  ActionFeedback,
+  useActionFeedback,
+  ActionsWrapper,
+  ActionsWrapperProps,
+  ActionWrapperStyles,
+  ActionWrapperClasses
 } from './Actions'
 export {
   Button,

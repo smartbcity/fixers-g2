@@ -1,6 +1,16 @@
 import { FieldRenderType } from '../factories/FormElementsRenderer'
+import {
+  ComposableElementRendererProps,
+  ElementRenderersConfig
+} from '../../ComposableRender'
 
-export type FormComposableField<ELEMENT_PARAMS = {}> = {
+export type FieldValidatorFnc = (
+  value: any | undefined
+) => Promise<string> | string | undefined
+
+export type FormComposableField<
+  ELEMENT_PARAMS extends ElementRenderersConfig = {}
+> = {
   /**
    * the unique key of the field
    */
@@ -20,7 +30,7 @@ export type FormComposableField<ELEMENT_PARAMS = {}> = {
   /**
    * the validator that takes the value of the input and return an error or undefined/nothing if the value is valid
    */
-  validator?: (value: any | undefined) => Promise<string> | string | undefined
+  validator?: FieldValidatorFnc
   /**
    * if you want to add other nodes around the input use this function
    */
@@ -35,4 +45,4 @@ export type FormComposableField<ELEMENT_PARAMS = {}> = {
    * @default false
    */
   readonly?: boolean
-} & (FieldRenderType | ELEMENT_PARAMS)
+} & (FieldRenderType | ComposableElementRendererProps<ELEMENT_PARAMS>)
