@@ -34,6 +34,7 @@
   },
   "dependencies": {
     "@smartb/g2-components": "^1.0.0-alpha-65",
+    "@smartb/g2-composable": "^1.0.0-alpha-65",
     "@smartb/g2-documentation": "^1.0.0-alpha-65",
     "@smartb/g2-forms": "^1.0.0-alpha-65",
     "@smartb/g2-fs": "^1.0.0-alpha-65",
