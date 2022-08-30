@@ -45,7 +45,7 @@ export const ReadonlyRenderer = (props: Partial<InputFormProps>) => {
           )
           .join(', ')
       }
-    } else if (options && value) {
+    } else if (options && value !== undefined) {
       const option = options.find((c) => c.key === value || c.key === value.key)
       return getLabelOfOption(option, getOptionLabel)
     }

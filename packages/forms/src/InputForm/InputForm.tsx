@@ -271,8 +271,8 @@ export const InputForm: InputFormComponent = React.forwardRef(
 
     if (
       readonly &&
-      !props.value &&
-      (!props.values || props.values.length === 0) &&
+      props.value === undefined &&
+      (props.values === undefined || props.values.length === 0) &&
       !isLoading
     )
       return <></>
