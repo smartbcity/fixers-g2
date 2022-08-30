@@ -5,6 +5,9 @@ const textFieldGrey = '#C5C7D0'
 const disabledColor = '#E6E9EF'
 
 export const useInputStyles = makeG2STyles()((theme) => ({
+  base: {
+    position: 'relative'
+  },
   label: {
     marginBottom: theme.spacing,
     fontSize: '0.875rem',

@@ -41,16 +41,18 @@ const useFormProps = (
   props: FormComposableProps<any>
 ): FieldRender => {
   const { formState, classes, styles, isLoading } = props
+  const error = formState.getFieldMeta(field.name).error
   return {
     key: field.key,
     id: field.key,
     label: field.label,
     name: field.name,
-    error: !!formState.errors[field.name],
-    errorMessage: formState.errors[field.name] as string,
+    error: !!error,
+    errorMessage: error as string,
     isLoading: isLoading,
     className: cx(classes?.field, 'AruiForm-field', field.params?.className),
     style: {
+      width: '100%',
       ...styles?.field,
       ...field.params?.style
     },

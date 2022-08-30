@@ -109,32 +109,47 @@ export const RadioChoices = React.forwardRef(
         />
       ))
     }, [choices, classes?.choice, styles?.choice])
-
-    return (
-      <RadioGroup
-        id={id}
-        ref={ref}
-        value={value}
-        onChange={onChange}
-        name={name}
-        className={defaultStyles.cx('AruiRadioChoices-root', className)}
-        style={style}
-        {...other}
-      >
-        {choicesMemoized}
-        {errorMessage !== '' && error && (
+    const errorText = useMemo(
+      () =>
+        errorMessage !== '' && error ? (
           <FormHelperText
             className={defaultStyles.cx(
               defaultStyles.classes.helperText,
               classes?.helperText,
               'AruiRadioChoices-helperText'
             )}
-            style={styles?.helperText}
+            style={{ ...styles?.helperText, marginTop: -9 }}
           >
             {errorMessage}
           </FormHelperText>
+        ) : (
+          <></>
+        ),
+      [errorMessage, error]
+    )
+    return (
+      <div
+        className={defaultStyles.cx(
+          defaultStyles.classes.base,
+          'AruiRadioChoices-root',
+          className
         )}
-      </RadioGroup>
+        style={style}
+      >
+        <RadioGroup
+          id={id}
+          ref={ref}
+          value={value}
+          onChange={onChange}
+          name={name}
+          className={defaultStyles.cx('AruiRadioChoices-root', className)}
+          style={style}
+          {...other}
+        >
+          {errorText}
+          {choicesMemoized}
+        </RadioGroup>
+      </div>
     )
   }
 )

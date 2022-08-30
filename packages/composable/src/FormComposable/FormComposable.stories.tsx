@@ -18,6 +18,7 @@ import {
   ElementRenderersConfig
 } from '../ComposableRender'
 import { Typography } from '@mui/material'
+import { requiredField, requiredTrue } from './validator'
 
 export default {
   title: 'Composable/FormComposable',
@@ -59,12 +60,23 @@ const DebugRender: ElementRendererFunction<DebugRenderProps> = (
   )
 }
 
+export type HiddenProps = {
+  formName: string
+}
+
+type HiddenRenderProps = FieldRenderProps<'hidden', HiddenProps>
+const HiddenRender: ElementRendererFunction<HiddenRenderProps> = (
+  _: HiddenRenderProps
+) => {
+  return <></>
+}
+
 const CustomRenderer: ElementRenderersConfig = {
-  debug: DebugRender
+  debug: DebugRender,
+  hidden: HiddenRender
 }
 
 export type CustomFieldRenderType = ElementParams<'debug', DebugExtendProps>
-
 export type AllFormComposableField = FormComposableField | CustomFieldRenderType
 
 const FormComposableStory: Story<FormComposableProps> = (
@@ -157,10 +169,7 @@ SelectForm.args = {
           { key: 'euro', label: '€' }
         ]
       },
-      validator: (value) =>
-        value === undefined || value === ''
-          ? 'The currency is required'
-          : undefined
+      validator: requiredField('The currency is required')
     },
     {
       key: 'storybook-form-select-to',
@@ -174,10 +183,7 @@ SelectForm.args = {
           { key: 'euro', label: '€' }
         ]
       },
-      validator: (value) =>
-        value === undefined || value === ''
-          ? 'The currency is required'
-          : undefined
+      validator: requiredField('The currency is required')
     },
     {
       key: 'storybook-form-select-value',
@@ -220,10 +226,7 @@ RadioSelectForm.args = {
           { key: 'euro', label: '€' }
         ]
       },
-      validator: (value) =>
-        value === undefined || value === ''
-          ? 'The currency is required'
-          : undefined
+      validator: requiredField('The currency is required')
     },
     {
       key: 'storybook-form-radioChoices-to',
@@ -237,10 +240,7 @@ RadioSelectForm.args = {
           { key: 'euro', label: '€' }
         ]
       },
-      validator: (value) =>
-        value === undefined || value === ''
-          ? 'The currency is required'
-          : undefined
+      validator: requiredField('The currency is required')
     },
     {
       key: 'storybook-form-radioChoices-value',
@@ -275,19 +275,15 @@ const fullFields: AllFormComposableField[] = [
     name: 'name',
     label: 'Name',
     type: 'textField',
-    validator: (value) =>
-      value === undefined || value === '' ? 'The name is required' : undefined
+    validator: requiredField('The name is required')
   },
   {
     key: 'storybook-form-field-gender',
-    name: 'gender',
+    name: 'gender.value',
     label: 'Gender',
     type: 'select',
     defaultValue: '',
-    validator: (value) =>
-      value === undefined || value === ''
-        ? 'The gender is required'
-        : undefined,
+    validator: requiredField('The gender is required'),
     params: {
       options: [
         { key: 'male', label: 'male' },
@@ -300,7 +296,8 @@ const fullFields: AllFormComposableField[] = [
     name: 'birthdate',
     label: 'Birthdate',
     type: 'datePicker',
-    defaultValue: ''
+    defaultValue: '',
+    validator: requiredField('The birthdate is required')
   },
   {
     key: 'storybook-form-field-yesOrNo',
@@ -308,8 +305,7 @@ const fullFields: AllFormComposableField[] = [
     label: 'Yes or no?',
     type: 'radioChoices',
     defaultValue: '',
-    validator: (value) =>
-      value === undefined || value === '' ? 'answer the question' : undefined,
+    validator: requiredField('Answer the question'),
     params: {
       choices: [
         { key: 'yes', label: 'Yes' },
@@ -323,7 +319,7 @@ const fullFields: AllFormComposableField[] = [
     label: 'I agree to the terms and conditions',
     type: 'checkBox',
     defaultValue: false,
-    validator: (value) => (value !== true ? 'You have to agree' : undefined)
+    validator: requiredTrue('You have to agree')
   },
   {
     key: 'storybook-form-field-debug',

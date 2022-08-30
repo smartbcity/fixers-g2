@@ -38,8 +38,8 @@ export const useFormComposable = <T extends {}>(
     validateOnBlur: false,
     validateOnChange: false,
     enableReinitialize: true,
-    initialValues: formikConfig?.initialValues || {},
-    ...formikConfig
+    ...formikConfig,
+    initialValues: formikConfig?.initialValues || {}
   })
 
   const actions: FormAction[] = [

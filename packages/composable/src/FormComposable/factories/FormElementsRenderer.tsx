@@ -13,7 +13,7 @@ export const DefaultRenderer = {
   checkBox: CheckBoxRender,
   datePicker: DatePickerRender,
   radioChoices: RadioChoicesRender
-}
+} as const
 
 export type FieldRenderType = ComposableElementRendererProps<
   typeof DefaultRenderer
