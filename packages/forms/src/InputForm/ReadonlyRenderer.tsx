@@ -49,7 +49,7 @@ export const ReadonlyRenderer = (props: Partial<InputFormProps>) => {
       const option = options.find((c) => c.key === value || c.key === value.key)
       return getLabelOfOption(option, getOptionLabel)
     }
-    return typeof value === 'string' ? value : ''
+    return typeof value === 'string' || typeof value === 'number' ? value : ''
   }, [inputType, value, values, choices, multiple, options, getOptionLabel])
 
   const renderTag = useMemo(() => {
