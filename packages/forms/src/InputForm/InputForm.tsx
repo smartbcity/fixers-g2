@@ -269,14 +269,9 @@ export const InputForm: InputFormComponent = React.forwardRef(
       [createInputContainer, inputUi]
     )
 
-    const valueExist = !(props.value === undefined || props.value === "")
-    if (
-      readonly &&
-      (valueExist) &&
-      (valueExist || props.values?.length === 0) &&
-      !isLoading
-    )
-      return <></>
+    const valueNotExist = props.value === undefined || props.value === ''
+    const valuesIsEmpty = props.value === undefined || props.value === ''
+    if (readonly && (valueNotExist || valuesIsEmpty) && !isLoading) return <></>
     return (
       <Box className={className} style={style}>
         {labelUi}
