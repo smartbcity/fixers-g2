@@ -269,10 +269,11 @@ export const InputForm: InputFormComponent = React.forwardRef(
       [createInputContainer, inputUi]
     )
 
+    const valueExist = !(props.value === undefined || props.value === "")
     if (
       readonly &&
-      props.value === undefined &&
-      (props.values === undefined || props.values.length === 0) &&
+      (valueExist) &&
+      (valueExist || props.values.length === 0) &&
       !isLoading
     )
       return <></>
