@@ -19,12 +19,9 @@ export type ElementRendererFunction<
   PROPS extends WithElementParams<string, {}>
 > = FunctionComponent<PROPS>
 
-// Type used to export ElementParams type from rendertype.
-// Types looks good in ide preview but when using object is any type
-
 export type ComposableElementRendererProps<
   RENDERER extends ElementRenderersConfig
-> = ExtractElementParams<ComposableRendererFunction<RENDERER>>
+> = ExtractElementParams<ComposableRendererFunction<RENDERER>>['element']
 
 export type ComposableRendererFunction<
   RENDERER extends ElementRenderersConfig
@@ -35,8 +32,4 @@ export type ExtractRenderersKeys<RENDERER extends ElementRenderersConfig> =
 
 export type ExtractElementParams<
   T extends ElementRendererFunction<WithElementParams<string, any>>
-> = T extends ElementRendererFunction<
-  infer R extends WithElementParams<string, any>
->
-  ? R['element']
-  : unknown
+> = T extends ElementRendererFunction<infer R> ? R : unknown
