@@ -63,7 +63,7 @@ const useFormProps = (
 
 export const useFieldRenderProps = (
   props: FormComposableProps<any>
-): FieldRenderProps<any, any>[] => {
+): FieldRenderProps<string, any>[] => {
   const { fields, formState, classes, styles, isLoading } = props
   const memo = useMemo<FieldRenderProps<string, any>[]>(() => {
     return fields.map((field: FormComposableField) => {
@@ -77,7 +77,8 @@ export const useFieldRenderProps = (
         formState: formState,
         element: {
           params: field.params,
-          type: field.type
+          type: field.type,
+          customDisplay: field.customDisplay
         }
       } as FieldRenderProps<any, any>
     })

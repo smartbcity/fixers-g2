@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactNode } from 'react'
 import { Meta } from '@storybook/react'
 import { Story } from '@storybook/react/types-6-0'
 import {
@@ -336,4 +336,83 @@ const fullFields: AllFormComposableField[] = [
 export const FullForm = FormComposableStory.bind({})
 FullForm.args = {
   fields: fullFields
+}
+
+const withCustomDisplay = (input: ReactNode): ReactNode => {
+  return <div>WithCustomDisplay: {input}</div>
+}
+
+const FullFieldsWithCustomDisplayField: AllFormComposableField[] = [
+  {
+    key: 'storybook-form-field-name',
+    name: 'name',
+    label: 'Name',
+    type: 'textField',
+    customDisplay: withCustomDisplay,
+    validator: requiredField('The name is required')
+  },
+  {
+    key: 'storybook-form-field-gender',
+    name: 'gender.value',
+    label: 'Gender',
+    type: 'select',
+    defaultValue: '',
+    customDisplay: withCustomDisplay,
+    validator: requiredField('The gender is required'),
+    params: {
+      options: [
+        { key: 'male', label: 'male' },
+        { key: 'female', label: 'female' }
+      ]
+    }
+  },
+  {
+    key: 'storybook-form-field-birthdate',
+    name: 'birthdate',
+    label: 'Birthdate',
+    type: 'datePicker',
+    defaultValue: '',
+    customDisplay: withCustomDisplay,
+    validator: requiredField('The birthdate is required')
+  },
+  {
+    key: 'storybook-form-field-yesOrNo',
+    name: 'yesOrNo',
+    label: 'Yes or no?',
+    type: 'radioChoices',
+    defaultValue: '',
+    customDisplay: withCustomDisplay,
+    validator: requiredField('Answer the question'),
+    params: {
+      choices: [
+        { key: 'yes', label: 'Yes' },
+        { key: 'no', label: 'No' }
+      ]
+    }
+  },
+  {
+    key: 'storybook-form-field-terms',
+    name: 'terms',
+    label: 'I agree to the terms and conditions',
+    type: 'checkBox',
+    defaultValue: false,
+    customDisplay: withCustomDisplay,
+    validator: requiredTrue('You have to agree')
+  },
+  {
+    key: 'storybook-form-field-debug',
+    name: 'debug',
+    label: 'Debug',
+    type: 'debug',
+    customDisplay: withCustomDisplay,
+    params: {
+      formName: 'Full Fields'
+    },
+    defaultValue: 'The description'
+  }
+] as AllFormComposableField[]
+
+export const FullFieldsWithCustom = FormComposableStory.bind({})
+FullFieldsWithCustom.args = {
+  fields: FullFieldsWithCustomDisplayField
 }

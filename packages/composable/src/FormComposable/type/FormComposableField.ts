@@ -3,6 +3,7 @@ import {
   ComposableElementRendererProps,
   ElementRenderersConfig
 } from '../../ComposableRender'
+import { ReactNode } from 'react'
 
 export type FieldValidatorFnc = (
   value: any | undefined
@@ -34,7 +35,7 @@ export type FormComposableField<
   /**
    * if you want to add other nodes around the input use this function
    */
-  customDisplay?: (input: React.ReactNode) => React.ReactNode
+  customDisplay?: (input: ReactNode) => ReactNode
   /**
    * the event called when the value of the input change
    */

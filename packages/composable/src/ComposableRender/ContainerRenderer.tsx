@@ -13,9 +13,11 @@ export const ContainerRenderer = (props: ContainerRendererProps) => {
   const comps = useMemo(() => {
     const factoryClasses = { ...renderer, ...(rendererCustom ?? {}) }
     return elements.map((component: WithElementParams<any, any>) => {
-      return ElementFactory(component, factoryClasses)
+      const element = ElementFactory(component, factoryClasses)
+      return component.element.customDisplay
+        ? component.element.customDisplay(element)
+        : element
     })
   }, [elements, renderer, rendererCustom])
-
   return <>{comps}</>
 }

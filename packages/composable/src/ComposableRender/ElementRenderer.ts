@@ -1,8 +1,12 @@
-import { FunctionComponent } from 'react'
+import { FunctionComponent, ReactNode } from 'react'
 
 export interface ElementParams<TYPE extends string, PARAMS> {
   type: TYPE
   params?: PARAMS
+  /**
+   * if you want to add other nodes around the input use this function
+   */
+  customDisplay?: (input: ReactNode) => ReactNode
 }
 
 export interface WithElementParams<TYPE extends string, PARAMS> {
