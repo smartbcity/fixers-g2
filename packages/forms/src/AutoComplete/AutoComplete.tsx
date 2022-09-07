@@ -150,8 +150,8 @@ const AutoCompleteBase = function <T>(
       value.map((option: T, index: number) => {
         const { key, ...other } = getTagProps({ index })
         return (
-          //@ts-ignore
           <Chip
+            //@ts-ignore
             key={option.key ?? key}
             label={getOptionLabel(option)}
             {...other}
