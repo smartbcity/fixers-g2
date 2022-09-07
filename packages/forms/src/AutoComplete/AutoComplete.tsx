@@ -1,7 +1,9 @@
 import {
   AutocompleteRenderOptionState,
+  Box,
   createFilterOptions,
   FilterOptionsState,
+  FormHelperText,
   ListItem,
   ListItemText
 } from '@mui/material'
@@ -12,20 +14,21 @@ import {
   AutocompleteRenderInputParams
 } from '@mui/material'
 import React, { forwardRef, useCallback } from 'react'
-import {
-  BasicProps,
-  makeG2STyles,
-  MergeMuiElementProps
-} from '@smartb/g2-themes'
+import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 import { TextField, TextFieldProps } from '../TextField'
 import { CheckBox } from '../CheckBox'
 import { Chip } from '@smartb/g2-components'
+import { useInputStyles } from '../style'
 
-const useStyles = makeG2STyles()({
-  list: {
-    padding: '0px'
-  }
-})
+export interface AutoCompleteClasses {
+  autocomplete?: string
+  helperText?: string
+}
+
+export interface AutoCompleteStyles {
+  autocomplete?: React.CSSProperties
+  helperText?: React.CSSProperties
+}
 
 export interface AutoCompleteBasicProps<T> extends BasicProps {
   /**
@@ -73,7 +76,7 @@ export interface AutoCompleteBasicProps<T> extends BasicProps {
    * This props will tell how many options are alowed to be displayed in the result list. If you want no sie restriction pass a negative number
    * @default -1
    */
-   optionsResultLimit?: number
+  optionsResultLimit?: number
   /**
    * If true the input will be disabled
    *
@@ -84,6 +87,25 @@ export interface AutoCompleteBasicProps<T> extends BasicProps {
    * If props given to the textField in the autoComplete
    */
   textFieldProps?: TextFieldProps
+  /**
+   * Define if the value of the input is valid or not
+   *
+   * @default false
+   */
+  error?: boolean
+
+  /**
+   * The message displayed when the input value is wrong
+   */
+  errorMessage?: string
+  /**
+   * The classes applied to the different part of the component
+   */
+  classes?: AutoCompleteClasses
+  /**
+   * The styles applied to the different part of the component
+   */
+  styles?: AutoCompleteStyles
 }
 
 export type AutoCompleteProps<T = any> = MergeMuiElementProps<
@@ -92,7 +114,7 @@ export type AutoCompleteProps<T = any> = MergeMuiElementProps<
 >
 
 const defaultFilterOptions = createFilterOptions()
-const defaultGetOptionLabel = (option: any) => option.label ?? ""
+const defaultGetOptionLabel = (option: any) => option.label ?? ''
 
 const AutoCompleteBase = function <T>(
   props: AutoCompleteProps<T>,
@@ -116,10 +138,14 @@ const AutoCompleteBase = function <T>(
     isOptionEqualToValue,
     noFilterDisplayOptions = true,
     optionsResultLimit = -1,
+    error = false,
+    errorMessage = '',
+    classes,
+    styles,
     ...other
   } = props
 
-  const defaultStyles = useStyles()
+  const defaultStyles = useInputStyles()
 
   const onChangeMemoized = useCallback(
     (_: React.SyntheticEvent<Element, Event>, value: T | T[] | null) => {
@@ -135,10 +161,14 @@ const AutoCompleteBase = function <T>(
   const renderTags = useCallback(
     (value: T[], getTagProps: AutocompleteGetTagProps) =>
       value.map((option: T, index: number) => {
-        const {key, ...other} = getTagProps({ index })
+        const { key, ...other } = getTagProps({ index })
         return (
           //@ts-ignore
-          <Chip key={option.key ?? key} label={getOptionLabel(option)} {...other} />
+          <Chip
+            key={option.key ?? key}
+            label={getOptionLabel(option)}
+            {...other}
+          />
         )
       }),
     [getOptionLabel]
@@ -158,10 +188,10 @@ const AutoCompleteBase = function <T>(
       { selected }: AutocompleteRenderOptionState
     ) => {
       //@ts-ignore
-      const {key, ...other} = props
+      const { key, ...other } = props
       return (
         <ListItem
-        //@ts-ignore
+          //@ts-ignore
           key={option.key ?? key}
           className={defaultStyles.cx('AruiAutoComplete-option')}
           {...other}
@@ -184,9 +214,8 @@ const AutoCompleteBase = function <T>(
       }
       return result
     },
-    [noFilterDisplayOptions, optionsResultLimit],
+    [noFilterDisplayOptions, optionsResultLimit]
   )
-  
 
   const defaultIsOptionEqualToValue = useCallback(
     //@ts-ignore
@@ -197,31 +226,59 @@ const AutoCompleteBase = function <T>(
   const hasKey = values ? !!values[0]?.key : !!value?.key
 
   return (
-    <MuiAutocomplete<T, boolean, undefined, undefined>
-      id={id}
-      ref={ref}
-      value={multiple ? values : value}
-      limitTags={2}
-      multiple={multiple}
-      options={options}
+    <Box
       className={defaultStyles.cx('AruiAutoComplete-root', className)}
-      getOptionLabel={getOptionLabel}
-      style={style}
-      disabled={disabled}
-      disableCloseOnSelect={multiple}
-      onChange={onChangeMemoized}
-      renderTags={renderTags}
-      renderInput={renderInput}
-      renderOption={renderOption}
-      isOptionEqualToValue={
-        isOptionEqualToValue ?? hasKey ? defaultIsOptionEqualToValue : undefined
-      }
-      filterOptions={filterOptions}
-      classes={{
-        listbox: defaultStyles.classes.list
+      sx={{
+        position: 'relative',
+        '& .AruiAutoComplete-listbox': {
+          padding: '0px'
+        }
       }}
-      {...other}
-    />
+      style={style}
+    >
+      <MuiAutocomplete<T, boolean, undefined, undefined>
+        id={id}
+        ref={ref}
+        value={multiple ? values : value}
+        limitTags={2}
+        multiple={multiple}
+        options={options}
+        className={defaultStyles.cx(
+          'AruiAutoComplete-autocomplete',
+          classes?.autocomplete
+        )}
+        getOptionLabel={getOptionLabel}
+        style={styles?.autocomplete}
+        disabled={disabled}
+        disableCloseOnSelect={multiple}
+        onChange={onChangeMemoized}
+        renderTags={renderTags}
+        renderInput={renderInput}
+        renderOption={renderOption}
+        isOptionEqualToValue={
+          isOptionEqualToValue ?? hasKey
+            ? defaultIsOptionEqualToValue
+            : undefined
+        }
+        filterOptions={filterOptions}
+        classes={{
+          listbox: 'AruiAutoComplete-listbox'
+        }}
+        {...other}
+      />
+      {errorMessage !== '' && error && (
+        <FormHelperText
+          className={defaultStyles.cx(
+            defaultStyles.classes.helperText,
+            'AruiSelect-helperText',
+            classes?.helperText
+          )}
+          style={styles?.helperText}
+        >
+          {errorMessage}
+        </FormHelperText>
+      )}
+    </Box>
   )
 }
 
