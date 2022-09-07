@@ -38,6 +38,8 @@ export const AutoComplete: Story<AutoCompleteBasicProps<Book>> = (
       style={{
         width: 500
       }}
+      error
+      errorMessage='test error'
       {...args}
     />
   )

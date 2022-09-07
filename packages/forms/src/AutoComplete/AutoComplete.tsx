@@ -1,9 +1,7 @@
 import {
   AutocompleteRenderOptionState,
-  Box,
   createFilterOptions,
   FilterOptionsState,
-  FormHelperText,
   ListItem,
   ListItemText
 } from '@mui/material'
@@ -14,21 +12,20 @@ import {
   AutocompleteRenderInputParams
 } from '@mui/material'
 import React, { forwardRef, useCallback } from 'react'
-import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
+import {
+  BasicProps,
+  makeG2STyles,
+  MergeMuiElementProps
+} from '@smartb/g2-themes'
 import { TextField, TextFieldProps } from '../TextField'
 import { CheckBox } from '../CheckBox'
 import { Chip } from '@smartb/g2-components'
-import { useInputStyles } from '../style'
 
-export interface AutoCompleteClasses {
-  autocomplete?: string
-  helperText?: string
-}
-
-export interface AutoCompleteStyles {
-  autocomplete?: React.CSSProperties
-  helperText?: React.CSSProperties
-}
+const useStyles = makeG2STyles()({
+  list: {
+    padding: '0px'
+  }
+})
 
 export interface AutoCompleteBasicProps<T> extends BasicProps {
   /**
@@ -98,14 +95,6 @@ export interface AutoCompleteBasicProps<T> extends BasicProps {
    * The message displayed when the input value is wrong
    */
   errorMessage?: string
-  /**
-   * The classes applied to the different part of the component
-   */
-  classes?: AutoCompleteClasses
-  /**
-   * The styles applied to the different part of the component
-   */
-  styles?: AutoCompleteStyles
 }
 
 export type AutoCompleteProps<T = any> = MergeMuiElementProps<
@@ -140,12 +129,10 @@ const AutoCompleteBase = function <T>(
     optionsResultLimit = -1,
     error = false,
     errorMessage = '',
-    classes,
-    styles,
     ...other
   } = props
 
-  const defaultStyles = useInputStyles()
+  const defaultStyles = useStyles()
 
   const onChangeMemoized = useCallback(
     (_: React.SyntheticEvent<Element, Event>, value: T | T[] | null) => {
@@ -176,9 +163,17 @@ const AutoCompleteBase = function <T>(
 
   const renderInput = useCallback(
     (params: AutocompleteRenderInputParams) => {
-      return <TextField {...textFieldProps} {...params} />
+      return (
+        <TextField
+          {...textFieldProps}
+          {...params}
+          error={error}
+          errorMessage={errorMessage}
+          noCheckOrClearIcon
+        />
+      )
     },
-    [textFieldProps]
+    [textFieldProps, error, errorMessage]
   )
 
   const renderOption = useCallback(
@@ -226,59 +221,31 @@ const AutoCompleteBase = function <T>(
   const hasKey = values ? !!values[0]?.key : !!value?.key
 
   return (
-    <Box
+    <MuiAutocomplete<T, boolean, undefined, undefined>
+      id={id}
+      ref={ref}
+      value={multiple ? values : value}
+      limitTags={2}
+      multiple={multiple}
+      options={options}
       className={defaultStyles.cx('AruiAutoComplete-root', className)}
-      sx={{
-        position: 'relative',
-        '& .AruiAutoComplete-listbox': {
-          padding: '0px'
-        }
-      }}
+      getOptionLabel={getOptionLabel}
       style={style}
-    >
-      <MuiAutocomplete<T, boolean, undefined, undefined>
-        id={id}
-        ref={ref}
-        value={multiple ? values : value}
-        limitTags={2}
-        multiple={multiple}
-        options={options}
-        className={defaultStyles.cx(
-          'AruiAutoComplete-autocomplete',
-          classes?.autocomplete
-        )}
-        getOptionLabel={getOptionLabel}
-        style={styles?.autocomplete}
-        disabled={disabled}
-        disableCloseOnSelect={multiple}
-        onChange={onChangeMemoized}
-        renderTags={renderTags}
-        renderInput={renderInput}
-        renderOption={renderOption}
-        isOptionEqualToValue={
-          isOptionEqualToValue ?? hasKey
-            ? defaultIsOptionEqualToValue
-            : undefined
-        }
-        filterOptions={filterOptions}
-        classes={{
-          listbox: 'AruiAutoComplete-listbox'
-        }}
-        {...other}
-      />
-      {errorMessage !== '' && error && (
-        <FormHelperText
-          className={defaultStyles.cx(
-            defaultStyles.classes.helperText,
-            'AruiSelect-helperText',
-            classes?.helperText
-          )}
-          style={styles?.helperText}
-        >
-          {errorMessage}
-        </FormHelperText>
-      )}
-    </Box>
+      disabled={disabled}
+      disableCloseOnSelect={multiple}
+      onChange={onChangeMemoized}
+      renderTags={renderTags}
+      renderInput={renderInput}
+      renderOption={renderOption}
+      isOptionEqualToValue={
+        isOptionEqualToValue ?? hasKey ? defaultIsOptionEqualToValue : undefined
+      }
+      filterOptions={filterOptions}
+      classes={{
+        listbox: defaultStyles.classes.list
+      }}
+      {...other}
+    />
   )
 }
 
