@@ -70,17 +70,27 @@ const Router = (props) => {
 const Example = (props) => {
   const args = props.args
 
-  const { formFilters, additionnalFilters, setAdditionnalFilters } =
-    useEnhancedFilters<{ page: number }>({
-      fields: args.fields,
-      onSubmit: (values) => {
-        console.log('submitted')
-        console.log(values)
-      },
-      initAdditionnalFilters: {
-        page: 0
-      }
-    })
+  const {
+    formFilters,
+    additionnalFilters,
+    setAdditionnalFilters,
+    submittedFilters
+  } = useEnhancedFilters<{ page: number }>({
+    fields: args.fields,
+    initAdditionnalFilters: {
+      page: 0
+    }
+  })
+
+  //pass the submittedFilters to your api calls
+  console.log(submittedFilters)
+
+  const incrementPage = useCallback(() => {
+    setAdditionnalFilters((old) => ({
+      ...old,
+      page: old.page + 1
+    }))
+  }, [setAdditionnalFilters])
 
   const actions = useMemo(
     (): FiltersAction[] => [
@@ -100,13 +110,6 @@ const Example = (props) => {
     ],
     [formFilters.setValues, formFilters.submitForm]
   )
-
-  const incrementPage = useCallback(() => {
-    setAdditionnalFilters((old) => ({
-      ...old,
-      page: old.page + 1
-    }))
-  }, [setAdditionnalFilters])
 
   return (
     <>

@@ -15,6 +15,10 @@ export type EnhancedFilterState<F extends {} | undefined = undefined> = {
    */
   formFilters: FiltersState
   /**
+   * the submitted filters to be included in your api calls
+   */
+  submittedFilters: any
+  /**
    * the filters not included in the form. For example a `page` or a `size` attribut
    */
   additionnalFilters: F
@@ -27,7 +31,17 @@ export type EnhancedFilterState<F extends {} | undefined = undefined> = {
 interface useEnhancedFiltersParams<
   T extends FiltersPartialField = FiltersPartialField,
   F extends {} | undefined = undefined
-> extends useFiltersParams<T> {
+> extends Omit<useFiltersParams<T>, 'onSubmit'> {
+  /**
+   * the callback called when the form is being validated by the user
+   * please use the `setSubmitting` in the formikHelpers object to inform about any asynchronous task
+   * before the end of the submission
+   */
+  onSubmit?: (
+    values: { [key: string]: any },
+    formikHelpers: FormikHelpers<any>,
+    additionnalFilters: F
+  ) => void | Promise<any>
   /**
    * the initial values of the filters not included in the form and in the url. For example a `page` or a `size` attribut
    */
@@ -70,9 +84,6 @@ export const useEnhancedFiltersBase = <
   const { fields, onSubmit, formikConfig, initAdditionnalFilters } = params
 
   const [searchParams, setSearchParams] = useSearchParams()
-  const [additionnalFilters, setAdditionnalFilters] = useState<F>(
-    initAdditionnalFilters as F
-  )
 
   const initialValues = useMemo(() => {
     const obj = {}
@@ -83,22 +94,29 @@ export const useEnhancedFiltersBase = <
         : field.defaultValue
       delete params[field.name]
     })
-    delete params.id
-    delete params.viewMode
-    setAdditionnalFilters((originals) => {
-      const unformattedParams = {}
-      for (let i in params) {
-        unformattedParams[i] = retrieveNumber(params[i])
-      }
-      return { ...originals, ...unformattedParams } as F
-    })
-    return obj
+    let additionnals = {}
+    const unformattedParams = {}
+    for (let i in params) {
+      unformattedParams[i] = retrieveNumber(params[i])
+    }
+    additionnals = { ...initAdditionnalFilters, ...unformattedParams }
+    return {
+      formValues: obj,
+      additionnalFilters: additionnals,
+      allFilters: { ...obj, ...additionnals }
+    }
   }, [])
 
-  console.log(additionnalFilters)
+  const [submittedFilters, setSubmittedFilters] = useState(
+    initialValues.allFilters
+  )
+  const [additionnalFilters, setAdditionnalFilters] = useState<F>(
+    initialValues.additionnalFilters as F
+  )
+
   const onSubmitMemoized = useCallback(
     (values: any, formikHelpers: FormikHelpers<any>) => {
-      onSubmit && onSubmit(values, formikHelpers)
+      onSubmit && onSubmit(values, formikHelpers, additionnalFilters)
 
       let fieldsValues = { ...values }
 
@@ -108,23 +126,22 @@ export const useEnhancedFiltersBase = <
           : undefined
       })
 
+      const filters = { ...fieldsValues, ...additionnalFilters }
+
       setSearchParams(
-        qs.stringify(
-          { ...fieldsValues, ...additionnalFilters },
-          {
-            addQueryPrefix: true,
-            arrayFormat: 'repeat'
-          }
-        ) +
-          '&' +
-          'viewMode=story&id=forms-enhancedfilters--enhanced-filters-story'
+        qs.stringify(filters, {
+          addQueryPrefix: true,
+          arrayFormat: 'repeat'
+        })
       )
+
+      setSubmittedFilters(filters)
     },
     [onSubmit, searchParams, setSearchParams, additionnalFilters]
   )
 
   const formik = useFormik({
-    initialValues: initialValues,
+    initialValues: initialValues.formValues,
     onSubmit: onSubmitMemoized,
     ...formikConfig
   })
@@ -140,7 +157,8 @@ export const useEnhancedFiltersBase = <
   return {
     formFilters: formik,
     additionnalFilters,
-    setAdditionnalFilters: setAdditionnalFiltersMeMoized
+    setAdditionnalFilters: setAdditionnalFiltersMeMoized,
+    submittedFilters
   }
 }
 
