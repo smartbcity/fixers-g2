@@ -30,8 +30,14 @@ export {
   FiltersField,
   FiltersPartialField,
   useFiltersWithPartialFields,
+  useFiltersParams,
   FiltersProps,
   FiltersState,
   useFilters
 } from './Filters'
+export {
+  EnhancedFilterState,
+  useEnhancedFilters,
+  useEnhancedFiltersWithPartialFields
+} from './EnhancedFilters'
 export { RadioChoices, Choice, RadioChoicesProps } from './RadioChoices'

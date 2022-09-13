@@ -26,7 +26,7 @@ interface useFormParams<T extends FormPartialField = FormPartialField> {
    * please use the `setSubmitting` in the formikHelpers object to inform about any asynchronous task
    * before the end of the submission
    */
-  onSubmit: (
+  onSubmit?: (
     values: { [key: string]: any },
     formikHelpers: FormikHelpers<any>
   ) => void | Promise<any>
@@ -51,6 +51,8 @@ export const useFormWithPartialFields = (
 ): FormState => {
   return useFormBase(params)
 }
+
+const emptyAction = () => {}
 
 const useFormBase = <T extends FormPartialField = FormPartialField>(
   params: useFormParams<T>
@@ -80,7 +82,7 @@ const useFormBase = <T extends FormPartialField = FormPartialField>(
 
   const formik = useFormik({
     initialValues: initialValues,
-    onSubmit: onSubmit,
+    onSubmit: onSubmit ?? emptyAction,
     validate: validate,
     validateOnBlur: false,
     validateOnChange: false,

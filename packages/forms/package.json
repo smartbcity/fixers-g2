@@ -43,7 +43,8 @@
     "date-fns": "^2.28.0",
     "formik": "^2.2.9",
     "react-router-dom": "^6.3.0",
-    "tinycolor2": "^1.4.2"
+    "tinycolor2": "^1.4.2",
+    "@mantine/hooks": "^4.2.12"
   },
   "publishConfig": {
     "@smartb:registry": "https://gitlab.smartb.city/api/v4/projects/127/packages/npm/"

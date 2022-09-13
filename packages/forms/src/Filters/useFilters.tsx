@@ -9,7 +9,7 @@ export type FiltersPartialField = {
   defaultValue?: any
 }
 
-interface useFiltersParams<
+export interface useFiltersParams<
   T extends FiltersPartialField = FiltersPartialField
 > {
   /**
@@ -21,7 +21,7 @@ interface useFiltersParams<
    * please use the `setSubmitting` in the formikHelpers object to inform about any asynchronous task
    * before the end of the submission
    */
-  onSubmit: (
+  onSubmit?: (
     values: { [key: string]: any },
     formikHelpers: FormikHelpers<any>
   ) => void | Promise<any>
@@ -49,6 +49,8 @@ export const useFiltersWithPartialFields = (
   return useFiltersBase(params)
 }
 
+const emptyAction = () => {}
+
 export const useFiltersBase = <
   T extends FiltersPartialField = FiltersPartialField
 >(
@@ -65,7 +67,7 @@ export const useFiltersBase = <
 
   const formik = useFormik({
     initialValues: initialValues,
-    onSubmit: onSubmit,
+    onSubmit: onSubmit ?? emptyAction,
     ...formikConfig
   })
 

@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useLayoutEffect, useMemo, useState } from 'react'
 import { Action, Actions } from '@smartb/g2-components'
 import { FilterSelectProps, FilterSelect } from '../FilterSelect'
 import { FilterTextFieldProps, FilterTextField } from '../FilterTextField'
@@ -8,9 +8,10 @@ import {
   makeG2STyles,
   MergeReactElementProps
 } from '@smartb/g2-themes'
-import { Stack, StackProps } from '@mui/material'
+import { Box, Stack, StackProps } from '@mui/material'
 import { cx } from '@emotion/css'
 import { FiltersState } from './useFilters'
+import { useElementSize } from '@mantine/hooks'
 
 export type FiltersAction = Action
 
@@ -71,7 +72,7 @@ export interface FiltersBasicProps extends BasicProps {
   /**
    * the fields of the form
    */
-  fields: FiltersField[]
+  fields: (FiltersField | 'spacer')[]
   /**
    * the state of the form provided by the hook `useFilters`
    */
@@ -105,6 +106,11 @@ export interface FiltersBasicProps extends BasicProps {
    */
   fieldsStackProps?: StackProps
   /**
+   * if true the component will wrap into a button opening a drawer containing the filters when not enough space is left for it
+   * @default false
+   */
+  responsive?: boolean
+  /**
    * The classes applied to the different part of the component
    */
   classes?: FiltersClasses
@@ -114,7 +120,7 @@ export interface FiltersBasicProps extends BasicProps {
   styles?: FiltersStyles
 }
 
-const useStyles = makeG2STyles()((theme) => ({
+const useStyles = makeG2STyles()({
   form: {
     display: 'flex',
     justifyContent: 'flex-end',
@@ -125,14 +131,8 @@ const useStyles = makeG2STyles()((theme) => ({
     '& .AruiFilters-button': {
       padding: '3px'
     }
-  },
-  fieldsContainer: {
-    display: 'flex',
-    justifyContent: 'flex-end',
-    flexWrap: 'wrap',
-    gap: theme.spacing
   }
-}))
+})
 
 export type FiltersProps = MergeReactElementProps<'form', FiltersBasicProps>
 
@@ -149,13 +149,33 @@ export const Filters = (props: FiltersProps) => {
     defaultSubmitBehavior = true,
     actionsStackProps,
     fieldsStackProps,
+    responsive = false,
     ...other
   } = props
   const defaultStyles = useStyles()
+  const containerSize = useElementSize()
+  const contentSize = useElementSize()
+  const [renderedContentWidth, setRenderedContentWidth] = useState<
+    undefined | number
+  >(undefined)
+
+  useLayoutEffect(() => {
+    if (contentSize.width > 0) {
+      setRenderedContentWidth(contentSize.width)
+    }
+  }, [contentSize.width])
+
+  // const isOverflowing = useMemo(() => {
+  //   if (!renderedContentWidth) return false
+  //   if (renderedContentWidth > containerSize.width) return true
+  //   return false
+  // }, [renderedContentWidth, containerSize.width])
 
   const fieldsMemoized = useMemo(
     () =>
       fields.map((field) => {
+        if (field === 'spacer') return <Box sx={{ flexGrow: 1 }} />
+
         const commonProps = {
           key: field.key,
           id: field.key,
@@ -267,26 +287,53 @@ export const Filters = (props: FiltersProps) => {
       />
     )
   }, [actions, classes?.button, styles?.button])
-  return (
-    <form
-      onSubmit={formState.handleSubmit}
-      className={cx(defaultStyles.classes?.form, 'AruiFilters-root', className)}
-      {...other}
-    >
+
+  const content = (
+    <>
       {actionsPosition === 'left' && actionsDisplay}
       <Stack
         direction='row'
         {...fieldsStackProps}
-        className={cx(
-          defaultStyles.classes.fieldsContainer,
-          'AruiFilters-fieldsContainer',
-          classes?.fieldsContainer
-        )}
+        sx={{
+          display: 'flex',
+          justifyContent: 'flex-end',
+          flexGrow: 1,
+          flexWrap: !responsive ? 'wrap' : 'nowrap',
+          gap: (theme) => theme.spacing(1),
+          ...fieldsStackProps?.sx
+        }}
+        className={cx('AruiFilters-fieldsContainer', classes?.fieldsContainer)}
         style={styles?.fieldsContainer}
       >
         {fieldsMemoized}
       </Stack>
       {actionsPosition === 'right' && actionsDisplay}
+    </>
+  )
+
+  return (
+    <form
+      ref={containerSize.ref}
+      onSubmit={formState.handleSubmit}
+      className={cx(defaultStyles.classes?.form, 'AruiFilters-root', className)}
+      {...other}
+    >
+      {!renderedContentWidth ? (
+        <Box
+          ref={contentSize.ref}
+          sx={{
+            width: 'fit-content',
+            justifyContent: 'flex-end',
+            alignItems: 'center',
+            visibility: 'hidden',
+            display: 'flex'
+          }}
+        >
+          {content}
+        </Box>
+      ) : (
+        content
+      )}
     </form>
   )
 }
