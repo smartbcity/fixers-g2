@@ -47,11 +47,9 @@ export const useFiltersComposable = <T extends {}>(
     const params = qs.parse(searchParams.toString())
     for (let fieldName in params) {
       const realFieldName = fieldName.replace('-date', '')
-      obj[realFieldName] = params[fieldName]
-        ? unformatFieldValue(params[fieldName], fieldName)
-        : formikConfig?.initialValues[fieldName]
+      obj[realFieldName] = unformatFieldValue(params[fieldName], fieldName)
     }
-    return obj
+    return { ...formikConfig?.initialValues, ...obj }
   }, [])
 
   const [submittedFilters, setSubmittedFilters] = useState(initialValues)
@@ -63,8 +61,15 @@ export const useFiltersComposable = <T extends {}>(
       const renamedValues = {}
 
       for (let fieldName in values) {
-        if (values[fieldName] instanceof Date) {
-          renamedValues[fieldName + '-date'] = values[fieldName]
+        const value = values[fieldName]
+        const date =
+          value instanceof Date
+            ? value
+            : typeof value === 'string'
+            ? new Date(Date.parse(value))
+            : undefined
+        if (date && date instanceof Date && !isNaN(date.getTime())) {
+          renamedValues[fieldName + '-date'] = date
         } else {
           renamedValues[fieldName] = values[fieldName]
         }
@@ -91,7 +96,7 @@ export const useFiltersComposable = <T extends {}>(
     initialValues: initialValues
   })
 
-  const setAdditionnalFiltersMemoized = useCallback(
+  const setAdditionnalFilterMemoized = useCallback(
     (fieldName: string, value: any) => {
       formik.setFieldValue(fieldName, value)
       formik.submitForm()
@@ -100,8 +105,8 @@ export const useFiltersComposable = <T extends {}>(
   )
 
   return {
-    filtersSate: formik,
-    setAdditionnalFilters: setAdditionnalFiltersMemoized,
+    formState: formik,
+    setAdditionnalFilter: setAdditionnalFilterMemoized,
     submittedFilters
   }
 }

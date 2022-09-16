@@ -19,12 +19,4 @@ export type FilterComposableField<
    * the displayed label of the field
    */
   label?: string
-  /**
-   * the default value of the field
-   */
-  defaultValue?: any
 } & (FilterRenderType | ComposableElementRendererProps<ELEMENT_PARAMS>)
-
-export type FilterComposable<
-  ELEMENT_PARAMS extends ElementRenderersConfig = {}
-> = FilterComposableField<ELEMENT_PARAMS> | 'spacer'

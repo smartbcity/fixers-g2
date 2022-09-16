@@ -16,7 +16,7 @@ export interface WithElementParams<TYPE extends string, PARAMS> {
 export interface ElementRenderersConfig
   extends Record<
     string,
-    ElementRendererFunction<WithElementParams<string, {}>> | undefined
+    ElementRendererFunction<WithElementParams<string, {}>>
   > {}
 
 export type ElementRendererFunction<

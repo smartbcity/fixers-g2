@@ -1,6 +1,6 @@
 import { ElementParams, WithElementParams } from '../../ComposableRender'
 import { FiltersComposableProps } from '../FiltersComposable'
-import { useEffect, useMemo } from 'react'
+import { useMemo } from 'react'
 import { FilterComposableField } from './FilterComposableField'
 import { cx } from '@emotion/css'
 import { useFormik } from 'formik'
@@ -48,7 +48,7 @@ export const useFilterRenderProps = (
     formState,
     classes,
     styles,
-    defaultSubmitBehavior = false
+    defaultSubmitBehavior = true
   } = props
   const memo = useMemo<FieldRenderProps<string, any>[]>(() => {
     return fields.map((field: FilterComposableField) => {
@@ -75,11 +75,5 @@ export const useFilterRenderProps = (
     ,
     defaultSubmitBehavior
   ])
-  const { setFieldValue } = formState
-  useEffect(() => {
-    fields.map((field) => {
-      field.defaultValue && setFieldValue(field.name, field.defaultValue)
-    })
-  }, [])
   return memo
 }

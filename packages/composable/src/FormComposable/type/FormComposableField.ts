@@ -25,10 +25,6 @@ export type FormComposableField<
    */
   label?: string
   /**
-   * the default value of the field
-   */
-  defaultValue?: any
-  /**
    * the validator that takes the value of the input and return an error or undefined/nothing if the value is valid
    */
   validator?: FieldValidatorFnc

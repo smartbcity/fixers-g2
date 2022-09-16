@@ -11,7 +11,7 @@ import {
   SelectChangeEvent,
   SelectProps as MuiSelectProps
 } from '@mui/material'
-import { ClearRounded, KeyboardArrowDownRounded } from '@mui/icons-material'
+import { KeyboardArrowDownRounded } from '@mui/icons-material'
 import {
   BasicProps,
   makeG2STyles,
@@ -231,6 +231,7 @@ export const FilterSelect = React.forwardRef(
     const defaultStyles = useFilterInputStyles()
     const localStyles = useStyles()
     const colorStyle = useMemo(() => {
+      if (variant === 'outlined') return {}
       if (color === 'primary') {
         const isPrimaryDark = tinycolor(theme.colors.primary).isDark()
         if (isPrimaryDark) return { color: 'white' }
@@ -240,7 +241,7 @@ export const FilterSelect = React.forwardRef(
         if (isSecondaryDark) return { color: 'white' }
       }
       return {}
-    }, [color, theme.colors.primary, theme.colors.secondary])
+    }, [color, theme.colors.primary, theme.colors.secondary, variant])
 
     const onChangeMemoized = useCallback(
       (event: SelectChangeEvent<unknown>) => {
@@ -260,21 +261,6 @@ export const FilterSelect = React.forwardRef(
 
     const renderValue = useCallback(
       (selected: string | string[]) => {
-        if (variant === 'outlined') {
-          if (
-            (!Array.isArray(selected) && selected === '') ||
-            (Array.isArray(selected) && selected.length === 0)
-          ) {
-            return placeholder
-          }
-          if (Array.isArray(selected) && selected.length > 0) {
-            return selected.map((el) => optionsMap.get(el)).join(', ')
-          }
-          if (!Array.isArray(selected)) {
-            return optionsMap.get(selected)
-          }
-          return ''
-        }
         const count = Array.isArray(selected)
           ? selected.length
           : selected === ''
@@ -396,12 +382,6 @@ export const FilterSelect = React.forwardRef(
       [value, onRemove, onClose]
     )
 
-    const canRemove =
-      (value !== '' || values.length > 0) &&
-      onRemove &&
-      !disabled &&
-      variant !== 'filled'
-
     return (
       <FormControl
         variant='outlined'
@@ -409,35 +389,20 @@ export const FilterSelect = React.forwardRef(
         className={defaultStyles.cx(
           defaultStyles.classes.input,
           localStyles.classes.input,
-          variant !== 'outlined' && defaultStyles.classes.inputWithoutLabel,
+          defaultStyles.classes.inputWithoutLabel,
           getVariantColorClass(),
           'AruiFilterSelect-root',
           className
         )}
         style={style}
       >
-        {variant === 'outlined' && (
-          <InputLabel
-            className={defaultStyles.cx(
-              defaultStyles.classes?.label,
-              'AruiFilterSelect-label',
-              classes?.label
-            )}
-            style={styles?.label}
-          >
-            {label}
-          </InputLabel>
-        )}
         <MuiSelect
           {...other}
           ref={ref}
-          label={variant === 'outlined' ? label : undefined}
           onClose={onCloseMemoized}
           className={defaultStyles.cx(
             localStyles.classes.root,
-            canRemove
-              ? localStyles.classes.selectPaddingWithClear
-              : localStyles.classes.selectPadding,
+            localStyles.classes.selectPadding,
             'AruiFilterSelect-select',
             classes?.select
           )}
@@ -474,17 +439,6 @@ export const FilterSelect = React.forwardRef(
         >
           {optionsMemoized}
         </MuiSelect>
-        {canRemove && (
-          <ClearRounded
-            onClick={onRemove}
-            className={defaultStyles.cx(
-              localStyles.classes.clear,
-              'AruiFilterSelect-clearIcon',
-              classes?.clearIcon
-            )}
-            style={styles?.clearIcon}
-          />
-        )}
       </FormControl>
     )
   }

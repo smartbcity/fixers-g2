@@ -3,7 +3,7 @@ import { ContainerRenderer, ElementRenderersConfig } from '../ComposableRender'
 import { cx } from '@emotion/css'
 import { Box, Stack, StackProps } from '@mui/material'
 import { FormikProvider, useFormik } from 'formik'
-import { useFilterRenderProps, FilterComposable } from './type'
+import { useFilterRenderProps, FilterComposableField } from './type'
 import { MergeReactElementProps, useIsOverflowing } from '@smartb/g2-utils'
 import { makeG2STyles } from '@smartb/g2-themes'
 import { ActionsWrapper, ActionsWrapperProps } from '@smartb/g2-components'
@@ -41,7 +41,7 @@ export interface FiltersComposableBasicProps<
   /**
    * the fields of the form
    */
-  fields: FilterComposable<ELEMENT_PARAMS>[]
+  fields: FilterComposableField<ELEMENT_PARAMS>[]
   /**
    * the state of the form provided by the hook `useForm`
    */

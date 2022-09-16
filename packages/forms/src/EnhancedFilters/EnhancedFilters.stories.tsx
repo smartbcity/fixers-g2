@@ -12,8 +12,10 @@ import { Typography } from '@mui/material'
 import { useEnhancedFilters } from './useEnhancedFilters'
 import { withDesign } from 'storybook-addon-designs'
 import { Route } from 'react-router-dom'
-import { Router as AruiRouter } from '@smartb/g2-providers/src'
-import { AppProvider as AruiAppProvider } from '@smartb/g2-providers/src/AppProvider/AppProvider'
+import {
+  Router as AruiRouter,
+  AppProvider as AruiAppProvider
+} from '@smartb/g2-providers'
 import { QueryClient } from 'react-query'
 import { Button } from '@smartb/g2-components'
 

@@ -25,10 +25,12 @@ export const FilterDatePickerRender: ElementRendererFunction<
         formState.setFieldValue(basicProps.name, date, false)
       }}
       onRemove={() => {
+        console.log('remove')
         formState.setFieldValue(basicProps.name, '', false)
         defaultSubmitBehavior && formState.submitForm()
       }}
       onClose={() => {
+        console.log('close')
         defaultSubmitBehavior && formState.submitForm()
       }}
       {...params}
