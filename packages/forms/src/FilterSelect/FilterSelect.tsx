@@ -15,12 +15,10 @@ import { KeyboardArrowDownRounded } from '@mui/icons-material'
 import {
   BasicProps,
   makeG2STyles,
-  MergeMuiElementProps,
-  useTheme
+  MergeMuiElementProps
 } from '@smartb/g2-themes'
 import { CheckBox } from '../CheckBox'
-import { useFilterInputStyles } from '../style'
-import tinycolor from 'tinycolor2'
+import { useFilterColorStyle, useFilterInputStyles } from '../style'
 import { Option } from '../Select'
 
 export interface FilterSelectClasses {
@@ -227,21 +225,13 @@ export const FilterSelect = React.forwardRef(
       ...other
     } = props
 
-    const theme = useTheme()
     const defaultStyles = useFilterInputStyles()
     const localStyles = useStyles()
-    const colorStyle = useMemo(() => {
-      if (variant === 'outlined') return {}
-      if (color === 'primary') {
-        const isPrimaryDark = tinycolor(theme.colors.primary).isDark()
-        if (isPrimaryDark) return { color: 'white' }
-      }
-      if (color === 'secondary') {
-        const isSecondaryDark = tinycolor(theme.colors.secondary).isDark()
-        if (isSecondaryDark) return { color: 'white' }
-      }
-      return {}
-    }, [color, theme.colors.primary, theme.colors.secondary, variant])
+
+    const colorStyle = useFilterColorStyle({
+      color,
+      variant
+    })
 
     const onChangeMemoized = useCallback(
       (event: SelectChangeEvent<unknown>) => {
