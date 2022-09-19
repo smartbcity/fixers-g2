@@ -26,7 +26,7 @@ const useFormProps = (
   field: FilterComposableField,
   props: FiltersComposableProps<any>
 ): FieldRender => {
-  const { classes, styles } = props
+  const { classes, styles, filterStyleProps } = props
   return {
     key: field.key,
     id: field.key,
@@ -36,7 +36,8 @@ const useFormProps = (
     style: {
       ...styles?.field,
       ...field.params?.style
-    }
+    },
+    ...filterStyleProps
   }
 }
 
@@ -72,7 +73,6 @@ export const useFilterRenderProps = (
     formState.handleChange,
     classes?.field,
     styles?.field,
-    ,
     defaultSubmitBehavior
   ])
   return memo

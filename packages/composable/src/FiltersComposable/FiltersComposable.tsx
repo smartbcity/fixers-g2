@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import { ContainerRenderer, ElementRenderersConfig } from '../ComposableRender'
 import { cx } from '@emotion/css'
 import { Box, Stack, StackProps } from '@mui/material'
@@ -6,9 +6,17 @@ import { FormikProvider, useFormik } from 'formik'
 import { useFilterRenderProps, FilterComposableField } from './type'
 import { MergeReactElementProps, useIsOverflowing } from '@smartb/g2-utils'
 import { makeG2STyles } from '@smartb/g2-themes'
-import { ActionsWrapper, ActionsWrapperProps } from '@smartb/g2-components'
-import { FormAction } from '@smartb/g2-forms'
+import {
+  Action,
+  ActionsWrapper,
+  ActionsWrapperProps
+} from '@smartb/g2-components'
+import { FilterButton, FilterButtonProps } from '@smartb/g2-forms'
 import { DefaultRenderer } from './factories/FormElementsRenderer'
+import {
+  ResponsiveFiltersComposable,
+  ResponsiveFiltersComposableBasicProps
+} from './ResponsiveFiltersComposable'
 
 export interface FiltersComposableClasses {
   actions?: string
@@ -33,7 +41,7 @@ export interface FiltersComposableBasicProps<
   /**
    * the actions displayed at the bottom of the component. To make a validation button you have to add an action with `type="submit"`
    */
-  actions?: FormAction[]
+  actions?: Action[]
   /**
    * the props given to the actions
    */
@@ -59,6 +67,17 @@ export interface FiltersComposableBasicProps<
    */
   styles?: FiltersComposableStyles
   /**
+   * The global ui settings of the filters components
+   */
+  filterStyleProps?: {
+    color?: 'primary' | 'secondary' | 'default'
+    variant?: 'filled' | 'outlined'
+  }
+  /**
+   * The props of the filter button appearing when the component is in responsive mode
+   */
+  filterButtonProps?: FilterButtonProps
+  /**
    * Determine wether the default submit behavior describe below will be activated or not.
    * By default:
    * - the `onChange` event of the datepicker trigger the submit
@@ -70,15 +89,24 @@ export interface FiltersComposableBasicProps<
   defaultSubmitBehavior?: boolean
   /**
    * if true the component will wrap into a button opening a drawer containing the filters when not enough space is left for it
-   * @default false
+   * @default true
    */
   responsive?: boolean
+  /**
+   * The props of the responsive component
+   */
+  responsiveFiltersProps?: ResponsiveFiltersComposableBasicProps
+  /**
+   * You should not use this prop it is used internally for the responsive filters mode
+   * @default true
+   */
+  withFormikProvider?: boolean
 }
 
 const useStyles = makeG2STyles()({
   form: {
     display: 'flex',
-    justifyContent: 'flex-end',
+    justifyContent: 'flex-start',
     alignItems: 'center'
   },
   actionContainer: {
@@ -109,13 +137,51 @@ export const FiltersComposable = <RENDERER extends ElementRenderersConfig>(
     formState,
     fieldsStackProps,
     defaultSubmitBehavior = true,
-    responsive = false,
+    responsive = true,
+    filterButtonProps,
+    withFormikProvider = true,
+    filterStyleProps,
     ...other
   } = props
   const defaultStyles = useStyles()
-  const fieldElement = useFilterRenderProps(props)
-  const { canRemoveContentContainer, containerRef, contentRef } =
+  const [openDrawer, setOpenDrawer] = useState(false)
+  const onCloseDrawer = useCallback(() => {
+    setOpenDrawer(false)
+  }, [])
+
+  const onOpenDrawer = useCallback(() => {
+    setOpenDrawer(true)
+  }, [])
+
+  const sortedFields = useMemo(() => {
+    const allFields: FilterComposableField<RENDERER>[] = []
+    const mandatoryFields: FilterComposableField<RENDERER>[] = []
+    const nonMandatoryFields: FilterComposableField<RENDERER>[] = []
+    fields.forEach((field) => {
+      allFields.push(field)
+      if (field.mandatory) {
+        mandatoryFields.push(field)
+      } else if (field.type !== 'spacer') {
+        nonMandatoryFields.push(field)
+      }
+    })
+    return {
+      allFields,
+      mandatoryFields,
+      nonMandatoryFields
+    }
+  }, [fields])
+
+  const { canRemoveContentContainer, containerRef, contentRef, isOverflowing } =
     useIsOverflowing()
+  const elements = useFilterRenderProps({
+    ...props,
+    fields:
+      isOverflowing && responsive
+        ? sortedFields.mandatoryFields
+        : sortedFields.allFields
+  })
+
   const content = (
     <ActionsWrapper actions={actions} {...actionsProps}>
       <Stack
@@ -123,7 +189,7 @@ export const FiltersComposable = <RENDERER extends ElementRenderersConfig>(
         {...fieldsStackProps}
         sx={{
           display: 'flex',
-          justifyContent: 'flex-end',
+          justifyContent: 'flex-start',
           flexGrow: 1,
           flexWrap: !responsive ? 'wrap' : 'nowrap',
           gap: (theme) => theme.spacing(1),
@@ -132,43 +198,56 @@ export const FiltersComposable = <RENDERER extends ElementRenderersConfig>(
         className={cx('AruiFilters-fieldsContainer', classes?.fieldsContainer)}
         style={styles?.fieldsContainer}
       >
+        {isOverflowing && (
+          <FilterButton
+            onClick={onOpenDrawer}
+            {...filterButtonProps}
+            {...filterStyleProps}
+          />
+        )}
         <ContainerRenderer
           renderer={DefaultRenderer}
           rendererCustom={customFactories}
-          elements={fieldElement}
+          elements={elements}
         />
       </Stack>
     </ActionsWrapper>
   )
-  return (
-    <FormikProvider value={formState}>
-      <form
-        ref={containerRef}
-        onSubmit={formState.handleSubmit}
-        className={cx(
-          defaultStyles.classes?.form,
-          'AruiFilters-root',
-          className
-        )}
-        {...other}
-      >
-        {!canRemoveContentContainer ? (
-          <Box
-            ref={contentRef}
-            sx={{
-              width: 'fit-content',
-              justifyContent: 'flex-end',
-              alignItems: 'center',
-              visibility: 'hidden',
-              display: 'flex'
-            }}
-          >
-            {content}
-          </Box>
-        ) : (
-          content
-        )}
-      </form>
-    </FormikProvider>
+
+  const form = (
+    <form
+      ref={containerRef}
+      onSubmit={formState.handleSubmit}
+      className={cx(defaultStyles.classes?.form, 'AruiFilters-root', className)}
+      {...other}
+    >
+      {!canRemoveContentContainer && responsive ? (
+        <Box
+          ref={contentRef}
+          sx={{
+            width: 'fit-content',
+            justifyContent: 'flex-end',
+            alignItems: 'center',
+            visibility: 'hidden',
+            display: 'flex'
+          }}
+        >
+          {content}
+        </Box>
+      ) : (
+        content
+      )}
+      {isOverflowing && responsive && (
+        <ResponsiveFiltersComposable
+          openDrawer={openDrawer}
+          onCloseDrawer={onCloseDrawer}
+          {...props}
+          fields={sortedFields.nonMandatoryFields}
+        />
+      )}
+    </form>
   )
+  if (withFormikProvider)
+    return <FormikProvider value={formState}>{form}</FormikProvider>
+  return form
 }

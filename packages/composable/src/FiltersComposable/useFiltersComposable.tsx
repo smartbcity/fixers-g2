@@ -54,6 +54,19 @@ export const useFiltersComposable = <T extends {}>(
 
   const [submittedFilters, setSubmittedFilters] = useState(initialValues)
 
+  const filtersCount = useMemo(() => {
+    let count = 0
+    for (let it in submittedFilters) {
+      const value = submittedFilters[it]
+      if (Array.isArray(value)) {
+        count += value.length
+      } else {
+        count += 1
+      }
+    }
+    return count
+  }, [submittedFilters])
+
   const onSubmitMemoized = useCallback(
     (values: any, formikHelpers: FormikHelpers<any>) => {
       onSubmit && onSubmit(values, formikHelpers)
@@ -107,6 +120,7 @@ export const useFiltersComposable = <T extends {}>(
   return {
     formState: formik,
     setAdditionnalFilter: setAdditionnalFilterMemoized,
-    submittedFilters
+    submittedFilters,
+    filtersCount
   }
 }

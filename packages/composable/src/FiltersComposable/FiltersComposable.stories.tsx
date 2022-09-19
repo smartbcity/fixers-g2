@@ -117,7 +117,12 @@ const Example = (args: any) => {
 
   return (
     <>
-      <FiltersComposable {...args} formState={formState} actions={actions} />
+      <FiltersComposable
+        {...args}
+        filterStyleProps={{ color: 'default', variant: 'filled' }}
+        formState={formState}
+        actions={actions}
+      />
       <Typography>{`current page: ${submittedFilters.page + 1}`}</Typography>
       <Button onClick={incrementPage}>+1 to page</Button>
     </>
@@ -129,15 +134,13 @@ const fields: FilterComposableField[] = [
     key: 'storybook-filters-field-from',
     name: 'from',
     label: 'From',
-    type: 'datePicker',
-    params: { variant: 'outlined' }
+    type: 'datePicker'
   },
   {
     key: 'storybook-filters-field-to',
     name: 'to',
     label: 'To',
-    type: 'datePicker',
-    params: { variant: 'outlined' }
+    type: 'datePicker'
   },
   {
     key: 'spacer',
@@ -149,7 +152,8 @@ const fields: FilterComposableField[] = [
     name: 'keyword',
     label: 'Keyword',
     type: 'textField',
-    params: { textFieldType: 'search', variant: 'outlined' }
+    params: { textFieldType: 'search' },
+    mandatory: true
   },
   {
     key: 'storybook-filters-field-country',
@@ -164,8 +168,7 @@ const fields: FilterComposableField[] = [
         { key: 'nice', label: 'Nice' },
         { key: 'marseille', label: 'Marseille' },
         { key: 'montpellier', label: 'Montpellier' }
-      ],
-      variant: 'outlined'
+      ]
     }
   }
 ]

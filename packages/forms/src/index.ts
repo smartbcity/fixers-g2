@@ -41,3 +41,4 @@ export {
   useEnhancedFiltersWithPartialFields
 } from './EnhancedFilters'
 export { RadioChoices, Choice, RadioChoicesProps } from './RadioChoices'
+export { FilterButton, FilterButtonProps } from './FilterButton'

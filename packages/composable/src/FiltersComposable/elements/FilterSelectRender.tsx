@@ -8,7 +8,7 @@ export type FilterSelectExtendProps = Partial<
 >
 
 export type FilterSelectRenderProps = FieldRenderProps<
-  'textField',
+  'select',
   FilterSelectExtendProps
 >
 

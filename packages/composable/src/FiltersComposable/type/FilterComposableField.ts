@@ -19,4 +19,9 @@ export type FilterComposableField<
    * the displayed label of the field
    */
   label?: string
+  /**
+   * Tells if the field should stay on place on responsive mode
+   * @default false
+   */
+  mandatory?: boolean
 } & (FilterRenderType | ComposableElementRendererProps<ELEMENT_PARAMS>)
