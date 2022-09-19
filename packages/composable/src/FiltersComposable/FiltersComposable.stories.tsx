@@ -113,7 +113,7 @@ const Example = (args: any) => {
     [formState.setValues, formState.submitForm]
   )
 
-  // console.log(submittedFilters)
+  console.log(submittedFilters)
 
   return (
     <>

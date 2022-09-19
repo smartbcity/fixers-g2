@@ -72,6 +72,7 @@ export const useFiltersComposable = <T extends {}>(
       onSubmit && onSubmit(values, formikHelpers)
 
       const renamedValues = {}
+      const cleanedValues = {}
 
       for (let fieldName in values) {
         const value = values[fieldName]
@@ -84,7 +85,10 @@ export const useFiltersComposable = <T extends {}>(
         if (date && date instanceof Date && !isNaN(date.getTime())) {
           renamedValues[fieldName + '-date'] = date
         } else {
-          renamedValues[fieldName] = values[fieldName]
+          renamedValues[fieldName] = value
+        }
+        if ((typeof value === 'number' || !!value) && value.length > 0) {
+          cleanedValues[fieldName] = value
         }
       }
 
@@ -96,7 +100,7 @@ export const useFiltersComposable = <T extends {}>(
         })
       )
 
-      setSubmittedFilters(values)
+      setSubmittedFilters(cleanedValues)
     },
     [onSubmit, searchParams, setSearchParams]
   )
