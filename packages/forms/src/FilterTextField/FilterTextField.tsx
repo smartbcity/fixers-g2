@@ -5,16 +5,14 @@ import {
   OutlinedTextFieldProps as MuiOutlinedTextFieldProps,
   InputLabelProps
 } from '@mui/material'
-import { useFilterInputStyles } from '../style'
+import { useFilterColorStyle, useFilterInputStyles } from '../style'
 import {
   BasicProps,
   makeG2STyles,
-  MergeMuiElementProps,
-  useTheme
+  MergeMuiElementProps
 } from '@smartb/g2-themes'
 import { SearchIcon } from '../assets/icons'
 import { ClearRounded } from '@mui/icons-material'
-import tinycolor from 'tinycolor2'
 
 const useStyles = makeG2STyles()({
   root: {
@@ -177,22 +175,15 @@ export const FilterTextField = React.forwardRef(
       variant = 'filled',
       inputProps,
       InputLabelProps,
+      placeholder,
       ...other
     } = props
-    const theme = useTheme()
     const defaultStyles = useFilterInputStyles()
     const localStyles = useStyles()
-    const colorStyle = useMemo(() => {
-      if (color === 'primary') {
-        const isPrimaryDark = tinycolor(theme.colors.primary).isDark()
-        if (isPrimaryDark) return { color: 'white' }
-      }
-      if (color === 'secondary') {
-        const isSecondaryDark = tinycolor(theme.colors.secondary).isDark()
-        if (isSecondaryDark) return { color: 'white' }
-      }
-      return {}
-    }, [color, theme.colors.primary, theme.colors.secondary])
+    const colorStyle = useFilterColorStyle({
+      color,
+      variant
+    })
 
     const onChangeMemoized = useCallback(
       (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
@@ -365,7 +356,7 @@ export const FilterTextField = React.forwardRef(
             ),
             style: styles?.label
           }}
-          placeholder={variant === 'filled' ? label : undefined}
+          placeholder={variant === 'filled' ? label : placeholder}
           variant='outlined'
           color={color !== 'default' ? color : undefined}
           value={value}
@@ -374,7 +365,8 @@ export const FilterTextField = React.forwardRef(
           defaultValue={defaultValue}
           className={defaultStyles.cx(
             defaultStyles.classes.input,
-            variant !== 'outlined' && defaultStyles.classes.inputWithoutLabel,
+            (variant !== 'outlined' || !label) &&
+              defaultStyles.classes.inputWithoutLabel,
             localStyles.classes.input,
             onRemove &&
               inputAdornment.endAdornment &&

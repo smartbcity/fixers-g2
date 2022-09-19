@@ -79,10 +79,6 @@ export const ActionsWrapper: FunctionComponent<ActionsWrapperProps> = (
         style={styles?.actions}
         classes={classes}
         styles={{ button: styles?.button }}
-        sx={{
-          marginTop: (theme) => theme.spacing(2),
-          ...stackProps?.sx
-        }}
         {...stackProps}
       />
     )

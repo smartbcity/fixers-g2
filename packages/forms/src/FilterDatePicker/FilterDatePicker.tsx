@@ -6,12 +6,11 @@ import {
 } from '@mui/lab'
 import AdapterDateFns from '@mui/lab/AdapterDateFns'
 import React, { forwardRef, useCallback, useMemo, useState } from 'react'
-import { useFilterInputStyles } from '../style'
+import { useFilterColorStyle, useFilterInputStyles } from '../style'
 import {
   BasicProps,
   makeG2STyles,
-  MergeMuiElementProps,
-  useTheme
+  MergeMuiElementProps
 } from '@smartb/g2-themes'
 import {
   InputAdornment,
@@ -20,7 +19,6 @@ import {
   TextFieldProps as MuiTextFieldProps
 } from '@mui/material'
 import { Calendar } from '../assets/icons'
-import tinycolor from 'tinycolor2'
 import { ClearRounded } from '@mui/icons-material'
 import { fr, enUS } from 'date-fns/locale'
 const dateFnsLocales = [fr, enUS]
@@ -195,22 +193,14 @@ const FilterDatePickerBase = (
     onOpen,
     ...other
   } = props
-  const theme = useTheme()
   const defaultStyles = useFilterInputStyles()
   const localStyles = useStyles()
   const [open, setOpen] = useState(false)
 
-  const colorStyle = useMemo(() => {
-    if (color === 'primary') {
-      const isPrimaryDark = tinycolor(theme.colors.primary).isDark()
-      if (isPrimaryDark) return { color: 'white' }
-    }
-    if (color === 'secondary') {
-      const isSecondaryDark = tinycolor(theme.colors.secondary).isDark()
-      if (isSecondaryDark) return { color: 'white' }
-    }
-    return {}
-  }, [color, theme.colors.primary, theme.colors.secondary])
+  const colorStyle = useFilterColorStyle({
+    color,
+    variant
+  })
 
   const onOpenMemoized = useCallback(() => {
     setOpen(true)

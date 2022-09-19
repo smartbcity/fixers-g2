@@ -183,9 +183,13 @@ const fields: FiltersField[] = [
   {
     key: 'storybook-filters-field-keyword',
     name: 'keyword',
-    label: 'Keyword',
+    // label: 'Keyword',
     type: 'textfield',
-    textFieldProps: { textFieldType: 'search', variant: 'outlined' }
+    textFieldProps: {
+      textFieldType: 'search',
+      variant: 'outlined',
+      placeholder: 'Keyword'
+    }
   },
   {
     key: 'storybook-filters-field-country',

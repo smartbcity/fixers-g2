@@ -76,7 +76,7 @@ export const FilterSelectSizes: Story<FilterSelectBasicProps> = () => {
             setvalue('')
           }}
           options={options}
-          style={{ margin: 20, width: '180px' }}
+          style={{ margin: 20, width: '200px' }}
         />
         <FilterSelect
           label='Secondary outlined'
@@ -90,7 +90,7 @@ export const FilterSelectSizes: Story<FilterSelectBasicProps> = () => {
             setvalue('')
           }}
           options={options}
-          style={{ margin: 20, width: '180px' }}
+          style={{ margin: 20, width: '200px' }}
         />
         <FilterSelect
           label='Default outlined'
@@ -104,7 +104,7 @@ export const FilterSelectSizes: Story<FilterSelectBasicProps> = () => {
             setvalue('')
           }}
           options={options}
-          style={{ margin: 20, width: '180px' }}
+          style={{ margin: 20, width: '200px' }}
         />
       </Box>
       <Box display='flex' flexDirection='column' alignItems='center'>
@@ -120,7 +120,7 @@ export const FilterSelectSizes: Story<FilterSelectBasicProps> = () => {
             setvalue('')
           }}
           options={options}
-          style={{ margin: 20, width: '180px' }}
+          style={{ margin: 20, width: '200px' }}
         />
         <FilterSelect
           label='Secondary filled'
@@ -134,7 +134,7 @@ export const FilterSelectSizes: Story<FilterSelectBasicProps> = () => {
             setvalue('')
           }}
           options={options}
-          style={{ margin: 20, width: '180px' }}
+          style={{ margin: 20, width: '200px' }}
         />
         <FilterSelect
           label='Default filled'
@@ -148,7 +148,7 @@ export const FilterSelectSizes: Story<FilterSelectBasicProps> = () => {
             setvalue('')
           }}
           options={options}
-          style={{ margin: 20, width: '180px' }}
+          style={{ margin: 20, width: '200px' }}
         />
       </Box>
     </Box>

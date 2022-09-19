@@ -11,16 +11,14 @@ import {
   SelectChangeEvent,
   SelectProps as MuiSelectProps
 } from '@mui/material'
-import { ClearRounded, KeyboardArrowDownRounded } from '@mui/icons-material'
+import { KeyboardArrowDownRounded } from '@mui/icons-material'
 import {
   BasicProps,
   makeG2STyles,
-  MergeMuiElementProps,
-  useTheme
+  MergeMuiElementProps
 } from '@smartb/g2-themes'
 import { CheckBox } from '../CheckBox'
-import { useFilterInputStyles } from '../style'
-import tinycolor from 'tinycolor2'
+import { useFilterColorStyle, useFilterInputStyles } from '../style'
 import { Option } from '../Select'
 
 export interface FilterSelectClasses {
@@ -227,20 +225,13 @@ export const FilterSelect = React.forwardRef(
       ...other
     } = props
 
-    const theme = useTheme()
     const defaultStyles = useFilterInputStyles()
     const localStyles = useStyles()
-    const colorStyle = useMemo(() => {
-      if (color === 'primary') {
-        const isPrimaryDark = tinycolor(theme.colors.primary).isDark()
-        if (isPrimaryDark) return { color: 'white' }
-      }
-      if (color === 'secondary') {
-        const isSecondaryDark = tinycolor(theme.colors.secondary).isDark()
-        if (isSecondaryDark) return { color: 'white' }
-      }
-      return {}
-    }, [color, theme.colors.primary, theme.colors.secondary])
+
+    const colorStyle = useFilterColorStyle({
+      color,
+      variant
+    })
 
     const onChangeMemoized = useCallback(
       (event: SelectChangeEvent<unknown>) => {
@@ -260,21 +251,6 @@ export const FilterSelect = React.forwardRef(
 
     const renderValue = useCallback(
       (selected: string | string[]) => {
-        if (variant === 'outlined') {
-          if (
-            (!Array.isArray(selected) && selected === '') ||
-            (Array.isArray(selected) && selected.length === 0)
-          ) {
-            return placeholder
-          }
-          if (Array.isArray(selected) && selected.length > 0) {
-            return selected.map((el) => optionsMap.get(el)).join(', ')
-          }
-          if (!Array.isArray(selected)) {
-            return optionsMap.get(selected)
-          }
-          return ''
-        }
         const count = Array.isArray(selected)
           ? selected.length
           : selected === ''
@@ -396,12 +372,6 @@ export const FilterSelect = React.forwardRef(
       [value, onRemove, onClose]
     )
 
-    const canRemove =
-      (value !== '' || values.length > 0) &&
-      onRemove &&
-      !disabled &&
-      variant !== 'filled'
-
     return (
       <FormControl
         variant='outlined'
@@ -409,35 +379,20 @@ export const FilterSelect = React.forwardRef(
         className={defaultStyles.cx(
           defaultStyles.classes.input,
           localStyles.classes.input,
-          variant !== 'outlined' && defaultStyles.classes.inputWithoutLabel,
+          defaultStyles.classes.inputWithoutLabel,
           getVariantColorClass(),
           'AruiFilterSelect-root',
           className
         )}
         style={style}
       >
-        {variant === 'outlined' && (
-          <InputLabel
-            className={defaultStyles.cx(
-              defaultStyles.classes?.label,
-              'AruiFilterSelect-label',
-              classes?.label
-            )}
-            style={styles?.label}
-          >
-            {label}
-          </InputLabel>
-        )}
         <MuiSelect
           {...other}
           ref={ref}
-          label={variant === 'outlined' ? label : undefined}
           onClose={onCloseMemoized}
           className={defaultStyles.cx(
             localStyles.classes.root,
-            canRemove
-              ? localStyles.classes.selectPaddingWithClear
-              : localStyles.classes.selectPadding,
+            localStyles.classes.selectPadding,
             'AruiFilterSelect-select',
             classes?.select
           )}
@@ -474,17 +429,6 @@ export const FilterSelect = React.forwardRef(
         >
           {optionsMemoized}
         </MuiSelect>
-        {canRemove && (
-          <ClearRounded
-            onClick={onRemove}
-            className={defaultStyles.cx(
-              localStyles.classes.clear,
-              'AruiFilterSelect-clearIcon',
-              classes?.clearIcon
-            )}
-            style={styles?.clearIcon}
-          />
-        )}
       </FormControl>
     )
   }
