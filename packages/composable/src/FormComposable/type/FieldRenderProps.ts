@@ -1,7 +1,7 @@
 import { ElementParams, WithElementParams } from '../../ComposableRender'
 import { FormComposableState } from './FormComposableState'
 import { FormComposableProps } from '../FormComposable'
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import { FormComposableField } from './FormComposableField'
 import { cx } from '@emotion/css'
 
@@ -91,5 +91,11 @@ export const useFieldRenderProps = (
     styles?.field,
     isLoading
   ])
+  const { setFieldValue } = formState
+  useEffect(() => {
+    fields.map((field) => {
+      field.defaultValue && setFieldValue(field.name, field.defaultValue)
+    })
+  }, [])
   return memo
 }
