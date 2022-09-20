@@ -95,7 +95,10 @@ export interface FiltersComposableBasicProps<
   /**
    * The props of the responsive component
    */
-  responsiveFiltersProps?: ResponsiveFiltersComposableBasicProps
+  responsiveFiltersProps?: Omit<
+    ResponsiveFiltersComposableBasicProps,
+    'openDrawer' | 'onCloseDrawer'
+  >
   /**
    * You should not use this prop it is used internally for the responsive filters mode
    * @default true

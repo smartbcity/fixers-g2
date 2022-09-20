@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react'
+import React, { useCallback, useEffect, useMemo } from 'react'
 import { Meta } from '@storybook/react'
 import { Story } from '@storybook/react/types-6-0'
 import {
@@ -113,7 +113,9 @@ const Example = (args: any) => {
     [formState.setValues, formState.submitForm]
   )
 
-  console.log(submittedFilters)
+  useEffect(() => {
+    console.log(submittedFilters)
+  }, [submittedFilters])
 
   return (
     <>

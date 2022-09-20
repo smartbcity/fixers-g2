@@ -84,11 +84,16 @@ export const useFiltersComposable = <T extends {}>(
             : undefined
         if (date && date instanceof Date && !isNaN(date.getTime())) {
           renamedValues[fieldName + '-date'] = date
-        } else {
+        } else if (
+          (typeof value === 'number' || !!value) &&
+          value.length !== 0
+        ) {
           renamedValues[fieldName] = value
         }
-        if ((typeof value === 'number' || !!value) && value.length > 0) {
+        if ((typeof value === 'number' || !!value) && value.length !== 0) {
           cleanedValues[fieldName] = value
+        } else {
+          cleanedValues[fieldName] = undefined
         }
       }
 
