@@ -29,6 +29,11 @@ export interface SectionBasicProps extends BasicProps {
    */
   bottomActionsProps?: ActionsProps
   /**
+   * if true the content will be wrap in a flex column container with a normalized gap between the children
+   * @default false
+   */
+  flexContent?: boolean
+  /**
    * The classes applied to the different part of the component
    */
   classes?: SectionClasses
@@ -49,6 +54,7 @@ export const Section = (props: SectionProps) => {
     styles,
     className,
     sx,
+    flexContent = false,
     ...other
   } = props
 
@@ -58,11 +64,11 @@ export const Section = (props: SectionProps) => {
       <Actions
         {...bottomActionsProps}
         sx={{
-          marginTop: (theme) => theme.spacing(2)
+          marginTop: !flexContent ? (theme) => theme.spacing(3) : ''
         }}
       />
     )
-  }, [bottomActionsProps])
+  }, [bottomActionsProps, flexContent])
 
   const headerDisplay = useMemo(() => {
     if (!headerProps) return undefined
@@ -109,7 +115,10 @@ export const Section = (props: SectionProps) => {
         <Box
           sx={{
             padding: (theme) => theme.spacing(3),
-            flexGrow: 1
+            flexGrow: 1,
+            display: flexContent ? 'flex' : '',
+            flexDirection: flexContent ? 'column' : '',
+            gap: flexContent ? (theme) => theme.spacing(3) : ''
           }}
           className={cx(
             'AruiSection-contentContainer',

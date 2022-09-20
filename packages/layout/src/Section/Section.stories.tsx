@@ -100,6 +100,7 @@ export const Section: Story<SectionBasicProps> = (args: SectionBasicProps) => {
         bottomActionsProps={{
           actions: actions
         }}
+        flexContent
         sx={{
           maxHeight: '70vh',
           width: '600px'

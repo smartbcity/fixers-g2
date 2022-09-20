@@ -144,6 +144,7 @@ export const FiltersComposable = <RENDERER extends ElementRenderersConfig>(
     filterButtonProps,
     withFormikProvider = true,
     filterStyleProps,
+    responsiveFiltersProps,
     ...other
   } = props
   const defaultStyles = useStyles()
@@ -242,9 +243,10 @@ export const FiltersComposable = <RENDERER extends ElementRenderersConfig>(
       )}
       {isOverflowing && responsive && (
         <ResponsiveFiltersComposable
+          {...props}
+          {...responsiveFiltersProps}
           openDrawer={openDrawer}
           onCloseDrawer={onCloseDrawer}
-          {...props}
           fields={sortedFields.nonMandatoryFields}
         />
       )}
