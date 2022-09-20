@@ -1,4 +1,5 @@
 export * from '@smartb/g2-components'
+export * from '@smartb/g2-composable'
 export * from '@smartb/g2-documentation'
 export * from '@smartb/g2-forms'
 export * from '@smartb/g2-fs'
