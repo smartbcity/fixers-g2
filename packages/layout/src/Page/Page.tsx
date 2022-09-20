@@ -15,6 +15,11 @@ export interface PageBasicProps extends BasicProps {
    */
   headerProps?: HeaderProps
   /**
+   * if true the content will be wrap in a flex column container with a normalized gap between the children
+   * @default false
+   */
+  flexContent?: boolean
+  /**
    * the actions displayed at the bottom of the component.
    */
   bottomActionsProps?: ActionsProps
@@ -23,8 +28,15 @@ export interface PageBasicProps extends BasicProps {
 export type PageProps = MergeMuiElementProps<BoxProps, PageBasicProps>
 
 export const Page = (props: PageProps) => {
-  const { children, headerProps, bottomActionsProps, className, sx, ...other } =
-    props
+  const {
+    children,
+    headerProps,
+    bottomActionsProps,
+    className,
+    flexContent = false,
+    sx,
+    ...other
+  } = props
 
   const actionsDisplay = useMemo(() => {
     if (!bottomActionsProps) return undefined
@@ -32,11 +44,11 @@ export const Page = (props: PageProps) => {
       <Actions
         {...bottomActionsProps}
         sx={{
-          marginTop: (theme) => theme.spacing(5)
+          marginTop: !flexContent ? (theme) => theme.spacing(4) : ''
         }}
       />
     )
-  }, [bottomActionsProps])
+  }, [bottomActionsProps, flexContent])
 
   const headerDisplay = useMemo(() => {
     if (!headerProps) return undefined
@@ -58,7 +70,11 @@ export const Page = (props: PageProps) => {
           sx={{
             padding: (theme) => theme.spacing(5),
             maxWidth: '1700px',
+            width: '100%',
             flexGrow: 1,
+            display: flexContent ? 'flex' : '',
+            flexDirection: flexContent ? 'column' : undefined,
+            gap: flexContent ? (theme) => theme.spacing(4) : '',
             ...sx
           }}
           {...other}
