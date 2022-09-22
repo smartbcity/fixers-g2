@@ -26,19 +26,15 @@ const retrieveNumber = (value: any) => {
   return value
 }
 
-const unformatFieldValue = (value: any, fieldName: string) => {
+const unformatFieldValue = (value: any) => {
   if (Array.isArray(value)) return value
-  if (fieldName.includes('-date')) {
-    const date = new Date(Number(value))
-    return date.toString()
-  }
   return retrieveNumber(value)
 }
 
 export const useFiltersComposable = <T extends {}>(
-  params: FormikFormParams<T>
+  params?: FormikFormParams<T>
 ): FiltersComposableState => {
-  const { onSubmit, formikConfig } = params
+  const { onSubmit, formikConfig } = params ?? {}
 
   const [searchParams, setSearchParams] = useSearchParams()
 
@@ -46,8 +42,7 @@ export const useFiltersComposable = <T extends {}>(
     const obj = {}
     const params = qs.parse(searchParams.toString())
     for (let fieldName in params) {
-      const realFieldName = fieldName.replace('-date', '')
-      obj[realFieldName] = unformatFieldValue(params[fieldName], fieldName)
+      obj[fieldName] = unformatFieldValue(params[fieldName])
     }
     return { ...formikConfig?.initialValues, ...obj }
   }, [])
@@ -60,7 +55,7 @@ export const useFiltersComposable = <T extends {}>(
       const value = submittedFilters[it]
       if (Array.isArray(value)) {
         count += value.length
-      } else {
+      } else if (value !== undefined) {
         count += 1
       }
     }
@@ -70,26 +65,10 @@ export const useFiltersComposable = <T extends {}>(
   const onSubmitMemoized = useCallback(
     (values: any, formikHelpers: FormikHelpers<any>) => {
       onSubmit && onSubmit(values, formikHelpers)
-
-      const renamedValues = {}
       const cleanedValues = {}
 
       for (let fieldName in values) {
         const value = values[fieldName]
-        const date =
-          value instanceof Date
-            ? value
-            : typeof value === 'string'
-            ? new Date(Date.parse(value))
-            : undefined
-        if (date && date instanceof Date && !isNaN(date.getTime())) {
-          renamedValues[fieldName + '-date'] = date
-        } else if (
-          (typeof value === 'number' || !!value) &&
-          value.length !== 0
-        ) {
-          renamedValues[fieldName] = value
-        }
         if ((typeof value === 'number' || !!value) && value.length !== 0) {
           cleanedValues[fieldName] = value
         } else {
@@ -98,10 +77,10 @@ export const useFiltersComposable = <T extends {}>(
       }
 
       setSearchParams(
-        qs.stringify(renamedValues, {
+        qs.stringify(cleanedValues, {
           addQueryPrefix: true,
           arrayFormat: 'repeat',
-          serializeDate: (date) => date.getTime().toString()
+          serializeDate: (date) => date.toISOString()
         })
       )
 

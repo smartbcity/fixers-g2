@@ -3,8 +3,8 @@ import {
   DatePicker as MuiDatePicker,
   DatePickerProps as MuiDatePickerProps,
   LocalizationProvider
-} from '@mui/lab'
-import AdapterDateFns from '@mui/lab/AdapterDateFns'
+} from '@mui/x-date-pickers'
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import React, { forwardRef, useCallback, useMemo } from 'react'
 import { useInputStyles } from '../style'
 import {
@@ -17,7 +17,9 @@ import {
   MergeMuiElementProps
 } from '@smartb/g2-themes'
 import { fr, enUS } from 'date-fns/locale'
-const dateFnsLocales = [fr, enUS]
+const dateFnsLocales = {
+  fr, enUS
+}
 
 const useStyles = makeG2STyles()((theme) => ({
   dialog: {
@@ -116,7 +118,7 @@ export interface DatePickerBasicProps extends BasicProps {
 }
 
 export type DatePickerProps = MergeMuiElementProps<
-  Omit<MuiDatePickerProps, 'onChange' | 'renderInput'>,
+  Omit<MuiDatePickerProps<Date, Date>, 'onChange' | 'renderInput'>,
   DatePickerBasicProps
 >
 
@@ -228,7 +230,7 @@ const DatePickerBase = (
   return (
     <LocalizationProvider
       dateAdapter={AdapterDateFns}
-      locale={dateFnsLocales[locale]}
+      adapterLocale={dateFnsLocales[locale]}
     >
       <MuiDatePicker
         ref={ref}
@@ -238,7 +240,11 @@ const DatePickerBase = (
         mask={format.mask}
         minDate={minDate}
         maxDate={maxDate}
-        clearable
+        componentsProps={{
+          actionBar: {
+            actions: ["clear"]
+          }
+        }}
         DialogProps={{ className: localStyles.classes.dialog }}
         disabled={disabled}
         value={value || null}

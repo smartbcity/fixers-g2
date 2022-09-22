@@ -71,7 +71,7 @@ export const FilterButton = (props: FilterButtonProps) => {
         borderColor: borderColor,
         borderStyle: 'solid',
         borderWidth: '2px',
-        padding: '6px 12px'
+        padding: '7px 12px'
       }}
       variant={variant === 'outlined' ? variant : 'contained'}
       startIcon={<FilterAltOutlined sx={{ width: 24, height: 24 }} />}

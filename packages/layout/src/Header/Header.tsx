@@ -9,8 +9,8 @@ export type HeaderTab = {
 }
 
 export type HeaderContent = {
-  leftPart?: JSX.Element[]
-  rightPart?: JSX.Element[]
+  leftPart?: (JSX.Element | undefined )[]
+  rightPart?: (JSX.Element | undefined) []
 }
 
 interface HeaderClasses {

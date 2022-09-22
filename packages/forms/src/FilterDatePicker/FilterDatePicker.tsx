@@ -3,8 +3,8 @@ import {
   DatePickerProps as MuiDatePickerProps,
   LocalizationProvider,
   CalendarPickerView
-} from '@mui/lab'
-import AdapterDateFns from '@mui/lab/AdapterDateFns'
+} from '@mui/x-date-pickers'
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import React, { forwardRef, useCallback, useMemo, useState } from 'react'
 import { useFilterColorStyle, useFilterInputStyles } from '../style'
 import {
@@ -21,7 +21,9 @@ import {
 import { Calendar } from '../assets/icons'
 import { ClearRounded } from '@mui/icons-material'
 import { fr, enUS } from 'date-fns/locale'
-const dateFnsLocales = [fr, enUS]
+const dateFnsLocales = {
+  fr, enUS
+}
 
 const useStyles = makeG2STyles()((theme) => ({
   root: {
@@ -160,7 +162,7 @@ export interface FilterDatePickerBasicProps extends BasicProps {
 }
 
 export type FilterDatePickerProps = MergeMuiElementProps<
-  Omit<MuiDatePickerProps, 'onChange' | 'renderInput'>,
+  Omit<MuiDatePickerProps<Date, Date>, 'onChange' | 'renderInput'>,
   FilterDatePickerBasicProps
 >
 
@@ -347,7 +349,7 @@ const FilterDatePickerBase = (
   return (
     <LocalizationProvider
       dateAdapter={AdapterDateFns}
-      locale={dateFnsLocales[locale]}
+      adapterLocale={dateFnsLocales[locale]}
     >
       <div
         className={defaultStyles.cx(
@@ -370,7 +372,11 @@ const FilterDatePickerBase = (
           minDate={minDate}
           maxDate={maxDate}
           DialogProps={{ className: localStyles.classes.dialog }}
-          clearable
+          componentsProps={{
+            actionBar: {
+              actions: ["clear"]
+            }
+          }}
           disabled={disabled}
           value={value ? value : null}
           onChange={onChange}

@@ -4,6 +4,7 @@ import { StorybookCanvas } from "../packages/storybook-documentation/src/Storybo
 import { G2ConfigBuilder } from "../packages/providers/src";
 
 import "./default.css";
+import { CssBaseline } from "@mui/material";
 
 export const parameters = {
   docs: {
@@ -43,6 +44,7 @@ G2ConfigBuilder({
 export const withThemeProvider = (Story) => {
   return (
     <ThemeContextProvider>
+      <CssBaseline />
       <Story />
     </ThemeContextProvider>
   );

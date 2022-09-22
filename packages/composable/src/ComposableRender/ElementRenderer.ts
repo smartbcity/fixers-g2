@@ -10,6 +10,7 @@ export interface ElementParams<TYPE extends string, PARAMS> {
 }
 
 export interface WithElementParams<TYPE extends string, PARAMS> {
+  key: string
   element: ElementParams<TYPE, PARAMS>
 }
 

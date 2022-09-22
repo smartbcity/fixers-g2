@@ -37,7 +37,7 @@ export const FilterSelectRender: ElementRendererFunction<
       value={value ?? ''}
       onChangeValue={(value) => {
         formState.setFieldValue(basicProps.name, value, false)
-        formState.submitForm()
+        defaultSubmitBehavior && formState.submitForm()
       }}
       onRemove={() => {
         formState.setFieldValue(basicProps.name, '', false)

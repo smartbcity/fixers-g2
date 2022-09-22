@@ -59,6 +59,7 @@ export const useFilterRenderProps = (
       return {
         basicProps: formProps,
         formState: formState,
+        key: field.key,
         element: {
           params: field.params,
           type: field.type,

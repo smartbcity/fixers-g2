@@ -146,10 +146,10 @@ export const defaultMaterialUiTheme = (
             color: theme.colors.success
           },
           sizeLarge: {
-            padding: '13px 16px'
+            padding: '12px 16px'
           },
           sizeMedium: {
-            padding: '9px 14px',
+            padding: '8px 14px',
             borderRadius: theme.borderRadius * 0.75
           },
           sizeSmall: {
