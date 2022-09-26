@@ -9,11 +9,13 @@ export interface FormikFormParams<T> {
    * the callback called when the form is being validated by the user
    * please use the `setSubmitting` in the formikHelpers object to inform about any asynchronous task
    * before the end of the submission
+   * 
+   * You can return the filtered values that will be saved in the url
    */
   onSubmit?: (
     values: T,
     formikHelpers: FormikHelpers<any>
-  ) => boolean | Promise<boolean>
+  ) => any | Promise<any>
   /**
    * this prop allow you to add you custom config to the useFormik hook
    */
@@ -64,11 +66,12 @@ export const useFiltersComposable = <T extends {}>(
 
   const onSubmitMemoized = useCallback(
     (values: any, formikHelpers: FormikHelpers<any>) => {
-      onSubmit && onSubmit(values, formikHelpers)
+      const customValues = onSubmit ? onSubmit(values, formikHelpers) : undefined
+      const definedValues = customValues ?? values
       const cleanedValues = {}
 
-      for (let fieldName in values) {
-        const value = values[fieldName]
+      for (let fieldName in definedValues) {
+        const value = definedValues[fieldName]
         if ((typeof value === 'number' || !!value) && value.length !== 0) {
           cleanedValues[fieldName] = value
         } else {
@@ -86,7 +89,7 @@ export const useFiltersComposable = <T extends {}>(
 
       setSubmittedFilters(cleanedValues)
     },
-    [onSubmit, searchParams, setSearchParams]
+    [onSubmit, setSearchParams]
   )
 
   const formik = useFormik({
