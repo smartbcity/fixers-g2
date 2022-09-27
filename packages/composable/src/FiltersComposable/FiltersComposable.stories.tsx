@@ -81,8 +81,12 @@ const Router = (props) => {
 }
 
 const Example = (args: any) => {
+  const onSubmit = useCallback((values: any, submittedFilters: any) => {
+    if (values.page === submittedFilters.page) return { ...values, page: 0 }
+  }, [])
   const { formState, setAdditionnalFilter, submittedFilters } =
     useFiltersComposable({
+      onSubmit,
       formikConfig: {
         initialValues: {
           page: 0

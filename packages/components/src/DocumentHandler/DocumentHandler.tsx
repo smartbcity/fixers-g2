@@ -262,6 +262,8 @@ export const DocumentHandler = (props: DocumentHandlerProps) => {
           style={style}
           sx={{
             width: '100%',
+            minWidth: '100px',
+            overflow: 'hidden',
             borderRadius: theme.borderRadius + 'px',
             background: '#F5F5F5',
             cursor: 'pointer',
@@ -302,6 +304,8 @@ export const DocumentHandler = (props: DocumentHandlerProps) => {
         {...dropzoneProps}
         sx={{
           width: '100%',
+          minWidth: '100px',
+          overflow: 'hidden',
           borderRadius: theme.borderRadius + 'px',
           borderColor: error ? theme.colors.error : '#BDBDBD',
           padding: '0px',
@@ -394,7 +398,22 @@ export const DropzoneChildren = (props: DropzoneChildrenProps) => {
         )
       }
       labels.push(
-        <Typography key='label' sx={{ color: '#676879' }} variant='body2'>
+        <Typography
+          key='label'
+          sx={{
+            color: '#676879',
+            lineBreak: 'anywhere',
+            WebkitLineClamp: 2,
+            lineClamp: '2',
+            display: 'box',
+            //@ts-ignore
+            display: '-webkit-box',
+            WebkitBoxOrient: 'vertical',
+            textOverflow: 'ellipsis',
+            overflow: 'hidden'
+          }}
+          variant='body2'
+        >
           {labelName}
         </Typography>
       )

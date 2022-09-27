@@ -3,13 +3,14 @@ import { useCallback, useMemo, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import qs from 'qs'
 import { FiltersComposableState } from './type/FilterComposableState'
+import { equals } from 'ramda'
 
 export interface FormikFormParams<T> {
   /**
    * the callback called when the form is being validated by the user
    * please use the `setSubmitting` in the formikHelpers object to inform about any asynchronous task
    * before the end of the submission
-   * 
+   *
    * You can return the filtered values that will be saved in the url
    */
   onSubmit?: (
@@ -34,7 +35,7 @@ const unformatFieldValue = (value: any) => {
   return retrieveNumber(value)
 }
 
-export const useFiltersComposable = <T extends {}>(
+export const useFiltersComposable = <T extends {} = any>(
   params?: FormikFormParams<T>
 ): FiltersComposableState<T> => {
   const { onSubmit, formikConfig } = params ?? {}
@@ -67,7 +68,11 @@ export const useFiltersComposable = <T extends {}>(
 
   const onSubmitMemoized = useCallback(
     (values: any, formikHelpers: FormikHelpers<any>) => {
-      const customValues = onSubmit ? onSubmit(values, submittedFilters, formikHelpers) : undefined
+      console.log(equals(values, submittedFilters))
+      if (equals(values, submittedFilters)) return
+      const customValues = onSubmit
+        ? onSubmit(values, submittedFilters, formikHelpers)
+        : undefined
       const definedValues = customValues ?? values
       const cleanedValues = {}
 
@@ -89,6 +94,7 @@ export const useFiltersComposable = <T extends {}>(
       )
 
       setSubmittedFilters(cleanedValues)
+      formikHelpers.setValues(cleanedValues)
     },
     [onSubmit, setSearchParams, submittedFilters]
   )

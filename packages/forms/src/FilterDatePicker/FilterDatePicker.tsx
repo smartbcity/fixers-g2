@@ -22,7 +22,8 @@ import { Calendar } from '../assets/icons'
 import { ClearRounded } from '@mui/icons-material'
 import { fr, enUS } from 'date-fns/locale'
 const dateFnsLocales = {
-  fr, enUS
+  fr,
+  enUS
 }
 
 const useStyles = makeG2STyles()((theme) => ({
@@ -374,7 +375,7 @@ const FilterDatePickerBase = (
           DialogProps={{ className: localStyles.classes.dialog }}
           componentsProps={{
             actionBar: {
-              actions: ["clear"]
+              actions: ['clear', 'cancel', 'accept']
             }
           }}
           disabled={disabled}

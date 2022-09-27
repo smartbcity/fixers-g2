@@ -1,11 +1,18 @@
 import { useLocalStorage } from '@mantine/hooks'
 import { Base64ToFile, fileToBase64 } from '@smartb/g2-utils'
 import { useCallback, useState } from 'react'
+import { DocumentHandlerProps } from './DocumentHandler'
 
-/**
- * TODO Add interface for the return type.
- */
-export const useLocalStorageDocumentHandler = (fileKey: string) => {
+export interface LocalStorageDocumentHandler {
+  getFile?: () => File | undefined
+  fileUrl?: string
+  fileName?: string
+  documentHandlerProps: DocumentHandlerProps
+}
+
+export const useLocalStorageDocumentHandler = (
+  fileKey: string
+): LocalStorageDocumentHandler => {
   const [fileUrl, setFileUrl] = useLocalStorage<string | undefined>({
     key: fileKey
   })
@@ -15,15 +22,18 @@ export const useLocalStorageDocumentHandler = (fileKey: string) => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
   const getFile = useCallback(
-    () => fileUrl ? Base64ToFile(fileUrl, fileName) : undefined,
-    [fileUrl, fileName],
+    () => (fileUrl ? Base64ToFile(fileUrl, fileName) : undefined),
+    [fileUrl, fileName]
   )
 
   const getFileUrl = useCallback(
-    () => fileUrl ? URL.createObjectURL(Base64ToFile(fileUrl, fileName)) : undefined,
-    [fileUrl],
+    () =>
+      fileUrl
+        ? URL.createObjectURL(Base64ToFile(fileUrl, fileName))
+        : undefined,
+    [fileUrl]
   )
-  
+
   const onAdd = useCallback(async (files: File[]) => {
     setIsLoading(true)
     const file = files[0]
@@ -42,7 +52,7 @@ export const useLocalStorageDocumentHandler = (fileKey: string) => {
     getFile,
     fileUrl,
     fileName,
-    docmentHandlerProps: {
+    documentHandlerProps: {
       uploaded: !!fileUrl,
       getFileUrl,
       isLoading,

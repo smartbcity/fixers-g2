@@ -1,6 +1,13 @@
 import { useCallback, useState } from 'react'
+import { DocumentHandlerProps } from './DocumentHandler'
 
-export const useLocalDocumentHandler = () => {
+export interface LocalDocumentHandler {
+  file?: File
+  getFileUrl: () => string
+  documentHandlerProps: DocumentHandlerProps
+}
+
+export const useLocalDocumentHandler = (): LocalDocumentHandler => {
   const [file, setFile] = useState<File | undefined>(undefined)
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
@@ -16,14 +23,14 @@ export const useLocalDocumentHandler = () => {
   }, [])
 
   const getFileUrl = useCallback(
-    async () => file ? URL.createObjectURL(file) : "",
-    [file],
+    () => (file ? URL.createObjectURL(file) : ''),
+    [file]
   )
 
   return {
     file,
     getFileUrl,
-    docmentHandlerProps: {
+    documentHandlerProps: {
       uploaded: !!file,
       getFileUrl,
       isLoading,
