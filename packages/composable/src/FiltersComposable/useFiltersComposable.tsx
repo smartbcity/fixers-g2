@@ -14,6 +14,7 @@ export interface FormikFormParams<T> {
    */
   onSubmit?: (
     values: T,
+    submittedFilters: T,
     formikHelpers: FormikHelpers<any>
   ) => any | Promise<any>
   /**
@@ -35,7 +36,7 @@ const unformatFieldValue = (value: any) => {
 
 export const useFiltersComposable = <T extends {}>(
   params?: FormikFormParams<T>
-): FiltersComposableState => {
+): FiltersComposableState<T> => {
   const { onSubmit, formikConfig } = params ?? {}
 
   const [searchParams, setSearchParams] = useSearchParams()
@@ -66,7 +67,7 @@ export const useFiltersComposable = <T extends {}>(
 
   const onSubmitMemoized = useCallback(
     (values: any, formikHelpers: FormikHelpers<any>) => {
-      const customValues = onSubmit ? onSubmit(values, formikHelpers) : undefined
+      const customValues = onSubmit ? onSubmit(values, submittedFilters, formikHelpers) : undefined
       const definedValues = customValues ?? values
       const cleanedValues = {}
 
@@ -89,7 +90,7 @@ export const useFiltersComposable = <T extends {}>(
 
       setSubmittedFilters(cleanedValues)
     },
-    [onSubmit, setSearchParams]
+    [onSubmit, setSearchParams, submittedFilters]
   )
 
   const formik = useFormik({
