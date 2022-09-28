@@ -1,9 +1,9 @@
 import {
   FormPartialField,
   Option,
-  useFormWithPartialFields
+  useFormWithPartialFields,
+  ValidatorFnc
 } from '@smartb/g2-forms'
-import { ValidatorFnc } from '@smartb/g2-forms'
 import { useCallback, useMemo, useState } from 'react'
 import { requiredString, useAdressFields } from '../../../Commons'
 import { useDeletableForm } from '../../../Commons/useDeletableForm'
@@ -13,7 +13,7 @@ import { UserFactoryStrings, ReadonlyFields } from './UserFactory'
 
 const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}/i
 
-export interface useUserFormStateProps<T extends User> {
+export interface UseUserFormStateProps<T extends User> {
   /**
    * The additional fields to add to the form
    */
@@ -72,10 +72,14 @@ export interface useUserFormStateProps<T extends User> {
    * The organizationId of the user. Needed if you want to preSelect it when you are creating a user
    */
   organizationId?: OrganizationId
+  /**
+   * The r of the user. Needed if you want to preSelect it when you are creating a user
+   */
+  roles?: string[]
 }
 
 export const useUserFormState = <T extends User = User>(
-  params?: useUserFormStateProps<T>
+  params?: UseUserFormStateProps<T>
 ) => {
   const {
     additionalFields = [],
@@ -90,14 +94,15 @@ export const useUserFormState = <T extends User = User>(
     checkEmailValidity,
     isUpdate = false,
     readonly = false,
-    organizationId
+    organizationId,
+    roles = []
   } = params ?? {}
 
   const [emailValid, setEmailValid] = useState(false)
   const [emailLoading, setEmailLoading] = useState(false)
 
   const onCheckEmail = useCallback(
-    async (email: string) => {
+    async (email: string): Promise<string | undefined> => {
       if (user?.email !== email && checkEmailValidity) {
         setEmailLoading(true)
         const isTaken = await checkEmailValidity(email)
@@ -109,7 +114,7 @@ export const useUserFormState = <T extends User = User>(
           setEmailValid(true)
         }
       }
-      return
+      return undefined
     },
     [user?.email, checkEmailValidity]
   )
@@ -189,8 +194,8 @@ export const useUserFormState = <T extends User = User>(
       {
         name: 'roles',
         defaultValue: multipleRoles
-          ? user?.roles?.assignedRoles
-          : user?.roles?.assignedRoles[0],
+          ? user?.roles?.assignedRoles || roles
+          : user?.roles?.assignedRoles[0] || roles[0],
         validator:
           !readonlyFields?.roles && additionnalValidators?.roles
             ? additionnalValidators?.roles

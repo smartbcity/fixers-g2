@@ -9,7 +9,7 @@ import { Stack, StackProps } from '@mui/material'
 import { useElementSize } from '@mantine/hooks'
 import { UserSummary } from '../UserSummary'
 import { useDeletableForm } from '../../../Commons/useDeletableForm'
-import { useUserFormState, useUserFormStateProps } from './useUserFormState'
+import { useUserFormState, UseUserFormStateProps } from './useUserFormState'
 
 export type Validated = boolean
 
@@ -83,7 +83,7 @@ export interface UserFactoryStrings extends AdressValidationStrings {
 
 export interface UserFactoryBasicProps
   extends BasicProps,
-    useUserFormStateProps<User> {
+    UseUserFormStateProps<User> {
   /**
    * The base user
    */
