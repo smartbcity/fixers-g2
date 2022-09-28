@@ -39,5 +39,7 @@ export {
   DropzoneChildren,
   useLocalDocumentHandler,
   useLocalStorageDocumentHandler,
-  DocumentHandlerProps
+  DocumentHandlerProps,
+  LocalDocumentHandler,
+  LocalStorageDocumentHandler
 } from './DocumentHandler'

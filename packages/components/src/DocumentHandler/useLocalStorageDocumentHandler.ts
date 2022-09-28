@@ -4,7 +4,7 @@ import { useCallback, useState } from 'react'
 import { DocumentHandlerProps } from './DocumentHandler'
 
 export interface LocalStorageDocumentHandler {
-  getFile?: () => File | undefined
+  getFile: () => File | undefined
   fileUrl?: string
   fileName?: string
   documentHandlerProps: DocumentHandlerProps
