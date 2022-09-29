@@ -15,8 +15,6 @@ export {
   AutomatedOrganizationTable,
   OrganizationTable,
   AutomatedOrganizationTableProps,
-  OrganizationTableBlockedFilters,
-  OrganizationTableFilters,
   OrganizationTableProps
 } from './Components/OrganizationTable'
 

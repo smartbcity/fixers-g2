@@ -30,9 +30,7 @@ export {
   AutomatedUserTable,
   AutomatedUserTableProps,
   UserTable,
-  UserTableProps,
-  UserTableFilters,
-  UserTableBlockedFilters
+  UserTableProps
 } from './Components/UserTable'
 
 export {
