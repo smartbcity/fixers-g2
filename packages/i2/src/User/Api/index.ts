@@ -15,7 +15,6 @@ import {
   useQuery,
   UseQueryOptions
 } from 'react-query'
-import { UserTableFilters } from '../Components/UserTable'
 import { OrganizationId, OrganizationRef } from '../../Organization'
 import { UserPageResult } from '../Domain'
 
@@ -28,7 +27,7 @@ export type GetUsersOptions<T extends User = User> = Omit<
     UserGetAllQueryResultOptional<T>,
     unknown,
     UserGetAllQueryResultOptional<T>,
-    (string | UserTableFilters | undefined)[]
+    any[]
   >,
   'queryKey' | 'queryFn'
 >
@@ -41,7 +40,7 @@ export interface GetUsersParams<T extends User = User> {
   jwt?: string
   apiUrl: string
   options?: GetUsersOptions<T>
-  queryParams?: UserTableFilters
+  queryParams?: any
 }
 
 export const useGetUsers = <T extends User = User>(
@@ -50,17 +49,14 @@ export const useGetUsers = <T extends User = User>(
   const { apiUrl, jwt, options, queryKey = 'users', queryParams } = params
 
   const getUsers = useCallback(
-    async ({
-      queryKey
-    }: QueryFunctionContext<[string, UserTableFilters | undefined]>) => {
+    async ({ queryKey }: QueryFunctionContext<[string, any]>) => {
       const [_key, currentParams] = queryKey
       const res = await request<UserPageResult<T>[]>({
         url: `${apiUrl}/userPage`,
         method: 'POST',
         body: JSON.stringify({
           ...currentParams,
-          page: currentParams?.page ? currentParams?.page - 1 : 0,
-          size: 10
+          size: currentParams?.size ?? 10
         }),
         jwt: jwt
       })

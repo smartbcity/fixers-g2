@@ -3,7 +3,6 @@ import { Link as G2Link, Presentation } from '@smartb/g2-components'
 import { Column, Table, TableProps, CellProps } from '@smartb/g2-layout'
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 import React, { useMemo } from 'react'
-import { UserFilters } from './UserFilters'
 import { User } from '../../Domain'
 import { OrganizationId } from '../../../Organization'
 import {
@@ -11,16 +10,6 @@ import {
   useExtendedColumns
 } from '../../../Commons/useExtendedColumns'
 import { Link, LinkProps } from 'react-router-dom'
-
-export type UserTableFilters = {
-  page?: number
-} & UserFilters
-
-export type UserTableBlockedFilters = {
-  search?: boolean
-  organizationId?: boolean
-  role?: boolean
-}
 
 export interface UserTableStrings {
   /**

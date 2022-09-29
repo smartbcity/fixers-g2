@@ -16,7 +16,6 @@ import {
   UseQueryOptions,
   QueryFunctionContext
 } from 'react-query'
-import { OrganizationTableFilters } from '../Components/OrganizationTable'
 export * from './GetOrganizationRefsQuery'
 
 export type GetOrganizationsOptions<T extends Organization> = Omit<
@@ -24,7 +23,7 @@ export type GetOrganizationsOptions<T extends Organization> = Omit<
     OrganizationPageResult<T>,
     unknown,
     OrganizationPageResult<T>,
-    (string | OrganizationTableFilters | undefined)[]
+    any[]
   >,
   'queryKey' | 'queryFn'
 >
@@ -54,19 +53,17 @@ export const useGetOrganizations = <T extends Organization = Organization>(
   const getOrganizations = useCallback(
     async ({
       queryKey
-    }: QueryFunctionContext<
-      [string, OrganizationTableFilters | undefined]
-    >): Promise<OrganizationPageResult<T>> => {
+    }: QueryFunctionContext<[string, any | undefined]>): Promise<
+      OrganizationPageResult<T>
+    > => {
       const [_key, currentParams] = queryKey
       const res = await request<OrganizationPageResult<T>[]>({
         url: `${apiUrl}/organizationPage`,
         method: 'POST',
         body: JSON.stringify({
           ...currentParams,
-          name: currentParams?.search,
-          page: currentParams?.page ? currentParams?.page - 1 : 0,
           size: currentParams?.size ?? 10
-        } as OrganizationTableFilters),
+        }),
         jwt: jwt
       })
       if (res) {

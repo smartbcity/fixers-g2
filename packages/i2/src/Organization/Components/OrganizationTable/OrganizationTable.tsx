@@ -8,17 +8,6 @@ import {
   useExtendedColumns
 } from '../../../Commons/useExtendedColumns'
 import { Organization } from '../../Domain'
-import { OrganizationFilters } from './OrganizationFilters'
-
-export type OrganizationTableFilters = {
-  page?: number
-  size?: number
-} & OrganizationFilters
-
-export type OrganizationTableBlockedFilters = {
-  search?: boolean
-  role?: boolean
-}
 
 export interface OrganizationTableStrings {
   /**

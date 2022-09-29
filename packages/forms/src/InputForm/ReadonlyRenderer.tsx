@@ -99,6 +99,7 @@ export const ReadonlyRenderer = (props: Partial<InputFormProps>) => {
           component={Link}
           sx={{ color: '#676879' }}
           variant={size === 'small' ? 'body2' : 'body1'}
+          className='AruiInputForm-readonlyLink'
         >
           {textToDisplay}
         </G2Link>
@@ -108,6 +109,7 @@ export const ReadonlyRenderer = (props: Partial<InputFormProps>) => {
         <Typography
           sx={{ color: '#676879' }}
           variant={size === 'small' ? 'body2' : 'body1'}
+          className='AruiInputForm-readonlyText'
         >
           {textToDisplay}
         </Typography>

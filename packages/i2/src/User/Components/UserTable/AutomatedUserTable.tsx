@@ -19,6 +19,14 @@ export interface AutomatedUserTableBasicProps<T extends User = User>
    * Pass the current state of the filters
    */
   filters?: any
+  /**
+   * Override the default local page state
+   */
+  page?: number
+  /**
+   * the event called when the page changes
+   */
+  setPage?: (newPage: number) => void
 }
 
 export type AutomatedUserTableProps<T extends User = User> =
@@ -33,9 +41,9 @@ export type AutomatedUserTableProps<T extends User = User> =
 export const AutomatedUserTable = <T extends User = User>(
   props: AutomatedUserTableProps<T>
 ) => {
-  const { filters, getUsersOptions, ...other } = props
+  const { filters, getUsersOptions, page, setPage, ...other } = props
 
-  const [page, setPage] = useState<number>(filters?.page ?? 1)
+  const [localPage, localSetPage] = useState<number>(1)
 
   const { keycloak } = useAuth()
 
@@ -43,7 +51,7 @@ export const AutomatedUserTable = <T extends User = User>(
     apiUrl: i2Config().userUrl,
     jwt: keycloak.token,
     queryParams: {
-      page,
+      page: localPage - 1,
       ...filters
     },
     options: getUsersOptions
@@ -51,8 +59,8 @@ export const AutomatedUserTable = <T extends User = User>(
 
   return (
     <UserTable<T>
-      page={page}
-      setPage={setPage}
+      page={page ?? localPage}
+      setPage={setPage ?? localSetPage}
       isLoading={!getUsers.isSuccess}
       users={getUsers.data?.users ?? []}
       totalPages={

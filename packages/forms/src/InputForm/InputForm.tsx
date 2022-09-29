@@ -24,6 +24,7 @@ import {
 import { AutoComplete, AutoCompleteProps } from '../AutoComplete'
 import { LoadingRenderer } from './LoadingRenderer'
 import { ReadonlyRenderer } from './ReadonlyRenderer'
+import { cx } from '@emotion/css'
 
 interface InputFormClasses {
   label?: string
@@ -60,6 +61,11 @@ export interface InputFormBasicProps<T extends InputFormTypes = 'textField'>
    * @default "text"
    */
   readonlyType?: 'text' | 'chip'
+  /**
+   * The orientation of the alignement of the label and the input
+   * @default "vertical"
+   */
+  orientation?: 'horizontal' | 'vertical'
   /**
    * This function is used to attribute a chip color to the value to be displayed (if not provided the default color will be used)
    */
@@ -173,6 +179,7 @@ export const InputForm: InputFormComponent = React.forwardRef(
       getReadonlyChipColor,
       readonlyType,
       getReadonlyTextUrl,
+      orientation = 'vertical',
       ...other
     } = props
 
@@ -185,7 +192,8 @@ export const InputForm: InputFormComponent = React.forwardRef(
           className={defaultStyles.cx(
             defaultStyles.classes.label,
             size === 'small' && defaultStyles.classes.labelSmall,
-            classes?.label
+            classes?.label,
+            'AruiInputForm-label'
           )}
           style={styles?.label}
         >
@@ -195,63 +203,30 @@ export const InputForm: InputFormComponent = React.forwardRef(
     }, [label, classes?.label, id, styles?.label, size])
 
     const inputUi = useMemo(() => {
+      const commonProps = {
+        size,
+        className: cx(classes?.input, 'AruiInputForm-input'),
+        style: styles?.input,
+        classes: inputClasses,
+        styles: inputStyles,
+        ref,
+        id
+      }
       return isLoading ? (
         <LoadingRenderer {...props} />
       ) : readonly ? (
         <ReadonlyRenderer {...props} />
       ) : inputType === 'textField' ? (
-        <TextField
-          {...other}
-          size={size}
-          className={classes?.input}
-          style={styles?.input}
-          classes={inputClasses}
-          styles={inputStyles}
-          ref={ref}
-          id={id}
-        />
+        <TextField {...other} {...commonProps} />
       ) : inputType === 'select' ? (
-        <Select
-          {...other}
-          size={size}
-          className={classes?.input}
-          style={styles?.input}
-          classes={inputClasses}
-          styles={inputStyles}
-          ref={ref}
-          id={id}
-        />
+        <Select {...other} {...commonProps} />
       ) : inputType === 'radioChoices' ? (
-        <RadioChoices
-          {...other}
-          className={classes?.input}
-          style={styles?.input}
-          classes={inputClasses}
-          styles={inputStyles}
-          ref={ref}
-          id={id}
-        />
+        <RadioChoices {...other} {...commonProps} />
       ) : inputType === 'autoComplete' ? (
         //@ts-ignore
-        <AutoComplete
-          {...other}
-          className={classes?.input}
-          style={styles?.input}
-          ref={ref}
-          id={id}
-        />
+        <AutoComplete {...other} {...commonProps} />
       ) : (
-        <DatePicker
-          {...other}
-          size={size}
-          className={classes?.input}
-          style={styles?.input}
-          classes={inputClasses}
-          styles={inputStyles}
-          //@ts-ignore
-          ref={ref}
-          id={id}
-        />
+        <DatePicker {...other} {...commonProps} />
       )
     }, [
       readonly,
@@ -273,7 +248,27 @@ export const InputForm: InputFormComponent = React.forwardRef(
     const valuesIsEmpty = props.value === undefined || props.value === ''
     if (readonly && (valueNotExist || valuesIsEmpty) && !isLoading) return <></>
     return (
-      <Box className={className} style={style}>
+      <Box
+        className={className}
+        style={style}
+        sx={
+          orientation === 'horizontal'
+            ? {
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                gap: (theme) => theme.spacing(2),
+                '& .MuiFormLabel-root': {
+                  margin: 'unset'
+                },
+                '& .AruiInputForm-input': {
+                  flexGrow: 1
+                }
+              }
+            : undefined
+        }
+      >
         {labelUi}
         {container ?? inputUi}
       </Box>

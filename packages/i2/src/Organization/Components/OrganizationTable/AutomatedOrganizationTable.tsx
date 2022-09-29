@@ -15,6 +15,14 @@ export interface AutomatedOrganizationTableBasicProps<T extends Organization>
    * Pass the current state of the filters
    */
   filters?: any
+  /**
+   * Override the default local page state
+   */
+  page?: number
+  /**
+   * the event called when the page changes
+   */
+  setPage?: (newPage: number) => void
 }
 
 export type AutomatedOrganizationTableProps<
@@ -32,16 +40,16 @@ export const AutomatedOrganizationTable = <
 >(
   props: AutomatedOrganizationTableProps<T>
 ) => {
-  const { filters, getOrganizationsOptions, ...other } = props
+  const { filters, getOrganizationsOptions, page, setPage, ...other } = props
 
-  const [page, setPage] = useState<number>(filters?.page ?? 1)
+  const [localPage, localSetPage] = useState<number>(1)
   const { keycloak } = useAuth()
 
   const getOrganizations = useGetOrganizations<T>({
     apiUrl: i2Config().orgUrl,
     jwt: keycloak.token,
     queryParams: {
-      page,
+      page: localPage - 1,
       ...filters
     },
     options: getOrganizationsOptions
@@ -56,8 +64,8 @@ export const AutomatedOrganizationTable = <
           ? getOrganizations.data?.total
           : undefined
       }
-      page={page}
-      setPage={setPage}
+      page={page ?? localPage}
+      setPage={setPage ?? localSetPage}
       {...other}
     />
   )
