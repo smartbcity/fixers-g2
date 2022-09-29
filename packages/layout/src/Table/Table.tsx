@@ -99,6 +99,10 @@ export interface TableBasicProps<Data extends {}> extends BasicProps {
    */
   setSelectedRowIds?: (rowIds: Record<string, boolean>) => void
   /**
+   * Do not display the checkbox return false.
+   */
+  isSelectableRow?: (rowIds: Row<Data>) => boolean
+  /**
    * The event triggered when a row is clicked
    */
   onRowClicked?: (row: Row<Data>) => void
@@ -188,6 +192,7 @@ export const Table = <Data extends {}>(props: TableProps<Data>) => {
     isLoading,
     totalPages,
     setSelectedRowIds,
+    isSelectableRow,
     variant = 'elevated',
     renderSubComponent,
     className,
@@ -271,11 +276,16 @@ export const Table = <Data extends {}>(props: TableProps<Data>) => {
                   )
                 },
                 Cell: ({ row }: CellProps<Data>) => {
+                  const isSelectable = isSelectableRow
+                    ? isSelectableRow(row)
+                    : true
                   return (
-                    <CheckBox
-                      {...row.getToggleRowSelectedProps()}
-                      onClick={(event) => event.stopPropagation()}
-                    />
+                    isSelectable && (
+                      <CheckBox
+                        {...row.getToggleRowSelectedProps()}
+                        onClick={(event) => event.stopPropagation()}
+                      />
+                    )
                   )
                 },
                 maxWidth: 50,
@@ -303,7 +313,8 @@ export const Table = <Data extends {}>(props: TableProps<Data>) => {
     rows,
     prepareRow,
     state: { selectedRowIds },
-    toggleRowExpanded
+    toggleRowExpanded,
+    selectedFlatRows
   } = UseCompleteTable<Data>(
     variant,
     {
@@ -325,7 +336,17 @@ export const Table = <Data extends {}>(props: TableProps<Data>) => {
   )
 
   useEffect(() => {
-    setSelectedRowIds && setSelectedRowIds(selectedRowIds)
+    const selectedOptions: Record<string, boolean> = {} as Record<
+      string,
+      boolean
+    >
+    selectedFlatRows
+      .filter((d) => (isSelectableRow ? isSelectableRow(d) : true))
+      .map((d) => d.id)
+      .forEach((val) => {
+        selectedOptions[val] = true
+      })
+    setSelectedRowIds && setSelectedRowIds(selectedOptions)
   }, [selectedRowIds, setSelectedRowIds])
 
   const tableProps = useMemo(() => getTableProps(), [getTableProps])

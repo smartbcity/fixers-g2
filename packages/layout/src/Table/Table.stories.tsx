@@ -133,7 +133,7 @@ export const Table: Story<TableBasicProps<Data>> = (
       onPageChange={(newPage) => setPage(newPage)}
       {...args}
       data={page === 1 ? data1 : data2}
-    ></AruiTable>
+    />
   )
 }
 
@@ -164,7 +164,8 @@ const columns: Column<Data>[] = [
 Table.args = {
   columns: columns,
   setSelectedRowIds: (ids) => console.log(ids),
-  renderSubComponent: (row, rowProps) => (
+  isSelectableRow: (row) => row.index % 2 === 0,
+  renderSubComponent: (row) => (
     <Box
       sx={{
         margin: 1
