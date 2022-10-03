@@ -135,7 +135,7 @@ export interface CheckBoxBasicProps extends BasicProps {
   /**
    * The label displayed at the right of the checkbox
    */
-  label?: string
+  label?: React.ReactNode
 
   /**
    * If true, the checkbox will be disabled
