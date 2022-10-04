@@ -5,7 +5,7 @@ const textFieldGrey = '#C5C7D0'
 const disabledColor = '#E6E9EF'
 
 export const useInputStyles = makeG2STyles()((theme) => ({
-  base: {
+  root: {
     position: 'relative'
   },
   label: {
@@ -180,16 +180,16 @@ export const useInputStyles = makeG2STyles()((theme) => ({
     }
   },
   helperText: {
-    position: 'absolute',
-    top: '100%',
+    position: 'relative',
     color: `${theme.colors.error}`,
+    width: '100%',
     margin: '0',
     marginTop: '3px'
   },
   clear: {
     position: 'absolute',
     right: '10px',
-    top: '50%',
+    top: '20px',
     marginTop: '-12px',
     cursor: 'pointer',
     color: darkGrey

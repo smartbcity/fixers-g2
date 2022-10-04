@@ -130,7 +130,7 @@ export const RadioChoices = React.forwardRef(
     return (
       <div
         className={defaultStyles.cx(
-          defaultStyles.classes.base,
+          defaultStyles.classes.root,
           'AruiRadioChoices-root',
           className
         )}
@@ -146,8 +146,8 @@ export const RadioChoices = React.forwardRef(
           style={style}
           {...other}
         >
-          {errorText}
           {choicesMemoized}
+          {errorText}
         </RadioGroup>
       </div>
     )

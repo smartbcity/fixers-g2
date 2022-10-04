@@ -195,7 +195,9 @@ const fields: FormField[] = [
     label: 'Name',
     type: 'textfield',
     validator: (value) =>
-      value === undefined || value === '' ? 'The name is required' : undefined
+      value === undefined || value === ''
+        ? 'The name is required because you have to in order to validate this beautiful looking form'
+        : undefined
   },
   {
     key: 'storybook-form-field-gender',
@@ -205,7 +207,7 @@ const fields: FormField[] = [
     defaultValue: '',
     validator: (value) =>
       value === undefined || value === ''
-        ? 'The gender is required'
+        ? 'The gender is required because you have to in order to validate this beautiful looking form'
         : undefined,
     selectProps: {
       options: [
@@ -228,7 +230,9 @@ const fields: FormField[] = [
     type: 'radioChoices',
     defaultValue: '',
     validator: (value) =>
-      value === undefined || value === '' ? 'answer the question' : undefined,
+      value === undefined || value === ''
+        ? 'answer the question because you have to in order to validate this beautiful looking form'
+        : undefined,
     radioChoicesProps: {
       choices: [
         { key: 'yes', label: 'Yes' },
@@ -242,7 +246,10 @@ const fields: FormField[] = [
     label: 'I agree to the terms and conditions',
     type: 'checkbox',
     defaultValue: false,
-    validator: (value) => (value !== true ? 'You have to agree' : undefined)
+    validator: (value) =>
+      value !== true
+        ? 'You have to agree because you have to in order to validate this beautiful looking form'
+        : undefined
   }
 ]
 

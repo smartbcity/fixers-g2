@@ -97,8 +97,7 @@ const useStyles = makeG2STyles()((theme) => ({
     height: '20px'
   },
   helperText: {
-    position: 'absolute',
-    top: '100%',
+    position: 'relative',
     marginTop: '-2px',
     marginLeft: '12px',
     color: theme.colors.error,

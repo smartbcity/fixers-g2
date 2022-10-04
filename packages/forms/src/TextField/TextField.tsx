@@ -15,9 +15,6 @@ import {
 import { SearchIcon } from '../assets/icons'
 
 const useStyles = makeG2STyles()({
-  root: {
-    position: 'relative'
-  },
   input: {
     width: '100%'
   },
@@ -92,12 +89,12 @@ export interface TextFieldBasicProps extends BasicProps {
    * @default 'text'
    */
   textFieldType?:
-  | 'number'
-  | 'text'
-  | 'email'
-  | 'password'
-  | 'search'
-  | 'search-number'
+    | 'number'
+    | 'text'
+    | 'email'
+    | 'password'
+    | 'search'
+    | 'search-number'
 
   /**
    * The size of the input
@@ -241,16 +238,13 @@ export const TextField = React.forwardRef(
       [onChange]
     )
 
-    const onSearchMemoisied = useCallback(
-      async () => {
-        if (!!onSearch) {
-          setloading(true)
-          await onSearch()
-          setloading(false)
-        }
-      },
-      [onSearch]
-    )
+    const onSearchMemoisied = useCallback(async () => {
+      if (!!onSearch) {
+        setloading(true)
+        await onSearch()
+        setloading(false)
+      }
+    }, [onSearch])
 
     const downHandler = useCallback(
       (event: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -314,7 +308,7 @@ export const TextField = React.forwardRef(
       classes?.searchIcon,
       styles?.searchIcon,
       disabled,
-      onSearchMemoisied,
+      onSearchMemoisied
     ])
 
     const formHelperProps = useMemo(() => {
@@ -338,7 +332,7 @@ export const TextField = React.forwardRef(
               defaultStyles.classes.clear,
               defaultStyles.classes.loading,
               inputAdornment.endAdornment &&
-              localStyles.classes.endAdornmentWithInputIcon,
+                localStyles.classes.endAdornmentWithInputIcon,
               'AruiTextfield-loadingIcon',
               classes?.loadingIcon
             )}
@@ -352,7 +346,7 @@ export const TextField = React.forwardRef(
             className={defaultStyles.cx(
               defaultStyles.classes.validated,
               inputAdornment.endAdornment &&
-              localStyles.classes.endAdornmentWithInputIcon,
+                localStyles.classes.endAdornmentWithInputIcon,
               'AruiTextfield-validIcon',
               classes?.validIcon
             )}
@@ -367,7 +361,7 @@ export const TextField = React.forwardRef(
             className={defaultStyles.cx(
               defaultStyles.classes.clear,
               inputAdornment.endAdornment &&
-              localStyles.classes.endAdornmentWithInputIcon,
+                localStyles.classes.endAdornmentWithInputIcon,
               error && defaultStyles.classes.clearError,
               'AruiTextfield-clearIcon',
               classes?.clearIcon
@@ -406,7 +400,7 @@ export const TextField = React.forwardRef(
     return (
       <div
         className={defaultStyles.cx(
-          localStyles.classes.root,
+          defaultStyles.classes.root,
           'AruiTextfield-root',
           className
         )}
@@ -423,8 +417,8 @@ export const TextField = React.forwardRef(
             textFieldType === 'search'
               ? 'text'
               : textFieldType === 'search-number'
-                ? 'number'
-                : textFieldType
+              ? 'number'
+              : textFieldType
           }
           defaultValue={defaultValue}
           className={defaultStyles.cx(
@@ -456,10 +450,7 @@ export const TextField = React.forwardRef(
             style: {
               ...styles?.input
             },
-            className: defaultStyles.cx(
-              'AruiTextfield-input',
-              classes?.input
-            ),
+            className: defaultStyles.cx('AruiTextfield-input', classes?.input),
             ...InputProps
           }}
           FormHelperTextProps={formHelperProps}
