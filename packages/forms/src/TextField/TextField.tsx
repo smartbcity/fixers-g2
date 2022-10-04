@@ -1,6 +1,8 @@
 import React, { useCallback, useMemo, useState } from 'react'
 import {
+  Box,
   CircularProgress,
+  FormHelperText,
   InputAdornment,
   TextField as MuiTextField,
   TextFieldProps as MuiTextFieldProps
@@ -311,17 +313,6 @@ export const TextField = React.forwardRef(
       onSearchMemoisied
     ])
 
-    const formHelperProps = useMemo(() => {
-      return {
-        className: defaultStyles.cx(
-          defaultStyles.classes.helperText,
-          'AruiTextfield-helperText',
-          classes?.helperText
-        ),
-        style: styles?.helperText
-      }
-    }, [classes?.helperText, styles?.helperText])
-
     const rightIcon = useMemo(() => {
       if (noCheckOrClearIcon) return
       if (loading || searchLoading) {
@@ -406,57 +397,77 @@ export const TextField = React.forwardRef(
         )}
         style={style}
       >
-        <MuiTextField
-          {...other}
-          ref={ref}
-          id={id}
-          value={value}
-          onChange={onChangeMemoized}
-          placeholder={placeholder}
-          type={
-            textFieldType === 'search'
-              ? 'text'
-              : textFieldType === 'search-number'
-              ? 'number'
-              : textFieldType
-          }
-          defaultValue={defaultValue}
-          className={defaultStyles.cx(
-            defaultStyles.classes.input,
-            localStyles.classes.input,
-            validated && defaultStyles.classes.inputValidated,
-            size === 'large' && defaultStyles.classes.inputLarge,
-            size === 'medium' && defaultStyles.classes.inputMedium,
-            size === 'small' && defaultStyles.classes.inputSmall,
-            multiline && localStyles.classes.paddingMultiline,
-            disabled && defaultStyles.classes.inputDisabled,
-            error && defaultStyles.classes.inputError,
-            inputAdornment.startAdornment && localStyles.classes.withIconStart,
-            inputAdornment.endAdornment && localStyles.classes.withIconEnd,
-            inputClasses(),
-            'AruiTextfield-Textfield',
-            classes?.textfield
-          )}
-          style={styles?.textfield}
-          variant='filled'
-          error={error}
-          disabled={disabled}
-          helperText={error ? errorMessage : ''}
-          color='primary'
-          InputProps={{
-            ...inputAdornment,
-            disableUnderline: true,
-            onKeyDown: downHandler,
-            style: {
-              ...styles?.input
-            },
-            className: defaultStyles.cx('AruiTextfield-input', classes?.input),
-            ...InputProps
+        <Box
+          sx={{
+            position: 'relative'
           }}
-          FormHelperTextProps={formHelperProps}
-          multiline={multiline}
-        />
-        {rightIcon}
+        >
+          <MuiTextField
+            {...other}
+            ref={ref}
+            id={id}
+            value={value}
+            onChange={onChangeMemoized}
+            placeholder={placeholder}
+            type={
+              textFieldType === 'search'
+                ? 'text'
+                : textFieldType === 'search-number'
+                ? 'number'
+                : textFieldType
+            }
+            defaultValue={defaultValue}
+            className={defaultStyles.cx(
+              defaultStyles.classes.input,
+              localStyles.classes.input,
+              validated && defaultStyles.classes.inputValidated,
+              size === 'large' && defaultStyles.classes.inputLarge,
+              size === 'medium' && defaultStyles.classes.inputMedium,
+              size === 'small' && defaultStyles.classes.inputSmall,
+              multiline && localStyles.classes.paddingMultiline,
+              disabled && defaultStyles.classes.inputDisabled,
+              error && defaultStyles.classes.inputError,
+              inputAdornment.startAdornment &&
+                localStyles.classes.withIconStart,
+              inputAdornment.endAdornment && localStyles.classes.withIconEnd,
+              inputClasses(),
+              'AruiTextfield-Textfield',
+              classes?.textfield
+            )}
+            style={styles?.textfield}
+            variant='filled'
+            error={error}
+            disabled={disabled}
+            color='primary'
+            InputProps={{
+              ...inputAdornment,
+              disableUnderline: true,
+              onKeyDown: downHandler,
+              style: {
+                ...styles?.input
+              },
+              className: defaultStyles.cx(
+                'AruiTextfield-input',
+                classes?.input
+              ),
+              ...InputProps
+            }}
+            multiline={multiline}
+          />
+          {rightIcon}
+        </Box>
+        {errorMessage !== '' && error && (
+          <FormHelperText
+            className={defaultStyles.cx(
+              defaultStyles.classes.helperText,
+              'AruiTextfield-helperText',
+              classes?.helperText
+            )}
+            style={styles?.helperText}
+          >
+            {errorMessage}
+          </FormHelperText>
+        )}
       </div>
     )
   }

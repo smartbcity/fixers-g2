@@ -283,6 +283,9 @@ export const FilterSelect = React.forwardRef(
               variant='outlined'
               color={color}
               style={styles?.chip}
+              sx={{
+                visibility: count <= 0 ? 'hidden' : 'visible'
+              }}
             />
           </Box>
         )

@@ -207,7 +207,7 @@ const fields: FormField[] = [
     defaultValue: '',
     validator: (value) =>
       value === undefined || value === ''
-        ? 'The gender is required because you have to in order to validate this beautiful looking form'
+        ? 'The gender is required'
         : undefined,
     selectProps: {
       options: [
@@ -246,10 +246,7 @@ const fields: FormField[] = [
     label: 'I agree to the terms and conditions',
     type: 'checkbox',
     defaultValue: false,
-    validator: (value) =>
-      value !== true
-        ? 'You have to agree because you have to in order to validate this beautiful looking form'
-        : undefined
+    validator: (value) => (value !== true ? 'You have to agree' : undefined)
   }
 ]
 

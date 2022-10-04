@@ -1,5 +1,6 @@
 import React, { useCallback, useMemo } from 'react'
 import {
+  Box,
   FormControl,
   FormHelperText,
   InputBaseComponentProps,
@@ -321,62 +322,68 @@ export const Select = React.forwardRef(
         style={style}
         error={error}
       >
-        <MuiSelect
-          {...other}
-          ref={ref}
-          className={defaultStyles.cx(
-            localStyles.classes.root,
-            values && value === '' && values.length <= 0 && placeholder
-              ? localStyles.classes.disabledStyle
-              : '',
-            canRemove
-              ? localStyles.classes.selectPaddingWithClear
-              : localStyles.classes.selectPadding,
-            'AruiSelect-select',
-            classes?.select
-          )}
-          variant={'filled'}
-          value={multiple ? values : value}
-          onClose={onCloseMemoized}
-          multiple={multiple}
-          IconComponent={selectIcon}
-          onChange={onChangeMemoized}
-          inputProps={inputProp}
-          renderValue={renderValue}
-          displayEmpty
-          MenuProps={{
-            anchorOrigin: {
-              vertical: 'bottom',
-              horizontal: 'center'
-            },
-            transformOrigin: {
-              vertical: 'top',
-              horizontal: 'center'
-            },
-            classes: { list: localStyles.classes.list },
-            className: defaultStyles.cx(
-              localStyles.classes.menu,
-              'AruiSelect-menu',
-              classes?.menu
-            ),
-            style: styles?.menu
+        <Box
+          sx={{
+            position: 'relative'
           }}
-          style={styles?.select}
-          disabled={disabled}
         >
-          {optionsMemoized}
-        </MuiSelect>
-        {canRemove && (
-          <ClearRounded
-            onClick={onRemove}
+          <MuiSelect
+            {...other}
+            ref={ref}
             className={defaultStyles.cx(
-              localStyles.classes.clear,
-              'AruiSelect-clearIcon',
-              classes?.clearIcon
+              localStyles.classes.root,
+              values && value === '' && values.length <= 0 && placeholder
+                ? localStyles.classes.disabledStyle
+                : '',
+              canRemove
+                ? localStyles.classes.selectPaddingWithClear
+                : localStyles.classes.selectPadding,
+              'AruiSelect-select',
+              classes?.select
             )}
-            style={styles?.clearIcon}
-          />
-        )}
+            variant={'filled'}
+            value={multiple ? values : value}
+            onClose={onCloseMemoized}
+            multiple={multiple}
+            IconComponent={selectIcon}
+            onChange={onChangeMemoized}
+            inputProps={inputProp}
+            renderValue={renderValue}
+            displayEmpty
+            MenuProps={{
+              anchorOrigin: {
+                vertical: 'bottom',
+                horizontal: 'center'
+              },
+              transformOrigin: {
+                vertical: 'top',
+                horizontal: 'center'
+              },
+              classes: { list: localStyles.classes.list },
+              className: defaultStyles.cx(
+                localStyles.classes.menu,
+                'AruiSelect-menu',
+                classes?.menu
+              ),
+              style: styles?.menu
+            }}
+            style={styles?.select}
+            disabled={disabled}
+          >
+            {optionsMemoized}
+          </MuiSelect>
+          {canRemove && (
+            <ClearRounded
+              onClick={onRemove}
+              className={defaultStyles.cx(
+                localStyles.classes.clear,
+                'AruiSelect-clearIcon',
+                classes?.clearIcon
+              )}
+              style={styles?.clearIcon}
+            />
+          )}
+        </Box>
         {errorMessage !== '' && error && (
           <FormHelperText
             className={defaultStyles.cx(
