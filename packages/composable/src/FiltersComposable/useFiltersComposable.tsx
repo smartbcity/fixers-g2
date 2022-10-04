@@ -68,7 +68,6 @@ export const useFiltersComposable = <T extends {} = any>(
 
   const onSubmitMemoized = useCallback(
     (values: any, formikHelpers: FormikHelpers<any>) => {
-      console.log(equals(values, submittedFilters))
       if (equals(values, submittedFilters)) return
       const customValues = onSubmit
         ? onSubmit(values, submittedFilters, formikHelpers)
