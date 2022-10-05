@@ -167,7 +167,7 @@ export const ButtonBase = function <T = {}>(
     if (loading || forcedLoading)
       return (
         <CircularProgress
-          size={size === 'small' ? 23 : size === 'medium' ? 24 : 25}
+          size={size === 'small' ? 22 : size === 'medium' ? 24 : 25}
           sx={{
             color: 'currentcolor',
             margin: '-4px 0'
