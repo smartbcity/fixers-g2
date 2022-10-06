@@ -1,18 +1,21 @@
-import React from 'react'
+import React, {ComponentPropsWithRef} from 'react'
 import { ContainerRenderer, ElementRenderersConfig } from '../ComposableRender'
 import { cx } from '@emotion/css'
-import { Stack, StackProps } from '@mui/material'
+import { Stack, StackProps, styled,  } from '@mui/material'
 import { FormikProvider } from 'formik'
 import {
   FormComposableField,
   FormComposableState,
   useFieldRenderProps
 } from './type'
-import { MergeReactElementProps } from '@smartb/g2-utils'
-import { makeG2STyles } from '@smartb/g2-themes'
+import { makeG2STyles, MergeMuiElementProps } from '@smartb/g2-themes'
 import { ActionsWrapper, ActionsWrapperProps } from '@smartb/g2-components'
 import { FormAction } from '@smartb/g2-forms'
 import { DefaultRenderer } from './factories/FormElementsRenderer'
+import { MUIStyledCommonProps } from '@mui/system'
+
+
+const Form = styled("form")()
 
 export interface FormComposableClasses {
   actions?: string
@@ -45,7 +48,7 @@ interface FormComposableBasicProps<
   /**
    * the fields of the form
    */
-  fields: FormComposableField<ELEMENT_PARAMS>[]
+  fields: FormComposableField<string, ELEMENT_PARAMS>[]
   /**
    * the state of the form provided by the hook `useForm`
    */
@@ -83,7 +86,7 @@ const useStyles = makeG2STyles()((theme) => ({
 }))
 
 export type FormComposableProps<RENDERER extends ElementRenderersConfig = {}> =
-  MergeReactElementProps<'form', FormComposableBasicProps<RENDERER>>
+  MergeMuiElementProps<(MUIStyledCommonProps & ComponentPropsWithRef<"form">), FormComposableBasicProps<RENDERER>>
 
 export const FormComposable = <RENDERER extends ElementRenderersConfig>(
   props: FormComposableProps<RENDERER>
@@ -102,15 +105,23 @@ export const FormComposable = <RENDERER extends ElementRenderersConfig>(
     fieldsStackProps,
     isLoading = false,
     readonly = false,
+    sx,
     ...other
   } = props
   const defaultStyles = useStyles()
   const fieldElement = useFieldRenderProps(props)
   return (
     <FormikProvider value={formState}>
-      <form
+      {/* @ts-ignore */}
+      <Form
         onSubmit={formState.handleSubmit}
         className={cx('AruiForm-root', className)}
+        sx={{
+          gap: (theme) => theme.spacing(3),
+          display: "flex",
+          flexDirection: "column",
+          ...sx
+        }}
         {...other}
       >
         <ActionsWrapper actions={actions} {...actionsProps}>
@@ -130,7 +141,7 @@ export const FormComposable = <RENDERER extends ElementRenderersConfig>(
             />
           </Stack>
         </ActionsWrapper>
-      </form>
+      </Form>
     </FormikProvider>
   )
 }

@@ -14,27 +14,26 @@ export interface WithElementParams<TYPE extends string, PARAMS> {
   element: ElementParams<TYPE, PARAMS>
 }
 
-export interface ElementRenderersConfig
-  extends Record<
-    string,
-    ElementRendererFunction<WithElementParams<string, {}>>
-  > {}
+export type ElementRenderersConfig<PROPS extends WithElementParams<string, {}> = WithElementParams<string, {}>> = Record<
+  string,
+  ElementRendererFunction<PROPS>
+>
 
 export type ElementRendererFunction<
-  PROPS extends WithElementParams<string, {}>
-> = FunctionComponent<PROPS>
+  PROPS extends WithElementParams<string, {}> = WithElementParams<string, {}>
+  > = FunctionComponent<PROPS>
 
 export type ComposableElementRendererProps<
   RENDERER extends ElementRenderersConfig
-> = ExtractElementParams<ComposableRendererFunction<RENDERER>>['element']
+  > = ExtractElementParams<ComposableRendererFunction<RENDERER>>['element']
 
 export type ComposableRendererFunction<
   RENDERER extends ElementRenderersConfig
-> = RENDERER[ExtractRenderersKeys<RENDERER>]
+  > = RENDERER[ExtractRenderersKeys<RENDERER>]
 
 export type ExtractRenderersKeys<RENDERER extends ElementRenderersConfig> =
   Extract<keyof RENDERER, string>
 
 export type ExtractElementParams<
   T extends ElementRendererFunction<WithElementParams<string, any>>
-> = T extends ElementRendererFunction<infer R> ? R : unknown
+  > = T extends ElementRendererFunction<infer R> ? R : unknown
