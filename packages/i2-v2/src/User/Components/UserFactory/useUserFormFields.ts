@@ -6,7 +6,11 @@ import {
   ValidatorFnc
 } from '@smartb/g2-forms'
 import { useCallback, useMemo, useState } from 'react'
-import { AdressFieldsName, requiredString, useAdressFields } from '../../../Commons'
+import {
+  AdressFieldsName,
+  requiredString,
+  useAdressFields
+} from '../../../Commons'
 import { useDeletableForm } from '../../../Commons/useDeletableForm'
 import { OrganizationId } from '../../../Organization'
 import { FlatUser, FlatUserToUser, User } from '../../Domain'
@@ -14,7 +18,15 @@ import { UserFactoryStrings, ReadonlyFields } from './UserFactory'
 
 const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}/i
 
-export type userFieldsName = "givenName" | 'familyName' | "email" | "phone" | 'roles' | "memberOf" | "sendEmailLink" | AdressFieldsName
+export type userFieldsName =
+  | 'givenName'
+  | 'familyName'
+  | 'email'
+  | 'phone'
+  | 'roles'
+  | 'memberOf'
+  | 'sendEmailLink'
+  | AdressFieldsName
 
 export interface UseUserFormStateProps<T extends User> {
   /**
@@ -30,24 +42,25 @@ export interface UseUserFormStateProps<T extends User> {
    */
   strings?: UserFactoryStrings
   /**
-    * use This prop to override the fields
-    */
-  fieldsOverride?: Record<userFieldsName, Partial<FormComposableField<userFieldsName>>>
+   * use This prop to override the fields
+   */
+  fieldsOverride?: Record<
+    userFieldsName,
+    Partial<FormComposableField<userFieldsName>>
+  >
   /**
    * The event called to check if the email is available
    */
   checkEmailValidity?: (email: string) => Promise<boolean | undefined>
   /**
-   * The submit event
-   * @param user the complete user object after form Validation
-   * @returns true if the Api call has been successfull
-   */
-  onSubmit?: (user: T) => void
-  /**
    * Indicates if it's an update
    * @default false
    */
   isUpdate?: boolean
+  /**
+   * The initial user object
+   */
+  user?: T
   /**
    * To activate Readonly view
    * @default false
@@ -58,7 +71,7 @@ export interface UseUserFormStateProps<T extends User> {
    */
   organizationId?: OrganizationId
   /**
-   * The r of the user. Needed if you want to preSelect it when you are creating a user
+   * The roles of the user. Needed if you want to preSelect it when you are creating a user
    */
   roles?: string[]
 }
@@ -68,18 +81,14 @@ export const useUserFormState = <T extends User = User>(
 ) => {
   const {
     additionalFields = [],
-    additionnalValidators,
     blockedFields,
     strings,
-    user,
-    readonlyFields,
-    rolesOptions,
-    multipleRoles = true,
-    onSubmit,
+    fieldsOverride,
     checkEmailValidity,
     isUpdate = false,
     readonly = false,
     organizationId,
+    user,
     roles = []
   } = params ?? {}
 
@@ -106,118 +115,36 @@ export const useUserFormState = <T extends User = User>(
 
   const { addressFields } = useAdressFields({
     strings,
-    additionnalValidators,
-    readonly: readonlyFields?.address
+    //@ts-ignore
+    fieldsOverride
   })
 
-  const initialFields = useMemo(
-    (): FormPartialField[] => [
+  const fields = useMemo(
+    (): FormComposableField<userFieldsName>[] => [
       {
+        key: 'givenName',
         name: 'givenName',
-        defaultValue: user?.givenName,
+        type: 'textField',
+        label: 'Prénom',
+        ...fieldsOverride?.givenName,
         validator: (value?: string, values?: any) =>
           requiredString(
-            'givenName',
             strings?.requiredField,
             value,
             values,
-            readonlyFields,
-            additionnalValidators
+            fieldsOverride?.givenName.readonly,
+            fieldsOverride?.givenName.validator
           )
-      },
-      {
-        name: 'familyName',
-        defaultValue: user?.familyName,
-        validator: (value?: string, values?: any) =>
-          requiredString(
-            'familyName',
-            strings?.requiredField,
-            value,
-            values,
-            readonlyFields,
-            additionnalValidators
-          )
-      },
-      addressPartialFields.street,
-      addressPartialFields.postalCode,
-      addressPartialFields.city,
-      {
-        name: 'email',
-        defaultValue: user?.email,
-        validator: async (value?: string) => {
-          if (readonlyFields?.email) return undefined
-          const trimmed = (value ?? '').trim()
-          if (!trimmed)
-            return (
-              strings?.completeTheEmail ??
-              ('Vous devez renseigner le mail' as string)
-            )
-          if (!emailRegex.test(trimmed))
-            return (
-              strings?.enterAValidEmail ?? "L'email renseigné n'est pas correct"
-            )
-          return await onCheckEmail(trimmed)
-        }
-      },
-      {
-        name: 'phone',
-        defaultValue: user?.phone,
-        validator: (value?: string, values?: any) => {
-          if (readonlyFields?.phone) return undefined
-          const trimmed = (value ?? '').trim().replace(' ', '')
-          if (trimmed && trimmed.length !== 10)
-            return (
-              strings?.enterAValidPhone ??
-              'Le numéro de téléphone doit contenir dix chiffres'
-            )
-          return additionnalValidators?.phone
-            ? additionnalValidators?.phone(trimmed, values)
-            : undefined
-        }
-      },
-      {
-        name: 'roles',
-        defaultValue: multipleRoles
-          ? user?.roles?.assignedRoles || roles
-          : user?.roles?.assignedRoles[0] || roles[0],
-        validator:
-          !readonlyFields?.roles && additionnalValidators?.roles
-            ? additionnalValidators?.roles
-            : undefined
-      },
-      {
-        name: 'memberOf',
-        defaultValue: user?.memberOf?.id ?? organizationId,
-        validator:
-          !readonlyFields?.memberOf && additionnalValidators?.memberOf
-            ? additionnalValidators?.memberOf
-            : undefined
-      },
-      ...(!isUpdate && !readonly
-        ? [
-          {
-            name: 'sendEmailLink',
-            defaultValue: true,
-            validator:
-              readonlyFields?.sendEmailLink &&
-                additionnalValidators?.sendEmailLink
-                ? additionnalValidators?.sendEmailLink
-                : undefined
-          }
-        ]
-        : [])
+      }
     ],
     [
       user,
       isUpdate,
-      rolesOptions,
+      fieldsOverride,
       readonly,
       organizationId,
-      readonlyFields,
       strings,
-      multipleRoles,
-      onCheckEmail,
-      addressPartialFields
+      onCheckEmail
     ]
   )
 
@@ -225,22 +152,14 @@ export const useUserFormState = <T extends User = User>(
     const orgsOptions =
       !!organizationsRefs && organizationsRefs.length > 0
         ? organizationsRefs.map(
-          (orgRef): Option => ({
-            key: orgRef.id,
-            label: orgRef.name
-          })
-        )
+            (orgRef): Option => ({
+              key: orgRef.id,
+              label: orgRef.name
+            })
+          )
         : undefined
     return [
-      {
-        key: 'givenName',
-        name: 'givenName',
-        type: 'textfield',
-        label: strings?.givenName ?? 'Prénom',
-        textFieldProps: {
-          readonly: readonlyFields?.givenName
-        }
-      },
+      {},
       {
         key: 'familyName',
         name: 'familyName',
@@ -252,37 +171,37 @@ export const useUserFormState = <T extends User = User>(
       },
       ...(orgsOptions || organizationId
         ? [
-          {
-            key: 'memberOf',
-            name: 'memberOf',
-            label: strings?.organization ?? 'Organisation',
-            type: 'select',
-            selectProps: {
-              options: orgsOptions,
-              readonly: readonlyFields?.memberOf,
-              getReadonlyTextUrl: getOrganizationUrl
-            }
-          } as FormField
-        ]
+            {
+              key: 'memberOf',
+              name: 'memberOf',
+              label: strings?.organization ?? 'Organisation',
+              type: 'select',
+              selectProps: {
+                options: orgsOptions,
+                readonly: readonlyFields?.memberOf,
+                getReadonlyTextUrl: getOrganizationUrl
+              }
+            } as FormField
+          ]
         : []),
       ...(rolesOptions
         ? [
-          {
-            key: 'roles',
-            name: 'roles',
-            label: strings?.roles ?? 'Role',
-            type: 'select',
-            selectProps: {
-              options:
-                readonlyFields?.roles === true || readonly
-                  ? readonlyRolesOptions
-                  : rolesOptions,
-              readonly: readonlyFields?.roles,
-              readonlyType: 'chip',
-              multiple: multipleRoles
-            }
-          } as FormField
-        ]
+            {
+              key: 'roles',
+              name: 'roles',
+              label: strings?.roles ?? 'Role',
+              type: 'select',
+              selectProps: {
+                options:
+                  readonlyFields?.roles === true || readonly
+                    ? readonlyRolesOptions
+                    : rolesOptions,
+                readonly: readonlyFields?.roles,
+                readonlyType: 'chip',
+                multiple: multipleRoles
+              }
+            } as FormField
+          ]
         : []),
       addressFields.street,
       addressFields.postalCode,
@@ -310,19 +229,19 @@ export const useUserFormState = <T extends User = User>(
       },
       ...(!isUpdate && !readonly
         ? [
-          {
-            key: 'sendEmailLink',
-            name: 'sendEmailLink',
-            type: 'checkbox',
-            label:
-              strings?.sendEmailLink ??
-              "Envoyer un lien d'invitation par mail",
-            checkBoxProps: {
-              className: 'AruiUserFactory-sendEmailLink',
-              disabled: readonlyFields?.sendEmailLink
-            }
-          } as FormField
-        ]
+            {
+              key: 'sendEmailLink',
+              name: 'sendEmailLink',
+              type: 'checkbox',
+              label:
+                strings?.sendEmailLink ??
+                "Envoyer un lien d'invitation par mail",
+              checkBoxProps: {
+                className: 'AruiUserFactory-sendEmailLink',
+                disabled: readonlyFields?.sendEmailLink
+              }
+            } as FormField
+          ]
         : [])
     ]
   }, [
@@ -344,7 +263,6 @@ export const useUserFormState = <T extends User = User>(
     additionalFields,
     blockedFields
   })
-
 
   return {
     emailLoading,

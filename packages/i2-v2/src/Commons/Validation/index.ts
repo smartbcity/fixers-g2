@@ -1,4 +1,4 @@
-import { ValidatorFnc } from "@smartb/g2-forms"
+import { ValidatorFnc } from '@smartb/g2-forms'
 
 export interface AdressValidationStrings {
   /**
@@ -53,8 +53,8 @@ const postalCode = (
       ('Vous devez renseigner le code postal pour avoir une adresse complète' as string)
     )
   return additionnalValidator
-  ? additionnalValidator(trimmed, values)
-  : undefined
+    ? additionnalValidator(trimmed, values)
+    : undefined
 }
 
 const city = (
@@ -72,8 +72,8 @@ const city = (
       ('Vous devez renseigner la ville pour avoir une adresse complète' as string)
     )
   return additionnalValidator
-  ? additionnalValidator(trimmed, values)
-  : undefined
+    ? additionnalValidator(trimmed, values)
+    : undefined
 }
 
 export const addressValidation = {
@@ -83,17 +83,14 @@ export const addressValidation = {
 }
 
 export const requiredString = (
-  fieldName: string,
   errorMessage?: string,
   value?: string | number,
   values?: any,
-  readonlyFields?: any,
+  readonly?: boolean,
   additionnalValidator?: ValidatorFnc
 ) => {
-  if (readonlyFields && readonlyFields[fieldName]) return undefined
+  if (readonly) return undefined
   const string = String(value).trim()
   if (!string || !value) return errorMessage ?? 'le champ est obligatoire'
-  return additionnalValidator
-  ? additionnalValidator(string, values)
-  : undefined
+  return additionnalValidator ? additionnalValidator(string, values) : undefined
 }
