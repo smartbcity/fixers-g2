@@ -1,20 +1,14 @@
 import { FormComposableField } from '@smartb/g2-composable'
-import {
-  FormPartialField,
-  Option,
-  useFormWithPartialFields,
-  ValidatorFnc
-} from '@smartb/g2-forms'
 import { useCallback, useMemo, useState } from 'react'
 import {
   AdressFieldsName,
+  mergeFields,
   requiredString,
   useAdressFields
 } from '../../../Commons'
-import { useDeletableForm } from '../../../Commons/useDeletableForm'
 import { OrganizationId } from '../../../Organization'
-import { FlatUser, FlatUserToUser, User } from '../../Domain'
-import { UserFactoryStrings, ReadonlyFields } from './UserFactory'
+import { User } from '../../Domain'
+import { UserFactoryStrings } from './UserFactory'
 
 const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}/i
 
@@ -28,15 +22,11 @@ export type userFieldsName =
   | 'sendEmailLink'
   | AdressFieldsName
 
-export interface UseUserFormStateProps<T extends User> {
-  /**
-   * The additional fields to add to the form
-   */
-  additionalFields?: FormPartialField[]
-  /**
-   * The name of the field you want to block in the form state
-   */
-  blockedFields?: string[]
+export type UserFactoryFieldsOverride = Partial<
+  Record<userFieldsName, Partial<FormComposableField<userFieldsName>>>
+>
+
+export interface UseUserFormFieldsProps<T extends User> {
   /**
    * The prop to use to add custom translation to the component
    */
@@ -44,10 +34,13 @@ export interface UseUserFormStateProps<T extends User> {
   /**
    * use This prop to override the fields
    */
-  fieldsOverride?: Record<
-    userFieldsName,
-    Partial<FormComposableField<userFieldsName>>
-  >
+  fieldsOverride?: UserFactoryFieldsOverride
+  /**
+   * Allow the user to have multipe roles
+   *
+   * @default true
+   */
+  multipleRoles?: boolean
   /**
    * The event called to check if the email is available
    */
@@ -70,18 +63,12 @@ export interface UseUserFormStateProps<T extends User> {
    * The organizationId of the user. Needed if you want to preSelect it when you are creating a user
    */
   organizationId?: OrganizationId
-  /**
-   * The roles of the user. Needed if you want to preSelect it when you are creating a user
-   */
-  roles?: string[]
 }
 
-export const useUserFormState = <T extends User = User>(
-  params?: UseUserFormStateProps<T>
+export const useUserFormFields = <T extends User = User>(
+  params?: UseUserFormFieldsProps<T>
 ) => {
   const {
-    additionalFields = [],
-    blockedFields,
     strings,
     fieldsOverride,
     checkEmailValidity,
@@ -89,7 +76,7 @@ export const useUserFormState = <T extends User = User>(
     readonly = false,
     organizationId,
     user,
-    roles = []
+    multipleRoles
   } = params ?? {}
 
   const [emailValid, setEmailValid] = useState(false)
@@ -121,26 +108,137 @@ export const useUserFormState = <T extends User = User>(
 
   const fields = useMemo(
     (): FormComposableField<userFieldsName>[] => [
-      {
-        key: 'givenName',
-        name: 'givenName',
-        type: 'textField',
-        label: 'Prénom',
-        ...fieldsOverride?.givenName,
-        validator: (value?: string, values?: any) =>
-          requiredString(
-            strings?.requiredField,
-            value,
-            values,
-            fieldsOverride?.givenName.readonly,
-            fieldsOverride?.givenName.validator
-          )
-      }
+      mergeFields<FormComposableField<userFieldsName>>(
+        {
+          key: 'givenName',
+          name: 'givenName',
+          type: 'textField',
+          label: 'Prénom',
+          validator: (value?: string) =>
+            requiredString(
+              strings?.requiredField,
+              value,
+              fieldsOverride?.givenName?.readonly
+            )
+        },
+        fieldsOverride?.givenName
+      ),
+      mergeFields<FormComposableField<userFieldsName>>(
+        {
+          key: 'familyName',
+          name: 'familyName',
+          type: 'textField',
+          label: 'Nom de Famille',
+          validator: (value?: string) =>
+            requiredString(
+              strings?.requiredField,
+              value,
+              fieldsOverride?.familyName?.readonly
+            )
+        },
+        fieldsOverride?.familyName
+      ),
+      addressFields.street,
+      addressFields.postalCode,
+      addressFields.city,
+      mergeFields<FormComposableField<userFieldsName>>(
+        {
+          key: 'email',
+          name: 'email',
+          type: 'textField',
+          label: 'Adresse mail',
+          params: {
+            textFieldType: 'email',
+            searchLoading: emailLoading,
+            validated: emailValid
+          },
+          validator: async (value?: string) => {
+            if (fieldsOverride?.email?.readonly) return undefined
+            const trimmed = (value ?? '').trim()
+            if (!trimmed)
+              return (
+                strings?.completeTheEmail ??
+                ('Vous devez renseigner le mail' as string)
+              )
+            if (!emailRegex.test(trimmed))
+              return (
+                strings?.enterAValidEmail ??
+                "L'email renseigné n'est pas correct"
+              )
+            return await onCheckEmail(trimmed)
+          }
+        },
+        fieldsOverride?.email
+      ),
+      mergeFields<FormComposableField<userFieldsName>>(
+        {
+          key: 'phone',
+          name: 'phone',
+          type: 'textField',
+          label: 'Numéro de téléphone (facultatif)',
+          validator: (value?: string) => {
+            if (fieldsOverride?.phone?.readonly) return undefined
+            const trimmed = (value ?? '').trim().replace(' ', '')
+            if (trimmed && trimmed.length !== 10)
+              return (
+                strings?.enterAValidPhone ??
+                'Le numéro de téléphone doit contenir dix chiffres'
+              )
+          }
+        },
+        fieldsOverride?.phone
+      ),
+      //@ts-ignore
+      ...(fieldsOverride?.roles?.params?.options || organizationId
+        ? [
+            mergeFields<FormComposableField<userFieldsName>>(
+              {
+                key: 'roles',
+                name: 'roles',
+                label: 'Role',
+                type: 'select',
+                params: {
+                  readonlyType: 'chip',
+                  multiple: multipleRoles
+                }
+              },
+              fieldsOverride?.roles
+            )
+          ]
+        : []),
+      mergeFields<FormComposableField<userFieldsName>>(
+        {
+          key: 'memberOf',
+          name: 'memberOf',
+          label: 'Organisation',
+          type: 'select',
+          defaultValue: user?.memberOf?.id ?? organizationId
+        },
+        fieldsOverride?.memberOf
+      ),
+      ...(!isUpdate && !readonly
+        ? [
+            mergeFields<FormComposableField<userFieldsName>>(
+              {
+                key: 'sendEmailLink',
+                name: 'sendEmailLink',
+                type: 'checkBox',
+                label: "Envoyer un lien d'invitation par mail",
+                params: {
+                  className: 'AruiUserFactory-sendEmailLink',
+                  disabled: fieldsOverride?.sendEmailLink?.readonly
+                }
+              },
+              fieldsOverride?.sendEmailLink
+            )
+          ]
+        : [])
     ],
     [
       user,
       isUpdate,
       fieldsOverride,
+      multipleRoles,
       readonly,
       organizationId,
       strings,
@@ -148,124 +246,12 @@ export const useUserFormState = <T extends User = User>(
     ]
   )
 
-  const userForm = useMemo((): FormField[] => {
-    const orgsOptions =
-      !!organizationsRefs && organizationsRefs.length > 0
-        ? organizationsRefs.map(
-            (orgRef): Option => ({
-              key: orgRef.id,
-              label: orgRef.name
-            })
-          )
-        : undefined
-    return [
-      {},
-      {
-        key: 'familyName',
-        name: 'familyName',
-        type: 'textfield',
-        label: strings?.familyName ?? 'Nom de Famille',
-        textFieldProps: {
-          readonly: readonlyFields?.familyName
-        }
-      },
-      ...(orgsOptions || organizationId
-        ? [
-            {
-              key: 'memberOf',
-              name: 'memberOf',
-              label: strings?.organization ?? 'Organisation',
-              type: 'select',
-              selectProps: {
-                options: orgsOptions,
-                readonly: readonlyFields?.memberOf,
-                getReadonlyTextUrl: getOrganizationUrl
-              }
-            } as FormField
-          ]
-        : []),
-      ...(rolesOptions
-        ? [
-            {
-              key: 'roles',
-              name: 'roles',
-              label: strings?.roles ?? 'Role',
-              type: 'select',
-              selectProps: {
-                options:
-                  readonlyFields?.roles === true || readonly
-                    ? readonlyRolesOptions
-                    : rolesOptions,
-                readonly: readonlyFields?.roles,
-                readonlyType: 'chip',
-                multiple: multipleRoles
-              }
-            } as FormField
-          ]
-        : []),
-      addressFields.street,
-      addressFields.postalCode,
-      addressFields.city,
-      {
-        key: 'email',
-        name: 'email',
-        type: 'textfield',
-        label: strings?.email ?? 'Adresse mail',
-        textFieldProps: {
-          textFieldType: 'email',
-          readonly: readonlyFields?.email,
-          searchLoading: emailLoading,
-          validated: emailValid
-        }
-      },
-      {
-        key: 'phone',
-        name: 'phone',
-        type: 'textfield',
-        label: strings?.phone ?? 'Numéro de téléphone (facultatif)',
-        textFieldProps: {
-          readonly: readonlyFields?.phone
-        }
-      },
-      ...(!isUpdate && !readonly
-        ? [
-            {
-              key: 'sendEmailLink',
-              name: 'sendEmailLink',
-              type: 'checkbox',
-              label:
-                strings?.sendEmailLink ??
-                "Envoyer un lien d'invitation par mail",
-              checkBoxProps: {
-                className: 'AruiUserFactory-sendEmailLink',
-                disabled: readonlyFields?.sendEmailLink
-              }
-            } as FormField
-          ]
-        : [])
-    ]
-  }, [
-    isUpdate,
-    rolesOptions,
-    organizationsRefs,
-    readonlyFields,
-    readonly,
-    organizationId,
-    getOrganizationUrl,
-    multipleRoles,
-    emailLoading,
-    emailValid,
-    addressFields
-  ])
-
-  const fields = useDeletableForm<FormPartialField>({
-    initialFields,
-    additionalFields,
-    blockedFields
-  })
+  const fieldsArray = useMemo(() => Object.values(fields), [fields])
 
   return {
     emailLoading,
-    emailValid
+    emailValid,
+    fields,
+    fieldsArray
   }
 }

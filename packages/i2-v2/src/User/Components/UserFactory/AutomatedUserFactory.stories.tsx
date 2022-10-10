@@ -9,9 +9,10 @@ import { g2Config, KeycloakProvider } from '@smartb/g2-providers'
 import { Typography } from '@mui/material'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { Button } from '@smartb/g2-components'
+import { useUserFormState } from './useUserFormState'
 
 export default {
-  title: 'I2/AutomatedUserFactory',
+  title: 'I2-V2/AutomatedUserFactory',
   component: AutomatedUserFactory
 } as Meta
 
@@ -38,24 +39,36 @@ const Following = (args: AutomatedUserFactoryProps) => {
     'b78ce604-72ce-4bf5-99a2-f0b0d5f06b2a'
   )
   const submitRef = useRef<HTMLButtonElement>(null)
+  const userFormState = useUserFormState({
+    createUserOptions: {
+      onSuccess: (data) => {
+        setuserId(data?.id)
+      }
+    },
+    userId: userId,
+    organizationId: '1'
+  })
+
   return (
     <>
       <AutomatedUserFactory
-        update={userId}
-        createUserOptions={{
-          onSuccess: (data) => {
-            setuserId(data.id)
+        update={!!userId}
+        organizationId={'1'}
+        fieldsOverride={{
+          memberOf: {
+            params: {
+              options: [
+                {
+                  key: '1',
+                  label: 'Organization 1'
+                }
+              ]
+            }
           }
         }}
-        organizationId={'1'}
-        organizationsRefs={[
-          {
-            id: '1',
-            name: 'Organization 1'
-          }
-        ]}
         resetPasswordType='forced'
         SubmitButtonRef={submitRef}
+        {...userFormState}
         {...args}
         userId={userId}
       />

@@ -1,16 +1,20 @@
 import { cx } from '@emotion/css'
-import { Form, FormField, Option } from '@smartb/g2-forms'
+import { Option } from '@smartb/g2-forms'
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
-import React, { useEffect, useMemo } from 'react'
+import React, { useEffect } from 'react'
 import { FlatUser, User } from '../../Domain'
-import { AdressValidationStrings, useAdressFields } from '../../../Commons'
+import { AdressValidationStrings } from '../../../Commons'
 import { OrganizationId, OrganizationRef } from '../../../Organization'
 import { Stack, StackProps } from '@mui/material'
 import { useElementSize } from '@mantine/hooks'
 import { UserSummary } from '../UserSummary'
 import { useDeletableForm } from '../../../Commons/useDeletableForm'
-import { useUserFormState, UseUserFormStateProps } from './useUserFormState'
-import { FormComposable } from '@smartb/g2-composable'
+import {
+  FormComposable,
+  FormComposableField,
+  FormComposableState
+} from '@smartb/g2-composable'
+import { useUserFormFields, UseUserFormFieldsProps } from './useUserFormFields'
 
 export type Validated = boolean
 
@@ -19,46 +23,6 @@ export type ReadonlyFields = {
 }
 
 export interface UserFactoryStrings extends AdressValidationStrings {
-  /**
-   * @default "Prénom"
-   */
-  givenName?: string
-  /**
-   * @default "Nom de Famille"
-   */
-  familyName?: string
-  /**
-   * @default "Addresse (facultatif)"
-   */
-  street?: string
-  /**
-   * @default "Code postal (facultatif)"
-   */
-  postalCode?: string
-  /**
-   * @default "Ville (facultatif)"
-   */
-  city?: string
-  /**
-   * @default "Adresse mail"
-   */
-  email?: string
-  /**
-   * @default "Numéro de téléphone (facultatif)"
-   */
-  phone?: string
-  /**
-   * @default "Role"
-   */
-  roles?: string
-  /**
-   * @default "Organisation"
-   */
-  organization?: string
-  /**
-   * @default "Envoyer un lien d'invitation par mail"
-   */
-  sendEmailLink?: string
   /**
    * @default "le champ est obligatoire"
    */
@@ -75,7 +39,6 @@ export interface UserFactoryStrings extends AdressValidationStrings {
    * @default "Le numéro de téléphone doit contenir dix chiffres"
    */
   enterAValidPhone?: string
-
   /**
    * @default 'Cette addresse email est déjà utilisée'
    */
@@ -84,17 +47,23 @@ export interface UserFactoryStrings extends AdressValidationStrings {
 
 export interface UserFactoryBasicProps
   extends BasicProps,
-    UseUserFormStateProps<User> {
+    UseUserFormFieldsProps<User> {
   /**
    * The base user
    */
   user?: User
   /**
-   * The submit event
-   * @param user the complete user object after form Validation
-   * @returns true if the Api call has been successfull
+   * The state of the form obtainable by calling useUserFormState
    */
-  onSubmit?: (user: User) => Promise<Validated> | Validated
+  formState: FormComposableState
+  /**
+   * The additional fields to add to the form
+   */
+  additionalFields?: FormComposableField[]
+  /**
+   * The name of the field you want to block in the form state
+   */
+  blockedFields?: string[]
   /**
    * The ref of the submit element
    */
@@ -140,13 +109,12 @@ export const UserFactory = (props: UserFactoryProps) => {
   const {
     user,
     onSubmit,
-    isUpdate = false,
     className,
     readonly = false,
+    formState,
     organizationsRefs,
-    rolesOptions,
+    additionalFields,
     organizationId,
-    readonlyFields,
     isLoading = false,
     strings,
     SubmitButtonRef,
@@ -157,30 +125,21 @@ export const UserFactory = (props: UserFactoryProps) => {
     checkEmailValidity,
     formExtension,
     setUserState,
-    additionnalValidators,
     ...other
   } = props
 
   const { ref, width } = useElementSize()
 
-  const { formState, emailLoading, emailValid } = useUserFormState(props)
-  delete other.additionalFields
-
+  const { fieldsArray } = useUserFormFields(props)
+  delete other.fieldsOverride
+  delete other.isUpdate
   useEffect(() => {
     setUserState && setUserState(formState.values as FlatUser)
   }, [formState.values, setUserState])
 
-  const { addressFields } = useAdressFields({
-    address: user?.address,
-    strings,
-    additionnalValidators,
-    readonly: readonlyFields?.address
-  })
-
- 
-
   const finalFields = useDeletableForm({
-    initialFields: userForm,
+    initialFields: fieldsArray,
+    additionalFields: additionalFields,
     blockedFields: blockedFields
   })
 

@@ -8,7 +8,7 @@ import { Stack, Typography } from '@mui/material'
 import { User } from '../../Domain'
 
 export default {
-  title: 'I2/UserTable',
+  title: 'I2-V2/UserTable',
   component: UserTable,
   parameters: {
     docs: {

@@ -12,7 +12,7 @@ import { styles, classes } from '../../Domain'
 import { Button } from '@smartb/g2-components'
 
 export default {
-  title: 'I2/OrganizationFactory',
+  title: 'I2-V2/OrganizationFactory',
   component: OrganizationFactory,
   parameters: {
     docs: {

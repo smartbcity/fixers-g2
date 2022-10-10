@@ -1,12 +1,21 @@
 import { FormComposableField } from '@smartb/g2-composable'
 import { useMemo } from 'react'
-import { Address, addressValidation, AdressValidationStrings } from '.'
+import {
+  Address,
+  addressValidation,
+  AdressValidationStrings,
+  mergeFields
+} from '.'
 
-export type AdressFieldsName = "street" | 'postalCode' | "city"
+export type AdressFieldsName = 'street' | 'postalCode' | 'city'
 
 export type AdressReadonlyFields = {
   [k in keyof Address]?: boolean
 }
+
+export type AdressFieldsOverride = Partial<
+  Record<AdressFieldsName, Partial<FormComposableField<AdressFieldsName>>>
+>
 
 export interface useAdressFieldsParams {
   /**
@@ -16,65 +25,55 @@ export interface useAdressFieldsParams {
   /**
    * use This prop to override the fields
    */
-  fieldsOverride?: Record<AdressFieldsName, Partial<FormComposableField<AdressFieldsName>>>
+  fieldsOverride?: AdressFieldsOverride
 }
 
 export const useAdressFields = (params?: useAdressFieldsParams) => {
-  const {
-    strings = {},
-    fieldsOverride
-  } = params || {}
+  const { strings = {}, fieldsOverride } = params || {}
 
   const addressFields = useMemo(
     () => ({
-      street: {
-        key: 'street',
-        name: 'street',
-        type: 'textField',
-        label: 'Addresse (facultatif)',
-        ...fieldsOverride?.street,
-        validator: fieldsOverride?.street.readonly
-          ? undefined
-          : (value: any, values: any) =>
-            addressValidation.street(
-              value,
-              values,
-              strings,
-              fieldsOverride?.street.validator
-            ),
-      } as FormComposableField<AdressFieldsName>,
-      postalCode: {
-        key: 'postalCode',
-        name: 'postalCode',
-        type: 'textField',
-        label: 'Code postal (facultatif)',
-        ...fieldsOverride?.postalCode,
-        validator: fieldsOverride?.postalCode.readonly
-          ? undefined
-          : (value: any, values: any) =>
-            addressValidation.postalCode(
-              value,
-              values,
-              strings,
-              fieldsOverride?.postalCode.validator
-            ),
-      } as FormComposableField<AdressFieldsName>,
-      city: {
-        key: 'city',
-        name: 'city',
-        type: 'textField',
-        label: 'Ville (facultatif)',
-        ...fieldsOverride?.city,
-        validator: fieldsOverride?.city.readonly
-          ? undefined
-          : (value: any, values: any) =>
-            addressValidation.city(
-              value,
-              values,
-              strings,
-              fieldsOverride?.city.validator
-            ),
-      } as FormComposableField<AdressFieldsName>
+      street: mergeFields<FormComposableField<AdressFieldsName>>(
+        {
+          key: 'street',
+          name: 'street',
+          type: 'textField',
+          label: 'Addresse (facultatif)',
+          validator: fieldsOverride?.street?.readonly
+            ? undefined
+            : (value: any, values: any) =>
+                addressValidation.street(value, values, strings)
+        },
+        fieldsOverride?.street
+      ),
+      postalCode: mergeFields<FormComposableField<AdressFieldsName>>(
+        {
+          key: 'postalCode',
+          name: 'postalCode',
+          type: 'textField',
+          label: 'Code postal (facultatif)',
+          ...fieldsOverride?.postalCode,
+          validator: fieldsOverride?.postalCode?.readonly
+            ? undefined
+            : (value: any, values: any) =>
+                addressValidation.postalCode(value, values, strings)
+        },
+        fieldsOverride?.postalCode
+      ),
+      city: mergeFields<FormComposableField<AdressFieldsName>>(
+        {
+          key: 'city',
+          name: 'city',
+          type: 'textField',
+          label: 'Ville (facultatif)',
+          ...fieldsOverride?.city,
+          validator: fieldsOverride?.city?.readonly
+            ? undefined
+            : (value: any, values: any) =>
+                addressValidation.city(value, values, strings)
+        },
+        fieldsOverride?.city
+      )
     }),
     [strings, fieldsOverride]
   )

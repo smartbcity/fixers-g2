@@ -11,7 +11,7 @@ import { QueryClient, QueryClientProvider } from 'react-query'
 import { Organization } from '../OrganizationFactory'
 
 export default {
-  title: 'I2/AutomatedOrganizationTable',
+  title: 'I2-V2/AutomatedOrganizationTable',
   component: AutomatedOrganizationTable
 } as Meta
 
@@ -23,20 +23,21 @@ const queryClient = new QueryClient({
   }
 })
 
-export const AutomatedOrganizationTableStory: Story<AutomatedOrganizationTableProps<Organization>> =
-  (args: AutomatedOrganizationTableProps<Organization>) => {
-    return (
-      <QueryClientProvider client={queryClient}>
-        <KeycloakProvider
-          config={g2Config().keycloak}
-          loadingComponent={<Typography>Loading...</Typography>}
-          initOptions={{ onLoad: 'login-required' }}
-        >
-          <Following {...args} />
-        </KeycloakProvider>
-      </QueryClientProvider>
-    )
-  }
+export const AutomatedOrganizationTableStory: Story<
+  AutomatedOrganizationTableProps<Organization>
+> = (args: AutomatedOrganizationTableProps<Organization>) => {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <KeycloakProvider
+        config={g2Config().keycloak}
+        loadingComponent={<Typography>Loading...</Typography>}
+        initOptions={{ onLoad: 'login-required' }}
+      >
+        <Following {...args} />
+      </KeycloakProvider>
+    </QueryClientProvider>
+  )
+}
 
 const Following = (args: AutomatedOrganizationTableProps<Organization>) => {
   const { keycloak } = useAuth()

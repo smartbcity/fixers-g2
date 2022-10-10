@@ -1,47 +1,55 @@
-import {
-  FormPartialField,
-  Option,
-  useFormWithPartialFields,
-  ValidatorFnc
-} from '@smartb/g2-forms'
-import { useCallback, useMemo, useState } from 'react'
-import { requiredString, useAdressFields } from '../../../Commons'
-import { useDeletableForm } from '../../../Commons/useDeletableForm'
+import { useFormComposable } from '@smartb/g2-composable'
+import { i2Config, useAuth } from '@smartb/g2-providers'
+import { useCallback, useMemo } from 'react'
+import { useQueryClient } from 'react-query'
 import { OrganizationId } from '../../../Organization'
-import { FlatUser, FlatUserToUser, User } from '../../Domain'
-import { UserFactoryStrings, ReadonlyFields } from './UserFactory'
-
-const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}/i
+import {
+  CreateUserOptions,
+  GetUsersOptions,
+  UpdateUserOptions,
+  useCreateUser,
+  useGetUser,
+  userExistsByEmail,
+  UserUpdateEmailOptions,
+  useUpdateUser,
+  useUserUpdateEmail
+} from '../../Api'
+import { FlatUser, FlatUserToUser, User, userToFlatUser } from '../../Domain'
 
 export interface UseUserFormStateProps<T extends User> {
-  /**
-   * The additional fields to add to the form
-   */
-  additionalFields?: FormPartialField[]
-  /**
-   * The name of the field you want to block in the form state
-   */
-  blockedFields?: string[]
-  /**
-   * An object containing the additionnal validators. The key should be the name of the field
-   */
-  additionnalValidators?: { [key: string]: ValidatorFnc }
-  /**
-   * The prop to use to add custom translation to the component
-   */
-  strings?: UserFactoryStrings
   /**
    * The initial user
    */
   user?: Partial<User>
   /**
-   * Use this prop if you want only some fields to be readonly
+   * The getUser hook options
    */
-  readonlyFields?: ReadonlyFields
+  getUserOptions?: GetUsersOptions<T>
   /**
-   * The roles options needed to make the roles select.
+   * The updateUser hook options
    */
-  rolesOptions?: Option[]
+  updateUserOptions?: UpdateUserOptions<T>
+  /**
+   * The createUser hook options
+   */
+  createUserOptions?: CreateUserOptions<T>
+  /**
+   * The userUpdateEmail hook options
+   */
+  userUpdateEmailOptions?: UserUpdateEmailOptions
+  /**
+   * The organizationId of the user.⚠️ You have to provide it if `update` is false and the organization module is activated
+   */
+  organizationId?: OrganizationId
+  /**
+   * Define whether the object is updated or created
+   * @default false
+   */
+  update?: boolean
+  /**
+   * The user id to provide if it's an updation
+   */
+  userId?: string
   /**
    * Allow the user to have multipe roles
    *
@@ -49,31 +57,7 @@ export interface UseUserFormStateProps<T extends User> {
    */
   multipleRoles?: boolean
   /**
-   * The event called to check if the email is available
-   */
-  checkEmailValidity?: (email: string) => Promise<boolean | undefined>
-  /**
-   * The submit event
-   * @param user the complete user object after form Validation
-   * @returns true if the Api call has been successfull
-   */
-  onSubmit?: (user: T) => void
-  /**
-   * Indicates if it's an update
-   * @default false
-   */
-  isUpdate?: boolean
-  /**
-   * To activate Readonly view
-   * @default false
-   */
-  readonly?: boolean
-  /**
-   * The organizationId of the user. Needed if you want to preSelect it when you are creating a user
-   */
-  organizationId?: OrganizationId
-  /**
-   * The r of the user. Needed if you want to preSelect it when you are creating a user
+   * The roles of the user. Needed if you want to preSelect it when you are creating a user
    */
   roles?: string[]
 }
@@ -82,169 +66,116 @@ export const useUserFormState = <T extends User = User>(
   params?: UseUserFormStateProps<T>
 ) => {
   const {
-    additionalFields = [],
-    additionnalValidators,
-    blockedFields,
-    strings,
     user,
-    readonlyFields,
-    rolesOptions,
     multipleRoles = true,
-    onSubmit,
-    checkEmailValidity,
-    isUpdate = false,
-    readonly = false,
     organizationId,
-    roles = []
+    roles = [],
+    createUserOptions,
+    getUserOptions,
+    updateUserOptions,
+    userUpdateEmailOptions,
+    update = false,
+    userId
   } = params ?? {}
 
-  const [emailValid, setEmailValid] = useState(false)
-  const [emailLoading, setEmailLoading] = useState(false)
+  const { keycloak } = useAuth()
+  const queryClient = useQueryClient()
 
-  const onCheckEmail = useCallback(
-    async (email: string): Promise<string | undefined> => {
-      if (user?.email !== email && checkEmailValidity) {
-        setEmailLoading(true)
-        const isTaken = await checkEmailValidity(email)
-        setEmailLoading(false)
-        if (isTaken === true) {
-          setEmailValid(false)
-          return strings?.emailAlreadyUsed ?? 'Cet email est déjà utilisé'
-        } else if (isTaken === false) {
-          setEmailValid(true)
-        }
+  const getUser = useGetUser<T>({
+    apiUrl: i2Config().userUrl,
+    jwt: keycloak.token,
+    userId: userId,
+    options: getUserOptions
+  })
+
+  const updateUserOptionsMemo = useMemo(
+    () => ({
+      ...updateUserOptions,
+      onSuccess: (data, variables, context) => {
+        getUser.refetch()
+        queryClient.invalidateQueries('users')
+        updateUserOptions?.onSuccess &&
+          updateUserOptions.onSuccess(data, variables, context)
       }
-      return undefined
+    }),
+    [updateUserOptions, getUser, queryClient.invalidateQueries]
+  )
+
+  const createUserOptionsMemo = useMemo(
+    () => ({
+      ...createUserOptions,
+      onSuccess: (data, variables, context) => {
+        queryClient.invalidateQueries('users')
+        createUserOptions?.onSuccess &&
+          createUserOptions.onSuccess(data, variables, context)
+      }
+    }),
+    [createUserOptions, queryClient.invalidateQueries]
+  )
+
+  const updateUser = useUpdateUser({
+    apiUrl: i2Config().userUrl,
+    jwt: keycloak.token,
+    options: updateUserOptionsMemo
+  })
+
+  const createUser = useCreateUser({
+    apiUrl: i2Config().userUrl,
+    jwt: keycloak.token,
+    options: createUserOptionsMemo,
+    organizationId: organizationId
+  })
+
+  const updateEmail = useUserUpdateEmail({
+    apiUrl: i2Config().userUrl,
+    jwt: keycloak.token,
+    options: userUpdateEmailOptions
+  })
+
+  const updateUserMemoized = useCallback(
+    async (user: User) => {
+      const results: Promise<any>[] = []
+      results.push(updateUser.mutateAsync({ ...user }))
+      if (getUser.data?.email !== user.email) {
+        results.push(
+          updateEmail.mutateAsync({
+            email: user.email,
+            id: user.id
+          })
+        )
+      }
+      const res = await Promise.all(results)
+      for (let it in res) {
+        const result = res[it]
+        if (!result) return false
+      }
+      return true
     },
-    [user?.email, checkEmailValidity]
+    [updateUser.mutateAsync, updateEmail.mutateAsync, getUser.data?.email]
   )
 
-  const { addressPartialFields } = useAdressFields({
-    address: user?.address,
-    strings,
-    additionnalValidators,
-    readonly: readonlyFields?.address
-  })
-
-  const initialFields = useMemo(
-    (): FormPartialField[] => [
-      {
-        name: 'givenName',
-        defaultValue: user?.givenName,
-        validator: (value?: string, values?: any) =>
-          requiredString(
-            'givenName',
-            strings?.requiredField,
-            value,
-            values,
-            readonlyFields,
-            additionnalValidators
-          )
-      },
-      {
-        name: 'familyName',
-        defaultValue: user?.familyName,
-        validator: (value?: string, values?: any) =>
-          requiredString(
-            'familyName',
-            strings?.requiredField,
-            value,
-            values,
-            readonlyFields,
-            additionnalValidators
-          )
-      },
-      addressPartialFields.street,
-      addressPartialFields.postalCode,
-      addressPartialFields.city,
-      {
-        name: 'email',
-        defaultValue: user?.email,
-        validator: async (value?: string) => {
-          if (readonlyFields?.email) return undefined
-          const trimmed = (value ?? '').trim()
-          if (!trimmed)
-            return (
-              strings?.completeTheEmail ??
-              ('Vous devez renseigner le mail' as string)
-            )
-          if (!emailRegex.test(trimmed))
-            return (
-              strings?.enterAValidEmail ?? "L'email renseigné n'est pas correct"
-            )
-          return await onCheckEmail(trimmed)
-        }
-      },
-      {
-        name: 'phone',
-        defaultValue: user?.phone,
-        validator: (value?: string, values?: any) => {
-          if (readonlyFields?.phone) return undefined
-          const trimmed = (value ?? '').trim().replace(' ', '')
-          if (trimmed && trimmed.length !== 10)
-            return (
-              strings?.enterAValidPhone ??
-              'Le numéro de téléphone doit contenir dix chiffres'
-            )
-          return additionnalValidators?.phone
-            ? additionnalValidators?.phone(trimmed, values)
-            : undefined
-        }
-      },
-      {
-        name: 'roles',
-        defaultValue: multipleRoles
-          ? user?.roles?.assignedRoles || roles
-          : user?.roles?.assignedRoles[0] || roles[0],
-        validator:
-          !readonlyFields?.roles && additionnalValidators?.roles
-            ? additionnalValidators?.roles
-            : undefined
-      },
-      {
-        name: 'memberOf',
-        defaultValue: user?.memberOf?.id ?? organizationId,
-        validator:
-          !readonlyFields?.memberOf && additionnalValidators?.memberOf
-            ? additionnalValidators?.memberOf
-            : undefined
-      },
-      ...(!isUpdate && !readonly
-        ? [
-            {
-              name: 'sendEmailLink',
-              defaultValue: true,
-              validator:
-                readonlyFields?.sendEmailLink &&
-                additionnalValidators?.sendEmailLink
-                  ? additionnalValidators?.sendEmailLink
-                  : undefined
-            }
-          ]
-        : [])
-    ],
-    [
-      user,
-      isUpdate,
-      rolesOptions,
-      readonly,
-      organizationId,
-      readonlyFields,
-      strings,
-      multipleRoles,
-      onCheckEmail,
-      addressPartialFields
-    ]
+  const createUserMemoized = useCallback(
+    async (user: User) => {
+      const res = await createUser.mutateAsync({ ...user })
+      if (res) {
+        return true
+      } else {
+        return false
+      }
+    },
+    [createUser.mutateAsync]
   )
 
-  const fields = useDeletableForm<FormPartialField>({
-    initialFields,
-    additionalFields,
-    blockedFields
-  })
+  const checkEmailValidity = useCallback(
+    async (email: string) => {
+      return userExistsByEmail(email, i2Config().userUrl, keycloak.token)
+    },
+    [keycloak.token]
+  )
 
   const onSubmitMemoized = useCallback(
     async (values: FlatUser) => {
+      const onSubmit = update ? updateUserMemoized : createUserMemoized
       if (onSubmit) {
         onSubmit({
           ...values,
@@ -253,20 +184,35 @@ export const useUserFormState = <T extends User = User>(
         } as T)
       }
     },
-    [onSubmit, user, multipleRoles]
+    [user, multipleRoles, update, updateUserMemoized, createUserMemoized]
   )
 
-  const formState = useFormWithPartialFields({
-    fields: fields,
+  const initialValues = useMemo(
+    () => ({
+      //@ts-ignore
+      ...(user ? userToFlatUser(user) : undefined),
+      //@ts-ignore
+      memberOf: user?.memberOf?.id ?? organizationId,
+      roles: multipleRoles
+        ? user?.roles?.assignedRoles || roles
+        : user?.roles?.assignedRoles[0] || roles[0],
+      sendEmailLink: true
+    }),
+    [user, multipleRoles]
+  )
+
+  const formState = useFormComposable({
+    //@ts-ignore
     onSubmit: onSubmitMemoized,
     formikConfig: {
-      enableReinitialize: true
+      initialValues: initialValues
     }
   })
 
   return {
     formState,
-    emailLoading,
-    emailValid
+    checkEmailValidity,
+    user: getUser.data,
+    isLoading: getUser.isLoading
   }
 }

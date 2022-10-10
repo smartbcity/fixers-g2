@@ -10,26 +10,27 @@ import { Typography } from '@mui/material'
 import { QueryClient, QueryClientProvider } from 'react-query'
 
 export default {
-  title: 'I2/AutomatedOrganizationFactory',
+  title: 'I2-V2/AutomatedOrganizationFactory',
   component: AutomatedOrganizationFactory
 } as Meta
 
 const queryClient = new QueryClient()
 
-export const AutomatedOrganizationFactoryStory: Story<AutomatedOrganizationFactoryProps> =
-  (args: AutomatedOrganizationFactoryProps) => {
-    return (
-      <QueryClientProvider client={queryClient}>
-        <KeycloakProvider
-          config={g2Config().keycloak}
-          loadingComponent={<Typography>Loading...</Typography>}
-          initOptions={{ onLoad: 'login-required' }}
-        >
-          <Following {...args} />
-        </KeycloakProvider>
-      </QueryClientProvider>
-    )
-  }
+export const AutomatedOrganizationFactoryStory: Story<
+  AutomatedOrganizationFactoryProps
+> = (args: AutomatedOrganizationFactoryProps) => {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <KeycloakProvider
+        config={g2Config().keycloak}
+        loadingComponent={<Typography>Loading...</Typography>}
+        initOptions={{ onLoad: 'login-required' }}
+      >
+        <Following {...args} />
+      </KeycloakProvider>
+    </QueryClientProvider>
+  )
+}
 
 const Following = (args: AutomatedOrganizationFactoryProps) => {
   const [organizationId, setOrganizationId] = useState<string | undefined>()

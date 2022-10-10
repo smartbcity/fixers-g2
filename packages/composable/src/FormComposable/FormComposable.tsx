@@ -1,7 +1,7 @@
-import React, {ComponentPropsWithRef} from 'react'
+import React, { ComponentPropsWithRef } from 'react'
 import { ContainerRenderer, ElementRenderersConfig } from '../ComposableRender'
 import { cx } from '@emotion/css'
-import { Stack, StackProps, styled,  } from '@mui/material'
+import { Stack, StackProps, styled } from '@mui/material'
 import { FormikProvider } from 'formik'
 import {
   FormComposableField,
@@ -14,8 +14,7 @@ import { FormAction } from '@smartb/g2-forms'
 import { DefaultRenderer } from './factories/FormElementsRenderer'
 import { MUIStyledCommonProps } from '@mui/system'
 
-
-const Form = styled("form")()
+const Form = styled('form')({})
 
 export interface FormComposableClasses {
   actions?: string
@@ -86,7 +85,10 @@ const useStyles = makeG2STyles()((theme) => ({
 }))
 
 export type FormComposableProps<RENDERER extends ElementRenderersConfig = {}> =
-  MergeMuiElementProps<(MUIStyledCommonProps & ComponentPropsWithRef<"form">), FormComposableBasicProps<RENDERER>>
+  MergeMuiElementProps<
+    MUIStyledCommonProps & ComponentPropsWithRef<'form'>,
+    FormComposableBasicProps<RENDERER>
+  >
 
 export const FormComposable = <RENDERER extends ElementRenderersConfig>(
   props: FormComposableProps<RENDERER>
@@ -118,8 +120,8 @@ export const FormComposable = <RENDERER extends ElementRenderersConfig>(
         className={cx('AruiForm-root', className)}
         sx={{
           gap: (theme) => theme.spacing(3),
-          display: "flex",
-          flexDirection: "column",
+          display: 'flex',
+          flexDirection: 'column',
           ...sx
         }}
         {...other}

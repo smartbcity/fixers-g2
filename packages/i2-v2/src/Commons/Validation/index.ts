@@ -1,5 +1,3 @@
-import { ValidatorFnc } from '@smartb/g2-forms'
-
 export interface AdressValidationStrings {
   /**
    * @default "Vous devez renseigner l'adresse en plus de la ville et du code postal"
@@ -22,8 +20,7 @@ export interface AdressValidationStrings {
 const street = (
   value: string,
   values?: any,
-  strings?: AdressValidationStrings,
-  additionnalValidator?: ValidatorFnc
+  strings?: AdressValidationStrings
 ) => {
   const city = values.city?.trim()
   const postalCode = values.postalCode?.trim()
@@ -33,16 +30,13 @@ const street = (
       strings?.completeTheStreet ??
       ("Vous devez renseigner l'addresse en plus de la ville et du code postal" as string)
     )
-  return additionnalValidator
-    ? additionnalValidator(trimmed, values)
-    : undefined
+  return
 }
 
 const postalCode = (
   value?: string,
   values?: any,
-  strings?: AdressValidationStrings,
-  additionnalValidator?: ValidatorFnc
+  strings?: AdressValidationStrings
 ) => {
   const street = !!values.street?.trim()
   const city = !!values.city?.trim()
@@ -52,16 +46,13 @@ const postalCode = (
       strings?.completeThePostalCode ??
       ('Vous devez renseigner le code postal pour avoir une adresse complète' as string)
     )
-  return additionnalValidator
-    ? additionnalValidator(trimmed, values)
-    : undefined
+  return
 }
 
 const city = (
   value?: string,
   values?: any,
-  strings?: AdressValidationStrings,
-  additionnalValidator?: ValidatorFnc
+  strings?: AdressValidationStrings
 ) => {
   const street = values.street?.trim()
   const postalCode = values.postalCode?.trim()
@@ -71,9 +62,7 @@ const city = (
       strings?.completeTheCity ??
       ('Vous devez renseigner la ville pour avoir une adresse complète' as string)
     )
-  return additionnalValidator
-    ? additionnalValidator(trimmed, values)
-    : undefined
+  return
 }
 
 export const addressValidation = {
@@ -85,12 +74,10 @@ export const addressValidation = {
 export const requiredString = (
   errorMessage?: string,
   value?: string | number,
-  values?: any,
-  readonly?: boolean,
-  additionnalValidator?: ValidatorFnc
+  readonly?: boolean
 ) => {
   if (readonly) return undefined
   const string = String(value).trim()
   if (!string || !value) return errorMessage ?? 'le champ est obligatoire'
-  return additionnalValidator ? additionnalValidator(string, values) : undefined
+  return
 }

@@ -8,7 +8,7 @@ import { QueryClient, QueryClientProvider } from 'react-query'
 import { AutomatedUserFactoryProps } from '../UserFactory'
 
 export default {
-  title: 'I2/MyProfile',
+  title: 'I2-V2/MyProfile',
   component: MyProfile
 } as Meta
 

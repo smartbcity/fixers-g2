@@ -9,7 +9,7 @@ import { Button } from '@smartb/g2-components'
 import { Organization } from '../OrganizationFactory'
 
 export default {
-  title: 'I2/OrganizationTable',
+  title: 'I2-V2/OrganizationTable',
   component: OrganizationTable,
   parameters: {
     docs: {
@@ -85,7 +85,7 @@ const organizations: Organization[] = [
 OrganizationTableStory.args = {
   organizations: organizations,
   totalPages: 10,
-  page: 1,
+  page: 1
 }
 
 OrganizationTableStory.storyName = 'OrganizationTable'
