@@ -77,10 +77,6 @@ export interface UserFactoryBasicProps
    */
   getOrganizationUrl?: (organizationId: OrganizationId) => string
   /**
-   * If you want to access the user state from the form use this function
-   */
-  setUserState?: (user: FlatUser) => void
-  /**
    * Indicates if the data is currently loading
    *
    * @default false
@@ -113,14 +109,12 @@ export const UserFactory = (props: UserFactoryProps) => {
     organizationId,
     isLoading = false,
     strings,
-
     getOrganizationUrl,
     blockedFields,
     readonlyRolesOptions,
     multipleRoles = true,
     checkEmailValidity,
     formExtension,
-    setUserState,
     ...other
   } = props
 
@@ -129,9 +123,6 @@ export const UserFactory = (props: UserFactoryProps) => {
   const { fieldsArray } = useUserFormFields(props)
   delete other.fieldsOverride
   delete other.isUpdate
-  useEffect(() => {
-    setUserState && setUserState(formState.values as FlatUser)
-  }, [formState.values, setUserState])
 
   const finalFields = useDeletableForm({
     initialFields: fieldsArray,

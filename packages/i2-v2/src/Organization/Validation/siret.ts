@@ -2,15 +2,11 @@ import { PotentialError } from '@smartb/g2-forms'
 
 export const siretValidation = (
   value?: string,
-  values?: any,
-  readonlyFields?: any,
-  additionnalValidators?: any
+  readonly?: boolean
 ): PotentialError => {
-  if (readonlyFields?.siret) return undefined
+  if (readonly) return undefined
   const trimmed = value?.trim()
   if (!!trimmed && trimmed?.length !== 14 && trimmed?.length !== 0)
     return 'un numéro de siret doit être composé de 14 chiffres'
-  return additionnalValidators?.siret
-    ? additionnalValidators?.siret(trimmed, values)
-    : undefined
+  return
 }

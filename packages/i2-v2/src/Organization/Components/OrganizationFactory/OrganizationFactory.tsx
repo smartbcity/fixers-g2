@@ -1,26 +1,21 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import { Form, FormField, FormProps } from '@smartb/g2-forms'
+import React, { useCallback, useState } from 'react'
+import { FormProps } from '@smartb/g2-forms'
 import { styled, Typography } from '@mui/material'
 import { Popover } from '@smartb/g2-notifications'
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 import { cx } from '@emotion/css'
-import {
-  FlatOrganization,
-  Organization,
-  organizationToFlatOrganization
-} from '../../Domain'
-import { AdressValidationStrings, useAdressFields } from '../../../Commons'
+import { Organization } from '../../Domain'
+import { AdressValidationStrings } from '../../../Commons'
 import { useDeletableForm } from '../../../Commons/useDeletableForm'
 import {
-  useOrganizationFormState,
-  useOrganizationFormStateProps
-} from './useOrganizationFormState'
-
-export type Validated = boolean
-
-export type ReadonlyFields = {
-  [k in keyof Organization]?: boolean
-}
+  FormComposable,
+  FormComposableField,
+  FormComposableState
+} from '@smartb/g2-composable'
+import {
+  useOrganizationFormFields,
+  useOrganizationFormFieldsProps
+} from './useOrganizationFormFields'
 
 // @ts-ignore
 const StyledPopover = styled(Popover)({
@@ -40,38 +35,6 @@ export interface OrganizationFactoryStyles {
 
 export interface OrganizationFactoryStrings extends AdressValidationStrings {
   /**
-   * @default "Numéro de siret"
-   */
-  siret?: string
-  /**
-   * @default "Nom"
-   */
-  name?: string
-  /**
-   * @default "Type"
-   */
-  roles?: string
-  /**
-   * @default "Addresse (facultatif)"
-   */
-  street?: string
-  /**
-   * @default "Code postal (facultatif)"
-   */
-  postalCode?: string
-  /**
-   * @default "Ville (facultatif)"
-   */
-  city?: string
-  /**
-   * @default "Site web (facultatif)"
-   */
-  website?: string
-  /**
-   * @default "Description (facultatif)"
-   */
-  description?: string
-  /**
    * @default "le champ est obligatoire"
    */
   requiredField?: string
@@ -87,34 +50,23 @@ export interface OrganizationFactoryStrings extends AdressValidationStrings {
 
 export interface OrganizationFactoryBasicProps
   extends BasicProps,
-    useOrganizationFormStateProps<Organization> {
+    useOrganizationFormFieldsProps {
   /**
    * The base organization. If it's given the component should be considered as an updater of the object
    */
   organization?: Partial<Organization>
   /**
-   * The event called after the research on the siret field
-   * that should fill as much as it can the organization type
+   * The state of the form obtainable by calling useUserFormState
    */
-  getInseeOrganization?: (siret: string) => Promise<Organization | undefined>
+  formState: FormComposableState
   /**
-   * The event called after the insee api call.
+   * The additional fields to add to the form
    */
-  setInseeOrganization?: (organization: any) => void
+  additionalFields?: FormComposableField[]
   /**
-   * The submit event
-   * @param organization the complete organization object after form Validation
-   * @returns true if the Api call has been successfull
+   * The name of the field you want to block in the form state
    */
-  onSubmit?: (organization: Organization) => Promise<Validated> | Validated
-  /**
-   * The ref of the submit element
-   */
-  SubmitButtonRef?: React.RefObject<HTMLElement | undefined>
-  /**
-   * If you want to access the organization state from the form use this function
-   */
-  setOrganizationState?: (organization: FlatOrganization) => void
+  blockedFields?: string[]
   /**
    * To activate Readonly view
    * @default false
@@ -147,171 +99,41 @@ export type OrganizationFactoryProps = MergeMuiElementProps<
 
 export const OrganizationFactory = (props: OrganizationFactoryProps) => {
   const {
+    additionalFields = [],
+    blockedFields,
     organization,
     onSubmit,
     getInseeOrganization,
-    SubmitButtonRef,
     className,
     classes,
     styles,
-    rolesOptions,
     readonly = false,
-    readonlyFields,
     isLoading = false,
-    blockedFields,
     strings,
     multipleRoles = true,
-    setOrganizationState,
+    fieldsOverride,
     setInseeOrganization,
-    additionnalValidators,
+    formState,
     ...other
   } = props
 
   const [openSiretInfo, setOpenSiretInfo] = useState(
-    !organization && !readonly && !readonlyFields?.siret
+    !organization && !readonly && !fieldsOverride?.siret?.readonly
   )
-  const [siretValid, setSiretValid] = useState(false)
-  const [siretRef, setSiretRef] = useState(null)
 
   const onCloseSiretInfo = useCallback(() => setOpenSiretInfo(false), [])
 
-  const formState = useOrganizationFormState(props)
-  delete other.additionalFields
-
-  useEffect(() => {
-    setOrganizationState &&
-      setOrganizationState(formState.values as FlatOrganization)
-  }, [formState.values, setOrganizationState])
-
-  const fetchOrganization = useCallback(async () => {
-    if (getInseeOrganization) {
-      await getInseeOrganization(formState.values.siret).then((values) => {
-        if (values) {
-          formState.setValues(organizationToFlatOrganization(values), false)
-          setSiretValid(true)
-          setInseeOrganization && setInseeOrganization(values)
-        } else {
-          formState.setFieldError(
-            'siret',
-            strings?.siretNotFound ??
-              'Aucune information trouvé. Saisissez les informations ci-dessous manuellement'
-          )
-        }
-      })
-    }
-  }, [
-    formState.values.siret,
-    formState.setValues,
-    formState.setFieldError,
-    getInseeOrganization,
-    strings?.siretNotFound,
-    setInseeOrganization
-  ])
-
-  const { addressFields } = useAdressFields({
-    address: organization?.address,
-    strings,
-    additionnalValidators,
-    readonly: readonlyFields?.address
-  })
-
-  const organizationForm = useMemo(
-    (): FormField[] => [
-      {
-        key: 'siret',
-        name: 'siret',
-        label: strings?.siret ?? 'Numéro de siret',
-        type: 'textfield',
-        textFieldProps: {
-          textFieldType: 'search',
-          iconPosition: 'end',
-          noCheckOrClearIcon: true,
-          validated: siretValid,
-          // @ts-ignore
-          ref: setSiretRef,
-          onSearch: async () => {
-            if (!formState.validateField('siret')) {
-              await fetchOrganization()
-            }
-          },
-          readonly: readonlyFields?.siret
-        }
-      },
-      {
-        key: 'name',
-        name: 'name',
-        type: 'textfield',
-        label: strings?.name ?? 'Nom',
-        textFieldProps: {
-          readonly: readonlyFields?.name
-        }
-      },
-      ...(rolesOptions
-        ? [
-            {
-              key: 'roles',
-              name: 'roles',
-              label: strings?.roles ?? 'Rôle',
-              type: 'select',
-              selectProps: {
-                options: rolesOptions,
-                readonly: readonlyFields?.roles,
-                readonlyType: 'chip',
-                multiple: multipleRoles
-              }
-            } as FormField
-          ]
-        : []),
-      addressFields.street,
-      addressFields.postalCode,
-      addressFields.city,
-      {
-        key: 'website',
-        name: 'website',
-        type: 'textfield',
-        label: strings?.website ?? 'Site web (facultatif)',
-        textFieldProps: {
-          readonly: readonlyFields?.website
-        }
-      },
-      {
-        key: 'description',
-        name: 'description',
-        type: 'textfield',
-        label: strings?.description ?? 'Description (facultatif)',
-        textFieldProps: {
-          multiline: true,
-          rows: 6,
-          readonly: readonlyFields?.description
-        }
-      }
-    ],
-    [
-      formState.validateField,
-      fetchOrganization,
-      siretValid,
-      readonlyFields,
-      strings,
-      multipleRoles,
-      addressFields
-    ]
-  )
+  const { fieldsArray, siretRef } = useOrganizationFormFields(props)
 
   const finalFields = useDeletableForm({
-    initialFields: organizationForm,
+    initialFields: fieldsArray,
+    additionalFields: additionalFields,
     blockedFields: blockedFields
   })
 
-  useEffect(() => {
-    const element = SubmitButtonRef?.current
-    if (element && !readonly) {
-      element.onclick = formState.submitForm
-    }
-  }, [SubmitButtonRef?.current, formState.submitForm, readonly])
-
   return (
     <>
-      <Form
+      <FormComposable
         {...other}
         className={cx('AruiOrganizationFactory-root', className)}
         fields={finalFields}

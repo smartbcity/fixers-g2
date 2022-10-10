@@ -189,7 +189,7 @@ export const useUserFormFields = <T extends User = User>(
         fieldsOverride?.phone
       ),
       //@ts-ignore
-      ...(fieldsOverride?.roles?.params?.options || organizationId
+      ...(fieldsOverride?.roles?.params?.options
         ? [
             mergeFields<FormComposableField<userFieldsName>>(
               {
@@ -206,16 +206,21 @@ export const useUserFormFields = <T extends User = User>(
             )
           ]
         : []),
-      mergeFields<FormComposableField<userFieldsName>>(
-        {
-          key: 'memberOf',
-          name: 'memberOf',
-          label: 'Organisation',
-          type: 'select',
-          defaultValue: user?.memberOf?.id ?? organizationId
-        },
-        fieldsOverride?.memberOf
-      ),
+      //@ts-ignore
+      ...(fieldsOverride?.roles?.memberOf?.options || organizationId
+        ? [
+            mergeFields<FormComposableField<userFieldsName>>(
+              {
+                key: 'memberOf',
+                name: 'memberOf',
+                label: 'Organisation',
+                type: 'select',
+                defaultValue: user?.memberOf?.id ?? organizationId
+              },
+              fieldsOverride?.memberOf
+            )
+          ]
+        : []),
       ...(!isUpdate && !readonly
         ? [
             mergeFields<FormComposableField<userFieldsName>>(
