@@ -4,8 +4,7 @@ import {
   ElementRenderersConfig
 } from '../../ComposableRender'
 import { ReactNode } from 'react'
-
-export type PotentialError = string | undefined | Promise<string | undefined>
+import { PotentialError } from '@smartb/g2-forms'
 
 export type FieldValidatorFnc = (value?: any, values?: any) => PotentialError
 
