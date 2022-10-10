@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useState } from 'react'
 import { Meta } from '@storybook/react'
 import {
   AutomatedUserFactory,
@@ -16,7 +16,13 @@ export default {
   component: AutomatedUserFactory
 } as Meta
 
-const queryClient = new QueryClient()
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false
+    }
+  }
+})
 
 export const AutomatedUserFactoryStory: Story<AutomatedUserFactoryProps> = (
   args: AutomatedUserFactoryProps
@@ -38,7 +44,7 @@ const Following = (args: AutomatedUserFactoryProps) => {
   const [userId, setuserId] = useState<string | undefined>(
     'b78ce604-72ce-4bf5-99a2-f0b0d5f06b2a'
   )
-  const submitRef = useRef<HTMLButtonElement>(null)
+
   const userFormState = useUserFormState({
     createUserOptions: {
       onSuccess: (data) => {
@@ -46,7 +52,8 @@ const Following = (args: AutomatedUserFactoryProps) => {
       }
     },
     userId: userId,
-    organizationId: '1'
+    organizationId: '1',
+    roles: ['admin']
   })
 
   return (
@@ -64,15 +71,28 @@ const Following = (args: AutomatedUserFactoryProps) => {
                 }
               ]
             }
+          },
+          roles: {
+            params: {
+              options: [
+                {
+                  key: 'admin',
+                  label: 'admin'
+                },
+                {
+                  key: 'user',
+                  label: 'user'
+                }
+              ]
+            }
           }
         }}
         resetPasswordType='forced'
-        SubmitButtonRef={submitRef}
         {...userFormState}
         {...args}
         userId={userId}
       />
-      <Button ref={submitRef}>Validate</Button>
+      <Button onClick={userFormState.formState.submitForm}>Validate</Button>
     </>
   )
 }

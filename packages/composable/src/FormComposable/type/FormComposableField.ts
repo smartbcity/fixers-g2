@@ -7,7 +7,7 @@ import { ReactNode } from 'react'
 
 export type PotentialError = string | undefined | Promise<string | undefined>
 
-export type FieldValidatorFnc = (value: any | undefined) => PotentialError
+export type FieldValidatorFnc = (value?: any, values?: any) => PotentialError
 
 export type FormComposableField<
   Name extends string = string,

@@ -65,10 +65,6 @@ export interface UserFactoryBasicProps
    */
   blockedFields?: string[]
   /**
-   * The ref of the submit element
-   */
-  SubmitButtonRef?: React.RefObject<HTMLElement | undefined>
-  /**
    * The organizations refs needed to make the orgnization select
    */
   organizationsRefs?: OrganizationRef[]
@@ -117,7 +113,7 @@ export const UserFactory = (props: UserFactoryProps) => {
     organizationId,
     isLoading = false,
     strings,
-    SubmitButtonRef,
+
     getOrganizationUrl,
     blockedFields,
     readonlyRolesOptions,
@@ -142,13 +138,6 @@ export const UserFactory = (props: UserFactoryProps) => {
     additionalFields: additionalFields,
     blockedFields: blockedFields
   })
-
-  useEffect(() => {
-    const element = SubmitButtonRef?.current
-    if (element && !readonly) {
-      element.onclick = formState.submitForm
-    }
-  }, [SubmitButtonRef?.current, formState.submitForm, readonly])
 
   return (
     <Stack

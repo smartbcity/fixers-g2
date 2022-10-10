@@ -21,7 +21,7 @@ export interface FormikFormParams<T> {
   /**
    * this prop allow you to add you custom config to the useFormik hook
    */
-  formikConfig?: Omit<FormikConfig<any>, 'onSubmit'>
+  formikConfig?: Partial<Omit<FormikConfig<any>, 'onSubmit'>>
   actions?: ActionProps
 }
 

@@ -76,7 +76,7 @@ export const useUserFormFields = <T extends User = User>(
     readonly = false,
     organizationId,
     user,
-    multipleRoles
+    multipleRoles = true
   } = params ?? {}
 
   const [emailValid, setEmailValid] = useState(false)

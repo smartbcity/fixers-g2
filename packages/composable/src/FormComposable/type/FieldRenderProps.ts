@@ -5,7 +5,8 @@ import { useEffect, useMemo } from 'react'
 import { FormComposableField } from './FormComposableField'
 import { cx } from '@emotion/css'
 
-export interface FieldRenderProps<TYPE extends string, PROPS> extends WithElementParams<TYPE, PROPS> {
+export interface FieldRenderProps<TYPE extends string, PROPS>
+  extends WithElementParams<TYPE, PROPS> {
   formState: FormComposableState
   basicProps: FieldRender
 }
@@ -66,9 +67,10 @@ export const useFieldRenderProps = (
   const memo = useMemo<FieldRenderProps<string, any>[]>(() => {
     return fields.map((field: FormComposableField) => {
       const formProps = useFormProps(field, props)
-      const { registerField } = formState
+      const validator = field.validator
+      const { registerField, values } = formState
       registerField(formProps.name, {
-        validate: field.validator
+        validate: validator ? (value) => validator(value, values) : undefined
       })
       return {
         basicProps: formProps,
