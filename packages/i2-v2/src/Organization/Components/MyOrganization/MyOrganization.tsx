@@ -2,7 +2,7 @@ import React, { useMemo } from 'react'
 import { useAuth } from '@smartb/g2-providers'
 import {
   AutomatedOrganizationFactory,
-  AutomatedOrganizationFactoryProps
+  OrganizationFactoryProps
 } from '../OrganizationFactory'
 import { MergeMuiElementProps } from '@smartb/g2-themes'
 import { Typography } from '@mui/material'
@@ -15,13 +15,12 @@ export interface MyOrganizationBasicProps {
 }
 
 export type MyOrganizationProps = MergeMuiElementProps<
-  AutomatedOrganizationFactoryProps,
+  OrganizationFactoryProps,
   MyOrganizationBasicProps
 >
 
 export const MyOrganization = (props: MyOrganizationProps) => {
   const {
-    readonly,
     noOrganizationMessage = "Vous n'êtes pas inclut dans une organisation",
     ...other
   } = props
@@ -35,12 +34,5 @@ export const MyOrganization = (props: MyOrganizationProps) => {
   if (!user) return <></>
   if (!user.memberOf)
     return <Typography align='center'>{noOrganizationMessage}</Typography>
-  return (
-    <AutomatedOrganizationFactory
-      {...other}
-      organizationId={user.memberOf}
-      update={!readonly}
-      readonly={readonly}
-    />
-  )
+  return <AutomatedOrganizationFactory {...other} />
 }

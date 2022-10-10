@@ -49,6 +49,11 @@ export interface useOrganizationFormStateProps {
    */
   rolesOptions?: Option[]
   /**
+   * to use the current user organization
+   * @default  false
+   */
+  myOrganization?: boolean
+  /**
    * Allow the organization to have multipe roles
    *
    * @default true
@@ -67,15 +72,20 @@ export const useOrganizationFormState = (
     update,
     updateOrganizationOptions,
     rolesOptions,
-    multipleRoles = true
+    multipleRoles = true,
+    myOrganization = false
   } = params ?? {}
 
-  const { keycloak } = useAuth()
+  const { keycloak, service } = useAuth()
   const queryClient = useQueryClient()
+
+  const user = useMemo(() => {
+    return service.getUser()
+  }, [service.getUser])
 
   const getOrganization = useGetOrganization({
     apiUrl: i2Config().orgUrl,
-    organizationId: organizationId,
+    organizationId: myOrganization ? user?.memberOf : organizationId,
     jwt: keycloak.token,
     options: getOrganizationOptions
   })
@@ -171,9 +181,9 @@ export const useOrganizationFormState = (
 
   const initialValues = useMemo(
     () => ({
-      //@ts-ignore
       ...(organization
-        ? organizationToFlatOrganization(organization)
+        ? //@ts-ignore
+          organizationToFlatOrganization(organization)
         : undefined),
       //@ts-ignore
       roles: defaultRoles

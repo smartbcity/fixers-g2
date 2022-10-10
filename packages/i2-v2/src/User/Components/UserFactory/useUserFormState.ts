@@ -57,6 +57,11 @@ export interface UseUserFormStateProps<T extends User> {
    */
   multipleRoles?: boolean
   /**
+   * to use the current user
+   * @default  false
+   */
+  myProfile?: boolean
+  /**
    * The roles of the user. Needed if you want to preSelect it when you are creating a user
    */
   roles?: string[]
@@ -75,16 +80,22 @@ export const useUserFormState = <T extends User = User>(
     updateUserOptions,
     userUpdateEmailOptions,
     update = false,
+    myProfile = false,
     userId
   } = params ?? {}
 
-  const { keycloak } = useAuth()
+  const { keycloak, service } = useAuth()
   const queryClient = useQueryClient()
+
+  const keycloakUser = useMemo(() => {
+    return service.getUser()
+  }, [service.getUser])
 
   const getUser = useGetUser<T>({
     apiUrl: i2Config().userUrl,
     jwt: keycloak.token,
-    userId: userId,
+    userId: myProfile && keycloakUser ? keycloakUser.id : userId,
+    //@ts-ignore
     options: getUserOptions
   })
 

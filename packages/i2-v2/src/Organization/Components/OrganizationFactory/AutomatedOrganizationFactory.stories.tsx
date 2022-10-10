@@ -1,13 +1,13 @@
 import React, { useState } from 'react'
 import { Meta } from '@storybook/react'
-import {
-  AutomatedOrganizationFactory,
-  AutomatedOrganizationFactoryBasicProps as AutomatedOrganizationFactoryProps
-} from './AutomatedOrganizationFactory'
+import { AutomatedOrganizationFactory } from './AutomatedOrganizationFactory'
 import { Story } from '@storybook/react/types-6-0'
 import { g2Config, KeycloakProvider } from '@smartb/g2-providers'
 import { Typography } from '@mui/material'
 import { QueryClient, QueryClientProvider } from 'react-query'
+import { useOrganizationFormState } from './useOrganizationFormState'
+import { OrganizationFactoryBasicProps } from './OrganizationFactory'
+import { Button } from '@smartb/g2-components'
 
 export default {
   title: 'I2-V2/AutomatedOrganizationFactory',
@@ -17,8 +17,8 @@ export default {
 const queryClient = new QueryClient()
 
 export const AutomatedOrganizationFactoryStory: Story<
-  AutomatedOrganizationFactoryProps
-> = (args: AutomatedOrganizationFactoryProps) => {
+  OrganizationFactoryBasicProps
+> = (args: OrganizationFactoryBasicProps) => {
   return (
     <QueryClientProvider client={queryClient}>
       <KeycloakProvider
@@ -32,19 +32,25 @@ export const AutomatedOrganizationFactoryStory: Story<
   )
 }
 
-const Following = (args: AutomatedOrganizationFactoryProps) => {
+const Following = (args: OrganizationFactoryBasicProps) => {
   const [organizationId, setOrganizationId] = useState<string | undefined>()
+
+  const organizationFormState = useOrganizationFormState({
+    update: !!organizationId,
+    organizationId: organizationId,
+    createOrganizationOptions: {
+      onSuccess: (data) => {
+        setOrganizationId(data?.id)
+      }
+    }
+  })
   return (
-    <AutomatedOrganizationFactory
-      createOrganizationOptions={{
-        onSuccess: (data) => {
-          setOrganizationId(data.id)
-        }
-      }}
-      organizationId={organizationId}
-      update={!!organizationId}
-      {...args}
-    />
+    <>
+      <AutomatedOrganizationFactory {...organizationFormState} {...args} />
+      <Button onClick={organizationFormState.formState.submitForm}>
+        Validate
+      </Button>
+    </>
   )
 }
 

@@ -52,7 +52,6 @@ export const useAdressFields = (params?: useAdressFieldsParams) => {
           name: 'postalCode',
           type: 'textField',
           label: 'Code postal (facultatif)',
-          ...fieldsOverride?.postalCode,
           validator: fieldsOverride?.postalCode?.readonly
             ? undefined
             : (value: any, values: any) =>
@@ -66,7 +65,6 @@ export const useAdressFields = (params?: useAdressFieldsParams) => {
           name: 'city',
           type: 'textField',
           label: 'Ville (facultatif)',
-          ...fieldsOverride?.city,
           validator: fieldsOverride?.city?.readonly
             ? undefined
             : (value: any, values: any) =>

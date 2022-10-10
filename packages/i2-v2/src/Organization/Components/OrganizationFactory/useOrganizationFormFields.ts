@@ -132,9 +132,6 @@ export const useOrganizationFormFields = (
         },
         fieldsOverride?.siret
       ),
-      addressFields.street,
-      addressFields.postalCode,
-      addressFields.city,
       mergeFields<FormComposableField<organizationFieldsName>>(
         {
           key: 'name',
@@ -149,28 +146,6 @@ export const useOrganizationFormFields = (
             )
         },
         fieldsOverride?.name
-      ),
-      mergeFields<FormComposableField<organizationFieldsName>>(
-        {
-          key: 'description',
-          name: 'description',
-          type: 'textField',
-          label: 'Description (facultatif)',
-          params: {
-            multiline: true,
-            rows: 6
-          }
-        },
-        fieldsOverride?.description
-      ),
-      mergeFields<FormComposableField<organizationFieldsName>>(
-        {
-          key: 'website',
-          name: 'website',
-          type: 'textField',
-          label: 'Site web (facultatif)'
-        },
-        fieldsOverride?.website
       ),
       //@ts-ignore
       ...(fieldsOverride?.roles?.params?.options
@@ -189,7 +164,32 @@ export const useOrganizationFormFields = (
               fieldsOverride?.website
             )
           ]
-        : [])
+        : []),
+      addressFields.street,
+      addressFields.postalCode,
+      addressFields.city,
+      mergeFields<FormComposableField<organizationFieldsName>>(
+        {
+          key: 'website',
+          name: 'website',
+          type: 'textField',
+          label: 'Site web (facultatif)'
+        },
+        fieldsOverride?.website
+      ),
+      mergeFields<FormComposableField<organizationFieldsName>>(
+        {
+          key: 'description',
+          name: 'description',
+          type: 'textField',
+          label: 'Description (facultatif)',
+          params: {
+            multiline: true,
+            rows: 6
+          }
+        },
+        fieldsOverride?.description
+      )
     ],
     [organization, strings]
   )

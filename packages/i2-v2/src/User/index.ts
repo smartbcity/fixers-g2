@@ -20,7 +20,10 @@ export {
   UserFactoryProps,
   AutomatedUserFactory,
   AutomatedUserFactoryProps,
-  ReadonlyUserFieldsPerState,
+  UseUserFormStateProps,
+  UseUserFormFieldsProps,
+  UserFactoryFieldsOverride,
+  useUserFormFields,
   useUserFormState,
   UserFactoryStrings,
   ReadonlyFields as UserReadonlyFields

@@ -138,6 +138,39 @@ export const useUserFormFields = <T extends User = User>(
         },
         fieldsOverride?.familyName
       ),
+      //@ts-ignore
+      ...(fieldsOverride?.roles?.memberOf?.options || organizationId
+        ? [
+            mergeFields<FormComposableField<userFieldsName>>(
+              {
+                key: 'memberOf',
+                name: 'memberOf',
+                label: 'Organisation',
+                type: 'select',
+                defaultValue: user?.memberOf?.id ?? organizationId
+              },
+              fieldsOverride?.memberOf
+            )
+          ]
+        : []),
+      //@ts-ignore
+      ...(fieldsOverride?.roles?.params?.options
+        ? [
+            mergeFields<FormComposableField<userFieldsName>>(
+              {
+                key: 'roles',
+                name: 'roles',
+                label: 'Role',
+                type: 'select',
+                params: {
+                  readonlyType: 'chip',
+                  multiple: multipleRoles
+                }
+              },
+              fieldsOverride?.roles
+            )
+          ]
+        : []),
       addressFields.street,
       addressFields.postalCode,
       addressFields.city,
@@ -184,43 +217,11 @@ export const useUserFormFields = <T extends User = User>(
                 strings?.enterAValidPhone ??
                 'Le numéro de téléphone doit contenir dix chiffres'
               )
+            return
           }
         },
         fieldsOverride?.phone
       ),
-      //@ts-ignore
-      ...(fieldsOverride?.roles?.params?.options
-        ? [
-            mergeFields<FormComposableField<userFieldsName>>(
-              {
-                key: 'roles',
-                name: 'roles',
-                label: 'Role',
-                type: 'select',
-                params: {
-                  readonlyType: 'chip',
-                  multiple: multipleRoles
-                }
-              },
-              fieldsOverride?.roles
-            )
-          ]
-        : []),
-      //@ts-ignore
-      ...(fieldsOverride?.roles?.memberOf?.options || organizationId
-        ? [
-            mergeFields<FormComposableField<userFieldsName>>(
-              {
-                key: 'memberOf',
-                name: 'memberOf',
-                label: 'Organisation',
-                type: 'select',
-                defaultValue: user?.memberOf?.id ?? organizationId
-              },
-              fieldsOverride?.memberOf
-            )
-          ]
-        : []),
       ...(!isUpdate && !readonly
         ? [
             mergeFields<FormComposableField<userFieldsName>>(
