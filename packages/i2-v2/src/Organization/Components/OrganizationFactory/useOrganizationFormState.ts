@@ -18,7 +18,9 @@ import {
 } from '../../Api'
 import { useFormComposable } from '@smartb/g2-composable'
 
-export interface useOrganizationFormStateProps {
+export interface useOrganizationFormStateProps<
+  T extends Organization = Organization
+> {
   /**
    * The organization id to provide if it's an updation
    */
@@ -26,15 +28,15 @@ export interface useOrganizationFormStateProps {
   /**
    * The getOrganization hook options
    */
-  getOrganizationOptions?: GetOrganizationOptions
+  getOrganizationOptions?: GetOrganizationOptions<T>
   /**
    * The updateOrganization hook options
    */
-  updateOrganizationOptions?: UpdateOrganizationOptions
+  updateOrganizationOptions?: UpdateOrganizationOptions<T>
   /**
    * The createOrganization hook options
    */
-  createOrganizationOptions?: CreateOrganizationOptions
+  createOrganizationOptions?: CreateOrganizationOptions<T>
   /**
    * Define whether the object is updated or created
    * @default false
@@ -57,8 +59,8 @@ export interface useOrganizationFormStateProps {
   multipleRoles?: boolean
 }
 
-export const useOrganizationFormState = (
-  params?: useOrganizationFormStateProps
+export const useOrganizationFormState = <T extends Organization = Organization>(
+  params?: useOrganizationFormStateProps<T>
 ) => {
   const {
     createOrganizationOptions,
@@ -78,7 +80,7 @@ export const useOrganizationFormState = (
     return service.getUser()
   }, [service.getUser])
 
-  const getOrganization = useGetOrganization({
+  const getOrganization = useGetOrganization<T>({
     apiUrl: i2Config().orgUrl,
     organizationId: myOrganization ? user?.memberOf : organizationId,
     jwt: keycloak.token,

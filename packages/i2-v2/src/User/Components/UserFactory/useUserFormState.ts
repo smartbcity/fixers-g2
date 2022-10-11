@@ -16,7 +16,7 @@ import {
 } from '../../Api'
 import { FlatUser, FlatUserToUser, User, userToFlatUser } from '../../Domain'
 
-export interface UseUserFormStateProps<T extends User> {
+export interface UseUserFormStateProps<T extends User = User> {
   /**
    * The getUser hook options
    */
