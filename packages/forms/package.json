@@ -1,6 +1,6 @@
 {
   "name": "@smartb/g2-forms",
-  "version": "1.0.0-alpha.77",
+  "version": "1.0.0-alpha.78",
   "repository": "https://gitlab.smartb.city/fixers/g2.git",
   "author": "Adrien Poupard <adrien@smartb.city>",
   "license": "Apache-2.0",
@@ -27,7 +27,7 @@
     "dist"
   ],
   "devDependencies": {
-    "@smartb/g2-providers": "1.0.0-alpha.77",
+    "@smartb/g2-providers": "1.0.0-alpha.78",
     "@types/tinycolor2": "^1.4.3",
     "react-query": "^3.39.1"
   },
@@ -41,8 +41,8 @@
     "@mantine/hooks": "^4.2.12",
     "@mui/icons-material": "^5.8.4",
     "@mui/x-date-pickers": "^5.0.2",
-    "@smartb/g2-components": "1.0.0-alpha.77",
-    "@smartb/g2-themes": "1.0.0-alpha.77",
+    "@smartb/g2-components": "1.0.0-alpha.78",
+    "@smartb/g2-themes": "1.0.0-alpha.78",
     "date-fns": "^2.29.3",
     "formik": "^2.2.9",
     "react-router-dom": "^6.3.0",
