@@ -18,10 +18,6 @@ import { FlatUser, FlatUserToUser, User, userToFlatUser } from '../../Domain'
 
 export interface UseUserFormStateProps<T extends User> {
   /**
-   * The initial user
-   */
-  user?: Partial<User>
-  /**
    * The getUser hook options
    */
   getUserOptions?: GetUsersOptions<T>
@@ -71,7 +67,6 @@ export const useUserFormState = <T extends User = User>(
   params?: UseUserFormStateProps<T>
 ) => {
   const {
-    user,
     multipleRoles = true,
     organizationId,
     roles = [],
@@ -98,6 +93,8 @@ export const useUserFormState = <T extends User = User>(
     //@ts-ignore
     options: getUserOptions
   })
+
+  const user = useMemo(() => getUser.data, [getUser.data])
 
   const updateUserOptionsMemo = useMemo(
     () => ({
@@ -201,13 +198,13 @@ export const useUserFormState = <T extends User = User>(
   const initialValues = useMemo(
     () => ({
       //@ts-ignore
-      ...(user ? userToFlatUser(user) : undefined),
+      memberOf: organizationId,
+      sendEmailLink: true,
       //@ts-ignore
-      memberOf: user?.memberOf?.id ?? organizationId,
+      ...(user ? userToFlatUser(user) : undefined),
       roles: multipleRoles
         ? user?.roles?.assignedRoles || roles
-        : user?.roles?.assignedRoles[0] || roles[0],
-      sendEmailLink: true
+        : user?.roles?.assignedRoles[0] || roles[0]
     }),
     [user, multipleRoles]
   )
@@ -223,7 +220,7 @@ export const useUserFormState = <T extends User = User>(
   return {
     formState,
     checkEmailValidity,
-    user: getUser.data,
+    user: user,
     isLoading: getUser.isLoading
   }
 }

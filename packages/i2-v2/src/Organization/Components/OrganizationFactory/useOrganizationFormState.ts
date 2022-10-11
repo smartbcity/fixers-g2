@@ -41,10 +41,6 @@ export interface useOrganizationFormStateProps {
    */
   update?: boolean
   /**
-   * The initial organization
-   */
-  organization?: Partial<Organization>
-  /**
    * The roles options used to attributs the default roles
    */
   rolesOptions?: Option[]
@@ -65,7 +61,6 @@ export const useOrganizationFormState = (
   params?: useOrganizationFormStateProps
 ) => {
   const {
-    organization,
     createOrganizationOptions,
     getOrganizationOptions,
     organizationId,
@@ -89,6 +84,11 @@ export const useOrganizationFormState = (
     jwt: keycloak.token,
     options: getOrganizationOptions
   })
+
+  const organization = useMemo(
+    () => getOrganization.data?.item,
+    [getOrganization.data?.item]
+  )
 
   const updateOrganizationOptionsMemo = useMemo(
     () => ({
@@ -181,12 +181,12 @@ export const useOrganizationFormState = (
 
   const initialValues = useMemo(
     () => ({
+      //@ts-ignore
+      roles: defaultRoles,
       ...(organization
         ? //@ts-ignore
           organizationToFlatOrganization(organization)
-        : undefined),
-      //@ts-ignore
-      roles: defaultRoles
+        : undefined)
     }),
     [defaultRoles]
   )
@@ -201,7 +201,7 @@ export const useOrganizationFormState = (
 
   return {
     formState,
-    organization: getOrganization.data?.item,
+    organization: organization,
     isLoading: getOrganization.isLoading
   }
 }
