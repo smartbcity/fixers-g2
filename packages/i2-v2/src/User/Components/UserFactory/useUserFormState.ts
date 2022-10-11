@@ -221,6 +221,7 @@ export const useUserFormState = <T extends User = User>(
     formState,
     checkEmailValidity,
     user: user,
-    isLoading: getUser.isLoading
+    isLoading: getUser.isLoading,
+    getUser: getUser
   }
 }

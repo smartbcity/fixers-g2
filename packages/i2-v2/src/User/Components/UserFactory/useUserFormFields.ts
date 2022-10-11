@@ -97,7 +97,7 @@ export const useUserFormFields = <T extends User = User>(
       }
       return undefined
     },
-    [user?.email, checkEmailValidity]
+    [user?.email, checkEmailValidity, strings?.emailAlreadyUsed]
   )
 
   const { addressFields } = useAdressFields({
@@ -146,8 +146,7 @@ export const useUserFormFields = <T extends User = User>(
                 key: 'memberOf',
                 name: 'memberOf',
                 label: 'Organisation',
-                type: 'select',
-                defaultValue: user?.memberOf?.id ?? organizationId
+                type: 'select'
               },
               fieldsOverride?.memberOf
             )
@@ -241,14 +240,15 @@ export const useUserFormFields = <T extends User = User>(
         : [])
     ],
     [
-      user,
-      isUpdate,
-      fieldsOverride,
-      multipleRoles,
-      readonly,
-      organizationId,
       strings,
-      onCheckEmail
+      fieldsOverride,
+      organizationId,
+      multipleRoles,
+      addressFields,
+      emailLoading,
+      onCheckEmail,
+      isUpdate,
+      readonly
     ]
   )
 

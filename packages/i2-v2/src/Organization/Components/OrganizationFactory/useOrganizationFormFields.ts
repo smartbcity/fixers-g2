@@ -48,10 +48,6 @@ export interface useOrganizationFormFieldsProps {
    */
   fieldsOverride?: OrganizationFactoryFieldsOverride
   /**
-   * The initial organization
-   */
-  organization?: Partial<Organization>
-  /**
    * Allow the organization to have multipe roles
    *
    * @default true
@@ -67,7 +63,6 @@ export const useOrganizationFormFields = (
     getInseeOrganization,
     setInseeOrganization,
     strings,
-    organization,
     multipleRoles = true,
     fieldsOverride
   } = params ?? {}
@@ -191,7 +186,15 @@ export const useOrganizationFormFields = (
         fieldsOverride?.description
       )
     ],
-    [organization, strings]
+    [
+      addressFields,
+      strings?.requiredField,
+      siretValid,
+      fetchOrganization,
+      formState?.validateField,
+      multipleRoles,
+      fieldsOverride
+    ]
   )
 
   const fieldsArray = useMemo(() => Object.values(fields), [fields])

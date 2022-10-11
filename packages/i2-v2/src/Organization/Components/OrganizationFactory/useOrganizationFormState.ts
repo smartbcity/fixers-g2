@@ -131,24 +131,14 @@ export const useOrganizationFormState = (
 
   const updateOrganizationMemoized = useCallback(
     async (organization: Organization) => {
-      const res = await updateOrganization.mutateAsync(organization)
-      if (res) {
-        return true
-      } else {
-        return false
-      }
+      await updateOrganization.mutateAsync(organization)
     },
     [updateOrganization.mutateAsync]
   )
 
   const createOrganizationMemoized = useCallback(
     async (organization: Organization) => {
-      const res = await createOrganization.mutateAsync(organization)
-      if (res) {
-        return true
-      } else {
-        return false
-      }
+      await createOrganization.mutateAsync(organization)
     },
     [createOrganization.mutateAsync]
   )
@@ -188,7 +178,7 @@ export const useOrganizationFormState = (
           organizationToFlatOrganization(organization)
         : undefined)
     }),
-    [defaultRoles]
+    [defaultRoles, organization]
   )
 
   const formState = useFormComposable({
@@ -202,6 +192,7 @@ export const useOrganizationFormState = (
   return {
     formState,
     organization: organization,
-    isLoading: getOrganization.isLoading
+    isLoading: getOrganization.isLoading,
+    getOrganization: getOrganization
   }
 }
