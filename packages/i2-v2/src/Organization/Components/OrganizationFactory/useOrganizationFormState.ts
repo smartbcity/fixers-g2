@@ -187,7 +187,8 @@ export const useOrganizationFormState = <T extends Organization = Organization>(
     //@ts-ignore
     onSubmit: onSubmitMemoized,
     formikConfig: {
-      initialValues: initialValues
+      initialValues: initialValues,
+      enableReinitialize: true
     }
   })
 
