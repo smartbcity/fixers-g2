@@ -201,7 +201,7 @@ export const useUserFormState = <T extends User = User>(
       memberOf: organizationId,
       sendEmailLink: true,
       //@ts-ignore
-      ...(user ? userToFlatUser(user) : undefined),
+      ...(!!user ? userToFlatUser(user) : undefined),
       roles: multipleRoles
         ? user?.roles?.assignedRoles || roles
         : user?.roles?.assignedRoles[0] || roles[0]

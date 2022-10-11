@@ -175,7 +175,7 @@ export const useOrganizationFormState = <T extends Organization = Organization>(
     () => ({
       //@ts-ignore
       roles: defaultRoles,
-      ...(organization
+      ...(!!organization
         ? //@ts-ignore
           organizationToFlatOrganization(organization)
         : undefined)

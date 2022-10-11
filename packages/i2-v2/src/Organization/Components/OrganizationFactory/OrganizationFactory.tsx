@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useState, useEffect } from 'react'
 import { FormProps } from '@smartb/g2-forms'
 import { styled, Typography } from '@mui/material'
 import { Popover } from '@smartb/g2-notifications'
@@ -118,8 +118,18 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
   } = props
 
   const [openSiretInfo, setOpenSiretInfo] = useState(
-    !organization && !readonly && !fieldsOverride?.siret?.readonly
+    !organization && !readonly && !fieldsOverride?.siret?.readonly && !isLoading
   )
+
+  useEffect(() => {
+    if (
+      !organization &&
+      !readonly &&
+      !fieldsOverride?.siret?.readonly &&
+      !isLoading
+    )
+      setOpenSiretInfo(true)
+  }, [organization, readonly, fieldsOverride?.siret?.readonly, isLoading])
 
   const onCloseSiretInfo = useCallback(() => setOpenSiretInfo(false), [])
 
