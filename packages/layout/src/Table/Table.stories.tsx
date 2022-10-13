@@ -163,6 +163,7 @@ const columns: Column<Data>[] = [
 
 Table.args = {
   columns: columns,
+  getRowId: (row) => row.id,
   setSelectedRowIds: (ids) => console.log(ids),
   isSelectableRow: (row) => row.index % 2 === 0,
   renderSubComponent: (row) => (
@@ -478,6 +479,7 @@ export const AxessExample: Story = () => {
       className: 'dataColumn'
     }
   ]
+
   return (
     <Stack
       sx={{

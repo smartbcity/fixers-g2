@@ -336,18 +336,20 @@ export const Table = <Data extends {}>(props: TableProps<Data>) => {
   )
 
   useEffect(() => {
-    const selectedOptions: Record<string, boolean> = {} as Record<
-      string,
-      boolean
-    >
-    selectedFlatRows
-      .filter((d) => (isSelectableRow ? isSelectableRow(d) : true))
-      .map((d) => d.id)
-      .forEach((val) => {
+    const selectedOptions: Record<string, boolean> = selectedRowIds
+    // In same case selectedFlatRows contains only the rows of the current page.
+    // When ToggleAllPageRowsSelected is checked, we need to unselect not selectable rows
+    selectedFlatRows.forEach((d) => {
+      const val = getRowId ? getRowId(d.original) : d.id
+      const isRowSelected = isSelectableRow ? isSelectableRow(d) : true
+      if (isRowSelected) {
         selectedOptions[val] = true
-      })
+      } else {
+        delete selectedOptions[val]
+      }
+    })
     setSelectedRowIds && setSelectedRowIds(selectedOptions)
-  }, [selectedRowIds, setSelectedRowIds])
+  }, [selectedFlatRows, selectedRowIds, setSelectedRowIds])
 
   const tableProps = useMemo(() => getTableProps(), [getTableProps])
 
