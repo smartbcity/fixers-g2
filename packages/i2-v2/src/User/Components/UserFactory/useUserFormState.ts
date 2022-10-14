@@ -58,9 +58,9 @@ export interface UseUserFormStateProps<T extends User = User> {
    */
   myProfile?: boolean
   /**
-   * The roles of the user. Needed if you want to preSelect it when you are creating a user
+   * The roles used by default in the form
    */
-  roles?: string[]
+  defaultRoles?: string[]
 }
 
 export const useUserFormState = <T extends User = User>(
@@ -69,7 +69,7 @@ export const useUserFormState = <T extends User = User>(
   const {
     multipleRoles = true,
     organizationId,
-    roles = [],
+    defaultRoles = [],
     createUserOptions,
     getUserOptions,
     updateUserOptions,
@@ -203,10 +203,10 @@ export const useUserFormState = <T extends User = User>(
       //@ts-ignore
       ...(!!user ? userToFlatUser(user) : undefined),
       roles: multipleRoles
-        ? user?.roles?.assignedRoles || roles
-        : user?.roles?.assignedRoles[0] || roles[0]
+        ? user?.roles?.assignedRoles || defaultRoles
+        : user?.roles?.assignedRoles[0] || defaultRoles[0]
     }),
-    [user, multipleRoles]
+    [user, multipleRoles, defaultRoles]
   )
 
   const formState = useFormComposable({

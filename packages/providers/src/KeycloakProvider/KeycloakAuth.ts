@@ -1,7 +1,7 @@
 import Keycloak, { KeycloakInitOptions, KeycloakConfig } from 'keycloak-js'
 
 export interface KeycloakAuth {
-  instance: Keycloak.KeycloakInstance
+  instance: Keycloak
   initOptions: KeycloakInitOptions
 }
 
@@ -12,7 +12,7 @@ const instanceBuilder = (
   initOptions?: KeycloakInitOptions
 ): KeycloakAuth => {
   keycloakSingleton = {
-    instance: Keycloak(config),
+    instance: new Keycloak(config),
     initOptions: initOptions || initOptionsDefault
   }
   return keycloakSingleton

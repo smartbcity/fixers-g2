@@ -1,7 +1,7 @@
 import { cx } from '@emotion/css'
 import { Option } from '@smartb/g2-forms'
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
-import React from 'react'
+import React, { useMemo } from 'react'
 import { User } from '../../Domain'
 import { AdressValidationStrings } from '../../../Commons'
 import { OrganizationId, OrganizationRef } from '../../../Organization'
@@ -14,13 +14,13 @@ import {
   FormComposableField,
   FormComposableState
 } from '@smartb/g2-composable'
-import { useUserFormFields, UseUserFormFieldsProps } from './useUserFormFields'
+import {
+  userFieldsName,
+  useUserFormFields,
+  UseUserFormFieldsProps
+} from './useUserFormFields'
 
 export type Validated = boolean
-
-export type ReadonlyFields = {
-  [k in keyof User]?: boolean
-}
 
 export interface UserFactoryStrings extends AdressValidationStrings {
   /**
@@ -63,7 +63,7 @@ export interface UserFactoryBasicProps
   /**
    * The name of the field you want to block in the form state
    */
-  blockedFields?: string[]
+  blockedFields?: userFieldsName[]
   /**
    * The organizations refs needed to make the orgnization select
    */
@@ -110,24 +110,43 @@ export const UserFactory = (props: UserFactoryProps) => {
     isLoading = false,
     strings,
     getOrganizationUrl,
-    blockedFields,
+    blockedFields = [],
     readonlyRolesOptions,
     multipleRoles = true,
     checkEmailValidity,
     formExtension,
+    fieldsOverride,
     ...other
   } = props
 
   const { ref, width } = useElementSize()
 
   const { fieldsArray } = useUserFormFields(props)
-  delete other.fieldsOverride
   delete other.isUpdate
 
-  const finalFields = useDeletableForm({
+  const definitivBlockedFields = useMemo(
+    (): userFieldsName[] => [
+      //@ts-ignore
+      ...(!fieldsOverride?.roles?.memberOf?.options || organizationId
+        ? (['memberOf'] as userFieldsName[])
+        : []),
+      //@ts-ignore
+      ...(!fieldsOverride?.roles?.params?.options
+        ? (['roles'] as userFieldsName[])
+        : []),
+      //@ts-ignore
+      ...(!isUpdate && !readonly
+        ? (['sendEmailLink'] as userFieldsName[])
+        : []),
+      ...blockedFields
+    ],
+    [blockedFields, fieldsOverride, organizationId]
+  )
+
+  const finalFields = useDeletableForm<FormComposableField<string, {}>>({
     initialFields: fieldsArray,
     additionalFields: additionalFields,
-    blockedFields: blockedFields
+    blockedFields: definitivBlockedFields
   })
 
   return (

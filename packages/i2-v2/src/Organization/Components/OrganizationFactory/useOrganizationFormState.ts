@@ -1,4 +1,3 @@
-import { Option } from '@smartb/g2-forms'
 import { i2Config, useAuth } from '@smartb/g2-providers'
 import { useCallback, useMemo } from 'react'
 import {
@@ -43,9 +42,9 @@ export interface useOrganizationFormStateProps<
    */
   update?: boolean
   /**
-   * The roles options used to attributs the default roles
+   * The roles used to attributs the default roles
    */
-  rolesOptions?: Option[]
+  defaultRoles?: string[]
   /**
    * to use the current user organization
    * @default  false
@@ -68,7 +67,7 @@ export const useOrganizationFormState = <T extends Organization = Organization>(
     organizationId,
     update,
     updateOrganizationOptions,
-    rolesOptions,
+    defaultRoles,
     multipleRoles = true,
     myOrganization = false
   } = params ?? {}
@@ -165,22 +164,21 @@ export const useOrganizationFormState = <T extends Organization = Organization>(
     ]
   )
 
-  const defaultRoles = useMemo(() => {
-    const givenRoles = rolesOptions?.map((it) => it.key)
-    const roles = organization?.roles?.filter((it) => givenRoles?.includes(it))
+  const initialRoles = useMemo(() => {
+    const roles = organization?.roles ?? defaultRoles
     return multipleRoles ? roles : roles?.[0]
-  }, [rolesOptions, organization?.roles, multipleRoles])
+  }, [defaultRoles, organization?.roles, multipleRoles])
 
   const initialValues = useMemo(
     () => ({
-      //@ts-ignore
-      roles: defaultRoles,
       ...(!!organization
         ? //@ts-ignore
           organizationToFlatOrganization(organization)
-        : undefined)
+        : undefined),
+      //@ts-ignore
+      roles: initialRoles
     }),
-    [defaultRoles, organization]
+    [initialRoles, organization]
   )
 
   const formState = useFormComposable({

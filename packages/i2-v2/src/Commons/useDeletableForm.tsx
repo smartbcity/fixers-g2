@@ -1,8 +1,8 @@
 import { useMemo } from 'react'
-import { FormField, FormPartialField } from '@smartb/g2-forms'
+import { FormComposableField } from '@smartb/g2-composable'
 
 export interface DeletableFormParams<
-  T extends FormField | FormPartialField = FormField
+  T extends FormComposableField<string, {}> = FormComposableField<string, {}>
 > {
   initialFields: T[]
   additionalFields?: T[]
@@ -13,7 +13,7 @@ export interface DeletableFormParams<
 }
 
 export const useDeletableForm = <
-  T extends FormField | FormPartialField = FormField
+  T extends FormComposableField<string, {}> = FormComposableField<string, {}>
 >(
   deletePrams: DeletableFormParams<T>
 ) => {

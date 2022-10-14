@@ -102,8 +102,11 @@ export const useOrganizationFormFields = (
   })
 
   const fields = useMemo(
-    (): FormComposableField<organizationFieldsName>[] => [
-      mergeFields<FormComposableField<organizationFieldsName>>(
+    (): Record<
+      organizationFieldsName,
+      FormComposableField<organizationFieldsName>
+    > => ({
+      siret: mergeFields<FormComposableField<organizationFieldsName>>(
         {
           key: 'siret',
           name: 'siret',
@@ -127,7 +130,7 @@ export const useOrganizationFormFields = (
         },
         fieldsOverride?.siret
       ),
-      mergeFields<FormComposableField<organizationFieldsName>>(
+      name: mergeFields<FormComposableField<organizationFieldsName>>(
         {
           key: 'name',
           name: 'name',
@@ -142,28 +145,21 @@ export const useOrganizationFormFields = (
         },
         fieldsOverride?.name
       ),
-      //@ts-ignore
-      ...(fieldsOverride?.roles?.params?.options
-        ? [
-            mergeFields<FormComposableField<organizationFieldsName>>(
-              {
-                key: 'roles',
-                name: 'roles',
-                label: 'Rôle',
-                type: 'select',
-                params: {
-                  readonlyType: 'chip',
-                  multiple: multipleRoles
-                }
-              },
-              fieldsOverride?.roles
-            )
-          ]
-        : []),
-      addressFields.street,
-      addressFields.postalCode,
-      addressFields.city,
-      mergeFields<FormComposableField<organizationFieldsName>>(
+      roles: mergeFields<FormComposableField<organizationFieldsName>>(
+        {
+          key: 'roles',
+          name: 'roles',
+          label: 'Rôle',
+          type: 'select',
+          params: {
+            readonlyType: 'chip',
+            multiple: multipleRoles
+          }
+        },
+        fieldsOverride?.roles
+      ),
+      ...addressFields,
+      website: mergeFields<FormComposableField<organizationFieldsName>>(
         {
           key: 'website',
           name: 'website',
@@ -172,7 +168,7 @@ export const useOrganizationFormFields = (
         },
         fieldsOverride?.website
       ),
-      mergeFields<FormComposableField<organizationFieldsName>>(
+      description: mergeFields<FormComposableField<organizationFieldsName>>(
         {
           key: 'description',
           name: 'description',
@@ -185,7 +181,7 @@ export const useOrganizationFormFields = (
         },
         fieldsOverride?.description
       )
-    ],
+    }),
     [
       addressFields,
       strings?.requiredField,

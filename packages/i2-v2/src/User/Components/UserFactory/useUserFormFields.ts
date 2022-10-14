@@ -107,8 +107,8 @@ export const useUserFormFields = <T extends User = User>(
   })
 
   const fields = useMemo(
-    (): FormComposableField<userFieldsName>[] => [
-      mergeFields<FormComposableField<userFieldsName>>(
+    (): Record<userFieldsName, FormComposableField<userFieldsName>> => ({
+      givenName: mergeFields<FormComposableField<userFieldsName>>(
         {
           key: 'givenName',
           name: 'givenName',
@@ -123,7 +123,7 @@ export const useUserFormFields = <T extends User = User>(
         },
         fieldsOverride?.givenName
       ),
-      mergeFields<FormComposableField<userFieldsName>>(
+      familyName: mergeFields<FormComposableField<userFieldsName>>(
         {
           key: 'familyName',
           name: 'familyName',
@@ -138,42 +138,30 @@ export const useUserFormFields = <T extends User = User>(
         },
         fieldsOverride?.familyName
       ),
-      //@ts-ignore
-      ...(fieldsOverride?.roles?.memberOf?.options || organizationId
-        ? [
-            mergeFields<FormComposableField<userFieldsName>>(
-              {
-                key: 'memberOf',
-                name: 'memberOf',
-                label: 'Organisation',
-                type: 'select'
-              },
-              fieldsOverride?.memberOf
-            )
-          ]
-        : []),
-      //@ts-ignore
-      ...(fieldsOverride?.roles?.params?.options
-        ? [
-            mergeFields<FormComposableField<userFieldsName>>(
-              {
-                key: 'roles',
-                name: 'roles',
-                label: 'Role',
-                type: 'select',
-                params: {
-                  readonlyType: 'chip',
-                  multiple: multipleRoles
-                }
-              },
-              fieldsOverride?.roles
-            )
-          ]
-        : []),
-      addressFields.street,
-      addressFields.postalCode,
-      addressFields.city,
-      mergeFields<FormComposableField<userFieldsName>>(
+      memberOf: mergeFields<FormComposableField<userFieldsName>>(
+        {
+          key: 'memberOf',
+          name: 'memberOf',
+          label: 'Organisation',
+          type: 'select'
+        },
+        fieldsOverride?.memberOf
+      ),
+      roles: mergeFields<FormComposableField<userFieldsName>>(
+        {
+          key: 'roles',
+          name: 'roles',
+          label: 'Role',
+          type: 'select',
+          params: {
+            readonlyType: 'chip',
+            multiple: multipleRoles
+          }
+        },
+        fieldsOverride?.roles
+      ),
+      ...addressFields,
+      email: mergeFields<FormComposableField<userFieldsName>>(
         {
           key: 'email',
           name: 'email',
@@ -202,7 +190,7 @@ export const useUserFormFields = <T extends User = User>(
         },
         fieldsOverride?.email
       ),
-      mergeFields<FormComposableField<userFieldsName>>(
+      phone: mergeFields<FormComposableField<userFieldsName>>(
         {
           key: 'phone',
           name: 'phone',
@@ -221,24 +209,20 @@ export const useUserFormFields = <T extends User = User>(
         },
         fieldsOverride?.phone
       ),
-      ...(!isUpdate && !readonly
-        ? [
-            mergeFields<FormComposableField<userFieldsName>>(
-              {
-                key: 'sendEmailLink',
-                name: 'sendEmailLink',
-                type: 'checkBox',
-                label: "Envoyer un lien d'invitation par mail",
-                params: {
-                  className: 'AruiUserFactory-sendEmailLink',
-                  disabled: fieldsOverride?.sendEmailLink?.readonly
-                }
-              },
-              fieldsOverride?.sendEmailLink
-            )
-          ]
-        : [])
-    ],
+      sendEmailLink: mergeFields<FormComposableField<userFieldsName>>(
+        {
+          key: 'sendEmailLink',
+          name: 'sendEmailLink',
+          type: 'checkBox',
+          label: "Envoyer un lien d'invitation par mail",
+          params: {
+            className: 'AruiUserFactory-sendEmailLink',
+            disabled: fieldsOverride?.sendEmailLink?.readonly
+          }
+        },
+        fieldsOverride?.sendEmailLink
+      )
+    }),
     [
       strings,
       fieldsOverride,

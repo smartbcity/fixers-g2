@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect } from 'react'
+import React, { useCallback, useState, useEffect, useMemo } from 'react'
 import { FormProps } from '@smartb/g2-forms'
 import { styled, Typography } from '@mui/material'
 import { Popover } from '@smartb/g2-notifications'
@@ -13,6 +13,7 @@ import {
   FormComposableState
 } from '@smartb/g2-composable'
 import {
+  organizationFieldsName,
   useOrganizationFormFields,
   useOrganizationFormFieldsProps
 } from './useOrganizationFormFields'
@@ -66,7 +67,7 @@ export interface OrganizationFactoryBasicProps
   /**
    * The name of the field you want to block in the form state
    */
-  blockedFields?: string[]
+  blockedFields?: organizationFieldsName[]
   /**
    * To activate Readonly view
    * @default false
@@ -100,7 +101,7 @@ export type OrganizationFactoryProps = MergeMuiElementProps<
 export const OrganizationFactory = (props: OrganizationFactoryProps) => {
   const {
     additionalFields = [],
-    blockedFields,
+    blockedFields = [],
     organization,
     onSubmit,
     getInseeOrganization,
@@ -135,10 +136,21 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
 
   const { fieldsArray, siretRef } = useOrganizationFormFields(props)
 
+  const definitivBlockedFields = useMemo(
+    (): organizationFieldsName[] => [
+      //@ts-ignore
+      ...(!fieldsOverride?.roles?.params?.options
+        ? (['roles'] as organizationFieldsName[])
+        : []),
+      ...blockedFields
+    ],
+    [blockedFields, fieldsOverride]
+  )
+
   const finalFields = useDeletableForm({
     initialFields: fieldsArray,
     additionalFields: additionalFields,
-    blockedFields: blockedFields
+    blockedFields: definitivBlockedFields
   })
 
   return (
