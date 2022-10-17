@@ -25,8 +25,7 @@ export {
   UserFactoryFieldsOverride,
   useUserFormFields,
   useUserFormState,
-  UserFactoryStrings,
-  ReadonlyFields as UserReadonlyFields
+  UserFactoryStrings
 } from './Components/UserFactory'
 
 export {
