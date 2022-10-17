@@ -4,12 +4,12 @@ import {
   ElementRenderersConfig
 } from '../../ComposableRender'
 import { ReactNode } from 'react'
+import { PotentialError } from '@smartb/g2-forms'
 
-export type FieldValidatorFnc = (
-  value: any | undefined
-) => Promise<string> | string | undefined
+export type FieldValidatorFnc = (value?: any, values?: any) => PotentialError
 
 export type FormComposableField<
+  Name extends string = string,
   ELEMENT_PARAMS extends ElementRenderersConfig = {}
 > = {
   /**
@@ -19,7 +19,7 @@ export type FormComposableField<
   /**
    * the name of the field used to define it in the returned values
    */
-  name: string
+  name: Name
   /**
    * the displayed label of the field
    */

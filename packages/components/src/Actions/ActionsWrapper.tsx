@@ -1,7 +1,6 @@
-import React, { FunctionComponent, useMemo } from 'react'
+import React, { FunctionComponent } from 'react'
 import { FormAction } from '@smartb/g2-forms'
-import { StackProps } from '@mui/material'
-import { Actions, ActionsClasses, ActionsStyles } from './Actions'
+import { Actions, ActionsProps, ActionsClasses, ActionsStyles } from './Actions'
 import { BasicProps } from '@smartb/g2-themes/src'
 import { MergeMuiElementProps } from '@smartb/g2-themes'
 
@@ -27,10 +26,6 @@ interface ActionsWrapperBasicProps extends BasicProps {
    */
   position?: 'above' | 'below' | 'both'
   /**
-   * the props given to the actions stack container
-   */
-  stackProps?: StackProps
-  /**
    * Indicates if the data is currently loading
    *
    * @default false
@@ -53,7 +48,7 @@ interface ActionsWrapperBasicProps extends BasicProps {
 }
 
 export type ActionsWrapperProps = MergeMuiElementProps<
-  StackProps,
+  ActionsProps,
   ActionsWrapperBasicProps
 >
 
@@ -65,24 +60,21 @@ export const ActionsWrapper: FunctionComponent<ActionsWrapperProps> = (
     classes,
     styles,
     position = 'below',
-    stackProps,
     isLoading = false,
-    children
+    children,
+    ...other
   } = props
 
-  const actionsElement = useMemo(() => {
-    if (!actions || actions.length === 0) return undefined
-    return (
-      <Actions
-        actions={actions}
-        className='AruiActions-Wrapper'
-        style={styles?.actions}
-        classes={classes}
-        styles={{ button: styles?.button }}
-        {...stackProps}
-      />
-    )
-  }, [actions, classes?.button, styles?.button])
+  const actionsElement = (
+    <Actions
+      actions={actions ?? []}
+      className='AruiActions-Wrapper'
+      style={styles?.actions}
+      classes={classes}
+      styles={{ button: styles?.button }}
+      {...other}
+    />
+  )
 
   return (
     <>

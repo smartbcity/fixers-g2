@@ -46,7 +46,7 @@ export const AutoCompleteRender: ElementRendererFunction<
     // @ts-ignore
     <InputForm
       inputType='autoComplete'
-      value={formState.getFieldProps(basicProps.name).value ?? ''}
+      value={formState.getFieldProps(basicProps.name).value ?? null}
       onChangeValue={(value: any) => {
         formState.setFieldValue(basicProps.name, value, false)
         !!basicProps.onChange && basicProps.onChange(value)

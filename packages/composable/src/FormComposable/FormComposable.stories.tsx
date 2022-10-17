@@ -44,7 +44,7 @@ export type DebugExtendProps = {
   formName: string
 }
 
-type DebugRenderProps = FieldRenderProps<'debug', DebugExtendProps>
+type DebugRenderProps = FieldRenderProps<string, DebugExtendProps>
 const DebugRender: ElementRendererFunction<DebugRenderProps> = (
   props: DebugRenderProps
 ) => {
@@ -64,14 +64,14 @@ export type HiddenProps = {
   formName: string
 }
 
-type HiddenRenderProps = FieldRenderProps<'hidden', HiddenProps>
+type HiddenRenderProps = FieldRenderProps<string, HiddenProps>
 const HiddenRender: ElementRendererFunction<HiddenRenderProps> = (
   _: HiddenRenderProps
 ) => {
   return <></>
 }
 
-const CustomRenderer: ElementRenderersConfig = {
+const CustomRenderer: ElementRenderersConfig<any> = {
   debug: DebugRender,
   hidden: HiddenRender
 }

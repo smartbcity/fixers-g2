@@ -14,14 +14,12 @@ export interface WithElementParams<TYPE extends string, PARAMS> {
   element: ElementParams<TYPE, PARAMS>
 }
 
-export interface ElementRenderersConfig
-  extends Record<
-    string,
-    ElementRendererFunction<WithElementParams<string, {}>>
-  > {}
+export type ElementRenderersConfig<
+  PROPS extends WithElementParams<string, {}> = WithElementParams<string, {}>
+> = Record<string, ElementRendererFunction<PROPS>>
 
 export type ElementRendererFunction<
-  PROPS extends WithElementParams<string, {}>
+  PROPS extends WithElementParams<string, {}> = WithElementParams<string, {}>
 > = FunctionComponent<PROPS>
 
 export type ComposableElementRendererProps<

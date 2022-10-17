@@ -244,9 +244,8 @@ export const InputForm: InputFormComponent = React.forwardRef(
       [createInputContainer, inputUi]
     )
 
-    const valueNotExist = props.value === undefined || props.value === ''
-    const valuesIsEmpty = props.value === undefined || props.value === ''
-    if (readonly && (valueNotExist || valuesIsEmpty) && !isLoading) return <></>
+    const valuesIsEmpty = props.value == undefined || props.value === ''
+    if (readonly && valuesIsEmpty && !isLoading) return <></>
     return (
       <Box
         className={className}
