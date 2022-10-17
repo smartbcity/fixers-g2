@@ -70,7 +70,12 @@ export interface AutoCompleteBasicProps<T> extends BasicProps {
    */
   noFilterDisplayOptions?: boolean
   /**
-   * This props will tell how many options are alowed to be displayed in the result list. If you want no sie restriction pass a negative number
+   * pass this prop to true if you don't want to filters the options
+   * @default false
+   */
+  noFilterOptions?: boolean
+  /**
+   * This props will tell how many options are alowed to be displayed in the result list. If you want no size restriction pass a negative number
    * @default -1
    */
   optionsResultLimit?: number
@@ -85,12 +90,17 @@ export interface AutoCompleteBasicProps<T> extends BasicProps {
    */
   textFieldProps?: TextFieldProps
   /**
+   * Tells whether or not to display the chekcbox in ths options
+   *
+   * @default true
+   */
+  withCheckbox?: boolean
+  /**
    * Define if the value of the input is valid or not
    *
    * @default false
    */
   error?: boolean
-
   /**
    * The message displayed when the input value is wrong
    */
@@ -114,7 +124,7 @@ const AutoCompleteBase = function <T>(
     style,
     multiple = false,
     id,
-    options,
+    options = [],
     value,
     values,
     onChangeValue,
@@ -126,9 +136,11 @@ const AutoCompleteBase = function <T>(
     disabled,
     isOptionEqualToValue,
     noFilterDisplayOptions = true,
+    noFilterOptions = false,
     optionsResultLimit = -1,
     error = false,
     errorMessage = '',
+    withCheckbox = true,
     ...other
   } = props
 
@@ -191,25 +203,27 @@ const AutoCompleteBase = function <T>(
           className={defaultStyles.cx('AruiAutoComplete-option')}
           {...other}
         >
-          <CheckBox checked={selected} />
+          {withCheckbox && <CheckBox checked={selected} />}
           <ListItemText primary={getOptionLabel(option)} />
         </ListItem>
       )
     },
-    [getOptionLabel]
+    [getOptionLabel, withCheckbox]
   )
 
   const filterOptions = useCallback(
     (options: T[], state: FilterOptionsState<T>): T[] => {
       const inputTrimmed = state.inputValue.trim()
       if (!noFilterDisplayOptions && !inputTrimmed) return []
-      const result = defaultFilterOptions(options, state) as T[]
+      const result = noFilterOptions
+        ? options
+        : (defaultFilterOptions(options, state) as T[])
       if (optionsResultLimit >= 0) {
         return result.splice(0, optionsResultLimit)
       }
       return result
     },
-    [noFilterDisplayOptions, optionsResultLimit]
+    [noFilterDisplayOptions, optionsResultLimit, noFilterOptions]
   )
 
   const defaultIsOptionEqualToValue = useCallback(
