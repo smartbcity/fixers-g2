@@ -3,7 +3,7 @@
   "repository": "https://gitlab.smartb.city/fixers/g2.git",
   "author": "SmartB",
   "license": "Apache-2.0",
-  "version": "1.0.0-alpha.83",
+  "version": "1.0.0-alpha.84",
   "description": "Utility package used in the g2 packages.",
   "private": false,
   "main": "dist/index.js",
