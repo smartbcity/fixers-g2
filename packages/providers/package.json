@@ -39,6 +39,7 @@
   "dependencies": {
     "@react-keycloak/web": "^3.4.0",
     "@smartb/g2-components": "1.0.0-alpha.83",
+    "@smartb/g2-composable": "1.0.0-alpha.83",
     "@smartb/g2-themes": "1.0.0-alpha.83",
     "i18next": "^21.8.9",
     "i18next-browser-languagedetector": "^6.1.4",

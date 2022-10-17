@@ -26,13 +26,15 @@ export const SelectRender: ElementRendererFunction<SelectRenderProps> = (
 ): ReactElement => {
   const { element, formState, basicProps } = props
   const { params } = element
+  const onChange = basicProps.onChange
+  delete basicProps.onChange
   return params?.multiple === true ? (
     <InputForm
       inputType='select'
       values={formState.getFieldProps(basicProps.name).value ?? []}
       onChangeValues={(values: string[]) => {
         formState.setFieldValue(basicProps.name, values, false)
-        !!basicProps.onChange && basicProps.onChange(values)
+        !!onChange && onChange(values)
       }}
       {...params}
       {...basicProps}
@@ -43,7 +45,7 @@ export const SelectRender: ElementRendererFunction<SelectRenderProps> = (
       value={formState.getFieldProps(basicProps.name).value ?? ''}
       onChangeValue={(value: string) => {
         formState.setFieldValue(basicProps.name, value, false)
-        !!basicProps.onChange && basicProps.onChange(value)
+        !!onChange && onChange(value)
       }}
       {...params}
       {...basicProps}

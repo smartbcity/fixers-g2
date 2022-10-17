@@ -24,7 +24,9 @@ export const TextFieldRender: ElementRendererFunction<TextFieldRenderProps> = (
 ) => {
   const { element, formState, basicProps } = props
   const { params } = element
-  const value = formState.getFieldProps(basicProps.name).value
+  const onChange = basicProps.onChange
+  delete basicProps.onChange
+  const value = formState.getFieldProps(basicProps.name).value ?? ''
   return (
     <InputForm
       inputType='textField'
@@ -33,7 +35,7 @@ export const TextFieldRender: ElementRendererFunction<TextFieldRenderProps> = (
       {...basicProps}
       onChange={(value: string) => {
         formState.setFieldValue(basicProps.name, value, false)
-        !!basicProps.onChange && basicProps.onChange(value)
+        !!onChange && onChange(value)
       }}
       readonly={basicProps.readonly}
     />

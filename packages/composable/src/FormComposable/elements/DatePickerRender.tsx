@@ -25,6 +25,7 @@ export const DatePickerRender: ElementRendererFunction<
   const { element, formState, basicProps } = props
   const { params } = element
   const date = new Date(formState.getFieldProps(basicProps.name).value)
+  const onChange = basicProps.onChange
   delete basicProps.onChange
   return (
     <InputForm
@@ -42,7 +43,7 @@ export const DatePickerRender: ElementRendererFunction<
           date && !isNaN(date.getTime()) ? date : date?.toString(),
           false
         )
-        !!basicProps.onChange && basicProps.onChange(date)
+        !!onChange && onChange(date)
       }}
     />
   )

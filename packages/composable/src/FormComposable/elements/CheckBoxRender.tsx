@@ -18,6 +18,8 @@ export const CheckBoxRender: ElementRendererFunction<CheckBoxRenderProps> = (
   const { element, formState, basicProps } = props
   const { params } = element
   const value = formState.getFieldProps(basicProps.name).value
+  const onChange = basicProps.onChange
+  delete basicProps.onChange
   return (
     <CheckBox
       checked={value}
@@ -29,7 +31,7 @@ export const CheckBoxRender: ElementRendererFunction<CheckBoxRenderProps> = (
       }
       onChange={(_: React.ChangeEvent<HTMLInputElement>, value: boolean) => {
         formState.setFieldValue(basicProps.name, value, false)
-        !!basicProps.onChange && basicProps.onChange(value)
+        !!onChange && onChange(value)
       }}
     />
   )

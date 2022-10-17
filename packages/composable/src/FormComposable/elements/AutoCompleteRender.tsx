@@ -30,6 +30,8 @@ export const AutoCompleteRender: ElementRendererFunction<
 > = (props: AutoCompleteRenderProps) => {
   const { element, formState, basicProps } = props
   const { params } = element
+  const onChange = basicProps.onChange
+  delete basicProps.onChange
   return params?.multiple === true ? (
     // @ts-ignore
     <InputForm
@@ -37,7 +39,7 @@ export const AutoCompleteRender: ElementRendererFunction<
       values={formState.getFieldProps(basicProps.name).value ?? []}
       onChangeValues={(values: any) => {
         formState.setFieldValue(basicProps.name, values, false)
-        !!basicProps.onChange && basicProps.onChange(values)
+        !!onChange && onChange(values)
       }}
       {...params}
       {...basicProps}
@@ -48,8 +50,9 @@ export const AutoCompleteRender: ElementRendererFunction<
       inputType='autoComplete'
       value={formState.getFieldProps(basicProps.name).value ?? null}
       onChangeValue={(value: any) => {
+        console.log(value)
         formState.setFieldValue(basicProps.name, value, false)
-        !!basicProps.onChange && basicProps.onChange(value)
+        !!onChange && onChange(value)
       }}
       {...params}
       {...basicProps}
