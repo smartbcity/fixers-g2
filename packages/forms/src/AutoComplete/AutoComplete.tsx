@@ -232,7 +232,7 @@ const AutoCompleteBase = function <T>(
     []
   )
   //@ts-ignore
-  const hasKey = values ? !!values[0]?.key : !!value?.key
+  const hasKey = !!options[0]?.key
 
   return (
     <MuiAutocomplete<T, boolean, undefined, undefined>
@@ -252,7 +252,8 @@ const AutoCompleteBase = function <T>(
       renderInput={renderInput}
       renderOption={renderOption}
       isOptionEqualToValue={
-        isOptionEqualToValue ?? hasKey ? defaultIsOptionEqualToValue : undefined
+        isOptionEqualToValue ??
+        (hasKey ? defaultIsOptionEqualToValue : undefined)
       }
       filterOptions={filterOptions}
       classes={{

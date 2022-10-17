@@ -39,7 +39,7 @@ const useFormProps = (
   field: FormComposableField,
   props: FormComposableProps<any>
 ): FieldRender => {
-  const { formState, classes, styles, isLoading } = props
+  const { formState, classes, styles, isLoading, readonly } = props
   const error = formState.getFieldMeta(field.name).error
   return {
     key: field.key,
@@ -56,14 +56,14 @@ const useFormProps = (
       ...field.params?.style
     },
     onChange: field.onChange,
-    readonly: field.readonly === true ? field.readonly : props?.readonly
+    readonly: field.readonly === true ? field.readonly : readonly
   }
 }
 
 export const useFieldRenderProps = (
   props: FormComposableProps<any>
 ): FieldRenderProps<string, any>[] => {
-  const { fields, formState, classes, styles, isLoading } = props
+  const { fields, formState, classes, styles, isLoading, readonly } = props
   const memo = useMemo<FieldRenderProps<string, any>[]>(() => {
     return fields.map((field: FormComposableField) => {
       const formProps = useFormProps(field, props)
@@ -90,6 +90,7 @@ export const useFieldRenderProps = (
     formState.errors,
     classes?.field,
     styles?.field,
+    readonly,
     isLoading
   ])
   const { setFieldValue } = formState
