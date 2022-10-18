@@ -113,7 +113,8 @@ export type AutoCompleteProps<T = any> = MergeMuiElementProps<
 >
 
 const defaultFilterOptions = createFilterOptions()
-const defaultGetOptionLabel = (option: any) => option.label ?? ''
+const defaultGetOptionLabel = (option: any) =>
+  typeof option === 'string' ? option : option.label ?? ''
 
 const AutoCompleteBase = function <T>(
   props: AutoCompleteProps<T>,
@@ -218,6 +219,7 @@ const AutoCompleteBase = function <T>(
       const result = noFilterOptions
         ? options
         : (defaultFilterOptions(options, state) as T[])
+      console.log(result)
       if (optionsResultLimit >= 0) {
         return result.splice(0, optionsResultLimit)
       }
