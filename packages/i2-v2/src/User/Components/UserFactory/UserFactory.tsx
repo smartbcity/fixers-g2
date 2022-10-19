@@ -4,7 +4,7 @@ import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 import React, { useMemo } from 'react'
 import { User } from '../../Domain'
 import { AdressValidationStrings } from '../../../Commons'
-import { OrganizationId, OrganizationRef } from '../../../Organization'
+import { OrganizationId } from '../../../Organization'
 import { Stack, StackProps } from '@mui/material'
 import { useElementSize } from '@mantine/hooks'
 import { UserSummary } from '../UserSummary'
@@ -65,10 +65,6 @@ export interface UserFactoryBasicProps
    */
   blockedFields?: userFieldsName[]
   /**
-   * The organizations refs needed to make the orgnization select
-   */
-  organizationsRefs?: OrganizationRef[]
-  /**
    * Use This props if you have roles that you don't want the user to be able to select but able to see in readonly use this prop
    */
   readonlyRolesOptions?: Option[]
@@ -104,7 +100,6 @@ export const UserFactory = (props: UserFactoryProps) => {
     className,
     readonly = false,
     formState,
-    organizationsRefs,
     additionalFields,
     organizationId,
     isLoading = false,
@@ -127,7 +122,7 @@ export const UserFactory = (props: UserFactoryProps) => {
   const definitivBlockedFields = useMemo(
     (): userFieldsName[] => [
       //@ts-ignore
-      ...(!fieldsOverride?.roles?.memberOf?.options || organizationId
+      ...(!fieldsOverride?.memberOf?.params?.options && !organizationId
         ? (['memberOf'] as userFieldsName[])
         : []),
       //@ts-ignore
@@ -135,9 +130,7 @@ export const UserFactory = (props: UserFactoryProps) => {
         ? (['roles'] as userFieldsName[])
         : []),
       //@ts-ignore
-      ...(!isUpdate && !readonly
-        ? (['sendEmailLink'] as userFieldsName[])
-        : []),
+      ...(isUpdate && !readonly ? (['sendEmailLink'] as userFieldsName[]) : []),
       ...blockedFields
     ],
     [blockedFields, fieldsOverride, organizationId, isUpdate, readonly]
