@@ -185,7 +185,7 @@ export const useUserFormState = <T extends User = User>(
     async (values: FlatUser) => {
       const onSubmit = update ? updateUserMemoized : createUserMemoized
       if (onSubmit) {
-        onSubmit({
+        await onSubmit({
           ...values,
           ...FlatUserToUser(values, multipleRoles),
           id: user?.id ?? ''

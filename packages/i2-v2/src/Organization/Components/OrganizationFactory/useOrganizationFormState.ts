@@ -149,7 +149,7 @@ export const useOrganizationFormState = <T extends Organization = Organization>(
       const onSubmit = update
         ? updateOrganizationMemoized
         : createOrganizationMemoized
-      onSubmit({
+      await onSubmit({
         ...values,
         ...flatOrganizationToOrganization(values, multipleRoles),
         id: organization?.id ?? ''

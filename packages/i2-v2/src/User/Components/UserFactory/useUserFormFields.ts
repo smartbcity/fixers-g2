@@ -4,7 +4,8 @@ import {
   AdressFieldsName,
   mergeFields,
   requiredString,
-  useAdressFields
+  useAdressFields,
+  validatePhone
 } from '../../../Commons'
 import { OrganizationId } from '../../../Organization'
 import { User } from '../../Domain'
@@ -196,16 +197,7 @@ export const useUserFormFields = <T extends User = User>(
           name: 'phone',
           type: 'textField',
           label: 'Numéro de téléphone (facultatif)',
-          validator: (value?: string) => {
-            if (fieldsOverride?.phone?.readonly) return undefined
-            const trimmed = (value ?? '').trim().replace(' ', '')
-            if (trimmed && trimmed.length !== 10)
-              return (
-                strings?.enterAValidPhone ??
-                'Le numéro de téléphone doit contenir dix chiffres'
-              )
-            return
-          }
+          validator: validatePhone
         },
         fieldsOverride?.phone
       ),
