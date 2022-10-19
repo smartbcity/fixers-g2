@@ -4,7 +4,6 @@ import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 import React, { useMemo } from 'react'
 import { User } from '../../Domain'
 import { AdressValidationStrings } from '../../../Commons'
-import { OrganizationId } from '../../../Organization'
 import { Stack, StackProps } from '@mui/material'
 import { useElementSize } from '@mantine/hooks'
 import { UserSummary } from '../UserSummary'
@@ -69,10 +68,6 @@ export interface UserFactoryBasicProps
    */
   readonlyRolesOptions?: Option[]
   /**
-   * If you want the organization to transform to a link
-   */
-  getOrganizationUrl?: (organizationId: OrganizationId) => string
-  /**
    * Indicates if the data is currently loading
    *
    * @default false
@@ -104,7 +99,6 @@ export const UserFactory = (props: UserFactoryProps) => {
     organizationId,
     isLoading = false,
     strings,
-    getOrganizationUrl,
     blockedFields = [],
     readonlyRolesOptions,
     multipleRoles = true,
@@ -118,6 +112,7 @@ export const UserFactory = (props: UserFactoryProps) => {
   const { ref, width } = useElementSize()
 
   const { fieldsArray } = useUserFormFields(props)
+  delete other.getOrganizationUrl
 
   const definitivBlockedFields = useMemo(
     (): userFieldsName[] => [
@@ -130,7 +125,7 @@ export const UserFactory = (props: UserFactoryProps) => {
         ? (['roles'] as userFieldsName[])
         : []),
       //@ts-ignore
-      ...(isUpdate && !readonly ? (['sendEmailLink'] as userFieldsName[]) : []),
+      ...(isUpdate || readonly ? (['sendEmailLink'] as userFieldsName[]) : []),
       ...blockedFields
     ],
     [blockedFields, fieldsOverride, organizationId, isUpdate, readonly]

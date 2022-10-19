@@ -47,6 +47,10 @@ export interface UseUserFormFieldsProps<T extends User> {
    */
   checkEmailValidity?: (email: string) => Promise<boolean | undefined>
   /**
+   * If you want the organization to transform to a link
+   */
+  getOrganizationUrl?: (organizationId: OrganizationId) => string
+  /**
    * Indicates if it's an update
    * @default false
    */
@@ -77,7 +81,8 @@ export const useUserFormFields = <T extends User = User>(
     readonly = false,
     organizationId,
     user,
-    multipleRoles = true
+    multipleRoles = true,
+    getOrganizationUrl
   } = params ?? {}
 
   const [emailValid, setEmailValid] = useState(false)
@@ -144,7 +149,10 @@ export const useUserFormFields = <T extends User = User>(
           key: 'memberOf',
           name: 'memberOf',
           label: 'Organisation',
-          type: 'select'
+          type: 'select',
+          params: {
+            getReadonlyTextUrl: getOrganizationUrl
+          }
         },
         fieldsOverride?.memberOf
       ),
