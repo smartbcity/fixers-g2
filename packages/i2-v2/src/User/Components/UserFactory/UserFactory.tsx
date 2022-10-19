@@ -116,13 +116,13 @@ export const UserFactory = (props: UserFactoryProps) => {
     checkEmailValidity,
     formExtension,
     fieldsOverride,
+    isUpdate = false,
     ...other
   } = props
 
   const { ref, width } = useElementSize()
 
   const { fieldsArray } = useUserFormFields(props)
-  delete other.isUpdate
 
   const definitivBlockedFields = useMemo(
     (): userFieldsName[] => [
@@ -140,7 +140,7 @@ export const UserFactory = (props: UserFactoryProps) => {
         : []),
       ...blockedFields
     ],
-    [blockedFields, fieldsOverride, organizationId]
+    [blockedFields, fieldsOverride, organizationId, isUpdate, readonly]
   )
 
   const finalFields = useDeletableForm<FormComposableField<string, {}>>({
