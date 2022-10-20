@@ -106,7 +106,7 @@ export const UserFilters = (props: UserFiltersProps) => {
             {
               key: 'role',
               name: 'role',
-              label: strings?.role ?? 'Role',
+              label: strings?.role ?? 'Rôle',
               defaultValue: initialFiltersValues?.role,
               type: 'select',
               selectProps: {

@@ -134,7 +134,7 @@ export const useUserFormFields = <T extends User = User>(
           key: 'familyName',
           name: 'familyName',
           type: 'textField',
-          label: 'Nom de Famille',
+          label: 'Nom de famille',
           validator: (value?: string) =>
             requiredString(
               strings?.requiredField,
@@ -160,7 +160,7 @@ export const useUserFormFields = <T extends User = User>(
         {
           key: 'roles',
           name: 'roles',
-          label: 'Role',
+          label: 'Rôle',
           type: 'select',
           params: {
             readonlyType: 'chip',
