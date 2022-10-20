@@ -200,7 +200,7 @@ export const UserFactory = (props: UserFactoryProps) => {
         key: 'familyName',
         name: 'familyName',
         type: 'textfield',
-        label: strings?.familyName ?? 'Nom de Famille',
+        label: strings?.familyName ?? 'Nom de famille',
         textFieldProps: {
           readonly: readonlyFields?.familyName
         }
@@ -225,7 +225,7 @@ export const UserFactory = (props: UserFactoryProps) => {
             {
               key: 'roles',
               name: 'roles',
-              label: strings?.roles ?? 'Role',
+              label: strings?.roles ?? 'Rôle',
               type: 'select',
               selectProps: {
                 options:
