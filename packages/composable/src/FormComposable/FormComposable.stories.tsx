@@ -140,6 +140,7 @@ TextFieldForm.args = {
         choices: [],
         disabled: true
       },
+      validator: (value: string) => (!value ? 'required' : undefined),
       defaultValue: 'The description'
     },
     {

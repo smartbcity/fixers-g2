@@ -17,7 +17,7 @@ export const FilterTextFieldRender: ElementRendererFunction<
 > = (props: FilterTextFieldRenderProps) => {
   const { element, formState, basicProps, defaultSubmitBehavior } = props
   const { params } = element
-  const value = formState.getFieldProps(basicProps.name).value
+  const value = formState.values[basicProps.name]
   return (
     <FilterTextField
       value={value ?? ''}

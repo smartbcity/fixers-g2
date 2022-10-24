@@ -24,12 +24,13 @@ export const RadioChoicesRender: ElementRendererFunction<
 > = (props: RadioChoicesRenderProps): ReactElement => {
   const { element, formState, basicProps } = props
   const { params } = element
+  const value = formState.values[basicProps.name]
   const onChange = basicProps.onChange
   delete basicProps.onChange
   return (
     <InputForm
       inputType='radioChoices'
-      value={formState.getFieldProps(basicProps.name).value ?? ''}
+      value={value ?? ''}
       {...params}
       {...basicProps}
       onChange={(_: React.ChangeEvent<HTMLInputElement>, value: string) => {

@@ -17,7 +17,7 @@ export const CheckBoxRender: ElementRendererFunction<CheckBoxRenderProps> = (
 ) => {
   const { element, formState, basicProps } = props
   const { params } = element
-  const value = formState.getFieldProps(basicProps.name).value
+  const value = formState.values[basicProps.name]
   const onChange = basicProps.onChange
   delete basicProps.onChange
   return (

@@ -26,7 +26,7 @@ export const TextFieldRender: ElementRendererFunction<TextFieldRenderProps> = (
   const { params } = element
   const onChange = basicProps.onChange
   delete basicProps.onChange
-  const value = formState.getFieldProps(basicProps.name).value ?? ''
+  const value = formState.values[basicProps.name] ?? ''
   return (
     <InputForm
       inputType='textField'

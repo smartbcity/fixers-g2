@@ -39,10 +39,8 @@ export const useAdressFields = (params?: useAdressFieldsParams) => {
           name: 'street',
           type: 'textField',
           label: 'Addresse (facultatif)',
-          validator: fieldsOverride?.street?.readonly
-            ? undefined
-            : (value: any, values: any) =>
-                addressValidation.street(value, values, strings)
+          validator: (value: any, values: any) =>
+            addressValidation.street(value, values, strings)
         },
         fieldsOverride?.street
       ),
@@ -52,10 +50,8 @@ export const useAdressFields = (params?: useAdressFieldsParams) => {
           name: 'postalCode',
           type: 'textField',
           label: 'Code postal (facultatif)',
-          validator: fieldsOverride?.postalCode?.readonly
-            ? undefined
-            : (value: any, values: any) =>
-                addressValidation.postalCode(value, values, strings)
+          validator: (value: any, values: any) =>
+            addressValidation.postalCode(value, values, strings)
         },
         fieldsOverride?.postalCode
       ),
@@ -65,10 +61,8 @@ export const useAdressFields = (params?: useAdressFieldsParams) => {
           name: 'city',
           type: 'textField',
           label: 'Ville (facultatif)',
-          validator: fieldsOverride?.city?.readonly
-            ? undefined
-            : (value: any, values: any) =>
-                addressValidation.city(value, values, strings)
+          validator: (value: any, values: any) =>
+            addressValidation.city(value, values, strings)
         },
         fieldsOverride?.city
       )

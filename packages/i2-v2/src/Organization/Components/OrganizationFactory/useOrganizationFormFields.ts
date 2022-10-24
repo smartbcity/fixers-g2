@@ -137,11 +137,7 @@ export const useOrganizationFormFields = (
           type: 'textField',
           label: 'Nom',
           validator: (value?: string) =>
-            requiredString(
-              strings?.requiredField,
-              value,
-              fieldsOverride?.name?.readonly
-            )
+            requiredString(strings?.requiredField, value)
         },
         fieldsOverride?.name
       ),

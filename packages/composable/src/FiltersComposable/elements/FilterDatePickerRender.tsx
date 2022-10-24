@@ -17,7 +17,7 @@ export const FilterDatePickerRender: ElementRendererFunction<
 > = (props: FilterDatePickerRenderProps) => {
   const { element, formState, basicProps, defaultSubmitBehavior } = props
   const { params } = element
-  const value = formState.getFieldProps(basicProps.name).value
+  const value = formState.values[basicProps.name]
   return (
     <FilterDatePicker
       value={value ?? ''}

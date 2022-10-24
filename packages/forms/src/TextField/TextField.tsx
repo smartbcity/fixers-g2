@@ -180,6 +180,13 @@ export interface TextFieldBasicProps extends BasicProps {
   noCheckOrClearIcon?: boolean
 
   /**
+   * pass this prop to true if you don't want the search icon
+   *
+   * @default false
+   */
+  noSearchIcon?: boolean
+
+  /**
    * The event called when a search request is send when the `textFieldType` is equal to 'search'
    */
   onSearch?: () => void
@@ -225,6 +232,7 @@ export const TextField = React.forwardRef(
       noCheckOrClearIcon = false,
       multiline = false,
       searchLoading = false,
+      noSearchIcon = false,
       ...other
     } = props
 
@@ -263,7 +271,10 @@ export const TextField = React.forwardRef(
 
     const inputAdornment = useMemo(() => {
       const getIcon = () => {
-        if (textFieldType === 'search' || textFieldType === 'search-number') {
+        if (
+          (textFieldType === 'search' || textFieldType === 'search-number') &&
+          !noSearchIcon
+        ) {
           return (
             <SearchIcon
               color='#323338'
@@ -310,7 +321,8 @@ export const TextField = React.forwardRef(
       classes?.searchIcon,
       styles?.searchIcon,
       disabled,
-      onSearchMemoisied
+      onSearchMemoisied,
+      noSearchIcon
     ])
 
     const rightIcon = useMemo(() => {

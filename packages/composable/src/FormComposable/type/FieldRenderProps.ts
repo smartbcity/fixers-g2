@@ -40,10 +40,10 @@ const useFormProps = (
   props: FormComposableProps<any>
 ): FieldRender => {
   const { formState, classes, styles, isLoading, readonly } = props
-  const error = formState.getFieldMeta(field.name).error
+  const error = formState.errors[field.name]
   return {
-    key: field.key,
-    id: field.key,
+    key: field.key ?? field.name,
+    id: field.key ?? field.name,
     label: field.label,
     name: field.name,
     error: !!error,
@@ -64,14 +64,26 @@ export const useFieldRenderProps = (
   props: FormComposableProps<any>
 ): FieldRenderProps<string, any>[] => {
   const { fields, formState, classes, styles, isLoading, readonly } = props
+
+  useEffect(() => {
+    const { registerField, unregisterField } = formState
+    fields.forEach((field) => {
+      if (!field.readonly) {
+        const validator = field.validator
+        registerField(field.name, validator)
+      } else {
+        unregisterField(field.name)
+      }
+    })
+
+    return () => {
+      fields.forEach((field) => formState.unregisterField(field.name))
+    }
+  }, [formState.registerField, formState.unregisterField, fields])
+
   const memo = useMemo<FieldRenderProps<string, any>[]>(() => {
     return fields.map((field: FormComposableField) => {
       const formProps = useFormProps(field, props)
-      const validator = field.validator
-      const { registerField, values } = formState
-      registerField(formProps.name, {
-        validate: validator ? (value) => validator(value, values) : undefined
-      })
       return {
         basicProps: formProps,
         formState: formState,
@@ -94,6 +106,7 @@ export const useFieldRenderProps = (
     isLoading
   ])
   const { setFieldValue } = formState
+
   useEffect(() => {
     fields.map((field) => {
       field.defaultValue && setFieldValue(field.name, field.defaultValue)

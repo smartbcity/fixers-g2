@@ -17,7 +17,7 @@ export const FilterSelectRender: ElementRendererFunction<
 > = (props: FilterSelectRenderProps) => {
   const { element, formState, basicProps, defaultSubmitBehavior } = props
   const { params } = element
-  const value = formState.getFieldProps(basicProps.name).value
+  const value = formState.values[basicProps.name]
   return (params?.multiple === true) === true ? (
     <FilterSelect
       values={Array.isArray(value) ? value : !!value ? [value] : []}

@@ -121,11 +121,7 @@ export const useUserFormFields = <T extends User = User>(
           type: 'textField',
           label: 'Prénom',
           validator: (value?: string) =>
-            requiredString(
-              strings?.requiredField,
-              value,
-              fieldsOverride?.givenName?.readonly
-            )
+            requiredString(strings?.requiredField, value)
         },
         fieldsOverride?.givenName
       ),
@@ -136,11 +132,7 @@ export const useUserFormFields = <T extends User = User>(
           type: 'textField',
           label: 'Nom de famille',
           validator: (value?: string) =>
-            requiredString(
-              strings?.requiredField,
-              value,
-              fieldsOverride?.familyName?.readonly
-            )
+            requiredString(strings?.requiredField, value)
         },
         fieldsOverride?.familyName
       ),

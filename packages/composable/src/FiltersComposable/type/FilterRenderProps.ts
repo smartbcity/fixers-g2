@@ -28,8 +28,8 @@ const useFormProps = (
 ): FieldRender => {
   const { classes, styles, filterStyleProps } = props
   return {
-    key: field.key,
-    id: field.key,
+    key: field.key ?? field.name,
+    id: field.key ?? field.name,
     label: field.label,
     name: field.name,
     className: cx(classes?.field, 'AruiForm-field', field.params?.className),
@@ -54,8 +54,6 @@ export const useFilterRenderProps = (
   const memo = useMemo<FieldRenderProps<string, any>[]>(() => {
     return fields.map((field: FilterComposableField) => {
       const formProps = useFormProps(field, props)
-      const { registerField } = formState
-      registerField(formProps.name, {})
       return {
         basicProps: formProps,
         formState: formState,

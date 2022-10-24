@@ -1,7 +1,8 @@
 import { FormikConfig, FormikHelpers, useFormik } from 'formik'
-import { FormAction } from '@smartb/g2-forms'
+import { FormAction, ValidatorFnc } from '@smartb/g2-forms'
 import { useActionFeedback } from '@smartb/g2-components'
 import { FormComposableState } from './type'
+import { useCallback, useState } from 'react'
 
 export interface ActionProps {
   validate?: Partial<FormAction>
@@ -30,11 +31,29 @@ export const useFormComposable = <T extends {}>(
 ): FormComposableState => {
   const feedback = useActionFeedback()
   const { onSubmit, formikConfig } = params
+  const [validators, setValidators] = useState<Record<string, ValidatorFnc>>({})
+  const validate = useCallback(
+    async (values) => {
+      const errors = {}
+      for (const fieldName in validators) {
+        if (validators[fieldName]) {
+          const error = await validators[fieldName](values[fieldName], values)
+          if (error) {
+            errors[fieldName] = error
+          }
+        }
+      }
+      return errors
+    },
+    [validators]
+  )
+
   const formik = useFormik({
     onSubmit: async (...values) => {
       const result = await onSubmit(...values)
       feedback.setFeedback(result)
     },
+    validate,
     validateOnBlur: false,
     validateOnChange: false,
     enableReinitialize: true,
@@ -59,8 +78,37 @@ export const useFormComposable = <T extends {}>(
     }
   ]
 
+  const registerField = useCallback(
+    (fieldName: string, validator: ValidatorFnc) => {
+      setValidators((old) => ({ ...old, [fieldName]: validator }))
+    },
+    []
+  )
+
+  const unregisterField = useCallback((fieldName: string) => {
+    setValidators((old) => {
+      delete old[fieldName]
+      return { ...old }
+    })
+  }, [])
+
+  const validateField = useCallback(
+    async (fieldName: string) => {
+      const validator = validators[fieldName]
+      const error = validator
+        ? await validator(formik.values[fieldName], formik.values)
+        : undefined
+      formik.setFieldError(fieldName, error)
+      return error
+    },
+    [validators, formik.values, formik.setFieldError]
+  )
+
   return {
     ...formik,
+    registerField,
+    unregisterField,
+    validateField,
     actions: actions
   }
 }

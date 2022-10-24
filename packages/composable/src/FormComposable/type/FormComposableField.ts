@@ -13,9 +13,9 @@ export type FormComposableField<
   ELEMENT_PARAMS extends ElementRenderersConfig = {}
 > = {
   /**
-   * the unique key of the field
+   * the unique key of the field by default the name
    */
-  key: string
+  key?: string
   /**
    * the name of the field used to define it in the returned values
    */

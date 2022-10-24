@@ -75,10 +75,8 @@ export const addressValidation = {
 
 export const requiredString = (
   errorMessage?: string,
-  value?: string | number,
-  readonly?: boolean
+  value?: string | number
 ) => {
-  if (readonly) return undefined
   const string = String(value).trim()
   if (!string || !value) return errorMessage ?? 'le champ est obligatoire'
   return

@@ -1,5 +1,5 @@
 import { BasicProps, MergeMuiElementProps, useTheme } from '@smartb/g2-themes'
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Dropzone, DropzoneProps, MIME_TYPES } from '@mantine/dropzone'
 import { StackProps } from '@mantine/core'
 import { FileRejection } from 'react-dropzone'
@@ -143,6 +143,23 @@ export const DocumentHandler = (props: DocumentHandlerProps) => {
   const [error, setError] = useState(customErrorMessage)
   const [loading, setLoading] = useState(false)
   const theme = useTheme()
+  const dropzoneRef = useRef<HTMLDivElement | null>(null)
+
+  const downHandler = useCallback(
+    (event: React.KeyboardEvent<HTMLDivElement>) => {
+      if (event.key === 'Enter') {
+        event.currentTarget.click()
+      }
+    },
+    []
+  )
+
+  useEffect(() => {
+    if (dropzoneRef.current) {
+      //@ts-ignore
+      dropzoneRef.current.onkeydown = downHandler
+    }
+  }, [dropzoneRef.current])
 
   useEffect(() => {
     setError(customErrorMessage)
@@ -298,6 +315,7 @@ export const DocumentHandler = (props: DocumentHandlerProps) => {
         onDrop={onDrop}
         onReject={onRejectMemoized}
         accept={accept}
+        ref={dropzoneRef}
         maxSize={50 * 1024 * 1024}
         multiple={multiple && !isRequired}
         disabled={isLoading || loading}
