@@ -28,7 +28,7 @@ export interface ActionsBasicProps extends BasicProps {
 export type ActionsProps = MergeMuiElementProps<StackProps, ActionsBasicProps>
 
 export const Actions = (props: ActionsProps) => {
-  const { actions, classes, styles, className, sx, ...stackProps } = props
+  const { actions = [], classes, styles, className, sx, ...stackProps } = props
   const actionsDisplay = useMemo(() => {
     if (!actions || actions.length === 0) return undefined
     return actions
@@ -63,6 +63,7 @@ export const Actions = (props: ActionsProps) => {
         )
       })
   }, [actions, classes?.button, styles?.button])
+  if (actions.length <= 0) return <></>
   return (
     <Stack
       {...stackProps}

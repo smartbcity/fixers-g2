@@ -106,7 +106,7 @@ export const useInputStyles = makeG2STyles()((theme) => ({
       padding: '0px 0px 0px 10px'
     },
     '& .MuiFilledInput-input::placeholder': {
-      fontSize: '14px'
+      fontSize: '14px',
     },
     '& .MuiInputAdornment-filled.MuiInputAdornment-positionStart:not(.MuiInputAdornment-hiddenLabel)':
       {
@@ -187,6 +187,9 @@ export const useInputStyles = makeG2STyles()((theme) => ({
     '& .MuiSelect-root': {
       backgroundColor: disabledColor,
       color: '#676879'
+    },
+    '& .MuiFilledInput-input::placeholder': {
+      opacity: 0.9
     }
   },
   inputWithClear: {
