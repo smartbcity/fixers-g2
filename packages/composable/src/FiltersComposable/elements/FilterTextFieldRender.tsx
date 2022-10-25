@@ -2,6 +2,7 @@ import { FilterTextField, FilterTextFieldProps } from '@smartb/g2-forms'
 import React from 'react'
 import { FieldRenderProps } from '../type'
 import { ElementRendererFunction } from '../../ComposableRender'
+import { getIn } from 'formik'
 
 export type FilterTextFieldExtendProps = Partial<
   Omit<FilterTextFieldProps, 'value' | 'onChange'>
@@ -17,7 +18,7 @@ export const FilterTextFieldRender: ElementRendererFunction<
 > = (props: FilterTextFieldRenderProps) => {
   const { element, formState, basicProps, defaultSubmitBehavior } = props
   const { params } = element
-  const value = formState.values[basicProps.name]
+  const value = getIn(formState.values, basicProps.name)
   return (
     <FilterTextField
       value={value ?? ''}

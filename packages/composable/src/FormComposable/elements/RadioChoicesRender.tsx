@@ -6,6 +6,7 @@ import {
 } from '@smartb/g2-forms'
 import { FieldRenderProps } from '../type'
 import { ElementRendererFunction } from '../../ComposableRender'
+import { getIn } from 'formik'
 
 export type RadioChoicesExtendProps = Partial<
   Omit<
@@ -24,7 +25,7 @@ export const RadioChoicesRender: ElementRendererFunction<
 > = (props: RadioChoicesRenderProps): ReactElement => {
   const { element, formState, basicProps } = props
   const { params } = element
-  const value = formState.values[basicProps.name]
+  const value = getIn(formState.values, basicProps.name)
   const onChange = basicProps.onChange
   delete basicProps.onChange
   return (

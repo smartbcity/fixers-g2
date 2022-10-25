@@ -2,6 +2,7 @@ import React, { ReactElement } from 'react'
 import { SelectProps, InputForm, InputFormBasicProps } from '@smartb/g2-forms'
 import { FieldRenderProps } from '../type'
 import { ElementRendererFunction } from '../../ComposableRender'
+import { getIn } from 'formik'
 
 export type FormSelectExtendProps = Partial<
   Omit<
@@ -26,7 +27,7 @@ export const SelectRender: ElementRendererFunction<SelectRenderProps> = (
 ): ReactElement => {
   const { element, formState, basicProps } = props
   const { params } = element
-  const value = formState.values[basicProps.name]
+  const value = getIn(formState.values, basicProps.name)
   const onChange = basicProps.onChange
   delete basicProps.onChange
   return params?.multiple === true ? (

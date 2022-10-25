@@ -1,4 +1,4 @@
-import { FormikConfig, FormikHelpers, useFormik } from 'formik'
+import { FormikConfig, FormikHelpers, useFormik, getIn} from 'formik'
 import { FormAction, ValidatorFnc } from '@smartb/g2-forms'
 import { useActionFeedback } from '@smartb/g2-components'
 import { FormComposableState } from './type'
@@ -37,7 +37,7 @@ export const useFormComposable = <T extends {}>(
       const errors = {}
       for (const fieldName in validators) {
         if (validators[fieldName]) {
-          const error = await validators[fieldName](values[fieldName], values)
+          const error = await validators[fieldName](getIn(values, fieldName), values)
           if (error) {
             errors[fieldName] = error
           }
@@ -96,12 +96,12 @@ export const useFormComposable = <T extends {}>(
     async (fieldName: string) => {
       const validator = validators[fieldName]
       const error = validator
-        ? await validator(formik.values[fieldName], formik.values)
+        ? await validator(getIn(formik.values, fieldName), formik.values)
         : undefined
       formik.setFieldError(fieldName, error)
       return error
     },
-    [validators, formik.values, formik.setFieldError]
+    [validators, formik.values, formik.getFieldProps, formik.setFieldError]
   )
 
   return {

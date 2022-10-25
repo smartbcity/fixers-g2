@@ -2,6 +2,7 @@ import { CheckBox, CheckBoxProps } from '@smartb/g2-forms'
 import React from 'react'
 import { FieldRenderProps } from '../type'
 import { ElementRendererFunction } from '../../ComposableRender'
+import { getIn } from 'formik'
 
 export type CheckBoxExtendProps = Partial<
   Omit<CheckBoxProps, 'checked' | 'onChange' | 'label' | 'classes' | 'styles'>
@@ -17,7 +18,7 @@ export const CheckBoxRender: ElementRendererFunction<CheckBoxRenderProps> = (
 ) => {
   const { element, formState, basicProps } = props
   const { params } = element
-  const value = formState.values[basicProps.name]
+  const value = getIn(formState.values, basicProps.name)
   const onChange = basicProps.onChange
   delete basicProps.onChange
   return (

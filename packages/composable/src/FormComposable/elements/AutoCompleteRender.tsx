@@ -6,6 +6,7 @@ import {
 import React from 'react'
 import { FieldRenderProps } from '../type'
 import { ElementRendererFunction } from '../../ComposableRender'
+import { getIn } from 'formik'
 
 export type AutoCompleteExtendProps = Partial<
   Omit<
@@ -32,7 +33,7 @@ export const AutoCompleteRender: ElementRendererFunction<
   const { params } = element
   const onChange = basicProps.onChange
   delete basicProps.onChange
-  const value = formState.values[basicProps.name]
+  const value = getIn(formState.values, basicProps.name)
   return params?.multiple === true ? (
     // @ts-ignore
     <InputForm

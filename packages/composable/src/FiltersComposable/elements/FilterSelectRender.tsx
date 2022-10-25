@@ -2,6 +2,7 @@ import { FilterSelect, FilterSelectProps } from '@smartb/g2-forms'
 import React from 'react'
 import { FieldRenderProps } from '../type'
 import { ElementRendererFunction } from '../../ComposableRender'
+import { getIn } from 'formik'
 
 export type FilterSelectExtendProps = Partial<
   Omit<FilterSelectProps, 'value' | 'onChangeValue' | 'onChangeValues'>
@@ -17,7 +18,7 @@ export const FilterSelectRender: ElementRendererFunction<
 > = (props: FilterSelectRenderProps) => {
   const { element, formState, basicProps, defaultSubmitBehavior } = props
   const { params } = element
-  const value = formState.values[basicProps.name]
+  const value = getIn(formState.values, basicProps.name)
   return (params?.multiple === true) === true ? (
     <FilterSelect
       values={Array.isArray(value) ? value : !!value ? [value] : []}

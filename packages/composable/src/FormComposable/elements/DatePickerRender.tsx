@@ -6,6 +6,7 @@ import {
 import React from 'react'
 import { FieldRenderProps } from '../type'
 import { ElementRendererFunction } from '../../ComposableRender'
+import { getIn } from 'formik'
 
 export type DatePickerExtendProps = Partial<
   Omit<
@@ -24,14 +25,14 @@ export const DatePickerRender: ElementRendererFunction<
 > = (props: DatePickerRenderProps) => {
   const { element, formState, basicProps } = props
   const { params } = element
-  const date = new Date(formState.values[basicProps.name])
+  const date = new Date(getIn(formState.values, basicProps.name))
   const onChange = basicProps.onChange
   delete basicProps.onChange
   return (
     <InputForm
       inputType='datePicker'
       value={
-        !isNaN(date.getTime()) ? date : formState.values[basicProps.name] ?? ''
+        !isNaN(date.getTime()) ? date : getIn(formState.values, basicProps.name) ?? ''
       }
       {...basicProps}
       {...params}

@@ -2,6 +2,7 @@ import { FilterDatePicker, FilterDatePickerProps } from '@smartb/g2-forms'
 import React from 'react'
 import { FieldRenderProps } from '../type'
 import { ElementRendererFunction } from '../../ComposableRender'
+import { getIn } from 'formik'
 
 export type FilterDatePickerExtendProps = Partial<
   Omit<FilterDatePickerProps, 'value' | 'onChangeDate'>
@@ -17,7 +18,7 @@ export const FilterDatePickerRender: ElementRendererFunction<
 > = (props: FilterDatePickerRenderProps) => {
   const { element, formState, basicProps, defaultSubmitBehavior } = props
   const { params } = element
-  const value = formState.values[basicProps.name]
+  const value = getIn(formState.values, basicProps.name)
   return (
     <FilterDatePicker
       value={value ?? ''}
