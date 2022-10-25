@@ -4,6 +4,7 @@ import { FormComposableProps } from '../FormComposable'
 import { useEffect, useMemo } from 'react'
 import { FormComposableField } from './FormComposableField'
 import { cx } from '@emotion/css'
+import { getIn } from 'formik'
 
 export interface FieldRenderProps<TYPE extends string, PROPS>
   extends WithElementParams<TYPE, PROPS> {
@@ -40,7 +41,7 @@ const useFormProps = (
   props: FormComposableProps<any>
 ): FieldRender => {
   const { formState, classes, styles, isLoading, readonly } = props
-  const error = formState.errors[field.name]
+  const error = getIn(formState.errors, field.name)
   return {
     key: field.key ?? field.name,
     id: field.key ?? field.name,
