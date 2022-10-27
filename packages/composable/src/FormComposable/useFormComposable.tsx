@@ -1,8 +1,8 @@
-import { FormikConfig, FormikHelpers, useFormik, getIn} from 'formik'
+import { FormikConfig, FormikHelpers, useFormik, getIn } from 'formik'
 import { FormAction, ValidatorFnc } from '@smartb/g2-forms'
 import { useActionFeedback } from '@smartb/g2-components'
 import { FormComposableState } from './type'
-import { useCallback, useState } from 'react'
+import { useCallback, useRef } from 'react'
 
 export interface ActionProps {
   validate?: Partial<FormAction>
@@ -31,22 +31,22 @@ export const useFormComposable = <T extends {}>(
 ): FormComposableState => {
   const feedback = useActionFeedback()
   const { onSubmit, formikConfig } = params
-  const [validators, setValidators] = useState<Record<string, ValidatorFnc>>({})
-  const validate = useCallback(
-    async (values) => {
-      const errors = {}
-      for (const fieldName in validators) {
-        if (validators[fieldName]) {
-          const error = await validators[fieldName](getIn(values, fieldName), values)
-          if (error) {
-            errors[fieldName] = error
-          }
+  const validators = useRef<Record<string, ValidatorFnc>>({})
+  const validate = useCallback(async (values) => {
+    const errors = {}
+    for (const fieldName in validators.current) {
+      if (validators.current[fieldName]) {
+        const error = await validators.current[fieldName](
+          getIn(values, fieldName),
+          values
+        )
+        if (error) {
+          errors[fieldName] = error
         }
       }
-      return errors
-    },
-    [validators]
-  )
+    }
+    return errors
+  }, [])
 
   const formik = useFormik({
     onSubmit: async (...values) => {
@@ -80,21 +80,18 @@ export const useFormComposable = <T extends {}>(
 
   const registerField = useCallback(
     (fieldName: string, validator: ValidatorFnc) => {
-      setValidators((old) => ({ ...old, [fieldName]: validator }))
+      validators.current[fieldName] = validator
     },
     []
   )
 
   const unregisterField = useCallback((fieldName: string) => {
-    setValidators((old) => {
-      delete old[fieldName]
-      return { ...old }
-    })
+    delete validators.current[fieldName]
   }, [])
 
   const validateField = useCallback(
     async (fieldName: string) => {
-      const validator = validators[fieldName]
+      const validator = validators.current[fieldName]
       const error = validator
         ? await validator(getIn(formik.values, fieldName), formik.values)
         : undefined

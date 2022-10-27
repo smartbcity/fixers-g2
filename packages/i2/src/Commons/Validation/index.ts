@@ -1,3 +1,5 @@
+import { PotentialError } from '@smartb/g2-forms'
+
 export interface AdressValidationStrings {
   /**
    * @default "Vous devez renseigner l'adresse en plus de la ville et du code postal"
@@ -94,4 +96,14 @@ export const requiredString = (
   return additionnalValidators && additionnalValidators[fieldName]
     ? additionnalValidators[fieldName](string, values)
     : undefined
+}
+
+export const validatePhone = (
+  value?: string,
+  errorString?: string
+): PotentialError => {
+  const trimmed = (value ?? '').trim().replaceAll(' ', '')
+  if (trimmed && trimmed.length !== 10)
+    return errorString ?? 'Le numéro de téléphone doit contenir dix chiffres'
+  return
 }

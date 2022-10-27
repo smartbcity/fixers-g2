@@ -86,7 +86,7 @@ export const validatePhone = (
   value?: string,
   errorString?: string
 ): PotentialError => {
-  const trimmed = (value ?? '').trim().replace(' ', '')
+  const trimmed = (value ?? '').trim().replaceAll(' ', '')
   if (trimmed && trimmed.length !== 10)
     return errorString ?? 'Le numéro de téléphone doit contenir dix chiffres'
   return

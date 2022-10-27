@@ -197,7 +197,7 @@ export const useUserFormFields = <T extends User = User>(
           name: 'phone',
           type: 'textField',
           label: 'Numéro de téléphone (facultatif)',
-          validator: validatePhone
+          validator: (value) => validatePhone(value, strings?.enterAValidPhone)
         },
         fieldsOverride?.phone
       ),

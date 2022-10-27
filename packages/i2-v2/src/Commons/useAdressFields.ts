@@ -29,7 +29,7 @@ export interface useAdressFieldsParams {
 }
 
 export const useAdressFields = (params?: useAdressFieldsParams) => {
-  const { strings = {}, fieldsOverride } = params || {}
+  const { strings, fieldsOverride } = params || {}
 
   const addressFields = useMemo(
     () => ({

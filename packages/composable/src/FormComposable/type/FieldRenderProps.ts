@@ -76,7 +76,6 @@ export const useFieldRenderProps = (
         unregisterField(field.name)
       }
     })
-
     return () => {
       fields.forEach((field) => formState.unregisterField(field.name))
     }

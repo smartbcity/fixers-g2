@@ -5,7 +5,11 @@ import {
   ValidatorFnc
 } from '@smartb/g2-forms'
 import { useCallback, useMemo, useState } from 'react'
-import { requiredString, useAdressFields } from '../../../Commons'
+import {
+  requiredString,
+  useAdressFields,
+  validatePhone
+} from '../../../Commons'
 import { useDeletableForm } from '../../../Commons/useDeletableForm'
 import { OrganizationId } from '../../../Organization'
 import { FlatUser, FlatUserToUser, User } from '../../Domain'
@@ -180,14 +184,10 @@ export const useUserFormState = <T extends User = User>(
         defaultValue: user?.phone,
         validator: (value?: string, values?: any) => {
           if (readonlyFields?.phone) return undefined
-          const trimmed = (value ?? '').trim().replace(' ', '')
-          if (trimmed && trimmed.length !== 10)
-            return (
-              strings?.enterAValidPhone ??
-              'Le numéro de téléphone doit contenir dix chiffres'
-            )
+          const res = validatePhone(value, strings?.enterAValidPhone)
+          if (res) return res
           return additionnalValidators?.phone
-            ? additionnalValidators?.phone(trimmed, values)
+            ? additionnalValidators?.phone(value, values)
             : undefined
         }
       },

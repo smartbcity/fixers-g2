@@ -22,22 +22,22 @@ const Template: Story<ActionsBasicProps> = (args: ActionsBasicProps) => (
 
 export const Actions = Template.bind({})
 Actions.args = {
-  actions: [
-    {
-      key: 'action1',
-      label: 'Action1'
-    },
-    {
-      key: 'action2',
-      label: 'Cancel',
-      variant: 'cancellation'
-    },
-    {
-      key: 'action2',
-      label: 'Delete',
-      variant: 'deletion'
-    }
-  ]
+  // actions: [
+  //   {
+  //     key: 'action1',
+  //     label: 'Action1'
+  //   },
+  //   {
+  //     key: 'action2',
+  //     label: 'Cancel',
+  //     variant: 'cancellation'
+  //   },
+  //   {
+  //     key: 'action2',
+  //     label: 'Delete',
+  //     variant: 'deletion'
+  //   }
+  // ]
 }
 Actions.storyName = 'Actions'
 
