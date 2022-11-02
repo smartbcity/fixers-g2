@@ -157,8 +157,8 @@ export const UserFactory = (props: UserFactoryProps) => {
           formState.values.familyName ?? ''
         }`}
         roles={formState.values.roles}
-        //@ts-ignore
         rolesOptions={
+          //@ts-ignore
           readonlyRolesOptions ?? fieldsOverride?.roles?.params?.options
         }
       />
