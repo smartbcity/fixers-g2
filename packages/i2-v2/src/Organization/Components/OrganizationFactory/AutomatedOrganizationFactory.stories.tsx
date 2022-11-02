@@ -33,9 +33,7 @@ export const AutomatedOrganizationFactoryStory: Story<
 }
 
 const Following = (args: OrganizationFactoryBasicProps) => {
-  const [organizationId, setOrganizationId] = useState<string | undefined>(
-    'test'
-  )
+  const [organizationId, setOrganizationId] = useState<string | undefined>()
 
   const organizationFormState = useOrganizationFormState({
     update: !!organizationId,

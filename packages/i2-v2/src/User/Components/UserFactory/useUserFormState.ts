@@ -188,7 +188,8 @@ export const useUserFormState = <T extends User = User>(
         await onSubmit({
           ...values,
           ...FlatUserToUser(values, multipleRoles),
-          id: user?.id ?? ''
+          id: user?.id ?? '',
+          phone: values.phone?.replaceAll(' ', '')
         } as T)
       }
     },
@@ -199,7 +200,8 @@ export const useUserFormState = <T extends User = User>(
     () => ({
       //@ts-ignore
       memberOf: organizationId,
-      sendEmailLink: true,
+      sendVerifyEmail: true,
+      sendResetPassword: true,
       //@ts-ignore
       ...(!!user ? userToFlatUser(user) : undefined),
       roles: multipleRoles

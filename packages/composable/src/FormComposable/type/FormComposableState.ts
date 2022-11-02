@@ -1,6 +1,10 @@
-import { FormAction } from '@smartb/g2-forms'
+import { FormAction, PotentialError } from '@smartb/g2-forms'
 import { useFormik } from 'formik'
 
-export type FormComposableState = ReturnType<typeof useFormik> & {
+export type FormComposableState = Omit<
+  ReturnType<typeof useFormik>,
+  'validateField'
+> & {
   actions: FormAction[]
+  validateField: (fieldName: string) => PotentialError
 }

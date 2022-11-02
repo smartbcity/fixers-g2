@@ -71,7 +71,7 @@ export const useOrganizationFormFields = (
   const [siretRef, setSiretRef] = useState(null)
 
   const fetchOrganization = useCallback(async () => {
-    if (getInseeOrganization && formState) {
+    if (getInseeOrganization && formState?.values.siret) {
       await getInseeOrganization(formState.values.siret).then((values) => {
         if (values) {
           formState.setValues(organizationToFlatOrganization(values), false)
@@ -120,7 +120,7 @@ export const useOrganizationFormFields = (
             // @ts-ignore
             ref: setSiretRef,
             onSearch: async () => {
-              if (formState && !formState.validateField('siret')) {
+              if (!!formState && !formState.validateField('siret')) {
                 await fetchOrganization()
               }
             }

@@ -231,7 +231,10 @@ export const Select = React.forwardRef(
           return placeholder
         }
         if (Array.isArray(selected) && selected.length > 0) {
-          return selected.map((el) => optionsMap.get(el)).join(', ')
+          return selected
+            .map((el) => optionsMap.get(el))
+            .filter((el) => el !== undefined)
+            .join(', ')
         }
         if (!Array.isArray(selected)) {
           return optionsMap.get(selected)

@@ -41,9 +41,7 @@ export const AutomatedUserFactoryStory: Story<AutomatedUserFactoryProps> = (
 }
 
 const Following = (args: AutomatedUserFactoryProps) => {
-  const [userId, setuserId] = useState<string | undefined>(
-    'b78ce604-72ce-4bf5-99a2-f0b0d5f06b2a'
-  )
+  const [userId, setuserId] = useState<string | undefined>()
 
   const userFormState = useUserFormState({
     createUserOptions: {

@@ -20,7 +20,8 @@ export type userFieldsName =
   | 'phone'
   | 'roles'
   | 'memberOf'
-  | 'sendEmailLink'
+  | 'sendVerifyEmail'
+  | 'sendResetPassword'
   | AdressFieldsName
 
 export type UserFactoryFieldsOverride = Partial<
@@ -201,18 +202,28 @@ export const useUserFormFields = <T extends User = User>(
         },
         fieldsOverride?.phone
       ),
-      sendEmailLink: mergeFields<FormComposableField<userFieldsName>>(
+      sendVerifyEmail: mergeFields<FormComposableField<userFieldsName>>(
         {
-          key: 'sendEmailLink',
-          name: 'sendEmailLink',
+          name: 'sendVerifyEmail',
           type: 'checkBox',
-          label: "Envoyer un lien d'invitation par mail",
+          label: "Envoyer le mail de vérification de l'adresse email",
           params: {
-            className: 'AruiUserFactory-sendEmailLink',
-            disabled: fieldsOverride?.sendEmailLink?.readonly
+            disabled: fieldsOverride?.sendVerifyEmail?.readonly
           }
         },
-        fieldsOverride?.sendEmailLink
+        fieldsOverride?.sendVerifyEmail
+      ),
+      sendResetPassword: mergeFields<FormComposableField<userFieldsName>>(
+        {
+          name: 'sendResetPassword',
+          type: 'checkBox',
+          label:
+            "Envoyer le mail de création de son mot de passe à l'utilisateur",
+          params: {
+            disabled: fieldsOverride?.sendResetPassword?.readonly
+          }
+        },
+        fieldsOverride?.sendResetPassword
       )
     }),
     [

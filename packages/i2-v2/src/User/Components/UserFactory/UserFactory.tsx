@@ -125,7 +125,9 @@ export const UserFactory = (props: UserFactoryProps) => {
         ? (['roles'] as userFieldsName[])
         : []),
       //@ts-ignore
-      ...(isUpdate || readonly ? (['sendEmailLink'] as userFieldsName[]) : []),
+      ...(isUpdate || readonly
+        ? (['sendResetPassword', 'sendVerifyEmail'] as userFieldsName[])
+        : []),
       ...blockedFields
     ],
     [blockedFields, fieldsOverride, organizationId, isUpdate, readonly]
@@ -155,7 +157,10 @@ export const UserFactory = (props: UserFactoryProps) => {
           formState.values.familyName ?? ''
         }`}
         roles={formState.values.roles}
-        rolesOptions={readonlyRolesOptions}
+        //@ts-ignore
+        rolesOptions={
+          readonlyRolesOptions ?? fieldsOverride?.roles?.params?.options
+        }
       />
       <Stack
         sx={{
