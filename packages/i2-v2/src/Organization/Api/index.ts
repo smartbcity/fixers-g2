@@ -244,3 +244,4 @@ export const useCreateOrganization = <T extends Organization = Organization>(
 }
 
 export * from './GetOrganizationRefsQuery'
+export * from './OrganizationDisableFunction'

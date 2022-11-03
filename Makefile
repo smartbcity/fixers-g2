@@ -22,6 +22,7 @@ package-libs:
 	@yarn workspace @smartb/g2-providers run build
 	@yarn workspace @smartb/g2-s2 run build
 	@yarn workspace @smartb/g2-i2 run build
+	@yarn workspace @smartb/g2-i2-v2 run build
 	@yarn workspace @smartb/g2-fs run build
 	@yarn workspace @smartb/g2 run build
 	@yarn workspace @smartb/g2-storybook-documentation run build
