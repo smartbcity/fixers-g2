@@ -1,4 +1,4 @@
-import { Address, RoleType } from '../../Commons'
+import { Address, Roles, RoleType } from '../../Commons'
 
 export const classes = `interface OrgCreationClasses {
   siretForm?: string
@@ -31,6 +31,7 @@ export interface Organization {
   siret?: string
   name: string
   roles?: RoleType[]
+  rolesComposites?: Roles
   description?: string
   website?: string
   address?: Address

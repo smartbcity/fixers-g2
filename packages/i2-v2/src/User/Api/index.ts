@@ -207,7 +207,6 @@ export const useCreateUser = <T extends User = User>(
         // @ts-ignore
         body: JSON.stringify({
           ...user,
-          roles: user.roles?.assignedRoles ?? [],
           memberOf: user.memberOf?.id ?? organizationId
         } as T),
         jwt: jwt

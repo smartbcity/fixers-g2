@@ -14,7 +14,7 @@ import {
   useUpdateUser,
   useUserUpdateEmail
 } from '../../Api'
-import { FlatUser, FlatUserToUser, User, userToFlatUser } from '../../Domain'
+import { FlatUser, flatUserToUser, User, userToFlatUser } from '../../Domain'
 
 export interface UseUserFormStateProps<T extends User = User> {
   /**
@@ -187,7 +187,7 @@ export const useUserFormState = <T extends User = User>(
       if (onSubmit) {
         await onSubmit({
           ...values,
-          ...FlatUserToUser(values, multipleRoles),
+          ...flatUserToUser(values, multipleRoles),
           id: user?.id ?? '',
           phone: values.phone?.replaceAll(' ', '')
         } as T)
@@ -205,8 +205,11 @@ export const useUserFormState = <T extends User = User>(
       //@ts-ignore
       ...(!!user ? userToFlatUser(user) : undefined),
       roles: multipleRoles
-        ? user?.roles?.assignedRoles || defaultRoles
-        : user?.roles?.assignedRoles[0] || defaultRoles[0]
+        ? user?.roles || defaultRoles
+        : // @ts-ignore
+        user?.roles && user?.roles?.length > 0
+        ? user?.roles[0]
+        : defaultRoles[0]
     }),
     [user, multipleRoles, defaultRoles]
   )

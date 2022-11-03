@@ -1,4 +1,4 @@
-import { Roles } from '../../Commons'
+import { Roles, RoleType } from '../../Commons'
 import { OrganizationRef } from '../../Organization'
 
 export const classes = `export interface UserCreationClasses {
@@ -28,7 +28,8 @@ export interface User {
   givenName: string
   address?: Address
   email: string
-  roles?: Roles
+  roles?: RoleType[]
+  rolesComposites?: Roles
   phone?: string
   sendEmailLink?: boolean
 }
@@ -54,16 +55,17 @@ export const userToFlatUser = (user: User): FlatUser => {
     city: user.address?.city,
     postalCode: user.address?.postalCode,
     memberOf: user.memberOf?.id,
-    roles: user.roles?.assignedRoles
+    roles: user.roles
   }
   delete flat.address
   return flat
 }
 
-export const FlatUserToUser = (
+export const flatUserToUser = (
   flat: FlatUser,
   multipleRoles: boolean
 ): User => {
+  // @ts-ignore
   const user: User & {
     street?: string
     city?: string
@@ -80,11 +82,8 @@ export const FlatUserToUser = (
       name: '',
       roles: []
     },
-    roles: {
-      //@ts-ignore
-      assignedRoles: multipleRoles ? flat.roles : [flat.roles],
-      effectiveRoles: []
-    }
+    // @ts-ignore
+    roles: multipleRoles ? flat.roles : [flat.roles]
   }
   delete user.street
   delete user.city
