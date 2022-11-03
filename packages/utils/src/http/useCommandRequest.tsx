@@ -1,8 +1,7 @@
 import { useMutation, UseMutationOptions } from "react-query";
-import { request } from "@smartb/g2-utils";
 import { useCallback } from "react";
 import { RequestProps } from "./RequestProps";
-import { errorHandler, successHandler } from "./request";
+import { errorHandler, request, successHandler } from "./request";
 
 export type CommandOptions<COMMAND, EVENT> = Omit<
   UseMutationOptions<EVENT | undefined, unknown, COMMAND | COMMAND[], unknown>,

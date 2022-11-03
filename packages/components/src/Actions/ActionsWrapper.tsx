@@ -1,6 +1,11 @@
 import React, { FunctionComponent } from 'react'
-import { FormAction } from '@smartb/g2-forms'
-import { Actions, ActionsProps, ActionsClasses, ActionsStyles } from './Actions'
+import {
+  Actions,
+  ActionsProps,
+  ActionsClasses,
+  ActionsStyles,
+  Action
+} from './Actions'
 import { BasicProps } from '@smartb/g2-themes/src'
 import { MergeMuiElementProps } from '@smartb/g2-themes'
 
@@ -18,7 +23,7 @@ interface ActionsWrapperBasicProps extends BasicProps {
   /**
    * the actions displayed at the bottom of the component. To make a validation button you have to add an action with `type="submit"`
    */
-  actions?: FormAction[]
+  actions?: Action[]
   /**
    * Determine wether the actions are placed above or below the content of the form
    *

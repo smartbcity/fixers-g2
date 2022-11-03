@@ -1,10 +1,10 @@
 import { t } from "i18next";
-import { pushAlert } from "@smartb/g2-notifications";
 export type HttpContentType =
   | "application/json"
   | "text/plain"
   | "application/octet-stream"
   | "none";
+
 export interface HttpOptions {
   url: string;
   method: "GET" | "PUT" | "POST" | "DELETE";
@@ -87,10 +87,11 @@ export const errorHandler =
     const sendAlert = (errorType: string) => {
       const message = geTranslatedMessageOrUndefined("http.errors." + key);
       if (message) {
-        pushAlert({
-          message: t("http." + errorType, { errorMessage: message }) as string,
-          severity: "error",
-        });
+        console.log(t("http." + errorType, { errorMessage: message }));
+        // pushAlert({
+        //   message: t("http." + errorType, { errorMessage: message }) as string,
+        //   severity: "error",
+        // });
       }
     };
     if (c === 401 || c === 403) {
@@ -105,7 +106,8 @@ export const errorHandler =
 export const successHandler = (key: string) => {
   const message = geTranslatedMessageOrUndefined("http.success." + key);
   if (message) {
-    pushAlert({ message: message, severity: "success", persist: false });
+    console.log(message);
+    // pushAlert({ message: message, severity: "success", persist: false });
   }
 };
 
