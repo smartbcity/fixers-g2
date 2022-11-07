@@ -41,7 +41,7 @@ export const AutomatedUserFactoryStory: Story<AutomatedUserFactoryProps> = (
 }
 
 const Following = (args: AutomatedUserFactoryProps) => {
-  const [userId, setuserId] = useState<string | undefined>()
+  const [userId, setuserId] = useState<string | undefined>("1")
 
   const userFormState = useUserFormState({
     createUserOptions: {
@@ -50,6 +50,7 @@ const Following = (args: AutomatedUserFactoryProps) => {
       }
     },
     userId: userId,
+    update: !!userId,
     organizationId: '1',
     roles: ['admin']
   })

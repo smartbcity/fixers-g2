@@ -165,8 +165,6 @@ export const useUpdateUser = <T extends User = User>(
         body: JSON.stringify({
           ...user,
           memberOf: user.memberOf?.id,
-          // @ts-ignore
-          roles: user.roles.assignedRoles ?? []
         }),
         jwt: jwt
       })
