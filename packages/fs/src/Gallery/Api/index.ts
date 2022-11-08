@@ -140,6 +140,7 @@ export const useUploadFiles = (params: UploadFilesParams) => {
         url: `${apiUrl}/fileUploads`,
         method: 'POST',
         formData: formData,
+        contentType: 'none',
         jwt: jwt
       })
       return res || undefined
