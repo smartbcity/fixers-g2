@@ -18,7 +18,7 @@ export interface FormikFormParams<T> {
   onSubmit: (
     values: T,
     formikHelpers: FormikHelpers<any>
-  ) => boolean | Promise<boolean>
+  ) => void | Promise<any> | boolean | Promise<boolean>
   /**
    * this prop allow you to add you custom config to the useFormik hook
    */

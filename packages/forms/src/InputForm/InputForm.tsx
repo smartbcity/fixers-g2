@@ -1,4 +1,4 @@
-import { Box, InputLabel } from '@mui/material'
+import { Box, InputLabel, SxProps, Theme } from '@mui/material'
 import React, { useMemo } from 'react'
 import { Select, SelectProps, SelectClasses, SelectStyles } from '../Select'
 import {
@@ -92,6 +92,7 @@ export interface InputFormBasicProps<T extends InputFormTypes = 'textField'>
    * The styles applied to the different part of the component
    */
   styles?: InputFormStyles
+  sx?: SxProps<Theme>
   /**
    * The classes applied to the different part of the input
    *
@@ -180,6 +181,7 @@ export const InputForm: InputFormComponent = React.forwardRef(
       readonlyType,
       getReadonlyTextUrl,
       orientation = 'vertical',
+      sx,
       ...other
     } = props
 
@@ -263,9 +265,10 @@ export const InputForm: InputFormComponent = React.forwardRef(
                 },
                 '& .AruiInputForm-input': {
                   flexGrow: 1
-                }
+                },
+                ...sx
               }
-            : undefined
+            : sx
         }
       >
         {labelUi}

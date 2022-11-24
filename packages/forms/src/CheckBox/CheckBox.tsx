@@ -6,7 +6,9 @@ import {
   CheckboxProps,
   FormHelperText,
   Box,
-  Skeleton
+  Skeleton,
+  SxProps,
+  Theme
 } from '@mui/material'
 import {
   BasicProps,
@@ -197,6 +199,7 @@ export interface CheckBoxBasicProps extends BasicProps {
    * The styles applied to the different part of the component
    */
   styles?: CheckBoxStyles
+  sx?: SxProps<Theme>
 }
 
 export type CheckBoxProps = MergeMuiElementProps<
@@ -222,6 +225,7 @@ const CheckBoxBase = (
     isLoading = false,
     readonly = false,
     createInputContainer,
+    sx,
     ...other
   } = props
 
@@ -288,13 +292,14 @@ const CheckBoxBase = (
   )
 
   return (
-    <div
+    <Box
       className={defaultStyles.cx(
         defaultStyles.classes.base,
         'AruiTextfield-root',
         className
       )}
       style={style}
+      sx={sx}
     >
       {isLoading && (
         <Box
@@ -329,7 +334,7 @@ const CheckBoxBase = (
           {errorMessage}
         </FormHelperText>
       )}
-    </div>
+    </Box>
   )
 }
 

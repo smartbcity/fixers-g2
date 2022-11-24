@@ -305,13 +305,16 @@ const fullFields: AllFormComposableField[] = [
     name: 'yesOrNo',
     label: 'Yes or no?',
     type: 'radioChoices',
+    fullRow: true,
     defaultValue: '',
     validator: requiredField('Answer the question'),
     params: {
       choices: [
         { key: 'yes', label: 'Yes' },
         { key: 'no', label: 'No' }
-      ]
+      ],
+      row: true,
+      orientation: 'horizontal'
     }
   },
   {
@@ -320,6 +323,7 @@ const fullFields: AllFormComposableField[] = [
     label: 'I agree to the terms and conditions',
     type: 'checkBox',
     defaultValue: false,
+    fullRow: true,
     validator: requiredTrue('You have to agree')
   },
   {
@@ -416,4 +420,11 @@ const FullFieldsWithCustomDisplayField: AllFormComposableField[] = [
 export const FullFieldsWithCustom = FormComposableStory.bind({})
 FullFieldsWithCustom.args = {
   fields: FullFieldsWithCustomDisplayField
+}
+
+export const GridDisplayForm = FormComposableStory.bind({})
+GridDisplayForm.args = {
+  fields: fullFields,
+  display: 'grid',
+  gridColumnNumber: 3
 }

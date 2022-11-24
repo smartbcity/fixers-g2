@@ -1,14 +1,14 @@
-import React, { ComponentPropsWithRef } from 'react'
+import React, { ComponentPropsWithRef, useMemo } from 'react'
 import { ContainerRenderer, ElementRenderersConfig } from '../ComposableRender'
 import { cx } from '@emotion/css'
-import { Stack, StackProps, styled } from '@mui/material'
+import { Stack, StackProps, styled, SxProps, Theme } from '@mui/material'
 import { FormikProvider } from 'formik'
 import {
   FormComposableField,
   FormComposableState,
   useFieldRenderProps
 } from './type'
-import { makeG2STyles, MergeMuiElementProps } from '@smartb/g2-themes'
+import { MergeMuiElementProps } from '@smartb/g2-themes'
 import { ActionsWrapper, ActionsWrapperProps } from '@smartb/g2-components'
 import { FormAction } from '@smartb/g2-forms'
 import { DefaultRenderer } from './factories/FormElementsRenderer'
@@ -53,6 +53,18 @@ interface FormComposableBasicProps<
    */
   formState: FormComposableState
   /**
+   * The display of the fieldContainer
+   *
+   * @default "flex"
+   */
+  display?: 'flex' | 'grid'
+  /**
+   * The number of column in a grid display
+   *
+   * @default 2
+   */
+  gridColumnNumber?: number
+  /**
    * the props given to the fields stack container
    */
   fieldsStackProps?: StackProps
@@ -78,12 +90,6 @@ interface FormComposableBasicProps<
   styles?: FormComposableStyles
 }
 
-const useStyles = makeG2STyles()((theme) => ({
-  fieldContainer: {
-    gap: theme.spacing * 3
-  }
-}))
-
 export type FormComposableProps<RENDERER extends ElementRenderersConfig = {}> =
   MergeMuiElementProps<
     MUIStyledCommonProps & ComponentPropsWithRef<'form'>,
@@ -107,11 +113,30 @@ export const FormComposable = <RENDERER extends ElementRenderersConfig>(
     fieldsStackProps,
     isLoading = false,
     readonly = false,
+    display = 'flex',
+    gridColumnNumber = 2,
     sx,
     ...other
   } = props
-  const defaultStyles = useStyles()
+
   const fieldElement = useFieldRenderProps(props)
+  const fieldContainerSx = useMemo(
+    (): SxProps<Theme> =>
+      display === 'grid'
+        ? {
+            display: 'grid',
+            gridTemplateColumns: {
+              sm: '1fr',
+              md: `repeat(${gridColumnNumber}, 1fr)`
+            },
+            gap: (theme) => theme.spacing(3)
+          }
+        : {
+            gap: (theme) => theme.spacing(3)
+          },
+    [gridColumnNumber, display]
+  )
+
   return (
     <FormikProvider value={formState}>
       {/* @ts-ignore */}
@@ -129,11 +154,12 @@ export const FormComposable = <RENDERER extends ElementRenderersConfig>(
         <ActionsWrapper actions={actions} {...actionsProps}>
           <Stack
             {...fieldsStackProps}
-            className={cx(
-              defaultStyles.classes.fieldContainer,
-              'AruiForm-fieldsContainer',
-              classes?.fieldsContainer
-            )}
+            className={cx('AruiForm-fieldsContainer', classes?.fieldsContainer)}
+            //@ts-ignore
+            sx={{
+              ...fieldContainerSx,
+              ...fieldsStackProps?.sx
+            }}
             style={styles?.fieldsContainer}
           >
             <ContainerRenderer

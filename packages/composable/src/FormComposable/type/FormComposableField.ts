@@ -37,6 +37,11 @@ export type FormComposableField<
    */
   customDisplay?: (input: ReactNode) => ReactNode
   /**
+   * indicates that the field should extend to the full row in a grid display in the form
+   * @default false
+   */
+  fullRow?: boolean
+  /**
    * the event called when the value of the input change
    */
   onChange?: (value: any) => void

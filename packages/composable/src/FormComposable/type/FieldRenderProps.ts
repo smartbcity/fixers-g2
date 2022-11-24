@@ -5,6 +5,7 @@ import { useEffect, useMemo } from 'react'
 import { FormComposableField } from './FormComposableField'
 import { cx } from '@emotion/css'
 import { getIn } from 'formik'
+import { SxProps, Theme } from '@mui/material'
 
 export interface FieldRenderProps<TYPE extends string, PROPS>
   extends WithElementParams<TYPE, PROPS> {
@@ -33,14 +34,23 @@ export interface FieldRender {
    * @default false
    */
   readonly?: boolean
+  sx?: SxProps<Theme>
   onChange?: (value: any) => void
 }
 
 const useFormProps = (
   field: FormComposableField,
-  props: FormComposableProps<any>
+  props: FormComposableProps<any>,
+  index: number
 ): FieldRender => {
-  const { formState, classes, styles, isLoading, readonly } = props
+  const {
+    formState,
+    classes,
+    styles,
+    isLoading,
+    readonly,
+    gridColumnNumber = 2
+  } = props
   const error = getIn(formState.errors, field.name)
   return {
     key: field.key ?? field.name,
@@ -56,6 +66,14 @@ const useFormProps = (
       ...styles?.field,
       ...field.params?.style
     },
+    sx: field.fullRow
+      ? {
+          gridArea: {
+            sm: 'unset',
+            md: `${index} / 1 / ${index} / ${gridColumnNumber + 1}`
+          }
+        }
+      : undefined,
     onChange: field.onChange,
     readonly: field.readonly === true ? field.readonly : readonly
   }
@@ -82,8 +100,14 @@ export const useFieldRenderProps = (
   }, [formState.registerField, formState.unregisterField, fields])
 
   const memo = useMemo<FieldRenderProps<string, any>[]>(() => {
+    let gridIndex = 0
     return fields.map((field: FormComposableField) => {
-      const formProps = useFormProps(field, props)
+      gridIndex += field.fullRow ? props.gridColumnNumber ?? 2 : 1
+      const formProps = useFormProps(
+        field,
+        props,
+        Math.ceil(gridIndex / (props.gridColumnNumber ?? 2))
+      )
       return {
         basicProps: formProps,
         formState: formState,
