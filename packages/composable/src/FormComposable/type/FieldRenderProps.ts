@@ -111,7 +111,7 @@ export const useFieldRenderProps = (
       return {
         basicProps: formProps,
         formState: formState,
-        key: field.key,
+        key: field.key ?? field.name,
         element: {
           params: field.params,
           type: field.type,
