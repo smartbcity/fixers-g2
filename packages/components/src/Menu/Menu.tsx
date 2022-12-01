@@ -21,7 +21,9 @@ const useStyles = makeG2STyles<{ paddingLeft: number }>()(
       paddingLeft: `${paddingLeft}px`,
       color: 'black',
       '& .MuiListItemIcon-root': {
-        color: 'black'
+        color: 'black',
+        minWidth: 'unset',
+        marginRight: '12px'
       }
     },
     selectedItem: {
@@ -39,9 +41,11 @@ const useStyles = makeG2STyles<{ paddingLeft: number }>()(
     itemText: {
       '& .MuiTypography-root': {
         fontSize: `${17 - paddingLeft / 10}px`,
-        textOverflow: 'ellipsis',
-        whiteSpace: 'nowrap',
-        overflow: 'hidden'
+        overflow: 'hidden',
+        WebkitLineClamp: 3,
+        display: '-webkit-box',
+        WebkitBoxOrient: 'vertical',
+        textOverflow: 'ellipsis'
       }
     },
     subList: {

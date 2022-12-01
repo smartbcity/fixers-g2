@@ -144,6 +144,11 @@ export interface TableBasicProps<Data extends {}> extends BasicProps {
    */
   getRowId?: (row: Data) => string
   /**
+   * You can pass additionnal props to some rows by giving the id of the row as the key in the object or to all
+   * the rows by giving the key "all" to your props
+   */
+  additionnalRowsProps?: Record<string, any>
+  /**
    * You optionnal custom icon used to indicate the expand status of a row
    */
   expandIcon?: JSX.Element
@@ -209,6 +214,7 @@ export const Table = <Data extends {}>(props: TableProps<Data>) => {
     expandIconPosition = 'start',
     expandInElevatedRow = false,
     toggleExpandOnRowClicked = false,
+    additionnalRowsProps,
     ...other
   } = props
   const isSelectabale = !!setSelectedRowIds

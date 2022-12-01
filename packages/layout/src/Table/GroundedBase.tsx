@@ -47,6 +47,8 @@ export interface GroundedBaseProps<Data extends {}> {
   renderRowHoveredComponent?: (row: Row<Data>) => JSX.Element
   toggleExpandOnRowClicked: boolean
   toggleRowExpanded: (id: IdType<Data>[], value?: boolean | undefined) => void
+  getRowId?: (row: Data) => string
+  additionnalRowsProps?: Record<string, any>
 }
 
 export const GroundedBase = <Data extends {}>(
@@ -67,27 +69,35 @@ export const GroundedBase = <Data extends {}>(
     withFooter,
     renderRowHoveredComponent,
     toggleExpandOnRowClicked,
-    toggleRowExpanded
+    toggleRowExpanded,
+    additionnalRowsProps = {},
+    getRowId
   } = props
   const rowsDisplay = useMemo(() => {
     return rows.map((row) => {
       prepareRow(row)
       row.getRowProps()
       const rowProps = row.getRowProps()
+      const extProps =
+        additionnalRowsProps[getRowId ? getRowId(row.original) : ''] ??
+        additionnalRowsProps?.all
       return (
         <Fragment key={rowProps.key}>
           <TableRow
+            {...extProps}
+            {...rowProps}
             onClick={() => {
               onRowClicked && onRowClicked(row)
               toggleExpandOnRowClicked && toggleRowExpanded([row.id])
             }}
             className={cx(
+              rowProps.className,
+              extProps.className,
               'AruiTable-principaleTableRow',
               'AruiTable-tableRow',
               classes?.tableRow
             )}
             style={styles?.tableRow}
-            {...row.getRowProps()}
           >
             {row.cells.map((cell) => {
               const column = cell.column
@@ -152,7 +162,9 @@ export const GroundedBase = <Data extends {}>(
     onRowClicked,
     toggleExpandOnRowClicked,
     toggleRowExpanded,
-    selectedRowIds
+    selectedRowIds,
+    additionnalRowsProps,
+    getRowId
   ])
 
   const headerDisplay = useMemo(

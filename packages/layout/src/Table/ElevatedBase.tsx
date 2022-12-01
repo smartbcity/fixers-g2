@@ -39,6 +39,8 @@ export interface ElevatedBaseProps<Data extends {}> {
   renderRowHoveredComponent?: (row: Row<Data>) => JSX.Element
   toggleExpandOnRowClicked: boolean
   toggleRowExpanded: (id: IdType<Data>[], value?: boolean | undefined) => void
+  getRowId?: (row: Data) => string
+  additionnalRowsProps?: Record<string, any>
 }
 
 export const ElevatedBase = <Data extends {}>(
@@ -60,28 +62,35 @@ export const ElevatedBase = <Data extends {}>(
     renderRowHoveredComponent,
     expandInRow,
     toggleExpandOnRowClicked,
-    toggleRowExpanded
+    toggleRowExpanded,
+    additionnalRowsProps = {},
+    getRowId
   } = props
   const rowsDisplay = useMemo(() => {
     return rows.map((row) => {
       prepareRow(row)
       row.getRowProps()
       const rowProps = row.getRowProps()
+      const extProps =
+        additionnalRowsProps[getRowId ? getRowId(row.original) : ''] ??
+        additionnalRowsProps?.all
       return (
         <Fragment key={rowProps.key}>
           <Box
+            {...extProps}
             onClick={() => {
               onRowClicked && onRowClicked(row)
               toggleExpandOnRowClicked && toggleRowExpanded([row.id])
             }}
             className={cx(
+              extProps.className,
               'AruiTable-principaleTableRow',
               'AruiTable-tableRow',
               classes?.tableRow
             )}
             style={styles?.tableRow}
           >
-            <Box {...row.getRowProps()}>
+            <Box {...rowProps}>
               {row.cells.map((cell) => {
                 const column = cell.column
                 return (
@@ -158,7 +167,9 @@ export const ElevatedBase = <Data extends {}>(
     selectedRowIds,
     expandInRow,
     toggleExpandOnRowClicked,
-    toggleRowExpanded
+    toggleRowExpanded,
+    additionnalRowsProps,
+    getRowId
   ])
 
   const headerDisplay = useMemo(
