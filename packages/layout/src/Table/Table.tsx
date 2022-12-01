@@ -415,6 +415,8 @@ export const Table = <Data extends {}>(props: TableProps<Data>) => {
               expandInRow={expandInElevatedRow}
               toggleRowExpanded={toggleRowExpanded}
               toggleExpandOnRowClicked={toggleExpandOnRowClicked}
+              getRowId={getRowId}
+              additionnalRowsProps={additionnalRowsProps}
             />
           ) : (
             <GroundedBase
@@ -433,6 +435,8 @@ export const Table = <Data extends {}>(props: TableProps<Data>) => {
               styles={styles}
               toggleRowExpanded={toggleRowExpanded}
               toggleExpandOnRowClicked={toggleExpandOnRowClicked}
+              getRowId={getRowId}
+              additionnalRowsProps={additionnalRowsProps}
             />
           ))}
       </TableContainer>
