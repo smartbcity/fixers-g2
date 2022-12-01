@@ -92,7 +92,7 @@ export const GroundedBase = <Data extends {}>(
             }}
             className={cx(
               rowProps.className,
-              extProps.className,
+              extProps?.className,
               'AruiTable-principaleTableRow',
               'AruiTable-tableRow',
               classes?.tableRow

@@ -83,7 +83,7 @@ export const ElevatedBase = <Data extends {}>(
               toggleExpandOnRowClicked && toggleRowExpanded([row.id])
             }}
             className={cx(
-              extProps.className,
+              extProps?.className,
               'AruiTable-principaleTableRow',
               'AruiTable-tableRow',
               classes?.tableRow
