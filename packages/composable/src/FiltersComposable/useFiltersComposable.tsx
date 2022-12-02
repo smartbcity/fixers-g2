@@ -87,7 +87,7 @@ export const useFiltersComposable = <T extends {} = any>(
       setSearchParams(
         qs.stringify(cleanedValues, {
           addQueryPrefix: true,
-          arrayFormat: 'repeat',
+          arrayFormat: 'indices',
           serializeDate: (date) => date.toISOString()
         })
       )
