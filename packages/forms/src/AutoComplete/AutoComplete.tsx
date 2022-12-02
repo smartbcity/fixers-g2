@@ -113,8 +113,14 @@ export type AutoCompleteProps<T = any> = MergeMuiElementProps<
 >
 
 const defaultFilterOptions = createFilterOptions()
-const defaultGetOptionLabel = (option: any) =>
-  typeof option === 'string' ? option : option.label ?? ''
+const defaultGetOptionLabel =
+  (options: any[], hasKey: boolean) => (option: any) => {
+    if (typeof option === 'string' && hasKey) {
+      const founded = options.find((el) => el.key === option)?.label
+      if (founded) return founded
+    }
+    return typeof option === 'string' ? option : option.label ?? ''
+  }
 
 const AutoCompleteBase = function <T>(
   props: AutoCompleteProps<T>,
@@ -132,7 +138,7 @@ const AutoCompleteBase = function <T>(
     onChangeValues,
     defaultValue = null,
     onSearch,
-    getOptionLabel = defaultGetOptionLabel,
+    getOptionLabel,
     textFieldProps,
     disabled,
     isOptionEqualToValue,
@@ -145,14 +151,31 @@ const AutoCompleteBase = function <T>(
     ...other
   } = props
 
+  //@ts-ignore
+  const hasKey = !!options[0]?.key
+
+  const defaultOptionLabelMemo = useCallback(
+    (option) => defaultGetOptionLabel(options, hasKey)(option),
+    [options, hasKey]
+  )
+
+  const getOptionLabelMemo = getOptionLabel ?? defaultOptionLabelMemo
+
   const defaultStyles = useStyles()
 
   const onChangeMemoized = useCallback(
     (_: React.SyntheticEvent<Element, Event>, value: T | T[] | null) => {
-      if (Array.isArray(value)) {
-        onChangeValues && onChangeValues(value)
-      } else {
-        onChangeValue && onChangeValue(value ?? undefined)
+      if (Array.isArray(value) && onChangeValues) {
+        //@ts-ignore
+        if (!!value[0]?.key) {
+          //@ts-ignore
+          onChangeValues(value.map((value) => value.key))
+        } else {
+          onChangeValues(value)
+        }
+      } else if (onChangeValue) {
+        //@ts-ignore
+        onChangeValue(value?.key ?? value ?? undefined)
       }
     },
     [onChangeValue, onChangeValues]
@@ -166,12 +189,12 @@ const AutoCompleteBase = function <T>(
           <Chip
             //@ts-ignore
             key={option.key ?? key}
-            label={getOptionLabel(option)}
+            label={getOptionLabelMemo(option)}
             {...other}
           />
         )
       }),
-    [getOptionLabel]
+    [getOptionLabelMemo]
   )
 
   const renderInput = useCallback(
@@ -205,11 +228,11 @@ const AutoCompleteBase = function <T>(
           {...other}
         >
           {withCheckbox && <CheckBox checked={selected} />}
-          <ListItemText primary={getOptionLabel(option)} />
+          <ListItemText primary={getOptionLabelMemo(option)} />
         </ListItem>
       )
     },
-    [getOptionLabel, withCheckbox]
+    [getOptionLabelMemo, withCheckbox]
   )
 
   const filterOptions = useCallback(
@@ -232,11 +255,9 @@ const AutoCompleteBase = function <T>(
     (option: T, value: T) => option.key === value.key || option.key === value,
     []
   )
-  //@ts-ignore
-  const hasKey = !!options[0]?.key
 
   return (
-    <MuiAutocomplete<T, boolean, undefined, undefined>
+    <MuiAutocomplete<T, boolean, undefined, boolean>
       id={id}
       ref={ref}
       value={multiple ? values : value}
@@ -244,7 +265,7 @@ const AutoCompleteBase = function <T>(
       multiple={multiple}
       options={options}
       className={defaultStyles.cx('AruiAutoComplete-root', className)}
-      getOptionLabel={getOptionLabel}
+      getOptionLabel={getOptionLabelMemo}
       style={style}
       disabled={disabled}
       disableCloseOnSelect={multiple}

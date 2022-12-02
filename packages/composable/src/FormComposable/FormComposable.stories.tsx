@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react'
+import React, { ReactNode, useMemo } from 'react'
 import { Meta } from '@storybook/react'
 import { Story } from '@storybook/react/types-6-0'
 import {
@@ -427,4 +427,105 @@ GridDisplayForm.args = {
   fields: fullFields,
   display: 'grid',
   gridColumnNumber: 3
+}
+
+const quotationLine = {
+  category: {
+    value: 'test1'
+  },
+  quantity: 10,
+  price: {
+    value: 50
+  }
+}
+
+export const testAlveole: Story<FormComposableProps> = (
+  args: FormComposableProps
+) => {
+  const formState = useFormComposable({
+    onSubmit: (values) => console.log(values),
+    formikConfig: {
+      enableReinitialize: true,
+      initialValues: quotationLine
+    }
+  })
+
+  const fields = useMemo(
+    (): FormComposableField[] => [
+      {
+        key: 'category.value',
+        name: 'category.value',
+        label: 'category',
+        type: 'autoComplete',
+        params: {
+          options: [
+            {
+              key: 'test1',
+              label: 'mon label 1'
+            },
+            {
+              key: 'test2',
+              label: 'mon label 2'
+            }
+          ],
+          style: {
+            width: '100%'
+          }
+        },
+        validator: () => "C'est faux"
+      },
+      {
+        key: 'quantity',
+        name: 'quantity',
+        label: 'quantity',
+        type: 'textField',
+        params: {
+          textFieldType: 'number',
+          style: {
+            flexShrink: 0,
+            width: '80px'
+          }
+        },
+        validator: () => "C'est faux"
+      },
+      {
+        key: 'price',
+        name: 'price.value',
+        label: 'unitPriceHT',
+        type: 'textField',
+        params: {
+          textFieldType: 'number',
+          style: {
+            flexShrink: 0,
+            width: '120px'
+          }
+        }
+      }
+    ],
+    []
+  )
+
+  const actions: FormAction[] = [
+    {
+      label: 'reset',
+      key: 'resetFiltersButton',
+      variant: 'text',
+      onClick: () => formState.resetForm()
+    },
+    {
+      label: 'Validate',
+      key: 'validateFormButton',
+      type: 'submit'
+    }
+  ]
+
+  return (
+    <FormComposable<typeof CustomRenderer>
+      fields={fields}
+      customFactories={CustomRenderer}
+      formState={formState}
+      actions={actions}
+      style={{ width: '500px' }}
+    />
+  )
 }
