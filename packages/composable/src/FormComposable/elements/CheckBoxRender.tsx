@@ -25,15 +25,15 @@ export const CheckBoxRender: ElementRendererFunction<CheckBoxRenderProps> = (
     <CheckBox
       checked={value}
       disabled={params?.disabled}
+      onChange={(_: React.ChangeEvent<HTMLInputElement>, value: boolean) => {
+        formState.setFieldValue(basicProps.name, value, false)
+        !!onChange && onChange(value)
+      }}
       {...params}
       {...basicProps}
       readOnly={
         basicProps.readonly === true ? basicProps.readonly : params?.readOnly
       }
-      onChange={(_: React.ChangeEvent<HTMLInputElement>, value: boolean) => {
-        formState.setFieldValue(basicProps.name, value, false)
-        !!onChange && onChange(value)
-      }}
     />
   )
 }

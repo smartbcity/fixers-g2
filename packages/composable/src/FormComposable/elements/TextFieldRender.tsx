@@ -32,13 +32,12 @@ export const TextFieldRender: ElementRendererFunction<TextFieldRenderProps> = (
     <InputForm
       inputType='textField'
       value={value}
-      {...params}
-      {...basicProps}
       onChange={(value: string) => {
         formState.setFieldValue(basicProps.name, value, false)
         !!onChange && onChange(value)
       }}
-      readonly={basicProps.readonly}
+      {...params}
+      {...basicProps}
     />
   )
 }
