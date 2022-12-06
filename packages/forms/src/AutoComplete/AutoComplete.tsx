@@ -167,18 +167,23 @@ const AutoCompleteBase = function <T>(
     (_: React.SyntheticEvent<Element, Event>, value: T | T[] | null) => {
       if (Array.isArray(value) && onChangeValues) {
         //@ts-ignore
-        if (!!value[0]?.key) {
+        if (!!value[0]?.key && !getOptionLabel) {
           //@ts-ignore
           onChangeValues(value.map((value) => value.key))
         } else {
           onChangeValues(value)
         }
-      } else if (onChangeValue) {
+      } else if (onChangeValue && !Array.isArray(value)) {
         //@ts-ignore
-        onChangeValue(value?.key ?? value ?? undefined)
+        if (!!value?.key && !getOptionLabel) {
+          //@ts-ignore
+          onChangeValue(value.key)
+        } else {
+          onChangeValue(value ?? undefined)
+        }
       }
     },
-    [onChangeValue, onChangeValues]
+    [onChangeValue, onChangeValues, getOptionLabel]
   )
 
   const renderTags = useCallback(

@@ -120,6 +120,7 @@ export const useOrganizationFormFields = (
             // @ts-ignore
             ref: setSiretRef,
             onSearch: async () => {
+              setSiretValid(false)
               if (!!formState && !formState.validateField('siret')) {
                 await fetchOrganization()
               }

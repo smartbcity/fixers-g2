@@ -432,13 +432,13 @@ export const TextField = React.forwardRef(
             className={defaultStyles.cx(
               defaultStyles.classes.input,
               localStyles.classes.input,
-              validated && defaultStyles.classes.inputValidated,
               size === 'large' && defaultStyles.classes.inputLarge,
               size === 'medium' && defaultStyles.classes.inputMedium,
               size === 'small' && defaultStyles.classes.inputSmall,
               multiline && localStyles.classes.paddingMultiline,
               disabled && defaultStyles.classes.inputDisabled,
               error && defaultStyles.classes.inputError,
+              validated && defaultStyles.classes.inputValidated,
               inputAdornment.startAdornment &&
                 localStyles.classes.withIconStart,
               inputAdornment.endAdornment && localStyles.classes.withIconEnd,

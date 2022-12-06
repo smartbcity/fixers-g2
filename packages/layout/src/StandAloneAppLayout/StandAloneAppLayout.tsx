@@ -9,7 +9,8 @@ import {
   styled,
   SxProps,
   Theme,
-  useMediaQuery
+  useMediaQuery,
+  useTheme
 } from '@mui/material'
 import { MenuItem } from '@smartb/g2-components'
 import React, { useCallback, useEffect, useState } from 'react'
@@ -107,7 +108,8 @@ export const StandAloneAppLayout = (props: StandAloneAppLayoutProps) => {
     classes,
     styles
   } = props
-  const isMobile = useMediaQuery('(max-width:800px)')
+  const theme = useTheme()
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'))
   const [openLocal, setOpen] = useState(!isMobile)
 
   useEffect(() => {
@@ -138,7 +140,7 @@ export const StandAloneAppLayout = (props: StandAloneAppLayoutProps) => {
             width: drawerWidth,
             boxSizing: 'border-box',
             border: 'unset',
-            height: `100vh`,
+            height: `100%`,
             overflow: 'visible',
             visibility: 'visible !important' as 'visible'
           },
@@ -160,7 +162,7 @@ export const StandAloneAppLayout = (props: StandAloneAppLayoutProps) => {
           style={styles?.scrollableContainer}
           sx={{
             height: '100%',
-            widht: '100%',
+            width: '100%',
             overflow: 'auto'
           }}
         >
@@ -199,6 +201,7 @@ export const StandAloneAppLayout = (props: StandAloneAppLayoutProps) => {
         )}
         {userMenuProps && (
           <UserMenu
+            defaultOpen={!isMobile}
             {...userMenuProps}
             className={cx(
               'AruiStandAloneAppLayout-userMenu',
@@ -206,9 +209,10 @@ export const StandAloneAppLayout = (props: StandAloneAppLayoutProps) => {
             )}
             style={styles?.userMenu}
             sx={{
-              position: 'absolute',
+              position: 'relative',
               bottom: '0px',
-              width: '100%'
+              width: '100%',
+              margin: '0px !important'
             }}
           />
         )}

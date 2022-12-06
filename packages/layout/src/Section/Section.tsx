@@ -1,4 +1,4 @@
-import { Box, Paper, PaperProps } from '@mui/material'
+import { Box, Paper, PaperProps, useTheme } from '@mui/material'
 import { Actions, ActionsProps } from '@smartb/g2-components'
 import React, { useMemo } from 'react'
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
@@ -58,6 +58,8 @@ export const Section = (props: SectionProps) => {
     ...other
   } = props
 
+  const theme = useTheme()
+
   const actionsDisplay = useMemo(() => {
     if (!bottomActionsProps) return undefined
     return (
@@ -114,6 +116,11 @@ export const Section = (props: SectionProps) => {
         {headerDisplay}
         <Box
           sx={{
+            [theme.breakpoints.down('sm')]: {
+              padding: (theme) => theme.spacing(1),
+              paddingTop: (theme) => theme.spacing(2),
+              gap: flexContent ? (theme) => theme.spacing(2) : ''
+            },
             padding: (theme) => theme.spacing(3),
             flexGrow: 1,
             display: flexContent ? 'flex' : '',

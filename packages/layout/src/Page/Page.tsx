@@ -1,4 +1,4 @@
-import { Box, BoxProps } from '@mui/material'
+import { Box, BoxProps, useTheme } from '@mui/material'
 import { Actions, ActionsProps } from '@smartb/g2-components'
 import React, { useMemo } from 'react'
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
@@ -38,6 +38,8 @@ export const Page = (props: PageProps) => {
     ...other
   } = props
 
+  const theme = useTheme()
+
   const actionsDisplay = useMemo(() => {
     if (!bottomActionsProps) return undefined
     return (
@@ -68,6 +70,11 @@ export const Page = (props: PageProps) => {
         <Box
           className={cx('AruiPage-root', className)}
           sx={{
+            [theme.breakpoints.down('sm')]: {
+              padding: (theme) => theme.spacing(1),
+              paddingTop: (theme) => theme.spacing(2),
+              gap: flexContent ? (theme) => theme.spacing(2) : ''
+            },
             padding: (theme) => theme.spacing(5),
             maxWidth: '1700px',
             width: '100%',

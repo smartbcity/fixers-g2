@@ -1,5 +1,13 @@
 import { cx } from '@emotion/css'
-import { Box, BoxProps, Stack, Tab, Tabs, TabsProps } from '@mui/material'
+import {
+  Box,
+  BoxProps,
+  Stack,
+  Tab,
+  Tabs,
+  TabsProps,
+  useTheme
+} from '@mui/material'
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 import React, { useMemo } from 'react'
 
@@ -9,8 +17,8 @@ export type HeaderTab = {
 }
 
 export type HeaderContent = {
-  leftPart?: (JSX.Element | undefined )[]
-  rightPart?: (JSX.Element | undefined) []
+  leftPart?: (JSX.Element | undefined)[]
+  rightPart?: (JSX.Element | undefined)[]
 }
 
 interface HeaderClasses {
@@ -83,7 +91,7 @@ export interface HeaderBasicProps extends BasicProps {
    * usually not needed, but if you have 2 headers on top of each others they might overlap each other in a weird way if they have the same z index
    * @default 300
    */
-   zIndex?: number
+  zIndex?: number
   /**
    * The classes applied to the different part of the component
    */
@@ -115,6 +123,8 @@ export const Header = (props: HeaderProps) => {
     zIndex = 300,
     ...rest
   } = props
+
+  const theme = useTheme()
 
   const contentDisplay = useMemo(
     () =>
@@ -195,6 +205,18 @@ export const Header = (props: HeaderProps) => {
     <Box
       className={cx('AruiHeader-root', className)}
       sx={{
+        [theme.breakpoints.down('sm')]: {
+          padding: (theme) => {
+            const topPadding = theme.spacing(1)
+            const horizontalPadding = strongPadding
+              ? theme.spacing(2)
+              : theme.spacing(1)
+            if (tabs) {
+              return `${topPadding} ${horizontalPadding} 0`
+            }
+            return `${topPadding} ${horizontalPadding}`
+          }
+        },
         padding: (theme) => {
           const topPadding = theme.spacing(2)
           const horizontalPadding = strongPadding
