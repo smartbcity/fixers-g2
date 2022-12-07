@@ -82,7 +82,7 @@ export const organizationToFlatOrganization = (
     street: org.address?.street,
     city: org.address?.city,
     postalCode: org.address?.postalCode,
-    roles: org.roles
+    roles: org.roles && org.roles.length > 0 ? org.roles : undefined
   }
   delete flat.address
   return flat

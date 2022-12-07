@@ -74,7 +74,13 @@ export const useOrganizationFormFields = (
     if (getInseeOrganization && formState?.values.siret) {
       await getInseeOrganization(formState.values.siret).then((values) => {
         if (values) {
-          formState.setValues(organizationToFlatOrganization(values), false)
+          formState.setValues(
+            (oldValues) => ({
+              ...oldValues,
+              ...organizationToFlatOrganization(values)
+            }),
+            false
+          )
           setSiretValid(true)
           setInseeOrganization && setInseeOrganization(values)
         } else {
