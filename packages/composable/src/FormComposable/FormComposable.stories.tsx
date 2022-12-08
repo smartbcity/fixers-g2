@@ -111,7 +111,7 @@ const FormComposableStory: Story<FormComposableProps> = (
       customFactories={CustomRenderer}
       actions={actions}
       formState={formState}
-      style={{ width: '500px' }}
+      style={{ width: '600px' }}
     />
   )
 }
@@ -272,6 +272,13 @@ RadioSelectForm.args = {
 
 const fullFields: AllFormComposableField[] = [
   {
+    name: 'picture',
+    type: 'dropPicture',
+    params: {
+      height: '200px'
+    }
+  },
+  {
     key: 'storybook-form-field-name',
     name: 'name',
     label: 'Name',
@@ -305,7 +312,6 @@ const fullFields: AllFormComposableField[] = [
     name: 'yesOrNo',
     label: 'Yes or no?',
     type: 'radioChoices',
-    fullRow: true,
     defaultValue: '',
     validator: requiredField('Answer the question'),
     params: {
@@ -313,8 +319,16 @@ const fullFields: AllFormComposableField[] = [
         { key: 'yes', label: 'Yes' },
         { key: 'no', label: 'No' }
       ],
-      row: true,
-      orientation: 'horizontal'
+      row: true
+    }
+  },
+  {
+    name: 'document',
+    type: 'documentHandler',
+    fullRow: true,
+    label: 'A document',
+    params: {
+      fileTypesAllowed: ['pdf']
     }
   },
   {
@@ -323,7 +337,6 @@ const fullFields: AllFormComposableField[] = [
     label: 'I agree to the terms and conditions',
     type: 'checkBox',
     defaultValue: false,
-    fullRow: true,
     validator: requiredTrue('You have to agree')
   },
   {
@@ -426,106 +439,5 @@ export const GridDisplayForm = FormComposableStory.bind({})
 GridDisplayForm.args = {
   fields: fullFields,
   display: 'grid',
-  gridColumnNumber: 3
-}
-
-const quotationLine = {
-  category: {
-    value: 'test1'
-  },
-  quantity: 10,
-  price: {
-    value: 50
-  }
-}
-
-export const testAlveole: Story<FormComposableProps> = (
-  args: FormComposableProps
-) => {
-  const formState = useFormComposable({
-    onSubmit: (values) => console.log(values),
-    formikConfig: {
-      enableReinitialize: true,
-      initialValues: quotationLine
-    }
-  })
-
-  const fields = useMemo(
-    (): FormComposableField[] => [
-      {
-        key: 'category.value',
-        name: 'category.value',
-        label: 'category',
-        type: 'autoComplete',
-        params: {
-          options: [
-            {
-              key: 'test1',
-              label: 'mon label 1'
-            },
-            {
-              key: 'test2',
-              label: 'mon label 2'
-            }
-          ],
-          style: {
-            width: '100%'
-          }
-        },
-        validator: () => "C'est faux"
-      },
-      {
-        key: 'quantity',
-        name: 'quantity',
-        label: 'quantity',
-        type: 'textField',
-        params: {
-          textFieldType: 'number',
-          style: {
-            flexShrink: 0,
-            width: '80px'
-          }
-        },
-        validator: () => "C'est faux"
-      },
-      {
-        key: 'price',
-        name: 'price.value',
-        label: 'unitPriceHT',
-        type: 'textField',
-        params: {
-          textFieldType: 'number',
-          style: {
-            flexShrink: 0,
-            width: '120px'
-          }
-        }
-      }
-    ],
-    []
-  )
-
-  const actions: FormAction[] = [
-    {
-      label: 'reset',
-      key: 'resetFiltersButton',
-      variant: 'text',
-      onClick: () => formState.resetForm()
-    },
-    {
-      label: 'Validate',
-      key: 'validateFormButton',
-      type: 'submit'
-    }
-  ]
-
-  return (
-    <FormComposable<typeof CustomRenderer>
-      fields={fields}
-      customFactories={CustomRenderer}
-      formState={formState}
-      actions={actions}
-      style={{ width: '500px' }}
-    />
-  )
+  gridColumnNumber: 2
 }

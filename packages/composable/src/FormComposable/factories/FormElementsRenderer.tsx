@@ -5,6 +5,8 @@ import { AutoCompleteRender } from '../elements/AutoCompleteRender'
 import { CheckBoxRender } from '../elements/CheckBoxRender'
 import { RadioChoicesRender } from '../elements/RadioChoicesRender'
 import { ComposableElementRendererProps } from '../../ComposableRender'
+import { DropPictureRender } from '../elements/DropPictureRender'
+import { DocumentHandlerRender } from '../elements/DocumentHandlerRender'
 
 export const DefaultRenderer = {
   textField: TextFieldRender,
@@ -12,7 +14,9 @@ export const DefaultRenderer = {
   autoComplete: AutoCompleteRender,
   checkBox: CheckBoxRender,
   datePicker: DatePickerRender,
-  radioChoices: RadioChoicesRender
+  radioChoices: RadioChoicesRender,
+  dropPicture: DropPictureRender,
+  documentHandler: DocumentHandlerRender
 } as const
 
 export type FieldRenderType = ComposableElementRendererProps<

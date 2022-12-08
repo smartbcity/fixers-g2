@@ -127,7 +127,7 @@ export const FormComposable = <RENDERER extends ElementRenderersConfig>(
             display: 'grid',
             gridTemplateColumns: {
               sm: '1fr',
-              md: `repeat(${gridColumnNumber}, 1fr)`
+              md: `repeat(${gridColumnNumber}, minmax(0px, 1fr))`
             },
             gap: (theme) => theme.spacing(3)
           }

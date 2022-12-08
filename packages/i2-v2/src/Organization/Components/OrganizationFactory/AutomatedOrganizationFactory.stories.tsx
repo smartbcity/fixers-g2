@@ -33,7 +33,9 @@ export const AutomatedOrganizationFactoryStory: Story<
 }
 
 const Following = (args: OrganizationFactoryBasicProps) => {
-  const [organizationId, setOrganizationId] = useState<string | undefined>()
+  const [organizationId, setOrganizationId] = useState<string | undefined>(
+    '09d64831-30ad-4781-b9c2-45a5fbc2f70b'
+  )
 
   const organizationFormState = useOrganizationFormState({
     update: !!organizationId,
@@ -44,9 +46,46 @@ const Following = (args: OrganizationFactoryBasicProps) => {
       }
     }
   })
+
+  const fieldsOverride = {
+    roles: {
+      params: {
+        options: [
+          {
+            key: 'support',
+            label: 'support'
+          },
+          {
+            key: 'beneficiary',
+            label: 'beneficiary'
+          },
+          {
+            key: 'fub',
+            label: 'fub'
+          },
+          {
+            key: 'provider_counseling',
+            label: 'provider_counseling'
+          },
+          {
+            key: 'provider_equipment',
+            label: 'provider_equipment'
+          },
+          {
+            key: 'provider_training',
+            label: 'provider_training'
+          }
+        ]
+      }
+    }
+  }
   return (
     <>
-      <AutomatedOrganizationFactory {...organizationFormState} {...args} />
+      <AutomatedOrganizationFactory
+        fieldsOverride={fieldsOverride}
+        {...organizationFormState}
+        {...args}
+      />
       <Button onClick={organizationFormState.formState.submitForm}>
         Validate
       </Button>

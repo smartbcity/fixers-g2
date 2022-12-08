@@ -93,7 +93,11 @@ export const OrganizationTable = <T extends Organization = Organization>(
         Header: strings?.organization ?? 'Organisation',
         accessor: 'name',
         Cell: ({ row }: CellProps<T>) => (
-          <Presentation displayAvatar={false} label={row.original.name} />
+          <Presentation
+            displayAvatar={false}
+            label={row.original.name}
+            imgSrc={row.original.logo}
+          />
         )
       } as Column<T>,
       {

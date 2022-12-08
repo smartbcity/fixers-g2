@@ -13,7 +13,7 @@ export interface PresentationBasicProps extends BasicProps {
    */
   subLabel?: string
   /**
-   * The src of the image for the presentation. If not provided, the `Presentation` will be used.
+   * The src of the image for the presentation. If not provided, the `UserAvatar` will be used.
    */
   imgSrc?: string
   /**
@@ -61,7 +61,8 @@ export const Presentation = (props: PresentationProps) => {
 
             '& .presentationImage': {
               width: '50px',
-              borderRadius: (theme) => `${theme.shape.borderRadius}px`
+              borderRadius: (theme) =>
+                `${Number(theme.shape.borderRadius) / 2}px`
             }
           }}
         >

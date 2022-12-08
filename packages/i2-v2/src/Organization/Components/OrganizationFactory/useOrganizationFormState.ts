@@ -10,9 +10,11 @@ import { useQueryClient } from 'react-query'
 import {
   CreateOrganizationOptions,
   GetOrganizationOptions,
+  OrganizationUploadLogoOptions,
   UpdateOrganizationOptions,
   useCreateOrganization,
   useGetOrganization,
+  useOrganizationUploadLogo,
   useUpdateOrganization
 } from '../../Api'
 import { useFormComposable } from '@smartb/g2-composable'
@@ -32,6 +34,10 @@ export interface useOrganizationFormStateProps<
    * The updateOrganization hook options
    */
   updateOrganizationOptions?: UpdateOrganizationOptions<T>
+  /**
+   * The uploadLogo hook options
+   */
+  uploadLogoOptions?: OrganizationUploadLogoOptions
   /**
    * The createOrganization hook options
    */
@@ -69,7 +75,8 @@ export const useOrganizationFormState = <T extends Organization = Organization>(
     updateOrganizationOptions,
     defaultRoles,
     multipleRoles = true,
-    myOrganization = false
+    myOrganization = false,
+    uploadLogoOptions
   } = params ?? {}
 
   const { keycloak, service } = useAuth()
@@ -124,6 +131,12 @@ export const useOrganizationFormState = <T extends Organization = Organization>(
     options: updateOrganizationOptionsMemo
   })
 
+  const uploadLogo = useOrganizationUploadLogo({
+    apiUrl: i2Config().orgUrl,
+    jwt: keycloak.token,
+    options: uploadLogoOptions
+  })
+
   const createOrganization = useCreateOrganization({
     apiUrl: i2Config().orgUrl,
     jwt: keycloak.token,
@@ -132,9 +145,16 @@ export const useOrganizationFormState = <T extends Organization = Organization>(
 
   const updateOrganizationMemoized = useCallback(
     async (organization: Organization) => {
+      //@ts-ignore
+      organization.logo &&
+        (await uploadLogo.mutateAsync({
+          file: organization.logo,
+          id: organization.id
+        }))
+      delete organization.logo
       await updateOrganization.mutateAsync(organization)
     },
-    [updateOrganization.mutateAsync]
+    [updateOrganization.mutateAsync, uploadLogo.mutateAsync]
   )
 
   const createOrganizationMemoized = useCallback(

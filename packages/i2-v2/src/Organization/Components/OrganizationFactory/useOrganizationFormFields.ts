@@ -11,6 +11,7 @@ import { siretValidation } from '../../Validation/siret'
 import { OrganizationFactoryStrings } from './OrganizationFactory'
 
 export type organizationFieldsName =
+  | 'logo'
   | 'siret'
   | 'name'
   | 'description'
@@ -74,10 +75,14 @@ export const useOrganizationFormFields = (
     if (getInseeOrganization && formState?.values.siret) {
       await getInseeOrganization(formState.values.siret).then((values) => {
         if (values) {
+          const flat = organizationToFlatOrganization(values)
+          for (var key in flat) {
+            if (flat[key] == null) delete flat[key]
+          }
           formState.setValues(
             (oldValues) => ({
               ...oldValues,
-              ...organizationToFlatOrganization(values)
+              ...flat
             }),
             false
           )
@@ -112,6 +117,26 @@ export const useOrganizationFormFields = (
       organizationFieldsName,
       FormComposableField<organizationFieldsName>
     > => ({
+      logo: mergeFields<FormComposableField<organizationFieldsName>>(
+        {
+          name: 'logo',
+          label: "Logo de l'entreprise (optionnel)",
+          type: 'dropPicture',
+          params: {
+            addPictureHelperText: 'Ajouter un logo (de préférence carré)',
+            alt: "Le logo de l'entreprise",
+            removePictureHelperText: 'Supprimer le logo',
+            errorMessages: {
+              'file-invalid-type': "L'image devrait être au format jpeg ou png",
+              'file-too-large':
+                'Votre image est trop lourde et ne devrait pas dépassé 10 Mo',
+              'too-many-files': "Vous ne pouvez insérez q'une seule image"
+            },
+            height: '200px'
+          }
+        },
+        fieldsOverride?.logo
+      ),
       siret: mergeFields<FormComposableField<organizationFieldsName>>(
         {
           key: 'siret',

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, forwardRef } from 'react'
 import { FileRejection, DropzoneProps, useDropzone } from 'react-dropzone'
-import { Paper, Typography } from '@mui/material'
+import { Paper, Typography, Skeleton } from '@mui/material'
 import { Clear, AddPhotoAlternate } from '@mui/icons-material'
 import {
   BasicProps,
@@ -9,15 +9,15 @@ import {
 } from '@smartb/g2-themes'
 import { Tooltip } from '@smartb/g2-notifications'
 
-const useStyles = makeG2STyles()((theme) => ({
+const useStyles = makeG2STyles<{ height: string }>()((theme, { height }) => ({
   root: {
     position: 'relative',
     width: '100%',
-    height: '100%'
+    height: height
   },
   dropZone: {
     width: '100%',
-    height: '100%',
+    height: height,
     background: 'rgb(237, 237, 237)',
     border: 'dashed rgba(209,202,203,1) 2px',
     borderRadius: theme.borderRadius,
@@ -34,8 +34,9 @@ const useStyles = makeG2STyles()((theme) => ({
   image: {
     width: '100%',
     borderRadius: theme.borderRadius,
-    objectFit: 'cover',
-    height: '100%'
+    objectFit: 'contain',
+    height: height,
+    position: 'relative'
   },
   clear: {
     color: '#757575',
@@ -49,7 +50,7 @@ const useStyles = makeG2STyles()((theme) => ({
   },
   container: {
     width: '100%',
-    height: 'auto',
+    height: height,
     position: 'relative',
     cursor: 'pointer',
     '&:hover img': {
@@ -80,6 +81,12 @@ export type DropPictureError =
   | 'too-many-files'
   | 'file-invalid-type'
 
+const defaultErrorMessages: { [key in DropPictureError]?: string } = {
+  'file-invalid-type': 'Your picture should be a png or a jpeg',
+  'file-too-large': 'Your picture should not exceed 10Mo',
+  'too-many-files': 'You can only drop one picture here'
+}
+
 interface DropPictureClasses {
   image?: string
   tooltip?: string
@@ -100,10 +107,6 @@ interface DropPictureStyles {
 
 export interface DropPictureBasicProps extends BasicProps {
   /**
-   * @deprecated Use onPictureDropped instead. Remove in 1.0.0-alpha.30
-   */
-  onPictureDroped?: (picture: File) => void
-  /**
    * The event called when a picture is dropped
    */
   onPictureDropped?: (picture: File) => void
@@ -112,13 +115,13 @@ export interface DropPictureBasicProps extends BasicProps {
    */
   onRemovePicture?: () => void
   /**
-   * The event called when an invalid picture is dropped
+   * error messages displayed if the files uploaded doesn't match the required constraints
    */
-  onDropError?: (errorType: DropPictureError) => void
+  errorMessages?: { [key in DropPictureError]?: string }
   /**
-   * The error message to display under the component
+   * The custom error message
    */
-  errorMessage?: string
+  customErrorMessage?: string
   /**
    * If true, the dropzone won't appear and the `initialPicture` or the `defaultPicture` will be displayed
    */
@@ -126,9 +129,9 @@ export interface DropPictureBasicProps extends BasicProps {
   /**
    * The initial picture that can be removed and changed
    */
-  initialPicture?: string
+  pictureUrl?: string
   /**
-   * The default picture that will be displayed if the first one doesn't exist or is unfindable. This prop is used only when `readonly` is true
+   * The default picture that will be displayed if the first one doesn't exist or is unfundable. This prop is used only when `readonly` is true
    */
   defaultPicture?: string
   /**
@@ -156,6 +159,16 @@ export interface DropPictureBasicProps extends BasicProps {
    */
   alt?: string
   /**
+   * isLoading state
+   * @default false
+   */
+  isLoading?: boolean
+  /**
+   * the height of the component
+   * @default "100%"
+   */
+  height?: string
+  /**
    * The classes applied to the different part of the component
    */
   classes?: DropPictureClasses
@@ -175,51 +188,55 @@ const DropPictureBase = (
   ref: React.ForwardedRef<HTMLDivElement>
 ) => {
   const {
-    onPictureDroped,
     onPictureDropped,
     onRemovePicture,
     className,
     style,
     readonly = false,
-    initialPicture = '',
+    pictureUrl,
     defaultPicture = '',
-    maxSize = 1000000,
-    errorMessage,
-    onDropError,
+    maxSize = 10 * 1024 * 1024,
+    errorMessages,
+    customErrorMessage,
     id,
     addPictureHelperText = 'Add an image',
     removePictureHelperText = 'Delete this image',
     alt = 'A picture',
     classes,
     styles,
+    isLoading = false,
+    height = '100%',
     ...other
   } = props
-
-  const defaultStyles = useStyles()
-  const [logo, setLogo] = useState<string>(initialPicture)
+  const [error, setError] = useState(customErrorMessage)
+  const [unFound, setUnFound] = useState(false)
+  const defaultStyles = useStyles({ height })
 
   useEffect(() => {
-    setLogo(initialPicture)
-  }, [initialPicture])
+    setError(customErrorMessage)
+  }, [customErrorMessage])
+
+  useEffect(() => {
+    setUnFound(false)
+  }, [readonly])
 
   const onUpload = useCallback(
     (acceptedFiles: File[]) => {
-      // TODO @deprecated replace by onPictureDropped
-      onPictureDroped && onPictureDroped(acceptedFiles[0])
       onPictureDropped && onPictureDropped(acceptedFiles[0])
-      const reader = new FileReader()
-      reader.readAsDataURL(acceptedFiles[0])
-      reader.onload = () => {
-        setLogo(reader.result as string)
-      }
     },
-    [onPictureDroped, onPictureDropped]
+    [onPictureDropped]
   )
 
   const onReject = useCallback(
-    (files: FileRejection[]) =>
-      onDropError && onDropError(files[0].errors[0].code as DropPictureError),
-    [onDropError]
+    (fileRejections: FileRejection[]) => {
+      const code = fileRejections[0].errors[0].code as DropPictureError
+      setError(
+        !!errorMessages && !!errorMessages[code]
+          ? errorMessages[code]
+          : defaultErrorMessages[code]
+      )
+    },
+    [errorMessages]
   )
 
   const { getRootProps, getInputProps } = useDropzone({
@@ -231,20 +248,29 @@ const DropPictureBase = (
     onDropRejected: onReject
   })
 
-  const onRemoveLogo = useCallback(() => {
-    setLogo('')
-    onRemovePicture && onRemovePicture()
-  }, [onRemovePicture])
+  const onError = useCallback(() => setUnFound(true), [])
 
-  const onError = useCallback(() => setLogo(''), [])
-
+  if (isLoading)
+    return (
+      <Skeleton
+        className={defaultStyles.cx('AruiDropzone-skeleton')}
+        sx={{
+          width: '100%',
+          height: height,
+          transform: 'none'
+        }}
+        animation='wave'
+      />
+    )
   if (readonly)
     return (
       <img
-        src={logo !== '' ? logo : defaultPicture}
+        src={!unFound ? pictureUrl : defaultPicture}
         className={defaultStyles.cx(
           defaultStyles.classes.image,
-          classes?.image
+          classes?.image,
+          'AruiDropzone-image',
+          className
         )}
         style={styles?.image}
         alt={alt}
@@ -252,7 +278,7 @@ const DropPictureBase = (
       />
     )
 
-  if (logo === '')
+  if (!pictureUrl)
     return (
       <div
         ref={ref}
@@ -262,7 +288,6 @@ const DropPictureBase = (
           className
         )}
         style={style}
-        id={id}
       >
         <Tooltip
           helperText={addPictureHelperText}
@@ -279,7 +304,7 @@ const DropPictureBase = (
             style={styles?.dropZone}
             {...getRootProps()}
           >
-            <input {...getInputProps()} />
+            <input id={id} {...getInputProps()} />
             <AddPhotoAlternate
               className={defaultStyles.cx(
                 defaultStyles.classes.add,
@@ -289,7 +314,7 @@ const DropPictureBase = (
             />
           </Paper>
         </Tooltip>
-        {!!errorMessage && (
+        {!!error && (
           <Typography
             className={defaultStyles.cx(
               defaultStyles.classes.error,
@@ -300,7 +325,7 @@ const DropPictureBase = (
             variant='body2'
             align='center'
           >
-            {errorMessage}
+            {error}
           </Typography>
         )}
       </div>
@@ -320,10 +345,10 @@ const DropPictureBase = (
         )}
         style={style}
         id={id}
-        onClick={onRemoveLogo}
+        onClick={onRemovePicture}
       >
         <img
-          src={logo}
+          src={pictureUrl}
           className={defaultStyles.cx(
             defaultStyles.classes.image,
             'AruiDropzone-image',

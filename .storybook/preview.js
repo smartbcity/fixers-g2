@@ -28,8 +28,8 @@ export const parameters = {
 
 G2ConfigBuilder({
   i2: {
-    orgUrl: "https://dev.app.alveoleplus.fr/im",
-    userUrl: "https://dev.app.alveoleplus.fr/im",
+    orgUrl: "https://dev.app.alveoleplus.fr/api",
+    userUrl: "https://dev.app.alveoleplus.fr/api",
   },
   keycloak: {
     realm: "alveole-dev",

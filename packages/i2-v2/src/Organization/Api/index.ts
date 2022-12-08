@@ -243,5 +243,55 @@ export const useCreateOrganization = <T extends Organization = Organization>(
   return useMutation(createOrganization, options)
 }
 
+export type OrganizationUploadLogoOptions = Omit<
+  UseMutationOptions<
+    undefined | { id: string },
+    unknown,
+    { id: string; file: File },
+    unknown
+  >,
+  'mutationFn'
+>
+
+export interface OrganizationUploadLogoParams {
+  jwt?: string
+  apiUrl: string
+  options?: OrganizationUploadLogoOptions
+}
+
+export const useOrganizationUploadLogo = (
+  params: OrganizationUploadLogoParams
+) => {
+  const { apiUrl, jwt, options } = params
+  // TODO Remove all duplicated code with other request
+  const updateOrganization = useCallback(
+    async (params: { id: string; file: File }) => {
+      const formData = new FormData()
+      formData.append(
+        'command',
+        new Blob([JSON.stringify({ id: params.id })], {
+          type: 'application/json'
+        })
+      )
+      formData.append('file', params.file)
+      const res = await request<{ id: string }[]>({
+        url: `${apiUrl}/organizationUploadLogo`,
+        method: 'POST',
+        formData: formData,
+        contentType: 'none',
+        jwt: jwt
+      })
+      if (res) {
+        return res[0]
+      } else {
+        return undefined
+      }
+    },
+    [apiUrl, jwt]
+  )
+
+  return useMutation(updateOrganization, options)
+}
+
 export * from './GetOrganizationRefsQuery'
 export * from './OrganizationDisableFunction'

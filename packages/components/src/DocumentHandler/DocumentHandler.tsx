@@ -1,7 +1,6 @@
 import { BasicProps, MergeMuiElementProps, useTheme } from '@smartb/g2-themes'
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Dropzone, DropzoneProps, MIME_TYPES } from '@mantine/dropzone'
-import { StackProps } from '@mantine/core'
 import { FileRejection } from 'react-dropzone'
 import { cx } from '@emotion/css'
 import {
@@ -9,7 +8,8 @@ import {
   Divider,
   InputLabel,
   Stack,
-  Typography
+  Typography,
+  StackProps
 } from '@mui/material'
 import {
   CloudDoneRounded,
