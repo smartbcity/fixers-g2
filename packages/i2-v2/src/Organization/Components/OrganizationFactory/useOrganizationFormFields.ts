@@ -120,7 +120,7 @@ export const useOrganizationFormFields = (
       logo: mergeFields<FormComposableField<organizationFieldsName>>(
         {
           name: 'logo',
-          label: "Logo de l'entreprise (optionnel)",
+          label: "Logo de l'entreprise (faculatif)",
           type: 'dropPicture',
           params: {
             addPictureHelperText: 'Ajouter un logo (de préférence carré)',
