@@ -145,9 +145,9 @@ export const useOrganizationFormState = <T extends Organization = Organization>(
 
   const updateOrganizationMemoized = useCallback(
     async (organization: Organization) => {
-      //@ts-ignore
       organization.logo &&
         (await uploadLogo.mutateAsync({
+          //@ts-ignore
           file: organization.logo,
           id: organization.id
         }))
