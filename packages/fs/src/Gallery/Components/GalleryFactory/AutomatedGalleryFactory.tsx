@@ -2,10 +2,8 @@ import { Stack, Typography } from '@mui/material'
 import { Button } from '@smartb/g2-components'
 import { fsConfig } from '@smartb/g2-providers'
 import { MergeMuiElementProps } from '@smartb/g2-themes'
-import { fileToBase64 } from '@smartb/g2-utils'
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import { useQueryClient } from 'react-query'
-import { v4 as uuidv4 } from 'uuid'
 import {
   DeleteFilesOptions,
   GetGalleryOptions,
@@ -14,13 +12,9 @@ import {
   useGetGallery,
   useUploadFiles
 } from '../..'
-import {
-  DirectoryPath,
-  FileDeleteCommand,
-  FsFile,
-  TrackedFsFile
-} from '../../Domain'
+import { DirectoryPath, FileDeleteCommand } from '../../Domain'
 import { GalleryFactory, GalleryFactoryProps } from './GalleryFactory'
+import { useLocalGalleryState } from './useLocalGalleryState'
 
 export interface AutomatedGalleryFactoryBasicProps {
   /**
@@ -83,9 +77,6 @@ export const AutomatedGalleryFactory = (
     getGalleryQueryKey,
     ...rest
   } = props
-  const [currentGallery, setCurrentGallery] = useState<TrackedFsFile[]>([])
-  const [hasChanges, setHasChanges] = useState<boolean>(false)
-  const [isLoading, setIsLoading] = useState<boolean>(false)
   const [isSaving, setIsSaving] = useState<boolean>(false)
   const queryClient = useQueryClient()
 
@@ -96,6 +87,20 @@ export const AutomatedGalleryFactory = (
       ...getGalleryOptions
     },
     queryKey: getGalleryQueryKey
+  })
+
+  const {
+    localGallery,
+    hasChanges,
+    isLoading,
+    setIsLoading,
+    setHasChanges,
+    onAdd,
+    onCancel,
+    onDelete
+  } = useLocalGalleryState({
+    directoryPath: directoryPath,
+    initialGallery: gallery.data?.items
   })
 
   const deleteFiles = useDeleteFiles({
@@ -138,66 +143,13 @@ export const AutomatedGalleryFactory = (
     }
   })
 
-  useEffect(() => {
-    if (gallery.data) {
-      setCurrentGallery(gallery.data.items)
-    }
-  }, [gallery.data])
-
-  const onAdd = useCallback(
-    (files: File[]) => {
-      setIsLoading(true)
-      const fsFiles = files.map(async (file): Promise<TrackedFsFile> => {
-        const base64 = await fileToBase64(file)
-        const name = `${uuidv4()}_${file.name}`
-        return {
-          id: name,
-          metadata: {},
-          path: {
-            ...directoryPath,
-            name: name
-          },
-          url: base64,
-          isNew: true,
-          file: file
-        }
-      })
-      Promise.all(fsFiles).then((values) => {
-        setCurrentGallery((oldValues) => [...oldValues, ...values])
-        setIsLoading(false)
-      })
-      setHasChanges(true)
-    },
-    [directoryPath]
-  )
-
-  const onDelete = useCallback((file: FsFile) => {
-    setCurrentGallery((oldValues) =>
-      oldValues.map((element) => {
-        if (file.id === element.id) {
-          return {
-            ...element,
-            isDeleted: true
-          }
-        }
-        return element
-      })
-    )
-    setHasChanges(true)
-  }, [])
-
-  const onCancel = useCallback(() => {
-    setCurrentGallery(gallery.data?.items ?? [])
-    setHasChanges(false)
-  }, [gallery.data?.items])
-
   const onSave = useCallback(async () => {
     setIsSaving(true)
     setIsLoading(true)
-    const filesToSave = currentGallery.filter(
+    const filesToSave = localGallery.filter(
       (file) => file.isNew && !file.isDeleted && !!file.file
     )
-    const deleteCommands: FileDeleteCommand[] = currentGallery
+    const deleteCommands: FileDeleteCommand[] = localGallery
       .filter((file) => file.isDeleted && !file.isNew)
       .map((file) => file.path)
 
@@ -212,15 +164,15 @@ export const AutomatedGalleryFactory = (
     setIsLoading(false)
     setHasChanges(false)
   }, [
-    currentGallery,
+    localGallery,
     deleteFiles.mutateAsync,
     uploadFiles.mutateAsync,
     gallery.data
   ])
 
   const displayedGallery = useMemo(
-    () => currentGallery.filter((file) => !file.isDeleted),
-    [currentGallery]
+    () => localGallery.filter((file) => !file.isDeleted),
+    [localGallery]
   )
 
   return (

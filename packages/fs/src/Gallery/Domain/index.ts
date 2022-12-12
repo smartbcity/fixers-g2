@@ -14,7 +14,7 @@ export interface FsFile {
   id: string
   path: FilePath
   url: string
-  metadata: Record<string, string>
+  metadata?: Record<string, string>
 }
 
 export interface FileUploadCommand {

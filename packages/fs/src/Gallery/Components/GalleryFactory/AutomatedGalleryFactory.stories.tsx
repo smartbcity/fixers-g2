@@ -5,9 +5,7 @@ import {
   AutomatedGalleryFactoryProps
 } from './AutomatedGalleryFactory'
 import { Story } from '@storybook/react/types-6-0'
-import { useGetGallery, useDeleteFiles, useUploadFiles } from '../../Gallery'
 import { QueryClient, QueryClientProvider } from 'react-query'
-import { Box } from '@mui/material'
 
 export default {
   title: 'Fs/AutomatedGalleryFactory',
@@ -16,14 +14,15 @@ export default {
 
 const queryClient = new QueryClient()
 
-export const AutomatedGalleryFactoryStory: Story<AutomatedGalleryFactoryProps> =
-  (args: AutomatedGalleryFactoryProps) => {
-    return (
-      <QueryClientProvider client={queryClient}>
-        <SubComponent {...args} />
-      </QueryClientProvider>
-    )
-  }
+export const AutomatedGalleryFactoryStory: Story<
+  AutomatedGalleryFactoryProps
+> = (args: AutomatedGalleryFactoryProps) => {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <SubComponent {...args} />
+    </QueryClientProvider>
+  )
+}
 
 const SubComponent = (args: AutomatedGalleryFactoryProps) => {
   return (
