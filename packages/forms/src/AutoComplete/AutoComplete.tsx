@@ -96,6 +96,12 @@ export interface AutoCompleteBasicProps<T> extends BasicProps {
    */
   withCheckbox?: boolean
   /**
+   * Disable the default behavior of returning only the key of the object like a Select
+   *
+   * @default false
+   */
+  returnFullObject?: boolean
+  /**
    * Define if the value of the input is valid or not
    *
    * @default false
@@ -148,6 +154,7 @@ const AutoCompleteBase = function <T>(
     error = false,
     errorMessage = '',
     withCheckbox = true,
+    returnFullObject = false,
     ...other
   } = props
 
@@ -167,7 +174,7 @@ const AutoCompleteBase = function <T>(
     (_: React.SyntheticEvent<Element, Event>, value: T | T[] | null) => {
       if (Array.isArray(value) && onChangeValues) {
         //@ts-ignore
-        if (!!value[0]?.key && !getOptionLabel) {
+        if (!!value[0]?.key && !getOptionLabel && !returnFullObject) {
           //@ts-ignore
           onChangeValues(value.map((value) => value.key))
         } else {
@@ -175,7 +182,7 @@ const AutoCompleteBase = function <T>(
         }
       } else if (onChangeValue && !Array.isArray(value)) {
         //@ts-ignore
-        if (!!value?.key && !getOptionLabel) {
+        if (!!value?.key && !getOptionLabel && !returnFullObject) {
           //@ts-ignore
           onChangeValue(value.key)
         } else {
@@ -183,7 +190,7 @@ const AutoCompleteBase = function <T>(
         }
       }
     },
-    [onChangeValue, onChangeValues, getOptionLabel]
+    [onChangeValue, onChangeValues, getOptionLabel, returnFullObject]
   )
 
   const renderTags = useCallback(
