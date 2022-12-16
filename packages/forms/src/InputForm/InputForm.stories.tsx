@@ -13,8 +13,6 @@ import {
 import LinkTo from '@storybook/addon-links/react'
 import { Box, Typography } from '@mui/material'
 import { InputFormClasses, InputFormStyles } from './docs'
-import { legalCategoryObject } from './legalCategoryObject'
-import { legalCategoryArray } from './legalCategoryArray'
 
 export default {
   title: 'Forms/InputForm',

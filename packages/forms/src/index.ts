@@ -42,3 +42,12 @@ export {
 } from './EnhancedFilters'
 export { RadioChoices, Choice, RadioChoicesProps } from './RadioChoices'
 export { FilterButton, FilterButtonProps } from './FilterButton'
+export {
+  Map,
+  MapProps,
+  MapClasses,
+  MapStyles,
+  DraggableMarkerNeeds,
+  MapPluginProps,
+  MapPlugin
+} from './Map'

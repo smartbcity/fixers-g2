@@ -1,4 +1,4 @@
-import React, { ReactNode, useMemo } from 'react'
+import React, { ReactNode } from 'react'
 import { Meta } from '@storybook/react'
 import { Story } from '@storybook/react/types-6-0'
 import {
@@ -19,6 +19,7 @@ import {
 } from '../ComposableRender'
 import { Typography } from '@mui/material'
 import { requiredField, requiredTrue } from './validator'
+import { BrowserRouter } from 'react-router-dom'
 
 export default {
   title: 'Composable/FormComposable',
@@ -105,14 +106,18 @@ const FormComposableStory: Story<FormComposableProps> = (
     }
   ]
 
+  console.log(formState.values)
+
   return (
-    <FormComposable<typeof CustomRenderer>
-      {...args}
-      customFactories={CustomRenderer}
-      actions={actions}
-      formState={formState}
-      style={{ width: '600px' }}
-    />
+    <BrowserRouter>
+      <FormComposable<typeof CustomRenderer>
+        {...args}
+        customFactories={CustomRenderer}
+        actions={actions}
+        formState={formState}
+        style={{ width: '600px' }}
+      />
+    </BrowserRouter>
   )
 }
 
@@ -271,6 +276,16 @@ RadioSelectForm.args = {
 }
 
 const fullFields: AllFormComposableField[] = [
+  {
+    name: 'map',
+    type: 'map',
+    params: {
+      draggableMarkerPlugin: {
+        enable: true
+      }
+    },
+    fullRow: true
+  },
   {
     name: 'picture',
     type: 'dropPicture',

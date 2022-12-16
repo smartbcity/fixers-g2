@@ -7,6 +7,7 @@ import { RadioChoicesRender } from '../elements/RadioChoicesRender'
 import { ComposableElementRendererProps } from '../../ComposableRender'
 import { DropPictureRender } from '../elements/DropPictureRender'
 import { DocumentHandlerRender } from '../elements/DocumentHandlerRender'
+import { MapComposableRenderer } from '../elements/MapComposableRenderer'
 
 export const DefaultRenderer = {
   textField: TextFieldRender,
@@ -16,7 +17,8 @@ export const DefaultRenderer = {
   datePicker: DatePickerRender,
   radioChoices: RadioChoicesRender,
   dropPicture: DropPictureRender,
-  documentHandler: DocumentHandlerRender
+  documentHandler: DocumentHandlerRender,
+  map: MapComposableRenderer
 } as const
 
 export type FieldRenderType = ComposableElementRendererProps<

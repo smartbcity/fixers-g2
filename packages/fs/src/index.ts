@@ -24,5 +24,8 @@ export {
   GalleryFactoryProps,
   GetGalleryOptions,
   DeleteFilesOptions,
-  UploadFilesOptions
+  UploadFilesOptions,
+  useLocalGalleryState,
+  TrackedFsFile,
+  useLocalGalleryStateParams
 } from './Gallery'
