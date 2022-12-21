@@ -19,7 +19,7 @@ import {
 } from '@smartb/g2-themes'
 import { TextField, TextFieldProps } from '../TextField'
 import { CheckBox } from '../CheckBox'
-import { Chip } from '@smartb/g2-components'
+import { Chip, ChipProps } from '@smartb/g2-components'
 
 const useStyles = makeG2STyles()({
   list: {
@@ -102,6 +102,10 @@ export interface AutoCompleteBasicProps<T> extends BasicProps {
    */
   returnFullObject?: boolean
   /**
+   * The props of the chip component used to display the selection if multiple
+   */
+  chipProps?: ChipProps
+  /**
    * Define if the value of the input is valid or not
    *
    * @default false
@@ -155,6 +159,7 @@ const AutoCompleteBase = function <T>(
     errorMessage = '',
     withCheckbox = true,
     returnFullObject = false,
+    chipProps,
     ...other
   } = props
 
@@ -202,11 +207,12 @@ const AutoCompleteBase = function <T>(
             //@ts-ignore
             key={option.key ?? key}
             label={getOptionLabelMemo(option)}
+            {...chipProps}
             {...other}
           />
         )
       }),
-    [getOptionLabelMemo]
+    [getOptionLabelMemo, chipProps]
   )
 
   const renderInput = useCallback(

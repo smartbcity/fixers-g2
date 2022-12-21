@@ -108,7 +108,7 @@ export const DraggableMarkerControl = (
               position,
               GeoJSON.parse(position, { Point: ['lat', 'lng'] })
             )
-            map.flyTo(position, undefined, {
+            map.flyTo(position, 17, {
               duration: 3
             })
           }
@@ -127,13 +127,17 @@ export const DraggableMarkerControl = (
     <>
       {(!isSm || isFullScreen) && !position && (
         <Button
-          sx={{ position: 'absolute', bottom: '20px', right: '5px' }}
+          sx={{
+            position: 'absolute',
+            bottom: isFullScreen && isSm ? '80px' : '20px',
+            right: '5px'
+          }}
           onClick={onAddMarker}
         >
           {addMarkerString ?? 'Ajouter un marker'}
         </Button>
       )}
-      {isSm && !isFullScreen && (
+      {isSm && (
         <Button sx={{ marginTop: '24px' }} onClick={onUseMyLocation}>
           {useMyPositionString ?? 'Utiliser ma position'}
         </Button>

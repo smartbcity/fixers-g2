@@ -5,12 +5,10 @@ import {
   IconButton,
   Stack,
   StackProps,
-  SxProps,
-  Theme,
   useMediaQuery,
   useTheme
 } from '@mui/material'
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import {
   DraggableMarker,
   DraggableMarkerControl,
@@ -18,7 +16,6 @@ import {
 } from './DraggableMarker'
 import 'leaflet/dist/leaflet.css'
 import { Button } from '@smartb/g2-components'
-import { useSearchParams } from 'react-router-dom'
 import { CloseRounded } from '@mui/icons-material'
 import L from 'leaflet'
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
@@ -46,15 +43,6 @@ export interface MapPluginProps extends MapPlugin {
   readonly: boolean
   isMobile: boolean
   isFullScreen: boolean
-}
-
-const fullScreenSx: SxProps<Theme> = {
-  position: 'fixed',
-  width: 'calc(100vw - 20px)',
-  height: 'calc(100vh - 20px)',
-  top: '10px',
-  left: '10px',
-  zIndex: 2000
 }
 
 export interface MapClasses {
@@ -137,31 +125,42 @@ export const Map = (props: MapProps) => {
 
   const theme = useTheme()
   const isSm = useMediaQuery(theme.breakpoints.down('md'))
-  const [searchParams, setSearchParams] = useSearchParams()
-
-  const isFullScreen = useMemo(
-    () => searchParams.get('fullScreenMap') === 'true',
-    [searchParams]
-  )
+  const [isFullScreen, setIsFullScreen] = useState(false)
+  const containerRef = useRef<HTMLDivElement | null>(null)
 
   const toggleFullScreen = useCallback(() => {
-    setSearchParams(
-      { fullScreenMap: !isFullScreen ? 'true' : 'false' },
-      { replace: false }
-    )
-  }, [setSearchParams, isFullScreen])
+    if (isFullScreen) {
+      document.exitFullscreen()
+    } else {
+      containerRef.current?.requestFullscreen()
+    }
+  }, [isFullScreen])
+
+  const onFullScreenChange = useCallback(() => {
+    if (document.fullscreenElement === containerRef.current)
+      setIsFullScreen(true)
+    else setIsFullScreen(false)
+  }, [])
+
+  useEffect(() => {
+    document.addEventListener('fullscreenchange', onFullScreenChange)
+
+    return () => {
+      document.removeEventListener('fullscreenchange', onFullScreenChange)
+    }
+  }, [onFullScreenChange])
 
   const [map, setMap] = useState<LeafletMap | undefined>()
 
   useEffect(() => {
     if (map) {
       if (isSm && !isFullScreen) {
-        map.scrollWheelZoom.disable()
+        map.dragging.disable()
       } else {
-        map.scrollWheelZoom.enable()
+        map.dragging.enable()
       }
     }
-  }, [isSm, isFullScreen])
+  }, [isSm, isFullScreen, map])
 
   const plugins = useMemo(
     () =>
@@ -183,11 +182,11 @@ export const Map = (props: MapProps) => {
 
   return (
     <Stack
+      ref={containerRef}
       sx={{
         position: 'relative',
         zIndex: 0,
         transition: '0.6s',
-        ...(isFullScreen ? fullScreenSx : undefined),
         ...sx
       }}
       className={cx('AruiMap-root', className)}
@@ -198,7 +197,7 @@ export const Map = (props: MapProps) => {
         ref={setMap}
         center={center ?? defaultPosition.center}
         zoom={zoom}
-        scrollWheelZoom={isSm && !isFullScreen ? false : true}
+        scrollWheelZoom
         className={cx('AruiMap-map', classes?.map)}
         style={{
           height: '100%',

@@ -23,6 +23,5 @@ module.exports = ({ config }) => {
     },
     include: [/node_modules\\react-leaflet/, /node_modules\\@react-leaflet/],
   });
-  console.log(config.module.rules);
   return config;
 };
