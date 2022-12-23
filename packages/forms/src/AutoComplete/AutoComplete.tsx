@@ -104,7 +104,7 @@ export interface AutoCompleteBasicProps<T> extends BasicProps {
   /**
    * The props of the chip component used to display the selection if multiple
    */
-  chipProps?: ChipProps
+  chipProps?: Partial<ChipProps>
   /**
    * Define if the value of the input is valid or not
    *

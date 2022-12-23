@@ -246,7 +246,9 @@ export const InputForm: InputFormComponent = React.forwardRef(
       [createInputContainer, inputUi]
     )
 
-    const valuesIsEmpty = props.value == undefined || props.value === ''
+    const valuesIsEmpty =
+      (props.value == undefined || props.value === '') &&
+      (props.values == undefined || props.values.length === 0)
     if (readonly && valuesIsEmpty && !isLoading) return <></>
     return (
       <Box
