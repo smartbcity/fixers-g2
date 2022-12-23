@@ -23,7 +23,7 @@ export const ReadonlyRenderer = (props: Partial<InputFormProps>) => {
     value,
     values,
     choices,
-    options,
+    options = [],
     multiple,
     getReadonlyChipColor,
     getReadonlyTextUrl,
