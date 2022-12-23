@@ -181,7 +181,7 @@ const AutoCompleteBase = function <T>(
         //@ts-ignore
         if (hasKey && !getOptionLabel && !returnFullObject) {
           //@ts-ignore
-          onChangeValues(value.map((value) => value.key))
+          onChangeValues(value.map((value) => value.key ?? value))
         } else {
           onChangeValues(value)
         }
