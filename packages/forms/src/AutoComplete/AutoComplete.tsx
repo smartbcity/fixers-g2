@@ -123,7 +123,7 @@ export type AutoCompleteProps<T = any> = MergeMuiElementProps<
 >
 
 const defaultFilterOptions = createFilterOptions()
-const defaultGetOptionLabel =
+export const defaultGetOptionLabel =
   (options: any[], hasKey: boolean) => (option: any) => {
     if (typeof option === 'string' && hasKey) {
       const founded = options.find((el) => el.key === option)?.label

@@ -1,8 +1,9 @@
 import { Stack, Typography } from '@mui/material'
 import { Link as G2Link, Chip } from '@smartb/g2-components'
-import React, { useMemo } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import { InputFormProps } from './InputForm'
 import { Link, LinkProps } from 'react-router-dom'
+import { defaultGetOptionLabel } from '../AutoComplete'
 
 const getLabelOfOption = (
   option: any,
@@ -30,6 +31,17 @@ export const ReadonlyRenderer = (props: Partial<InputFormProps>) => {
     size
   } = props
 
+  //@ts-ignore
+  const hasKey = !!options[0]?.key
+
+  const defaultOptionLabelMemo = useCallback(
+    //@ts-ignore
+    (option) => defaultGetOptionLabel(options, hasKey)(option),
+    [options, hasKey]
+  )
+
+  const getOptionLabelMemo = getOptionLabel ?? defaultOptionLabelMemo
+
   const textToDisplay = useMemo(() => {
     if (inputType === 'datePicker') return new Date(value).toLocaleDateString()
     if (inputType === 'radioChoices' && choices && value)
@@ -40,7 +52,7 @@ export const ReadonlyRenderer = (props: Partial<InputFormProps>) => {
           .map((v: any) =>
             getLabelOfOption(
               options.find((o) => o.key === v || o.key === v.key),
-              getOptionLabel
+              getOptionLabelMemo
             )
           )
           .join(', ')
@@ -49,10 +61,10 @@ export const ReadonlyRenderer = (props: Partial<InputFormProps>) => {
       const option = options.find(
         (c) => c.key === value || c.key === value?.key
       )
-      return getLabelOfOption(option, getOptionLabel)
+      return getLabelOfOption(option, getOptionLabelMemo)
     }
     return typeof value === 'string' || typeof value === 'number' ? value : ''
-  }, [inputType, value, values, choices, multiple, options, getOptionLabel])
+  }, [inputType, value, values, choices, multiple, options, getOptionLabelMemo])
 
   const renderTag = useMemo(() => {
     if (readonlyType === 'text') return undefined
