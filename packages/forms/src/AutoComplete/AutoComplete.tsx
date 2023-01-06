@@ -241,7 +241,7 @@ const AutoCompleteBase = function <T>(
       return (
         <ListItem
           //@ts-ignore
-          key={option.key ?? key}
+          key={option.key?.toString() ?? key}
           className={defaultStyles.cx('AruiAutoComplete-option')}
           {...other}
         >

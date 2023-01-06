@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import {
   FormHelperText,
   RadioGroup,
@@ -9,10 +9,10 @@ import {
 } from '@mui/material'
 import { useInputStyles } from '../style'
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
+import { Option, SmartKey } from '../Select'
+import { extractNumberOrBooleanFromString } from '@smartb/g2-utils'
 
-export type Choice = {
-  key: string | number
-  label: string | number
+export type Choice = Option & {
   props?: FormControlLabelProps
 }
 
@@ -37,14 +37,25 @@ export interface RadioChoicesBasicProps extends BasicProps {
   /**
    * The event called when the value of the input change
    */
-  onChange?: (event: React.ChangeEvent<HTMLInputElement>, value: string) => void
+  onChange?: (
+    event: React.ChangeEvent<HTMLInputElement>,
+    value: SmartKey
+  ) => void
+
+  /**
+   * @deprecated use `options` instead
+   * List of options available in the option
+   *
+   * @default []
+   */
+  choices?: Choice[]
 
   /**
    * List of options available in the option
    *
    * @default []
    */
-  choices?: Choice[]
+  options?: Choice[]
 
   /**
    * Define if the value of the input is valid or not
@@ -77,7 +88,8 @@ export const RadioChoices = React.forwardRef(
     const {
       value = '',
       name,
-      choices = [],
+      choices,
+      options = [],
       className,
       placeholder = '',
       onChange,
@@ -90,12 +102,19 @@ export const RadioChoices = React.forwardRef(
       ...other
     } = props
 
+    const onChangeMemoized = useCallback(
+      (event: React.ChangeEvent<HTMLInputElement>, value: string) => {
+        onChange && onChange(event, extractNumberOrBooleanFromString(value))
+      },
+      [onChange]
+    )
+
     const defaultStyles = useInputStyles()
 
     const choicesMemoized = useMemo(() => {
-      return choices.map((choice) => (
+      return (choices ?? options).map((choice) => (
         <FormControlLabel
-          key={choice.key}
+          key={choice.key.toString()}
           value={choice.key}
           label={choice.label}
           {...choice.props}
@@ -108,7 +127,8 @@ export const RadioChoices = React.forwardRef(
           style={styles?.choice}
         />
       ))
-    }, [choices, classes?.choice, styles?.choice])
+    }, [choices, options, classes?.choice, styles?.choice])
+
     const errorText = useMemo(
       () =>
         errorMessage !== '' && error ? (
@@ -140,7 +160,7 @@ export const RadioChoices = React.forwardRef(
           id={id}
           ref={ref}
           value={value}
-          onChange={onChange}
+          onChange={onChangeMemoized}
           name={name}
           className={defaultStyles.cx('AruiRadioChoices-root', className)}
           style={style}

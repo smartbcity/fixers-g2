@@ -7,7 +7,7 @@ export {
   InputForm,
   InputFormTypes
 } from './InputForm'
-export { Option, Select, SelectProps } from './Select'
+export { Option, SmartKey, Select, SelectProps } from './Select'
 export { TextFieldProps, TextField } from './TextField'
 export {
   Form,
