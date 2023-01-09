@@ -41,7 +41,7 @@ export const UserSummary = (props: UserSummaryProps) => {
         if (!option?.label) return undefined
         return (
           <Chip
-            key={option.key}
+            key={option.key.toString()}
             label={`${option?.label}`}
             color={option?.color}
           />
@@ -51,7 +51,11 @@ export const UserSummary = (props: UserSummaryProps) => {
     const option = rolesOptions.find((o) => o.key === roles)
     if (!option?.label) return undefined
     return (
-      <Chip key={option.key} label={`${option?.label}`} color={option?.color} />
+      <Chip
+        key={option.key.toString()}
+        label={`${option?.label}`}
+        color={option?.color}
+      />
     )
   }, [roles, rolesOptions])
 
