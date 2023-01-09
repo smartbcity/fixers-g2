@@ -8,6 +8,7 @@ import { ComposableElementRendererProps } from '../../ComposableRender'
 import { DropPictureRender } from '../elements/DropPictureRender'
 import { DocumentHandlerRender } from '../elements/DocumentHandlerRender'
 import { MapComposableRenderer } from '../elements/MapComposableRenderer'
+import { MultiChoicesRender } from '../elements/MultiChoicesRender'
 
 export const DefaultRenderer = {
   textField: TextFieldRender,
@@ -16,6 +17,7 @@ export const DefaultRenderer = {
   checkBox: CheckBoxRender,
   datePicker: DatePickerRender,
   radioChoices: RadioChoicesRender,
+  multiChoices: MultiChoicesRender,
   dropPicture: DropPictureRender,
   documentHandler: DocumentHandlerRender,
   map: MapComposableRenderer

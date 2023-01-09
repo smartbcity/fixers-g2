@@ -278,11 +278,11 @@ export const Select = React.forwardRef(
           value={option.key.toString()}
         >
           <CheckBox
-            data-value={option.key}
+            data-value={option.key.toString()}
             checked={values.indexOf(option.key) > -1 || value === option.key}
           />
           <ListItemText
-            data-value={option.key}
+            data-value={option.key.toString()}
             primary={option.label as string}
           />
         </MenuItem>

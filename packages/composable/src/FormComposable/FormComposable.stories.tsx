@@ -331,8 +331,27 @@ const fullFields: AllFormComposableField[] = [
     validator: requiredField('Answer the question'),
     params: {
       choices: [
-        { key: 'yes', label: 'Yes' },
-        { key: 'no', label: 'No' }
+        { key: true, label: 'Yes' },
+        { key: false, label: 'No' }
+      ],
+      row: true
+    }
+  },
+  {
+    key: 'storybook-form-field-termsOfUse',
+    name: 'termsOfUse',
+    label: 'do you accept the terms of use?',
+    type: 'multiChoices',
+    defaultValue: '',
+    validator: requiredField('Answer the question'),
+    params: {
+      options: [
+        { key: 'yes', label: 'Yes take my data' },
+        {
+          key: 'maybe',
+          label: "I don't know cause i haven't the time to read it"
+        },
+        { key: 'no', label: 'no' }
       ],
       row: true
     }

@@ -153,7 +153,8 @@ export const FormExample: Story<InputFormBasicProps> = () => {
     password: '',
     gender: '',
     birthday: undefined,
-    nationality: 'fr'
+    nationality: 'fr',
+    cookies: []
   })
   return (
     <Box display='flex' flexDirection='column' alignItems='center'>
@@ -166,14 +167,12 @@ export const FormExample: Story<InputFormBasicProps> = () => {
         inputType='textField'
         textFieldType='email'
         placeholder='example@gmail.com'
+        orientation='horizontal'
         style={{
           width: '400px',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
           margin: '20px'
         }}
-        styles={{ label: { marginBottom: '0px' }, input: { width: '60%' } }}
+        styles={{ input: { width: '60%', flexGrow: 0 } }}
       />
       <InputForm
         value={form.password}
@@ -183,14 +182,12 @@ export const FormExample: Story<InputFormBasicProps> = () => {
         id='FormExamplePassword'
         inputType='textField'
         textFieldType='password'
+        orientation='horizontal'
         style={{
           width: '400px',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
           margin: '20px'
         }}
-        styles={{ label: { marginBottom: '0px' }, input: { width: '60%' } }}
+        styles={{ input: { width: '60%', flexGrow: 0 } }}
       />
       <InputForm
         value={form.gender}
@@ -202,14 +199,12 @@ export const FormExample: Story<InputFormBasicProps> = () => {
           { key: 'female', label: 'Female' }
         ]}
         placeholder='chosse your gender'
+        orientation='horizontal'
         style={{
           width: '400px',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
           margin: '20px'
         }}
-        styles={{ label: { marginBottom: '0px' }, input: { width: '60%' } }}
+        styles={{ input: { width: '60%', flexGrow: 0 } }}
       />
       <InputForm
         value={form.birthday}
@@ -217,14 +212,12 @@ export const FormExample: Story<InputFormBasicProps> = () => {
         inputType='datePicker'
         onChangeDate={(date) => setform({ ...form, birthday: date })}
         placeholder='Choose your birthday'
+        orientation='horizontal'
         style={{
           width: '400px',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
           margin: '20px'
         }}
-        styles={{ label: { marginBottom: '0px' }, input: { width: '60%' } }}
+        styles={{ input: { width: '60%', flexGrow: 0 } }}
       />
       <InputForm
         value={form.nationality}
@@ -239,12 +232,32 @@ export const FormExample: Story<InputFormBasicProps> = () => {
         ]}
         style={{
           width: '400px',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
           margin: '20px'
         }}
-        styles={{ label: { marginBottom: '0px' }, input: { width: '60%' } }}
+      />
+      <InputForm
+        values={form.cookies}
+        label='which cookie do you accept:'
+        inputType='multiChoices'
+        onChange={(values) => setform({ ...form, cookies: values })}
+        options={[
+          {
+            key: 'statistics',
+            label: 'I accept all the cookies for the statistics'
+          },
+          {
+            key: 'analitics',
+            label: 'I accept all the cookies for the analitics'
+          },
+          {
+            key: 'essential',
+            label: 'I accept the essential cookies for the platform'
+          }
+        ]}
+        style={{
+          width: '400px',
+          margin: '20px'
+        }}
       />
     </Box>
   )

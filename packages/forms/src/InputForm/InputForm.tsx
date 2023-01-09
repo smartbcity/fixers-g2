@@ -25,6 +25,12 @@ import { AutoComplete, AutoCompleteProps } from '../AutoComplete'
 import { LoadingRenderer } from './LoadingRenderer'
 import { ReadonlyRenderer } from './ReadonlyRenderer'
 import { cx } from '@emotion/css'
+import {
+  MultiChoices,
+  MultiChoicesClasses,
+  MultiChoicesProps,
+  MultiChoicesStyles
+} from '../MultiChoices'
 
 interface InputFormClasses {
   label?: string
@@ -41,6 +47,7 @@ export type InputFormTypes =
   | 'textField'
   | 'datePicker'
   | 'radioChoices'
+  | 'multiChoices'
   | 'autoComplete'
 
 export interface InputFormBasicProps<T extends InputFormTypes = 'textField'>
@@ -105,6 +112,8 @@ export interface InputFormBasicProps<T extends InputFormTypes = 'textField'>
     ? SelectClasses
     : [T] extends ['datePicker']
     ? DatePickerClasses
+    : [T] extends ['multiChoices']
+    ? MultiChoicesClasses
     : RadioChoicesClasses
   /**
    * The styles applied to the different part of the input
@@ -118,6 +127,8 @@ export interface InputFormBasicProps<T extends InputFormTypes = 'textField'>
     ? SelectStyles
     : [T] extends ['datePicker']
     ? DatePickerStyles
+    : [T] extends ['multiChoices']
+    ? MultiChoicesStyles
     : RadioChoicesStyles
 }
 
@@ -137,6 +148,8 @@ type InputFormComponentProps<
     ? RemoveMainProps<RadioChoicesProps>
     : [T] extends ['autoComplete']
     ? RemoveMainProps<AutoCompleteProps>
+    : [T] extends ['multiChoices']
+    ? RemoveMainProps<MultiChoicesProps>
     : RemoveMainProps<TextFieldProps>)
 
 interface InputFormComponent {
@@ -154,6 +167,7 @@ export type InputFormProps = InputFormBasicProps &
   Omit<SelectProps, keyof InputFormBasicProps> &
   Omit<DatePickerProps, keyof InputFormBasicProps> &
   Omit<AutoCompleteProps, keyof InputFormBasicProps> &
+  Omit<MultiChoicesProps, keyof InputFormBasicProps> &
   Omit<RadioChoicesProps, keyof InputFormBasicProps> & {
     inputClasses?: SelectClasses | TextFieldClasses | DatePickerClasses
     inputStyles?: SelectStyles | TextFieldStyles | DatePickerStyles
@@ -224,6 +238,8 @@ export const InputForm: InputFormComponent = React.forwardRef(
         <Select {...other} {...commonProps} />
       ) : inputType === 'radioChoices' ? (
         <RadioChoices {...other} {...commonProps} />
+      ) : inputType === 'multiChoices' ? (
+        <MultiChoices {...other} {...commonProps} />
       ) : inputType === 'autoComplete' ? (
         //@ts-ignore
         <AutoComplete {...other} {...commonProps} />

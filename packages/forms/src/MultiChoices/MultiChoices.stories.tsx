@@ -1,14 +1,14 @@
 import React, { useState } from 'react'
-import { RadioChoices, Choice, RadioChoicesBasicProps } from './RadioChoices'
+import { MultiChoices, MultiChoicesBasicProps } from './MultiChoices'
 import { Meta } from '@storybook/react'
 import { Story } from '@storybook/react/types-6-0'
-import { Box } from '@mui/material'
-import { RadioChoicesClasses, RadioChoicesStyles } from './docs'
+import { MultiChoicesClasses, MultiChoicesStyles } from './docs'
 import { withDesign } from 'storybook-addon-designs'
+import { Option } from '../Select'
 
 export default {
-  title: 'Forms/RadioChoices',
-  component: RadioChoices,
+  title: 'Forms/MultiChoices',
+  component: MultiChoices,
   decorators: [withDesign],
   parameters: {
     design: {
@@ -20,37 +20,37 @@ export default {
     classes: {
       table: {
         type: {
-          summary: 'RadioChoicesClasses',
-          detail: RadioChoicesClasses
+          summary: 'MultiChoicesClasses',
+          detail: MultiChoicesClasses
         }
       }
     },
     styles: {
       table: {
         type: {
-          summary: 'RadioChoicesStyles',
-          detail: RadioChoicesStyles
+          summary: 'MultiChoicesStyles',
+          detail: MultiChoicesStyles
         }
       }
     }
   }
 } as Meta
 
-export const RadioChoicesStory: Story<RadioChoicesBasicProps> = (
-  args: RadioChoicesBasicProps
+export const MultiChoicesStory: Story<MultiChoicesBasicProps> = (
+  args: MultiChoicesBasicProps
 ) => {
-  const [value, setvalue] = useState('')
+  const [values, setvalues] = useState<any[]>([])
   return (
-    <RadioChoices
+    <MultiChoices
       {...args}
-      value={value}
-      onChange={(event, value) => setvalue(value)}
+      values={values}
+      onChange={(values) => setvalues(values)}
       style={{ width: 350 }}
     />
   )
 }
 
-const options: Choice[] = [
+const options: Option[] = [
   {
     key: 1,
     label: 'test1'
@@ -81,8 +81,8 @@ const options: Choice[] = [
   }
 ]
 
-RadioChoicesStory.args = {
+MultiChoicesStory.args = {
   options: options
 }
 
-RadioChoicesStory.storyName = 'RadioChoices'
+MultiChoicesStory.storyName = 'MultiChoices'

@@ -51,3 +51,9 @@ export {
   MapPluginProps,
   MapPlugin
 } from './Map'
+export {
+  MultiChoices,
+  MultiChoicesClasses,
+  MultiChoicesStyles,
+  MultiChoicesProps
+} from './MultiChoices'

@@ -91,7 +91,6 @@ export const RadioChoices = React.forwardRef(
       choices,
       options = [],
       className,
-      placeholder = '',
       onChange,
       style,
       id,
@@ -138,7 +137,7 @@ export const RadioChoices = React.forwardRef(
               classes?.helperText,
               'AruiRadioChoices-helperText'
             )}
-            style={{ ...styles?.helperText, marginTop: -9 }}
+            style={{ ...styles?.helperText, marginTop: -3 }}
           >
             {errorMessage}
           </FormHelperText>
