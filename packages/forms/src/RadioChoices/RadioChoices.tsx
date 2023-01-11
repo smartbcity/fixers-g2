@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import {
   FormHelperText,
   RadioGroup,
@@ -11,9 +11,15 @@ import { useInputStyles } from '../style'
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 import { Option, SmartKey } from '../Select'
 import { extractNumberOrBooleanFromString } from '@smartb/g2-utils'
+import { TextField, TextFieldProps } from '../TextField'
 
 export type Choice = Option & {
   props?: FormControlLabelProps
+  /**
+   * set this to `true` if you want the label to appear as an editable textfield. The value returned when selected will be the value entered by the user
+   */
+  editableLabel?: boolean
+  editableLabelProps?: Omit<TextFieldProps, 'value' | 'onChange'>
 }
 
 export interface RadioChoicesClasses {
@@ -101,11 +107,35 @@ export const RadioChoices = React.forwardRef(
       ...other
     } = props
 
+    const [editableLabels, setEditableLabels] = useState({})
+
+    useEffect(() => {
+      options.forEach((choice) => {
+        if (choice.editableLabel && !editableLabels[choice.key.toString()]) {
+          setEditableLabels((old) => ({
+            ...old,
+            [choice.key.toString()]: choice.label
+          }))
+        }
+      })
+    }, [options])
+
+    const editedLabelKey = useMemo(() => {
+      for (let key in editableLabels) {
+        if (editableLabels[key] === value) {
+          return key
+        }
+      }
+      return undefined
+    }, [value])
+
     const onChangeMemoized = useCallback(
       (event: React.ChangeEvent<HTMLInputElement>, value: string) => {
-        onChange && onChange(event, extractNumberOrBooleanFromString(value))
+        const edited = editableLabels[value]
+        onChange &&
+          onChange(event, edited ?? extractNumberOrBooleanFromString(value))
       },
-      [onChange]
+      [onChange, editableLabels]
     )
 
     const defaultStyles = useInputStyles()
@@ -115,7 +145,22 @@ export const RadioChoices = React.forwardRef(
         <FormControlLabel
           key={choice.key.toString()}
           value={choice.key}
-          label={choice.label}
+          label={
+            choice.editableLabel ? (
+              <TextField
+                {...choice.editableLabelProps}
+                value={editableLabels[choice.key.toString()]}
+                onChange={(value) =>
+                  setEditableLabels((old) => ({
+                    ...old,
+                    [choice.key.toString()]: value
+                  }))
+                }
+              />
+            ) : (
+              choice.label
+            )
+          }
           {...choice.props}
           control={<Radio />}
           color='primary'
@@ -126,7 +171,7 @@ export const RadioChoices = React.forwardRef(
           style={styles?.choice}
         />
       ))
-    }, [choices, options, classes?.choice, styles?.choice])
+    }, [choices, options, classes?.choice, styles?.choice, editableLabels])
 
     const errorText = useMemo(
       () =>
@@ -158,7 +203,7 @@ export const RadioChoices = React.forwardRef(
         <RadioGroup
           id={id}
           ref={ref}
-          value={value}
+          value={editedLabelKey ?? value}
           onChange={onChangeMemoized}
           name={name}
           className={defaultStyles.cx('AruiRadioChoices-root', className)}

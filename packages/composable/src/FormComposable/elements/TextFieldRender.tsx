@@ -3,10 +3,10 @@ import {
   TextFieldProps,
   InputForm
 } from '@smartb/g2-forms'
-import React from 'react'
+import React, { useMemo } from 'react'
 import { FieldRenderProps } from '../type'
 import { ElementRendererFunction } from '../../ComposableRender'
-import { getIn } from 'formik'
+import { getValueSetup } from '../type/getValueSetup'
 
 export type TextFieldExtendProps = Partial<
   Omit<
@@ -27,13 +27,16 @@ export const TextFieldRender: ElementRendererFunction<TextFieldRenderProps> = (
   const { params } = element
   const onChange = basicProps.onChange
   delete basicProps.onChange
-  const value = getIn(formState.values, basicProps.name) ?? ''
+  const { value, setFieldValue } = useMemo(
+    () => getValueSetup(basicProps.name, formState, basicProps.sharedNameIndex),
+    [basicProps.name, formState, basicProps.sharedNameIndex]
+  )
   return (
     <InputForm
       inputType='textField'
-      value={value}
+      value={value ?? ''}
       onChange={(value: string) => {
-        formState.setFieldValue(basicProps.name, value, false)
+        setFieldValue(value)
         !!onChange && onChange(value)
       }}
       {...params}

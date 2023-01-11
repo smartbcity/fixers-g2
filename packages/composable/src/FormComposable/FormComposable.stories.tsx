@@ -352,8 +352,35 @@ const fullFields: AllFormComposableField[] = [
           label: "I don't know cause i haven't the time to read it"
         },
         { key: 'no', label: 'no' }
-      ],
-      row: true
+      ]
+    }
+  },
+  {
+    key: 'storybook-form-field-reasons',
+    name: 'reasons',
+    label: 'what are you reason to sign in the website',
+    type: 'radioChoices',
+    sharedNameIndex: 0,
+    params: {
+      options: [
+        { key: 'a', label: 'I love to have data stolen' },
+        {
+          key: 'b',
+          label: "I don't really know to be honest"
+        },
+        { key: 'c', label: 'other (explain)' }
+      ]
+    }
+  },
+  {
+    key: 'storybook-form-field-otherReason',
+    name: 'reasons',
+    type: 'textField',
+    sharedNameIndex: 1,
+    params: {
+      rows: '4',
+      multiline: true,
+      placeholder: 'Explain here if it is an other reason'
     }
   },
   {

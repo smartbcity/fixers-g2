@@ -86,3 +86,51 @@ RadioChoicesStory.args = {
 }
 
 RadioChoicesStory.storyName = 'RadioChoices'
+
+export const withEditableLabel: Story = () => {
+  const [value, setvalue] = useState('')
+  console.log(value)
+  const options: Choice[] = [
+    {
+      key: 1,
+      label: 'test1'
+    },
+    {
+      key: 2,
+      label: 'test2'
+    },
+    {
+      key: 3,
+      label: 'test3'
+    },
+    {
+      key: 4,
+      label: 'test4',
+      editableLabel: true
+    },
+    {
+      key: 5,
+      label: 'test5'
+    },
+    {
+      key: 6,
+      label: '',
+      editableLabel: true,
+      editableLabelProps: {
+        textFieldType: 'number'
+      }
+    },
+    {
+      key: 7,
+      label: 'test7'
+    }
+  ]
+  return (
+    <RadioChoices
+      value={value}
+      onChange={(event, value) => setvalue(value)}
+      options={options}
+      style={{ width: 350 }}
+    />
+  )
+}

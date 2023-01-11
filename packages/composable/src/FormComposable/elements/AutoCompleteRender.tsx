@@ -3,10 +3,10 @@ import {
   AutoCompleteProps,
   InputForm
 } from '@smartb/g2-forms'
-import React from 'react'
+import React, { useMemo } from 'react'
 import { FieldRenderProps } from '../type'
 import { ElementRendererFunction } from '../../ComposableRender'
-import { getIn } from 'formik'
+import { getValueSetup } from '../type/getValueSetup'
 
 export type AutoCompleteExtendProps = Partial<
   Omit<
@@ -33,14 +33,17 @@ export const AutoCompleteRender: ElementRendererFunction<
   const { params } = element
   const onChange = basicProps.onChange
   delete basicProps.onChange
-  const value = getIn(formState.values, basicProps.name)
+  const { value, setFieldValue } = useMemo(
+    () => getValueSetup(basicProps.name, formState, basicProps.sharedNameIndex),
+    [basicProps.name, formState, basicProps.sharedNameIndex]
+  )
   return params?.multiple === true ? (
     // @ts-ignore
     <InputForm
       inputType='autoComplete'
       values={value ?? []}
       onChangeValues={(values: any) => {
-        formState.setFieldValue(basicProps.name, values, false)
+        setFieldValue(values)
         !!onChange && onChange(values)
       }}
       {...params}
@@ -52,7 +55,7 @@ export const AutoCompleteRender: ElementRendererFunction<
       inputType='autoComplete'
       value={value ?? null}
       onChangeValue={(value: any) => {
-        formState.setFieldValue(basicProps.name, value, false)
+        setFieldValue(value)
         !!onChange && onChange(value)
       }}
       {...params}
