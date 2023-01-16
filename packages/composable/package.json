@@ -1,6 +1,6 @@
 {
   "name": "@smartb/g2-composable",
-  "version": "1.0.0-alpha.117",
+  "version": "1.0.0-alpha.118",
   "description": "Composable components",
   "author": "SmartB",
   "license": "Apache-2.0",
@@ -33,17 +33,17 @@
   },
   "dependencies": {
     "@mui/icons-material": "^5.8.4",
-    "@smartb/g2-components": "1.0.0-alpha.117",
-    "@smartb/g2-forms": "1.0.0-alpha.117",
-    "@smartb/g2-themes": "1.0.0-alpha.117",
-    "@smartb/g2-utils": "1.0.0-alpha.117",
+    "@smartb/g2-components": "1.0.0-alpha.118",
+    "@smartb/g2-forms": "1.0.0-alpha.118",
+    "@smartb/g2-themes": "1.0.0-alpha.118",
+    "@smartb/g2-utils": "1.0.0-alpha.118",
     "date-fns": "^2.28.0",
     "formik": "^2.2.9",
     "ramda": "^0.28.0",
     "react-router-dom": "^6.3.0"
   },
   "devDependencies": {
-    "@smartb/g2-providers": "1.0.0-alpha.117",
+    "@smartb/g2-providers": "1.0.0-alpha.118",
     "react-query": "^3.39.1"
   },
   "publishConfig": {
