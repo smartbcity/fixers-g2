@@ -37,7 +37,7 @@ export const RadioChoicesRender: ElementRendererFunction<
       value={value ?? ''}
       {...params}
       {...basicProps}
-      onChange={(_: React.ChangeEvent<HTMLInputElement>, value: string) => {
+      onChange={(value: string) => {
         setFieldValue(value)
         !!onChange && onChange(value)
       }}
