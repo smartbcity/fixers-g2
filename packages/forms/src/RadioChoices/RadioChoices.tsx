@@ -16,7 +16,8 @@ import { TextField, TextFieldProps } from '../TextField'
 export type Choice = Option & {
   props?: FormControlLabelProps
   /**
-   * set this to `true` if you want the label to appear as an editable textfield. The value returned when selected will be the value entered by the user
+   * set this to `true` if you want the label to appear as an editable textfield. The value returned when selected will be the value entered by the user.
+   * Don't add more than one
    */
   editableLabel?: boolean
   editableLabelProps?: Omit<TextFieldProps, 'value' | 'onChange'>
@@ -43,10 +44,7 @@ export interface RadioChoicesBasicProps extends BasicProps {
   /**
    * The event called when the value of the input change
    */
-  onChange?: (
-    event: React.ChangeEvent<HTMLInputElement>,
-    value: SmartKey
-  ) => void
+  onChange?: (value: SmartKey) => void
 
   /**
    * @deprecated use `options` instead
@@ -107,35 +105,55 @@ export const RadioChoices = React.forwardRef(
       ...other
     } = props
 
-    const [editableLabels, setEditableLabels] = useState({})
+    const [editableLabel, setEditableLabel] = useState<{
+      key?: SmartKey
+      label: string | number
+    }>({
+      label: ''
+    })
 
     useEffect(() => {
-      options.forEach((choice) => {
-        if (choice.editableLabel && !editableLabels[choice.key.toString()]) {
-          setEditableLabels((old) => ({
-            ...old,
-            [choice.key.toString()]: choice.label
-          }))
+      ;(choices ?? options).forEach((choice) => {
+        if (choice.editableLabel && !editableLabel.label) {
+          setEditableLabel({
+            key: choice.key,
+            label: choice.label
+          })
         }
       })
-    }, [options])
+    }, [options, choices])
 
-    const editedLabelKey = useMemo(() => {
-      for (let key in editableLabels) {
-        if (editableLabels[key] === value) {
-          return key
+    useEffect(() => {
+      if (
+        value &&
+        !(choices ?? options).find((option) => option.key === value)
+      ) {
+        const editable = (choices ?? options).find(
+          (choice) => choice.editableLabel
+        )
+        if (editable) {
+          setEditableLabel({
+            key: editable.key,
+            label: value
+          })
         }
       }
+    }, [])
+
+    const editedLabelKey = useMemo(() => {
+      if (editableLabel.label === value) {
+        return editableLabel.key
+      }
       return undefined
-    }, [value])
+    }, [value, editableLabel.label])
 
     const onChangeMemoized = useCallback(
-      (event: React.ChangeEvent<HTMLInputElement>, value: string) => {
-        const edited = editableLabels[value]
-        onChange &&
-          onChange(event, edited ?? extractNumberOrBooleanFromString(value))
+      (_: React.ChangeEvent<HTMLInputElement>, value: string) => {
+        const edited =
+          value === editableLabel.key ? editableLabel.label : undefined
+        onChange && onChange(edited ?? extractNumberOrBooleanFromString(value))
       },
-      [onChange, editableLabels]
+      [onChange, editableLabel]
     )
 
     const defaultStyles = useInputStyles()
@@ -149,13 +167,14 @@ export const RadioChoices = React.forwardRef(
             choice.editableLabel ? (
               <TextField
                 {...choice.editableLabelProps}
-                value={editableLabels[choice.key.toString()]}
-                onChange={(value) =>
-                  setEditableLabels((old) => ({
-                    ...old,
-                    [choice.key.toString()]: value
-                  }))
-                }
+                value={editableLabel.label}
+                onChange={(value) => {
+                  setEditableLabel({
+                    key: choice.key,
+                    label: value
+                  })
+                  onChange && onChange(value)
+                }}
               />
             ) : (
               choice.label
@@ -171,7 +190,7 @@ export const RadioChoices = React.forwardRef(
           style={styles?.choice}
         />
       ))
-    }, [choices, options, classes?.choice, styles?.choice, editableLabels])
+    }, [choices, options, classes?.choice, styles?.choice, editableLabel])
 
     const errorText = useMemo(
       () =>

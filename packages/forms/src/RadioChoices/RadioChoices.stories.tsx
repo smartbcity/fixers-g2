@@ -44,7 +44,7 @@ export const RadioChoicesStory: Story<RadioChoicesBasicProps> = (
     <RadioChoices
       {...args}
       value={value}
-      onChange={(event, value) => setvalue(value)}
+      onChange={(value) => setvalue(value)}
       style={{ width: 350 }}
     />
   )
@@ -114,11 +114,7 @@ export const withEditableLabel: Story = () => {
     },
     {
       key: 6,
-      label: '',
-      editableLabel: true,
-      editableLabelProps: {
-        textFieldType: 'number'
-      }
+      label: 'test6'
     },
     {
       key: 7,
@@ -128,7 +124,7 @@ export const withEditableLabel: Story = () => {
   return (
     <RadioChoices
       value={value}
-      onChange={(event, value) => setvalue(value)}
+      onChange={(value) => setvalue(value)}
       options={options}
       style={{ width: 350 }}
     />
