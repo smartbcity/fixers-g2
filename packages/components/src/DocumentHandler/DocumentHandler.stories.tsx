@@ -77,7 +77,7 @@ export const useLocalDocumentHandlerExample: Story = () => {
 }
 
 export const useLocalStorageDocumentHandlerExample: Story = () => {
-  const { fileName, docmentHandlerProps } =
+  const { fileName, documentHandlerProps } =
     useLocalStorageDocumentHandler('fileExample')
   return (
     <Box
@@ -90,7 +90,7 @@ export const useLocalStorageDocumentHandlerExample: Story = () => {
         fileTypesAllowed={['pdf']}
         label={fileName ?? 'Add your pdf file'}
         isRequired
-        {...docmentHandlerProps}
+        {...documentHandlerProps}
       />
     </Box>
   )
