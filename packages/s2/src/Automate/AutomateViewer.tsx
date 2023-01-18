@@ -1,11 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { Node, Network, Edge } from 'vis-network'
-import {
-  BasicProps,
-  MergeReactElementProps,
-  makeG2STyles
-} from '@smartb/g2-themes'
-import { useTheme } from '@smartb/g2-themes'
+import { BasicProps, makeG2STyles, useTheme } from '@smartb/g2-themes'
+import { MergeReactElementProps } from '@smartb/g2-utils'
 
 const useStyles = makeG2STyles()({
   container: {

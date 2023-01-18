@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import mermaid from 'mermaid'
-import { MergeReactElementProps, BasicProps } from '@smartb/g2-themes'
+import { BasicProps } from '@smartb/g2-themes'
+import { MergeReactElementProps } from '@smartb/g2-utils'
 import { cx } from '@emotion/css'
 
 export interface MermaidBasicProps extends BasicProps {

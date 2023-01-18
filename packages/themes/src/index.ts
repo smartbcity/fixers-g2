@@ -9,9 +9,4 @@ export {
   defaultMaterialUiTheme,
   defaultTheme
 } from './ThemeContextProvider'
-export {
-  BasicProps,
-  makeG2STyles,
-  MergeMuiElementProps,
-  MergeReactElementProps
-} from './Types'
+export { BasicProps, makeG2STyles, MergeMuiElementProps } from './Types'

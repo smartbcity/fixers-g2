@@ -19,11 +19,6 @@ const { makeStyles } = createMakeStyles({ useTheme })
 
 export const makeG2STyles = makeStyles
 
-export type MergeReactElementProps<
-  T extends React.ElementType,
-  P extends object = {}
-> = Omit<React.ComponentPropsWithRef<T>, keyof P> & P
-
 export type MergeMuiElementProps<MuiElement, P extends object = {}> = Omit<
   MuiElement,
   keyof P

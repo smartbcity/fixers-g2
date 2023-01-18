@@ -6,11 +6,8 @@ import {
   ListItemIcon,
   Grid
 } from '@mui/material'
-import {
-  MergeReactElementProps,
-  BasicProps,
-  makeG2STyles
-} from '@smartb/g2-themes'
+import { BasicProps, makeG2STyles } from '@smartb/g2-themes'
+import { MergeReactElementProps } from '@smartb/g2-utils'
 
 const useStyles = makeG2STyles()({
   gridContainer: {

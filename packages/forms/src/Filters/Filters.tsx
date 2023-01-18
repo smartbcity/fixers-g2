@@ -3,11 +3,8 @@ import { Action, Actions } from '@smartb/g2-components'
 import { FilterSelectProps, FilterSelect } from '../FilterSelect'
 import { FilterTextFieldProps, FilterTextField } from '../FilterTextField'
 import { FilterDatePickerProps, FilterDatePicker } from '../FilterDatePicker'
-import {
-  BasicProps,
-  makeG2STyles,
-  MergeReactElementProps
-} from '@smartb/g2-themes'
+import { BasicProps, makeG2STyles } from '@smartb/g2-themes'
+import { MergeReactElementProps } from '@smartb/g2-utils'
 import { Box, Stack, StackProps } from '@mui/material'
 import { cx } from '@emotion/css'
 import { FiltersState } from './useFilters'

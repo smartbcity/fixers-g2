@@ -1,6 +1,6 @@
 import React from 'react'
 import { ReactComponent } from './IndeterminateIcon.svg'
-import { MergeReactElementProps } from '@smartb/g2-themes'
+import { MergeReactElementProps } from '@smartb/g2-utils'
 
 interface IndeterminateIconProps {}
 
