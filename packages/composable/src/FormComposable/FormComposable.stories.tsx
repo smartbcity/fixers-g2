@@ -1,4 +1,4 @@
-import React, { ReactNode, useMemo } from 'react'
+import React, { ReactNode } from 'react'
 import { Meta } from '@storybook/react'
 import { Story } from '@storybook/react/types-6-0'
 import {
@@ -19,6 +19,7 @@ import {
 } from '../ComposableRender'
 import { Typography } from '@mui/material'
 import { requiredField, requiredTrue } from './validator'
+import { BrowserRouter } from 'react-router-dom'
 
 export default {
   title: 'Composable/FormComposable',
@@ -105,14 +106,18 @@ const FormComposableStory: Story<FormComposableProps> = (
     }
   ]
 
+  console.log(formState.values)
+
   return (
-    <FormComposable<typeof CustomRenderer>
-      {...args}
-      customFactories={CustomRenderer}
-      actions={actions}
-      formState={formState}
-      style={{ width: '600px' }}
-    />
+    <BrowserRouter>
+      <FormComposable<typeof CustomRenderer>
+        {...args}
+        customFactories={CustomRenderer}
+        actions={actions}
+        formState={formState}
+        style={{ width: '600px' }}
+      />
+    </BrowserRouter>
   )
 }
 
@@ -272,6 +277,16 @@ RadioSelectForm.args = {
 
 const fullFields: AllFormComposableField[] = [
   {
+    name: 'map',
+    type: 'map',
+    params: {
+      draggableMarkerPlugin: {
+        enable: true
+      }
+    },
+    fullRow: true
+  },
+  {
     name: 'picture',
     type: 'dropPicture',
     params: {
@@ -316,10 +331,56 @@ const fullFields: AllFormComposableField[] = [
     validator: requiredField('Answer the question'),
     params: {
       choices: [
-        { key: 'yes', label: 'Yes' },
-        { key: 'no', label: 'No' }
+        { key: true, label: 'Yes' },
+        { key: false, label: 'No' }
       ],
       row: true
+    }
+  },
+  {
+    key: 'storybook-form-field-termsOfUse',
+    name: 'termsOfUse',
+    label: 'do you accept the terms of use?',
+    type: 'multiChoices',
+    defaultValue: '',
+    validator: requiredField('Answer the question'),
+    params: {
+      options: [
+        { key: 'yes', label: 'Yes take my data' },
+        {
+          key: 'maybe',
+          label: "I don't know cause i haven't the time to read it"
+        },
+        { key: 'no', label: 'no' }
+      ]
+    }
+  },
+  {
+    key: 'storybook-form-field-reasons',
+    name: 'reasons',
+    label: 'what are you reason to sign in the website',
+    type: 'radioChoices',
+    sharedNameIndex: 0,
+    params: {
+      options: [
+        { key: 'a', label: 'I love to have data stolen' },
+        {
+          key: 'b',
+          label: "I don't really know to be honest"
+        },
+        { key: 'c', label: 'other (explain)' }
+      ]
+    }
+  },
+  {
+    key: 'storybook-form-field-otherReason',
+    name: 'reasons',
+    type: 'textField',
+    sharedNameIndex: 1,
+    params: {
+      rows: '4',
+      multiline: true,
+      placeholder: 'Explain here if it is an other reason'
     }
   },
   {

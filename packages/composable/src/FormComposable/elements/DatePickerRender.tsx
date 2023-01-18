@@ -3,10 +3,10 @@ import {
   DatePickerProps,
   InputForm
 } from '@smartb/g2-forms'
-import React from 'react'
+import React, { useMemo } from 'react'
 import { FieldRenderProps } from '../type'
 import { ElementRendererFunction } from '../../ComposableRender'
-import { getIn } from 'formik'
+import { getValueSetup } from '../type/getValueSetup'
 
 export type DatePickerExtendProps = Partial<
   Omit<
@@ -25,23 +25,19 @@ export const DatePickerRender: ElementRendererFunction<
 > = (props: DatePickerRenderProps) => {
   const { element, formState, basicProps } = props
   const { params } = element
-  const date = new Date(getIn(formState.values, basicProps.name))
+  const { value, setFieldValue } = useMemo(
+    () => getValueSetup(basicProps.name, formState, basicProps.sharedNameIndex),
+    [basicProps.name, formState, basicProps.sharedNameIndex]
+  )
+  const date = new Date(value)
   const onChange = basicProps.onChange
   delete basicProps.onChange
   return (
     <InputForm
       inputType='datePicker'
-      value={
-        !isNaN(date.getTime())
-          ? date
-          : getIn(formState.values, basicProps.name) ?? ''
-      }
+      value={!isNaN(date.getTime()) ? date : value ?? ''}
       onChangeDate={(date) => {
-        formState.setFieldValue(
-          basicProps.name,
-          date && !isNaN(date.getTime()) ? date : date?.toString(),
-          false
-        )
+        setFieldValue(date && !isNaN(date.getTime()) ? date : date?.toString())
         !!onChange && onChange(date)
       }}
       {...params}

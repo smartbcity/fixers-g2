@@ -1,8 +1,8 @@
 import { CheckBox, CheckBoxProps } from '@smartb/g2-forms'
-import React from 'react'
+import React, { useMemo } from 'react'
 import { FieldRenderProps } from '../type'
 import { ElementRendererFunction } from '../../ComposableRender'
-import { getIn } from 'formik'
+import { getValueSetup } from '../type/getValueSetup'
 
 export type CheckBoxExtendProps = Partial<
   Omit<CheckBoxProps, 'checked' | 'onChange' | 'label' | 'classes' | 'styles'>
@@ -18,7 +18,10 @@ export const CheckBoxRender: ElementRendererFunction<CheckBoxRenderProps> = (
 ) => {
   const { element, formState, basicProps } = props
   const { params } = element
-  const value = getIn(formState.values, basicProps.name)
+  const { value, setFieldValue } = useMemo(
+    () => getValueSetup(basicProps.name, formState, basicProps.sharedNameIndex),
+    [basicProps.name, formState, basicProps.sharedNameIndex]
+  )
   const onChange = basicProps.onChange
   delete basicProps.onChange
   return (
@@ -26,7 +29,7 @@ export const CheckBoxRender: ElementRendererFunction<CheckBoxRenderProps> = (
       checked={value}
       disabled={params?.disabled}
       onChange={(_: React.ChangeEvent<HTMLInputElement>, value: boolean) => {
-        formState.setFieldValue(basicProps.name, value, false)
+        setFieldValue(value)
         !!onChange && onChange(value)
       }}
       {...params}

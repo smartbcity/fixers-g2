@@ -21,15 +21,7 @@ import { IndeterminateIcon } from '../assets/icons/IndeterminateIcon'
 const useStyles = makeG2STyles()((theme) => ({
   base: {
     position: 'relative',
-    width: 'fit-content',
-    '&:hover .MuiFormHelperText-root': {
-      position: 'relative',
-      top: '0%',
-      whiteSpace: 'unset',
-      overflow: 'visible',
-      textOverflow: 'ellipsis',
-      marginBottom: '-18px'
-    }
+    width: 'fit-content'
   },
   root: {
     borderRadius: 20,

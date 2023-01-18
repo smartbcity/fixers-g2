@@ -136,34 +136,39 @@ export const GalleryFactory = (props: GalleryFactoryProps) => {
             height: '100%'
           }}
         >
-          <IconButton
-            className={cx(
-              'AruiGalleryFactory-closeButton',
-              classes?.closeButton
-            )}
-            style={styles?.closeButton}
-            onClick={() => onDelete && onDelete(file)}
-            sx={{
-              position: 'absolute',
-              top: 10,
-              right: 10,
-              borderRadius: '20px',
-              background: 'rgb(73, 80, 87, 0.8)',
-              color: 'white',
-              '&:hover': {
-                background: 'rgb(73, 80, 87, 1)'
-              }
-            }}
-          >
-            <CloseRounded
-              className={cx('AruiGalleryFactory-closeIcon', classes?.closeIcon)}
-              style={styles?.closeIcon}
+          {!!onDelete && (
+            <IconButton
+              className={cx(
+                'AruiGalleryFactory-closeButton',
+                classes?.closeButton
+              )}
+              style={styles?.closeButton}
+              onClick={() => onDelete(file)}
               sx={{
-                width: '22px',
-                height: '22px'
+                position: 'absolute',
+                top: 10,
+                right: 10,
+                borderRadius: '20px',
+                background: 'rgb(73, 80, 87, 0.8)',
+                color: 'white',
+                '&:hover': {
+                  background: 'rgb(73, 80, 87, 1)'
+                }
               }}
-            />
-          </IconButton>
+            >
+              <CloseRounded
+                className={cx(
+                  'AruiGalleryFactory-closeIcon',
+                  classes?.closeIcon
+                )}
+                style={styles?.closeIcon}
+                sx={{
+                  width: '22px',
+                  height: '22px'
+                }}
+              />
+            </IconButton>
+          )}
           <img
             className={cx('AruiGalleryFactory-image', classes?.image)}
             style={styles?.image}
@@ -238,37 +243,38 @@ export const GalleryFactory = (props: GalleryFactoryProps) => {
       {...rest}
     >
       {images}
-      {!isLoading ? (
-        <Dropzone
-          className={cx('AruiGalleryFactory-dropzone', classes?.dropzone)}
-          style={styles?.dropzone}
-          sx={{
-            width: '300px',
-            flexShrink: 0,
-            maxWidth: '300px',
-            borderRadius: '20px'
-          }}
-          onDrop={onDrop}
-          onReject={onRejectMemoized}
-          accept={IMAGE_MIME_TYPE}
-          maxSize={10 * 1024 * 1024}
-          {...dropzoneProps}
-        >
-          {dropzone}
-        </Dropzone>
-      ) : (
-        <Stack
-          sx={{
-            justifyContent: 'center',
-            alignItems: 'center',
-            width: '300px',
-            flexShrink: 0,
-            maxWidth: '300px'
-          }}
-        >
-          <CircularProgress disableShrink />
-        </Stack>
-      )}
+      {!!onAdd &&
+        (!isLoading ? (
+          <Dropzone
+            className={cx('AruiGalleryFactory-dropzone', classes?.dropzone)}
+            style={styles?.dropzone}
+            sx={{
+              width: '300px',
+              flexShrink: 0,
+              maxWidth: '300px',
+              borderRadius: '20px'
+            }}
+            onDrop={onDrop}
+            onReject={onRejectMemoized}
+            accept={IMAGE_MIME_TYPE}
+            maxSize={10 * 1024 * 1024}
+            {...dropzoneProps}
+          >
+            {dropzone}
+          </Dropzone>
+        ) : (
+          <Stack
+            sx={{
+              justifyContent: 'center',
+              alignItems: 'center',
+              width: '300px',
+              flexShrink: 0,
+              maxWidth: '300px'
+            }}
+          >
+            <CircularProgress disableShrink />
+          </Stack>
+        ))}
     </Stack>
   )
 }

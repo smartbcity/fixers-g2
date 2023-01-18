@@ -19,7 +19,7 @@ import {
 } from '@smartb/g2-themes'
 import { TextField, TextFieldProps } from '../TextField'
 import { CheckBox } from '../CheckBox'
-import { Chip } from '@smartb/g2-components'
+import { Chip, ChipProps } from '@smartb/g2-components'
 
 const useStyles = makeG2STyles()({
   list: {
@@ -102,6 +102,10 @@ export interface AutoCompleteBasicProps<T> extends BasicProps {
    */
   returnFullObject?: boolean
   /**
+   * The props of the chip component used to display the selection if multiple
+   */
+  chipProps?: Partial<ChipProps>
+  /**
    * Define if the value of the input is valid or not
    *
    * @default false
@@ -119,7 +123,7 @@ export type AutoCompleteProps<T = any> = MergeMuiElementProps<
 >
 
 const defaultFilterOptions = createFilterOptions()
-const defaultGetOptionLabel =
+export const defaultGetOptionLabel =
   (options: any[], hasKey: boolean) => (option: any) => {
     if (typeof option === 'string' && hasKey) {
       const founded = options.find((el) => el.key === option)?.label
@@ -155,6 +159,7 @@ const AutoCompleteBase = function <T>(
     errorMessage = '',
     withCheckbox = true,
     returnFullObject = false,
+    chipProps,
     ...other
   } = props
 
@@ -174,9 +179,9 @@ const AutoCompleteBase = function <T>(
     (_: React.SyntheticEvent<Element, Event>, value: T | T[] | null) => {
       if (Array.isArray(value) && onChangeValues) {
         //@ts-ignore
-        if (!!value[0]?.key && !getOptionLabel && !returnFullObject) {
+        if (hasKey && !getOptionLabel && !returnFullObject) {
           //@ts-ignore
-          onChangeValues(value.map((value) => value.key))
+          onChangeValues(value.map((value) => value.key ?? value))
         } else {
           onChangeValues(value)
         }
@@ -190,7 +195,7 @@ const AutoCompleteBase = function <T>(
         }
       }
     },
-    [onChangeValue, onChangeValues, getOptionLabel, returnFullObject]
+    [onChangeValue, onChangeValues, getOptionLabel, returnFullObject, hasKey]
   )
 
   const renderTags = useCallback(
@@ -202,11 +207,12 @@ const AutoCompleteBase = function <T>(
             //@ts-ignore
             key={option.key ?? key}
             label={getOptionLabelMemo(option)}
+            {...chipProps}
             {...other}
           />
         )
       }),
-    [getOptionLabelMemo]
+    [getOptionLabelMemo, chipProps]
   )
 
   const renderInput = useCallback(
@@ -235,7 +241,7 @@ const AutoCompleteBase = function <T>(
       return (
         <ListItem
           //@ts-ignore
-          key={option.key ?? key}
+          key={option.key?.toString() ?? key}
           className={defaultStyles.cx('AruiAutoComplete-option')}
           {...other}
         >

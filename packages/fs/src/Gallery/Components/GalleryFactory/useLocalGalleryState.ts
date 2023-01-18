@@ -81,6 +81,7 @@ export const useLocalGalleryState = (params?: useLocalGalleryStateParams) => {
     onCancel,
     setHasChanges,
     setIsLoading,
-    localGallery: displayedGallery
+    localGallery: currentGallery,
+    displayedGallery
   }
 }

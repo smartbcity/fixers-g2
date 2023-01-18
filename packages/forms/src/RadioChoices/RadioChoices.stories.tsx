@@ -42,16 +42,15 @@ export const RadioChoicesStory: Story<RadioChoicesBasicProps> = (
   const [value, setvalue] = useState('')
   return (
     <RadioChoices
-      choices={[]}
       {...args}
       value={value}
-      onChange={(event, value) => setvalue(value)}
+      onChange={(value) => setvalue(value)}
       style={{ width: 350 }}
     />
   )
 }
 
-const choices: Choice[] = [
+const options: Choice[] = [
   {
     key: 1,
     label: 'test1'
@@ -83,7 +82,51 @@ const choices: Choice[] = [
 ]
 
 RadioChoicesStory.args = {
-  choices: choices
+  options: options
 }
 
 RadioChoicesStory.storyName = 'RadioChoices'
+
+export const withEditableLabel: Story = () => {
+  const [value, setvalue] = useState('')
+  console.log(value)
+  const options: Choice[] = [
+    {
+      key: 1,
+      label: 'test1'
+    },
+    {
+      key: 2,
+      label: 'test2'
+    },
+    {
+      key: 3,
+      label: 'test3'
+    },
+    {
+      key: 4,
+      label: 'test4',
+      editableLabel: true
+    },
+    {
+      key: 5,
+      label: 'test5'
+    },
+    {
+      key: 6,
+      label: 'test6'
+    },
+    {
+      key: 7,
+      label: 'test7'
+    }
+  ]
+  return (
+    <RadioChoices
+      value={value}
+      onChange={(value) => setvalue(value)}
+      options={options}
+      style={{ width: 350 }}
+    />
+  )
+}

@@ -19,7 +19,8 @@ import {
 } from '@smartb/g2-themes'
 import { CheckBox } from '../CheckBox'
 import { useFilterColorStyle, useFilterInputStyles } from '../style'
-import { Option } from '../Select'
+import { Option, SmartKey } from '../Select'
+import { extractNumberOrBooleanFromString } from '@smartb/g2-utils'
 
 export interface FilterSelectClasses {
   label?: string
@@ -125,14 +126,14 @@ export interface FilterSelectBasicProps extends BasicProps {
    *
    * @default ''
    */
-  value?: string | number
+  value?: SmartKey
 
   /**
    * The values of selected. ⚠️ This prop is used only if `multiple` is true
    *
    * @default []
    */
-  values?: (string | number)[]
+  values?: SmartKey[]
 
   /**
    * If true the select will be able to handle multiple selections
@@ -144,12 +145,12 @@ export interface FilterSelectBasicProps extends BasicProps {
   /**
    * The event called when the value of the slect change
    */
-  onChangeValue?: (value: string) => void
+  onChangeValue?: (value: SmartKey) => void
 
   /**
    * The event called when the values of the multiple select change
    */
-  onChangeValues?: (values: string[]) => void
+  onChangeValues?: (values: SmartKey[]) => void
 
   /**
    * List of options available in the option
@@ -237,9 +238,14 @@ export const FilterSelect = React.forwardRef(
       (event: SelectChangeEvent<unknown>) => {
         const eventValue = event.target.value
         if (Array.isArray(eventValue)) {
-          onChangeValues && onChangeValues(eventValue as string[])
+          onChangeValues &&
+            onChangeValues(extractNumberOrBooleanFromString(eventValue))
+        } else {
+          onChangeValue &&
+            onChangeValue(
+              extractNumberOrBooleanFromString(eventValue as string)
+            )
         }
-        onChangeValue && onChangeValue(eventValue as string)
       },
       [onChangeValue, onChangeValues]
     )
@@ -307,21 +313,21 @@ export const FilterSelect = React.forwardRef(
     const optionsMemoized = useMemo(() => {
       return options.map((option) => (
         <MenuItem
-          data-value={option.key}
+          data-value={option.key.toString()}
           className={defaultStyles.cx(
             'AruiFilterSelect-option',
             classes?.option
           )}
           style={styles?.option}
-          key={option.key}
-          value={option.key}
+          key={option.key.toString()}
+          value={option.key.toString()}
         >
           <CheckBox
-            data-value={option.key}
+            data-value={option.key.toString()}
             checked={values.indexOf(option.key) > -1 || value === option.key}
           />
           <ListItemText
-            data-value={option.key}
+            data-value={option.key.toString()}
             primary={option.label as string}
             primaryTypographyProps={{ variant: 'body2' }}
           />

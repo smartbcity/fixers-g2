@@ -89,7 +89,7 @@ yarn storybook
 - Release Version on npm from master
 
 ```
-lerna version 0.0.1 --no-git-tag-version
+lerna version 0.0.1 --no-git-tag-version --exact
 
 lerna publish from-package --no-git-reset
 ```

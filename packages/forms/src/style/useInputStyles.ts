@@ -1,26 +1,12 @@
 import { makeG2STyles } from '@smartb/g2-themes'
-import { CSSObject } from 'tss-react'
 
 const darkGrey = '#323338'
 const textFieldGrey = '#C5C7D0'
 const disabledColor = '#E6E9EF'
 
-const displayFullError: CSSObject = {
-  '&:hover .MuiFormHelperText-root': {
-    position: 'relative',
-    top: '0%',
-    whiteSpace: 'unset',
-    overflow: 'visible',
-    textOverflow: 'ellipsis',
-    width: '100%',
-    marginBottom: '-23px'
-  }
-}
-
 export const useInputStyles = makeG2STyles()((theme) => ({
   root: {
-    position: 'relative',
-    ...displayFullError
+    position: 'relative'
   },
   label: {
     marginBottom: theme.spacing,
@@ -33,7 +19,6 @@ export const useInputStyles = makeG2STyles()((theme) => ({
     fontSize: '0.813rem'
   },
   input: {
-    ...displayFullError,
     '& .MuiInputBase-input': {
       padding: '6px 7px',
       backgroundColor: 'unset',
@@ -106,7 +91,7 @@ export const useInputStyles = makeG2STyles()((theme) => ({
       padding: '0px 0px 0px 10px'
     },
     '& .MuiFilledInput-input::placeholder': {
-      fontSize: '14px',
+      fontSize: '14px'
     },
     '& .MuiInputAdornment-filled.MuiInputAdornment-positionStart:not(.MuiInputAdornment-hiddenLabel)':
       {

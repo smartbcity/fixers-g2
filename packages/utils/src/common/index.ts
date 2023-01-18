@@ -110,3 +110,26 @@ export const stringToAvatarAttributs = (name: string) => {
     label: `${splited[0][0]}${splited[1] ? splited[1][0] : ""}`,
   };
 };
+
+export const extractNumberOrBooleanFromString = <
+  T extends string | string[] = string
+>(
+  string: T
+): T extends string[]
+  ? (boolean | number | string)[]
+  : boolean | number | string => {
+  const extract = (str): boolean | number | string => {
+    if (str === "true") return true;
+    if (str === "false") return false;
+    const num = Number(str);
+    if (!isNaN(num)) return num;
+    return str;
+  };
+  if (Array.isArray(string)) {
+    //@ts-ignore
+    return string.map(extract);
+  } else {
+    //@ts-ignore
+    return extract(string);
+  }
+};

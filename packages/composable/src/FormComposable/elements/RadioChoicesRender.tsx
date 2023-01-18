@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react'
+import React, { ReactElement, useMemo } from 'react'
 import {
   RadioChoicesProps,
   InputForm,
@@ -6,7 +6,7 @@ import {
 } from '@smartb/g2-forms'
 import { FieldRenderProps } from '../type'
 import { ElementRendererFunction } from '../../ComposableRender'
-import { getIn } from 'formik'
+import { getValueSetup } from '../type/getValueSetup'
 
 export type RadioChoicesExtendProps = Partial<
   Omit<
@@ -25,7 +25,10 @@ export const RadioChoicesRender: ElementRendererFunction<
 > = (props: RadioChoicesRenderProps): ReactElement => {
   const { element, formState, basicProps } = props
   const { params } = element
-  const value = getIn(formState.values, basicProps.name)
+  const { value, setFieldValue } = useMemo(
+    () => getValueSetup(basicProps.name, formState, basicProps.sharedNameIndex),
+    [basicProps.name, formState, basicProps.sharedNameIndex]
+  )
   const onChange = basicProps.onChange
   delete basicProps.onChange
   return (
@@ -34,8 +37,8 @@ export const RadioChoicesRender: ElementRendererFunction<
       value={value ?? ''}
       {...params}
       {...basicProps}
-      onChange={(_: React.ChangeEvent<HTMLInputElement>, value: string) => {
-        formState.setFieldValue(basicProps.name, value, false)
+      onChange={(value: string) => {
+        setFieldValue(value)
         !!onChange && onChange(value)
       }}
     />

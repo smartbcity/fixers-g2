@@ -30,34 +30,36 @@ export const ReadonlyRenderer = (props: Partial<InputFormProps>) => {
     size
   } = props
 
+  const hoptions = options ?? choices
+
   const textToDisplay = useMemo(() => {
     if (inputType === 'datePicker') return new Date(value).toLocaleDateString()
-    if (inputType === 'radioChoices' && choices && value)
-      return choices.find((c) => c.key === value)?.label
+    if (inputType === 'radioChoices' && hoptions && value)
+      return hoptions.find((c) => c.key === value)?.label
     if (multiple) {
-      if (options && values) {
+      if (hoptions && values) {
         return values
           .map((v: any) =>
             getLabelOfOption(
-              options.find((o) => o.key === v || o.key === v.key),
+              hoptions.find((o) => o.key === v || o.key === v.key),
               getOptionLabel
             )
           )
           .join(', ')
       }
-    } else if (options && value !== undefined) {
-      const option = options.find(
+    } else if (hoptions && value !== undefined) {
+      const option = hoptions.find(
         (c) => c.key === value || c.key === value?.key
       )
       return getLabelOfOption(option, getOptionLabel)
     }
     return typeof value === 'string' || typeof value === 'number' ? value : ''
-  }, [inputType, value, values, choices, multiple, options, getOptionLabel])
+  }, [inputType, value, values, multiple, hoptions, getOptionLabel])
 
   const renderTag = useMemo(() => {
     if (readonlyType === 'text') return undefined
     if (!multiple) {
-      const option = options?.find((o) => o.key === value)
+      const option = hoptions?.find((o) => o.key === value)
       return (
         <Chip
           label={textToDisplay}
@@ -67,13 +69,13 @@ export const ReadonlyRenderer = (props: Partial<InputFormProps>) => {
           }
         />
       )
-    } else if (options && values) {
+    } else if (hoptions && values) {
       return values.map((value) => {
-        const option = options.find((o) => o.key === value)
+        const option = hoptions.find((o) => o.key === value)
         if (!option?.label) return undefined
         return (
           <Chip
-            key={option.key}
+            key={option.key.toString()}
             label={`${option?.label}`}
             color={
               option?.color ??
@@ -84,7 +86,7 @@ export const ReadonlyRenderer = (props: Partial<InputFormProps>) => {
       })
     }
     return
-  }, [readonlyType, textToDisplay, value, options])
+  }, [readonlyType, textToDisplay, value, hoptions])
 
   const url = useMemo(() => {
     if (!value || !getReadonlyTextUrl) return undefined

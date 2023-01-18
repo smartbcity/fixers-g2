@@ -1,6 +1,6 @@
 {
   "name": "@smartb/g2-forms",
-  "version": "1.0.0-alpha.107",
+  "version": "1.0.0-alpha.118",
   "repository": "https://gitlab.smartb.city/fixers/g2.git",
   "author": "Adrien Poupard <adrien@smartb.city>",
   "license": "Apache-2.0",
@@ -27,7 +27,10 @@
     "dist"
   ],
   "devDependencies": {
-    "@smartb/g2-providers": "1.0.0-alpha.107",
+    "@geoman-io/leaflet-geoman-free": "^2.13.1",
+    "@smartb/g2-providers": "1.0.0-alpha.118",
+    "@types/geojson": "^7946.0.10",
+    "@types/leaflet": "^1.9.0",
     "@types/tinycolor2": "^1.4.3",
     "react-query": "^3.39.1"
   },
@@ -41,11 +44,14 @@
     "@mantine/hooks": "^4.2.12",
     "@mui/icons-material": "^5.8.4",
     "@mui/x-date-pickers": "^5.0.2",
-    "@smartb/g2-components": "1.0.0-alpha.107",
-    "@smartb/g2-themes": "1.0.0-alpha.107",
-    "@smartb/g2-utils": "1.0.0-alpha.107",
+    "@smartb/g2-components": "1.0.0-alpha.118",
+    "@smartb/g2-themes": "1.0.0-alpha.118",
+    "@smartb/g2-utils": "1.0.0-alpha.118",
     "date-fns": "^2.29.3",
     "formik": "^2.2.9",
+    "geojson": "^0.5.0",
+    "leaflet": "^1.9.3",
+    "react-leaflet": "^4.1.0",
     "react-router-dom": "^6.3.0",
     "tinycolor2": "^1.4.2"
   },

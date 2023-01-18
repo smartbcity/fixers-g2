@@ -2,7 +2,7 @@ import { Stack, Typography } from '@mui/material'
 import { Button } from '@smartb/g2-components'
 import { fsConfig } from '@smartb/g2-providers'
 import { MergeMuiElementProps } from '@smartb/g2-themes'
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { useQueryClient } from 'react-query'
 import {
   DeleteFilesOptions,
@@ -91,6 +91,7 @@ export const AutomatedGalleryFactory = (
 
   const {
     localGallery,
+    displayedGallery,
     hasChanges,
     isLoading,
     setIsLoading,
@@ -169,11 +170,6 @@ export const AutomatedGalleryFactory = (
     uploadFiles.mutateAsync,
     gallery.data
   ])
-
-  const displayedGallery = useMemo(
-    () => localGallery.filter((file) => !file.isDeleted),
-    [localGallery]
-  )
 
   return (
     <>

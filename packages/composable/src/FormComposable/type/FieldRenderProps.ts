@@ -22,6 +22,7 @@ export interface FieldRender {
   errorMessage: string
   className: any
   style: any
+  sharedNameIndex?: number
   /**
    * Indicates if the data is currently loading
    *
@@ -61,6 +62,7 @@ const useFormProps = (
     errorMessage: error as string,
     isLoading: isLoading,
     className: cx(classes?.field, 'AruiForm-field', field.params?.className),
+    sharedNameIndex: field.sharedNameIndex,
     style: {
       width: '100%',
       ...styles?.field,
