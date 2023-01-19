@@ -29,7 +29,8 @@
     "@mui/material": "^5.8.4",
     "@types/react": "^18.0.12",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-query": "^3.39.1"
   },
   "dependencies": {
     "@mui/icons-material": "^5.8.4",
@@ -43,8 +44,7 @@
     "react-router-dom": "^6.3.0"
   },
   "devDependencies": {
-    "@smartb/g2-providers": "^1.0.0-alpha.119",
-    "react-query": "^3.39.1"
+    "@smartb/g2-providers": "^1.0.0-alpha.119"
   },
   "publishConfig": {
     "@smartb:registry": "https://gitlab.smartb.city/api/v4/projects/127/packages/npm/"
