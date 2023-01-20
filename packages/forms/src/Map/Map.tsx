@@ -124,7 +124,7 @@ export const Map = (props: MapProps) => {
     children,
     draggableMarkerPlugin,
     center,
-    zoom = !center ? defaultPosition.zoom : 40,
+    zoom = !center ? defaultPosition.zoom : 17,
     additionnalPlugins,
     openFullScreenString,
     sx,
