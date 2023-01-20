@@ -1,4 +1,4 @@
-import { MapContainer, TileLayer } from 'react-leaflet'
+import { MapContainer, MapContainerProps, TileLayer } from 'react-leaflet'
 import { LatLngExpression, Map as LeafletMap } from 'leaflet'
 import {
   FormHelperText,
@@ -83,6 +83,10 @@ export interface MapBasicProps extends BasicProps {
    */
   zoom?: number
   /**
+   * the props passed to the map component
+   */
+  mapProps?: Partial<MapContainerProps>
+  /**
    * the string of the button to open the map in fullscreen on mobile mode
    */
   openFullScreenString?: string
@@ -120,6 +124,7 @@ export const Map = (props: MapProps) => {
     classes,
     styles,
     className,
+    mapProps,
     ...other
   } = props
 
@@ -193,6 +198,7 @@ export const Map = (props: MapProps) => {
       {...other}
     >
       <MapContainer
+        {...mapProps}
         //@ts-ignore
         ref={setMap}
         center={center ?? defaultPosition.center}
