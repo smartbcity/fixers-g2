@@ -1,4 +1,9 @@
-import { MapContainer, MapContainerProps, TileLayer } from 'react-leaflet'
+import {
+  MapContainer,
+  MapContainerProps,
+  TileLayer,
+  TileLayerProps
+} from 'react-leaflet'
 import { LatLngExpression, Map as LeafletMap } from 'leaflet'
 import {
   FormHelperText,
@@ -87,6 +92,10 @@ export interface MapBasicProps extends BasicProps {
    */
   mapProps?: Partial<MapContainerProps>
   /**
+   * the props passed to the TileLayer component
+   */
+  tileLayerProps?: Partial<TileLayerProps>
+  /**
    * the string of the button to open the map in fullscreen on mobile mode
    */
   openFullScreenString?: string
@@ -125,6 +134,7 @@ export const Map = (props: MapProps) => {
     styles,
     className,
     mapProps,
+    tileLayerProps,
     ...other
   } = props
 
@@ -214,6 +224,7 @@ export const Map = (props: MapProps) => {
         }}
       >
         <TileLayer
+          {...tileLayerProps}
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
         />
