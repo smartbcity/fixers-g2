@@ -4,6 +4,7 @@ import { DocumentHandlerProps } from './DocumentHandler'
 export interface LocalDocumentHandler {
   file?: File
   getFileUrl: () => string
+  resetFile: () => void
   documentHandlerProps: DocumentHandlerProps
 }
 
@@ -26,10 +27,12 @@ export const useLocalDocumentHandler = (): LocalDocumentHandler => {
     () => (file ? URL.createObjectURL(file) : ''),
     [file]
   )
+  const resetFile = useCallback(() => setFile(undefined), [])
 
   return {
     file,
     getFileUrl,
+    resetFile,
     documentHandlerProps: {
       uploaded: !!file,
       getFileUrl,
