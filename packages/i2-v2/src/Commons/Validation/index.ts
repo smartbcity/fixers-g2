@@ -87,7 +87,7 @@ export const validatePhone = (
   errorString?: string
 ): PotentialError => {
   const trimmed = (value ?? '').trim().replaceAll(' ', '')
-  if (trimmed && trimmed.length !== 10)
+  if (trimmed && (trimmed.length !== 10 || isNaN(Number(trimmed))))
     return errorString ?? 'Le numéro de téléphone doit contenir dix chiffres'
   return
 }
