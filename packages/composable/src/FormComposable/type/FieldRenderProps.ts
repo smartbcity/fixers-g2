@@ -60,7 +60,7 @@ const useFormProps = (
     name: field.name,
     error: !!error,
     errorMessage: error as string,
-    isLoading: isLoading,
+    isLoading: isLoading === true ? isLoading : formState.isLoading,
     className: cx(classes?.field, 'AruiForm-field', field.params?.className),
     sharedNameIndex: field.sharedNameIndex,
     style: {
@@ -77,7 +77,12 @@ const useFormProps = (
         }
       : undefined,
     onChange: field.onChange,
-    readonly: field.readonly === true ? field.readonly : readonly
+    readonly:
+      field.readonly === true
+        ? field.readonly
+        : readonly === true
+        ? readonly
+        : formState.readonly
   }
 }
 

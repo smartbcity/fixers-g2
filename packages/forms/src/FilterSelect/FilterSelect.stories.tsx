@@ -5,6 +5,7 @@ import { Story } from '@storybook/react/types-6-0'
 import { Box } from '@mui/material'
 import { FilterSelectClasses, FilterSelectStyles } from './docs'
 import { withDesign } from 'storybook-addon-designs'
+import { ArrowRightAltRounded, SortByAlphaRounded } from '@mui/icons-material'
 
 export default {
   title: 'Forms/FilterSelect',
@@ -190,6 +191,71 @@ export const MultipleFilterSelect: Story<FilterSelectBasicProps> = () => {
         onRemove={() => {
           setvalues([])
         }}
+      />
+    </Box>
+  )
+}
+
+export const SortSelect: Story<FilterSelectBasicProps> = () => {
+  const [value, setvalue] = useState('')
+
+  const options: Option[] = [
+    {
+      key: 'ascDate',
+      label: 'Date',
+      icon: (
+        <ArrowRightAltRounded
+          fontSize='small'
+          sx={{ transform: 'rotate(-90deg)' }}
+        />
+      )
+    },
+    {
+      key: 'descDate',
+      label: 'Date',
+      icon: (
+        <ArrowRightAltRounded
+          fontSize='small'
+          sx={{ transform: 'rotate(90deg)' }}
+        />
+      )
+    },
+    {
+      key: 'ascPrice',
+      label: 'Price',
+      icon: (
+        <ArrowRightAltRounded
+          fontSize='small'
+          sx={{ transform: 'rotate(-90deg)' }}
+        />
+      )
+    },
+    {
+      key: 'descPrice',
+      label: 'Price',
+      icon: (
+        <ArrowRightAltRounded
+          fontSize='small'
+          sx={{ transform: 'rotate(90deg)' }}
+        />
+      )
+    }
+  ]
+
+  return (
+    <Box display='flex' flexDirection='column' alignItems='center'>
+      <FilterSelect
+        color='default'
+        variant='outlined'
+        label='sort select'
+        options={options}
+        value={value}
+        onChangeValue={setvalue}
+        onRemove={() => {
+          setvalue('')
+        }}
+        startAdornment={<SortByAlphaRounded fontSize='small' />}
+        displaySelected
       />
     </Box>
   )

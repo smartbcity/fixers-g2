@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo, useState } from 'react'
 import { ContainerRenderer, ElementRenderersConfig } from '../ComposableRender'
 import { cx } from '@emotion/css'
-import { Box, Stack, StackProps } from '@mui/material'
+import { Box, Divider, Stack, StackProps } from '@mui/material'
 import { FormikProvider, useFormik } from 'formik'
 import { useFilterRenderProps, FilterComposableField } from './type'
 import { MergeReactElementProps, useIsOverflowing } from '@smartb/g2-utils'
@@ -50,6 +50,10 @@ export interface FiltersComposableBasicProps<
    * the fields of the form
    */
   fields: FilterComposableField<ELEMENT_PARAMS>[]
+  /**
+   * the sort field placed a the left and not included in the responsive behavior
+   */
+  sortField?: FilterComposableField<ELEMENT_PARAMS>
   /**
    * the state of the form provided by the hook `useForm`
    */
@@ -145,6 +149,7 @@ export const FiltersComposable = <RENDERER extends ElementRenderersConfig>(
     withFormikProvider = true,
     filterStyleProps,
     responsiveFiltersProps,
+    sortField,
     ...other
   } = props
   const defaultStyles = useStyles()
@@ -186,6 +191,11 @@ export const FiltersComposable = <RENDERER extends ElementRenderersConfig>(
         : sortedFields.allFields
   })
 
+  const sortElement = useFilterRenderProps({
+    ...props,
+    fields: sortField ? [sortField] : []
+  })
+
   const content = (
     <ActionsWrapper actions={actions} {...actionsProps}>
       <Stack
@@ -202,6 +212,16 @@ export const FiltersComposable = <RENDERER extends ElementRenderersConfig>(
         className={cx('AruiFilters-fieldsContainer', classes?.fieldsContainer)}
         style={styles?.fieldsContainer}
       >
+        {sortElement.length > 0 && (
+          <ContainerRenderer
+            renderer={DefaultRenderer}
+            rendererCustom={customFactories}
+            elements={sortElement}
+          />
+        )}
+        {sortElement.length > 0 && !isOverflowing && (
+          <Divider orientation='vertical' flexItem />
+        )}
         {isOverflowing && (
           <FilterButton
             onClick={onOpenDrawer}
@@ -248,6 +268,7 @@ export const FiltersComposable = <RENDERER extends ElementRenderersConfig>(
           openDrawer={openDrawer}
           onCloseDrawer={onCloseDrawer}
           fields={sortedFields.nonMandatoryFields}
+          sortField={undefined}
         />
       )}
     </form>

@@ -9,7 +9,8 @@ import {
   MenuItem,
   Select as MuiSelect,
   SelectChangeEvent,
-  SelectProps as MuiSelectProps
+  SelectProps as MuiSelectProps,
+  ListItemIcon
 } from '@mui/material'
 import { KeyboardArrowDownRounded } from '@mui/icons-material'
 import {
@@ -186,6 +187,13 @@ export interface FilterSelectBasicProps extends BasicProps {
   variant?: 'filled' | 'outlined'
 
   /**
+   * Will display the label of the selected key only work if not multiple
+   *
+   * @default false
+   */
+  displaySelected?: boolean
+
+  /**
    * The classes applied to the different part of the component
    */
   classes?: FilterSelectClasses
@@ -222,7 +230,9 @@ export const FilterSelect = React.forwardRef(
       multiple = false,
       color = 'primary',
       variant = 'filled',
+      displaySelected = false,
       onClose,
+      startAdornment,
       ...other
     } = props
 
@@ -251,8 +261,13 @@ export const FilterSelect = React.forwardRef(
     )
 
     const optionsMap = useMemo(
-      () => new Map(options.map((el) => [el.key, el.label])),
+      () => new Map<SmartKey, Option>(options.map((el) => [el.key, el])),
       [options]
+    )
+
+    const currentOption = useMemo(
+      () => (value ? optionsMap.get(value) : undefined),
+      [value, optionsMap]
     )
 
     const renderValue = useCallback(
@@ -277,22 +292,26 @@ export const FilterSelect = React.forwardRef(
               )}
               style={{ ...styles?.label, ...colorStyle }}
             >
-              {label}
+              {displaySelected && !Array.isArray(selected) && !!selected
+                ? optionsMap.get(selected)?.label
+                : label}
             </InputLabel>
-            <Chip
-              className={defaultStyles.cx(
-                localStyles.classes.chip,
-                'AruiFilterSelect-chip',
-                classes?.chip
-              )}
-              label={count}
-              variant='outlined'
-              color={color}
-              style={styles?.chip}
-              sx={{
-                visibility: count <= 0 ? 'hidden' : 'visible'
-              }}
-            />
+            {!(displaySelected && !Array.isArray(selected)) && (
+              <Chip
+                className={defaultStyles.cx(
+                  localStyles.classes.chip,
+                  'AruiFilterSelect-chip',
+                  classes?.chip
+                )}
+                label={count}
+                variant='outlined'
+                color={color}
+                style={styles?.chip}
+                sx={{
+                  visibility: count <= 0 ? 'hidden' : 'visible'
+                }}
+              />
+            )}
           </Box>
         )
       },
@@ -306,12 +325,14 @@ export const FilterSelect = React.forwardRef(
         classes?.chip,
         styles?.label,
         styles?.chip,
+        displaySelected,
         optionsMap
       ]
     )
 
     const optionsMemoized = useMemo(() => {
       return options.map((option) => (
+        //@ts-ignore
         <MenuItem
           data-value={option.key.toString()}
           className={defaultStyles.cx(
@@ -320,12 +341,21 @@ export const FilterSelect = React.forwardRef(
           )}
           style={styles?.option}
           key={option.key.toString()}
-          value={option.key.toString()}
+          value={option.key}
         >
           <CheckBox
             data-value={option.key.toString()}
             checked={values.indexOf(option.key) > -1 || value === option.key}
           />
+          {option.icon && (
+            <ListItemIcon
+              sx={{
+                minWidth: '0 !important'
+              }}
+            >
+              {option.icon}
+            </ListItemIcon>
+          )}
           <ListItemText
             data-value={option.key.toString()}
             primary={option.label as string}
@@ -412,6 +442,18 @@ export const FilterSelect = React.forwardRef(
           inputProps={inputProp}
           renderValue={renderValue}
           displayEmpty
+          startAdornment={
+            currentOption?.icon || startAdornment ? (
+              <Box
+                sx={{
+                  display: 'flex',
+                  marginRight: '-6px'
+                }}
+              >
+                {currentOption?.icon ?? startAdornment}
+              </Box>
+            ) : undefined
+          }
           MenuProps={{
             anchorOrigin: {
               vertical: 'bottom',

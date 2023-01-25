@@ -24,13 +24,25 @@ export interface FormikFormParams<T> {
    */
   formikConfig?: Partial<Omit<FormikConfig<any>, 'onSubmit'>>
   actions?: ActionProps
+  /**
+   * Indicates if the data is currently loading
+   *
+   * @default false
+   */
+  isLoading?: boolean
+  /**
+   * Indicates if the data is on readonly mode
+   *
+   * @default false
+   */
+  readonly?: boolean
 }
 
 export const useFormComposable = <T extends {}>(
   params: FormikFormParams<T>
 ): FormComposableState => {
   const feedback = useActionFeedback()
-  const { onSubmit, formikConfig } = params
+  const { onSubmit, formikConfig, isLoading, readonly } = params
   const validators = useRef<Record<string, ValidatorFnc>>({})
   const validate = useCallback(async (values) => {
     let errors = {}
@@ -107,6 +119,8 @@ export const useFormComposable = <T extends {}>(
     registerField,
     unregisterField,
     validateField,
-    actions: actions
+    actions: actions,
+    isLoading: isLoading ?? false,
+    readonly: readonly ?? false
   }
 }

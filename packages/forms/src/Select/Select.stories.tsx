@@ -5,6 +5,12 @@ import { Story } from '@storybook/react/types-6-0'
 import { Box } from '@mui/material'
 import { SelectClasses, SelectStyles } from './docs'
 import { withDesign } from 'storybook-addon-designs'
+import {
+  ContentCopy,
+  ContentCut,
+  ContentPaste,
+  SortByAlphaRounded
+} from '@mui/icons-material'
 
 export default {
   title: 'Forms/Select',
@@ -41,10 +47,12 @@ export const SelectStory: Story<SelectBasicProps> = (
 ) => {
   const [value, setvalue] = useState('')
   const [values, setvalues] = useState([])
+  console.log(values)
   return (
     <Select
       options={[]}
       {...args}
+      startAdornment={<SortByAlphaRounded fontSize='small' />}
       value={args.multiple ? undefined : value}
       values={args.multiple ? values : undefined}
       onChangeValue={(value) => setvalue(value)}
@@ -137,15 +145,18 @@ const options: Option[] = [
   },
   {
     key: 2,
-    label: 'test2'
+    label: 'test2',
+    icon: <ContentCut fontSize='small' />
   },
   {
     key: 3,
-    label: 'test3'
+    label: 'test3',
+    icon: <ContentCopy fontSize='small' />
   },
   {
     key: 4,
-    label: 'test4'
+    label: 'test4',
+    icon: <ContentPaste fontSize='small' />
   },
   {
     key: 5,

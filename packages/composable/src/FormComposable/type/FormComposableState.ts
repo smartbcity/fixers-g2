@@ -7,4 +7,6 @@ export type FormComposableState = Omit<
 > & {
   actions: FormAction[]
   validateField: (fieldName: string) => PotentialError
+  readonly: boolean
+  isLoading: boolean
 }

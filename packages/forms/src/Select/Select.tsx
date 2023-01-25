@@ -4,6 +4,7 @@ import {
   FormControl,
   FormHelperText,
   InputBaseComponentProps,
+  ListItemIcon,
   ListItemText,
   MenuItem,
   Select as MuiSelect,
@@ -26,6 +27,11 @@ export type SmartKey = string | number | boolean
 export type Option = {
   key: SmartKey
   label: string | number
+  /**
+   * The icon of the option only used for Select component.
+   * If the option is selected and the select is not multiple the icon is displayed in the Select Component.
+   */
+  icon?: React.ReactNode
   color?: string
 }
 
@@ -201,6 +207,7 @@ export const Select = React.forwardRef(
       styles,
       size = 'medium',
       multiple = false,
+      startAdornment,
       onClose,
       ...other
     } = props
@@ -225,8 +232,13 @@ export const Select = React.forwardRef(
     )
 
     const optionsMap = useMemo(
-      () => new Map(options.map((el) => [el.key, el.label])),
+      () => new Map<SmartKey, Option>(options.map((el) => [el.key, el])),
       [options]
+    )
+
+    const currentOption = useMemo(
+      () => (value ? optionsMap.get(value) : undefined),
+      [value, optionsMap]
     )
 
     const renderValue = useCallback(
@@ -239,12 +251,12 @@ export const Select = React.forwardRef(
         }
         if (Array.isArray(selected) && selected.length > 0) {
           return selected
-            .map((el) => optionsMap.get(el))
+            .map((el) => optionsMap.get(el)?.label)
             .filter((el) => el !== undefined)
             .join(', ')
         }
         if (!Array.isArray(selected)) {
-          return optionsMap.get(selected)
+          return optionsMap.get(selected)?.label
         }
         return ''
       },
@@ -270,17 +282,19 @@ export const Select = React.forwardRef(
 
     const optionsMemoized = useMemo(() => {
       return options.map((option) => (
+        //@ts-ignore
         <MenuItem
           data-value={option.key.toString()}
           className={defaultStyles.cx('AruiSelect-option', classes?.option)}
           style={styles?.option}
           key={option.key.toString()}
-          value={option.key.toString()}
+          value={option.key}
         >
           <CheckBox
             data-value={option.key.toString()}
             checked={values.indexOf(option.key) > -1 || value === option.key}
           />
+          {option.icon && <ListItemIcon>{option.icon}</ListItemIcon>}
           <ListItemText
             data-value={option.key.toString()}
             primary={option.label as string}
@@ -357,6 +371,7 @@ export const Select = React.forwardRef(
             multiple={multiple}
             IconComponent={selectIcon}
             onChange={onChangeMemoized}
+            startAdornment={currentOption?.icon ?? startAdornment}
             inputProps={inputProp}
             renderValue={renderValue}
             displayEmpty

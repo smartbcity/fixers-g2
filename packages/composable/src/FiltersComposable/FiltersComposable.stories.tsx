@@ -21,6 +21,7 @@ import {
 import { Typography } from '@mui/material'
 import { Route } from 'react-router-dom'
 import { QueryClient } from 'react-query'
+import { ArrowRightAltRounded, SortByAlphaRounded } from '@mui/icons-material'
 
 export default {
   title: 'Composable/FiltersComposable',
@@ -128,6 +129,57 @@ const Example = (args: any) => {
         filterStyleProps={{ color: 'default', variant: 'filled' }}
         formState={formState}
         actions={actions}
+        sortField={{
+          name: 'sort',
+          type: 'select',
+          label: 'Sort',
+          params: {
+            startAdornment: <SortByAlphaRounded fontSize='small' />,
+            displaySelected: true,
+            options: [
+              {
+                key: 'ascDate',
+                label: 'Date',
+                icon: (
+                  <ArrowRightAltRounded
+                    fontSize='small'
+                    sx={{ transform: 'rotate(-90deg)' }}
+                  />
+                )
+              },
+              {
+                key: 'descDate',
+                label: 'Date',
+                icon: (
+                  <ArrowRightAltRounded
+                    fontSize='small'
+                    sx={{ transform: 'rotate(90deg)' }}
+                  />
+                )
+              },
+              {
+                key: 'ascPrice',
+                label: 'Price',
+                icon: (
+                  <ArrowRightAltRounded
+                    fontSize='small'
+                    sx={{ transform: 'rotate(-90deg)' }}
+                  />
+                )
+              },
+              {
+                key: 'descPrice',
+                label: 'Price',
+                icon: (
+                  <ArrowRightAltRounded
+                    fontSize='small'
+                    sx={{ transform: 'rotate(90deg)' }}
+                  />
+                )
+              }
+            ]
+          }
+        }}
       />
       <Typography>{`current page: ${submittedFilters.page + 1}`}</Typography>
       <Button onClick={incrementPage}>+1 to page</Button>
