@@ -239,7 +239,9 @@ const DatePickerBase = (
         maxDate={maxDate}
         componentsProps={{
           actionBar: {
-            actions: ['cancel', 'clear']
+            actions: ['cancel', 'clear'],
+            //@ts-ignore
+            locale: locale
           }
         }}
         components={{
