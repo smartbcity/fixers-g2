@@ -49,11 +49,11 @@ export interface FiltersComposableBasicProps<
   /**
    * the fields of the form
    */
-  fields: FilterComposableField<ELEMENT_PARAMS>[]
+  fields: FilterComposableField<string, ELEMENT_PARAMS>[]
   /**
    * the sort field placed a the left and not included in the responsive behavior
    */
-  sortField?: FilterComposableField<ELEMENT_PARAMS>
+  sortField?: FilterComposableField<string, ELEMENT_PARAMS>
   /**
    * the state of the form provided by the hook `useForm`
    */
@@ -163,9 +163,9 @@ export const FiltersComposable = <RENDERER extends ElementRenderersConfig>(
   }, [])
 
   const sortedFields = useMemo(() => {
-    const allFields: FilterComposableField<RENDERER>[] = []
-    const mandatoryFields: FilterComposableField<RENDERER>[] = []
-    const nonMandatoryFields: FilterComposableField<RENDERER>[] = []
+    const allFields: FilterComposableField<string, RENDERER>[] = []
+    const mandatoryFields: FilterComposableField<string, RENDERER>[] = []
+    const nonMandatoryFields: FilterComposableField<string, RENDERER>[] = []
     fields.forEach((field) => {
       allFields.push(field)
       if (field.mandatory) {

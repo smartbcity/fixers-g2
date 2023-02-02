@@ -5,6 +5,7 @@ import {
 } from '../../ComposableRender'
 
 export type FilterComposableField<
+  Name extends string = string,
   ELEMENT_PARAMS extends ElementRenderersConfig = {}
 > = {
   /**
@@ -14,7 +15,7 @@ export type FilterComposableField<
   /**
    * the name of the field used to define it in the returned values
    */
-  name: string
+  name: Name
   /**
    * the displayed label of the field
    */
