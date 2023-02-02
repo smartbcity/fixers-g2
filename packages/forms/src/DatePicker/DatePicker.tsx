@@ -1,5 +1,4 @@
 import {
-  CalendarPickerView,
   DatePicker as MuiDatePicker,
   DatePickerProps as MuiDatePickerProps,
   LocalizationProvider
@@ -17,8 +16,10 @@ import {
   MergeMuiElementProps
 } from '@smartb/g2-themes'
 import { fr, enUS } from 'date-fns/locale'
+import { CustomActionBar } from './CustomActionBar'
 const dateFnsLocales = {
-  fr, enUS
+  fr,
+  enUS
 }
 
 const useStyles = makeG2STyles()((theme) => ({
@@ -121,8 +122,6 @@ export type DatePickerProps = MergeMuiElementProps<
   Omit<MuiDatePickerProps<Date, Date>, 'onChange' | 'renderInput'>,
   DatePickerBasicProps
 >
-
-const views: CalendarPickerView[] = ['day', 'month', 'year']
 
 const DatePickerBase = (
   props: DatePickerProps,
@@ -234,16 +233,17 @@ const DatePickerBase = (
     >
       <MuiDatePicker
         ref={ref}
-        views={views}
-        openTo='day'
         inputFormat={format.format}
         mask={format.mask}
         minDate={minDate}
         maxDate={maxDate}
         componentsProps={{
           actionBar: {
-            actions: ["clear"]
+            actions: ['cancel', 'clear']
           }
+        }}
+        components={{
+          ActionBar: CustomActionBar
         }}
         DialogProps={{ className: localStyles.classes.dialog }}
         disabled={disabled}

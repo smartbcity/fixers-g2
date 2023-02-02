@@ -1,8 +1,7 @@
 import {
   MobileDatePicker as MuiMobileDatePicker,
   DatePickerProps as MuiDatePickerProps,
-  LocalizationProvider,
-  CalendarPickerView
+  LocalizationProvider
 } from '@mui/x-date-pickers'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import React, { forwardRef, useCallback, useMemo, useState } from 'react'
@@ -21,12 +20,13 @@ import {
 import { Calendar } from '../assets/icons'
 import { ClearRounded } from '@mui/icons-material'
 import { fr, enUS } from 'date-fns/locale'
+import { CustomActionBar } from '../DatePicker/CustomActionBar'
 const dateFnsLocales = {
   fr,
   enUS
 }
 
-const useStyles = makeG2STyles()((theme) => ({
+const useStyles = makeG2STyles()({
   root: {
     position: 'relative',
     width: 'fit-content'
@@ -58,17 +58,10 @@ const useStyles = makeG2STyles()((theme) => ({
   calendarIconDisabled: {
     cursor: 'default'
   },
-  dialog: {
-    '& .MuiButton-root': {
-      background: theme.colors.primary,
-      padding: '3px 5px',
-      textTransform: 'lowercase'
-    }
-  },
   clear: {
     right: '30px'
   }
-}))
+})
 
 export interface FilterDatePickerClasses {
   input?: string
@@ -166,8 +159,6 @@ export type FilterDatePickerProps = MergeMuiElementProps<
   Omit<MuiDatePickerProps<Date, Date>, 'onChange' | 'renderInput'>,
   FilterDatePickerBasicProps
 >
-
-const views: CalendarPickerView[] = ['day', 'month', 'year']
 
 const FilterDatePickerBase = (
   props: FilterDatePickerProps,
@@ -312,7 +303,6 @@ const FilterDatePickerBase = (
         {...props}
         id={id}
         name={name}
-        onClick={!disabled ? onOpenMemoized : undefined}
         disabled={disabled}
         placeholder={variant === 'filled' ? label : undefined}
         color={color !== 'default' ? color : undefined}
@@ -341,8 +331,10 @@ const FilterDatePickerBase = (
         inputProps={{
           size: '5',
           ...textFieldProps?.inputProps,
-          ...props.inputProps
+          ...props.inputProps,
+          onClick: onOpenMemoized
         }}
+        onClick={onOpenMemoized}
       />
     )
   }
@@ -363,8 +355,6 @@ const FilterDatePickerBase = (
         <MuiMobileDatePicker
           ref={ref}
           label={variant === 'outlined' ? label : undefined}
-          views={views}
-          openTo='day'
           open={open}
           onOpen={onOpen}
           onClose={onCloseMemoized}
@@ -372,11 +362,13 @@ const FilterDatePickerBase = (
           mask={format.mask}
           minDate={minDate}
           maxDate={maxDate}
-          DialogProps={{ className: localStyles.classes.dialog }}
           componentsProps={{
             actionBar: {
-              actions: ['clear', 'cancel', 'accept']
+              actions: ['cancel', 'clear', 'accept']
             }
+          }}
+          components={{
+            ActionBar: CustomActionBar
           }}
           disabled={disabled}
           value={value ? value : null}
