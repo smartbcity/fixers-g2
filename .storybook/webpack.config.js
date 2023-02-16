@@ -1,3 +1,5 @@
+const path = require("path");
+
 module.exports = ({ config }) => {
   // Add SVGR Loader to load svg
   // ========================================================
@@ -21,7 +23,10 @@ module.exports = ({ config }) => {
         "@babel/plugin-proposal-nullish-coalescing-operator",
       ],
     },
-    include: [/node_modules\\react-leaflet/, /node_modules\\@react-leaflet/],
+    include: [
+      path.resolve(__dirname, "../node_modules/@react-leaflet"),
+      path.resolve(__dirname, "../node_modules/react-leaflet"),
+    ],
   });
   return config;
 };
