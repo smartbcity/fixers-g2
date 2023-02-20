@@ -4,3 +4,4 @@ export {
   MarkdownHighlighterProps
 } from './MarkdownHighlighter'
 export { DescriptedCode, DescriptedCodeProps } from './DescriptedCode'
+export { DocsTable, DocsTableProps } from './DocsTable'

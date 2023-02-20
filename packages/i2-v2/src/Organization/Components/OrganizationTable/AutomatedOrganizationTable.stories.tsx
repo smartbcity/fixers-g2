@@ -11,7 +11,7 @@ import { QueryClient, QueryClientProvider } from 'react-query'
 import { Organization } from '../OrganizationFactory'
 
 export default {
-  title: 'I2-V2/AutomatedOrganizationTable',
+  title: 'I2V2/AutomatedOrganizationTable',
   component: AutomatedOrganizationTable
 } as Meta
 

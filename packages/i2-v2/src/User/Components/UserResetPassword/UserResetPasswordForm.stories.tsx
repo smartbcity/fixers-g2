@@ -8,7 +8,7 @@ import { Story } from '@storybook/react/types-6-0'
 import { styles, classes } from '../../Domain'
 
 export default {
-  title: 'I2-V2/UserResetPasswordForm',
+  title: 'I2V2/UserResetPasswordForm',
   component: UserResetPasswordForm,
   argTypes: {
     classes: {

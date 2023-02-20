@@ -10,7 +10,7 @@ import {
 import { QueryClient, QueryClientProvider } from 'react-query'
 
 export default {
-  title: 'I2-V2/UserResetPasswordForm',
+  title: 'I2V2/UserResetPasswordForm',
   component: UserResetPasswordFormAutomated
 } as Meta
 

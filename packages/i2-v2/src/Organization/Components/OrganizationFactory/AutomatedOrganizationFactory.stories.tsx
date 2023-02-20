@@ -10,7 +10,7 @@ import { OrganizationFactoryBasicProps } from './OrganizationFactory'
 import { Button } from '@smartb/g2-components'
 
 export default {
-  title: 'I2-V2/AutomatedOrganizationFactory',
+  title: 'I2V2/AutomatedOrganizationFactory',
   component: AutomatedOrganizationFactory
 } as Meta
 

@@ -5,11 +5,10 @@ import { Story } from '@storybook/react/types-6-0'
 import { ArgsTable, PRIMARY_STORY, Subtitle } from '@storybook/addon-docs'
 import LinkTo from '@storybook/addon-links/react'
 import { Stack, Typography } from '@mui/material'
-import { Button } from '@smartb/g2-components'
 import { Organization } from '../OrganizationFactory'
 
 export default {
-  title: 'I2-V2/OrganizationTable',
+  title: 'I2V2/OrganizationTable',
   component: OrganizationTable,
   parameters: {
     docs: {

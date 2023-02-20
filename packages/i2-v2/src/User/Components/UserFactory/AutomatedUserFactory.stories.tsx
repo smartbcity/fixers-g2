@@ -12,7 +12,7 @@ import { Button } from '@smartb/g2-components'
 import { useUserFormState } from './useUserFormState'
 
 export default {
-  title: 'I2-V2/AutomatedUserFactory',
+  title: 'I2V2/AutomatedUserFactory',
   component: AutomatedUserFactory
 } as Meta
 
@@ -41,7 +41,7 @@ export const AutomatedUserFactoryStory: Story<AutomatedUserFactoryProps> = (
 }
 
 const Following = (args: AutomatedUserFactoryProps) => {
-  const [userId, setuserId] = useState<string | undefined>("1")
+  const [userId, setuserId] = useState<string | undefined>('1')
 
   const userFormState = useUserFormState({
     createUserOptions: {

@@ -24,6 +24,7 @@ export const parameters = {
       ],
     },
   },
+  viewMode: "docs",
 };
 
 G2ConfigBuilder({

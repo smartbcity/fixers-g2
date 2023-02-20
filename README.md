@@ -1,7 +1,7 @@
 # G2 libraries
 
-![](https://badgen.net/badge/React/16.13.1/purple)
-![](https://badgen.net/badge/@material-ui/4.11.3/green)
+![](https://badgen.net/badge/React/18.2.0/purple)
+![](https://badgen.net/badge/@mui%2Fmaterial/5.8.4/green)
 ![](https://badgen.net/npm/v/@smartb/g2-components/latest)
 ![](https://badgen.net/npm/types/tslib)
 

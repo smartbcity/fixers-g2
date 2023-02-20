@@ -5,24 +5,59 @@ import './font.css'
 
 const useStyles = makeG2STyles()({
   markdownBody: {
+    '& .sbdocs': {
+      fontFamily: "'Montserrat', sans-serif",
+      color: '#353945',
+      fontWeight: 500
+    },
+    '& code': {
+      fontFamily:
+        'ui-monospace,SFMono-Regular,SF Mono,Menlo,Consolas,Liberation Mono,monospace'
+    },
+    '& pre code': {
+      fontFamily: 'monospace'
+    },
     '& .sbdocs-p': {
-      margin: 0,
-      marginBottom: '10px',
-      fontSize: '14px'
+      margin: '0',
+      marginTop: '8px'
+    },
+    '& .sbdocs-h1, & .sbdocs-h2': {
+      fontSize: '2.25rem',
+      marginBottom: '20px',
+      padding: 'unset',
+      fontWeight: 700
+    },
+    '& .sbdocs-h2': {
+      fontSize: '1.625rem'
+    },
+    '& .sbdocs-h3': {
+      fontSize: '1.25rem',
+      fontWeight: 600
+    },
+    '& .sbdocs-h4': {
+      fontSize: '1rem',
+      fontWeight: 600
     },
     '& .sbdocs-h1, & .sbdocs-h2, & .sbdocs-h3, & .sbdocs-h4, & .sbdocs-h5, & .sbdocs-h6':
       {
-        marginTop: '20px',
-        marginBottom: '13px'
+        borderBottom: 'unset'
       },
-    '& .sbdocs-h2, & .sbdocs-h3, & .sbdocs-h4, & .sbdocs-h5, & .sbdocs-h6': {
-      borderBottom: '1px solid rgba(0,0,0,.1)'
+    '& .sbdocs-a:hover': {
+      textDecoration: 'underline'
+    },
+    '& .sbdocs-a code': {
+      color: '#4174b0'
+    },
+    '& .sbdocs-a': {
+      color: '#4174b0'
+    },
+    '& .sbdocs-li::marker': {
+      fontSize: '12px',
+      paddingBottom: '2px'
     },
     '& .sbdocs-hr': {
-      height: '.15em',
-      margin: '15px 0',
-      background: '#b7c0c9',
-      borderRadius: '20px',
+      height: '0px',
+      margin: '25px 0',
       border: 'none'
     },
     '& article': {
@@ -38,30 +73,11 @@ const useStyles = makeG2STyles()({
     '& blockquote': {
       margin: '10px 0'
     },
-    '& .sbdocs-a:hover': {
-      textDecoration: 'underline'
-    },
-    '& .sbdocs-a code': {
-      color: '#4174b0'
-    },
-    '& .sbdocs-a': {
-      color: '#4174b0'
-    },
     '& .sbdocs-wrapper': {
       padding: '2rem 15px'
     },
     '& .sbdocs-content': {
-      maxWidth: '1500px'
-    },
-    '& .sbdocs': {
-      fontFamily: "'Atkinson Hyperlegible', sans-serif"
-    },
-    '& code': {
-      fontFamily:
-        'ui-monospace,SFMono-Regular,SF Mono,Menlo,Consolas,Liberation Mono,monospace'
-    },
-    '& pre code': {
-      fontFamily: 'monospace'
+      maxWidth: '1200px'
     },
     '& .AruiDescriptedCode-root': {
       width: '100%',

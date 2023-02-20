@@ -6,7 +6,7 @@ import { Typography } from '@mui/material'
 import { QueryClient, QueryClientProvider } from 'react-query'
 
 export default {
-  title: 'I2-V2/MyOrganization',
+  title: 'I2V2/MyOrganization',
   component: MyOrganization
 } as Meta
 
