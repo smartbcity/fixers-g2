@@ -91,7 +91,9 @@ export const CodeHighlighter = (props: CodeHighlighterProps) => {
             language={language}
             style={selectedStyle}
             httpDefinitions={object as any}
-          />
+          >
+            {code ?? formatedObject ?? children}
+          </HttpDefinitionHighlighter>
         )
       default:
         return (
@@ -129,7 +131,7 @@ export const CodeHighlighter = (props: CodeHighlighterProps) => {
     >
       {title && (
         <Box
-          className={'AruiCodeHighlighter-titleContainer'}
+          className='AruiCodeHighlighter-titleContainer'
           sx={{
             width: '100%',
             padding: '8px 16px',
