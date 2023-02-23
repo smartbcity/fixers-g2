@@ -3,5 +3,8 @@ export {
   MarkdownHighlighter,
   MarkdownHighlighterProps
 } from './MarkdownHighlighter'
-export { DescriptedCode, DescriptedCodeProps } from './DescriptedCode'
+export {
+  SegmentedContainer,
+  SegmentedContainerProps
+} from './SegmentedContainer'
 export { DocsTable, DocsTableProps } from './DocsTable'

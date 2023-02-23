@@ -37,7 +37,7 @@ export const CodeHighlighter: Story<CodeHighlighterProps> = (
 ) => <AruiCodeHighlighter {...args} />
 
 CodeHighlighter.args = {
-  code: `function(arg: String) {
+  code: `function test(arg: String) {
     console.log(arg)
   }`,
   language: 'typescript',

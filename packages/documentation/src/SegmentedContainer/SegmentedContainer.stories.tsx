@@ -1,8 +1,8 @@
 import React from 'react'
 import {
-  DescriptedCode as AruiDescriptedCode,
-  DescriptedCodeProps
-} from './DescriptedCode'
+  SegmentedContainer as AruiSegmentedContainer,
+  SegmentedContainerProps
+} from './SegmentedContainer'
 import { Meta } from '@storybook/react'
 import { Story } from '@storybook/react/types-6-0'
 import { MarkdownHighlighter } from '../MarkdownHighlighter'
@@ -11,16 +11,16 @@ import md from '!raw-loader!./exampleMarkdown.md'
 import { CodeHighlighter } from '../CodeHighlighter'
 
 export default {
-  title: 'Documentation/DescriptedCode',
-  component: AruiDescriptedCode
+  title: 'Documentation/SegmentedContainer',
+  component: AruiSegmentedContainer
 } as Meta
 
-export const DescriptedCode: Story<DescriptedCodeProps> = (
-  args: DescriptedCodeProps
+export const SegmentedContainer: Story<SegmentedContainerProps> = (
+  args: SegmentedContainerProps
 ) => (
   <>
-    <AruiDescriptedCode {...args} />
-    <AruiDescriptedCode {...args} />
+    <AruiSegmentedContainer {...args} />
+    <AruiSegmentedContainer {...args} />
   </>
 )
 
@@ -46,9 +46,9 @@ const code = `{
     "uncategorized_text": null
   }`
 
-DescriptedCode.args = {
+SegmentedContainer.args = {
   leftElement: <MarkdownHighlighter markdown={md} />,
   rightElement: <CodeHighlighter code={code} title='Example' language='json' />
 }
 
-DescriptedCode.storyName = 'DescriptedCode'
+SegmentedContainer.storyName = 'SegmentedContainer'

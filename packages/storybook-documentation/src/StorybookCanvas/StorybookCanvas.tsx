@@ -18,12 +18,11 @@ const useStyles = makeG2STyles()({
       fontFamily: 'monospace'
     },
     '& .sbdocs-p': {
-      margin: '0',
-      marginTop: '8px'
+      margin: '8px 0'
     },
     '& .sbdocs-h1, & .sbdocs-h2': {
       fontSize: '2.25rem',
-      marginBottom: '20px',
+      marginBottom: '16px',
       padding: 'unset',
       fontWeight: 700
     },
@@ -31,6 +30,7 @@ const useStyles = makeG2STyles()({
       fontSize: '1.625rem'
     },
     '& .sbdocs-h3': {
+      marginBottom: '10px',
       fontSize: '1.25rem',
       fontWeight: 600
     },
@@ -57,18 +57,26 @@ const useStyles = makeG2STyles()({
     },
     '& .sbdocs-hr': {
       height: '0px',
-      margin: '25px 0',
-      border: 'none'
+      margin: '38px 0',
+      borderTop: '1px solid #EEEEEE'
     },
-    '& article': {
-      padding: '15px 0',
-      borderBottom: 'solid 1px #b7c0c9'
+    '& em': {
+      color: 'rgba(53, 57, 69, 0.75)',
+      fontWeight: 600
     },
-    '& article p:last-of-type': {
-      margin: 0
+    '& .spacer': {
+      margin: '38px 0',
+      height: '1px',
+      width: '100%'
     },
-    '& article:last-of-type': {
-      borderBottom: 'none'
+    '& .AruiSegmentedContainer-root .sbdocs-hr': {
+      margin: '24px 0'
+    },
+    '& .AruiSegmentedContainer-root .spacer': {
+      margin: '24px 0'
+    },
+    '& .AruiSegmentedContainer-root': {
+      margin: '20px 0px'
     },
     '& blockquote': {
       margin: '10px 0'
@@ -78,15 +86,6 @@ const useStyles = makeG2STyles()({
     },
     '& .sbdocs-content': {
       maxWidth: '1200px'
-    },
-    '& .AruiDescriptedCode-root': {
-      width: '100%',
-      marginLeft: '-15px',
-      padding: '20px 15px',
-      marginBottom: '30px'
-    },
-    '& .sbdocs-content .AruiDescriptedCode-root:nth-of-type(odd)': {
-      background: '#fafcfc'
     }
   }
 })

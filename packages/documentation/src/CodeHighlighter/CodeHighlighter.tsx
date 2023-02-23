@@ -1,59 +1,35 @@
+import { cx } from '@emotion/css'
 import { Box, Typography } from '@mui/material'
-import { BasicProps, makeG2STyles } from '@smartb/g2-themes'
+import { BasicProps } from '@smartb/g2-themes'
 import React, { useMemo } from 'react'
 import SyntaxHighlighter, {
   SyntaxHighlighterProps
 } from 'react-syntax-highlighter'
 import {
-  androidstudio,
   atomOneDark,
   atomOneLight,
-  darcula,
   gruvboxLight,
-  hopscotch,
-  tomorrow,
-  tomorrowNight
+  gruvboxDark
 } from 'react-syntax-highlighter/dist/esm/styles/hljs'
+import a11yDark from 'react-syntax-highlighter/dist/esm/styles/hljs/a11y-dark'
+import a11yLight from 'react-syntax-highlighter/dist/esm/styles/hljs/a11y-light'
 import { HttpDefinitionHighlighter } from '../HttpDefinitionHighlighter'
 
-const useStyles = makeG2STyles()({
-  root: {
-    '& pre': {
-      borderRadius: '4px',
-      margin: 0
-    }
-  },
-  rootWithTitle: {
-    '& pre': {
-      borderTopLeftRadius: 0,
-      borderTopRightRadius: 0
-    }
-  },
-  titleContainer: {
-    background: '#e9e9e9',
-    color: 'rgb(40, 44, 52, 0.7)',
-    borderTopLeftRadius: '4px',
-    borderTopRightRadius: '4px'
-  }
-})
+export type Sytles =
+  | 'a11y-dark'
+  | 'a11y-light'
+  | 'atome-one-light'
+  | 'atome-one-dark'
+  | 'gruvbox-dark'
+  | 'gruvbox-light'
 
-export type darkStyles =
-  | 'atomOneDark'
-  | 'androidstudio'
-  | 'darcula'
-  | 'hopscotch'
-  | 'tomorrowNight'
-export type lightStyles = 'atomOneLight' | 'gruvboxLight' | 'tomorrow'
-
-const highlightStyleMap = new Map<darkStyles | lightStyles, any>([
-  ['atomOneDark', atomOneDark],
-  ['androidstudio', androidstudio],
-  ['atomOneLight', atomOneLight],
-  ['darcula', darcula],
-  ['gruvboxLight', gruvboxLight],
-  ['hopscotch', hopscotch],
-  ['tomorrowNight', tomorrowNight],
-  ['tomorrow', tomorrow]
+const highlightStyleMap = new Map<Sytles, any>([
+  ['atome-one-dark', atomOneDark],
+  ['atome-one-light', atomOneLight],
+  ['a11y-dark', a11yDark],
+  ['a11y-light', a11yLight],
+  ['gruvbox-light', gruvboxLight],
+  ['gruvbox-dark', gruvboxDark]
 ])
 
 export interface CodeHighlighterProps
@@ -74,9 +50,9 @@ export interface CodeHighlighterProps
   language?: string
   /**
    * the stye of the highlight
-   * @default "atomOneDark"
+   * @default "a11y-dark"
    */
-  highlightStyle?: darkStyles | lightStyles
+  highlightStyle?: Sytles
   /**
    * the title displayed in an header above the component
    */
@@ -88,7 +64,7 @@ export const CodeHighlighter = (props: CodeHighlighterProps) => {
     code,
     children,
     object,
-    highlightStyle = 'atomOneDark',
+    highlightStyle = 'atome-one-dark',
     title,
     style,
     className,
@@ -96,7 +72,6 @@ export const CodeHighlighter = (props: CodeHighlighterProps) => {
     language = 'typescript',
     ...other
   } = props
-  const { classes, cx } = useStyles()
   const formatedObject = useMemo(() => {
     if (!object) return
     return JSON.stringify(object, undefined, 2)
@@ -134,25 +109,38 @@ export const CodeHighlighter = (props: CodeHighlighterProps) => {
   return (
     <Box
       style={style}
-      className={cx(
-        classes.root,
-        title && classes.rootWithTitle,
-        'AruiCodeHighlighter-root',
-        className
-      )}
+      className={cx('AruiCodeHighlighter-root', className)}
+      sx={{
+        '& pre': {
+          borderRadius: '8px',
+          border: '1px solid #EEEEEE',
+          margin: 0,
+          padding: '16px !important',
+          ...(title
+            ? {
+                borderTopLeftRadius: 0,
+                borderTopRightRadius: 0,
+                borderTop: '0px solid #EEEEEE'
+              }
+            : {})
+        }
+      }}
       id={id}
     >
       {title && (
         <Box
-          className={cx(
-            classes.titleContainer,
-            'AruiCodeHighlighter-titleContainer'
-          )}
-          width='100%'
-          padding='0.4em 0.5em'
-          boxSizing='border-box'
+          className={'AruiCodeHighlighter-titleContainer'}
+          sx={{
+            width: '100%',
+            padding: '8px 16px',
+            boxSizing: 'border-box',
+            background: '#FEF9EE',
+            borderTopLeftRadius: '8px',
+            borderTopRightRadius: '8px',
+            border: '1px solid #EEEEEE'
+          }}
         >
-          <Typography className='AruiCodeHighlighter-title' variant='body2'>
+          <Typography className='AruiCodeHighlighter-title' variant='subtitle1'>
             {title}
           </Typography>
         </Box>

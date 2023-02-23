@@ -23,17 +23,19 @@ export const DocsTable = (props: DocsTableProps) => {
         (index + 1) % gridColumnNumber === 0 &&
         index + 1 < children.length
       if (canDisplayDivider) dividerCount++
+      const dividerIndex = (index + 1) / gridColumnNumber + dividerCount
       return (
         <Fragment key={index}>
           {child}
           {canDisplayDivider && (
             <Divider
               sx={{
-                gridArea: `${
-                  (index + 1) / gridColumnNumber + dividerCount
-                } / 1 / ${(index + 1) / gridColumnNumber + dividerCount} / ${
-                  gridColumnNumber + 1
-                }`,
+                gridArea: {
+                  xs: 'unset',
+                  sm: `${dividerIndex} / 1 / ${dividerIndex} / ${
+                    gridColumnNumber + 1
+                  }`
+                },
                 width: 'calc(100% + 48px)',
                 marginLeft: '-24px',
                 borderColor: '#EEEEEE'
@@ -51,7 +53,7 @@ export const DocsTable = (props: DocsTableProps) => {
         display: 'grid',
         gridTemplateColumns: {
           xs: 'repeat(1, 1fr)',
-          md: `repeat(${gridColumnNumber}, 1fr)`
+          sm: `repeat(${gridColumnNumber}, 1fr)`
         },
         gridColumnGap: '50px',
         gridRowGap: '16px',
@@ -59,7 +61,8 @@ export const DocsTable = (props: DocsTableProps) => {
         borderRadius: '8px',
         border: '1px solid #EEEEEE',
         background: '#FFFEFB',
-        alignItems: 'center'
+        alignItems: 'center',
+        margin: '8px 0'
       }}
     >
       {display}
