@@ -1,11 +1,21 @@
 export interface SSM {
   name: string
-  transtions: SSMTransition[]
+  transitions: SSMTransition[]
+  version?: string
 }
 
 export interface SSMTransition {
-  from: number
-  to: number
-  role: string
-  action: string
+  from?: SSMPosition
+  to: SSMPosition
+  role: SSMObject
+  action: SSMObject
+  result?: string
+}
+
+export interface SSMPosition extends SSMObject {
+  position: number
+}
+
+export interface SSMObject {
+  name: string
 }

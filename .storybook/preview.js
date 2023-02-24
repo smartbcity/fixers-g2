@@ -1,6 +1,6 @@
 import React from "react";
 import { ThemeContextProvider } from "@smartb/g2-themes";
-import { StorybookCanvas } from "../packages/storybook-documentation/src/StorybookCanvas";
+import { StorybookCanvas } from "@smartb/g2-storybook-documentation";
 import { G2ConfigBuilder } from "../packages/providers/src";
 
 import "./default.css";

@@ -43,7 +43,7 @@ interface Data {
 
 export interface Transition {
   label: string
-  from: number
+  from?: number
   to: number
 }
 
@@ -82,27 +82,54 @@ export const AutomateViewer = (props: AutomateViewerProps) => {
   const data: Data = useMemo(() => {
     const selfRefSize: number[] = []
     const nodes: Node[] = []
+    let hasUndefinedFrom = false
     let nbNodes = 0
     const edges: Edge[] = transitions.map((transition, index) => {
       const from = transition.from
       const to = transition.to
-      if (!selfRefSize[from]) selfRefSize[from] = 0
+      if (from !== undefined && !selfRefSize[from]) selfRefSize[from] = 0
       if (from === to) selfRefSize[from] += 0.2
+      if (from == undefined) hasUndefinedFrom = true
       nbNodes = Math.max(nbNodes, Math.max(to + 1))
       return {
         label: transition.label,
         id: index,
-        from: from,
+        from: from ?? -1,
         to: to,
         arrows: 'to',
         selfReference: {
           size: 40,
-          angle: Math.PI / selfRefSize[from],
+          angle: Math.PI / selfRefSize[from ?? 0],
           renderBehindTheNode: false
         },
         ...(customEdge ? customEdge(transition, index) : undefined)
       }
     })
+    if (hasUndefinedFrom) {
+      nodes.push({
+        id: -1,
+        shape: 'circle',
+        color: {
+          border: theme.colors.secondary,
+          background: theme.colors.secondary,
+          highlight: {
+            border: theme.colors.secondary,
+            background: theme.colors.secondary
+          },
+          hover: {
+            background: theme.colors.secondary,
+            border: theme.colors.secondary
+          }
+        },
+        borderWidth: 0,
+        margin: {
+          bottom: 3,
+          left: 3,
+          right: 3,
+          top: 3
+        }
+      })
+    }
     for (let i = 0; i < nbNodes; i++) {
       nodes.push({
         id: i,

@@ -1,7 +1,6 @@
 import React from 'react'
 import { makeG2STyles } from '@smartb/g2-themes'
 import { DocsContainer } from '@storybook/addon-docs'
-import './font.css'
 
 const useStyles = makeG2STyles()({
   markdownBody: {
