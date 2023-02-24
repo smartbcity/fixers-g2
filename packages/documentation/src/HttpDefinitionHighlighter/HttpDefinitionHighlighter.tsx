@@ -19,7 +19,8 @@ export interface HttpDefinition {
   url: string
 }
 
-export interface HttpDefinitionHighlighterProps extends SyntaxHighlighterProps {
+export interface HttpDefinitionHighlighterProps
+  extends Omit<SyntaxHighlighterProps, 'children'> {
   httpDefinitions: HttpDefinition[]
 }
 

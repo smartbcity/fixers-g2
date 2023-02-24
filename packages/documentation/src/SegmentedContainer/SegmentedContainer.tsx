@@ -42,7 +42,9 @@ export const SegmentedContainer = (props: SegmentedContainerProps) => {
       <Box
         className={'AruiSegmentedContainer-leftContainer'}
         sx={{
-          flex: leftSegmentPortion
+          width: `calc(${leftSegmentPortion * 100}% - ${
+            50 * (1 - leftSegmentPortion)
+          }px)`
         }}
       >
         {description}
@@ -54,7 +56,9 @@ export const SegmentedContainer = (props: SegmentedContainerProps) => {
           position: 'sticky',
           top: '16px',
           alignSelf: 'flex-start',
-          flex: 1 - leftSegmentPortion
+          width: `calc(${(1 - leftSegmentPortion) * 100}% - ${
+            50 * leftSegmentPortion
+          }px)`
         }}
       >
         {rightElement}

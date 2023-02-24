@@ -91,9 +91,7 @@ export const CodeHighlighter = (props: CodeHighlighterProps) => {
             language={language}
             style={selectedStyle}
             httpDefinitions={object as any}
-          >
-            {code ?? formatedObject ?? children}
-          </HttpDefinitionHighlighter>
+          />
         )
       default:
         return (

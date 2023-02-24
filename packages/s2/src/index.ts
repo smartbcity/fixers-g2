@@ -11,3 +11,4 @@ export {
   S2AutomateViewerProps
 } from './S2Automate'
 export { Mermaid, MermaidProps } from './Mermaid'
+export { SsmViewer, SsmViewerProps } from './SsmViewer'
