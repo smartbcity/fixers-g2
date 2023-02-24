@@ -1,6 +1,6 @@
 {
   "name": "@smartb/g2-documentation",
-  "version": "1.0.0-alpha.130",
+  "version": "1.0.0-alpha.131",
   "description": "Components for documentation",
   "author": "SmartB",
   "license": "Apache-2.0",
@@ -28,13 +28,13 @@
   "peerDependencies": {
     "@mui/material": "^5.8.4",
     "@types/react": "^18.0.12",
-    "@types/stringify-object": "^4.0.1",
     "@types/react-syntax-highlighter": "^15.5.6",
+    "@types/stringify-object": "^4.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
   "dependencies": {
-    "@smartb/g2-themes": "1.0.0-alpha.130",
+    "@smartb/g2-themes": "1.0.0-alpha.131",
     "github-markdown-css": "^4.0.0",
     "react-markdown": "^6.0.2",
     "react-syntax-highlighter": "^15.5.0",
