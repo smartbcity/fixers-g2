@@ -120,6 +120,8 @@ export const ReadonlyRenderer = (props: Partial<InputFormProps>) => {
   return (
     <Stack
       direction='row'
+      alignItems='center'
+      flexWrap='wrap'
       sx={{
         gap: (theme) => theme.spacing(0.5)
       }}
