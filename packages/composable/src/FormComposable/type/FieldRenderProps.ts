@@ -59,7 +59,10 @@ const useFormProps = (
     label: field.label,
     name: field.name,
     error: !!error,
-    errorMessage: error as string,
+    errorMessage:
+      field.sharedNameIndex && field.sharedNameIndex !== 0
+        ? ''
+        : (error as string),
     isLoading: isLoading === true ? isLoading : formState.isLoading,
     className: cx(classes?.field, 'AruiForm-field', field.params?.className),
     sharedNameIndex: field.sharedNameIndex,
@@ -94,7 +97,7 @@ export const useFieldRenderProps = (
   useEffect(() => {
     const { registerField, unregisterField } = formState
     fields.forEach((field) => {
-      if (!field.readonly) {
+      if (!field.readonly && field.validator) {
         const validator = field.validator
         registerField(field.name, validator)
       } else {

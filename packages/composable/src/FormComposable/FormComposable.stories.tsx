@@ -381,6 +381,10 @@ const fullFields: AllFormComposableField[] = [
       rows: '4',
       multiline: true,
       placeholder: 'Explain here if it is an other reason'
+    },
+    validator: (value) => {
+      const array = value ?? []
+      if (!array[0] || !array[1]) return 'Answer the question'
     }
   },
   {
