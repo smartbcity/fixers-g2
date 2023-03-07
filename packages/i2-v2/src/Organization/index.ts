@@ -37,3 +37,5 @@ export {
 } from './Domain'
 
 export { MyOrganization } from './Components/MyOrganization'
+
+export { siretValidation } from './Validation/siret'
