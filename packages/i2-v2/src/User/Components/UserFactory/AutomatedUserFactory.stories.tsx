@@ -91,7 +91,14 @@ const Following = (args: AutomatedUserFactoryProps) => {
         {...args}
         userId={userId}
       />
-      <Button onClick={userFormState.formState.submitForm}>Validate</Button>
+      <Button
+        onClick={() => {
+          console.log('submit')
+          userFormState.formState.submitForm()
+        }}
+      >
+        Validate
+      </Button>
     </>
   )
 }

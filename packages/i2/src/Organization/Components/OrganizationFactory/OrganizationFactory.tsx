@@ -325,8 +325,8 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
         }}
       />
       {siretRef && (
+        // @ts-ignore
         <StyledPopover
-          // @ts-ignore
           open={openSiretInfo}
           onClose={onCloseSiretInfo}
           anchorEl={siretRef}

@@ -93,6 +93,7 @@ export const StorybookCanvas = ({ children, context }: any) => {
   const { classes } = useStyles()
   return (
     <div className={classes.markdownBody}>
+      {/* @ts-ignore */}
       <DocsContainer context={context}>{children}</DocsContainer>
     </div>
   )
