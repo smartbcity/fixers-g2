@@ -27,20 +27,20 @@
     "dist"
   ],
   "devDependencies": {
-    "@types/ramda": "^0.27.45",
+    "@types/ramda": "^0.28.23",
     "@types/react": "^18.0.28"
   },
   "peerDependencies": {
-    "@emotion/css": "^11.9.0",
-    "@emotion/react": "^11.9.3",
-    "@emotion/styled": "^11.9.3",
-    "@mui/material": "^5.8.4",
+    "@emotion/css": "^11.10.6",
+    "@emotion/react": "^11.10.6",
+    "@emotion/styled": "^11.10.6",
+    "@mui/material": "^5.11.12",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
   "dependencies": {
     "ramda": "^0.28.0",
-    "tinycolor2": "^1.4.2",
+    "tinycolor2": "^1.6.0",
     "tss-react": "^3.7.0"
   },
   "gitHead": "01582f4b620c1e44cab5a65394e29d95f66ddabb",

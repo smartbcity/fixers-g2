@@ -30,14 +30,14 @@
     "@types/react": "^18.0.28"
   },
   "peerDependencies": {
-    "@mui/material": "^5.8.4",
+    "@mui/material": "^5.11.12",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-query": "^3.39.1"
   },
   "dependencies": {
     "@mantine/hooks": "^4.2.12",
-    "@mui/icons-material": "^5.8.4",
+    "@mui/icons-material": "^5.11.11",
     "@smartb/g2-components": "1.0.0-alpha.138",
     "@smartb/g2-composable": "1.0.0-alpha.138",
     "@smartb/g2-forms": "1.0.0-alpha.138",

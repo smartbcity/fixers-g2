@@ -31,7 +31,7 @@
     "@types/stringify-object": "^4.0.1"
   },
   "peerDependencies": {
-    "@mui/material": "^5.8.4",
+    "@mui/material": "^5.11.12",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
