@@ -7,7 +7,11 @@ import { SwapHoriz } from '@mui/icons-material'
 import { EditButton } from './EditButton'
 import { DeleteButton } from './DeleteButton'
 import { BackButton } from './BackButton'
+import { LinkButton } from './LinkButton'
 import { withDesign } from 'storybook-addon-designs'
+import { Router } from '@smartb/g2-providers'
+import { Route } from 'react-router-dom'
+import { BrowserRouter } from 'react-router-dom'
 
 export default {
   title: 'Components/Button',
@@ -152,12 +156,17 @@ export const buttonExtend: Story = () => {
     href: '/?path=/docs/components-button--button-extend'
   }
   return (
-    <AruiButton<ComponentPropsType>
-      component={'a'}
-      componentProps={componentProps}
-    >
-      Link Button
-    </AruiButton>
+    <Box display='flex' justifyContent='space-around'>
+      <AruiButton<ComponentPropsType>
+        component={'a'}
+        componentProps={componentProps}
+      >
+        Standard Link Button
+      </AruiButton>
+      <BrowserRouter>
+        <LinkButton to='/'>react router Link Button</LinkButton>
+      </BrowserRouter>
+    </Box>
   )
 }
 
