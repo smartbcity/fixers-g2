@@ -1,7 +1,9 @@
 import { Box } from '@mui/material'
 import React, { useCallback } from 'react'
-import { Pagination as MuiPagination } from '@mui/material'
-import { PaginationProps as MuiPaginationProps } from '@mui/lab'
+import {
+  Pagination as MuiPagination,
+  PaginationProps as MuiPaginationProps
+} from '@mui/material'
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 import { cx } from '@emotion/css'
 
