@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
-import { styled } from '@mui/material/styles'
-import { AppBar, Tab, Tabs } from '@mui/material'
+import { AppBar, Tab, Tabs, styled } from '@mui/material'
 import { BasicProps, makeG2STyles } from '@smartb/g2-themes'
 
 const useStyles = makeG2STyles()({

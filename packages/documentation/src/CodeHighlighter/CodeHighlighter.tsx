@@ -7,9 +7,7 @@ import SyntaxHighlighter, {
 } from 'react-syntax-highlighter'
 import {
   atomOneDark,
-  atomOneLight,
-  gruvboxLight,
-  gruvboxDark
+  atomOneLight
 } from 'react-syntax-highlighter/dist/esm/styles/hljs'
 import a11yDark from 'react-syntax-highlighter/dist/esm/styles/hljs/a11y-dark'
 import a11yLight from 'react-syntax-highlighter/dist/esm/styles/hljs/a11y-light'
@@ -27,9 +25,7 @@ const highlightStyleMap = new Map<Sytles, any>([
   ['atome-one-dark', atomOneDark],
   ['atome-one-light', atomOneLight],
   ['a11y-dark', a11yDark],
-  ['a11y-light', a11yLight],
-  ['gruvbox-light', gruvboxLight],
-  ['gruvbox-dark', gruvboxDark]
+  ['a11y-light', a11yLight]
 ])
 
 export interface CodeHighlighterProps

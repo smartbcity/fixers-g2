@@ -1,8 +1,7 @@
 import React from 'react'
 import { Box, InputLabel } from '@mui/material'
 import { cx } from '@emotion/css'
-import { DropPicture } from '@smartb/g2-components'
-import { DropPictureProps } from '@smartb/g2-components/src'
+import { DropPicture, DropPictureProps } from '@smartb/g2-components'
 
 // TODO Need to be reviewed
 export const DropZonePicture = (drop: Partial<DropPictureProps>) => {

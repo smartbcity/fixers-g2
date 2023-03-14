@@ -3,7 +3,7 @@ import React, { useMemo } from 'react'
 import { FsFile } from '../../Domain'
 import { cx } from '@emotion/css'
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
-import { AutoCompleteBasicProps } from '@smartb/g2-forms/src/AutoComplete'
+import { AutoCompleteProps } from '@smartb/g2-forms'
 import { ImageListProps } from '@mui/material/ImageList/ImageList'
 
 export interface GalleryClasses {
@@ -18,7 +18,7 @@ export interface GalleryStyles {
 
 export type GridProps<T = any> = MergeMuiElementProps<
   ImageListProps,
-  AutoCompleteBasicProps<T>
+  AutoCompleteProps<T>
 >
 
 export interface GalleryProps extends BasicProps {
@@ -70,8 +70,9 @@ export const Gallery = (props: GalleryProps) => {
             className={cx('AruiGallery-image', classes?.image)}
             key={file.path.name}
             src={file.url}
-            alt={`The image ${file.path.name.split('_')[1]
-              } of the gallery ${galleryName}`}
+            alt={`The image ${
+              file.path.name.split('_')[1]
+            } of the gallery ${galleryName}`}
             loading='lazy'
           />
         )
@@ -83,8 +84,9 @@ export const Gallery = (props: GalleryProps) => {
             <img
               className={cx('AruiGallery-image', classes?.image)}
               src={file.url}
-              alt={`The image ${file.path.name.split('_')[1]
-                } of the gallery ${galleryName}`}
+              alt={`The image ${
+                file.path.name.split('_')[1]
+              } of the gallery ${galleryName}`}
               loading='lazy'
             />
           </ImageListItem>
@@ -113,6 +115,7 @@ export const Gallery = (props: GalleryProps) => {
       </Stack>
     )
   return (
+    //@ts-ignore
     <ImageList
       {...other}
       variant='masonry'

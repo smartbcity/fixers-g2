@@ -33,10 +33,12 @@
     "@mui/material": "^5.11.12",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-query": "^3.39.1"
+    "@emotion/css": "^11.10.6"
   },
   "dependencies": {
-    "@mantine/hooks": "^4.2.12"
+    "@mantine/hooks": "^4.2.12",
+    "react-query": "^3.39.1",
+    "i18next": "^22.4.11"
   },
   "publishConfig": {
     "@smartb:registry": "https://gitlab.smartb.city/api/v4/projects/127/packages/npm/"

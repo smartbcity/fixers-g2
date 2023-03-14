@@ -5,7 +5,7 @@ import {
 } from './FilterDatePicker'
 import { Meta } from '@storybook/react'
 import { Story } from '@storybook/react/types-6-0'
-import { addDays } from 'date-fns'
+import addDays from 'date-fns/addDays'
 import { Box } from '@mui/material'
 
 export default {

@@ -41,6 +41,7 @@
   "dependencies": {
     "ramda": "^0.28.0",
     "tinycolor2": "^1.6.0",
+    "@emotion/cache": "^11.10.6",
     "tss-react": "^3.7.0"
   },
   "gitHead": "01582f4b620c1e44cab5a65394e29d95f66ddabb",

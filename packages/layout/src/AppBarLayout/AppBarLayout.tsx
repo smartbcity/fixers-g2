@@ -1,7 +1,7 @@
 import React from 'react'
 import { AppBar as MuiAppBar } from '@mui/material'
 import { AppBarProps as MuiAppBarProps, Box, Toolbar } from '@mui/material'
-import MenuIcon from '@mui/icons-material/Menu'
+import { Menu } from '@mui/icons-material'
 import { IconButton } from '@mui/material'
 import {
   BasicProps,
@@ -79,7 +79,7 @@ export const AppBarLayout = (props: AppBarLayoutProps) => {
             onClick={onDrawerOpen}
             size='large'
           >
-            <MenuIcon
+            <Menu
               className={defaultStyles.cx(
                 'AruiAppBar-menuIcon',
                 classes?.menuIcon
@@ -129,7 +129,7 @@ export const AppBarLayout = (props: AppBarLayoutProps) => {
             onClick={onDrawerOpen}
             size='large'
           >
-            <MenuIcon
+            <Menu
               className={defaultStyles.cx(
                 'AruiAppBar-menuIcon',
                 classes?.menuIcon

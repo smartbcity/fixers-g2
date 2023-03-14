@@ -5,6 +5,7 @@ import image from "@rollup/plugin-image";
 import json from "rollup-plugin-json";
 import svgr from "@svgr/rollup";
 import postcss from "rollup-plugin-postcss";
+import analyze from "rollup-plugin-analyzer";
 
 const getGlobal = (localPackageJson) => {
   const externalsDependencies = Object.keys(
@@ -15,7 +16,7 @@ const getGlobal = (localPackageJson) => {
     "react-dom": "ReactDOM",
   };
   return {
-    external: [...externalsDependencies],
+    external: [...externalsDependencies, "tslib"],
     output: [
       {
         file: localPackageJson.main,
@@ -43,6 +44,7 @@ const getGlobal = (localPackageJson) => {
       json(),
       svgr(),
       postcss(),
+      // analyze()
     ],
   };
 };
