@@ -27,8 +27,7 @@ export const TableContainer = styled(BasicTableContainer)((props) => {
   const { variant, theme, expandInElevatedRow } = props
   const comunStyles = {
     '& .AruiTable-actionColumn': {
-      maxWidth: '65px',
-      width: '20px'
+      maxWidth: '65px'
     },
     '& .AruiTable-pagination': {
       marginTop: '30px'

@@ -7,22 +7,22 @@ import {
   TableOptions,
   ColumnDef,
   Table,
-  RowModel,
-  Row
+  RowModel
 } from '@tanstack/react-table'
 import React, { useMemo } from 'react'
 import { Arrow } from '../icons'
 
+export type G2ColumnDef<Data extends {}> = ColumnDef<Data> & {
+  className?: string
+  style?: React.CSSProperties
+}
+
 interface UseTableOptions<Data extends {}>
-  extends Omit<TableOptions<Data>, 'getCoreRowModel'> {
+  extends Omit<TableOptions<Data>, 'getCoreRowModel' | 'columns'> {
   /**
-   * @default false
+   * The columns to display in the table
    */
-  isExpandable?: boolean
-  /**
-   * @default false
-   */
-  isSelectabale?: boolean
+  columns: G2ColumnDef<Data>[]
   /**
    * The poistion in the row of the expand icon
    * @default 'start'
@@ -37,10 +37,6 @@ interface UseTableOptions<Data extends {}>
    * @default false
    */
   noToggleAllPageRowsSelected?: boolean
-  /**
-   * Do not display the checkbox return false.
-   */
-  isSelectableRow?: (rowIds: Row<Data>) => boolean
   getCoreRowModel?: (table: Table<any>) => () => RowModel<any>
 }
 
@@ -49,22 +45,24 @@ export const useTable = <Data extends {}>(
 ): Table<Data> => {
   const {
     columns,
-    isExpandable = false,
-    isSelectabale = false,
+    enableExpanding = false,
+    enableRowSelection = false,
     expandIconPosition = 'start',
     expandIcon,
     noToggleAllPageRowsSelected = false,
-    isSelectableRow,
     ...other
   } = options
 
   const extendedColumns = useMemo(() => {
-    const expanderRow: ColumnDef<Data> = {
+    const expanderRow: G2ColumnDef<Data> = {
       id: 'expander',
       cell: ({ row }) => {
         return (
           <div onClick={(e) => e.stopPropagation()}>
-            <IconButton className='AruiTable-actionColumn'>
+            <IconButton
+              className='AruiTable-actionColumn'
+              onClick={() => row.toggleExpanded()}
+            >
               <Box
                 sx={{
                   transform:
@@ -96,8 +94,10 @@ export const useTable = <Data extends {}>(
       className: 'AruiTable-actionColumn'
     }
     return [
-      ...(isExpandable && expandIconPosition === 'start' ? [expanderRow] : []),
-      ...(isSelectabale
+      ...(enableExpanding && expandIconPosition === 'start'
+        ? [expanderRow]
+        : []),
+      ...(enableRowSelection
         ? [
             {
               id: 'selection',
@@ -107,45 +107,44 @@ export const useTable = <Data extends {}>(
                   <div />
                 ) : (
                   <CheckBox
-                    onChange={(_, value) =>
+                    onChange={(_, value) => {
                       table.toggleAllPageRowsSelected(value)
-                    }
+                    }}
+                    checked={table.getIsAllRowsSelected()}
                   />
                 )
               },
               cell: ({ row }) => {
-                const isSelectable = isSelectableRow
-                  ? isSelectableRow(row)
-                  : true
+                if (!row.getCanSelect()) return undefined
                 return (
-                  isSelectable && (
-                    <CheckBox
-                      onChange={(_, value) => row.toggleSelected(value)}
-                      onClick={(event) => event.stopPropagation()}
-                    />
-                  )
+                  <CheckBox
+                    onChange={(_, value) => row.toggleSelected(value)}
+                    checked={row.getIsSelected()}
+                    onClick={(event) => event.stopPropagation()}
+                  />
                 )
               },
               className: 'AruiTable-actionColumn'
-            } as ColumnDef<Data>
+            } as G2ColumnDef<Data>
           ]
         : []),
       ...columns,
-      ...(isExpandable && expandIconPosition === 'end' ? [expanderRow] : [])
+      ...(enableExpanding && expandIconPosition === 'end' ? [expanderRow] : [])
     ]
   }, [
     columns,
-    isExpandable,
-    isSelectabale,
+    enableExpanding,
+    enableRowSelection,
     expandIconPosition,
     expandIcon,
-    noToggleAllPageRowsSelected,
-    isSelectableRow
+    noToggleAllPageRowsSelected
   ])
 
   return useReactTable({
     getCoreRowModel: getCoreRowModel(),
     getExpandedRowModel: getExpandedRowModel(),
+    enableExpanding,
+    enableRowSelection,
     ...other,
     columns: extendedColumns
   })

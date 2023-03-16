@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Meta } from '@storybook/react'
 import { TableV2 as AruiTableV2, TableV2BasicProps } from './TableV2'
-import { useTable } from './useTable'
+import { G2ColumnDef, useTable } from './useTable'
 import { Story } from '@storybook/react/types-6-0'
 import { Box, Button, Divider, Stack, Typography } from '@mui/material'
 import { Info } from '@mui/icons-material'
@@ -80,7 +80,10 @@ export const TableV2: Story<TableV2BasicProps<Data>> = (
   const [page, setPage] = useState<number>(1)
   const tableState = useTable({
     data: page === 1 ? data1 : data2,
-    columns: columns
+    columns: columns,
+    enableExpanding: true,
+    enableRowSelection: true,
+    getRowId: (row) => row.id
   })
   return (
     <AruiTableV2
@@ -341,7 +344,7 @@ export const AxessExample: Story = () => {
     }
   ]
 
-  const axessColumns: ColumnDef<AxessData>[] = [
+  const axessColumns: G2ColumnDef<AxessData>[] = [
     {
       header: 'Protocol',
       id: 'protocol',
@@ -411,7 +414,9 @@ export const AxessExample: Story = () => {
   ]
   const tableState = useTable({
     data: axessData,
-    columns: axessColumns
+    columns: axessColumns,
+    noToggleAllPageRowsSelected: true,
+    enableRowSelection: true
   })
   return (
     <Stack
@@ -425,21 +430,21 @@ export const AxessExample: Story = () => {
         '& .marketColumn': {
           textAlign: 'right'
         },
-        '& .AruiTableV2-tablecell.dataColumn': {
+        '& .AruiTable-tableCell.dataColumn': {
           background: '#F2F3F5'
         },
-        '& .AruiTableV2-tableheaderRow': {
+        '& .AruiTable-tableHeaderRow': {
           background: '#404A68',
           color: 'white'
         },
-        '& .AruiTableV2-tableheadercell': {
+        '& .AruiTable-tableHeaderCell': {
           color: 'white'
         },
-        '& .AruiTableV2-tablefootercell.dataColumn': {
+        '& .AruiTable-tableFooterCell.dataColumn': {
           background: '#404A68',
           color: 'white'
         },
-        '.AruiTableV2-rowHoveredComponentContainer': {
+        '.AruiTable-rowHoveredComponentContainer': {
           width: 'fit-content',
           paddingRight: '10px',
           paddingLeft: '50px',
@@ -458,8 +463,7 @@ export const AxessExample: Story = () => {
         tableState={tableState}
         getRowId={(row) => row.id}
         variant='grounded'
-        noToggleAllPageRowsSelected
-        withfooter
+        withFooter
         renderRowHoveredComponent={() => (
           <Stack direction='row' spacing={2} alignItems='center' height='100%'>
             <Button>Buy</Button>

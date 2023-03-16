@@ -6,8 +6,7 @@ import { TableContainer } from '../Table/TableContainer'
 import { cx } from '@emotion/css'
 import { ElevatedLoading } from '../Table/ElevatedLoading'
 import { GroundedLoading } from '../Table/GroundedLoading'
-import { ElevatedBase } from './ElevatedBase'
-import { GroundedBase } from './GroundedBase'
+import { TableBase } from './TableBase'
 import { Pagination } from '@smartb/g2-components'
 import { TableClasses, TableStyles } from '../Table/Table'
 
@@ -18,7 +17,7 @@ export interface TableV2BasicProps<Data extends {}> extends BasicProps {
   tableState: Table<Data>
   /**
    * The variants of the style of the table
-   * @default elevated
+   * @default grounded
    */
   variant?: 'grounded' | 'elevated'
   /**
@@ -114,7 +113,7 @@ export const TableV2 = <Data extends {}>(props: TableV2Props<Data>) => {
     onPageChange,
     isLoading,
     totalPages,
-    variant = 'elevated',
+    variant = 'grounded',
     renderSubComponent,
     className,
     classes,
@@ -171,37 +170,22 @@ export const TableV2 = <Data extends {}>(props: TableV2Props<Data>) => {
           ) : (
             <GroundedLoading expectedSize={expectedSize} />
           ))}
-        {!isLoading &&
-          (variant === 'elevated' ? (
-            <ElevatedBase
-              tableState={tableState}
-              withFooter={withFooter}
-              classes={classes}
-              onRowClicked={onRowClicked}
-              page={page}
-              renderSubComponent={renderSubComponent}
-              renderRowHoveredComponent={renderRowHoveredComponent}
-              styles={styles}
-              expandInRow={expandInElevatedRow}
-              toggleExpandOnRowClicked={toggleExpandOnRowClicked}
-              getRowId={getRowId}
-              additionnalRowsProps={additionnalRowsProps}
-            />
-          ) : (
-            <GroundedBase
-              tableState={tableState}
-              withFooter={withFooter}
-              page={page}
-              classes={classes}
-              onRowClicked={onRowClicked}
-              renderSubComponent={renderSubComponent}
-              renderRowHoveredComponent={renderRowHoveredComponent}
-              styles={styles}
-              toggleExpandOnRowClicked={toggleExpandOnRowClicked}
-              getRowId={getRowId}
-              additionnalRowsProps={additionnalRowsProps}
-            />
-          ))}
+        {!isLoading && (
+          <TableBase
+            tableState={tableState}
+            withFooter={withFooter}
+            classes={classes}
+            onRowClicked={onRowClicked}
+            variant={variant}
+            renderSubComponent={renderSubComponent}
+            renderRowHoveredComponent={renderRowHoveredComponent}
+            styles={styles}
+            expandInRow={expandInElevatedRow}
+            toggleExpandOnRowClicked={toggleExpandOnRowClicked}
+            getRowId={getRowId}
+            additionnalRowsProps={additionnalRowsProps}
+          />
+        )}
       </TableContainer>
       {isPaginated ? (
         <Pagination
