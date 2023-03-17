@@ -9,6 +9,7 @@ import { GroundedLoading } from '../Table/GroundedLoading'
 import { TableBase } from './TableBase'
 import { Pagination } from '@smartb/g2-components'
 import { TableClasses, TableStyles } from '../Table/Table'
+import { LinkProps } from 'react-router-dom'
 
 export interface TableV2BasicProps<Data extends {}> extends BasicProps {
   /**
@@ -44,6 +45,10 @@ export interface TableV2BasicProps<Data extends {}> extends BasicProps {
    * The event triggered when a row is clicked
    */
   onRowClicked?: (row: Row<Data>) => void
+  /**
+   * use this prop to make every rows a clickable link
+   */
+  getRowLink?: (row: Row<Data>) => LinkProps
   /**
    * Provide this function if you want to have a subcomponent for the rows
    */
@@ -128,6 +133,7 @@ export const TableV2 = <Data extends {}>(props: TableV2Props<Data>) => {
     toggleExpandOnRowClicked = false,
     additionnalRowsProps,
     tableState,
+    getRowLink,
     ...other
   } = props
 
@@ -143,20 +149,22 @@ export const TableV2 = <Data extends {}>(props: TableV2Props<Data>) => {
                 padding: (theme) => `0px ${theme.spacing(1.5)}`,
                 paddingBottom: (theme) => `${theme.spacing(1.5)}`,
                 boxSizing: 'border-box',
-                '& .AruiTable-principaleTableRow:hover': onRowClicked
-                  ? {
-                      borderColor: 'secondary.main',
-                      cursor: 'pointer'
-                    }
-                  : {}
+                '& .AruiTable-principaleTableRow:hover':
+                  onRowClicked || getRowLink
+                    ? {
+                        borderColor: 'secondary.main',
+                        cursor: 'pointer'
+                      }
+                    : {}
               }
             : {
-                '& .AruiTable-principaleTableRow:hover': onRowClicked
-                  ? {
-                      background: '#D9DBE14D',
-                      cursor: 'pointer'
-                    }
-                  : {}
+                '& .AruiTable-principaleTableRow:hover':
+                  onRowClicked || getRowLink
+                    ? {
+                        background: '#D9DBE14D',
+                        cursor: 'pointer'
+                      }
+                    : {}
               }
         }
         variant={variant}
@@ -172,6 +180,7 @@ export const TableV2 = <Data extends {}>(props: TableV2Props<Data>) => {
           ))}
         {!isLoading && (
           <TableBase
+            getRowLink={getRowLink}
             tableState={tableState}
             withFooter={withFooter}
             classes={classes}

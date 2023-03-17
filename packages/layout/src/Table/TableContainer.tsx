@@ -42,6 +42,14 @@ export const TableContainer = styled(BasicTableContainer)((props) => {
       '& .AruiTable-rowHoveredComponentContainer': {
         display: 'block'
       }
+    },
+    '& .AruiTable-tableCell': {
+      zIndex: 2,
+      position: 'relative',
+      pointerEvents: 'none'
+    },
+    '& .AruiTable-tableCell :is(h1, h2, h3, h4, h5, h6, p, button, a, label)': {
+      pointerEvents: 'auto'
     }
   }
   if (variant === 'grounded') {

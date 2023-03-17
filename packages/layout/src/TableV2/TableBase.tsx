@@ -12,6 +12,7 @@ import {
 } from '@mui/material'
 import { Table, flexRender, Row } from '@tanstack/react-table'
 import React, { Fragment } from 'react'
+import { Link, LinkProps } from 'react-router-dom'
 import { TableClasses, TableStyles } from '../Table'
 import { G2ColumnDef } from './useTable'
 
@@ -34,6 +35,10 @@ export interface TableBaseProps<Data extends {}> {
    * the envent triggered when a row is clicked
    */
   onRowClicked?: (row: Row<Data>) => void
+  /**
+   * use this prop to make every rows a clickable link
+   */
+  getRowLink?: (row: Row<Data>) => LinkProps
   /**
    * The classes applied to the different part of the component
    */
@@ -67,6 +72,7 @@ export const TableBase = <Data extends {}>(props: TableBaseProps<Data>) => {
     toggleExpandOnRowClicked,
     additionnalRowsProps = {},
     variant,
+    getRowLink,
     getRowId
   } = props
 
@@ -106,7 +112,7 @@ export const TableBase = <Data extends {}>(props: TableBaseProps<Data>) => {
                   : undefined
               }
             >
-              {flexRender(cell.column.columnDef.cell, cell.getContext())}
+              {flexRender(column.cell, cell.getContext())}
             </TableCellComponent>
           )
         })}
@@ -172,6 +178,19 @@ export const TableBase = <Data extends {}>(props: TableBaseProps<Data>) => {
               {renderSubComponent && renderSubComponent(row)}
             </Collapse>
           )}
+          {getRowLink && (
+            <Link
+              {...getRowLink(row)}
+              style={{
+                position: 'absolute',
+                zIndex: 1,
+                width: '100%',
+                height: '100%',
+                top: 0,
+                left: 0
+              }}
+            />
+          )}
         </TableRowComponent>
         {(!expandInRow || variant === 'grounded') && (
           <TableRowComponent
@@ -230,13 +249,10 @@ export const TableBase = <Data extends {}>(props: TableBaseProps<Data>) => {
           >
             {header.id !== 'selection' ? (
               <Typography variant='subtitle1'>
-                {flexRender(
-                  header.column.columnDef.header,
-                  header.getContext()
-                )}
+                {flexRender(column.header, header.getContext())}
               </Typography>
             ) : (
-              flexRender(header.column.columnDef.header, header.getContext())
+              flexRender(column.header, header.getContext())
             )}
           </TableCellComponent>
         )
@@ -280,10 +296,7 @@ export const TableBase = <Data extends {}>(props: TableBaseProps<Data>) => {
                 }
                 variant={variant === 'grounded' ? 'body' : undefined}
               >
-                {flexRender(
-                  header.column.columnDef.footer,
-                  header.getContext()
-                )}
+                {flexRender(column.footer, header.getContext())}
               </TableCellComponent>
             )
           })}

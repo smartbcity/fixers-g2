@@ -6,6 +6,8 @@ import { Story } from '@storybook/react/types-6-0'
 import { Box, Button, Divider, Stack, Typography } from '@mui/material'
 import { Info } from '@mui/icons-material'
 import { ColumnDef } from '@tanstack/react-table'
+import { ColumnFactory } from '../ColumnFactory'
+import { BrowserRouter } from 'react-router-dom'
 
 export default {
   title: 'Layout/TableV2',
@@ -472,6 +474,100 @@ export const AxessExample: Story = () => {
           </Stack>
         )}
       />
+    </Stack>
+  )
+}
+
+export const ColumnFactoryExample: Story = () => {
+  interface Person {
+    id: string
+    firstName: string
+    lastName: string
+    birthDate: number
+    phone: string
+    email: string
+    city: string
+  }
+
+  const persons: Person[] = [
+    {
+      id: '1',
+      firstName: 'Jack',
+      lastName: 'Burdon',
+      birthDate: Date.now(),
+      email: 'jack@burdon.com',
+      phone: '0610203040',
+      city: 'Montpellier'
+    },
+    {
+      id: '2',
+      firstName: 'Alice',
+      lastName: 'Brace',
+      birthDate: Date.now(),
+      email: 'alice@brace.com',
+      phone: '0610203040',
+      city: 'Montpellier'
+    },
+    {
+      id: '3',
+      firstName: 'Henri',
+      lastName: 'Rutelle',
+      birthDate: Date.now(),
+      email: 'heanri@rutelle.com',
+      phone: '0610203040',
+      city: 'Montpellier'
+    }
+  ]
+
+  const columns = ColumnFactory<Person>({
+    generateColumns: (generators) => ({
+      profile: generators.profile({
+        header: 'Profile',
+        getCellProps: (person) => ({
+          givenName: person.firstName,
+          familyName: person.lastName
+        })
+      }),
+
+      birthDate: generators.date({
+        header: 'Birth date',
+        getCellProps: (person) => ({
+          date: person.birthDate
+        })
+      }),
+
+      city: generators.text({
+        header: 'City',
+        getCellProps: (person) => ({
+          value: person.city
+        })
+      }),
+
+      contact: generators.contact({
+        header: 'Contact',
+        getCellProps: (person) => ({
+          email: person.email,
+          phone: person.phone
+        })
+      })
+    })
+  })
+  const tableState = useTable({
+    data: persons,
+    columns: columns,
+    noToggleAllPageRowsSelected: true,
+    enableRowSelection: true
+  })
+  return (
+    <Stack>
+      <BrowserRouter>
+        <AruiTableV2
+          getRowLink={() => ({
+            to: 'https://tanstack.com/table/v8/docs/examples/react/row-dnd'
+          })}
+          tableState={tableState}
+        />
+      </BrowserRouter>
     </Stack>
   )
 }

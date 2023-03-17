@@ -14,6 +14,8 @@ import {
 import { CodeHighlighter } from '@smartb/g2-documentation'
 import { customCellExample, classes, styles, Column, CellProps } from './types'
 import { Info } from '@mui/icons-material'
+import { BrowserRouter } from 'react-router-dom'
+import { ColumnFactoryV1 } from '../ColumnFactory'
 
 export default {
   title: 'Layout/Table',
@@ -537,6 +539,89 @@ export const AxessExample: Story = () => {
           </Stack>
         )}
       />
+    </Stack>
+  )
+}
+
+export const ColumnFactoryExample: Story = () => {
+  interface Person {
+    id: string
+    firstName: string
+    lastName: string
+    birthDate: number
+    phone: string
+    email: string
+    city: string
+  }
+
+  const persons: Person[] = [
+    {
+      id: '1',
+      firstName: 'Jack',
+      lastName: 'Burdon',
+      birthDate: Date.now(),
+      email: 'jack@burdon.com',
+      phone: '0610203040',
+      city: 'Montpellier'
+    },
+    {
+      id: '2',
+      firstName: 'Alice',
+      lastName: 'Brace',
+      birthDate: Date.now(),
+      email: 'alice@brace.com',
+      phone: '0610203040',
+      city: 'Montpellier'
+    },
+    {
+      id: '3',
+      firstName: 'Henri',
+      lastName: 'Rutelle',
+      birthDate: Date.now(),
+      email: 'heanri@rutelle.com',
+      phone: '0610203040',
+      city: 'Montpellier'
+    }
+  ]
+
+  const columns = ColumnFactoryV1<Person>({
+    generateColumns: (generators) => ({
+      profile: generators.profile({
+        Header: 'Profile',
+        getCellProps: (person) => ({
+          givenName: person.firstName,
+          familyName: person.lastName
+        })
+      }),
+
+      birthDate: generators.date({
+        Header: 'Birth date',
+        getCellProps: (person) => ({
+          date: person.birthDate
+        })
+      }),
+
+      city: generators.text({
+        Header: 'City',
+        getCellProps: (person) => ({
+          value: person.city
+        })
+      }),
+
+      contact: generators.contact({
+        Header: 'Contact',
+        getCellProps: (person) => ({
+          email: person.email,
+          phone: person.phone
+        })
+      })
+    })
+  })
+  return (
+    <Stack>
+      <BrowserRouter>
+        <AruiTable<Person> data={persons} columns={columns} />
+      </BrowserRouter>
     </Stack>
   )
 }
