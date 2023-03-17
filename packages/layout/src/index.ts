@@ -48,3 +48,10 @@ export {
   TableCellText,
   TableCellTextProps
 } from './ColumnFactory'
+export {
+  G2ColumnDef,
+  TableV2,
+  TableV2Props,
+  useTable,
+  UseTableOptions
+} from './TableV2'

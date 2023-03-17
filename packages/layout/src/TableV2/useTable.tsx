@@ -17,7 +17,7 @@ export type G2ColumnDef<Data extends {}> = ColumnDef<Data> & {
   style?: React.CSSProperties
 }
 
-interface UseTableOptions<Data extends {}>
+export interface UseTableOptions<Data extends {}>
   extends Omit<TableOptions<Data>, 'getCoreRowModel' | 'columns'> {
   /**
    * The columns to display in the table

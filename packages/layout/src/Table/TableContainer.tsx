@@ -5,11 +5,13 @@ import {
 } from '@mui/material'
 import React from 'react'
 import { MergeMuiElementProps } from '@smartb/g2-themes'
+import { LinkProps } from 'react-router-dom'
 
 interface BasicTableContainerBasicProps {
   variant: 'grounded' | 'elevated'
   children: React.ReactNode
   expandInElevatedRow?: boolean
+  getRowLink?: (row: any) => LinkProps
 }
 
 type BasicTableContainerProps = MergeMuiElementProps<
@@ -24,7 +26,7 @@ const BasicTableContainer = (props: BasicTableContainerProps) => {
 }
 
 export const TableContainer = styled(BasicTableContainer)((props) => {
-  const { variant, theme, expandInElevatedRow } = props
+  const { variant, theme, expandInElevatedRow, getRowLink } = props
   const comunStyles = {
     '& .AruiTable-actionColumn': {
       maxWidth: '65px'
@@ -43,14 +45,18 @@ export const TableContainer = styled(BasicTableContainer)((props) => {
         display: 'block'
       }
     },
-    '& .AruiTable-tableCell': {
-      zIndex: 2,
-      position: 'relative',
-      pointerEvents: 'none'
-    },
-    '& .AruiTable-tableCell :is(h1, h2, h3, h4, h5, h6, p, button, a, label)': {
-      pointerEvents: 'auto'
-    }
+    '& .AruiTable-tableCell': !!getRowLink
+      ? {
+          zIndex: 2,
+          position: 'relative',
+          pointerEvents: 'none'
+        }
+      : undefined,
+    '& .AruiTable-tableCell :is(button, a, label)': !!getRowLink
+      ? {
+          pointerEvents: 'auto'
+        }
+      : undefined
   }
   if (variant === 'grounded') {
     return {

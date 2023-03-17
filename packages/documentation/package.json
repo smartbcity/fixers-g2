@@ -1,6 +1,6 @@
 {
   "name": "@smartb/g2-documentation",
-  "version": "1.0.0-alpha.142",
+  "version": "1.0.0-alpha.143",
   "description": "Components for documentation",
   "author": "SmartB",
   "license": "Apache-2.0",
@@ -37,8 +37,8 @@
     "react-dom": "^18.2.0"
   },
   "dependencies": {
-    "@smartb/g2-themes": "1.0.0-alpha.142",
-    "@smartb/g2-utils": "1.0.0-alpha.142",
+    "@smartb/g2-themes": "1.0.0-alpha.143",
+    "@smartb/g2-utils": "1.0.0-alpha.143",
     "github-markdown-css": "^4.0.0",
     "react-markdown": "^6.0.2",
     "react-syntax-highlighter": "^15.5.0",
