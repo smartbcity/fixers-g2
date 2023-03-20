@@ -168,6 +168,7 @@ export const TableV2 = <Data extends {}>(props: TableV2Props<Data>) => {
               }
         }
         variant={variant}
+        getRowLink={getRowLink}
         expandInElevatedRow={expandInElevatedRow}
         {...other}
       >

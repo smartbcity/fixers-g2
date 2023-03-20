@@ -31,13 +31,13 @@ export const useFilterInputStyles = makeG2STyles()((theme) => ({
       boxShadow: '0px 0px 0px 1px transparent',
       borderRadius: theme.borderRadius * 0.75,
       color: '#323338',
-      minWidth: '100px',
+      minWidth: '80px',
       backgroundColor: 'transparent',
       transition: 'background-color 200ms'
     },
     '& .MuiOutlinedInput-notchedOutline': {
       top: '-6.5px',
-      bottom: "-1px",
+      bottom: '-1px',
       '& legend': {
         height: 15,
         '& span': {

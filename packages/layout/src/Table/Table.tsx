@@ -368,7 +368,6 @@ export const Table = <Data extends {}>(props: TableProps<Data>) => {
   return (
     <>
       <TableContainer
-        getRowLink={getRowLink}
         className={cx('AruiTable-root', className)}
         sx={
           variant === 'elevated'
@@ -395,6 +394,7 @@ export const Table = <Data extends {}>(props: TableProps<Data>) => {
               }
         }
         variant={variant}
+        getRowLink={getRowLink}
         expandInElevatedRow={expandInElevatedRow}
         {...other}
       >

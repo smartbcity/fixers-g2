@@ -19,5 +19,5 @@ export const TableCellNumber = (props: TableCellNumberProps) => {
   const number = !value
     ? '-'
     : formatNumber(value, language, fractionDigits, isCurrency)
-  return <Typography style={{ textAlign: 'right' }}>{number}</Typography>
+  return <Typography>{number}</Typography>
 }

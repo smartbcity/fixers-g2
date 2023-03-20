@@ -28,6 +28,7 @@ const BasicTableContainer = (props: BasicTableContainerProps) => {
 export const TableContainer = styled(BasicTableContainer)((props) => {
   const { variant, theme, expandInElevatedRow, getRowLink } = props
   const comunStyles = {
+    overflow: 'unset',
     '& .AruiTable-actionColumn': {
       maxWidth: '65px'
     },
@@ -44,6 +45,16 @@ export const TableContainer = styled(BasicTableContainer)((props) => {
       '& .AruiTable-rowHoveredComponentContainer': {
         display: 'block'
       }
+    },
+    '& .AruiTable-tableHead': {
+      backgroundColor: '#ffffff99',
+      position: 'sticky',
+      top: '0px',
+      backdropFilter: 'blur(15px)',
+      zIndex: 5
+    },
+    '& .AruiTable-table': {
+      borderCollapse: 'unset'
     },
     '& .AruiTable-tableCell': !!getRowLink
       ? {
