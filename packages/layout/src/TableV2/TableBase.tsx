@@ -179,17 +179,27 @@ export const TableBase = <Data extends {}>(props: TableBaseProps<Data>) => {
             </Collapse>
           )}
           {getRowLink && (
-            <Link
-              {...getRowLink(row)}
-              style={{
+            <TableCellComponent
+              sx={{
+                padding: 0,
                 position: 'absolute',
-                zIndex: 1,
                 width: '100%',
                 height: '100%',
+                zIndex: 1,
                 top: 0,
                 left: 0
               }}
-            />
+              className='AruiTable-rowLinkContainer'
+            >
+              <Link
+                {...getRowLink(row)}
+                style={{
+                  position: 'absolute',
+                  width: '100%',
+                  height: '100%'
+                }}
+              />
+            </TableCellComponent>
           )}
         </TableRowComponent>
         {(!expandInRow || variant === 'grounded') && (

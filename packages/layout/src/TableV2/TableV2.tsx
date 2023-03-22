@@ -150,7 +150,7 @@ export const TableV2 = <Data extends {}>(props: TableV2Props<Data>) => {
                 paddingBottom: (theme) => `${theme.spacing(1.5)}`,
                 boxSizing: 'border-box',
                 '& .AruiTable-principaleTableRow:hover':
-                  onRowClicked || getRowLink
+                  !!onRowClicked || !!getRowLink
                     ? {
                         borderColor: 'secondary.main',
                         cursor: 'pointer'
@@ -159,7 +159,7 @@ export const TableV2 = <Data extends {}>(props: TableV2Props<Data>) => {
               }
             : {
                 '& .AruiTable-principaleTableRow:hover':
-                  onRowClicked || getRowLink
+                  !!onRowClicked || !!getRowLink
                     ? {
                         background: '#D9DBE14D',
                         cursor: 'pointer'

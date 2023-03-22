@@ -1,23 +1,7 @@
+import { cx } from '@emotion/css'
 import { Chip, ChipProps } from '@mui/material'
-import {
-  BasicProps,
-  makeG2STyles,
-  MergeMuiElementProps,
-  useTheme
-} from '@smartb/g2-themes'
+import { BasicProps, MergeMuiElementProps, useTheme } from '@smartb/g2-themes'
 import React, { forwardRef, useMemo } from 'react'
-
-const useStyles = makeG2STyles<{ color: string }>()((_, { color }) => ({
-  tagWidth: {
-    width: 'fit-content',
-    padding: '0px 5px',
-    '& .MuiChip-label': {
-      color: color
-    },
-    background: `${color}26`,
-    border: `1.5px solid ${color}`
-  }
-}))
 
 export interface StatusTagBasicProps extends BasicProps {
   /**
@@ -50,14 +34,34 @@ export const StatusTagBase = (
   const theme = useTheme()
   const color = useMemo(() => {
     if (customColor) return { color: customColor }
-    return { color: theme.colors[variant] }
+    return theme.colors[variant]
   }, [variant, customColor, theme])
-  const { classes, cx } = useStyles(color)
   return (
     <Chip
       ref={ref}
       label={label}
-      className={cx(classes.tagWidth, 'AruiStatusTag-root', className)}
+      className={cx('AruiStatusTag-root', className)}
+      sx={{
+        width: 'fit-content',
+        '& .MuiChip-label': {
+          color: color,
+          lineBreak: 'anywhere',
+          WebkitLineClamp: 2,
+          lineClamp: '2',
+          display: 'box',
+          //@ts-ignore
+          display: '-webkit-box',
+          WebkitBoxOrient: 'vertical',
+          textOverflow: 'ellipsis',
+          overflow: 'hidden',
+          whiteSpace: 'normal'
+        },
+        background: `${color}26`,
+        border: `1.5px solid ${color}`,
+        height: 'unset',
+        padding: '3px 5px',
+        borderRadius: '200px'
+      }}
       {...other}
     />
   )
