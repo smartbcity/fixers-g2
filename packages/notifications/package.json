@@ -1,6 +1,6 @@
 {
   "name": "@smartb/g2-notifications",
-  "version": "1.0.0-alpha.145",
+  "version": "1.0.0-alpha.146",
   "repository": "https://gitlab.smartb.city/fixers/g2.git",
   "author": "Adrien Poupard <adrien@smartb.city>",
   "license": "Apache-2.0",
@@ -27,8 +27,8 @@
     "dist"
   ],
   "devDependencies": {
-    "@smartb/g2-components": "1.0.0-alpha.145",
-    "@smartb/g2-forms": "1.0.0-alpha.145",
+    "@smartb/g2-components": "1.0.0-alpha.146",
+    "@smartb/g2-forms": "1.0.0-alpha.146",
     "@types/react": "^18.0.28"
   },
   "peerDependencies": {
@@ -39,8 +39,8 @@
   },
   "dependencies": {
     "@mui/icons-material": "^5.11.11",
-    "@smartb/g2-themes": "1.0.0-alpha.145",
-    "@smartb/g2-utils": "1.0.0-alpha.145",
+    "@smartb/g2-themes": "1.0.0-alpha.146",
+    "@smartb/g2-utils": "1.0.0-alpha.146",
     "notistack": "3.0.0-alpha.7"
   },
   "gitHead": "01582f4b620c1e44cab5a65394e29d95f66ddabb",
