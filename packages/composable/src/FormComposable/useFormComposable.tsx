@@ -15,7 +15,7 @@ export interface FormikFormParams<T> {
    * please use the `setSubmitting` in the formikHelpers object to inform about any asynchronous task
    * before the end of the submission
    */
-  onSubmit: (
+  onSubmit?: (
     values: T,
     formikHelpers: FormikHelpers<any>
   ) => void | Promise<any> | boolean | Promise<boolean>
@@ -60,11 +60,17 @@ export const useFormComposable = <T extends {}>(
     return errors
   }, [])
 
-  const formik = useFormik({
-    onSubmit: async (...values) => {
-      const result = await onSubmit(...values)
+  const onSubmitMemoized = useCallback(
+    async (values: any, formikHelpers: FormikHelpers<any>) => {
+      if (!onSubmit) return
+      const result = await onSubmit(values, formikHelpers)
       feedback.setFeedback(result)
     },
+    [onSubmit]
+  )
+
+  const formik = useFormik({
+    onSubmit: onSubmitMemoized,
     validate,
     validateOnBlur: false,
     validateOnChange: false,

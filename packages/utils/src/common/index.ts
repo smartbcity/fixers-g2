@@ -133,3 +133,22 @@ export const extractNumberOrBooleanFromString = <
     return extract(string);
   }
 };
+
+export const insertObjectIdsInsideRoutes = <Routes extends string = string>(
+  route: Routes,
+  ...objectIds: string[]
+) => {
+  const splitted = route.split("/");
+  let objectIdsIndex = 0;
+
+  return splitted
+    .map((str) => {
+      if (str.startsWith(":") && objectIds[objectIdsIndex]) {
+        const id = objectIds[objectIdsIndex];
+        objectIdsIndex++;
+        return id;
+      }
+      return str;
+    })
+    .join("/");
+};
