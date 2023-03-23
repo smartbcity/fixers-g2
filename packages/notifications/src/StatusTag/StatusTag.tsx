@@ -33,7 +33,7 @@ export const StatusTagBase = (
 
   const theme = useTheme()
   const color = useMemo(() => {
-    if (customColor) return { color: customColor }
+    if (customColor) return customColor
     return theme.colors[variant]
   }, [variant, customColor, theme])
   return (
@@ -45,7 +45,6 @@ export const StatusTagBase = (
         width: 'fit-content',
         '& .MuiChip-label': {
           color: color,
-          lineBreak: 'anywhere',
           WebkitLineClamp: 2,
           lineClamp: '2',
           display: 'box',
@@ -59,7 +58,7 @@ export const StatusTagBase = (
         background: `${color}26`,
         border: `1.5px solid ${color}`,
         height: 'unset',
-        padding: '3px 5px',
+        padding: '5px',
         borderRadius: '200px'
       }}
       {...other}

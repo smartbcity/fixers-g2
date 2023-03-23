@@ -99,20 +99,26 @@ export const ReadonlyRenderer = (props: Partial<InputFormProps>) => {
       return undefined
     const Element = readonlyElement
     if (!multiple) {
-      return <Element value={textToDisplay} />
+      return <Element valueKey={value} value={textToDisplay} />
     } else if (hoptions && values && readonlyType === 'customElement') {
       return values.map((value) => {
         const option = hoptions.find((o) => o.key === value)
         if (!option) return undefined
         const label = getLabelOfOption(option, getOptionLabel)
-        return <Element key={option.key.toString()} value={`${label}`} />
+        return (
+          <Element
+            key={option.key.toString()}
+            valueKey={option.key}
+            value={`${label}`}
+          />
+        )
       })
     } else if (hoptions && values && readonlyType === 'customContainer') {
       return (
         <Element
           values={values.map((value) => {
             const option = hoptions.find((o) => o.key === value)
-            return getLabelOfOption(option, getOptionLabel)
+            return option
           })}
         />
       )

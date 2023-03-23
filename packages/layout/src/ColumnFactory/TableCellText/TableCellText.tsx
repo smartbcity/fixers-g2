@@ -12,7 +12,6 @@ export const TableCellText = (props: TableCellTextProps) => {
   return (
     <Typography
       sx={{
-        lineBreak: 'anywhere',
         WebkitLineClamp: 2,
         lineClamp: '2',
         display: 'box',

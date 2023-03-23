@@ -269,6 +269,7 @@ export const Map = (props: MapProps) => {
           isSm={isSm}
           {...draggableMarkerPlugin}
           map={map}
+          readonly={readonly}
         />
       )}
       {!!errorMessage && (

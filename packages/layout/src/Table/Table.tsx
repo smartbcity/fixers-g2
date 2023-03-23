@@ -221,6 +221,7 @@ export const Table = <Data extends {}>(props: TableProps<Data>) => {
     toggleExpandOnRowClicked = false,
     additionnalRowsProps,
     getRowLink,
+    sx,
     ...other
   } = props
   const isSelectabale = !!setSelectedRowIds
@@ -381,7 +382,8 @@ export const Table = <Data extends {}>(props: TableProps<Data>) => {
                         borderColor: 'secondary.main',
                         cursor: 'pointer'
                       }
-                    : {}
+                    : {},
+                ...sx
               }
             : {
                 '& .AruiTable-principaleTableRow:hover':
@@ -390,7 +392,8 @@ export const Table = <Data extends {}>(props: TableProps<Data>) => {
                         background: '#D9DBE14D',
                         cursor: 'pointer'
                       }
-                    : {}
+                    : {},
+                ...sx
               }
         }
         variant={variant}

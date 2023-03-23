@@ -134,6 +134,7 @@ export const TableV2 = <Data extends {}>(props: TableV2Props<Data>) => {
     additionnalRowsProps,
     tableState,
     getRowLink,
+    sx,
     ...other
   } = props
 
@@ -155,7 +156,8 @@ export const TableV2 = <Data extends {}>(props: TableV2Props<Data>) => {
                         borderColor: 'secondary.main',
                         cursor: 'pointer'
                       }
-                    : {}
+                    : {},
+                ...sx
               }
             : {
                 '& .AruiTable-principaleTableRow:hover':
@@ -164,7 +166,8 @@ export const TableV2 = <Data extends {}>(props: TableV2Props<Data>) => {
                         background: '#D9DBE14D',
                         cursor: 'pointer'
                       }
-                    : {}
+                    : {},
+                ...sx
               }
         }
         variant={variant}

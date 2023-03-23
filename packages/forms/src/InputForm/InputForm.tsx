@@ -83,7 +83,7 @@ export interface InputFormBasicProps<T extends InputFormTypes = 'textField'>
   getReadonlyTextUrl?: (value: string | number) => string | undefined
   /**
    * The element rendered in readonly if the `readonlyType` is `"customElement" | "customContainer"` your element need to use the prop
-   * `value: string` if `readonlyType="customElement"` and also `values: string[]` if `readonlyType="customContainer"`
+   * `value: string` and `valueKey?: SmartKey` if `readonlyType="customElement"` and also `values: Option[]` if `readonlyType="customContainer"`
    */
   readonlyElement?: React.ElementType
   /**
