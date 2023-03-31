@@ -28,12 +28,18 @@ export const ReadonlyRenderer = (props: Partial<InputFormProps>) => {
     getReadonlyTextUrl,
     getOptionLabel,
     readonlyElement,
+    emptyValueInReadonly,
     size
   } = props
 
   const hoptions = options ?? choices
 
+  const valuesIsEmpty =
+    (props.value == undefined || props.value === '') &&
+    (props.values == undefined || props.values.length === 0)
+
   const textToDisplay = useMemo(() => {
+    if (valuesIsEmpty) return emptyValueInReadonly
     if (inputType === 'datePicker') return new Date(value).toLocaleDateString()
     if (inputType === 'radioChoices' && hoptions && value)
       return hoptions.find((c) => c.key === value)?.label
@@ -55,11 +61,20 @@ export const ReadonlyRenderer = (props: Partial<InputFormProps>) => {
       return getLabelOfOption(option, getOptionLabel)
     }
     return typeof value === 'string' || typeof value === 'number' ? value : ''
-  }, [inputType, value, values, multiple, hoptions, getOptionLabel])
+  }, [
+    inputType,
+    value,
+    values,
+    multiple,
+    hoptions,
+    getOptionLabel,
+    emptyValueInReadonly,
+    valuesIsEmpty
+  ])
 
   const renderTag = useMemo(() => {
     if (readonlyType !== 'chip') return undefined
-    if (!multiple) {
+    if (!multiple || valuesIsEmpty) {
       const option = hoptions?.find((o) => o.key === value)
       return (
         <Chip
@@ -88,7 +103,7 @@ export const ReadonlyRenderer = (props: Partial<InputFormProps>) => {
       })
     }
     return
-  }, [readonlyType, textToDisplay, value, values, hoptions])
+  }, [readonlyType, textToDisplay, value, values, hoptions, valuesIsEmpty])
 
   const renderCustom = useMemo(() => {
     if (

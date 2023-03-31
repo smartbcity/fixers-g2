@@ -37,6 +37,7 @@ export interface FieldRender {
   readonly?: boolean
   sx?: SxProps<Theme>
   onChange?: (value: any) => void
+  emptyValueInReadonly?: any
 }
 
 const useFormProps = (
@@ -85,7 +86,10 @@ const useFormProps = (
         ? field.readonly
         : readonly === true
         ? readonly
-        : formState.readonly
+        : formState.readonly,
+    //@ts-ignore
+    emptyValueInReadonly:
+      field.params?.emptyValueInReadonly ?? formState.emptyValueInReadonly
   }
 }
 
@@ -139,7 +143,8 @@ export const useFieldRenderProps = (
     readonly,
     isLoading,
     formState.readonly,
-    formState.isLoading
+    formState.isLoading,
+    formState.emptyValueInReadonly
   ])
   const { setFieldValue } = formState
 

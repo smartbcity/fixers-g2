@@ -134,7 +134,7 @@ export const RadioChoices = React.forwardRef(
         if (editable) {
           setEditableLabel({
             key: editable.key,
-            label: value
+            label: value.toString()
           })
         }
       }

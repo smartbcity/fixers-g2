@@ -35,6 +35,7 @@ export const MapComposableRenderer: ElementRendererFunction<
   )
   const onChange = basicProps.onChange
   delete basicProps.onChange
+  delete basicProps.emptyValueInReadonly
 
   const pluginsCount =
     (params?.additionnalPlugins?.length ?? 0) +

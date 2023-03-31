@@ -24,6 +24,7 @@ export const DocumentHandlerRender: ElementRendererFunction<
   const { params } = element
   const { errorMessage, label, onChange, readonly, sx, ...basicPropsRest } =
     basicProps
+  delete basicProps.emptyValueInReadonly
   const localFile: File | undefined = getIn(formState.values, basicProps.name)
   const uploadedGetUrl = getIn(formState.values, basicProps.name + 'Uploaded')
   if (basicProps.readonly && !uploadedGetUrl && !localFile) return <></>

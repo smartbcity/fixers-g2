@@ -91,6 +91,11 @@ export interface InputFormBasicProps<T extends InputFormTypes = 'textField'>
    */
   createInputContainer?: (input: JSX.Element) => JSX.Element
   /**
+   * The default behavior is that an empty field won't appear in readonly. If you want it to appear provide a value to put in it.
+   * This will be passed as `value` to the `ReadonlyRenderer` or as `values` if `multiple` is `true`
+   */
+  emptyValueInReadonly?: any
+  /**
    * Indicates if the data is currently loading
    *
    * @default false
@@ -200,6 +205,7 @@ export const InputForm: InputFormComponent = React.forwardRef(
       readonlyType,
       getReadonlyTextUrl,
       orientation = 'vertical',
+      emptyValueInReadonly,
       sx,
       ...other
     } = props
@@ -259,6 +265,7 @@ export const InputForm: InputFormComponent = React.forwardRef(
       styles?.input,
       ref,
       size,
+      emptyValueInReadonly,
       Object.values({ ...other })
     ])
 
@@ -270,7 +277,13 @@ export const InputForm: InputFormComponent = React.forwardRef(
     const valuesIsEmpty =
       (props.value == undefined || props.value === '') &&
       (props.values == undefined || props.values.length === 0)
-    if (readonly && valuesIsEmpty && !isLoading) return <></>
+    if (
+      readonly &&
+      valuesIsEmpty &&
+      !isLoading &&
+      emptyValueInReadonly == undefined
+    )
+      return <></>
     return (
       <Box
         className={className}

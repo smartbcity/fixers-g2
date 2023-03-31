@@ -14,6 +14,7 @@ import LinkTo from '@storybook/addon-links/react'
 import { Box, Stack, Typography } from '@mui/material'
 import { StatusTag } from '@smartb/g2-notifications'
 import { InputFormClasses, InputFormStyles } from './docs'
+import { Option } from '../Select'
 
 export default {
   title: 'Forms/InputForm',
@@ -138,8 +139,8 @@ export const InputFormReadonlyChip: Story<InputFormBasicProps> = (
 const CustomStatusTag = ({ values }) => {
   return (
     <Stack>
-      {values.map((value) => (
-        <StatusTag label={value} />
+      {values.map((value: Option) => (
+        <StatusTag label={value.label} />
       ))}
     </Stack>
   )

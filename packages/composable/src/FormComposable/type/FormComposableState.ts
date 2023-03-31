@@ -9,4 +9,5 @@ export type FormComposableState = Omit<
   validateField: (fieldName: string) => PotentialError
   readonly: boolean
   isLoading: boolean
+  emptyValueInReadonly?: any
 }
