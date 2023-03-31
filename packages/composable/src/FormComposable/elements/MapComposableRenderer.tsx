@@ -79,7 +79,10 @@ export const MapComposableRenderer: ElementRendererFunction<
                   position: position,
                   geojson: geojson
                 }),
-              position: mapState?.marker?.position,
+              position:
+                pluginsCount > 1
+                  ? mapState?.marker?.position
+                  : mapState?.position,
               ...params?.draggableMarkerPlugin
             }
           : undefined
