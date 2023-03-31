@@ -4,6 +4,7 @@ import React, { Fragment, useMemo } from 'react'
 import { HeaderGroup, IdType, TableProps, TableRowProps } from 'react-table'
 import { TableClasses, TableStyles } from './Table'
 import { Row } from './types'
+import { LinkProps, Link } from 'react-router-dom'
 
 export interface ElevatedBaseProps<Data extends {}> {
   /**
@@ -20,6 +21,10 @@ export interface ElevatedBaseProps<Data extends {}> {
    * the envent triggered when a row is clicked
    */
   onRowClicked?: (row: Row<Data>) => void
+  /**
+   * use this prop to make every rows a clickable link
+   */
+  getRowLink?: (row: Row<Data>) => LinkProps
   /**
    * The classes applied to the different part of the component
    */
@@ -64,7 +69,8 @@ export const ElevatedBase = <Data extends {}>(
     toggleExpandOnRowClicked,
     toggleRowExpanded,
     additionnalRowsProps = {},
-    getRowId
+    getRowId,
+    getRowLink
   } = props
   const rowsDisplay = useMemo(() => {
     return rows.map((row) => {
@@ -127,6 +133,29 @@ export const ElevatedBase = <Data extends {}>(
                 </Box>
               )}
             </Box>
+            {getRowLink && (
+              <Box
+                sx={{
+                  padding: 0,
+                  position: 'absolute',
+                  width: '100%',
+                  height: '100%',
+                  zIndex: 1,
+                  top: 0,
+                  left: 0
+                }}
+                className='AruiTable-rowLinkContainer'
+              >
+                <Link
+                  {...getRowLink(row)}
+                  style={{
+                    position: 'absolute',
+                    width: '100%',
+                    height: '100%'
+                  }}
+                />
+              </Box>
+            )}
             {expandInRow && (
               <Collapse in={row.isExpanded} timeout='auto' unmountOnExit>
                 {renderSubComponent && renderSubComponent(row, rowProps)}
@@ -169,7 +198,8 @@ export const ElevatedBase = <Data extends {}>(
     toggleExpandOnRowClicked,
     toggleRowExpanded,
     additionnalRowsProps,
-    getRowId
+    getRowId,
+    getRowLink
   ])
 
   const headerDisplay = useMemo(

@@ -29,3 +29,29 @@ export {
 } from './StandAloneAppLayout'
 export { Section, SectionProps } from './Section'
 export { Header, HeaderProps, HeaderContent, HeaderTab } from './Header'
+export {
+  ColumnFactory,
+  ColumnFactoryParams,
+  ColumnFactoryV1,
+  ColumnFactoryV1Params,
+  ColumnGenerators,
+  TableCellContact,
+  TableCellContactProps,
+  TableCellDate,
+  TableCellDateProps,
+  TableCellLink,
+  TableCellLinkProps,
+  TableCellNumber,
+  TableCellNumberProps,
+  TableCellProfile,
+  TableCellProfileProps,
+  TableCellText,
+  TableCellTextProps
+} from './ColumnFactory'
+export {
+  G2ColumnDef,
+  TableV2,
+  TableV2Props,
+  useTable,
+  UseTableOptions
+} from './TableV2'

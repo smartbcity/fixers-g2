@@ -12,7 +12,7 @@ const getLabelOfOption = (
     if (getOptionLabel) return getOptionLabel(option)
     if (option.label) return option.label
   }
-  return ''
+  return undefined
 }
 
 export const ReadonlyRenderer = (props: Partial<InputFormProps>) => {
@@ -27,6 +27,7 @@ export const ReadonlyRenderer = (props: Partial<InputFormProps>) => {
     getReadonlyChipColor,
     getReadonlyTextUrl,
     getOptionLabel,
+    readonlyElement,
     size
   } = props
 
@@ -57,7 +58,7 @@ export const ReadonlyRenderer = (props: Partial<InputFormProps>) => {
   }, [inputType, value, values, multiple, hoptions, getOptionLabel])
 
   const renderTag = useMemo(() => {
-    if (readonlyType === 'text') return undefined
+    if (readonlyType !== 'chip') return undefined
     if (!multiple) {
       const option = hoptions?.find((o) => o.key === value)
       return (
@@ -72,11 +73,12 @@ export const ReadonlyRenderer = (props: Partial<InputFormProps>) => {
     } else if (hoptions && values) {
       return values.map((value) => {
         const option = hoptions.find((o) => o.key === value)
-        if (!option?.label) return undefined
+        if (!option) return undefined
+        const label = getLabelOfOption(option, getOptionLabel)
         return (
           <Chip
             key={option.key.toString()}
-            label={`${option?.label}`}
+            label={`${label}`}
             color={
               option?.color ??
               (getReadonlyChipColor && getReadonlyChipColor(option?.label))
@@ -86,7 +88,43 @@ export const ReadonlyRenderer = (props: Partial<InputFormProps>) => {
       })
     }
     return
-  }, [readonlyType, textToDisplay, value, hoptions])
+  }, [readonlyType, textToDisplay, value, values, hoptions])
+
+  const renderCustom = useMemo(() => {
+    if (
+      (readonlyType !== 'customElement' &&
+        readonlyType !== 'customContainer') ||
+      !readonlyElement
+    )
+      return undefined
+    const Element = readonlyElement
+    if (!multiple) {
+      return <Element valueKey={value} value={textToDisplay} />
+    } else if (hoptions && values && readonlyType === 'customElement') {
+      return values.map((value) => {
+        const option = hoptions.find((o) => o.key === value)
+        if (!option) return undefined
+        const label = getLabelOfOption(option, getOptionLabel)
+        return (
+          <Element
+            key={option.key.toString()}
+            valueKey={option.key}
+            value={`${label}`}
+          />
+        )
+      })
+    } else if (hoptions && values && readonlyType === 'customContainer') {
+      return (
+        <Element
+          values={values.map((value) => {
+            const option = hoptions.find((o) => o.key === value)
+            return option
+          })}
+        />
+      )
+    }
+    return
+  }, [readonlyType, textToDisplay, value, values, hoptions, readonlyElement])
 
   const url = useMemo(() => {
     if (!value || !getReadonlyTextUrl) return undefined
@@ -117,16 +155,33 @@ export const ReadonlyRenderer = (props: Partial<InputFormProps>) => {
         </Typography>
       )
   }
-  return (
-    <Stack
-      direction='row'
-      alignItems='center'
-      flexWrap='wrap'
-      sx={{
-        gap: (theme) => theme.spacing(0.5)
-      }}
-    >
-      {renderTag}
-    </Stack>
-  )
+  if (readonlyType === 'chip') {
+    return (
+      <Stack
+        direction='row'
+        alignItems='center'
+        flexWrap='wrap'
+        sx={{
+          gap: (theme) => theme.spacing(0.5)
+        }}
+      >
+        {renderTag}
+      </Stack>
+    )
+  }
+  if (readonlyType === 'customElement') {
+    return (
+      <Stack
+        direction='row'
+        alignItems='center'
+        flexWrap='wrap'
+        sx={{
+          gap: (theme) => theme.spacing(0.5)
+        }}
+      >
+        {renderCustom}
+      </Stack>
+    )
+  }
+  return <>{renderCustom}</>
 }

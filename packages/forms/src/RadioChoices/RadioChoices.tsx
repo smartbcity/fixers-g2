@@ -39,7 +39,7 @@ export interface RadioChoicesBasicProps extends BasicProps {
    *
    * @default ''
    */
-  value?: string
+  value?: SmartKey
 
   /**
    * The event called when the value of the input change

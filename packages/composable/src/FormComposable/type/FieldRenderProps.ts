@@ -137,7 +137,9 @@ export const useFieldRenderProps = (
     classes?.field,
     styles?.field,
     readonly,
-    isLoading
+    isLoading,
+    formState.readonly,
+    formState.isLoading
   ])
   const { setFieldValue } = formState
 

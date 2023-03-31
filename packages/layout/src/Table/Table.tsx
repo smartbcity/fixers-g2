@@ -25,6 +25,7 @@ import { ElevatedBase } from './ElevatedBase'
 import { ElevatedLoading } from './ElevatedLoading'
 import { GroundedLoading } from './GroundedLoading'
 import { Pagination } from '@smartb/g2-components'
+import { LinkProps } from 'react-router-dom'
 
 export interface TableClasses {
   table?: string
@@ -106,6 +107,10 @@ export interface TableBasicProps<Data extends {}> extends BasicProps {
    * The event triggered when a row is clicked
    */
   onRowClicked?: (row: Row<Data>) => void
+  /**
+   * use this prop to make every rows a clickable link
+   */
+  getRowLink?: (row: Row<Data>) => LinkProps
   /**
    * Provide this function if you want to have a subcomponent for the rows
    */
@@ -215,6 +220,8 @@ export const Table = <Data extends {}>(props: TableProps<Data>) => {
     expandInElevatedRow = false,
     toggleExpandOnRowClicked = false,
     additionnalRowsProps,
+    getRowLink,
+    sx,
     ...other
   } = props
   const isSelectabale = !!setSelectedRowIds
@@ -369,23 +376,28 @@ export const Table = <Data extends {}>(props: TableProps<Data>) => {
                 padding: (theme) => `0px ${theme.spacing(1.5)}`,
                 paddingBottom: (theme) => `${theme.spacing(1.5)}`,
                 boxSizing: 'border-box',
-                '& .AruiTable-principaleTableRow:hover': onRowClicked
-                  ? {
-                      borderColor: 'secondary.main',
-                      cursor: 'pointer'
-                    }
-                  : {}
+                '& .AruiTable-principaleTableRow:hover':
+                  onRowClicked || getRowLink
+                    ? {
+                        borderColor: 'secondary.main',
+                        cursor: 'pointer'
+                      }
+                    : {},
+                ...sx
               }
             : {
-                '& .AruiTable-principaleTableRow:hover': onRowClicked
-                  ? {
-                      background: '#D9DBE14D',
-                      cursor: 'pointer'
-                    }
-                  : {}
+                '& .AruiTable-principaleTableRow:hover':
+                  onRowClicked || getRowLink
+                    ? {
+                        background: '#D9DBE14D',
+                        cursor: 'pointer'
+                      }
+                    : {},
+                ...sx
               }
         }
         variant={variant}
+        getRowLink={getRowLink}
         expandInElevatedRow={expandInElevatedRow}
         {...other}
       >
@@ -402,6 +414,7 @@ export const Table = <Data extends {}>(props: TableProps<Data>) => {
               headerGroups={headerGroups}
               footerGroups={footerGroups}
               withFooter={withFooter}
+              getRowLink={getRowLink}
               prepareRow={prepareRow}
               rows={rows}
               tableProps={tableProps}
@@ -426,6 +439,7 @@ export const Table = <Data extends {}>(props: TableProps<Data>) => {
               selectedRowIds={selectedRowIds}
               page={page}
               prepareRow={prepareRow}
+              getRowLink={getRowLink}
               rows={rows}
               tableProps={tableProps}
               classes={classes}

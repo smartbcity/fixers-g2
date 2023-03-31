@@ -17,10 +17,7 @@ import { ClearRounded } from '@mui/icons-material'
 const useStyles = makeG2STyles()({
   root: {
     position: 'relative',
-    width: 'fit-content',
-    '& .MuiInputBase-input': {
-      minWidth: '60px'
-    }
+    width: 'fit-content'
   },
   searchIcon: {
     width: '17px',

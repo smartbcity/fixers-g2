@@ -36,11 +36,18 @@ export const MapComposableRenderer: ElementRendererFunction<
   const onChange = basicProps.onChange
   delete basicProps.onChange
 
+  const pluginsCount =
+    (params?.additionnalPlugins?.length ?? 0) +
+    (params?.draggableMarkerPlugin?.enable ? 1 : 0)
+
   const onChangeMapState = useCallback(
     (key: string, value: any) => {
-      formState.setFieldValue(basicProps.name, { ...mapState, [key]: value })
+      formState.setFieldValue(
+        basicProps.name,
+        pluginsCount > 1 ? { ...mapState, [key]: value } : value
+      )
     },
-    [onChange, mapState, formState.setFieldValue]
+    [onChange, mapState, formState.setFieldValue, pluginsCount]
   )
 
   const additionnalPlugins = useMemo(
@@ -48,11 +55,15 @@ export const MapComposableRenderer: ElementRendererFunction<
       params?.additionnalPlugins?.map(
         (plugin): MapPlugin => ({
           ...plugin,
-          value: mapState ? mapState[plugin.key] : undefined,
+          value: mapState
+            ? pluginsCount > 1
+              ? mapState[plugin.key]
+              : mapState
+            : undefined,
           setValue: (value) => onChangeMapState(plugin.key, value)
         })
       ),
-    [params?.additionnalPlugins, mapState, onChangeMapState]
+    [params?.additionnalPlugins, mapState, onChangeMapState, pluginsCount]
   )
 
   return (
@@ -68,7 +79,10 @@ export const MapComposableRenderer: ElementRendererFunction<
                   position: position,
                   geojson: geojson
                 }),
-              position: mapState?.marker?.position,
+              position:
+                pluginsCount > 1
+                  ? mapState?.marker?.position
+                  : mapState?.position,
               ...params?.draggableMarkerPlugin
             }
           : undefined

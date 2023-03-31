@@ -11,7 +11,8 @@ import {
   Stories
 } from '@storybook/addon-docs'
 import LinkTo from '@storybook/addon-links/react'
-import { Box, Typography } from '@mui/material'
+import { Box, Stack, Typography } from '@mui/material'
+import { StatusTag } from '@smartb/g2-notifications'
 import { InputFormClasses, InputFormStyles } from './docs'
 
 export default {
@@ -134,11 +135,50 @@ export const InputFormReadonlyChip: Story<InputFormBasicProps> = (
   )
 }
 
+const CustomStatusTag = ({ values }) => {
+  return (
+    <Stack>
+      {values.map((value) => (
+        <StatusTag label={value} />
+      ))}
+    </Stack>
+  )
+}
+
+export const InputFormReadonlyCustom: Story<InputFormBasicProps> = (
+  args: InputFormBasicProps
+) => {
+  return (
+    <InputForm
+      inputType='select'
+      label='Readonly input chip'
+      values={['status1', 'status2']}
+      options={[
+        {
+          key: 'status1',
+          label: 'Started'
+        },
+        {
+          key: 'status2',
+          label: 'Done dzsqf qsdf azef azef qsd fazrg azegh azrhazdhazer'
+        }
+      ]}
+      multiple
+      style={{ width: '500px' }}
+      readonly
+      readonlyType='customContainer'
+      readonlyElement={CustomStatusTag}
+      getReadonlyChipColor={() => '#E56643'}
+    />
+  )
+}
+
 export const InputFormLoading: Story<InputFormBasicProps> = (
   args: InputFormBasicProps
 ) => {
   return (
     <InputForm
+      inputType='textField'
       label='Loading input'
       value='My value'
       style={{ width: '500px' }}
@@ -223,9 +263,7 @@ export const FormExample: Story<InputFormBasicProps> = () => {
         value={form.nationality}
         label='nationality:'
         inputType='radioChoices'
-        onChange={(_: React.ChangeEvent<HTMLInputElement>, value: string) =>
-          setform({ ...form, nationality: value })
-        }
+        onChange={(value: string) => setform({ ...form, nationality: value })}
         choices={[
           { key: 'fr', label: 'I have the french nationnality' },
           { key: 'other', label: "I don't have the french nationnality" }

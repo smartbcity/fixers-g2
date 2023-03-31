@@ -13,6 +13,7 @@ import React, { Fragment, useMemo } from 'react'
 import { HeaderGroup, IdType, TableProps, TableRowProps } from 'react-table'
 import { TableClasses, TableStyles } from './Table'
 import { Row } from './types'
+import { LinkProps, Link } from 'react-router-dom'
 
 export interface GroundedBaseProps<Data extends {}> {
   /**
@@ -29,6 +30,10 @@ export interface GroundedBaseProps<Data extends {}> {
    * the envent triggered when a row is clicked
    */
   onRowClicked?: (row: Row<Data>) => void
+  /**
+   * use this prop to make every rows a clickable link
+   */
+  getRowLink?: (row: Row<Data>) => LinkProps
   /**
    * The classes applied to the different part of the component
    */
@@ -71,7 +76,8 @@ export const GroundedBase = <Data extends {}>(
     toggleExpandOnRowClicked,
     toggleRowExpanded,
     additionnalRowsProps = {},
-    getRowId
+    getRowId,
+    getRowLink
   } = props
   const rowsDisplay = useMemo(() => {
     return rows.map((row) => {
@@ -134,6 +140,29 @@ export const GroundedBase = <Data extends {}>(
                 {renderRowHoveredComponent(row)}
               </TableCell>
             )}
+            {getRowLink && (
+              <TableCell
+                sx={{
+                  padding: 0,
+                  position: 'absolute',
+                  width: '100%',
+                  height: '100%',
+                  zIndex: 1,
+                  top: 0,
+                  left: 0
+                }}
+                className='AruiTable-rowLinkContainer'
+              >
+                <Link
+                  {...getRowLink(row)}
+                  style={{
+                    position: 'absolute',
+                    width: '100%',
+                    height: '100%'
+                  }}
+                />
+              </TableCell>
+            )}
           </TableRow>
           <TableRow
             className={cx('AruiTable-tableRow', classes?.tableRow)}
@@ -164,7 +193,8 @@ export const GroundedBase = <Data extends {}>(
     toggleRowExpanded,
     selectedRowIds,
     additionnalRowsProps,
-    getRowId
+    getRowId,
+    getRowLink
   ])
 
   const headerDisplay = useMemo(

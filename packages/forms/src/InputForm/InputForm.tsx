@@ -67,7 +67,7 @@ export interface InputFormBasicProps<T extends InputFormTypes = 'textField'>
    * If you choose "chip" it will be displayed in chips.
    * @default "text"
    */
-  readonlyType?: 'text' | 'chip'
+  readonlyType?: 'text' | 'chip' | 'customElement' | 'customContainer'
   /**
    * The orientation of the alignement of the label and the input
    * @default "vertical"
@@ -81,6 +81,11 @@ export interface InputFormBasicProps<T extends InputFormTypes = 'textField'>
    * attribute a link to a readonly text
    */
   getReadonlyTextUrl?: (value: string | number) => string | undefined
+  /**
+   * The element rendered in readonly if the `readonlyType` is `"customElement" | "customContainer"` your element need to use the prop
+   * `value: string` and `valueKey?: SmartKey` if `readonlyType="customElement"` and also `values: Option[]` if `readonlyType="customContainer"`
+   */
+  readonlyElement?: React.ElementType
   /**
    * If you want to add additionnals element near to the input use this prop
    */

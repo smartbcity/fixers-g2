@@ -1,85 +1,17 @@
 import React, { useState } from 'react'
 import { Meta } from '@storybook/react'
-import { Table as AruiTable, TableBasicProps } from './Table'
+import { TableV2 as AruiTableV2, TableV2BasicProps } from './TableV2'
+import { G2ColumnDef, useTable } from './useTable'
 import { Story } from '@storybook/react/types-6-0'
 import { Box, Button, Divider, Stack, Typography } from '@mui/material'
-import {
-  ArgsTable,
-  PRIMARY_STORY,
-  Title,
-  Description,
-  Primary,
-  Stories
-} from '@storybook/addon-docs'
-import { CodeHighlighter } from '@smartb/g2-documentation'
-import { customCellExample, classes, styles, Column, CellProps } from './types'
 import { Info } from '@mui/icons-material'
+import { ColumnDef } from '@tanstack/react-table'
+import { ColumnFactory } from '../ColumnFactory'
 import { BrowserRouter } from 'react-router-dom'
-import { ColumnFactoryV1 } from '../ColumnFactory'
 
 export default {
-  title: 'Layout/Table',
-  component: AruiTable,
-  parameters: {
-    docs: {
-      page: () => (
-        <>
-          <Title>Table</Title>
-          <Description>
-            This table is created using the library
-            [react-table](https://react-table.tanstack.com/).
-          </Description>
-          <Description>
-            You will have to provide the data and the columns used to create the
-            table. The columns need to have an id or an acessor as described
-            here:
-            https://react-table.tanstack.com/docs/api/useTable#column-options.
-            And the Data should extends the type `BasicData` in order to have
-            server side pagination and row selection working
-          </Description>
-          <Description>
-            To create a custom cell you will have to type the parameters with
-            customs types provided by g2 like so:
-          </Description>
-          <CodeHighlighter code={customCellExample} />
-          <Description>
-            There is 2 variants you can use. They are fundamentally different:
-          </Description>
-          <Description>
-            - the `grounded` variant is based on the Material-ui
-            [`Table`](https://mui.com/components/tables/#main-content)
-            component. And use the the appropriate html tags for a table.
-          </Description>
-          <Description>
-            - the `elevated` variant is a virtualized table created with div
-            tags. It's the most custamizable one but it less accessible because
-            it doesn't follow the html rule.
-          </Description>
-          <Primary />
-          <ArgsTable story={PRIMARY_STORY} />
-          <Stories />
-        </>
-      )
-    }
-  },
-  argTypes: {
-    classes: {
-      table: {
-        type: {
-          summary: 'AppClasses',
-          detail: classes
-        }
-      }
-    },
-    styles: {
-      table: {
-        type: {
-          summary: 'AppStyles',
-          detail: styles
-        }
-      }
-    }
-  }
+  title: 'Layout/TableV2',
+  component: AruiTableV2
 } as Meta
 
 interface Data {
@@ -124,50 +56,50 @@ const data2: Data[] = [
   }
 ]
 
-export const Table: Story<TableBasicProps<Data>> = (
-  args: TableBasicProps<Data>
-) => {
-  const [page, setPage] = useState<number>(1)
-  return (
-    <AruiTable
-      page={page}
-      totalPages={2}
-      onPageChange={(newPage) => setPage(newPage)}
-      {...args}
-      data={page === 1 ? data1 : data2}
-    />
-  )
-}
-
-const columns: Column<Data>[] = [
+const columns: ColumnDef<Data>[] = [
   {
-    Header: 'Id',
-    accessor: 'id',
-    Cell: ({ row }: CellProps<Data>) => (
-      <Typography>{row.original.id}</Typography>
-    )
+    header: 'Id',
+    id: 'id',
+    cell: ({ row }) => <Typography>{row.original.id}</Typography>
   },
   {
-    Header: 'Name',
-    accessor: 'name',
-    Cell: ({ row }: CellProps<Data>) => (
-      <Typography>{row.original.name}</Typography>
-    )
+    header: 'Name',
+    id: 'name',
+    cell: ({ row }) => <Typography>{row.original.name}</Typography>
   },
   {
-    Header: 'Is he relax ?',
-    accessor: 'isRelaxed',
-    Cell: ({ row }: CellProps<Data>) => (
+    header: 'Is he relax ?',
+    id: 'isRelaxed',
+    cell: ({ row }) => (
       <Typography>{row.original.isRelaxed ? 'yes' : 'no'}</Typography>
     )
   }
 ]
 
-Table.args = {
-  columns: columns,
+export const TableV2: Story<TableV2BasicProps<Data>> = (
+  args: TableV2BasicProps<Data>
+) => {
+  const [page, setPage] = useState<number>(1)
+  const tableState = useTable({
+    data: page === 1 ? data1 : data2,
+    columns: columns,
+    enableExpanding: true,
+    enableRowSelection: true,
+    getRowId: (row) => row.id
+  })
+  return (
+    <AruiTableV2
+      page={page}
+      totalPages={2}
+      onPageChange={(newPage) => setPage(newPage)}
+      tableState={tableState}
+      {...args}
+    />
+  )
+}
+
+TableV2.args = {
   getRowId: (row) => row.id,
-  setSelectedRowIds: (ids) => console.log(ids),
-  isSelectableRow: (row) => row.index % 2 === 0,
   renderSubComponent: (row) => (
     <Box
       sx={{
@@ -219,47 +151,41 @@ export const theVariants: Story = () => {
     }
   ]
 
-  const columnsExample: Column<DataExample>[] = [
+  const columnsExample: ColumnDef<DataExample>[] = [
     {
-      Header: 'Name',
-      accessor: 'name',
-      Cell: ({ row }: CellProps<DataExample>) => (
-        <Typography>{row.original.name}</Typography>
-      )
+      header: 'Name',
+      id: 'name',
+      cell: ({ row }) => <Typography>{row.original.name}</Typography>
     },
     {
-      Header: 'Age',
-      accessor: 'age',
-      Cell: ({ row }: CellProps<DataExample>) => (
-        <Typography>{row.original.age}</Typography>
-      )
+      header: 'Age',
+      id: 'age',
+      cell: ({ row }) => <Typography>{row.original.age}</Typography>
     },
     {
-      Header: 'Gender',
-      accessor: 'gender',
-      Cell: ({ row }: CellProps<DataExample>) => (
-        <Typography>{row.original.gender}</Typography>
-      )
+      header: 'Gender',
+      id: 'gender',
+      cell: ({ row }) => <Typography>{row.original.gender}</Typography>
     },
     {
-      Header: 'Nationality',
-      accessor: 'nationality',
-      Cell: ({ row }: CellProps<DataExample>) => (
-        <Typography>{row.original.nationality}</Typography>
-      )
+      header: 'Nationality',
+      id: 'nationality',
+      cell: ({ row }) => <Typography>{row.original.nationality}</Typography>
     }
   ]
+  const tableState = useTable({
+    data: dataExample,
+    columns: columnsExample
+  })
   return (
     <Stack spacing={5}>
-      <AruiTable<DataExample>
-        data={dataExample}
-        columns={columnsExample}
+      <AruiTableV2<DataExample>
+        tableState={tableState}
         variant='grounded'
         getRowId={(row) => row.id}
       />
-      <AruiTable<DataExample>
-        data={dataExample}
-        columns={columnsExample}
+      <AruiTableV2<DataExample>
+        tableState={tableState}
         variant='elevated'
         getRowId={(row) => row.id}
       />
@@ -268,10 +194,14 @@ export const theVariants: Story = () => {
 }
 
 export const LoadingStates: Story = () => {
+  const tableState = useTable({
+    data: [],
+    columns: []
+  })
   return (
     <Stack spacing={5}>
-      <AruiTable columns={[]} data={[]} isLoading variant='grounded' />
-      <AruiTable columns={[]} data={[]} isLoading variant='elevated' />
+      <AruiTableV2 tableState={tableState} isLoading variant='grounded' />
+      <AruiTableV2 tableState={tableState} isLoading variant='elevated' />
     </Stack>
   )
 }
@@ -306,11 +236,11 @@ export const NotificationList: Story = () => {
     }
   ]
 
-  const columnsNotification: Column<Notification>[] = [
+  const columnsNotification: ColumnDef<Notification>[] = [
     {
-      Header: 'Notification list',
+      header: 'Notification list',
       id: 'notifications',
-      Cell: ({ row }) => (
+      cell: ({ row }) => (
         <Stack direction='row' alignItems='center' spacing={2}>
           <Divider
             orientation='vertical'
@@ -340,11 +270,14 @@ export const NotificationList: Story = () => {
       )
     }
   ]
+  const tableState = useTable({
+    data: dataNotifications,
+    columns: columnsNotification
+  })
   return (
     <Stack>
-      <AruiTable<Notification>
-        data={dataNotifications}
-        columns={columnsNotification}
+      <AruiTableV2<Notification>
+        tableState={tableState}
         variant='grounded'
         onRowClicked={() => {}}
         getRowId={(row) => row.id}
@@ -413,75 +346,80 @@ export const AxessExample: Story = () => {
     }
   ]
 
-  const axessColumns: Column<AxessData>[] = [
+  const axessColumns: G2ColumnDef<AxessData>[] = [
     {
-      Header: 'Protocol',
-      accessor: 'protocol',
-      Cell: ({ row }: CellProps<AxessData>) => (
+      header: 'Protocol',
+      id: 'protocol',
+      cell: ({ row }) => (
         <Typography variant='body2'>{row.original.protocol}</Typography>
       )
     },
     {
-      Header: 'Sectors',
-      accessor: 'sectors',
-      Cell: ({ row }: CellProps<AxessData>) => (
+      header: 'Sectors',
+      id: 'sectors',
+      cell: ({ row }) => (
         <Typography variant='body2'>{row.original.sectors}</Typography>
       )
     },
     {
-      Header: 'Vintage',
-      accessor: 'vintage',
-      Cell: ({ row }: CellProps<AxessData>) => (
+      header: 'Vintage',
+      id: 'vintage',
+      cell: ({ row }) => (
         <Typography variant='body2'>{row.original.vintage}</Typography>
       ),
       className: 'vintageColumn'
     },
     {
-      Header: 'Mark. price',
-      accessor: 'marketprice',
-      Cell: ({ row }: CellProps<AxessData>) => (
+      header: 'Mark. price',
+      id: 'marketprice',
+      cell: ({ row }) => (
         <Typography variant='body2'>{row.original.marketprice}</Typography>
       ),
       className: 'marketColumn'
     },
     {
-      Header: 'Purch. price',
-      accessor: 'purchaseprice',
-      Cell: ({ row }: CellProps<AxessData>) => (
+      header: 'Purch. price',
+      id: 'purchaseprice',
+      cell: ({ row }) => (
         <Typography variant='body2'>{row.original.purchaseprice}</Typography>
       ),
-      Footer: () => <Typography variant='body2'>290 $</Typography>,
+      footer: () => <Typography variant='body2'>290 $</Typography>,
       className: 'dataColumn'
     },
     {
-      Header: 'Gain',
-      accessor: 'gain',
-      Cell: ({ row }: CellProps<AxessData>) => (
+      header: 'Gain',
+      id: 'gain',
+      cell: ({ row }) => (
         <Typography variant='body2'>{row.original.gain}</Typography>
       ),
-      Footer: () => <Typography variant='body2'>+47%</Typography>,
+      footer: () => <Typography variant='body2'>+47%</Typography>,
       className: 'dataColumn'
     },
     {
-      Header: 'Quantity',
-      accessor: 'quantity',
-      Cell: ({ row }: CellProps<AxessData>) => (
+      header: 'Quantity',
+      id: 'quantity',
+      cell: ({ row }) => (
         <Typography variant='body2'>{row.original.quantity}</Typography>
       ),
-      Footer: () => <Typography variant='body2'>5 000 tCO2E</Typography>,
+      footer: () => <Typography variant='body2'>5 000 tCO2E</Typography>,
       className: 'dataColumn'
     },
     {
-      Header: 'Total',
-      accessor: 'total',
-      Cell: ({ row }: CellProps<AxessData>) => (
+      header: 'Total',
+      id: 'total',
+      cell: ({ row }) => (
         <Typography variant='subtitle2'>{row.original.total}</Typography>
       ),
-      Footer: () => <Typography variant='subtitle2'>1 450 000 $</Typography>,
+      footer: () => <Typography variant='subtitle2'>1 450 000 $</Typography>,
       className: 'dataColumn'
     }
   ]
-
+  const tableState = useTable({
+    data: axessData,
+    columns: axessColumns,
+    noToggleAllPageRowsSelected: true,
+    enableRowSelection: true
+  })
   return (
     <Stack
       sx={{
@@ -523,13 +461,10 @@ export const AxessExample: Story = () => {
         }
       }}
     >
-      <AruiTable<AxessData>
-        data={axessData}
-        columns={axessColumns}
+      <AruiTableV2<AxessData>
+        tableState={tableState}
         getRowId={(row) => row.id}
         variant='grounded'
-        setSelectedRowIds={(rows) => console.log(rows)}
-        noToggleAllPageRowsSelected
         withFooter
         renderRowHoveredComponent={() => (
           <Stack direction='row' spacing={2} alignItems='center' height='100%'>
@@ -584,10 +519,10 @@ export const ColumnFactoryExample: Story = () => {
     }
   ]
 
-  const columns = ColumnFactoryV1<Person>({
+  const columns = ColumnFactory<Person>({
     generateColumns: (generators) => ({
       profile: generators.profile({
-        Header: 'Profile',
+        header: 'Profile',
         getCellProps: (person) => ({
           givenName: person.firstName,
           familyName: person.lastName
@@ -595,21 +530,21 @@ export const ColumnFactoryExample: Story = () => {
       }),
 
       birthDate: generators.date({
-        Header: 'Birth date',
+        header: 'Birth date',
         getCellProps: (person) => ({
           date: person.birthDate
         })
       }),
 
       city: generators.text({
-        Header: 'City',
+        header: 'City',
         getCellProps: (person) => ({
           value: person.city
         })
       }),
 
       contact: generators.contact({
-        Header: 'Contact',
+        header: 'Contact',
         getCellProps: (person) => ({
           email: person.email,
           phone: person.phone
@@ -617,10 +552,21 @@ export const ColumnFactoryExample: Story = () => {
       })
     })
   })
+  const tableState = useTable({
+    data: persons,
+    columns: columns,
+    noToggleAllPageRowsSelected: true,
+    enableRowSelection: true
+  })
   return (
     <Stack>
       <BrowserRouter>
-        <AruiTable<Person> data={persons} columns={columns} />
+        <AruiTableV2
+          getRowLink={() => ({
+            to: 'https://tanstack.com/table/v8/docs/examples/react/row-dnd'
+          })}
+          tableState={tableState}
+        />
       </BrowserRouter>
     </Stack>
   )

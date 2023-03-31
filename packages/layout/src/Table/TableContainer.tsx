@@ -5,11 +5,13 @@ import {
 } from '@mui/material'
 import React from 'react'
 import { MergeMuiElementProps } from '@smartb/g2-themes'
+import { LinkProps } from 'react-router-dom'
 
 interface BasicTableContainerBasicProps {
   variant: 'grounded' | 'elevated'
   children: React.ReactNode
   expandInElevatedRow?: boolean
+  getRowLink?: (row: any) => LinkProps
 }
 
 type BasicTableContainerProps = MergeMuiElementProps<
@@ -20,15 +22,16 @@ type BasicTableContainerProps = MergeMuiElementProps<
 const BasicTableContainer = (props: BasicTableContainerProps) => {
   const { children, ...other } = props
   delete other.expandInElevatedRow
+  delete other.getRowLink
   return <MuiTableContainer {...other}>{children}</MuiTableContainer>
 }
 
 export const TableContainer = styled(BasicTableContainer)((props) => {
-  const { variant, theme, expandInElevatedRow } = props
+  const { variant, theme, expandInElevatedRow, getRowLink } = props
   const comunStyles = {
+    overflow: 'unset',
     '& .AruiTable-actionColumn': {
-      maxWidth: '65px',
-      width: '20px'
+      maxWidth: '65px'
     },
     '& .AruiTable-pagination': {
       marginTop: '30px'
@@ -43,7 +46,29 @@ export const TableContainer = styled(BasicTableContainer)((props) => {
       '& .AruiTable-rowHoveredComponentContainer': {
         display: 'block'
       }
-    }
+    },
+    '& .AruiTable-tableHead': {
+      backgroundColor: '#ffffff99',
+      position: 'sticky',
+      top: '0px',
+      backdropFilter: 'blur(15px)',
+      zIndex: 5
+    },
+    '& .AruiTable-table': {
+      borderCollapse: 'unset'
+    },
+    '& .AruiTable-tableCell': !!getRowLink
+      ? {
+          zIndex: 2,
+          position: 'relative',
+          pointerEvents: 'none'
+        }
+      : undefined,
+    '& .AruiTable-tableCell :is(button, a, label)': !!getRowLink
+      ? {
+          pointerEvents: 'auto'
+        }
+      : undefined
   }
   if (variant === 'grounded') {
     return {
