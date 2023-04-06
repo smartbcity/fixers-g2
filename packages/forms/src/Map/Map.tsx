@@ -231,6 +231,7 @@ export const Map = (props: MapProps) => {
         {!!draggableMarkerPlugin && (
           <DraggableMarker
             draggable={(!isSm || isFullScreen) && !readonly}
+            map={map}
             {...draggableMarkerPlugin}
           />
         )}

@@ -34,7 +34,9 @@ export const DocumentHandlerRender: ElementRendererFunction<
         uploaded={!!uploadedGetUrl || !!localFile}
         label={localFile?.name ?? label}
         getFileUrl={
-          localFile ? () => URL.createObjectURL(localFile) : uploadedGetUrl
+          localFile
+            ? () => URL.createObjectURL(localFile)
+            : () => URL.createObjectURL(uploadedGetUrl())
         }
         onAdd={(files: File[]) => {
           formState.setFieldValue(basicProps.name, files[0], false)

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Marker } from 'react-leaflet'
 import { LatLngLiteral, Marker as LeafletMarker, Map } from 'leaflet'
 import { Button } from '@smartb/g2-components'
@@ -14,27 +14,41 @@ export interface DraggableMarkerNeeds {
 
 export interface DraggableMarkerProps extends DraggableMarkerNeeds {
   draggable?: boolean
+  map?: Map
 }
 
 export const DraggableMarker = (props: DraggableMarkerProps) => {
-  const { draggable = false, onPositionChange, position, canDragString } = props
+  const {
+    draggable = false,
+    onPositionChange,
+    position,
+    canDragString,
+    map
+  } = props
   const [diplayInfo, setDiplayInfo] = useState(draggable)
   const [markerRef, setmarkerRef] = useState<LeafletMarker<any> | null>(null)
+  const hasPositionChanged = useRef(false)
 
   useEffect(() => {
     setDiplayInfo(draggable)
   }, [draggable])
 
+  useEffect(() => {
+    if (!hasPositionChanged.current && position && map) {
+      map.setView(position, 10)
+    }
+  }, [position, map])
+
   const eventHandlers = useMemo(
     () => ({
       dragend() {
         const marker = markerRef
-        if (marker != null) {
-          onPositionChange &&
-            onPositionChange(
-              marker.getLatLng(),
-              GeoJSON.parse(marker.getLatLng(), { Point: ['lat', 'lng'] })
-            )
+        if (marker != null && onPositionChange) {
+          onPositionChange(
+            marker.getLatLng(),
+            GeoJSON.parse(marker.getLatLng(), { Point: ['lat', 'lng'] })
+          )
+          hasPositionChanged.current = true
         }
       },
       dragstart() {

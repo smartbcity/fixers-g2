@@ -29,7 +29,6 @@ const BasicTableContainer = (props: BasicTableContainerProps) => {
 export const TableContainer = styled(BasicTableContainer)((props) => {
   const { variant, theme, expandInElevatedRow, getRowLink } = props
   const comunStyles = {
-    overflow: 'unset',
     '& .AruiTable-actionColumn': {
       maxWidth: '65px'
     },
