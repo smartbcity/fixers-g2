@@ -13,7 +13,7 @@ import {
 import { useDeletableForm } from '../../../Commons/useDeletableForm'
 import { OrganizationId } from '../../../Organization'
 import { FlatUser, FlatUserToUser, User } from '../../Domain'
-import { UserFactoryStrings, ReadonlyFields } from './UserFactory'
+import { UserFactoryStrings, ReadOnlyFields } from './UserFactory'
 
 const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}/i
 
@@ -39,9 +39,9 @@ export interface UseUserFormStateProps<T extends User> {
    */
   user?: Partial<User>
   /**
-   * Use this prop if you want only some fields to be readonly
+   * Use this prop if you want only some fields to be readOnly
    */
-  readonlyFields?: ReadonlyFields
+  readOnlyFields?: ReadOnlyFields
   /**
    * The roles options needed to make the roles select.
    */
@@ -68,10 +68,10 @@ export interface UseUserFormStateProps<T extends User> {
    */
   isUpdate?: boolean
   /**
-   * To activate Readonly view
+   * To activate ReadOnly view
    * @default false
    */
-  readonly?: boolean
+  readOnly?: boolean
   /**
    * The organizationId of the user. Needed if you want to preSelect it when you are creating a user
    */
@@ -91,13 +91,13 @@ export const useUserFormState = <T extends User = User>(
     blockedFields,
     strings,
     user,
-    readonlyFields,
+    readOnlyFields,
     rolesOptions,
     multipleRoles = true,
     onSubmit,
     checkEmailValidity,
     isUpdate = false,
-    readonly = false,
+    readOnly = false,
     organizationId,
     roles = []
   } = params ?? {}
@@ -127,7 +127,7 @@ export const useUserFormState = <T extends User = User>(
     address: user?.address,
     strings,
     additionnalValidators,
-    readonly: readonlyFields?.address
+    readOnly: readOnlyFields?.address
   })
 
   const initialFields = useMemo(
@@ -141,7 +141,7 @@ export const useUserFormState = <T extends User = User>(
             strings?.requiredField,
             value,
             values,
-            readonlyFields,
+            readOnlyFields,
             additionnalValidators
           )
       },
@@ -154,7 +154,7 @@ export const useUserFormState = <T extends User = User>(
             strings?.requiredField,
             value,
             values,
-            readonlyFields,
+            readOnlyFields,
             additionnalValidators
           )
       },
@@ -165,7 +165,7 @@ export const useUserFormState = <T extends User = User>(
         name: 'email',
         defaultValue: user?.email,
         validator: async (value?: string) => {
-          if (readonlyFields?.email) return undefined
+          if (readOnlyFields?.email) return undefined
           const trimmed = (value ?? '').trim()
           if (!trimmed)
             return (
@@ -183,7 +183,7 @@ export const useUserFormState = <T extends User = User>(
         name: 'phone',
         defaultValue: user?.phone,
         validator: (value?: string, values?: any) => {
-          if (readonlyFields?.phone) return undefined
+          if (readOnlyFields?.phone) return undefined
           const res = validatePhone(value, strings?.enterAValidPhone)
           if (res) return res
           return additionnalValidators?.phone
@@ -197,7 +197,7 @@ export const useUserFormState = <T extends User = User>(
           ? user?.roles?.assignedRoles || roles
           : user?.roles?.assignedRoles[0] || roles[0],
         validator:
-          !readonlyFields?.roles && additionnalValidators?.roles
+          !readOnlyFields?.roles && additionnalValidators?.roles
             ? additionnalValidators?.roles
             : undefined
       },
@@ -205,17 +205,17 @@ export const useUserFormState = <T extends User = User>(
         name: 'memberOf',
         defaultValue: user?.memberOf?.id ?? organizationId,
         validator:
-          !readonlyFields?.memberOf && additionnalValidators?.memberOf
+          !readOnlyFields?.memberOf && additionnalValidators?.memberOf
             ? additionnalValidators?.memberOf
             : undefined
       },
-      ...(!isUpdate && !readonly
+      ...(!isUpdate && !readOnly
         ? [
             {
               name: 'sendEmailLink',
               defaultValue: true,
               validator:
-                readonlyFields?.sendEmailLink &&
+                readOnlyFields?.sendEmailLink &&
                 additionnalValidators?.sendEmailLink
                   ? additionnalValidators?.sendEmailLink
                   : undefined
@@ -227,9 +227,9 @@ export const useUserFormState = <T extends User = User>(
       user,
       isUpdate,
       rolesOptions,
-      readonly,
+      readOnly,
       organizationId,
-      readonlyFields,
+      readOnlyFields,
       strings,
       multipleRoles,
       onCheckEmail,

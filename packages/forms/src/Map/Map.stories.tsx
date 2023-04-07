@@ -41,7 +41,7 @@ export default {
             &#125; from "leaflet"` to access the currentMap object.
           </Description>
           <Description>
-            - `isMobile`, `readonly`, `isFullScreen` that are props provided by
+            - `isMobile`, `readOnly`, `isFullScreen` that are props provided by
             the map to keep you updated with its current state.
           </Description>
           <Description>

@@ -87,10 +87,10 @@ export const requiredString = (
   errorMessage?: string,
   value?: string | number,
   values?: any,
-  readonlyFields?: any,
+  readOnlyFields?: any,
   additionnalValidators?: any
 ) => {
-  if (readonlyFields && readonlyFields[fieldName]) return undefined
+  if (readOnlyFields && readOnlyFields[fieldName]) return undefined
   const string = String(value).trim()
   if (!string || !value) return errorMessage ?? 'le champ est obligatoire'
   return additionnalValidators && additionnalValidators[fieldName]

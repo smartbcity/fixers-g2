@@ -37,11 +37,11 @@ interface ActionsWrapperBasicProps extends BasicProps {
    */
   isLoading?: boolean
   /**
-   * Indicates if the data is on readonly mode
+   * Indicates if the data is on readOnly mode
    *
    * @default false
    */
-  readonly?: boolean
+  readOnly?: boolean
   /**
    * The classes applied to the different part of the component
    */

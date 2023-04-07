@@ -20,18 +20,18 @@ export const MyProfile = (props: AutomatedUserFactoryProps) => {
           ? {
               ...props.fieldsOverride,
               memberOf: {
-                readonly: true,
+                readOnly: true,
                 ...props.fieldsOverride?.memberOf
               },
               roles: {
-                readonly: true,
+                readOnly: true,
                 ...props.fieldsOverride?.roles
               }
             }
           : props.fieldsOverride
       }
-      update={!props.readonly}
-      readonly={props.readonly}
+      update={!props.readOnly}
+      readOnly={props.readOnly}
     />
   )
 }

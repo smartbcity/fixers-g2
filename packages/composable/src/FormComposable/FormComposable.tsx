@@ -75,11 +75,11 @@ interface FormComposableBasicProps<
    */
   isLoading?: boolean
   /**
-   * Indicates if the data is on readonly mode
+   * Indicates if the data is on readOnly mode
    *
    * @default false
    */
-  readonly?: boolean
+  readOnly?: boolean
   /**
    * The classes applied to the different part of the component
    */
@@ -112,7 +112,7 @@ export const FormComposable = <RENDERER extends ElementRenderersConfig>(
     formState,
     fieldsStackProps,
     isLoading = false,
-    readonly = false,
+    readOnly = false,
     display = 'flex',
     gridColumnNumber = 2,
     sx,

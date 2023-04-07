@@ -45,7 +45,7 @@ export interface MapPlugin {
 
 export interface MapPluginProps extends MapPlugin {
   map?: LeafletMap
-  readonly: boolean
+  readOnly: boolean
   isMobile: boolean
   isFullScreen: boolean
 }
@@ -72,11 +72,11 @@ export interface MapBasicProps extends BasicProps {
   /**
    * the pluggins you want to have inside the map they should be compatible with leaflet.
    * They should use the two required props `value` and `setValue` to handle their custom states
-   * They will also receive the prop `map?: LeafletMap` of the type `import { Map as LeafletMap } from "leaflet"` to access the currentMap object and also the props `isMobile`, `readonly`, `isFullScreen` to be informed of the state of the current map
+   * They will also receive the prop `map?: LeafletMap` of the type `import { Map as LeafletMap } from "leaflet"` to access the currentMap object and also the props `isMobile`, `readOnly`, `isFullScreen` to be informed of the state of the current map
    */
   additionnalPlugins?: (MapPlugin & Record<string, any>)[]
   /**
-   * the pluggin to have a draggableMarker on the map. When `readonly` is set to `true` its just a simple marker
+   * the pluggin to have a draggableMarker on the map. When `readOnly` is set to `true` its just a simple marker
    */
   draggableMarkerPlugin?: DraggableMarkerNeeds
   /**
@@ -100,9 +100,9 @@ export interface MapBasicProps extends BasicProps {
    */
   openFullScreenString?: string
   /**
-   * the readonly property passed to the pluggins of the map
+   * the readOnly property passed to the pluggins of the map
    */
-  readonly?: boolean
+  readOnly?: boolean
   /**
    * the error message you want to display at the bottom of the map
    */
@@ -128,7 +128,7 @@ export const Map = (props: MapProps) => {
     additionnalPlugins,
     openFullScreenString,
     sx,
-    readonly = false,
+    readOnly = false,
     errorMessage,
     classes,
     styles,
@@ -186,13 +186,13 @@ export const Map = (props: MapProps) => {
           <PluginElement
             {...other}
             isMobile={isSm}
-            readonly={readonly}
+            readOnly={readOnly}
             isFullScreen={isFullScreen}
             map={map}
           />
         )
       }),
-    [additionnalPlugins, readonly, isSm, isFullScreen, map]
+    [additionnalPlugins, readOnly, isSm, isFullScreen, map]
   )
 
   return (
@@ -230,7 +230,7 @@ export const Map = (props: MapProps) => {
         />
         {!!draggableMarkerPlugin && (
           <DraggableMarker
-            draggable={(!isSm || isFullScreen) && !readonly}
+            draggable={(!isSm || isFullScreen) && !readOnly}
             map={map}
             {...draggableMarkerPlugin}
           />
@@ -270,7 +270,7 @@ export const Map = (props: MapProps) => {
           isSm={isSm}
           {...draggableMarkerPlugin}
           map={map}
-          readonly={readonly}
+          readOnly={readOnly}
         />
       )}
       {!!errorMessage && (

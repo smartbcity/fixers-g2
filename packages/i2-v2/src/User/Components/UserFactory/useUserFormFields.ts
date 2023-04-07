@@ -61,10 +61,10 @@ export interface UseUserFormFieldsProps<T extends User> {
    */
   user?: T
   /**
-   * To activate Readonly view
+   * To activate ReadOnly view
    * @default false
    */
-  readonly?: boolean
+  readOnly?: boolean
   /**
    * The organizationId of the user. Needed if you want to preSelect it when you are creating a user
    */
@@ -79,7 +79,7 @@ export const useUserFormFields = <T extends User = User>(
     fieldsOverride,
     checkEmailValidity,
     isUpdate = false,
-    readonly = false,
+    readOnly = false,
     organizationId,
     user,
     multipleRoles = true,
@@ -144,7 +144,7 @@ export const useUserFormFields = <T extends User = User>(
           label: 'Organisation',
           type: 'select',
           params: {
-            getReadonlyTextUrl: getOrganizationUrl
+            getReadOnlyTextUrl: getOrganizationUrl
           }
         },
         fieldsOverride?.memberOf
@@ -156,7 +156,7 @@ export const useUserFormFields = <T extends User = User>(
           label: 'Rôle',
           type: 'select',
           params: {
-            readonlyType: 'chip',
+            readOnlyType: 'chip',
             multiple: multipleRoles
           }
         },
@@ -175,7 +175,7 @@ export const useUserFormFields = <T extends User = User>(
             validated: emailValid
           },
           validator: async (value?: string) => {
-            if (fieldsOverride?.email?.readonly) return undefined
+            if (fieldsOverride?.email?.readOnly) return undefined
             const trimmed = (value ?? '').trim()
             if (!trimmed)
               return (
@@ -208,7 +208,7 @@ export const useUserFormFields = <T extends User = User>(
           type: 'checkBox',
           label: "Envoyer le mail de vérification de l'adresse email",
           params: {
-            disabled: fieldsOverride?.sendVerifyEmail?.readonly
+            disabled: fieldsOverride?.sendVerifyEmail?.readOnly
           }
         },
         fieldsOverride?.sendVerifyEmail
@@ -220,7 +220,7 @@ export const useUserFormFields = <T extends User = User>(
           label:
             "Envoyer le mail de création de son mot de passe à l'utilisateur",
           params: {
-            disabled: fieldsOverride?.sendResetPassword?.readonly
+            disabled: fieldsOverride?.sendResetPassword?.readOnly
           }
         },
         fieldsOverride?.sendResetPassword
@@ -235,7 +235,7 @@ export const useUserFormFields = <T extends User = User>(
       emailLoading,
       onCheckEmail,
       isUpdate,
-      readonly
+      readOnly
     ]
   )
 

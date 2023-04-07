@@ -5,10 +5,10 @@ export {
   AutomatedOrganizationFactoryProps,
   OrganizationFactory,
   OrganizationFactoryProps,
-  ReadonlyOrgFieldsPerState,
+  ReadOnlyOrgFieldsPerState,
   useOrganizationFormState,
   OrganizationFactoryStrings,
-  ReadonlyFields as OrganizationReadonlyFields
+  ReadOnlyFields as OrganizationReadOnlyFields
 } from './Components/OrganizationFactory'
 
 export {

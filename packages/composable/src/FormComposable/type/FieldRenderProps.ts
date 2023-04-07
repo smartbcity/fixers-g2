@@ -30,14 +30,14 @@ export interface FieldRender {
    */
   isLoading?: boolean
   /**
-   * Indicates if the data is on readonly mode
+   * Indicates if the data is on readOnly mode
    *
    * @default false
    */
-  readonly?: boolean
+  readOnly?: boolean
   sx?: SxProps<Theme>
   onChange?: (value: any) => void
-  emptyValueInReadonly?: any
+  emptyValueInReadOnly?: any
 }
 
 const useFormProps = (
@@ -50,7 +50,7 @@ const useFormProps = (
     classes,
     styles,
     isLoading,
-    readonly,
+    readOnly,
     gridColumnNumber = 2
   } = props
   const error = getIn(formState.errors, field.name)
@@ -81,27 +81,27 @@ const useFormProps = (
         }
       : undefined,
     onChange: field.onChange,
-    readonly:
-      field.readonly === true
-        ? field.readonly
-        : readonly === true
-        ? readonly
-        : formState.readonly,
+    readOnly:
+      field.readOnly === true
+        ? field.readOnly
+        : readOnly === true
+        ? readOnly
+        : formState.readOnly,
     //@ts-ignore
-    emptyValueInReadonly:
-      field.params?.emptyValueInReadonly ?? formState.emptyValueInReadonly
+    emptyValueInReadOnly:
+      field.params?.emptyValueInReadOnly ?? formState.emptyValueInReadOnly
   }
 }
 
 export const useFieldRenderProps = (
   props: FormComposableProps<any>
 ): FieldRenderProps<string, any>[] => {
-  const { fields, formState, classes, styles, isLoading, readonly } = props
+  const { fields, formState, classes, styles, isLoading, readOnly } = props
 
   useEffect(() => {
     const { registerField, unregisterField } = formState
     fields.forEach((field) => {
-      if (!field.readonly && field.validator) {
+      if (!field.readOnly && field.validator) {
         const validator = field.validator
         registerField(field.name, validator)
       } else {
@@ -140,11 +140,11 @@ export const useFieldRenderProps = (
     formState.errors,
     classes?.field,
     styles?.field,
-    readonly,
+    readOnly,
     isLoading,
-    formState.readonly,
+    formState.readOnly,
     formState.isLoading,
-    formState.emptyValueInReadonly
+    formState.emptyValueInReadOnly
   ])
   const { setFieldValue } = formState
 

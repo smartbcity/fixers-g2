@@ -18,7 +18,7 @@ export const CheckBoxRender: ElementRendererFunction<CheckBoxRenderProps> = (
 ) => {
   const { element, formState, basicProps } = props
   const { params } = element
-  delete basicProps.emptyValueInReadonly
+  delete basicProps.emptyValueInReadOnly
   const { value, setFieldValue } = useMemo(
     () => getValueSetup(basicProps.name, formState, basicProps.sharedNameIndex),
     [basicProps.name, formState, basicProps.sharedNameIndex]
@@ -36,7 +36,7 @@ export const CheckBoxRender: ElementRendererFunction<CheckBoxRenderProps> = (
       {...params}
       {...basicProps}
       readOnly={
-        basicProps.readonly === true ? basicProps.readonly : params?.readOnly
+        basicProps.readOnly === true ? basicProps.readOnly : params?.readOnly
       }
     />
   )

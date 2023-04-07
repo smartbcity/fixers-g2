@@ -91,8 +91,8 @@ const FormComposableStory: Story<FormComposableProps> = (
       window.alert(JSON.stringify(values))
       return true
     }
-    // readonly: true,
-    // emptyValueInReadonly: "-"
+    // readOnly: true,
+    // emptyValueInReadOnly: "-"
   })
   const actions: FormAction[] = [
     {

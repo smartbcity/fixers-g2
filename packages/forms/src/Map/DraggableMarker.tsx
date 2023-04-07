@@ -88,7 +88,7 @@ export const DraggableMarkerControl = (
     map?: Map
     isSm: boolean
     isFullScreen: boolean
-    readonly?: boolean
+    readOnly?: boolean
   }
 ) => {
   const {
@@ -99,7 +99,7 @@ export const DraggableMarkerControl = (
     isFullScreen,
     addMarkerString,
     useMyPositionString,
-    readonly
+    readOnly
   } = props
 
   const onAddMarker = useCallback(() => {
@@ -138,7 +138,7 @@ export const DraggableMarkerControl = (
       )
   }, [onPositionChange, map])
 
-  if (!map || readonly) return <></>
+  if (!map || readOnly) return <></>
   return (
     <>
       {(!isSm || isFullScreen) && !position && (

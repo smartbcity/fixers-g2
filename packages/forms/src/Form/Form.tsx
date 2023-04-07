@@ -175,11 +175,11 @@ export interface FormBasicProps extends BasicProps {
    */
   isLoading?: boolean
   /**
-   * Indicates if the data is on readonly mode
+   * Indicates if the data is on readOnly mode
    *
    * @default false
    */
-  readonly?: boolean
+  readOnly?: boolean
   /**
    * The classes applied to the different part of the component
    */
@@ -215,7 +215,7 @@ export const Form = (props: FormProps) => {
     actionsStackProps,
     fieldsStackProps,
     isLoading = false,
-    readonly = false,
+    readOnly = false,
     ...other
   } = props
   const defaultStyles = useStyles()
@@ -229,7 +229,7 @@ export const Form = (props: FormProps) => {
           classes,
           styles,
           isLoading,
-          readonly
+          readOnly
         )
         if (!!field.customDisplay) {
           return field.customDisplay(input)
@@ -244,7 +244,7 @@ export const Form = (props: FormProps) => {
       classes?.field,
       styles?.field,
       isLoading,
-      readonly
+      readOnly
     ]
   )
 
@@ -297,7 +297,7 @@ const getInput = (
   classes?: FormClasses,
   styles?: FormStyles,
   isLoading?: boolean,
-  readonly?: boolean
+  readOnly?: boolean
 ) => {
   const commonProps = {
     key: field.key,
@@ -348,8 +348,8 @@ const getInput = (
           }}
           {...field.datePickerProps}
           {...commonProps}
-          readonly={
-            readonly === true ? readonly : field.datePickerProps?.readonly
+          readOnly={
+            readOnly === true ? readOnly : field.datePickerProps?.readOnly
           }
         />
       )
@@ -365,7 +365,7 @@ const getInput = (
           }}
           {...field.selectProps}
           {...commonProps}
-          readonly={readonly === true ? readonly : field.selectProps?.readonly}
+          readOnly={readOnly === true ? readOnly : field.selectProps?.readOnly}
         />
       ) : (
         <InputForm
@@ -377,7 +377,7 @@ const getInput = (
           }}
           {...field.selectProps}
           {...commonProps}
-          readonly={readonly === true ? readonly : field.selectProps?.readonly}
+          readOnly={readOnly === true ? readOnly : field.selectProps?.readOnly}
         />
       )
     case 'autoComplete':
@@ -392,8 +392,8 @@ const getInput = (
           }}
           {...field.autoCompleteProps}
           {...commonProps}
-          readonly={
-            readonly === true ? readonly : field.autoCompleteProps?.readonly
+          readOnly={
+            readOnly === true ? readOnly : field.autoCompleteProps?.readOnly
           }
         />
       ) : (
@@ -407,8 +407,8 @@ const getInput = (
           }}
           {...field.autoCompleteProps}
           {...commonProps}
-          readonly={
-            readonly === true ? readonly : field.autoCompleteProps?.readonly
+          readOnly={
+            readOnly === true ? readOnly : field.autoCompleteProps?.readOnly
           }
         />
       )
@@ -426,7 +426,7 @@ const getInput = (
           {...field.checkBoxProps}
           {...commonProps}
           disabled={
-            readonly === true ? readonly : field.checkBoxProps?.disabled
+            readOnly === true ? readOnly : field.checkBoxProps?.disabled
           }
         />
       )
@@ -441,8 +441,8 @@ const getInput = (
           }}
           {...field.radioChoicesProps}
           {...commonProps}
-          readonly={
-            readonly === true ? readonly : field.radioChoicesProps?.readonly
+          readOnly={
+            readOnly === true ? readOnly : field.radioChoicesProps?.readOnly
           }
         />
       )
@@ -457,7 +457,7 @@ const getInput = (
       }}
       {...field.textFieldProps}
       {...commonProps}
-      readonly={readonly === true ? readonly : field.textFieldProps?.readonly}
+      readOnly={readOnly === true ? readOnly : field.textFieldProps?.readOnly}
     />
   )
 }

@@ -25,10 +25,10 @@ export interface FormikFormParams<T> {
   formikConfig?: Partial<Omit<FormikConfig<any>, 'onSubmit'>>
   actions?: ActionProps
   /**
-   * The default behavior is that an empty field won't appear in readonly. If you want it to appear provide a value to put in it.
-   * This will be passed as `value` to the `ReadonlyRenderer` or as `values` if `multiple` is `true`
+   * The default behavior is that an empty field won't appear in readOnly. If you want it to appear provide a value to put in it.
+   * This will be passed as `value` to the `ReadOnlyRenderer` or as `values` if `multiple` is `true`
    */
-  emptyValueInReadonly?: any
+  emptyValueInReadOnly?: any
   /**
    * Indicates if the data is currently loading
    *
@@ -36,18 +36,18 @@ export interface FormikFormParams<T> {
    */
   isLoading?: boolean
   /**
-   * Indicates if the data is on readonly mode
+   * Indicates if the data is on readOnly mode
    *
    * @default false
    */
-  readonly?: boolean
+  readOnly?: boolean
 }
 
 export const useFormComposable = <T extends {}>(
   params: FormikFormParams<T>
 ): FormComposableState => {
   const feedback = useActionFeedback()
-  const { onSubmit, formikConfig, isLoading, readonly, emptyValueInReadonly } =
+  const { onSubmit, formikConfig, isLoading, readOnly, emptyValueInReadOnly } =
     params
   const validators = useRef<Record<string, ValidatorFnc>>({})
   const validate = useCallback(async (values) => {
@@ -133,7 +133,7 @@ export const useFormComposable = <T extends {}>(
     validateField,
     actions: actions,
     isLoading: isLoading ?? false,
-    readonly: readonly ?? false,
-    emptyValueInReadonly
+    readOnly: readOnly ?? false,
+    emptyValueInReadOnly
   }
 }

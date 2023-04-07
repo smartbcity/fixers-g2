@@ -13,7 +13,7 @@ import { useUserFormState, UseUserFormStateProps } from './useUserFormState'
 
 export type Validated = boolean
 
-export type ReadonlyFields = {
+export type ReadOnlyFields = {
   [k in keyof User]?: boolean
 }
 
@@ -103,9 +103,9 @@ export interface UserFactoryBasicProps
    */
   organizationsRefs?: OrganizationRef[]
   /**
-   * Use This props if you have roles that you don't want the user to be able to select but able to see in readonly use this prop
+   * Use This props if you have roles that you don't want the user to be able to select but able to see in readOnly use this prop
    */
-  readonlyRolesOptions?: Option[]
+  readOnlyRolesOptions?: Option[]
   /**
    * If you want the organization to transform to a link
    */
@@ -141,17 +141,17 @@ export const UserFactory = (props: UserFactoryProps) => {
     onSubmit,
     isUpdate = false,
     className,
-    readonly = false,
+    readOnly = false,
     organizationsRefs,
     rolesOptions,
     organizationId,
-    readonlyFields,
+    readOnlyFields,
     isLoading = false,
     strings,
     SubmitButtonRef,
     getOrganizationUrl,
     blockedFields,
-    readonlyRolesOptions,
+    readOnlyRolesOptions,
     multipleRoles = true,
     checkEmailValidity,
     formExtension,
@@ -173,7 +173,7 @@ export const UserFactory = (props: UserFactoryProps) => {
     address: user?.address,
     strings,
     additionnalValidators,
-    readonly: readonlyFields?.address
+    readOnly: readOnlyFields?.address
   })
 
   const userForm = useMemo((): FormField[] => {
@@ -193,7 +193,7 @@ export const UserFactory = (props: UserFactoryProps) => {
         type: 'textfield',
         label: strings?.givenName ?? 'Prénom',
         textFieldProps: {
-          readonly: readonlyFields?.givenName
+          readOnly: readOnlyFields?.givenName
         }
       },
       {
@@ -202,7 +202,7 @@ export const UserFactory = (props: UserFactoryProps) => {
         type: 'textfield',
         label: strings?.familyName ?? 'Nom de famille',
         textFieldProps: {
-          readonly: readonlyFields?.familyName
+          readOnly: readOnlyFields?.familyName
         }
       },
       ...(orgsOptions || organizationId
@@ -214,8 +214,8 @@ export const UserFactory = (props: UserFactoryProps) => {
               type: 'select',
               selectProps: {
                 options: orgsOptions,
-                readonly: readonlyFields?.memberOf,
-                getReadonlyTextUrl: getOrganizationUrl
+                readOnly: readOnlyFields?.memberOf,
+                getReadOnlyTextUrl: getOrganizationUrl
               }
             } as FormField
           ]
@@ -229,11 +229,11 @@ export const UserFactory = (props: UserFactoryProps) => {
               type: 'select',
               selectProps: {
                 options:
-                  readonlyFields?.roles === true || readonly
-                    ? readonlyRolesOptions
+                  readOnlyFields?.roles === true || readOnly
+                    ? readOnlyRolesOptions
                     : rolesOptions,
-                readonly: readonlyFields?.roles,
-                readonlyType: 'chip',
+                readOnly: readOnlyFields?.roles,
+                readOnlyType: 'chip',
                 multiple: multipleRoles
               }
             } as FormField
@@ -249,7 +249,7 @@ export const UserFactory = (props: UserFactoryProps) => {
         label: strings?.email ?? 'Adresse mail',
         textFieldProps: {
           textFieldType: 'email',
-          readonly: readonlyFields?.email,
+          readOnly: readOnlyFields?.email,
           searchLoading: emailLoading,
           validated: emailValid
         }
@@ -260,10 +260,10 @@ export const UserFactory = (props: UserFactoryProps) => {
         type: 'textfield',
         label: strings?.phone ?? 'Numéro de téléphone (facultatif)',
         textFieldProps: {
-          readonly: readonlyFields?.phone
+          readOnly: readOnlyFields?.phone
         }
       },
-      ...(!isUpdate && !readonly
+      ...(!isUpdate && !readOnly
         ? [
             {
               key: 'sendEmailLink',
@@ -274,7 +274,7 @@ export const UserFactory = (props: UserFactoryProps) => {
                 "Envoyer un lien d'invitation par mail",
               checkBoxProps: {
                 className: 'AruiUserFactory-sendEmailLink',
-                disabled: readonlyFields?.sendEmailLink
+                disabled: readOnlyFields?.sendEmailLink
               }
             } as FormField
           ]
@@ -284,8 +284,8 @@ export const UserFactory = (props: UserFactoryProps) => {
     isUpdate,
     rolesOptions,
     organizationsRefs,
-    readonlyFields,
-    readonly,
+    readOnlyFields,
+    readOnly,
     organizationId,
     getOrganizationUrl,
     multipleRoles,
@@ -301,10 +301,10 @@ export const UserFactory = (props: UserFactoryProps) => {
 
   useEffect(() => {
     const element = SubmitButtonRef?.current
-    if (element && !readonly) {
+    if (element && !readOnly) {
       element.onclick = formState.submitForm
     }
-  }, [SubmitButtonRef?.current, formState.submitForm, readonly])
+  }, [SubmitButtonRef?.current, formState.submitForm, readOnly])
 
   return (
     <Stack
@@ -324,7 +324,7 @@ export const UserFactory = (props: UserFactoryProps) => {
           formState.values.familyName ?? ''
         }`}
         roles={formState.values.roles}
-        rolesOptions={readonlyRolesOptions}
+        rolesOptions={readOnlyRolesOptions}
       />
       <Stack
         sx={{
@@ -336,7 +336,7 @@ export const UserFactory = (props: UserFactoryProps) => {
           fields={finalFields}
           formState={formState}
           isLoading={isLoading}
-          readonly={readonly}
+          readOnly={readOnly}
           sx={{
             width: '100%',
             flexGrow: 1,

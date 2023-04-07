@@ -9,7 +9,7 @@ import {
 
 export type AdressFieldsName = 'street' | 'postalCode' | 'city'
 
-export type AdressReadonlyFields = {
+export type AdressReadOnlyFields = {
   [k in keyof Address]?: boolean
 }
 

@@ -21,7 +21,7 @@ export type MyOrganizationProps = MergeMuiElementProps<
 
 export const MyOrganization = (props: MyOrganizationProps) => {
   const {
-    readonly,
+    readOnly,
     noOrganizationMessage = "Vous n'êtes pas inclut dans une organisation",
     ...other
   } = props
@@ -39,8 +39,8 @@ export const MyOrganization = (props: MyOrganizationProps) => {
     <AutomatedOrganizationFactory
       {...other}
       organizationId={user.memberOf}
-      update={!readonly}
-      readonly={readonly}
+      update={!readOnly}
+      readOnly={readOnly}
     />
   )
 }

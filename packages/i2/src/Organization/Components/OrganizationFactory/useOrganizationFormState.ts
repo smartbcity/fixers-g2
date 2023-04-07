@@ -15,7 +15,7 @@ import {
 import { siretValidation } from '../../Validation/siret'
 import {
   OrganizationFactoryStrings,
-  ReadonlyFields
+  ReadOnlyFields
 } from './OrganizationFactory'
 
 export interface useOrganizationFormStateProps<T extends Organization> {
@@ -40,9 +40,9 @@ export interface useOrganizationFormStateProps<T extends Organization> {
    */
   organization?: Partial<Organization>
   /**
-   * Use this prop if you want only some fields to be readonly
+   * Use this prop if you want only some fields to be readOnly
    */
-  readonlyFields?: ReadonlyFields
+  readOnlyFields?: ReadOnlyFields
   /**
    * The roles options needed to make the roles select.
    */
@@ -70,7 +70,7 @@ export const useOrganizationFormState = <T extends Organization = Organization>(
     blockedFields,
     strings,
     organization,
-    readonlyFields,
+    readOnlyFields,
     rolesOptions,
     multipleRoles = true,
     onSubmit
@@ -86,7 +86,7 @@ export const useOrganizationFormState = <T extends Organization = Organization>(
     address: organization?.address,
     strings,
     additionnalValidators,
-    readonly: readonlyFields?.address
+    readOnly: readOnlyFields?.address
   })
 
   const initialFields = useMemo(
@@ -95,7 +95,7 @@ export const useOrganizationFormState = <T extends Organization = Organization>(
         name: 'siret',
         defaultValue: organization?.siret,
         validator: (value: any, values: any) =>
-          siretValidation(value, values, readonlyFields, additionnalValidators)
+          siretValidation(value, values, readOnlyFields, additionnalValidators)
       },
       addressPartialFields.street,
       addressPartialFields.postalCode,
@@ -109,7 +109,7 @@ export const useOrganizationFormState = <T extends Organization = Organization>(
             strings?.requiredField,
             value,
             values,
-            readonlyFields,
+            readOnlyFields,
             additionnalValidators
           )
       },
@@ -117,7 +117,7 @@ export const useOrganizationFormState = <T extends Organization = Organization>(
         name: 'description',
         defaultValue: organization?.description,
         validator:
-          !readonlyFields?.description && additionnalValidators?.description
+          !readOnlyFields?.description && additionnalValidators?.description
             ? additionnalValidators?.description
             : undefined
       },
@@ -125,7 +125,7 @@ export const useOrganizationFormState = <T extends Organization = Organization>(
         name: 'website',
         defaultValue: organization?.website,
         validator:
-          !readonlyFields?.website && additionnalValidators?.website
+          !readOnlyFields?.website && additionnalValidators?.website
             ? additionnalValidators?.website
             : undefined
       },
@@ -133,7 +133,7 @@ export const useOrganizationFormState = <T extends Organization = Organization>(
         name: 'roles',
         defaultValue: defaultRoles,
         validator:
-          !readonlyFields?.roles && additionnalValidators?.roles
+          !readOnlyFields?.roles && additionnalValidators?.roles
             ? additionnalValidators?.roles
             : undefined
       }
@@ -141,7 +141,7 @@ export const useOrganizationFormState = <T extends Organization = Organization>(
     [
       organization,
       rolesOptions,
-      readonlyFields,
+      readOnlyFields,
       strings,
       defaultRoles,
       additionnalValidators,

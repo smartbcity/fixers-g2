@@ -68,7 +68,7 @@ export const OrganizationFactoryStory: Story<OrganizationFactoryProps> = (
         {...args}
         organization={{ roles: ['Manager'], name: 'SmartB' }}
         SubmitButtonRef={ref}
-        readonly
+        readOnly
       />
       <Button sx={{ marginTop: '16px' }} ref={ref}>
         Sauvegarder

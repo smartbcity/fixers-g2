@@ -158,7 +158,7 @@ export const useOrganizationFormFields = (
             }
           },
           validator: (value: any) =>
-            siretValidation(value, fieldsOverride?.siret?.readonly)
+            siretValidation(value, fieldsOverride?.siret?.readOnly)
         },
         fieldsOverride?.siret
       ),
@@ -180,7 +180,7 @@ export const useOrganizationFormFields = (
           label: 'Rôle',
           type: 'select',
           params: {
-            readonlyType: 'chip',
+            readOnlyType: 'chip',
             multiple: multipleRoles
           }
         },

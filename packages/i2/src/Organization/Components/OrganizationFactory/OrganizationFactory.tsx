@@ -18,7 +18,7 @@ import {
 
 export type Validated = boolean
 
-export type ReadonlyFields = {
+export type ReadOnlyFields = {
   [k in keyof Organization]?: boolean
 }
 
@@ -116,10 +116,10 @@ export interface OrganizationFactoryBasicProps
    */
   setOrganizationState?: (organization: FlatOrganization) => void
   /**
-   * To activate Readonly view
+   * To activate ReadOnly view
    * @default false
    */
-  readonly?: boolean
+  readOnly?: boolean
   /**
    * Indicates if the data is currently loading
    *
@@ -155,8 +155,8 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
     classes,
     styles,
     rolesOptions,
-    readonly = false,
-    readonlyFields,
+    readOnly = false,
+    readOnlyFields,
     isLoading = false,
     blockedFields,
     strings,
@@ -168,7 +168,7 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
   } = props
 
   const [openSiretInfo, setOpenSiretInfo] = useState(
-    !organization && !readonly && !readonlyFields?.siret
+    !organization && !readOnly && !readOnlyFields?.siret
   )
   const [siretValid, setSiretValid] = useState(false)
   const [siretRef, setSiretRef] = useState(null)
@@ -212,7 +212,7 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
     address: organization?.address,
     strings,
     additionnalValidators,
-    readonly: readonlyFields?.address
+    readOnly: readOnlyFields?.address
   })
 
   const organizationForm = useMemo(
@@ -234,7 +234,7 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
               await fetchOrganization()
             }
           },
-          readonly: readonlyFields?.siret
+          readOnly: readOnlyFields?.siret
         }
       },
       {
@@ -243,7 +243,7 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
         type: 'textfield',
         label: strings?.name ?? 'Nom',
         textFieldProps: {
-          readonly: readonlyFields?.name
+          readOnly: readOnlyFields?.name
         }
       },
       ...(rolesOptions
@@ -255,8 +255,8 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
               type: 'select',
               selectProps: {
                 options: rolesOptions,
-                readonly: readonlyFields?.roles,
-                readonlyType: 'chip',
+                readOnly: readOnlyFields?.roles,
+                readOnlyType: 'chip',
                 multiple: multipleRoles
               }
             } as FormField
@@ -271,7 +271,7 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
         type: 'textfield',
         label: strings?.website ?? 'Site web (facultatif)',
         textFieldProps: {
-          readonly: readonlyFields?.website
+          readOnly: readOnlyFields?.website
         }
       },
       {
@@ -282,7 +282,7 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
         textFieldProps: {
           multiline: true,
           rows: 6,
-          readonly: readonlyFields?.description
+          readOnly: readOnlyFields?.description
         }
       }
     ],
@@ -290,7 +290,7 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
       formState.validateField,
       fetchOrganization,
       siretValid,
-      readonlyFields,
+      readOnlyFields,
       strings,
       multipleRoles,
       addressFields
@@ -304,10 +304,10 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
 
   useEffect(() => {
     const element = SubmitButtonRef?.current
-    if (element && !readonly) {
+    if (element && !readOnly) {
       element.onclick = formState.submitForm
     }
-  }, [SubmitButtonRef?.current, formState.submitForm, readonly])
+  }, [SubmitButtonRef?.current, formState.submitForm, readOnly])
 
   return (
     <>
@@ -317,7 +317,7 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
         fields={finalFields}
         formState={formState}
         isLoading={isLoading}
-        readonly={readonly}
+        readOnly={readOnly}
         onFocus={onCloseSiretInfo}
         sx={{
           width: '100%',

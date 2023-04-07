@@ -51,9 +51,9 @@ export type FormComposableField<
    */
   onChange?: (value: any) => void
   /**
-   * Indicates if the data is on readonly mode
+   * Indicates if the data is on readOnly mode
    *
    * @default false
    */
-  readonly?: boolean
+  readOnly?: boolean
 } & (FieldRenderType | ComposableElementRendererProps<ELEMENT_PARAMS>)

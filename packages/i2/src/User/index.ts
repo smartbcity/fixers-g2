@@ -20,10 +20,10 @@ export {
   UserFactoryProps,
   AutomatedUserFactory,
   AutomatedUserFactoryProps,
-  ReadonlyUserFieldsPerState,
+  ReadOnlyUserFieldsPerState,
   useUserFormState,
   UserFactoryStrings,
-  ReadonlyFields as UserReadonlyFields
+  ReadOnlyFields as UserReadOnlyFields
 } from './Components/UserFactory'
 
 export {

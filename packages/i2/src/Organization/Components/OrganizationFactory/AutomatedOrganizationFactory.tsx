@@ -4,7 +4,7 @@ import { Organization } from '../../Domain'
 import {
   OrganizationFactory,
   OrganizationFactoryProps,
-  ReadonlyFields
+  ReadOnlyFields
 } from './OrganizationFactory'
 import {
   CreateOrganizationOptions,
@@ -18,12 +18,12 @@ import {
 import { useAuth, i2Config } from '@smartb/g2-providers'
 import { useQueryClient } from 'react-query'
 
-export type ReadonlyOrgFieldsPerState = {
-  create?: ReadonlyFields
+export type ReadOnlyOrgFieldsPerState = {
+  create?: ReadOnlyFields
   /**
    * @default {siret: true, roles: true}
    */
-  update?: ReadonlyFields
+  update?: ReadOnlyFields
 }
 
 export interface AutomatedOrganizationFactoryBasicProps extends BasicProps {
@@ -49,9 +49,9 @@ export interface AutomatedOrganizationFactoryBasicProps extends BasicProps {
    */
   update?: boolean
   /**
-   * The fields readonly attributes for the current state
+   * The fields readOnly attributes for the current state
    */
-  readonlyFieldsPerState?: ReadonlyOrgFieldsPerState
+  readOnlyFieldsPerState?: ReadOnlyOrgFieldsPerState
   /**
    * The attributes to add in the user object on submission
    */
@@ -69,7 +69,7 @@ export const AutomatedOrganizationFactory = (
   const {
     organizationId,
     update = false,
-    readonlyFieldsPerState,
+    readOnlyFieldsPerState,
     getOrganizationOptions,
     updateOrganizationOptions,
     createOrganizationOptions,
@@ -170,10 +170,10 @@ export const AutomatedOrganizationFactory = (
       onSubmit={
         update ? updateOrganizationMemoized : createOrganizationMemoized
       }
-      readonlyFields={
+      readOnlyFields={
         update
-          ? { roles: true, ...readonlyFieldsPerState?.update }
-          : readonlyFieldsPerState?.create
+          ? { roles: true, ...readOnlyFieldsPerState?.update }
+          : readOnlyFieldsPerState?.create
       }
       isLoading={getOrganization.isLoading}
       {...other}

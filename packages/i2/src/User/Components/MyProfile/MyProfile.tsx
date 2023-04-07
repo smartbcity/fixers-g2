@@ -15,17 +15,17 @@ export const MyProfile = (props: AutomatedUserFactoryProps) => {
       {...props}
       userId={user.id}
       organizationId={user.memberOf}
-      readonlyFieldsPerState={{
+      readOnlyFieldsPerState={{
         update: {
           memberOf: true,
           email: true,
           roles: true,
-          ...props.readonlyFieldsPerState?.update
+          ...props.readOnlyFieldsPerState?.update
         },
-        ...props.readonlyFieldsPerState
+        ...props.readOnlyFieldsPerState
       }}
-      update={!props.readonly}
-      readonly={props.readonly}
+      update={!props.readOnly}
+      readOnly={props.readOnly}
     />
   )
 }

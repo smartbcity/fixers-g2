@@ -24,13 +24,13 @@ export const DropPictureRender: ElementRendererFunction<
   const { params } = element
   const { errorMessage, onChange, sx, label, id, ...basicPropsRest } =
     basicProps
-  delete basicProps.emptyValueInReadonly
+  delete basicProps.emptyValueInReadOnly
   const localFile: File | undefined = getIn(formState.values, basicProps.name)
   const uploadedGetUrl: string | undefined = getIn(
     formState.values,
     basicProps.name + 'Uploaded'
   )
-  if (basicProps.readonly && !uploadedGetUrl && !localFile) return <></>
+  if (basicProps.readOnly && !uploadedGetUrl && !localFile) return <></>
   return (
     <Box sx={sx}>
       {label && (
@@ -55,7 +55,7 @@ export const DropPictureRender: ElementRendererFunction<
           !!onChange && onChange(picture)
         }}
         onRemovePicture={
-          !basicProps.readonly
+          !basicProps.readOnly
             ? () => {
                 if (localFile)
                   formState.setFieldValue(basicProps.name, undefined, false)

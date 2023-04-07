@@ -105,33 +105,33 @@ export const InputFormStory: Story<InputFormBasicProps> = (
   return <InputForm {...args} style={{ width: '500px' }} />
 }
 
-export const InputFormReadonly: Story<InputFormBasicProps> = (
+export const InputFormReadOnly: Story<InputFormBasicProps> = (
   args: InputFormBasicProps
 ) => {
   return (
     <InputForm
       {...args}
-      label='Readonly input'
+      label='ReadOnly input'
       value='My value'
       inputType='textField'
       style={{ width: '500px' }}
-      readonly
+      readOnly
     />
   )
 }
 
-export const InputFormReadonlyChip: Story<InputFormBasicProps> = (
+export const InputFormReadOnlyChip: Story<InputFormBasicProps> = (
   args: InputFormBasicProps
 ) => {
   return (
     <InputForm
-      label='Readonly input chip'
+      label='ReadOnly input chip'
       value='My value'
       inputType='textField'
       style={{ width: '500px' }}
-      readonly
-      readonlyType='chip'
-      getReadonlyChipColor={() => '#E56643'}
+      readOnly
+      readOnlyType='chip'
+      getReadOnlyChipColor={() => '#E56643'}
     />
   )
 }
@@ -146,13 +146,13 @@ const CustomStatusTag = ({ values }) => {
   )
 }
 
-export const InputFormReadonlyCustom: Story<InputFormBasicProps> = (
+export const InputFormReadOnlyCustom: Story<InputFormBasicProps> = (
   args: InputFormBasicProps
 ) => {
   return (
     <InputForm
       inputType='select'
-      label='Readonly input chip'
+      label='ReadOnly input chip'
       values={['status1', 'status2']}
       options={[
         {
@@ -166,10 +166,10 @@ export const InputFormReadonlyCustom: Story<InputFormBasicProps> = (
       ]}
       multiple
       style={{ width: '500px' }}
-      readonly
-      readonlyType='customContainer'
-      readonlyElement={CustomStatusTag}
-      getReadonlyChipColor={() => '#E56643'}
+      readOnly
+      readOnlyType='customContainer'
+      readOnlyElement={CustomStatusTag}
+      getReadOnlyChipColor={() => '#E56643'}
     />
   )
 }

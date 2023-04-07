@@ -64,9 +64,9 @@ export interface UserFactoryBasicProps
    */
   blockedFields?: userFieldsName[]
   /**
-   * Use This props if you have roles that you don't want the user to be able to select but able to see in readonly use this prop
+   * Use This props if you have roles that you don't want the user to be able to select but able to see in readOnly use this prop
    */
-  readonlyRolesOptions?: Option[]
+  readOnlyRolesOptions?: Option[]
   /**
    * Indicates if the data is currently loading
    *
@@ -93,14 +93,14 @@ export const UserFactory = (props: UserFactoryProps) => {
     user,
     onSubmit,
     className,
-    readonly = false,
+    readOnly = false,
     formState,
     additionalFields,
     organizationId,
     isLoading = false,
     strings,
     blockedFields = [],
-    readonlyRolesOptions,
+    readOnlyRolesOptions,
     multipleRoles = true,
     checkEmailValidity,
     formExtension,
@@ -125,12 +125,12 @@ export const UserFactory = (props: UserFactoryProps) => {
         ? (['roles'] as userFieldsName[])
         : []),
       //@ts-ignore
-      ...(isUpdate || readonly
+      ...(isUpdate || readOnly
         ? (['sendResetPassword', 'sendVerifyEmail'] as userFieldsName[])
         : []),
       ...blockedFields
     ],
-    [blockedFields, fieldsOverride, organizationId, isUpdate, readonly]
+    [blockedFields, fieldsOverride, organizationId, isUpdate, readOnly]
   )
 
   const finalFields = useDeletableForm<FormComposableField<string, {}>>({
@@ -159,7 +159,7 @@ export const UserFactory = (props: UserFactoryProps) => {
         roles={formState.values.roles}
         rolesOptions={
           //@ts-ignore
-          readonlyRolesOptions ?? fieldsOverride?.roles?.params?.options
+          readOnlyRolesOptions ?? fieldsOverride?.roles?.params?.options
         }
       />
       <Stack
@@ -172,7 +172,7 @@ export const UserFactory = (props: UserFactoryProps) => {
           fields={finalFields}
           formState={formState}
           isLoading={isLoading}
-          readonly={readonly}
+          readOnly={readOnly}
           sx={{
             width: '100%',
             flexGrow: 1,

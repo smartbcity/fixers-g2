@@ -22,12 +22,12 @@ export const DocumentHandlerRender: ElementRendererFunction<
 > = (props: DocumentHandlerRenderProps) => {
   const { element, formState, basicProps } = props
   const { params } = element
-  const { errorMessage, label, onChange, readonly, sx, ...basicPropsRest } =
+  const { errorMessage, label, onChange, readOnly, sx, ...basicPropsRest } =
     basicProps
-  delete basicProps.emptyValueInReadonly
+  delete basicProps.emptyValueInReadOnly
   const localFile: File | undefined = getIn(formState.values, basicProps.name)
   const uploadedGetUrl = getIn(formState.values, basicProps.name + 'Uploaded')
-  if (basicProps.readonly && !uploadedGetUrl && !localFile) return <></>
+  if (basicProps.readOnly && !uploadedGetUrl && !localFile) return <></>
   return (
     <Box sx={sx}>
       <DocumentHandler
@@ -43,7 +43,7 @@ export const DocumentHandlerRender: ElementRendererFunction<
           !!onChange && onChange(files[0])
         }}
         onDelete={
-          !basicProps.readonly
+          !basicProps.readOnly
             ? () => {
                 if (localFile)
                   formState.setFieldValue(basicProps.name, undefined, false)

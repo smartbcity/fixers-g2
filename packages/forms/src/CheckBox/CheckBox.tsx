@@ -151,11 +151,11 @@ export interface CheckBoxBasicProps extends BasicProps {
   disabled?: boolean
 
   /**
-   * For this input readonly has the same effect than disabled
+   * For this input readOnly has the same effect than disabled
    *
    * @default false
    */
-  readonly?: boolean
+  readOnly?: boolean
 
   /**
    * Define if the value of the input is valid or not
@@ -215,7 +215,7 @@ const CheckBoxBase = (
     disabled = false,
     errorMessage,
     isLoading = false,
-    readonly = false,
+    readOnly = false,
     createInputContainer,
     sx,
     ...other
@@ -227,7 +227,7 @@ const CheckBoxBase = (
     <FormControlLabel
       className={defaultStyles.cx(
         defaultStyles.classes.container,
-        (disabled || readonly) && defaultStyles.classes.containerDisabled,
+        (disabled || readOnly) && defaultStyles.classes.containerDisabled,
         'AruiCheckBox-root',
         classes?.formControl
       )}
@@ -237,7 +237,7 @@ const CheckBoxBase = (
           ref={ref}
           {...other}
           checked={checked}
-          disabled={disabled || readonly}
+          disabled={disabled || readOnly}
           id={id}
           className={defaultStyles.cx(
             defaultStyles.classes.root,

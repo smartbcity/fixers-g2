@@ -17,7 +17,7 @@ export interface AdressStrings extends AdressValidationStrings {
   city?: string
 }
 
-export type AdressReadonlyFields = {
+export type AdressReadOnlyFields = {
   [k in keyof Address]?: boolean
 }
 
@@ -31,9 +31,9 @@ export interface useAdressFieldsParams {
    */
   strings?: AdressStrings
   /**
-   * The prop to use to put the fields in readonly
+   * The prop to use to put the fields in readOnly
    */
-  readonly?: boolean
+  readOnly?: boolean
   /**
    * An object containing the additionnal validators. The key should be the name of the field
    */
@@ -44,7 +44,7 @@ export const useAdressFields = (params?: useAdressFieldsParams) => {
   const {
     address,
     strings = {},
-    readonly = false,
+    readOnly = false,
     additionnalValidators
   } = params || {}
 
@@ -53,7 +53,7 @@ export const useAdressFields = (params?: useAdressFieldsParams) => {
       street: {
         name: 'street',
         defaultValue: address?.street,
-        validator: readonly
+        validator: readOnly
           ? undefined
           : (value: any, values: any) =>
               addressValidation.street(
@@ -66,7 +66,7 @@ export const useAdressFields = (params?: useAdressFieldsParams) => {
       postalCode: {
         name: 'postalCode',
         defaultValue: address?.postalCode,
-        validator: readonly
+        validator: readOnly
           ? undefined
           : (value: any, values: any) =>
               addressValidation.postalCode(
@@ -79,7 +79,7 @@ export const useAdressFields = (params?: useAdressFieldsParams) => {
       city: {
         name: 'city',
         defaultValue: address?.city,
-        validator: readonly
+        validator: readOnly
           ? undefined
           : (value: any, values: any) =>
               addressValidation.city(
@@ -90,7 +90,7 @@ export const useAdressFields = (params?: useAdressFieldsParams) => {
               )
       } as FormPartialField
     }),
-    [address, strings, readonly]
+    [address, strings, readOnly]
   )
 
   const addressFields = useMemo(
@@ -101,7 +101,7 @@ export const useAdressFields = (params?: useAdressFieldsParams) => {
         type: 'textfield',
         label: strings?.street ?? 'Addresse (facultatif)',
         textFieldProps: {
-          readonly: readonly
+          readOnly: readOnly
         }
       } as FormField,
       postalCode: {
@@ -110,7 +110,7 @@ export const useAdressFields = (params?: useAdressFieldsParams) => {
         type: 'textfield',
         label: strings?.postalCode ?? 'Code postal (facultatif)',
         textFieldProps: {
-          readonly: readonly
+          readOnly: readOnly
         }
       } as FormField,
       city: {
@@ -119,11 +119,11 @@ export const useAdressFields = (params?: useAdressFieldsParams) => {
         type: 'textfield',
         label: strings?.city ?? 'Ville (facultatif)',
         textFieldProps: {
-          readonly: readonly
+          readOnly: readOnly
         }
       } as FormField
     }),
-    [readonly, strings]
+    [readOnly, strings]
   )
 
   return {

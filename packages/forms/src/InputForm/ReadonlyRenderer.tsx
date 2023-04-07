@@ -15,20 +15,20 @@ const getLabelOfOption = (
   return undefined
 }
 
-export const ReadonlyRenderer = (props: Partial<InputFormProps>) => {
+export const ReadOnlyRenderer = (props: Partial<InputFormProps>) => {
   const {
-    readonlyType = 'text',
+    readOnlyType = 'text',
     inputType,
     value,
     values,
     choices,
     options,
     multiple,
-    getReadonlyChipColor,
-    getReadonlyTextUrl,
+    getReadOnlyChipColor,
+    getReadOnlyTextUrl,
     getOptionLabel,
-    readonlyElement,
-    emptyValueInReadonly,
+    readOnlyElement,
+    emptyValueInReadOnly,
     size
   } = props
 
@@ -39,7 +39,7 @@ export const ReadonlyRenderer = (props: Partial<InputFormProps>) => {
     (props.values == undefined || props.values.length === 0)
 
   const textToDisplay = useMemo(() => {
-    if (valuesIsEmpty) return emptyValueInReadonly
+    if (valuesIsEmpty) return emptyValueInReadOnly
     if (inputType === 'datePicker') return new Date(value).toLocaleDateString()
     if (inputType === 'radioChoices' && hoptions && value)
       return hoptions.find((c) => c.key === value)?.label
@@ -68,12 +68,12 @@ export const ReadonlyRenderer = (props: Partial<InputFormProps>) => {
     multiple,
     hoptions,
     getOptionLabel,
-    emptyValueInReadonly,
+    emptyValueInReadOnly,
     valuesIsEmpty
   ])
 
   const renderTag = useMemo(() => {
-    if (readonlyType !== 'chip') return undefined
+    if (readOnlyType !== 'chip') return undefined
     if (!multiple || valuesIsEmpty) {
       const option = hoptions?.find((o) => o.key === value)
       return (
@@ -81,7 +81,7 @@ export const ReadonlyRenderer = (props: Partial<InputFormProps>) => {
           label={textToDisplay}
           color={
             option?.color ??
-            (getReadonlyChipColor && getReadonlyChipColor(textToDisplay))
+            (getReadOnlyChipColor && getReadOnlyChipColor(textToDisplay))
           }
         />
       )
@@ -96,26 +96,26 @@ export const ReadonlyRenderer = (props: Partial<InputFormProps>) => {
             label={`${label}`}
             color={
               option?.color ??
-              (getReadonlyChipColor && getReadonlyChipColor(option?.label))
+              (getReadOnlyChipColor && getReadOnlyChipColor(option?.label))
             }
           />
         )
       })
     }
     return
-  }, [readonlyType, textToDisplay, value, values, hoptions, valuesIsEmpty])
+  }, [readOnlyType, textToDisplay, value, values, hoptions, valuesIsEmpty])
 
   const renderCustom = useMemo(() => {
     if (
-      (readonlyType !== 'customElement' &&
-        readonlyType !== 'customContainer') ||
-      !readonlyElement
+      (readOnlyType !== 'customElement' &&
+        readOnlyType !== 'customContainer') ||
+      !readOnlyElement
     )
       return undefined
-    const Element = readonlyElement
+    const Element = readOnlyElement
     if (!multiple) {
       return <Element valueKey={value} value={textToDisplay} />
-    } else if (hoptions && values && readonlyType === 'customElement') {
+    } else if (hoptions && values && readOnlyType === 'customElement') {
       return values.map((value) => {
         const option = hoptions.find((o) => o.key === value)
         if (!option) return undefined
@@ -128,7 +128,7 @@ export const ReadonlyRenderer = (props: Partial<InputFormProps>) => {
           />
         )
       })
-    } else if (hoptions && values && readonlyType === 'customContainer') {
+    } else if (hoptions && values && readOnlyType === 'customContainer') {
       return (
         <Element
           values={values.map((value) => {
@@ -139,14 +139,14 @@ export const ReadonlyRenderer = (props: Partial<InputFormProps>) => {
       )
     }
     return
-  }, [readonlyType, textToDisplay, value, values, hoptions, readonlyElement])
+  }, [readOnlyType, textToDisplay, value, values, hoptions, readOnlyElement])
 
   const url = useMemo(() => {
-    if (!value || !getReadonlyTextUrl) return undefined
-    return getReadonlyTextUrl(value)
-  }, [value, getReadonlyTextUrl])
+    if (!value || !getReadOnlyTextUrl) return undefined
+    return getReadOnlyTextUrl(value)
+  }, [value, getReadOnlyTextUrl])
 
-  if (readonlyType === 'text') {
+  if (readOnlyType === 'text') {
     if (url)
       return (
         <G2Link<LinkProps>
@@ -154,7 +154,7 @@ export const ReadonlyRenderer = (props: Partial<InputFormProps>) => {
           component={Link}
           sx={{ color: '#676879' }}
           variant={size === 'small' ? 'body2' : 'body1'}
-          className='AruiInputForm-readonlyLink'
+          className='AruiInputForm-readOnlyLink'
         >
           {textToDisplay}
         </G2Link>
@@ -164,13 +164,13 @@ export const ReadonlyRenderer = (props: Partial<InputFormProps>) => {
         <Typography
           sx={{ color: '#676879' }}
           variant={size === 'small' ? 'body2' : 'body1'}
-          className='AruiInputForm-readonlyText'
+          className='AruiInputForm-readOnlyText'
         >
           {textToDisplay}
         </Typography>
       )
   }
-  if (readonlyType === 'chip') {
+  if (readOnlyType === 'chip') {
     return (
       <Stack
         direction='row'
@@ -184,7 +184,7 @@ export const ReadonlyRenderer = (props: Partial<InputFormProps>) => {
       </Stack>
     )
   }
-  if (readonlyType === 'customElement') {
+  if (readOnlyType === 'customElement') {
     return (
       <Stack
         direction='row'

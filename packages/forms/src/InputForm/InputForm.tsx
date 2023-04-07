@@ -23,7 +23,7 @@ import {
 } from '../RadioChoices'
 import { AutoComplete, AutoCompleteProps } from '../AutoComplete'
 import { LoadingRenderer } from './LoadingRenderer'
-import { ReadonlyRenderer } from './ReadonlyRenderer'
+import { ReadOnlyRenderer } from './ReadOnlyRenderer'
 import { cx } from '@emotion/css'
 import {
   MultiChoices,
@@ -60,14 +60,14 @@ export interface InputFormBasicProps<T extends InputFormTypes = 'textField'>
    * If true the input will be disabled and forced on type 'textfield'
    * @default false
    */
-  readonly?: boolean
+  readOnly?: boolean
   /**
-   * The input will be replaced by the solution choosed on readonly.
+   * The input will be replaced by the solution choosed on readOnly.
    * If you choose the "text it will be displayed in a Typography.
    * If you choose "chip" it will be displayed in chips.
    * @default "text"
    */
-  readonlyType?: 'text' | 'chip' | 'customElement' | 'customContainer'
+  readOnlyType?: 'text' | 'chip' | 'customElement' | 'customContainer'
   /**
    * The orientation of the alignement of the label and the input
    * @default "vertical"
@@ -76,25 +76,25 @@ export interface InputFormBasicProps<T extends InputFormTypes = 'textField'>
   /**
    * This function is used to attribute a chip color to the value to be displayed (if not provided the default color will be used)
    */
-  getReadonlyChipColor?: (value: string | number) => string | undefined
+  getReadOnlyChipColor?: (value: string | number) => string | undefined
   /**
-   * attribute a link to a readonly text
+   * attribute a link to a readOnly text
    */
-  getReadonlyTextUrl?: (value: string | number) => string | undefined
+  getReadOnlyTextUrl?: (value: string | number) => string | undefined
   /**
-   * The element rendered in readonly if the `readonlyType` is `"customElement" | "customContainer"` your element need to use the prop
-   * `value: string` and `valueKey?: SmartKey` if `readonlyType="customElement"` and also `values: Option[]` if `readonlyType="customContainer"`
+   * The element rendered in readOnly if the `readOnlyType` is `"customElement" | "customContainer"` your element need to use the prop
+   * `value: string` and `valueKey?: SmartKey` if `readOnlyType="customElement"` and also `values: Option[]` if `readOnlyType="customContainer"`
    */
-  readonlyElement?: React.ElementType
+  readOnlyElement?: React.ElementType
   /**
    * If you want to add additionnals element near to the input use this prop
    */
   createInputContainer?: (input: JSX.Element) => JSX.Element
   /**
-   * The default behavior is that an empty field won't appear in readonly. If you want it to appear provide a value to put in it.
-   * This will be passed as `value` to the `ReadonlyRenderer` or as `values` if `multiple` is `true`
+   * The default behavior is that an empty field won't appear in readOnly. If you want it to appear provide a value to put in it.
+   * This will be passed as `value` to the `ReadOnlyRenderer` or as `values` if `multiple` is `true`
    */
-  emptyValueInReadonly?: any
+  emptyValueInReadOnly?: any
   /**
    * Indicates if the data is currently loading
    *
@@ -166,7 +166,7 @@ interface InputFormComponent {
   <T extends InputFormTypes, R extends boolean>(
     props: {
       inputType: T
-      readonly?: R
+      readOnly?: R
     } & InputFormComponentProps<T, R>,
     ref: React.ForwardedRef<HTMLDivElement>
   ): JSX.Element
@@ -189,7 +189,7 @@ export const InputForm: InputFormComponent = React.forwardRef(
   (props: Partial<InputFormProps>, ref: React.ForwardedRef<HTMLDivElement>) => {
     const {
       inputType = 'textField',
-      readonly = false,
+      readOnly = false,
       className,
       style,
       label,
@@ -201,11 +201,11 @@ export const InputForm: InputFormComponent = React.forwardRef(
       size = 'medium',
       isLoading = false,
       createInputContainer,
-      getReadonlyChipColor,
-      readonlyType,
-      getReadonlyTextUrl,
+      getReadOnlyChipColor,
+      readOnlyType,
+      getReadOnlyTextUrl,
       orientation = 'vertical',
-      emptyValueInReadonly,
+      emptyValueInReadOnly,
       sx,
       ...other
     } = props
@@ -241,8 +241,8 @@ export const InputForm: InputFormComponent = React.forwardRef(
       }
       return isLoading ? (
         <LoadingRenderer {...props} />
-      ) : readonly ? (
-        <ReadonlyRenderer {...props} />
+      ) : readOnly ? (
+        <ReadOnlyRenderer {...props} />
       ) : inputType === 'textField' ? (
         <TextField {...other} {...commonProps} />
       ) : inputType === 'select' ? (
@@ -258,14 +258,14 @@ export const InputForm: InputFormComponent = React.forwardRef(
         <DatePicker {...other} {...commonProps} />
       )
     }, [
-      readonly,
+      readOnly,
       inputType,
       classes?.input,
       id,
       styles?.input,
       ref,
       size,
-      emptyValueInReadonly,
+      emptyValueInReadOnly,
       Object.values({ ...other })
     ])
 
@@ -278,10 +278,10 @@ export const InputForm: InputFormComponent = React.forwardRef(
       (props.value == undefined || props.value === '') &&
       (props.values == undefined || props.values.length === 0)
     if (
-      readonly &&
+      readOnly &&
       valuesIsEmpty &&
       !isLoading &&
-      emptyValueInReadonly == undefined
+      emptyValueInReadOnly == undefined
     )
       return <></>
     return (

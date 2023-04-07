@@ -69,10 +69,10 @@ export interface OrganizationFactoryBasicProps
    */
   blockedFields?: organizationFieldsName[]
   /**
-   * To activate Readonly view
+   * To activate ReadOnly view
    * @default false
    */
-  readonly?: boolean
+  readOnly?: boolean
   /**
    * Indicates if the data is currently loading
    *
@@ -108,7 +108,7 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
     className,
     classes,
     styles,
-    readonly = false,
+    readOnly = false,
     isLoading = false,
     strings,
     multipleRoles = true,
@@ -119,18 +119,18 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
   } = props
 
   const [openSiretInfo, setOpenSiretInfo] = useState(
-    !organization && !readonly && !fieldsOverride?.siret?.readonly && !isLoading
+    !organization && !readOnly && !fieldsOverride?.siret?.readOnly && !isLoading
   )
 
   useEffect(() => {
     if (
       !organization &&
-      !readonly &&
-      !fieldsOverride?.siret?.readonly &&
+      !readOnly &&
+      !fieldsOverride?.siret?.readOnly &&
       !isLoading
     )
       setOpenSiretInfo(true)
-  }, [organization, readonly, fieldsOverride?.siret?.readonly, isLoading])
+  }, [organization, readOnly, fieldsOverride?.siret?.readOnly, isLoading])
 
   const onCloseSiretInfo = useCallback(() => setOpenSiretInfo(false), [])
 
@@ -161,7 +161,7 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
         fields={finalFields}
         formState={formState}
         isLoading={isLoading}
-        readonly={readonly}
+        readOnly={readOnly}
         onFocus={onCloseSiretInfo}
         sx={{
           width: '100%',

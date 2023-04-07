@@ -125,13 +125,13 @@ export interface DropPictureBasicProps extends BasicProps {
   /**
    * If true, the dropzone won't appear and the `initialPicture` or the `defaultPicture` will be displayed
    */
-  readonly?: boolean
+  readOnly?: boolean
   /**
    * The initial picture that can be removed and changed
    */
   pictureUrl?: string
   /**
-   * The default picture that will be displayed if the first one doesn't exist or is unfundable. This prop is used only when `readonly` is true
+   * The default picture that will be displayed if the first one doesn't exist or is unfundable. This prop is used only when `readOnly` is true
    */
   defaultPicture?: string
   /**
@@ -192,7 +192,7 @@ const DropPictureBase = (
     onRemovePicture,
     className,
     style,
-    readonly = false,
+    readOnly = false,
     pictureUrl,
     defaultPicture = '',
     maxSize = 10 * 1024 * 1024,
@@ -218,7 +218,7 @@ const DropPictureBase = (
 
   useEffect(() => {
     setUnFound(false)
-  }, [readonly])
+  }, [readOnly])
 
   const onUpload = useCallback(
     (acceptedFiles: File[]) => {
@@ -262,7 +262,7 @@ const DropPictureBase = (
         animation='wave'
       />
     )
-  if (readonly)
+  if (readOnly)
     return (
       <img
         src={!unFound ? pictureUrl : defaultPicture}

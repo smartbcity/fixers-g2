@@ -2,7 +2,7 @@ import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 import React, { useCallback, useMemo } from 'react'
 import { OrganizationId } from '../../../Organization'
 import { User } from '../../Domain'
-import { ReadonlyFields, UserFactory, UserFactoryProps } from './UserFactory'
+import { ReadOnlyFields, UserFactory, UserFactoryProps } from './UserFactory'
 import {
   CreateUserOptions,
   GetUserOptions,
@@ -21,12 +21,12 @@ import {
   ChoicedResetPasswordProps
 } from '../UserResetPassword'
 
-export type ReadonlyUserFieldsPerState = {
-  create?: ReadonlyFields
+export type ReadOnlyUserFieldsPerState = {
+  create?: ReadOnlyFields
   /**
    * @default {memberOf: true, email: true, roles:true }
    */
-  update?: ReadonlyFields
+  update?: ReadOnlyFields
 }
 
 export interface AutomatedUserFactoryBasicProps extends BasicProps {
@@ -60,9 +60,9 @@ export interface AutomatedUserFactoryBasicProps extends BasicProps {
    */
   userId?: string
   /**
-   * The fields readonly attributes for the current state
+   * The fields readOnly attributes for the current state
    */
-  readonlyFieldsPerState?: ReadonlyUserFieldsPerState
+  readOnlyFieldsPerState?: ReadOnlyUserFieldsPerState
   /**
    * The props passed to the component ChoicedResetPassword
    */
@@ -87,7 +87,7 @@ export const AutomatedUserFactory = (props: AutomatedUserFactoryProps) => {
     userId,
     update = false,
     organizationId,
-    readonlyFieldsPerState,
+    readOnlyFieldsPerState,
     getUserOptions,
     updateUserOptions,
     createUserOptions,
@@ -208,28 +208,26 @@ export const AutomatedUserFactory = (props: AutomatedUserFactoryProps) => {
       organizationId={organizationId}
       checkEmailValidity={checkEmailValidity}
       formExtension={
-        (
-          <>
-            {formExtension}
-            {userId && resetPasswordType && (
-              <ChoicedResetPassword
-                resetPasswordType={resetPasswordType}
-                userId={userId}
-                {...choicedResetPasswordProps}
-              />
-            )}
-          </>
-        )
+        <>
+          {formExtension}
+          {userId && resetPasswordType && (
+            <ChoicedResetPassword
+              resetPasswordType={resetPasswordType}
+              userId={userId}
+              {...choicedResetPasswordProps}
+            />
+          )}
+        </>
       }
-      readonlyFields={
+      readOnlyFields={
         update
           ? {
-            memberOf: true,
-            email: false,
-            roles: true,
-            ...readonlyFieldsPerState?.update
-          }
-          : readonlyFieldsPerState?.create
+              memberOf: true,
+              email: false,
+              roles: true,
+              ...readOnlyFieldsPerState?.update
+            }
+          : readOnlyFieldsPerState?.create
       }
       {...other}
     />
