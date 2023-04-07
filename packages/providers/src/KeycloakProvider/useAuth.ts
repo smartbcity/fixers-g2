@@ -31,7 +31,7 @@ type RolesServices<Roles extends string> = {
 }
 
 type AuthService<
-  Additionnals extends AuthServiceAdditionnal = {},
+  Additionals extends AuthServiceAdditional = {},
   Roles extends string = string
 > = {
   /**
@@ -87,7 +87,7 @@ type AuthService<
    */
   executeAuthFunction: (authFunction: AuthFunction, ...args) => isAuthorized
 } & RolesServices<Roles> &
-  Additionnals
+  Additionals
 
 type KeycloackInjector<
   Roles extends string = string,
@@ -109,7 +109,7 @@ export type KeycloackService<T = {}, Roles extends string = string> = {
   >
 }
 
-export type AuthServiceAdditionnal<T = {}> = {
+export type AuthServiceAdditional<T = {}> = {
   [K in keyof T]: AuthFnc<
     T[K] extends { paramsType: unknown } ? T[K]['paramsType'] : undefined,
     T[K] extends { returnType: unknown } ? T[K]['returnType'] : undefined
@@ -130,30 +130,27 @@ export interface KeycloakWithRoles<Roles extends string = string>
 }
 
 export interface Auth<
-  Additionnals extends AuthServiceAdditionnal = {},
+  Additionals extends AuthServiceAdditional = {},
   Roles extends string = string
 > {
-  service: AuthService<Additionnals, Roles>
+  service: AuthService<Additionals, Roles>
   keycloak: KeycloakWithRoles<Roles>
 }
 
-function useAuth<AdditionnalServices, Roles extends string = string>(
+function useAuth<AdditionalServices, Roles extends string = string>(
   roles: Roles[],
-  additionnalServices: KeycloackService<AdditionnalServices, Roles>
-): Auth<AuthServiceAdditionnal<AdditionnalServices>, Roles>
+  additionalServices: KeycloackService<AdditionalServices, Roles>
+): Auth<AuthServiceAdditional<AdditionalServices>, Roles>
 
 function useAuth<Roles extends string = string>(): Auth<{}, Roles>
 function useAuth<Roles extends string = string>(
   roles?: Roles[]
 ): Auth<{}, Roles>
 
-function useAuth<
-  AdditionnalServices = undefined,
-  Roles extends string = string
->(
+function useAuth<AdditionalServices = undefined, Roles extends string = string>(
   roles: Roles[] = [],
-  additionnalServices?: KeycloackService<AdditionnalServices, Roles>
-): Auth<AuthServiceAdditionnal<AdditionnalServices>, Roles> {
+  additionalServices?: KeycloackService<AdditionalServices, Roles>
+): Auth<AuthServiceAdditional<AdditionalServices>, Roles> {
   const { keycloak } = useKeycloak()
 
   const keycloakWithRoles: KeycloakWithRoles<Roles> = useMemo(
@@ -289,24 +286,23 @@ function useAuth<
     ]
   )
 
-  const additionnals: AuthServiceAdditionnal<AdditionnalServices> =
-    useMemo(() => {
-      const object: AuthServiceAdditionnal<AdditionnalServices> =
-        {} as AuthServiceAdditionnal<AdditionnalServices>
-      for (let serviceName in additionnalServices) {
-        const fn: AuthFnc = (params) =>
-          additionnalServices[serviceName.toString()](
-            keycloakWithRoles,
-            service,
-            params
-          )
-        object[serviceName.toString()] = fn
-      }
-      return object
-    }, [additionnalServices, keycloakWithRoles, hasRole, roles, service])
+  const additionals: AuthServiceAdditional<AdditionalServices> = useMemo(() => {
+    const object: AuthServiceAdditional<AdditionalServices> =
+      {} as AuthServiceAdditional<AdditionalServices>
+    for (let serviceName in additionalServices) {
+      const fn: AuthFnc = (params) =>
+        additionalServices[serviceName.toString()](
+          keycloakWithRoles,
+          service,
+          params
+        )
+      object[serviceName.toString()] = fn
+    }
+    return object
+  }, [additionalServices, keycloakWithRoles, hasRole, roles, service])
 
   return {
-    service: Object.assign(service, additionnals),
+    service: Object.assign(service, additionals),
     keycloak: keycloakWithRoles
   }
 }

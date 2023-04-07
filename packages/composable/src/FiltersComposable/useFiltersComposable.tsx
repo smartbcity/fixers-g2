@@ -106,7 +106,7 @@ export const useFiltersComposable = <T extends {} = any>(
     initialValues: initialValues
   })
 
-  const setAdditionnalFilterMemoized = useCallback(
+  const setAdditionalFilterMemoized = useCallback(
     (fieldName: string, value: any) => {
       formik.setFieldValue(fieldName, value)
       formik.submitForm()
@@ -116,7 +116,7 @@ export const useFiltersComposable = <T extends {} = any>(
 
   return {
     formState: formik,
-    setAdditionnalFilter: setAdditionnalFilterMemoized,
+    setAdditionalFilter: setAdditionalFilterMemoized,
     submittedFilters,
     filtersCount
   }

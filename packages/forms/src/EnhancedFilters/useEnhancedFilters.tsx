@@ -21,11 +21,11 @@ export type EnhancedFilterState<F extends {} | undefined = undefined> = {
   /**
    * the filters not included in the form. For example a `page` or a `size` attribut
    */
-  additionnalFilters: F
+  additionalFilters: F
   /**
-   * the setter of the additionnal filters
+   * the setter of the additional filters
    */
-  setAdditionnalFilters: (filters: F | ((oldValues: F) => F)) => void
+  setAdditionalFilters: (filters: F | ((oldValues: F) => F)) => void
 }
 
 interface useEnhancedFiltersParams<
@@ -40,12 +40,12 @@ interface useEnhancedFiltersParams<
   onSubmit?: (
     values: { [key: string]: any },
     formikHelpers: FormikHelpers<any>,
-    additionnalFilters: F
+    additionalFilters: F
   ) => void | Promise<any>
   /**
    * the initial values of the filters not included in the form and in the url. For example a `page` or a `size` attribut
    */
-  initAdditionnalFilters?: F
+  initAdditionalFilters?: F
 }
 
 const retrieveNumber = (value: any) => {
@@ -81,7 +81,7 @@ export const useEnhancedFiltersBase = <
 >(
   params: useEnhancedFiltersParams<T, F>
 ): EnhancedFilterState<F> => {
-  const { fields, onSubmit, formikConfig, initAdditionnalFilters } = params
+  const { fields, onSubmit, formikConfig, initAdditionalFilters } = params
 
   const [searchParams, setSearchParams] = useSearchParams()
 
@@ -94,29 +94,29 @@ export const useEnhancedFiltersBase = <
         : field.defaultValue
       delete params[field.name]
     })
-    let additionnals = {}
+    let additionals = {}
     const unformattedParams = {}
     for (let i in params) {
       unformattedParams[i] = retrieveNumber(params[i])
     }
-    additionnals = { ...initAdditionnalFilters, ...unformattedParams }
+    additionals = { ...initAdditionalFilters, ...unformattedParams }
     return {
       formValues: obj,
-      additionnalFilters: additionnals,
-      allFilters: { ...obj, ...additionnals }
+      additionalFilters: additionals,
+      allFilters: { ...obj, ...additionals }
     }
   }, [])
 
   const [submittedFilters, setSubmittedFilters] = useState(
     initialValues.allFilters
   )
-  const [additionnalFilters, setAdditionnalFilters] = useState<F>(
-    initialValues.additionnalFilters as F
+  const [additionalFilters, setAdditionalFilters] = useState<F>(
+    initialValues.additionalFilters as F
   )
 
   const onSubmitMemoized = useCallback(
     (values: any, formikHelpers: FormikHelpers<any>) => {
-      onSubmit && onSubmit(values, formikHelpers, additionnalFilters)
+      onSubmit && onSubmit(values, formikHelpers, additionalFilters)
 
       let fieldsValues = { ...values }
 
@@ -126,7 +126,7 @@ export const useEnhancedFiltersBase = <
           : undefined
       })
 
-      const filters = { ...fieldsValues, ...additionnalFilters }
+      const filters = { ...fieldsValues, ...additionalFilters }
 
       setSearchParams(
         qs.stringify(filters, {
@@ -137,7 +137,7 @@ export const useEnhancedFiltersBase = <
 
       setSubmittedFilters(filters)
     },
-    [onSubmit, searchParams, setSearchParams, additionnalFilters]
+    [onSubmit, searchParams, setSearchParams, additionalFilters]
   )
 
   const formik = useFormik({
@@ -146,9 +146,9 @@ export const useEnhancedFiltersBase = <
     ...formikConfig
   })
 
-  const setAdditionnalFiltersMeMoized = useCallback(
+  const setAdditionalFiltersMeMoized = useCallback(
     (filters: F | ((oldValues: F) => F)) => {
-      setAdditionnalFilters(filters)
+      setAdditionalFilters(filters)
       formik.submitForm()
     },
     [formik.submitForm]
@@ -156,8 +156,8 @@ export const useEnhancedFiltersBase = <
 
   return {
     formFilters: formik,
-    additionnalFilters,
-    setAdditionnalFilters: setAdditionnalFiltersMeMoized,
+    additionalFilters,
+    setAdditionalFilters: setAdditionalFiltersMeMoized,
     submittedFilters
   }
 }

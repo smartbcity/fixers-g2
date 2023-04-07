@@ -74,7 +74,7 @@ export interface MapBasicProps extends BasicProps {
    * They should use the two required props `value` and `setValue` to handle their custom states
    * They will also receive the prop `map?: LeafletMap` of the type `import { Map as LeafletMap } from "leaflet"` to access the currentMap object and also the props `isMobile`, `readOnly`, `isFullScreen` to be informed of the state of the current map
    */
-  additionnalPlugins?: (MapPlugin & Record<string, any>)[]
+  additionalPlugins?: (MapPlugin & Record<string, any>)[]
   /**
    * the pluggin to have a draggableMarker on the map. When `readOnly` is set to `true` its just a simple marker
    */
@@ -125,7 +125,7 @@ export const Map = (props: MapProps) => {
     draggableMarkerPlugin,
     center,
     zoom = !center ? defaultPosition.zoom : 17,
-    additionnalPlugins,
+    additionalPlugins,
     openFullScreenString,
     sx,
     readOnly = false,
@@ -179,7 +179,7 @@ export const Map = (props: MapProps) => {
 
   const plugins = useMemo(
     () =>
-      additionnalPlugins?.map((plugin) => {
+      additionalPlugins?.map((plugin) => {
         const { element, ...other } = plugin
         const PluginElement = element
         return (
@@ -192,7 +192,7 @@ export const Map = (props: MapProps) => {
           />
         )
       }),
-    [additionnalPlugins, readOnly, isSm, isFullScreen, map]
+    [additionalPlugins, readOnly, isSm, isFullScreen, map]
   )
 
   return (

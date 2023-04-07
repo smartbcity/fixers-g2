@@ -87,7 +87,7 @@ export interface InputFormBasicProps<T extends InputFormTypes = 'textField'>
    */
   readOnlyElement?: React.ElementType
   /**
-   * If you want to add additionnals element near to the input use this prop
+   * If you want to add additionals element near to the input use this prop
    */
   createInputContainer?: (input: JSX.Element) => JSX.Element
   /**

@@ -82,10 +82,10 @@ export interface TableV2BasicProps<Data extends {}> extends BasicProps {
    */
   getRowId?: (row: Data) => string
   /**
-   * You can pass additionnal props to some rows by giving the id of the row as the key in the object or to all
+   * You can pass additional props to some rows by giving the id of the row as the key in the object or to all
    * the rows by giving the key "all" to your props
    */
-  additionnalRowsProps?: Record<string, any>
+  additionalRowsProps?: Record<string, any>
   /**
    * Pass this props to true if you want the expandable row to be expanded in the row when the `variant` is 'elevated'
    * @default false
@@ -131,7 +131,7 @@ export const TableV2 = <Data extends {}>(props: TableV2Props<Data>) => {
     expectedSize = 10,
     expandInElevatedRow = false,
     toggleExpandOnRowClicked = false,
-    additionnalRowsProps,
+    additionalRowsProps,
     tableState,
     getRowLink,
     sx,
@@ -196,7 +196,7 @@ export const TableV2 = <Data extends {}>(props: TableV2Props<Data>) => {
             expandInRow={expandInElevatedRow}
             toggleExpandOnRowClicked={toggleExpandOnRowClicked}
             getRowId={getRowId}
-            additionnalRowsProps={additionnalRowsProps}
+            additionalRowsProps={additionalRowsProps}
           />
         )}
       </TableContainer>

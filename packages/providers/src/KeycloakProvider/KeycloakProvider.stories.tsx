@@ -64,7 +64,7 @@ export default {
           </Description>
           <Description>
             You can inform the roles by giving a type to the useAuth hook. ⚠️
-            Your additionnal services should be inform of those roles as well:
+            Your additional services should be inform of those roles as well:
           </Description>
           <CodeHighlighter code={informRoles} />
           <Description>

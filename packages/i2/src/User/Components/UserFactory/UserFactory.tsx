@@ -156,7 +156,7 @@ export const UserFactory = (props: UserFactoryProps) => {
     checkEmailValidity,
     formExtension,
     setUserState,
-    additionnalValidators,
+    additionalValidators,
     ...other
   } = props
 
@@ -172,7 +172,7 @@ export const UserFactory = (props: UserFactoryProps) => {
   const { addressFields } = useAdressFields({
     address: user?.address,
     strings,
-    additionnalValidators,
+    additionalValidators,
     readOnly: readOnlyFields?.address
   })
 

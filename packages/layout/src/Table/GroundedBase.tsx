@@ -53,7 +53,7 @@ export interface GroundedBaseProps<Data extends {}> {
   toggleExpandOnRowClicked: boolean
   toggleRowExpanded: (id: IdType<Data>[], value?: boolean | undefined) => void
   getRowId?: (row: Data) => string
-  additionnalRowsProps?: Record<string, any>
+  additionalRowsProps?: Record<string, any>
 }
 
 export const GroundedBase = <Data extends {}>(
@@ -75,7 +75,7 @@ export const GroundedBase = <Data extends {}>(
     renderRowHoveredComponent,
     toggleExpandOnRowClicked,
     toggleRowExpanded,
-    additionnalRowsProps = {},
+    additionalRowsProps = {},
     getRowId,
     getRowLink
   } = props
@@ -85,8 +85,8 @@ export const GroundedBase = <Data extends {}>(
       row.getRowProps()
       const rowProps = row.getRowProps()
       const extProps =
-        additionnalRowsProps[getRowId ? getRowId(row.original) : ''] ??
-        additionnalRowsProps?.all
+        additionalRowsProps[getRowId ? getRowId(row.original) : ''] ??
+        additionalRowsProps?.all
       return (
         <Fragment key={rowProps.key}>
           <TableRow
@@ -192,7 +192,7 @@ export const GroundedBase = <Data extends {}>(
     toggleExpandOnRowClicked,
     toggleRowExpanded,
     selectedRowIds,
-    additionnalRowsProps,
+    additionalRowsProps,
     getRowId,
     getRowLink
   ])

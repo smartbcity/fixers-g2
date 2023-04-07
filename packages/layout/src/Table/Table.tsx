@@ -149,10 +149,10 @@ export interface TableBasicProps<Data extends {}> extends BasicProps {
    */
   getRowId?: (row: Data) => string
   /**
-   * You can pass additionnal props to some rows by giving the id of the row as the key in the object or to all
+   * You can pass additional props to some rows by giving the id of the row as the key in the object or to all
    * the rows by giving the key "all" to your props
    */
-  additionnalRowsProps?: Record<string, any>
+  additionalRowsProps?: Record<string, any>
   /**
    * You optionnal custom icon used to indicate the expand status of a row
    */
@@ -219,7 +219,7 @@ export const Table = <Data extends {}>(props: TableProps<Data>) => {
     expandIconPosition = 'start',
     expandInElevatedRow = false,
     toggleExpandOnRowClicked = false,
-    additionnalRowsProps,
+    additionalRowsProps,
     getRowLink,
     sx,
     ...other
@@ -429,7 +429,7 @@ export const Table = <Data extends {}>(props: TableProps<Data>) => {
               toggleRowExpanded={toggleRowExpanded}
               toggleExpandOnRowClicked={toggleExpandOnRowClicked}
               getRowId={getRowId}
-              additionnalRowsProps={additionnalRowsProps}
+              additionalRowsProps={additionalRowsProps}
             />
           ) : (
             <GroundedBase
@@ -450,7 +450,7 @@ export const Table = <Data extends {}>(props: TableProps<Data>) => {
               toggleRowExpanded={toggleRowExpanded}
               toggleExpandOnRowClicked={toggleExpandOnRowClicked}
               getRowId={getRowId}
-              additionnalRowsProps={additionnalRowsProps}
+              additionalRowsProps={additionalRowsProps}
             />
           ))}
       </TableContainer>

@@ -74,12 +74,12 @@ const Example = (props) => {
 
   const {
     formFilters,
-    additionnalFilters,
-    setAdditionnalFilters,
+    additionalFilters,
+    setAdditionalFilters,
     submittedFilters
   } = useEnhancedFilters<{ page: number }>({
     fields: args.fields,
-    initAdditionnalFilters: {
+    initAdditionalFilters: {
       page: 0
     }
   })
@@ -88,11 +88,11 @@ const Example = (props) => {
   console.log(submittedFilters)
 
   const incrementPage = useCallback(() => {
-    setAdditionnalFilters((old) => ({
+    setAdditionalFilters((old) => ({
       ...old,
       page: old.page + 1
     }))
-  }, [setAdditionnalFilters])
+  }, [setAdditionalFilters])
 
   const actions = useMemo(
     (): FiltersAction[] => [
@@ -121,7 +121,7 @@ const Example = (props) => {
         actions={actions}
         actionsPosition='right'
       />
-      <Typography>{`current page: ${additionnalFilters.page + 1}`}</Typography>
+      <Typography>{`current page: ${additionalFilters.page + 1}`}</Typography>
       <Button onClick={incrementPage}>+1 to page</Button>
     </>
   )

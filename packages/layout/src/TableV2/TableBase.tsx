@@ -56,7 +56,7 @@ export interface TableBaseProps<Data extends {}> {
   renderRowHoveredComponent?: (row: Row<Data>) => JSX.Element
   toggleExpandOnRowClicked: boolean
   getRowId?: (row: Data) => string
-  additionnalRowsProps?: Record<string, any>
+  additionalRowsProps?: Record<string, any>
 }
 
 export const TableBase = <Data extends {}>(props: TableBaseProps<Data>) => {
@@ -70,7 +70,7 @@ export const TableBase = <Data extends {}>(props: TableBaseProps<Data>) => {
     renderRowHoveredComponent,
     expandInRow,
     toggleExpandOnRowClicked,
-    additionnalRowsProps = {},
+    additionalRowsProps = {},
     variant,
     getRowLink,
     getRowId
@@ -136,8 +136,8 @@ export const TableBase = <Data extends {}>(props: TableBaseProps<Data>) => {
       </>
     )
     const extProps =
-      additionnalRowsProps[getRowId ? getRowId(row.original) : ''] ??
-      additionnalRowsProps?.all
+      additionalRowsProps[getRowId ? getRowId(row.original) : ''] ??
+      additionalRowsProps?.all
     return (
       <Fragment key={row.id}>
         <TableRowComponent

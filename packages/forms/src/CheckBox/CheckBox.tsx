@@ -174,7 +174,7 @@ export interface CheckBoxBasicProps extends BasicProps {
    */
   onChange?: (event: ChangeEvent<HTMLInputElement>, checked: boolean) => void
   /**
-   * If you want to add additionnals element near to the input use this prop
+   * If you want to add additionals element near to the input use this prop
    */
   createInputContainer?: (input: JSX.Element) => JSX.Element
   /**

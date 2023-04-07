@@ -81,7 +81,7 @@ export const MapStory: Story<MapBasicProps> = (args: MapBasicProps) => {
       <Map
         {...args}
         style={{ height: 600 }}
-        additionnalPlugins={[
+        additionalPlugins={[
           {
             key: 'geoman',
             value: geoman,

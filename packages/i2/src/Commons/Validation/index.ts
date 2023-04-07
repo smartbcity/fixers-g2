@@ -23,7 +23,7 @@ const street = (
   value: string,
   values?: any,
   strings?: AdressValidationStrings,
-  additionnalValidators?: any
+  additionalValidators?: any
 ) => {
   const city = values.city?.trim()
   const postalCode = values.postalCode?.trim()
@@ -33,8 +33,8 @@ const street = (
       strings?.completeTheStreet ??
       ("Vous devez renseigner l'addresse en plus de la ville et du code postal" as string)
     )
-  return additionnalValidators?.street
-    ? additionnalValidators.street(trimmed, values)
+  return additionalValidators?.street
+    ? additionalValidators.street(trimmed, values)
     : undefined
 }
 
@@ -42,7 +42,7 @@ const postalCode = (
   value?: string,
   values?: any,
   strings?: AdressValidationStrings,
-  additionnalValidators?: any
+  additionalValidators?: any
 ) => {
   const street = !!values.street?.trim()
   const city = !!values.city?.trim()
@@ -52,8 +52,8 @@ const postalCode = (
       strings?.completeThePostalCode ??
       ('Vous devez renseigner le code postal pour avoir une adresse complète' as string)
     )
-  return additionnalValidators?.postalCode
-    ? additionnalValidators.postalCode(trimmed, values)
+  return additionalValidators?.postalCode
+    ? additionalValidators.postalCode(trimmed, values)
     : undefined
 }
 
@@ -61,7 +61,7 @@ const city = (
   value?: string,
   values?: any,
   strings?: AdressValidationStrings,
-  additionnalValidators?: any
+  additionalValidators?: any
 ) => {
   const street = values.street?.trim()
   const postalCode = values.postalCode?.trim()
@@ -71,8 +71,8 @@ const city = (
       strings?.completeTheCity ??
       ('Vous devez renseigner la ville pour avoir une adresse complète' as string)
     )
-  return additionnalValidators?.city
-    ? additionnalValidators.city(trimmed, values)
+  return additionalValidators?.city
+    ? additionalValidators.city(trimmed, values)
     : undefined
 }
 
@@ -88,13 +88,13 @@ export const requiredString = (
   value?: string | number,
   values?: any,
   readOnlyFields?: any,
-  additionnalValidators?: any
+  additionalValidators?: any
 ) => {
   if (readOnlyFields && readOnlyFields[fieldName]) return undefined
   const string = String(value).trim()
   if (!string || !value) return errorMessage ?? 'le champ est obligatoire'
-  return additionnalValidators && additionnalValidators[fieldName]
-    ? additionnalValidators[fieldName](string, values)
+  return additionalValidators && additionalValidators[fieldName]
+    ? additionalValidators[fieldName](string, values)
     : undefined
 }
 

@@ -35,9 +35,9 @@ export interface useAdressFieldsParams {
    */
   readOnly?: boolean
   /**
-   * An object containing the additionnal validators. The key should be the name of the field
+   * An object containing the additional validators. The key should be the name of the field
    */
-  additionnalValidators?: { [key: string]: ValidatorFnc }
+  additionalValidators?: { [key: string]: ValidatorFnc }
 }
 
 export const useAdressFields = (params?: useAdressFieldsParams) => {
@@ -45,7 +45,7 @@ export const useAdressFields = (params?: useAdressFieldsParams) => {
     address,
     strings = {},
     readOnly = false,
-    additionnalValidators
+    additionalValidators
   } = params || {}
 
   const addressPartialFields = useMemo(
@@ -60,7 +60,7 @@ export const useAdressFields = (params?: useAdressFieldsParams) => {
                 value,
                 values,
                 strings,
-                additionnalValidators
+                additionalValidators
               )
       } as FormPartialField,
       postalCode: {
@@ -73,7 +73,7 @@ export const useAdressFields = (params?: useAdressFieldsParams) => {
                 value,
                 values,
                 strings,
-                additionnalValidators
+                additionalValidators
               )
       } as FormPartialField,
       city: {
@@ -86,7 +86,7 @@ export const useAdressFields = (params?: useAdressFieldsParams) => {
                 value,
                 values,
                 strings,
-                additionnalValidators
+                additionalValidators
               )
       } as FormPartialField
     }),

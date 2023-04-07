@@ -87,8 +87,9 @@ const useFormProps = (
         : readOnly === true
         ? readOnly
         : formState.readOnly,
-    //@ts-ignore
+
     emptyValueInReadOnly:
+      //@ts-ignore
       field.params?.emptyValueInReadOnly ?? formState.emptyValueInReadOnly
   }
 }

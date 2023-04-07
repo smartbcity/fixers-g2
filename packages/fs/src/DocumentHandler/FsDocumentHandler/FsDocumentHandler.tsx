@@ -65,7 +65,7 @@ export const FsDocumentHandler = (props: FsDocumentHandlerProps) => {
     if (acceptAdditionalDocuments) {
       documentList.push(
         <DocumentHandler
-          key='additionnalDocumentsDropzone'
+          key='additionalDocumentsDropzone'
           label={addDocumentsString ?? 'Ajouter des documents'}
         />
       )

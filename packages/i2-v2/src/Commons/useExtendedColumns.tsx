@@ -8,7 +8,7 @@ export interface ExtandedColumnsParams<T extends object> {
   /**
    * The additional columns to add to the table
    */
-  additionnalColumns?: Column<T>[]
+  additionalColumns?: Column<T>[]
   /**
    * The id or the accessor of the columns you want to block
    */
@@ -24,7 +24,7 @@ export const useExtendedColumns = <T extends object>(
 ) => {
   const {
     initialColumns,
-    additionnalColumns = [],
+    additionalColumns = [],
     blockedColumns,
     getActions
   } = extandParams
@@ -44,7 +44,7 @@ export const useExtendedColumns = <T extends object>(
       : []
     const columns: Column<T>[] = [
       ...initialColumns,
-      ...additionnalColumns,
+      ...additionalColumns,
       ...actions
     ]
     const columnsFiltered = blockedColumns
@@ -55,6 +55,6 @@ export const useExtendedColumns = <T extends object>(
         )
       : columns
     return columnsFiltered
-  }, [initialColumns, additionnalColumns, blockedColumns, getActions])
+  }, [initialColumns, additionalColumns, blockedColumns, getActions])
   return columns
 }

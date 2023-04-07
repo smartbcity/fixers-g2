@@ -163,7 +163,7 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
     multipleRoles = true,
     setOrganizationState,
     setInseeOrganization,
-    additionnalValidators,
+    additionalValidators,
     ...other
   } = props
 
@@ -211,7 +211,7 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
   const { addressFields } = useAdressFields({
     address: organization?.address,
     strings,
-    additionnalValidators,
+    additionalValidators,
     readOnly: readOnlyFields?.address
   })
 

@@ -85,7 +85,7 @@ const Example = (args: any) => {
   const onSubmit = useCallback((values: any, submittedFilters: any) => {
     if (values.page === submittedFilters.page) return { ...values, page: 0 }
   }, [])
-  const { formState, setAdditionnalFilter, submittedFilters } =
+  const { formState, setAdditionalFilter, submittedFilters } =
     useFiltersComposable({
       onSubmit,
       formikConfig: {
@@ -96,8 +96,8 @@ const Example = (args: any) => {
     })
 
   const incrementPage = useCallback(() => {
-    setAdditionnalFilter('page', submittedFilters.page + 1)
-  }, [submittedFilters.page, setAdditionnalFilter])
+    setAdditionalFilter('page', submittedFilters.page + 1)
+  }, [submittedFilters.page, setAdditionalFilter])
 
   const actions = useMemo(
     (): Action[] => [

@@ -27,9 +27,9 @@ export interface UseUserFormStateProps<T extends User> {
    */
   blockedFields?: string[]
   /**
-   * An object containing the additionnal validators. The key should be the name of the field
+   * An object containing the additional validators. The key should be the name of the field
    */
-  additionnalValidators?: { [key: string]: ValidatorFnc }
+  additionalValidators?: { [key: string]: ValidatorFnc }
   /**
    * The prop to use to add custom translation to the component
    */
@@ -87,7 +87,7 @@ export const useUserFormState = <T extends User = User>(
 ) => {
   const {
     additionalFields = [],
-    additionnalValidators,
+    additionalValidators,
     blockedFields,
     strings,
     user,
@@ -126,7 +126,7 @@ export const useUserFormState = <T extends User = User>(
   const { addressPartialFields } = useAdressFields({
     address: user?.address,
     strings,
-    additionnalValidators,
+    additionalValidators,
     readOnly: readOnlyFields?.address
   })
 
@@ -142,7 +142,7 @@ export const useUserFormState = <T extends User = User>(
             value,
             values,
             readOnlyFields,
-            additionnalValidators
+            additionalValidators
           )
       },
       {
@@ -155,7 +155,7 @@ export const useUserFormState = <T extends User = User>(
             value,
             values,
             readOnlyFields,
-            additionnalValidators
+            additionalValidators
           )
       },
       addressPartialFields.street,
@@ -186,8 +186,8 @@ export const useUserFormState = <T extends User = User>(
           if (readOnlyFields?.phone) return undefined
           const res = validatePhone(value, strings?.enterAValidPhone)
           if (res) return res
-          return additionnalValidators?.phone
-            ? additionnalValidators?.phone(value, values)
+          return additionalValidators?.phone
+            ? additionalValidators?.phone(value, values)
             : undefined
         }
       },
@@ -197,16 +197,16 @@ export const useUserFormState = <T extends User = User>(
           ? user?.roles?.assignedRoles || roles
           : user?.roles?.assignedRoles[0] || roles[0],
         validator:
-          !readOnlyFields?.roles && additionnalValidators?.roles
-            ? additionnalValidators?.roles
+          !readOnlyFields?.roles && additionalValidators?.roles
+            ? additionalValidators?.roles
             : undefined
       },
       {
         name: 'memberOf',
         defaultValue: user?.memberOf?.id ?? organizationId,
         validator:
-          !readOnlyFields?.memberOf && additionnalValidators?.memberOf
-            ? additionnalValidators?.memberOf
+          !readOnlyFields?.memberOf && additionalValidators?.memberOf
+            ? additionalValidators?.memberOf
             : undefined
       },
       ...(!isUpdate && !readOnly
@@ -216,8 +216,8 @@ export const useUserFormState = <T extends User = User>(
               defaultValue: true,
               validator:
                 readOnlyFields?.sendEmailLink &&
-                additionnalValidators?.sendEmailLink
-                  ? additionnalValidators?.sendEmailLink
+                additionalValidators?.sendEmailLink
+                  ? additionalValidators?.sendEmailLink
                   : undefined
             }
           ]

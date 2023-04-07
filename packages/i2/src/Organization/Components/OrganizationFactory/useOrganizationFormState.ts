@@ -28,9 +28,9 @@ export interface useOrganizationFormStateProps<T extends Organization> {
    */
   blockedFields?: string[]
   /**
-   * An object containing the additionnal validators. The key should be the name of the field
+   * An object containing the additional validators. The key should be the name of the field
    */
-  additionnalValidators?: { [key: string]: ValidatorFnc }
+  additionalValidators?: { [key: string]: ValidatorFnc }
   /**
    * The prop to use to add custom translation to the component
    */
@@ -66,7 +66,7 @@ export const useOrganizationFormState = <T extends Organization = Organization>(
 ) => {
   const {
     additionalFields = [],
-    additionnalValidators,
+    additionalValidators,
     blockedFields,
     strings,
     organization,
@@ -85,7 +85,7 @@ export const useOrganizationFormState = <T extends Organization = Organization>(
   const { addressPartialFields } = useAdressFields({
     address: organization?.address,
     strings,
-    additionnalValidators,
+    additionalValidators,
     readOnly: readOnlyFields?.address
   })
 
@@ -95,7 +95,7 @@ export const useOrganizationFormState = <T extends Organization = Organization>(
         name: 'siret',
         defaultValue: organization?.siret,
         validator: (value: any, values: any) =>
-          siretValidation(value, values, readOnlyFields, additionnalValidators)
+          siretValidation(value, values, readOnlyFields, additionalValidators)
       },
       addressPartialFields.street,
       addressPartialFields.postalCode,
@@ -110,31 +110,31 @@ export const useOrganizationFormState = <T extends Organization = Organization>(
             value,
             values,
             readOnlyFields,
-            additionnalValidators
+            additionalValidators
           )
       },
       {
         name: 'description',
         defaultValue: organization?.description,
         validator:
-          !readOnlyFields?.description && additionnalValidators?.description
-            ? additionnalValidators?.description
+          !readOnlyFields?.description && additionalValidators?.description
+            ? additionalValidators?.description
             : undefined
       },
       {
         name: 'website',
         defaultValue: organization?.website,
         validator:
-          !readOnlyFields?.website && additionnalValidators?.website
-            ? additionnalValidators?.website
+          !readOnlyFields?.website && additionalValidators?.website
+            ? additionalValidators?.website
             : undefined
       },
       {
         name: 'roles',
         defaultValue: defaultRoles,
         validator:
-          !readOnlyFields?.roles && additionnalValidators?.roles
-            ? additionnalValidators?.roles
+          !readOnlyFields?.roles && additionalValidators?.roles
+            ? additionalValidators?.roles
             : undefined
       }
     ],
@@ -144,7 +144,7 @@ export const useOrganizationFormState = <T extends Organization = Organization>(
       readOnlyFields,
       strings,
       defaultRoles,
-      additionnalValidators,
+      additionalValidators,
       addressPartialFields
     ]
   )

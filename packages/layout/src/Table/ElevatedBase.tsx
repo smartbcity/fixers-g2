@@ -45,7 +45,7 @@ export interface ElevatedBaseProps<Data extends {}> {
   toggleExpandOnRowClicked: boolean
   toggleRowExpanded: (id: IdType<Data>[], value?: boolean | undefined) => void
   getRowId?: (row: Data) => string
-  additionnalRowsProps?: Record<string, any>
+  additionalRowsProps?: Record<string, any>
 }
 
 export const ElevatedBase = <Data extends {}>(
@@ -68,7 +68,7 @@ export const ElevatedBase = <Data extends {}>(
     expandInRow,
     toggleExpandOnRowClicked,
     toggleRowExpanded,
-    additionnalRowsProps = {},
+    additionalRowsProps = {},
     getRowId,
     getRowLink
   } = props
@@ -78,8 +78,8 @@ export const ElevatedBase = <Data extends {}>(
       row.getRowProps()
       const rowProps = row.getRowProps()
       const extProps =
-        additionnalRowsProps[getRowId ? getRowId(row.original) : ''] ??
-        additionnalRowsProps?.all
+        additionalRowsProps[getRowId ? getRowId(row.original) : ''] ??
+        additionalRowsProps?.all
       return (
         <Fragment key={rowProps.key}>
           <Box
@@ -197,7 +197,7 @@ export const ElevatedBase = <Data extends {}>(
     expandInRow,
     toggleExpandOnRowClicked,
     toggleRowExpanded,
-    additionnalRowsProps,
+    additionalRowsProps,
     getRowId,
     getRowLink
   ])
