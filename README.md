@@ -74,6 +74,12 @@ These classes allows you to override the default css properties from a static cs
 
 ## ⛏ Source
 
+- Install
+
+```
+yarn install
+```
+
 - Build
 
 ```
