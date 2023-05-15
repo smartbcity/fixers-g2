@@ -11,6 +11,7 @@ export const TableCellText = (props: TableCellTextProps) => {
   const text = !value?.trim()?.length ?? 0 ? '-' : value
   return (
     <Typography
+      {...componentProps}
       sx={{
         WebkitLineClamp: 2,
         lineClamp: '2',
@@ -22,7 +23,6 @@ export const TableCellText = (props: TableCellTextProps) => {
         overflow: 'hidden',
         ...componentProps?.sx
       }}
-      {...componentProps}
     >
       {text}
     </Typography>

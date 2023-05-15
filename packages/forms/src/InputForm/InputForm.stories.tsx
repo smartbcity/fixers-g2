@@ -261,7 +261,7 @@ export const FormExample: Story<InputFormBasicProps> = () => {
         styles={{ input: { width: '60%', flexGrow: 0 } }}
       />
       <InputForm
-        value={form.nationality}
+        value={6}
         label='nationality:'
         inputType='radioChoices'
         onChange={(value: string) => setform({ ...form, nationality: value })}

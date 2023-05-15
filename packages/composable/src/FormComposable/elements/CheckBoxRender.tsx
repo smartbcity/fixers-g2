@@ -25,6 +25,7 @@ export const CheckBoxRender: ElementRendererFunction<CheckBoxRenderProps> = (
   )
   const onChange = basicProps.onChange
   delete basicProps.onChange
+  delete basicProps.sharedNameIndex
   return (
     <CheckBox
       checked={value}

@@ -55,7 +55,7 @@ export interface InputFormBasicProps<T extends InputFormTypes = 'textField'>
   /**
    * The label of the input
    */
-  label?: string
+  label?: React.ReactNode
   /**
    * If true the input will be disabled and forced on type 'textfield'
    * @default false
@@ -144,30 +144,25 @@ export interface InputFormBasicProps<T extends InputFormTypes = 'textField'>
 
 type RemoveMainProps<T> = Omit<T, keyof InputFormBasicProps>
 
-type InputFormComponentProps<
-  T extends InputFormTypes,
-  R extends boolean
-> = InputFormBasicProps<T> &
-  ([R] extends [true]
-    ? RemoveMainProps<TextFieldProps>
-    : [T] extends ['select']
-    ? RemoveMainProps<SelectProps>
-    : [T] extends ['datePicker']
-    ? RemoveMainProps<DatePickerProps>
-    : [T] extends ['radioChoices']
-    ? RemoveMainProps<RadioChoicesProps>
-    : [T] extends ['autoComplete']
-    ? RemoveMainProps<AutoCompleteProps>
-    : [T] extends ['multiChoices']
-    ? RemoveMainProps<MultiChoicesProps>
-    : RemoveMainProps<TextFieldProps>)
+type InputFormComponentProps<T extends InputFormTypes> =
+  InputFormBasicProps<T> &
+    ([T] extends ['select']
+      ? RemoveMainProps<SelectProps>
+      : [T] extends ['datePicker']
+      ? RemoveMainProps<DatePickerProps>
+      : [T] extends ['radioChoices']
+      ? RemoveMainProps<RadioChoicesProps>
+      : [T] extends ['autoComplete']
+      ? RemoveMainProps<AutoCompleteProps>
+      : [T] extends ['multiChoices']
+      ? RemoveMainProps<MultiChoicesProps>
+      : RemoveMainProps<TextFieldProps>)
 
 interface InputFormComponent {
-  <T extends InputFormTypes, R extends boolean>(
+  <T extends InputFormTypes>(
     props: {
       inputType: T
-      readOnly?: R
-    } & InputFormComponentProps<T, R>,
+    } & InputFormComponentProps<T>,
     ref: React.ForwardedRef<HTMLDivElement>
   ): JSX.Element
 }

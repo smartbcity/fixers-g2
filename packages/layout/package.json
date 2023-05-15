@@ -26,8 +26,7 @@
   "devDependencies": {
     "@smartb/g2-documentation": "1.0.0-alpha.148",
     "@smartb/g2-notifications": "1.0.0-alpha.148",
-    "@types/react": "^18.0.28",
-    "@types/react-table": "^7.7.12"
+    "@types/react": "^18.0.28"
   },
   "peerDependencies": {
     "@emotion/css": "^11.10.6",
@@ -44,7 +43,8 @@
     "@smartb/g2-utils": "1.0.0-alpha.148",
     "@tanstack/react-table": "^8.7.9",
     "react-router-dom": "^6.8.2",
-    "react-table": "^7.8.0"
+    "react-table": "^7.8.0",
+    "@types/react-table": "^7.7.12"
   },
   "files": [
     "dist"

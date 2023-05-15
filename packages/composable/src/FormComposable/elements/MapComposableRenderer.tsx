@@ -17,7 +17,7 @@ export type MapPropsWithLimitedPlugins = Omit<
     DraggableMarkerNeeds,
     'onPositionChange' | 'position'
   > & { enable?: boolean }
-  additionalPlugins?: Omit<MapPlugin, 'value' | 'setValue'>[]
+  additionnalPlugins?: Omit<MapPlugin, 'value' | 'setValue'>[]
 }
 
 export type MapComposableRendererProps = FieldRenderProps<
@@ -36,9 +36,13 @@ export const MapComposableRenderer: ElementRendererFunction<
   const onChange = basicProps.onChange
   delete basicProps.onChange
   delete basicProps.emptyValueInReadOnly
+  delete basicProps.sharedNameIndex
+  //@ts-ignore
+  delete basicProps.error
+  delete basicProps.isLoading
 
   const pluginsCount =
-    (params?.additionalPlugins?.length ?? 0) +
+    (params?.additionnalPlugins?.length ?? 0) +
     (params?.draggableMarkerPlugin?.enable ? 1 : 0)
 
   const onChangeMapState = useCallback(
@@ -51,9 +55,9 @@ export const MapComposableRenderer: ElementRendererFunction<
     [onChange, mapState, formState.setFieldValue, pluginsCount]
   )
 
-  const additionalPlugins = useMemo(
+  const additionnalPlugins = useMemo(
     () =>
-      params?.additionalPlugins?.map(
+      params?.additionnalPlugins?.map(
         (plugin): MapPlugin => ({
           ...plugin,
           value: mapState
@@ -64,14 +68,14 @@ export const MapComposableRenderer: ElementRendererFunction<
           setValue: (value) => onChangeMapState(plugin.key, value)
         })
       ),
-    [params?.additionalPlugins, mapState, onChangeMapState, pluginsCount]
+    [params?.additionnalPlugins, mapState, onChangeMapState, pluginsCount]
   )
 
   return (
     <Map
       {...basicProps}
       {...params}
-      additionalPlugins={additionalPlugins}
+      additionnalPlugins={additionnalPlugins}
       draggableMarkerPlugin={
         params?.draggableMarkerPlugin?.enable
           ? {

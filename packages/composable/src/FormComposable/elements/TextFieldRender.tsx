@@ -26,11 +26,15 @@ export const TextFieldRender: ElementRendererFunction<TextFieldRenderProps> = (
   const { element, formState, basicProps } = props
   const { params } = element
   const onChange = basicProps.onChange
-  delete basicProps.onChange
+
   const { value, setFieldValue } = useMemo(
     () => getValueSetup(basicProps.name, formState, basicProps.sharedNameIndex),
     [basicProps.name, formState, basicProps.sharedNameIndex]
   )
+
+  delete basicProps.onChange
+  delete basicProps.sharedNameIndex
+
   return (
     <InputForm
       inputType='textField'

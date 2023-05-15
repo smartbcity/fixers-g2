@@ -16,7 +16,7 @@ export interface FieldRenderProps<TYPE extends string, PROPS>
 export interface FieldRender {
   key: string
   id: string
-  label?: string
+  label?: React.ReactNode
   name: string
   error: boolean
   errorMessage: string

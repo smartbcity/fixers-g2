@@ -189,24 +189,20 @@ const Example = (args: any) => {
 
 const fields: FilterComposableField[] = [
   {
-    key: 'storybook-filters-field-from',
     name: 'from',
     label: 'From',
     type: 'datePicker'
   },
   {
-    key: 'storybook-filters-field-to',
     name: 'to',
     label: 'To',
     type: 'datePicker'
   },
   {
-    key: 'spacer',
     name: 'spacer',
     type: 'spacer'
   },
   {
-    key: 'storybook-filters-field-keyword',
     name: 'keyword',
     label: 'Keyword',
     type: 'textField',
@@ -214,7 +210,6 @@ const fields: FilterComposableField[] = [
     mandatory: true
   },
   {
-    key: 'storybook-filters-field-country',
     name: 'country',
     label: 'Country',
     type: 'select',
