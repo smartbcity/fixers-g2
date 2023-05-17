@@ -33,6 +33,7 @@ export const SelectRender: ElementRendererFunction<SelectRenderProps> = (
   )
   const onChange = basicProps.onChange
   delete basicProps.onChange
+  delete basicProps.sharedNameIndex
   return params?.multiple === true ? (
     <InputForm
       inputType='select'

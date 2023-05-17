@@ -25,6 +25,7 @@ export const DocumentHandlerRender: ElementRendererFunction<
   const { errorMessage, label, onChange, readOnly, sx, ...basicPropsRest } =
     basicProps
   delete basicProps.emptyValueInReadOnly
+  delete basicProps.sharedNameIndex
   const localFile: File | undefined = getIn(formState.values, basicProps.name)
   const uploadedGetUrl = getIn(formState.values, basicProps.name + 'Uploaded')
   if (basicProps.readOnly && !uploadedGetUrl && !localFile) return <></>
@@ -32,11 +33,11 @@ export const DocumentHandlerRender: ElementRendererFunction<
     <Box sx={sx}>
       <DocumentHandler
         uploaded={!!uploadedGetUrl || !!localFile}
-        label={localFile?.name ?? label}
+        label={
+          localFile?.name ?? (typeof label === 'string' ? label : undefined)
+        }
         getFileUrl={
-          localFile
-            ? () => URL.createObjectURL(localFile)
-            : () => URL.createObjectURL(uploadedGetUrl())
+          localFile ? () => URL.createObjectURL(localFile) : uploadedGetUrl
         }
         onAdd={(files: File[]) => {
           formState.setFieldValue(basicProps.name, files[0], false)

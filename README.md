@@ -77,7 +77,7 @@ These classes allows you to override the default css properties from a static cs
 - Build
 
 ```
-yarn workspaces run build
+make package-libs
 ```
 
 - Run Storybook

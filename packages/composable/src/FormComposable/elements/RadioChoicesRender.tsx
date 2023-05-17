@@ -31,6 +31,7 @@ export const RadioChoicesRender: ElementRendererFunction<
   )
   const onChange = basicProps.onChange
   delete basicProps.onChange
+  delete basicProps.sharedNameIndex
   return (
     <InputForm
       inputType='radioChoices'

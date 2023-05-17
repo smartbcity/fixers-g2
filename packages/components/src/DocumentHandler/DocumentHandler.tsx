@@ -42,7 +42,7 @@ export interface DocumentHandlerBasicProps extends BasicProps {
   /**
    * The label displayed on top of the document handler if wanted
    */
-  outterLabel?: string
+  outterLabel?: React.ReactNode
   /**
    * provide it if the file is already uploaded
    */

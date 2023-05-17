@@ -31,6 +31,7 @@ export const MultiChoicesRender: ElementRendererFunction<
   )
   const onChange = basicProps.onChange
   delete basicProps.onChange
+  delete basicProps.sharedNameIndex
   return (
     <InputForm
       inputType='multiChoices'

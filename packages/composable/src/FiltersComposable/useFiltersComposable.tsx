@@ -73,7 +73,8 @@ export const useFiltersComposable = <T extends {} = any>(
         ? onSubmit(values, submittedFilters, formikHelpers)
         : undefined
       const definedValues = customValues ?? values
-      const cleanedValues = {}
+      //@ts-ignore
+      const cleanedValues = qs.parse(searchParams.toString())
 
       for (let fieldName in definedValues) {
         const value = definedValues[fieldName]
@@ -95,7 +96,7 @@ export const useFiltersComposable = <T extends {} = any>(
       setSubmittedFilters(cleanedValues)
       formikHelpers.setValues(cleanedValues)
     },
-    [onSubmit, setSearchParams, submittedFilters]
+    [onSubmit, setSearchParams, submittedFilters, searchParams]
   )
 
   const formik = useFormik({

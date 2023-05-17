@@ -32,6 +32,7 @@ export const DatePickerRender: ElementRendererFunction<
   const date = new Date(value)
   const onChange = basicProps.onChange
   delete basicProps.onChange
+  delete basicProps.sharedNameIndex
   return (
     <InputForm
       inputType='datePicker'
