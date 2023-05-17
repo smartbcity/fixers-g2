@@ -49,7 +49,7 @@ export const useFiltersComposable = <T extends {} = any>(
       obj[fieldName] = unformatFieldValue(params[fieldName])
     }
     return { ...formikConfig?.initialValues, ...obj }
-  }, [])
+  }, [searchParams, formikConfig?.initialValues])
 
   const [submittedFilters, setSubmittedFilters] = useState(initialValues)
 
@@ -103,6 +103,7 @@ export const useFiltersComposable = <T extends {} = any>(
     ...formikConfig,
     validateOnBlur: false,
     validateOnChange: false,
+    enableReinitialize: true,
     initialValues: initialValues
   })
 

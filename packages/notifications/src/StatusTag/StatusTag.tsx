@@ -52,8 +52,7 @@ export const StatusTagBase = (
           display: '-webkit-box',
           WebkitBoxOrient: 'vertical',
           textOverflow: 'ellipsis',
-          overflow: 'hidden',
-          whiteSpace: 'normal'
+          overflow: 'hidden'
         },
         background: `${color}26`,
         border: `1.5px solid ${color}`,
