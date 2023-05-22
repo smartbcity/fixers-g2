@@ -3,12 +3,12 @@ import { useMemo, useCallback, useState } from 'react'
 import {
   AdressFieldsName,
   mergeFields,
-  requiredString,
   useAdressFields
 } from '../../../Commons'
 import { Organization, organizationToFlatOrganization } from '../../Domain'
 import { siretValidation } from '../../Validation/siret'
-import { OrganizationFactoryStrings } from './OrganizationFactory'
+import { validators } from '@smartb/g2-utils'
+import { useTranslation } from 'react-i18next'
 
 export type organizationFieldsName =
   | 'logo'
@@ -41,10 +41,6 @@ export interface useOrganizationFormFieldsProps {
    */
   formState?: FormComposableState
   /**
-   * The prop to use to add custom translation to the component
-   */
-  strings?: OrganizationFactoryStrings
-  /**
    * use This prop to override the fields
    */
   fieldsOverride?: OrganizationFactoryFieldsOverride
@@ -63,13 +59,13 @@ export const useOrganizationFormFields = (
     formState,
     getInseeOrganization,
     setInseeOrganization,
-    strings,
     multipleRoles = true,
     fieldsOverride
   } = params ?? {}
 
   const [siretValid, setSiretValid] = useState(false)
   const [siretRef, setSiretRef] = useState(null)
+  const { t } = useTranslation()
 
   const fetchOrganization = useCallback(async () => {
     if (getInseeOrganization && formState?.values.siret) {
@@ -89,11 +85,7 @@ export const useOrganizationFormFields = (
           setSiretValid(true)
           setInseeOrganization && setInseeOrganization(values)
         } else {
-          formState.setFieldError(
-            'siret',
-            strings?.siretNotFound ??
-              'Aucune information trouvé. Saisissez les informations ci-dessous manuellement'
-          )
+          formState.setFieldError('siret', t('siretNotFound'))
         }
       })
     }
@@ -102,12 +94,11 @@ export const useOrganizationFormFields = (
     formState?.setValues,
     formState?.setFieldError,
     getInseeOrganization,
-    strings?.siretNotFound,
+    t,
     setInseeOrganization
   ])
 
   const { addressFields } = useAdressFields({
-    strings,
     //@ts-ignore
     fieldsOverride
   })
@@ -168,8 +159,7 @@ export const useOrganizationFormFields = (
           name: 'name',
           type: 'textField',
           label: 'Nom',
-          validator: (value?: string) =>
-            requiredString(strings?.requiredField, value)
+          validator: validators.requiredField(t)
         },
         fieldsOverride?.name
       ),
@@ -211,8 +201,9 @@ export const useOrganizationFormFields = (
       )
     }),
     [
+      t,
       addressFields,
-      strings?.requiredField,
+      t,
       siretValid,
       fetchOrganization,
       formState?.validateField,

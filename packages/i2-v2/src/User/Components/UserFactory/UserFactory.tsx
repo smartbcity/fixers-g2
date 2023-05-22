@@ -3,7 +3,6 @@ import { Option } from '@smartb/g2-forms'
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 import React, { useMemo } from 'react'
 import { User } from '../../Domain'
-import { AdressValidationStrings } from '../../../Commons'
 import { Stack, StackProps } from '@mui/material'
 import { useElementSize } from '@mantine/hooks'
 import { UserSummary } from '../UserSummary'
@@ -20,29 +19,6 @@ import {
 } from './useUserFormFields'
 
 export type Validated = boolean
-
-export interface UserFactoryStrings extends AdressValidationStrings {
-  /**
-   * @default "le champ est obligatoire"
-   */
-  requiredField?: string
-  /**
-   * @default "Vous devez renseigner le mail"
-   */
-  completeTheEmail?: string
-  /**
-   * @default "L'email renseigné n'est pas correct"
-   */
-  enterAValidEmail?: string
-  /**
-   * @default "Le numéro de téléphone doit contenir dix chiffres"
-   */
-  enterAValidPhone?: string
-  /**
-   * @default 'Cette addresse email est déjà utilisée'
-   */
-  emailAlreadyUsed?: string
-}
 
 export interface UserFactoryBasicProps
   extends BasicProps,
@@ -77,10 +53,6 @@ export interface UserFactoryBasicProps
    * The nodes put at the bottom of the form
    */
   formExtension?: React.ReactNode
-  /**
-   * The prop to use to add custom translation to the component
-   */
-  strings?: UserFactoryStrings
 }
 
 export type UserFactoryProps = MergeMuiElementProps<
@@ -98,7 +70,6 @@ export const UserFactory = (props: UserFactoryProps) => {
     additionalFields,
     organizationId,
     isLoading = false,
-    strings,
     blockedFields = [],
     readOnlyRolesOptions,
     multipleRoles = true,

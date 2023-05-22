@@ -1,11 +1,8 @@
 import { FormComposableField } from '@smartb/g2-composable'
 import { useMemo } from 'react'
-import {
-  Address,
-  addressValidation,
-  AdressValidationStrings,
-  mergeFields
-} from '.'
+import { Address, mergeFields } from '.'
+import { validators } from '@smartb/g2-utils'
+import { useTranslation } from 'react-i18next'
 
 export type AdressFieldsName = 'street' | 'postalCode' | 'city'
 
@@ -19,17 +16,15 @@ export type AdressFieldsOverride = Partial<
 
 export interface useAdressFieldsParams {
   /**
-   * The prop to use to add custom translation to the component
-   */
-  strings?: AdressValidationStrings
-  /**
    * use This prop to override the fields
    */
   fieldsOverride?: AdressFieldsOverride
 }
 
 export const useAdressFields = (params?: useAdressFieldsParams) => {
-  const { strings, fieldsOverride } = params || {}
+  const { fieldsOverride } = params || {}
+
+  const { t } = useTranslation()
 
   const addressFields = useMemo(
     () => ({
@@ -39,8 +34,7 @@ export const useAdressFields = (params?: useAdressFieldsParams) => {
           name: 'street',
           type: 'textField',
           label: 'Addresse (facultatif)',
-          validator: (value: any, values: any) =>
-            addressValidation.street(value, values, strings)
+          validator: validators.street(t)
         },
         fieldsOverride?.street
       ),
@@ -50,8 +44,7 @@ export const useAdressFields = (params?: useAdressFieldsParams) => {
           name: 'postalCode',
           type: 'textField',
           label: 'Code postal (facultatif)',
-          validator: (value: any, values: any) =>
-            addressValidation.postalCode(value, values, strings)
+          validator: validators.postalCode(t)
         },
         fieldsOverride?.postalCode
       ),
@@ -61,13 +54,12 @@ export const useAdressFields = (params?: useAdressFieldsParams) => {
           name: 'city',
           type: 'textField',
           label: 'Ville (facultatif)',
-          validator: (value: any, values: any) =>
-            addressValidation.city(value, values, strings)
+          validator: validators.city(t)
         },
         fieldsOverride?.city
       )
     }),
-    [strings, fieldsOverride]
+    [t, fieldsOverride]
   )
 
   return {

@@ -3,13 +3,12 @@ import { useCallback, useMemo, useState } from 'react'
 import {
   AdressFieldsName,
   mergeFields,
-  requiredString,
-  useAdressFields,
-  validatePhone
+  useAdressFields
 } from '../../../Commons'
 import { OrganizationId } from '../../../Organization'
 import { User } from '../../Domain'
-import { UserFactoryStrings } from './UserFactory'
+import { validators } from '@smartb/g2-utils'
+import { useTranslation } from 'react-i18next'
 
 const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}/i
 
@@ -29,10 +28,6 @@ export type UserFactoryFieldsOverride = Partial<
 >
 
 export interface UseUserFormFieldsProps<T extends User> {
-  /**
-   * The prop to use to add custom translation to the component
-   */
-  strings?: UserFactoryStrings
   /**
    * use This prop to override the fields
    */
@@ -75,7 +70,6 @@ export const useUserFormFields = <T extends User = User>(
   params?: UseUserFormFieldsProps<T>
 ) => {
   const {
-    strings,
     fieldsOverride,
     checkEmailValidity,
     isUpdate = false,
@@ -88,6 +82,7 @@ export const useUserFormFields = <T extends User = User>(
 
   const [emailValid, setEmailValid] = useState(false)
   const [emailLoading, setEmailLoading] = useState(false)
+  const { t } = useTranslation()
 
   const onCheckEmail = useCallback(
     async (email: string): Promise<string | undefined> => {
@@ -97,18 +92,17 @@ export const useUserFormFields = <T extends User = User>(
         setEmailLoading(false)
         if (isTaken === true) {
           setEmailValid(false)
-          return strings?.emailAlreadyUsed ?? 'Cet email est déjà utilisé'
+          return t('emailAlreadyUsed')
         } else if (isTaken === false) {
           setEmailValid(true)
         }
       }
       return undefined
     },
-    [user?.email, checkEmailValidity, strings?.emailAlreadyUsed]
+    [user?.email, checkEmailValidity, t]
   )
 
   const { addressFields } = useAdressFields({
-    strings,
     //@ts-ignore
     fieldsOverride
   })
@@ -121,8 +115,7 @@ export const useUserFormFields = <T extends User = User>(
           name: 'givenName',
           type: 'textField',
           label: 'Prénom',
-          validator: (value?: string) =>
-            requiredString(strings?.requiredField, value)
+          validator: validators.requiredField(t)
         },
         fieldsOverride?.givenName
       ),
@@ -132,8 +125,7 @@ export const useUserFormFields = <T extends User = User>(
           name: 'familyName',
           type: 'textField',
           label: 'Nom de famille',
-          validator: (value?: string) =>
-            requiredString(strings?.requiredField, value)
+          validator: validators.requiredField(t)
         },
         fieldsOverride?.familyName
       ),
@@ -177,16 +169,8 @@ export const useUserFormFields = <T extends User = User>(
           validator: async (value?: string) => {
             if (fieldsOverride?.email?.readOnly) return undefined
             const trimmed = (value ?? '').trim()
-            if (!trimmed)
-              return (
-                strings?.completeTheEmail ??
-                ('Vous devez renseigner le mail' as string)
-              )
-            if (!emailRegex.test(trimmed))
-              return (
-                strings?.enterAValidEmail ??
-                "L'email renseigné n'est pas correct"
-              )
+            if (!trimmed) return t('completeTheEmail')
+            if (!emailRegex.test(trimmed)) return t('enterAValidEmail')
             return await onCheckEmail(trimmed)
           }
         },
@@ -198,7 +182,7 @@ export const useUserFormFields = <T extends User = User>(
           name: 'phone',
           type: 'textField',
           label: 'Numéro de téléphone (facultatif)',
-          validator: (value) => validatePhone(value, strings?.enterAValidPhone)
+          validator: validators.requiredField(t)
         },
         fieldsOverride?.phone
       ),
@@ -227,7 +211,7 @@ export const useUserFormFields = <T extends User = User>(
       )
     }),
     [
-      strings,
+      t,
       fieldsOverride,
       organizationId,
       multipleRoles,

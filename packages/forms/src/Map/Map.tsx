@@ -26,6 +26,8 @@ import L from 'leaflet'
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 import { cx } from '@emotion/css'
 import { markerIcon, markerIcon2x, markerShadow } from './leafletImages'
+import { useTranslation } from 'react-i18next'
+
 //@ts-ignore
 delete L.Icon.Default.prototype._getIconUrl
 L.Icon.Default.mergeOptions({
@@ -96,10 +98,6 @@ export interface MapBasicProps extends BasicProps {
    */
   tileLayerProps?: Partial<TileLayerProps>
   /**
-   * the string of the button to open the map in fullscreen on mobile mode
-   */
-  openFullScreenString?: string
-  /**
    * the readOnly property passed to the pluggins of the map
    */
   readOnly?: boolean
@@ -126,7 +124,6 @@ export const Map = (props: MapProps) => {
     center,
     zoom = !center ? defaultPosition.zoom : 17,
     additionalPlugins,
-    openFullScreenString,
     sx,
     readOnly = false,
     errorMessage,
@@ -142,6 +139,7 @@ export const Map = (props: MapProps) => {
   const isSm = useMediaQuery(theme.breakpoints.down('md'))
   const [isFullScreen, setIsFullScreen] = useState(false)
   const containerRef = useRef<HTMLDivElement | null>(null)
+  const { t } = useTranslation()
 
   const toggleFullScreen = useCallback(() => {
     if (isFullScreen) {
@@ -248,7 +246,7 @@ export const Map = (props: MapProps) => {
           sx={{ position: 'absolute', top: '10px', right: '5px' }}
           onClick={toggleFullScreen}
         >
-          {openFullScreenString ?? 'open in full screen'}
+          {t('openFullScreen')}
         </Button>
       )}
       {isFullScreen && (

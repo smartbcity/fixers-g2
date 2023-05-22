@@ -5,7 +5,6 @@ import { Popover } from '@smartb/g2-notifications'
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 import { cx } from '@emotion/css'
 import { Organization } from '../../Domain'
-import { AdressValidationStrings } from '../../../Commons'
 import { useDeletableForm } from '../../../Commons/useDeletableForm'
 import {
   FormComposable,
@@ -17,6 +16,7 @@ import {
   useOrganizationFormFields,
   useOrganizationFormFieldsProps
 } from './useOrganizationFormFields'
+import { useTranslation } from 'react-i18next'
 
 // @ts-ignore
 const StyledPopover = styled(Popover)({
@@ -32,21 +32,6 @@ export interface OrganizationFactoryClasses {
 export interface OrganizationFactoryStyles {
   dropPictureBox?: React.CSSProperties
   infoPopover?: React.CSSProperties
-}
-
-export interface OrganizationFactoryStrings extends AdressValidationStrings {
-  /**
-   * @default "le champ est obligatoire"
-   */
-  requiredField?: string
-  /**
-   * @default "Aucune information trouvé. Saisissez les informations ci-dessous manuellement"
-   */
-  siretNotFound?: string
-  /**
-   * @default "Le numéro de siret permettra de remplir automatiquement une partie des champs suivant"
-   */
-  siretDescription?: string
 }
 
 export interface OrganizationFactoryBasicProps
@@ -87,10 +72,6 @@ export interface OrganizationFactoryBasicProps
    * The styles applied to the different part of the component
    */
   styles?: OrganizationFactoryStyles
-  /**
-   * The prop to use to add custom translation to the component
-   */
-  strings?: OrganizationFactoryStrings
 }
 
 export type OrganizationFactoryProps = MergeMuiElementProps<
@@ -110,7 +91,6 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
     styles,
     readOnly = false,
     isLoading = false,
-    strings,
     multipleRoles = true,
     fieldsOverride,
     setInseeOrganization,
@@ -121,6 +101,8 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
   const [openSiretInfo, setOpenSiretInfo] = useState(
     !organization && !readOnly && !fieldsOverride?.siret?.readOnly && !isLoading
   )
+
+  const { t } = useTranslation()
 
   useEffect(() => {
     if (
@@ -181,10 +163,7 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
           )}
           style={styles?.infoPopover}
         >
-          <Typography variant='body1'>
-            {strings?.siretDescription ??
-              'Le numéro de siret permettra de remplir automatiquement une partie des champs suivants'}
-          </Typography>
+          <Typography variant='body1'>{t('siretDescription')}</Typography>
         </StyledPopover>
       )}
     </>

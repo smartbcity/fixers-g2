@@ -1,9 +1,11 @@
 import React, { Suspense, useMemo } from 'react'
-import { i18n as I18nType } from 'i18next'
+import { i18n as I18nType, InitOptions } from 'i18next'
 import { I18nextProvider } from 'react-i18next'
 import { BrowserRouter } from 'react-router-dom'
 import initI18next from './i18n'
 import { QueryClient, QueryClientProvider } from 'react-query'
+import { DeepPartial } from '@smartb/g2-utils'
+import { G2Translations } from './G2Translations'
 
 export interface AppProviderProps<
   Languages extends { [K in keyof Languages]: string } = {}
@@ -20,6 +22,8 @@ export interface AppProviderProps<
    * This prop will override the default i18n instance
    */
   i18nOverride?: I18nType
+  i18nTranslationsOverrides?: DeepPartial<typeof G2Translations>
+  i18nOptions?: InitOptions
   /**
    * The queryClient from react-query
    */
@@ -40,11 +44,15 @@ export const AppProvider = <
     languages = { fr: 'fr-FR' },
     loadingComponent,
     queryClient,
-    children
+    children,
+    i18nTranslationsOverrides,
+    i18nOptions
   } = props
   const i18n = useMemo(
-    () => i18nOverride || initI18next(languages),
-    [i18nOverride, languages]
+    () =>
+      i18nOverride ||
+      initI18next(languages, i18nTranslationsOverrides, i18nOptions),
+    [i18nOverride, languages, i18nTranslationsOverrides, i18nOptions]
   )
   return (
     <QueryClientProvider client={queryClient}>
