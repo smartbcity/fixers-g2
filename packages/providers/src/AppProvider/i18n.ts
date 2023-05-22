@@ -37,10 +37,10 @@ export const initI18next = <T extends { [key: string]: string } = {}>(
       interpolation: {
         escapeValue: false // not needed for react as it escapes by default
       },
-      ns: ['app', 'g2'],
+      ns: ['translation', 'g2'],
 
-      // application is the default namespace
-      defaultNS: 'app',
+      // application translation is the default namespace
+      defaultNS: 'translation',
 
       // fallback to g2 translation to make g2 translations overridable
       fallbackNS: 'g2',

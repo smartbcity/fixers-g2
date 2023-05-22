@@ -24,8 +24,7 @@ export {
   UseUserFormFieldsProps,
   UserFactoryFieldsOverride,
   useUserFormFields,
-  useUserFormState,
-  UserFactoryStrings
+  useUserFormState
 } from './Components/UserFactory'
 
 export {

@@ -58,10 +58,6 @@ export const useLocalStorageDocumentHandler = (
       isLoading,
       onAdd,
       onDelete,
-      errorMessages: {
-        'file-too-large':
-          'Your file is too big, it should not exceed 4Mo to be saved locally on your device.'
-      },
       dropzoneProps: {
         multiple: false,
         maxSize: 4 * 1024 * 1024

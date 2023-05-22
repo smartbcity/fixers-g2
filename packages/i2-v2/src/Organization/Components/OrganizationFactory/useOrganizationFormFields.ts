@@ -114,15 +114,7 @@ export const useOrganizationFormFields = (
           label: "Logo de l'entreprise (faculatif)",
           type: 'dropPicture',
           params: {
-            addPictureHelperText: 'Ajouter un logo (de préférence carré)',
             alt: "Le logo de l'entreprise",
-            removePictureHelperText: 'Supprimer le logo',
-            errorMessages: {
-              'file-invalid-type': "L'image devrait être au format jpeg ou png",
-              'file-too-large':
-                'Votre image est trop lourde et ne devrait pas dépassé 10 Mo',
-              'too-many-files': "Vous ne pouvez insérez q'une seule image"
-            },
             height: '200px'
           }
         },

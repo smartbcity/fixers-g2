@@ -11,7 +11,6 @@ export {
   OrganizationFactory,
   OrganizationFactoryProps,
   useOrganizationFormState,
-  OrganizationFactoryStrings,
   organizationFieldsName
 } from './Components/OrganizationFactory'
 
