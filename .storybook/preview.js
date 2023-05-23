@@ -1,7 +1,8 @@
 import React from "react";
 import { ThemeContextProvider } from "@smartb/g2-themes";
 import { StorybookCanvas } from "@smartb/g2-storybook-documentation";
-import { G2ConfigBuilder } from "../packages/providers/src";
+import { G2ConfigBuilder, initI18next } from "../packages/providers/src";
+import { I18nextProvider } from "react-i18next";
 
 import "./default.css";
 import { CssBaseline } from "@mui/material";
@@ -42,12 +43,16 @@ G2ConfigBuilder({
   },
 });
 
+const i18n = initI18next({ en: "en-US", fr: "fr-FR" });
+
 export const withThemeProvider = (Story) => {
   return (
-    <ThemeContextProvider>
-      <CssBaseline />
-      <Story />
-    </ThemeContextProvider>
+    <I18nextProvider i18n={i18n}>
+      <ThemeContextProvider>
+        <CssBaseline />
+        <Story />
+      </ThemeContextProvider>
+    </I18nextProvider>
   );
 };
 

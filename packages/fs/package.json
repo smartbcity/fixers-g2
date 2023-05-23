@@ -43,6 +43,7 @@
     "@smartb/g2-providers": "1.0.0-alpha.151",
     "@smartb/g2-themes": "1.0.0-alpha.151",
     "@smartb/g2-utils": "1.0.0-alpha.151",
+    "react-i18next": "^12.2.0",
     "react-dropzone": "^11.3.2",
     "react-query": "^3.39.1",
     "uuid": "^8.3.2"

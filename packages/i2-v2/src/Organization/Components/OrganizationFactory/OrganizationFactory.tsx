@@ -163,7 +163,7 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
           )}
           style={styles?.infoPopover}
         >
-          <Typography variant='body1'>{t('siretDescription')}</Typography>
+          <Typography variant='body1'>{t('g2.siretDescription')}</Typography>
         </StyledPopover>
       )}
     </>

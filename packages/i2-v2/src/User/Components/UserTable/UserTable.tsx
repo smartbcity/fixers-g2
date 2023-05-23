@@ -10,25 +10,7 @@ import {
   useExtendedColumns
 } from '../../../Commons/useExtendedColumns'
 import { Link, LinkProps } from 'react-router-dom'
-
-export interface UserTableStrings {
-  /**
-   * @default "Utilisateur"
-   */
-  user?: string
-  /**
-   * @default "Adresse"
-   */
-  adress?: string
-  /**
-   * @default "Email"
-   */
-  email?: string
-  /**
-   * @default "Oganisation"
-   */
-  organization?: string
-}
+import { useTranslation } from 'react-i18next'
 
 export interface UserTableBasicProps<T extends User> extends BasicProps {
   /**
@@ -62,10 +44,6 @@ export interface UserTableBasicProps<T extends User> extends BasicProps {
    */
   hasOrganizations?: boolean
   /**
-   * The prop to use to add custom translation to the component
-   */
-  strings?: UserTableStrings
-  /**
    * The component to displauy if no user is found
    */
   noDataComponent?: JSX.Element
@@ -81,7 +59,6 @@ export const UserTable = <T extends User = User>(props: UserTableProps<T>) => {
     users,
     getOrganizationUrl,
     totalPages,
-    strings,
     hasOrganizations = false,
     columnsExtander,
     page,
@@ -90,11 +67,11 @@ export const UserTable = <T extends User = User>(props: UserTableProps<T>) => {
     isLoading,
     ...other
   } = props
-
+  const { t } = useTranslation()
   const columns = useMemo(
     (): Column<T>[] => [
       {
-        Header: strings?.user ?? 'Utilisateur',
+        Header: t('g2.user'),
         accessor: 'givenName',
         Cell: ({ row }: CellProps<T>) => (
           <Presentation
@@ -105,7 +82,7 @@ export const UserTable = <T extends User = User>(props: UserTableProps<T>) => {
         width: 170
       } as Column<T>,
       {
-        Header: strings?.adress ?? 'Adresse',
+        Header: t('g2.address'),
         accessor: 'address',
         Cell: ({ row }: CellProps<T>) =>
           row.original.address ? (
@@ -116,7 +93,7 @@ export const UserTable = <T extends User = User>(props: UserTableProps<T>) => {
         width: 200
       } as Column<T>,
       {
-        Header: strings?.email ?? 'Email',
+        Header: t('g2.email'),
         accessor: 'email',
         Cell: ({ row }: CellProps<T>) => (
           <Typography>{row.original.email}</Typography>
@@ -126,7 +103,7 @@ export const UserTable = <T extends User = User>(props: UserTableProps<T>) => {
       ...((!!users[0] && !!users[0].memberOf) || hasOrganizations
         ? [
             {
-              Header: strings?.organization ?? 'Organisation',
+              Header: t('g2.organization'),
               accessor: 'memberOf',
               Cell: ({ row }: CellProps<T>) => {
                 if (!!getOrganizationUrl && row.original.memberOf?.id) {
@@ -150,7 +127,7 @@ export const UserTable = <T extends User = User>(props: UserTableProps<T>) => {
           ]
         : [])
     ],
-    [getOrganizationUrl, strings, hasOrganizations]
+    [getOrganizationUrl, t, hasOrganizations]
   )
 
   const completeColumns = useExtendedColumns<T>({

@@ -2,12 +2,12 @@ import { WrapperVariantContext } from '@mui/x-date-pickers/internals'
 import { PickersActionBarProps } from '@mui/x-date-pickers/PickersActionBar'
 import { Action, Actions } from '@smartb/g2-components'
 import React, { useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 
-export const CustomActionBar = (
-  props: PickersActionBarProps & { locale: 'fr' | 'enUS' }
-) => {
-  const { onAccept, onClear, onCancel, onSetToday, actions, locale } = props
+export const CustomActionBar = (props: PickersActionBarProps) => {
+  const { onAccept, onClear, onCancel, onSetToday, actions } = props
   const wrapperVariant = React.useContext(WrapperVariantContext)
+  const { t } = useTranslation()
 
   const actionsArray =
     typeof actions === 'function' ? actions(wrapperVariant) : actions
@@ -25,20 +25,20 @@ export const CustomActionBar = (
         switch (actionType) {
           case 'clear':
             action = onClear
-            text = locale === 'fr' ? 'Vider' : 'Clear'
+            text = t('g2.clear')
             break
           case 'cancel':
             action = onCancel
-            text = locale === 'fr' ? 'Annuler' : 'Cancel'
+            text = t('g2.cancel')
             variant = 'text'
             break
           case 'accept':
             action = onAccept
-            text = locale === 'fr' ? 'Valider' : 'Accept'
+            text = t('g2.accept')
             break
           case 'today':
             action = onSetToday
-            text = locale === 'fr' ? "Aujourd'hui" : 'Today'
+            text = t('g2.today')
             break
         }
         return {
@@ -49,7 +49,7 @@ export const CustomActionBar = (
           variant: variant
         }
       }),
-    [actionsArray, locale]
+    [actionsArray, t]
   )
 
   return <Actions padding={1} actions={actionsDisplay} />

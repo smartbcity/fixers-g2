@@ -8,21 +8,7 @@ import {
   useExtendedColumns
 } from '../../../Commons/useExtendedColumns'
 import { Organization } from '../../Domain'
-
-export interface OrganizationTableStrings {
-  /**
-   * @default "Oganisation"
-   */
-  organization?: string
-  /**
-   * @default "Adresse"
-   */
-  adress?: string
-  /**
-   * @default "Site web"
-   */
-  website?: string
-}
+import { useTranslation } from 'react-i18next'
 
 export interface OrganizationTableBasicProps<T extends Organization>
   extends BasicProps {
@@ -58,10 +44,6 @@ export interface OrganizationTableBasicProps<T extends Organization>
    * The component to displauy if no user is found
    */
   noDataComponent?: JSX.Element
-  /**
-   * The prop to use to add custom translation to the component
-   */
-  strings?: OrganizationTableStrings
 }
 
 export type OrganizationTableProps<T extends Organization = Organization> =
@@ -83,14 +65,14 @@ export const OrganizationTable = <T extends Organization = Organization>(
     columnsExtander,
     noDataComponent,
     isLoading,
-    strings,
     ...other
   } = props
+  const { t } = useTranslation()
 
   const columns = useMemo(
     (): Column<T>[] => [
       {
-        Header: strings?.organization ?? 'Organisation',
+        Header: t('g2.organization'),
         accessor: 'name',
         Cell: ({ row }: CellProps<T>) => (
           <Presentation
@@ -101,7 +83,7 @@ export const OrganizationTable = <T extends Organization = Organization>(
         )
       } as Column<T>,
       {
-        Header: strings?.adress ?? 'Adresse',
+        Header: t('g2.address'),
         accessor: 'address',
         Cell: ({ row }: CellProps<T>) =>
           row.original.address ? (
@@ -111,7 +93,7 @@ export const OrganizationTable = <T extends Organization = Organization>(
           ) : undefined
       } as Column<T>,
       {
-        Header: strings?.website ?? 'Site web',
+        Header: t('g2.website'),
         accessor: 'website',
         Cell: ({ row }: CellProps<T>) => (
           <Link
@@ -123,7 +105,7 @@ export const OrganizationTable = <T extends Organization = Organization>(
         )
       } as Column<T>
     ],
-    [strings]
+    [t]
   )
 
   const completeColumns = useExtendedColumns({

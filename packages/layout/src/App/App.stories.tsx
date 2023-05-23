@@ -185,7 +185,7 @@ App.args = {
   title: 'SmartB',
   logo: {
     src: defaultLogo,
-    onClick: () => window.alert('Going somewhere')
+    onClick: () => window.alert('g2.Going somewhere')
   } as AppLogoProps,
   navBarContent: (
     <div>

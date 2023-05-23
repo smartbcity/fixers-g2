@@ -208,8 +208,8 @@ const DropPictureBase = (
     (fileRejections: FileRejection[]) => {
       const code = fileRejections[0].errors[0].code as DropPictureError
       setError(
-        t(code, {
-          formats: ['png', 'jpeg'].join(` ${t('or')} `),
+        t('g2.' + code, {
+          formats: ['png', 'jpeg'].join(` ${t('g2.or')} `),
           sizeLimit: maxSize / 1024 / 1024
         })
       )
@@ -268,7 +268,7 @@ const DropPictureBase = (
         style={style}
       >
         <Tooltip
-          helperText={t('addPicture')}
+          helperText={t('g2.addPicture')}
           className={classes?.tooltip}
           style={styles?.tooltip}
         >
@@ -310,7 +310,7 @@ const DropPictureBase = (
     )
   return (
     <Tooltip
-      helperText={t('removePicture')}
+      helperText={t('g2.removePicture')}
       className={classes?.tooltip}
       style={styles?.tooltip}
     >

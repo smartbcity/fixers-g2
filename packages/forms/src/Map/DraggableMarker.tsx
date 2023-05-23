@@ -56,7 +56,7 @@ export const DraggableMarker = (props: DraggableMarkerProps) => {
 
   useEffect(() => {
     if (diplayInfo && !!markerRef) {
-      markerRef.bindPopup(t('canDrag')).openPopup()
+      markerRef.bindPopup(t('g2.canDrag')).openPopup()
     } else {
       markerRef?.closePopup()
       markerRef?.unbindPopup()
@@ -135,12 +135,12 @@ export const DraggableMarkerControl = (
           }}
           onClick={onAddMarker}
         >
-          {t('addMarker')}
+          {t('g2.addMarker')}
         </Button>
       )}
       {isSm && (
         <Button sx={{ marginTop: '24px' }} onClick={onUseMyLocation}>
-          {t('useMyPosition')}
+          {t('g2.useMyPosition')}
         </Button>
       )}
     </>

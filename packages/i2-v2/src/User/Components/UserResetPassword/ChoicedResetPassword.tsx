@@ -9,33 +9,7 @@ import {
   UserResetPasswordFormAutomated,
   UserResetPasswordFormAutomatedProps
 } from './UserResetPasswordFormAutomated'
-
-export interface ChoicedResetPasswordStrings {
-  /**
-   * @default 'Mot de passe'
-   */
-  passwordLabel?: string
-  /**
-   * @default 'Changer le mot de passe'
-   */
-  passwordLink?: string
-  /**
-   * @default 'Changement de mot de passe'
-   */
-  passwordTitle?: string
-  /**
-   * @default "Un email pour effectuer le changement de mot de passe va être envoyé à l'adresse email de votre compte."
-   */
-  passwordEmail?: string
-  /**
-   * @default "Annuler"
-   */
-  cancelButton?: string
-  /**
-   * @default "Confirmer"
-   */
-  confirmButton?: string
-}
+import { useTranslation } from 'react-i18next'
 
 export interface ChoicedResetPasswordBasicProps extends BasicProps {
   /**
@@ -44,10 +18,6 @@ export interface ChoicedResetPasswordBasicProps extends BasicProps {
    * @defautl 'email'
    */
   resetPasswordType?: 'email' | 'forced'
-  /**
-   * The prop to use to add custom translation to the component
-   */
-  choicedResetPasswordstrings?: ChoicedResetPasswordStrings
 }
 
 export type ChoicedResetPasswordProps = MergeMuiElementProps<
@@ -60,7 +30,6 @@ export const ChoicedResetPassword = (props: ChoicedResetPasswordProps) => {
     resetPasswordType = 'email',
     userId,
     userUpdatePasswordOptions,
-    choicedResetPasswordstrings,
     ...other
   } = props
   const [open, setOpen] = useState(false)
@@ -68,6 +37,7 @@ export const ChoicedResetPassword = (props: ChoicedResetPasswordProps) => {
   const [error, setError] = useState(false)
   const submitRef = useRef<HTMLButtonElement>(null)
   const { keycloak } = useAuth()
+  const { t } = useTranslation()
 
   const onToggle = useCallback(() => {
     setOpen((open) => !open)
@@ -116,15 +86,14 @@ export const ChoicedResetPassword = (props: ChoicedResetPasswordProps) => {
   const actions = useMemo(
     (): Action[] => [
       {
-        label: choicedResetPasswordstrings?.cancelButton ?? 'Annuler',
+        label: t('g2.cancel'),
         key: 'cancelPopupButton',
         onClick: onToggle,
         variant: 'text'
       },
       {
-        label: choicedResetPasswordstrings?.confirmButton ?? 'Confirmer',
+        label: t('g2.confirm'),
         key: 'confirmPopupButton',
-        sx: {},
         ref: submitRef,
         isLoading: mutating,
         fail: error,
@@ -135,7 +104,7 @@ export const ChoicedResetPassword = (props: ChoicedResetPasswordProps) => {
         }
       }
     ],
-    [onToggle, mutating, error, choicedResetPasswordstrings, userId]
+    [onToggle, mutating, error, t, userId]
   )
 
   return (
@@ -148,21 +117,17 @@ export const ChoicedResetPassword = (props: ChoicedResetPasswordProps) => {
           color: '#000000'
         }}
       >
-        {choicedResetPasswordstrings?.passwordLabel ?? 'Mot de passe'}
+        {t('g2.password')}
       </InputLabel>
       <Link onClick={onToggle} sx={{ color: '#1E88E5', cursor: 'pointer' }}>
-        {choicedResetPasswordstrings?.passwordLink ?? 'Changer le mot de passe'}
+        {t('g2.changePassword')}
       </Link>
       <PopUp onClose={onToggle} open={open} actions={actions}>
         <Typography variant='h6' style={{ marginBottom: '15px' }}>
-          {choicedResetPasswordstrings?.passwordTitle ??
-            'Changement de mot de passe'}
+          {t('g2.passwordChangement')}
         </Typography>
         {resetPasswordType === 'email' ? (
-          <Typography variant='body1'>
-            {choicedResetPasswordstrings?.passwordEmail ??
-              "Un email pour effectuer le changement de mot de passe va être envoyé à l'adresse email de votre compte."}
-          </Typography>
+          <Typography variant='body1'>{t('g2.passwordEmail')}</Typography>
         ) : (
           <UserResetPasswordFormAutomated
             userUpdatePasswordOptions={{

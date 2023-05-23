@@ -17,6 +17,7 @@ import {
 } from '@smartb/g2-themes'
 import { fr, enUS } from 'date-fns/locale'
 import { CustomActionBar } from './CustomActionBar'
+import { useTranslation } from 'react-i18next'
 const dateFnsLocales = {
   fr,
   enUS
@@ -87,12 +88,6 @@ export interface DatePickerBasicProps extends BasicProps {
    */
   errorMessage?: string
   /**
-   * The locale language use in the date picker
-   *
-   * @default 'fr'
-   */
-  locale?: keyof typeof dateFnsLocales
-  /**
    * The size of the input
    *
    * @default 'medium'
@@ -138,7 +133,6 @@ const DatePickerBase = (
     disabled = false,
     placeholder = 'jj/MM/yyyy',
     size = 'medium',
-    locale = 'fr',
     onRemove,
     textFieldProps,
     name,
@@ -151,11 +145,12 @@ const DatePickerBase = (
 
   const defaultStyles = useInputStyles()
   const localStyles = useStyles()
-
+  const { i18n } = useTranslation()
   const format = useMemo(() => {
-    if (locale === 'fr') return { format: 'dd/MM/yyyy', mask: '__/__/____' }
+    if (i18n.language === 'fr')
+      return { format: 'dd/MM/yyyy', mask: '__/__/____' }
     return { format: 'yyyy/MM/dd', mask: '____/__/__' }
-  }, [locale])
+  }, [i18n.language])
 
   const onChange = useCallback(
     (date: Date | null) => {
@@ -229,7 +224,7 @@ const DatePickerBase = (
   return (
     <LocalizationProvider
       dateAdapter={AdapterDateFns}
-      adapterLocale={dateFnsLocales[locale]}
+      adapterLocale={dateFnsLocales[i18n.language === 'en' ? 'enUS' : 'fr']}
     >
       <MuiDatePicker
         ref={ref}
@@ -239,9 +234,7 @@ const DatePickerBase = (
         maxDate={maxDate}
         componentsProps={{
           actionBar: {
-            actions: ['cancel', 'clear'],
-            //@ts-ignore
-            locale: locale
+            actions: ['cancel', 'clear']
           }
         }}
         components={{

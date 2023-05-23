@@ -179,8 +179,8 @@ export const DocumentHandler = (props: DocumentHandlerProps) => {
     (fileRejections: FileRejection[]) => {
       const code = fileRejections[0].errors[0].code as DropError
       setError(
-        t(code, {
-          formats: ['png', 'jpeg'].join(` ${t('or')} `),
+        t('g2.' + code, {
+          formats: ['png', 'jpeg'].join(', '),
           sizeLimit: dropzoneProps?.maxSize
             ? dropzoneProps?.maxSize / 1024 / 1024
             : 50
@@ -370,7 +370,7 @@ export const DropzoneChildren = (props: DropzoneChildrenProps) => {
           sx={{ color: (theme) => theme.palette.warning.main, fontWeight: 700 }}
           variant='subtitle2'
         >
-          {t('required')}
+          {t('g2.required')}
         </Typography>
       )
     }

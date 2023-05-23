@@ -92,7 +92,7 @@ export const useUserFormFields = <T extends User = User>(
         setEmailLoading(false)
         if (isTaken === true) {
           setEmailValid(false)
-          return t('emailAlreadyUsed')
+          return t('g2.emailAlreadyUsed')
         } else if (isTaken === false) {
           setEmailValid(true)
         }
@@ -111,7 +111,6 @@ export const useUserFormFields = <T extends User = User>(
     (): Record<userFieldsName, FormComposableField<userFieldsName>> => ({
       givenName: mergeFields<FormComposableField<userFieldsName>>(
         {
-          key: 'givenName',
           name: 'givenName',
           type: 'textField',
           label: 'Prénom',
@@ -121,7 +120,6 @@ export const useUserFormFields = <T extends User = User>(
       ),
       familyName: mergeFields<FormComposableField<userFieldsName>>(
         {
-          key: 'familyName',
           name: 'familyName',
           type: 'textField',
           label: 'Nom de famille',
@@ -131,9 +129,8 @@ export const useUserFormFields = <T extends User = User>(
       ),
       memberOf: mergeFields<FormComposableField<userFieldsName>>(
         {
-          key: 'memberOf',
           name: 'memberOf',
-          label: 'Organisation',
+          label: t('g2.memberOf'),
           type: 'select',
           params: {
             getReadOnlyTextUrl: getOrganizationUrl
@@ -143,9 +140,8 @@ export const useUserFormFields = <T extends User = User>(
       ),
       roles: mergeFields<FormComposableField<userFieldsName>>(
         {
-          key: 'roles',
           name: 'roles',
-          label: 'Rôle',
+          label: t('g2.roles'),
           type: 'select',
           params: {
             readOnlyType: 'chip',
@@ -157,10 +153,9 @@ export const useUserFormFields = <T extends User = User>(
       ...addressFields,
       email: mergeFields<FormComposableField<userFieldsName>>(
         {
-          key: 'email',
           name: 'email',
           type: 'textField',
-          label: 'Adresse mail',
+          label: t('g2.email'),
           params: {
             textFieldType: 'email',
             searchLoading: emailLoading,
@@ -169,8 +164,8 @@ export const useUserFormFields = <T extends User = User>(
           validator: async (value?: string) => {
             if (fieldsOverride?.email?.readOnly) return undefined
             const trimmed = (value ?? '').trim()
-            if (!trimmed) return t('completeTheEmail')
-            if (!emailRegex.test(trimmed)) return t('enterAValidEmail')
+            if (!trimmed) return t('g2.completeTheEmail')
+            if (!emailRegex.test(trimmed)) return t('g2.enterAValidEmail')
             return await onCheckEmail(trimmed)
           }
         },
@@ -178,10 +173,9 @@ export const useUserFormFields = <T extends User = User>(
       ),
       phone: mergeFields<FormComposableField<userFieldsName>>(
         {
-          key: 'phone',
           name: 'phone',
           type: 'textField',
-          label: 'Numéro de téléphone (facultatif)',
+          label: t('g2.facultativeField', { label: t('g2.phone') }),
           validator: validators.requiredField(t)
         },
         fieldsOverride?.phone
@@ -190,7 +184,7 @@ export const useUserFormFields = <T extends User = User>(
         {
           name: 'sendVerifyEmail',
           type: 'checkBox',
-          label: "Envoyer le mail de vérification de l'adresse email",
+          label: t('g2.sendVerifyEmail'),
           params: {
             disabled: fieldsOverride?.sendVerifyEmail?.readOnly
           }
@@ -201,8 +195,7 @@ export const useUserFormFields = <T extends User = User>(
         {
           name: 'sendResetPassword',
           type: 'checkBox',
-          label:
-            "Envoyer le mail de création de son mot de passe à l'utilisateur",
+          label: t('g2.sendResetPassword'),
           params: {
             disabled: fieldsOverride?.sendResetPassword?.readOnly
           }

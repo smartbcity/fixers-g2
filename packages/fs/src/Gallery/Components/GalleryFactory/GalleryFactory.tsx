@@ -19,6 +19,7 @@ import { FileRejection } from 'react-dropzone'
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 import { StackProps } from '@mantine/core'
 import { DropError } from '@smartb/g2-components'
+import { useTranslation } from 'react-i18next'
 
 export interface GalleryFactoryClasses {
   image?: string
@@ -34,13 +35,6 @@ export interface GalleryFactoryStyles {
   closeButton?: React.CSSProperties
   closeIcon?: React.CSSProperties
   dropzone?: React.CSSProperties
-}
-
-const defaultErrorMessages: { [key in DropError]?: string } = {
-  'file-invalid-type':
-    'Les types de fichier accepté sont le: jpg, jpeg, png, gif, webp et svg',
-  'file-too-large':
-    'Un ou plusieurs fichiers sont trop volumineux: ils ne doivent pas dépasser 10Mo'
 }
 
 export interface GalleryFactoryBasicProps extends BasicProps {
@@ -77,16 +71,6 @@ export interface GalleryFactoryBasicProps extends BasicProps {
    */
   dropzoneProps?: DropzoneProps
   /**
-   * the strings in the component to do translations
-   */
-  strings?: {
-    /**
-     * @default 'Ajouter une ou plusieurs images'
-     */
-    addImages?: string
-    errorMessages?: { [key in DropError]?: string }
-  }
-  /**
    * The classes applied to the different part of the component
    */
   classes?: GalleryFactoryClasses
@@ -109,7 +93,6 @@ export const GalleryFactory = (props: GalleryFactoryProps) => {
     onAdd,
     onReject,
     isLoading = false,
-    strings,
     classes,
     styles,
     className,
@@ -120,6 +103,7 @@ export const GalleryFactory = (props: GalleryFactoryProps) => {
   } = props
 
   const [error, setError] = useState<DropError | undefined>(undefined)
+  const { t } = useTranslation()
 
   const images = useMemo(() => {
     return files.map((file) => {
@@ -214,13 +198,14 @@ export const GalleryFactory = (props: GalleryFactoryProps) => {
         : dropzoneChildren(
             status,
             error
-              ? !!strings?.errorMessages
-                ? strings?.errorMessages[error]
-                : defaultErrorMessages[error]
+              ? t('g2.' + error, {
+                  formats: ['png', 'gif', 'jpeg', 'svg+xml', 'webp'].join(', '),
+                  sizeLimit: (dropzoneProps?.maxSize ?? 10) / 1024 / 1024
+                })
               : undefined,
-            strings?.addImages
+            t('g2.addImages')
           ),
-    [generateDropzone, error, strings]
+    [generateDropzone, error, dropzoneProps?.maxSize, t]
   )
 
   return (
@@ -297,9 +282,7 @@ export const dropzoneChildren = (
         height: '50px'
       }}
     />
-    <Typography align='center'>
-      {addImagesString ?? 'Ajouter une ou plusieurs images'}
-    </Typography>
+    <Typography align='center'>{addImagesString}</Typography>
     {error && (
       <Typography
         sx={{ paddingTop: '15px' }}

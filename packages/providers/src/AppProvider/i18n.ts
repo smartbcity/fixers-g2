@@ -44,22 +44,38 @@ export const initI18next = <T extends { [key: string]: string } = {}>(
 
       // fallback to g2 translation to make g2 translations overridable
       fallbackNS: 'g2',
-      resources: {
-        fr: {
-          g2: {
-            ...G2Translations.fr,
-            ...translationsOverrides?.fr
-          }
-        },
-        en: {
-          g2: {
-            ...G2Translations.en,
-            ...translationsOverrides?.en
-          }
-        },
-        ...options?.resources
-      },
       ...options
+    })
+    .then(() => {
+      // Fetch translations from the backend
+      return i18n.reloadResources()
+    })
+    .then(() => {
+      // Merge translations from the backend with the initial translations
+      i18n.addResourceBundle(
+        'fr',
+        'g2',
+        {
+          g2: {
+            ...G2Translations.fr.g2,
+            ...translationsOverrides?.fr?.g2
+          }
+        },
+        true,
+        false
+      )
+      i18n.addResourceBundle(
+        'en',
+        'g2',
+        {
+          g2: {
+            ...G2Translations.en.g2,
+            ...translationsOverrides?.en?.g2
+          }
+        },
+        true,
+        false
+      )
     })
   return i18n
 }

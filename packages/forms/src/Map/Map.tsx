@@ -246,7 +246,7 @@ export const Map = (props: MapProps) => {
           sx={{ position: 'absolute', top: '10px', right: '5px' }}
           onClick={toggleFullScreen}
         >
-          {t('openFullScreen')}
+          {t('g2.openFullScreen')}
         </Button>
       )}
       {isFullScreen && (

@@ -85,7 +85,7 @@ export const useOrganizationFormFields = (
           setSiretValid(true)
           setInseeOrganization && setInseeOrganization(values)
         } else {
-          formState.setFieldError('siret', t('siretNotFound'))
+          formState.setFieldError('siret', t('g2.siretNotFound'))
         }
       })
     }
@@ -111,7 +111,7 @@ export const useOrganizationFormFields = (
       logo: mergeFields<FormComposableField<organizationFieldsName>>(
         {
           name: 'logo',
-          label: "Logo de l'entreprise (faculatif)",
+          label: t('g2.facultativeField', { label: t('g2.logo') }),
           type: 'dropPicture',
           params: {
             alt: "Le logo de l'entreprise",
@@ -122,9 +122,8 @@ export const useOrganizationFormFields = (
       ),
       siret: mergeFields<FormComposableField<organizationFieldsName>>(
         {
-          key: 'siret',
           name: 'siret',
-          label: 'Numéro de siret',
+          label: t('g2.siret'),
           type: 'textField',
           params: {
             textFieldType: 'search',
@@ -147,7 +146,6 @@ export const useOrganizationFormFields = (
       ),
       name: mergeFields<FormComposableField<organizationFieldsName>>(
         {
-          key: 'name',
           name: 'name',
           type: 'textField',
           label: 'Nom',
@@ -157,9 +155,8 @@ export const useOrganizationFormFields = (
       ),
       roles: mergeFields<FormComposableField<organizationFieldsName>>(
         {
-          key: 'roles',
           name: 'roles',
-          label: 'Rôle',
+          label: t('g2.roles'),
           type: 'select',
           params: {
             readOnlyType: 'chip',
@@ -171,19 +168,17 @@ export const useOrganizationFormFields = (
       ...addressFields,
       website: mergeFields<FormComposableField<organizationFieldsName>>(
         {
-          key: 'website',
           name: 'website',
           type: 'textField',
-          label: 'Site web (facultatif)'
+          label: t('g2.facultativeField', { label: t('g2.website') })
         },
         fieldsOverride?.website
       ),
       description: mergeFields<FormComposableField<organizationFieldsName>>(
         {
-          key: 'description',
           name: 'description',
           type: 'textField',
-          label: 'Description (facultatif)',
+          label: t('g2.facultativeField', { label: t('g2.description') }),
           params: {
             multiline: true,
             rows: 6
