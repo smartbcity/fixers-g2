@@ -226,7 +226,7 @@ export const Table = <Data extends {}>(props: TableProps<Data>) => {
   } = props
   const isSelectabale = !!setSelectedRowIds
   const isExpandable = !!renderSubComponent
-  const isPaginated = !!page && !!totalPages
+  const isPaginated = !!page && !!totalPages && totalPages > 1
 
   const useVariableHooks = useCallback(
     (hooks: Hooks<Data>) => {

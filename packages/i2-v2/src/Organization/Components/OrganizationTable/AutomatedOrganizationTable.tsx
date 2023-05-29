@@ -4,6 +4,10 @@ import { OrganizationTable, OrganizationTableProps } from './OrganizationTable'
 import { useGetOrganizations, GetOrganizationsOptions } from '../../Api'
 import { i2Config, useAuth } from '@smartb/g2-providers'
 import { Organization } from '../../Domain'
+import {
+  useOrganizationTableState,
+  useOrganizationTableStateParams
+} from './useOrganizationTableState'
 
 export interface AutomatedOrganizationTableBasicProps<T extends Organization>
   extends BasicProps {
@@ -29,8 +33,13 @@ export type AutomatedOrganizationTableProps<
   T extends Organization = Organization
 > = MergeMuiElementProps<
   Omit<
-    OrganizationTableProps<T>,
-    'organizations' | 'onFetchOrganizations' | 'totalPages' | 'page' | 'setPage'
+    OrganizationTableProps<T> & useOrganizationTableStateParams<T>,
+    | 'organizations'
+    | 'onFetchOrganizations'
+    | 'totalPages'
+    | 'page'
+    | 'setPage'
+    | 'tableState'
   >,
   AutomatedOrganizationTableBasicProps<T>
 >
@@ -40,7 +49,14 @@ export const AutomatedOrganizationTable = <
 >(
   props: AutomatedOrganizationTableProps<T>
 ) => {
-  const { filters, getOrganizationsOptions, page, setPage, ...other } = props
+  const {
+    filters,
+    getOrganizationsOptions,
+    page,
+    setPage,
+    columnsExtander,
+    ...other
+  } = props
 
   const [localPage, localSetPage] = useState<number>(1)
   const { keycloak } = useAuth()
@@ -55,10 +71,15 @@ export const AutomatedOrganizationTable = <
     options: getOrganizationsOptions
   })
 
+  const tableState = useOrganizationTableState<T>({
+    organizations: getOrganizations.data?.items ?? [],
+    columnsExtander: columnsExtander
+  })
+
   return (
     <OrganizationTable<T>
       isLoading={!getOrganizations.isSuccess}
-      organizations={getOrganizations.data?.items ?? []}
+      tableState={tableState}
       totalPages={
         getOrganizations.data?.total && getOrganizations.data?.total > 1
           ? getOrganizations.data?.total

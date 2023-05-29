@@ -50,7 +50,7 @@ export interface UseUserFormFieldsProps<T extends User> {
    * Indicates if it's an update
    * @default false
    */
-  isUpdate?: boolean
+  update?: boolean
   /**
    * The initial user object
    */
@@ -72,7 +72,7 @@ export const useUserFormFields = <T extends User = User>(
   const {
     fieldsOverride,
     checkEmailValidity,
-    isUpdate = false,
+    update = false,
     readOnly = false,
     organizationId,
     user,
@@ -211,7 +211,7 @@ export const useUserFormFields = <T extends User = User>(
       addressFields,
       emailLoading,
       onCheckEmail,
-      isUpdate,
+      update,
       readOnly
     ]
   )

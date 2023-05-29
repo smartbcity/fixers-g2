@@ -1,14 +1,14 @@
 import React from 'react'
 import { MenuItem, MoreOptions } from '@smartb/g2-components'
-import { CellProps, Column } from '@smartb/g2-layout'
+import { ColumnDef } from '@tanstack/react-table'
 import { useMemo } from 'react'
 
 export interface ExtandedColumnsParams<T extends object> {
-  initialColumns: Column<T>[]
+  initialColumns: ColumnDef<T>[]
   /**
    * The additional columns to add to the table
    */
-  additionalColumns?: Column<T>[]
+  additionalColumns?: ColumnDef<T>[]
   /**
    * The id or the accessor of the columns you want to block
    */
@@ -33,26 +33,22 @@ export const useExtendedColumns = <T extends object>(
       ? [
           {
             id: 'moreoptions',
-            Cell: ({ row }: CellProps<T>) => (
+            Cell: ({ row }) => (
               <MoreOptions
                 options={getActions(row.original)}
                 onClick={(e) => e.stopPropagation()}
               />
             )
-          } as Column<T>
+          } as ColumnDef<T>
         ]
       : []
-    const columns: Column<T>[] = [
+    const columns: ColumnDef<T>[] = [
       ...initialColumns,
       ...additionalColumns,
       ...actions
     ]
     const columnsFiltered = blockedColumns
-      ? columns.filter(
-          (col) =>
-            !blockedColumns.includes(col.id as string) &&
-            !blockedColumns.includes(col.accessor as string)
-        )
+      ? columns.filter((col) => !blockedColumns.includes(col.id as string))
       : columns
     return columnsFiltered
   }, [initialColumns, additionalColumns, blockedColumns, getActions])

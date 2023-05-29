@@ -12,6 +12,7 @@ import { CodeHighlighter } from '@smartb/g2-documentation'
 import { LinkProps, Link, Route, useNavigate } from 'react-router-dom'
 import { i18next, usei18next, reactQuery } from './docs'
 import { QueryClient } from 'react-query'
+import { G2Translations } from './G2Translations'
 
 export default {
   title: 'Providers/AppProvider',
@@ -45,7 +46,14 @@ export default {
           <Description>
             With the default configuration of i18next you will have to save the
             json translation file in `public/locales/"your languages (example:
-            fr)"/translation.json`
+            fr)"/translation.json`.
+          </Description>
+          <Description>
+            In G2 there is a default translation file with translations keys
+            that you can found documented at the end of this page. To override
+            the default translations you can write them with the same key in
+            your local translation file or override the js object from the
+            translation file in the initI18next.
           </Description>
           <Description>
             You can extends the `useI18n` hook to type i18n with your
@@ -81,6 +89,8 @@ export default {
             one.
           </Description>
           <ArgsTable components={{ NoMatchPage: AruiNoMatchPage }} />
+          <Title>G2 translations</Title>
+          <CodeHighlighter object={G2Translations} />
         </>
       )
     }

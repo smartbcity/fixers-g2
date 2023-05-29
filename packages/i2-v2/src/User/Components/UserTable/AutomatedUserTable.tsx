@@ -4,6 +4,7 @@ import { UserTable, UserTableProps } from './UserTable'
 import { GetUsersOptions, useGetUsers } from '../../Api'
 import { i2Config, useAuth } from '@smartb/g2-providers'
 import { User } from '../../Domain'
+import { useUserTableState, useUserTableStateParams } from './useUserTableState'
 
 // TODO Automated should be without getUsers and organizationsRefs
 // we could use a parameter to disable organizationsRefs if needed
@@ -32,8 +33,13 @@ export interface AutomatedUserTableBasicProps<T extends User = User>
 export type AutomatedUserTableProps<T extends User = User> =
   MergeMuiElementProps<
     Omit<
-      UserTableProps<T>,
-      'users' | 'onFiltersChanged' | 'totalPages' | 'page' | 'setPage'
+      UserTableProps<T> & useUserTableStateParams<T>,
+      | 'users'
+      | 'onFiltersChanged'
+      | 'totalPages'
+      | 'page'
+      | 'setPage'
+      | 'tableState'
     >,
     AutomatedUserTableBasicProps<T>
   >
@@ -41,7 +47,16 @@ export type AutomatedUserTableProps<T extends User = User> =
 export const AutomatedUserTable = <T extends User = User>(
   props: AutomatedUserTableProps<T>
 ) => {
-  const { filters, getUsersOptions, page, setPage, ...other } = props
+  const {
+    filters,
+    getUsersOptions,
+    page,
+    setPage,
+    columnsExtander,
+    getOrganizationUrl,
+    hasOrganizations,
+    ...other
+  } = props
 
   const [localPage, localSetPage] = useState<number>(1)
 
@@ -57,12 +72,19 @@ export const AutomatedUserTable = <T extends User = User>(
     options: getUsersOptions
   })
 
+  const tableState = useUserTableState<T>({
+    users: getUsers.data?.users ?? [],
+    columnsExtander,
+    getOrganizationUrl,
+    hasOrganizations
+  })
+
   return (
     <UserTable<T>
       page={page ?? localPage}
       setPage={setPage ?? localSetPage}
       isLoading={!getUsers.isSuccess}
-      users={getUsers.data?.users ?? []}
+      tableState={tableState}
       totalPages={
         getUsers.data?.totalPages && getUsers.data?.totalPages > 1
           ? getUsers.data?.totalPages

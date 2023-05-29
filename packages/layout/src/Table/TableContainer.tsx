@@ -47,10 +47,10 @@ export const TableContainer = styled(BasicTableContainer)((props) => {
       }
     },
     '& .AruiTable-tableHead': {
-      backgroundColor: '#ffffff99',
+      // backgroundColor: '#ffffff99',
       position: 'sticky',
-      top: '0px',
-      backdropFilter: 'blur(15px)',
+      // top: '0px',
+      // backdropFilter: 'blur(15px)',
       zIndex: 5
     },
     '& .AruiTable-table': {

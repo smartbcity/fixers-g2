@@ -138,7 +138,7 @@ export const TableV2 = <Data extends {}>(props: TableV2Props<Data>) => {
     ...other
   } = props
 
-  const isPaginated = !!page && !!totalPages
+  const isPaginated = !!page && !!totalPages && totalPages > 1
 
   return (
     <>

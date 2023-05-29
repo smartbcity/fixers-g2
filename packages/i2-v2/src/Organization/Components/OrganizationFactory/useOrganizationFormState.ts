@@ -12,6 +12,7 @@ import {
   GetOrganizationOptions,
   OrganizationUploadLogoOptions,
   UpdateOrganizationOptions,
+  getInseeOrganization,
   useCreateOrganization,
   useGetOrganization,
   useOrganizationUploadLogo,
@@ -210,10 +211,18 @@ export const useOrganizationFormState = <T extends Organization = Organization>(
     }
   })
 
+  const getInseeOrganizationMemoized = useCallback(
+    async (siret: string) => {
+      return getInseeOrganization(siret, i2Config().orgUrl, keycloak.token)
+    },
+    [keycloak.token]
+  )
+
   return {
     formState,
     organization: organization,
     isLoading: getOrganization.isLoading,
-    getOrganization: getOrganization
+    getOrganization: getOrganization,
+    getInseeOrganization: getInseeOrganizationMemoized
   }
 }

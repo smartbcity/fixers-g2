@@ -72,7 +72,9 @@ export const G2Translations = {
       save: 'Enregistrer',
       copySuccess: 'Déjà copié, cliquez ici pour re-copier',
       copyToClipboard: 'Copier dans le presse papier',
-      required: 'Obligatoire'
+      required: 'Obligatoire',
+      noData: 'Aucune donnée trouvé',
+      noOrganization: "Vous n'êtes pas inclut dans une organisation"
     }
   },
   en: {
@@ -144,7 +146,9 @@ export const G2Translations = {
       save: 'Save',
       copySuccess: 'Already copied, click here to re-copy',
       copyToClipboard: 'Copy to clipboard',
-      required: 'Required'
+      required: 'Required',
+      noData: 'No data found',
+      noOrganization: 'You are not included in an organization'
     }
   }
 }

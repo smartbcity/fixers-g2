@@ -17,6 +17,10 @@ import {
   useUserFormFields,
   UseUserFormFieldsProps
 } from './useUserFormFields'
+import {
+  ChoicedResetPassword,
+  ChoicedResetPasswordProps
+} from '../UserResetPassword'
 
 export type Validated = boolean
 
@@ -53,6 +57,18 @@ export interface UserFactoryBasicProps
    * The nodes put at the bottom of the form
    */
   formExtension?: React.ReactNode
+  /**
+   * The user id to provide if it's an updation
+   */
+  userId?: string
+  /**
+   * The props passed to the component ChoicedResetPassword
+   */
+  choicedResetPasswordProps?: ChoicedResetPasswordProps
+  /**
+   * The type of the reset password. If not provided the component will not be rendered
+   */
+  resetPasswordType?: 'email' | 'forced'
 }
 
 export type UserFactoryProps = MergeMuiElementProps<
@@ -76,7 +92,10 @@ export const UserFactory = (props: UserFactoryProps) => {
     checkEmailValidity,
     formExtension,
     fieldsOverride,
-    isUpdate = false,
+    update = false,
+    userId,
+    resetPasswordType,
+    choicedResetPasswordProps,
     ...other
   } = props
 
@@ -96,12 +115,12 @@ export const UserFactory = (props: UserFactoryProps) => {
         ? (['roles'] as userFieldsName[])
         : []),
       //@ts-ignore
-      ...(isUpdate || readOnly
+      ...(update || readOnly
         ? (['sendResetPassword', 'sendVerifyEmail'] as userFieldsName[])
         : []),
       ...blockedFields
     ],
-    [blockedFields, fieldsOverride, organizationId, isUpdate, readOnly]
+    [blockedFields, fieldsOverride, organizationId, update, readOnly]
   )
 
   const finalFields = useDeletableForm<FormComposableField<string, {}>>({
@@ -150,7 +169,16 @@ export const UserFactory = (props: UserFactoryProps) => {
             maxWidth: '450px'
           }}
         />
-        {formExtension}
+        <>
+          {formExtension}
+          {userId && resetPasswordType && (
+            <ChoicedResetPassword
+              resetPasswordType={resetPasswordType}
+              userId={userId}
+              {...choicedResetPasswordProps}
+            />
+          )}
+        </>
       </Stack>
     </Stack>
   )
