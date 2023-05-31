@@ -148,7 +148,7 @@ export const useOrganizationFormFields = (
         {
           name: 'name',
           type: 'textField',
-          label: 'Nom',
+          label: t('g2.name'),
           validator: validators.requiredField(t)
         },
         fieldsOverride?.name
@@ -161,7 +161,8 @@ export const useOrganizationFormFields = (
           params: {
             readOnlyType: 'chip',
             multiple: multipleRoles
-          }
+          },
+          validator: validators.requiredField(t)
         },
         fieldsOverride?.roles
       ),

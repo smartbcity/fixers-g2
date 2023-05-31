@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect, useMemo } from 'react'
+import React, { useCallback, useState, useEffect } from 'react'
 import { FormProps } from '@smartb/g2-forms'
 import { styled, Typography } from '@mui/material'
 import { Popover } from '@smartb/g2-notifications'
@@ -118,21 +118,10 @@ export const OrganizationFactory = (props: OrganizationFactoryProps) => {
 
   const { fieldsArray, siretRef } = useOrganizationFormFields(props)
 
-  const definitivBlockedFields = useMemo(
-    (): organizationFieldsName[] => [
-      //@ts-ignore
-      ...(!fieldsOverride?.roles?.params?.options
-        ? (['roles'] as organizationFieldsName[])
-        : []),
-      ...blockedFields
-    ],
-    [blockedFields, fieldsOverride]
-  )
-
   const finalFields = useDeletableForm({
     initialFields: fieldsArray,
     additionalFields: additionalFields,
-    blockedFields: definitivBlockedFields
+    blockedFields: blockedFields
   })
 
   return (

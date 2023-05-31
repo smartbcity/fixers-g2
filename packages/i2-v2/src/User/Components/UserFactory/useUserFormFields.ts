@@ -113,7 +113,7 @@ export const useUserFormFields = <T extends User = User>(
         {
           name: 'givenName',
           type: 'textField',
-          label: 'Prénom',
+          label: t('g2.givenName'),
           validator: validators.requiredField(t)
         },
         fieldsOverride?.givenName
@@ -122,7 +122,7 @@ export const useUserFormFields = <T extends User = User>(
         {
           name: 'familyName',
           type: 'textField',
-          label: 'Nom de famille',
+          label: t('g2.familyName'),
           validator: validators.requiredField(t)
         },
         fieldsOverride?.familyName
@@ -146,7 +146,8 @@ export const useUserFormFields = <T extends User = User>(
           params: {
             readOnlyType: 'chip',
             multiple: multipleRoles
-          }
+          },
+          validator: validators.requiredField(t)
         },
         fieldsOverride?.roles
       ),
@@ -175,8 +176,7 @@ export const useUserFormFields = <T extends User = User>(
         {
           name: 'phone',
           type: 'textField',
-          label: t('g2.facultativeField', { label: t('g2.phone') }),
-          validator: validators.requiredField(t)
+          label: t('g2.facultativeField', { label: t('g2.phone') })
         },
         fieldsOverride?.phone
       ),

@@ -111,10 +111,6 @@ export const UserFactory = (props: UserFactoryProps) => {
         ? (['memberOf'] as userFieldsName[])
         : []),
       //@ts-ignore
-      ...(!fieldsOverride?.roles?.params?.options
-        ? (['roles'] as userFieldsName[])
-        : []),
-      //@ts-ignore
       ...(update || readOnly
         ? (['sendResetPassword', 'sendVerifyEmail'] as userFieldsName[])
         : []),
