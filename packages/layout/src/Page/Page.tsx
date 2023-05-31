@@ -64,8 +64,6 @@ export const Page = (props: PageProps) => {
         strongPadding
         {...headerProps}
         sx={{
-          left: g2Theme.permanentHeader ? 0 : undefined,
-          // padding: g2Theme.permanentHeader ? (theme) => theme.spacing(2, 5) : undefined,
           paddingLeft:
             g2Theme.permanentHeader && !openDrawer
               ? `${g2Theme.drawerWidth + 40}px`
