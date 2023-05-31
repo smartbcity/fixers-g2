@@ -11,8 +11,8 @@ import {
   useTheme
 } from '@mui/material'
 import { MenuItem } from '@smartb/g2-components'
-import { useTheme as useG2Theme } from '@smartb/g2-themes'
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import { ThemeContext } from '@smartb/g2-themes'
+import React, { useContext, useMemo } from 'react'
 import { AppLogoProps, AppMenu } from '../AppMenu'
 import { UserMenu, UserMenuProps } from '../UserMenu'
 
@@ -30,11 +30,11 @@ const Main = styled('main', {
   height: '100vh',
   overflow: 'auto',
   transition: !openDrawer
-    ? theme.transitions.create('margin', {
+    ? theme.transitions.create(['margin', 'width'], {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.leavingScreen
       })
-    : theme.transitions.create('margin', {
+    : theme.transitions.create(['margin', 'width'], {
         easing: theme.transitions.easing.easeOut,
         duration: theme.transitions.duration.enteringScreen
       })
@@ -74,10 +74,6 @@ export interface StandAloneAppLayoutProps {
    */
   open?: boolean
   /**
-   * The function that is called when the hamburger button is clicked on mobile
-   */
-  onToggle?: () => void
-  /**
    * Use these props to add a user menu to the drawer menu
    */
   userMenuProps?: UserMenuProps
@@ -109,7 +105,6 @@ export const StandAloneAppLayout = (props: StandAloneAppLayoutProps) => {
     menu,
     logo,
     open,
-    onToggle,
     userMenuProps,
     drawerProps,
     mainProps,
@@ -119,24 +114,13 @@ export const StandAloneAppLayout = (props: StandAloneAppLayoutProps) => {
   } = props
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down('md'))
-  const g2Theme = useG2Theme()
+  const {
+    theme: g2Theme,
+    openDrawer,
+    toggleOpenDrawer
+  } = useContext(ThemeContext)
 
-  const [openLocal, setOpen] = useState(!isMobile)
-
-  useEffect(() => {
-    if (isMobile) {
-      setOpen(false)
-    } else {
-      setOpen(true)
-    }
-  }, [isMobile])
-
-  const onToggleLocal = useCallback(() => {
-    setOpen((prevOpen) => !prevOpen)
-    onToggle && onToggle()
-  }, [onToggle])
-
-  const currentOpen = open !== undefined ? open : openLocal
+  const currentOpen = open !== undefined ? open : openDrawer
 
   const PerManentHeader = useMemo(
     () => g2Theme.permanentHeader,
@@ -156,7 +140,7 @@ export const StandAloneAppLayout = (props: StandAloneAppLayoutProps) => {
           }}
         >
           <PerManentHeader
-            toggleOpenDrawer={onToggleLocal}
+            toggleOpenDrawer={toggleOpenDrawer}
             openDrawer={currentOpen}
           />
         </Box>
@@ -183,7 +167,7 @@ export const StandAloneAppLayout = (props: StandAloneAppLayoutProps) => {
         ModalProps={{
           keepMounted: true
         }}
-        onClose={onToggleLocal}
+        onClose={toggleOpenDrawer}
         anchor='left'
         open={currentOpen}
       >

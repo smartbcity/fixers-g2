@@ -53,9 +53,19 @@ const permanentHeader = ({ toggleOpenDrawer }) => {
         display: "flex",
         justifyContent: "flex-end",
         width: "100%",
-        padding: "20px 16px",
+        padding: "16px",
+        gap: "16px",
+        alignItems: "center",
       }}
     >
+      <Box
+        sx={{
+          flexGrow: 1,
+          display: "flex",
+        }}
+      >
+        <img src="/smartb.png" style={{ width: "100%" }} />
+      </Box>
       <IconButton onClick={toggleOpenDrawer}>
         <Menu />
       </IconButton>

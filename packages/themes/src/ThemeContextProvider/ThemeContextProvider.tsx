@@ -1,5 +1,12 @@
-import React, { createContext, useCallback, useContext, useMemo } from 'react'
-import { ThemeProvider, ThemeOptions } from '@mui/material'
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState
+} from 'react'
+import { ThemeProvider, ThemeOptions, useMediaQuery } from '@mui/material'
 import { defaultMaterialUiTheme, defaultTheme, Theme } from './Theme'
 import { CacheProvider } from '@emotion/react'
 import createCache from '@emotion/cache'
@@ -15,11 +22,15 @@ declare module '@mui/styles/defaultTheme' {
 export interface ThemeContextProps {
   theme: Theme
   changeTheme: (theme: Partial<Theme>) => void
+  openDrawer: boolean
+  toggleOpenDrawer: () => void
 }
 
 export const ThemeContext = createContext<ThemeContextProps>({
   theme: defaultTheme,
-  changeTheme: () => {}
+  changeTheme: () => {},
+  openDrawer: false,
+  toggleOpenDrawer: () => {}
 })
 
 export interface ThemeContextProviderProps {
@@ -54,9 +65,30 @@ export const ThemeContextProvider = (props: ThemeContextProviderProps) => {
     [customMuiTheme, localTheme]
   )
 
+  const isMobile = useMediaQuery(defaultMuiTheme.breakpoints.down('md'))
+
+  const [openDrawer, setOpenDrawer] = useState(!isMobile)
+
+  useEffect(() => {
+    if (isMobile) {
+      setOpenDrawer(false)
+    } else {
+      setOpenDrawer(true)
+    }
+  }, [isMobile])
+
+  const toggleOpenDrawer = useCallback(() => {
+    setOpenDrawer((prevOpen) => !prevOpen)
+  }, [])
+
   return (
     <ThemeContext.Provider
-      value={{ theme: localTheme, changeTheme: setPartialTheme }}
+      value={{
+        theme: localTheme,
+        changeTheme: setPartialTheme,
+        openDrawer,
+        toggleOpenDrawer
+      }}
     >
       <TssCacheProvider value={tssCache}>
         <CacheProvider value={muiCache}>

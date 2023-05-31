@@ -1,10 +1,10 @@
 import { Box, BoxProps, useTheme } from '@mui/material'
 import { Actions, ActionsProps } from '@smartb/g2-components'
-import React, { useMemo } from 'react'
+import React, { useContext, useMemo } from 'react'
 import {
   BasicProps,
   MergeMuiElementProps,
-  useTheme as useG2Theme
+  ThemeContext
 } from '@smartb/g2-themes'
 import { Header, HeaderProps } from '../Header'
 import { cx } from '@emotion/css'
@@ -43,7 +43,7 @@ export const Page = (props: PageProps) => {
   } = props
 
   const theme = useTheme()
-  const g2Theme = useG2Theme()
+  const { theme: g2Theme, openDrawer } = useContext(ThemeContext)
 
   const actionsDisplay = useMemo(() => {
     if (!bottomActionsProps) return undefined
@@ -64,17 +64,28 @@ export const Page = (props: PageProps) => {
         strongPadding
         {...headerProps}
         sx={{
-          position: g2Theme.permanentHeader ? 'fixed' : 'sticky',
           left: g2Theme.permanentHeader ? 0 : undefined,
           // padding: g2Theme.permanentHeader ? (theme) => theme.spacing(2, 5) : undefined,
-          paddingLeft: g2Theme.permanentHeader
-            ? `${g2Theme.drawerWidth + 40}px`
+          paddingLeft:
+            g2Theme.permanentHeader && !openDrawer
+              ? `${g2Theme.drawerWidth + 40}px`
+              : undefined,
+          transition: g2Theme.permanentHeader
+            ? !openDrawer
+              ? theme.transitions.create(['padding'], {
+                  easing: theme.transitions.easing.sharp,
+                  duration: theme.transitions.duration.leavingScreen
+                })
+              : theme.transitions.create(['padding'], {
+                  easing: theme.transitions.easing.easeOut,
+                  duration: theme.transitions.duration.enteringScreen
+                })
             : undefined,
           ...headerProps.sx
         }}
       />
     )
-  }, [headerProps, g2Theme])
+  }, [headerProps, g2Theme, openDrawer])
 
   return (
     <>
