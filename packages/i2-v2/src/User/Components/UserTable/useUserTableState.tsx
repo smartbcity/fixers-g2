@@ -15,12 +15,17 @@ import {
 import { User } from '../../Domain'
 import { OrganizationId } from '../../../Organization'
 
+export type userTableColumns = 'givenName' | 'address' | 'email' | 'memberOf'
+
 export interface useUserTableStateParams<T extends User>
   extends Partial<UseTableOptions<T>> {
   /**
    * The column extander module
    */
-  columnsExtander?: Omit<ExtandedColumnsParams<T>, 'initialColumns'>
+  columnsExtander?: Omit<
+    ExtandedColumnsParams<T, userTableColumns>,
+    'initialColumns'
+  >
   /**
    * If you want the columns organization to contain links redirecting to the organization page provide this prop
    */
@@ -60,9 +65,7 @@ export const useUserTableState = <T extends User = User>(
             givenName={row.original.givenName}
           />
         ),
-        style: {
-          width: 170
-        }
+        className: 'givenNameColumn'
       },
       {
         header: t('g2.address'),
@@ -73,17 +76,13 @@ export const useUserTableState = <T extends User = User>(
               value={`${row.original.address.street} ${row.original.address.postalCode} ${row.original.address.city}`}
             />
           ) : undefined,
-        style: {
-          width: 200
-        }
+        className: 'addressColumn'
       },
       {
         header: t('g2.email'),
         id: 'email',
         cell: ({ row }) => <TableCellText value={row.original.email} />,
-        style: {
-          width: 250
-        }
+        className: 'emailColumn'
       },
       ...((!!users[0] && !!users[0].memberOf) || hasOrganizations
         ? [
@@ -101,10 +100,8 @@ export const useUserTableState = <T extends User = User>(
                 }
                 return <TableCellText value={row.original.memberOf?.name} />
               },
-              style: {
-                width: 150
-              }
-            }
+              className: 'memberOfColumn'
+            } as G2ColumnDef<T>
           ]
         : [])
     ],

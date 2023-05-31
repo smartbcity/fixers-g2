@@ -24,7 +24,7 @@ export const ThemeContext = createContext<ThemeContextProps>({
 
 export interface ThemeContextProviderProps {
   children: React.ReactNode
-  theme?: Theme | any
+  theme?: Theme
   customMuiTheme?: Partial<ThemeOptions>
 }
 
@@ -41,17 +41,19 @@ export const tssCache = createCache({
 export const ThemeContextProvider = (props: ThemeContextProviderProps) => {
   const { children, customMuiTheme, theme } = props
   const [localTheme, setLocalTheme] = React.useState<Theme>(
-    theme ? mergeDeepRight(defaultTheme, theme) : defaultTheme
+    theme ? mergeDeepRight(defaultTheme, theme as any) : defaultTheme
   )
-  const setPartialTheme = useCallback((partialTheme: Theme | any) => {
+
+  const setPartialTheme = useCallback((partialTheme: Theme) => {
     setLocalTheme((oldLocalTheme) =>
-      mergeDeepRight(oldLocalTheme, partialTheme)
+      mergeDeepRight(oldLocalTheme, partialTheme as any)
     )
   }, [])
   const defaultMuiTheme = useMemo(
     () => defaultMaterialUiTheme(localTheme, customMuiTheme),
     [customMuiTheme, localTheme]
   )
+
   return (
     <ThemeContext.Provider
       value={{ theme: localTheme, changeTheme: setPartialTheme }}

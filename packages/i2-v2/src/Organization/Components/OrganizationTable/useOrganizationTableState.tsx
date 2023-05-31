@@ -1,20 +1,29 @@
 import React, { useMemo } from 'react'
-import { ColumnDef } from '@tanstack/react-table'
 import { Organization } from '../../Domain'
 import { useTranslation } from 'react-i18next'
 import {
   ExtandedColumnsParams,
   useExtendedColumns
 } from '../../../Commons/useExtendedColumns'
-import { TableCellText, UseTableOptions, useTable } from '@smartb/g2-layout'
+import {
+  TableCellText,
+  UseTableOptions,
+  useTable,
+  G2ColumnDef
+} from '@smartb/g2-layout'
 import { Link, Presentation } from '@smartb/g2-components'
+
+export type OrganizationTableColumns = 'name' | 'address' | 'website'
 
 export interface useOrganizationTableStateParams<T extends Organization>
   extends Partial<UseTableOptions<T>> {
   /**
    * The column extander module
    */
-  columnsExtander?: Omit<ExtandedColumnsParams<T>, 'initialColumns'>
+  columnsExtander?: Omit<
+    ExtandedColumnsParams<T, OrganizationTableColumns>,
+    'initialColumns'
+  >
   /**
    * The tableState returned by the useTable
    */
@@ -29,7 +38,7 @@ export const useOrganizationTableState = <
   const { columnsExtander, organizations = [], ...other } = params ?? {}
   const { t } = useTranslation()
   const columns = useMemo(
-    (): ColumnDef<T>[] => [
+    (): G2ColumnDef<T>[] => [
       {
         header: t('g2.organization'),
         id: 'name',
@@ -39,7 +48,8 @@ export const useOrganizationTableState = <
             label={row.original.name}
             imgSrc={row.original.logo}
           />
-        )
+        ),
+        className: 'nameColumn'
       },
       {
         header: t('g2.address'),
@@ -49,7 +59,8 @@ export const useOrganizationTableState = <
             <TableCellText
               value={`${row.original.address.street} ${row.original.address.postalCode} ${row.original.address.city}`}
             />
-          ) : undefined
+          ) : undefined,
+        className: 'addressColumn'
       },
       {
         header: t('g2.website'),
@@ -61,7 +72,8 @@ export const useOrganizationTableState = <
           >
             {row.original.website}
           </Link>
-        )
+        ),
+        className: 'websiteColumn'
       }
     ],
     [t]

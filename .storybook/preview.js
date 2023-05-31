@@ -5,7 +5,8 @@ import { G2ConfigBuilder, initI18next } from "../packages/providers/src";
 import { I18nextProvider } from "react-i18next";
 
 import "./default.css";
-import { CssBaseline } from "@mui/material";
+import { Box, CssBaseline, IconButton } from "@mui/material";
+import { Menu } from "@mui/icons-material";
 
 export const parameters = {
   docs: {
@@ -45,10 +46,27 @@ G2ConfigBuilder({
 
 const i18n = initI18next({ en: "en-US", fr: "fr-FR" });
 
+const permanentHeader = ({ toggleOpenDrawer }) => {
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "flex-end",
+        width: "100%",
+        padding: "20px 16px",
+      }}
+    >
+      <IconButton onClick={toggleOpenDrawer}>
+        <Menu />
+      </IconButton>
+    </Box>
+  );
+};
+
 export const withThemeProvider = (Story) => {
   return (
     <I18nextProvider i18n={i18n}>
-      <ThemeContextProvider>
+      <ThemeContextProvider theme={{ permanentHeader }}>
         <CssBaseline />
         <Story />
       </ThemeContextProvider>

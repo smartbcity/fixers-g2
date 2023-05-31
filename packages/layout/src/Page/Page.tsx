@@ -1,7 +1,11 @@
 import { Box, BoxProps, useTheme } from '@mui/material'
 import { Actions, ActionsProps } from '@smartb/g2-components'
 import React, { useMemo } from 'react'
-import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
+import {
+  BasicProps,
+  MergeMuiElementProps,
+  useTheme as useG2Theme
+} from '@smartb/g2-themes'
 import { Header, HeaderProps } from '../Header'
 import { cx } from '@emotion/css'
 
@@ -39,6 +43,7 @@ export const Page = (props: PageProps) => {
   } = props
 
   const theme = useTheme()
+  const g2Theme = useG2Theme()
 
   const actionsDisplay = useMemo(() => {
     if (!bottomActionsProps) return undefined
@@ -54,8 +59,22 @@ export const Page = (props: PageProps) => {
 
   const headerDisplay = useMemo(() => {
     if (!headerProps) return undefined
-    return <Header strongPadding {...headerProps} />
-  }, [headerProps])
+    return (
+      <Header
+        strongPadding
+        {...headerProps}
+        sx={{
+          position: g2Theme.permanentHeader ? 'fixed' : 'sticky',
+          left: g2Theme.permanentHeader ? 0 : undefined,
+          // padding: g2Theme.permanentHeader ? (theme) => theme.spacing(2, 5) : undefined,
+          paddingLeft: g2Theme.permanentHeader
+            ? `${g2Theme.drawerWidth + 40}px`
+            : undefined,
+          ...headerProps.sx
+        }}
+      />
+    )
+  }, [headerProps, g2Theme])
 
   return (
     <>

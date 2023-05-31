@@ -11,6 +11,13 @@ export interface Theme {
   colors: ThemeColors
   borderRadius: number
   spacing: number
+  drawerWidth: number
+  /**
+   * Here you can pass the header put to the right in the page component and above the drawer menu.
+   * It should use the prop openDrawer and toggleOpenDrawer to update the drawer state.
+   * It will be place in a container of the width `drawerWidth`
+   */
+  permanentHeader?: React.ElementType<any>
   shadows: string[]
 }
 
@@ -32,6 +39,7 @@ export const defaultTheme: Theme = {
   name: 'default',
   borderRadius: 8,
   spacing: 8,
+  drawerWidth: 234,
   colors: {
     primary: '#EDBA27',
     secondary: '#353945',
