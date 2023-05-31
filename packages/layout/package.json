@@ -25,7 +25,6 @@
   },
   "devDependencies": {
     "@smartb/g2-documentation": "1.0.0-alpha.150",
-    "@smartb/g2-notifications": "1.0.0-alpha.148",
     "@types/react": "^18.0.28"
   },
   "peerDependencies": {
