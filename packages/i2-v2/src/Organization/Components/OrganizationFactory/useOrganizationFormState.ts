@@ -18,7 +18,7 @@ import {
   useOrganizationUploadLogo,
   useUpdateOrganization
 } from '../../Api'
-import { useFormComposable } from '@smartb/g2-composable'
+import { FormikFormParams, useFormComposable } from '@smartb/g2-composable'
 
 export interface useOrganizationFormStateProps<
   T extends Organization = Organization
@@ -63,6 +63,14 @@ export interface useOrganizationFormStateProps<
    * @default true
    */
   multipleRoles?: boolean
+  /**
+   * use this param to access the formComposable config
+   */
+  formComposableParams?: Partial<FormikFormParams<any>>
+  /**
+   * provide this function to extend the initialValues passes to the formComposable
+   */
+  extendInitialValues?: (organization: T) => any
 }
 
 export const useOrganizationFormState = <T extends Organization = Organization>(
@@ -77,7 +85,9 @@ export const useOrganizationFormState = <T extends Organization = Organization>(
     defaultRoles,
     multipleRoles = true,
     myOrganization = false,
-    uploadLogoOptions
+    uploadLogoOptions,
+    formComposableParams,
+    extendInitialValues
   } = params ?? {}
 
   const { keycloak, service } = useAuth()
@@ -197,17 +207,19 @@ export const useOrganizationFormState = <T extends Organization = Organization>(
           organizationToFlatOrganization(organization)
         : undefined),
       //@ts-ignore
-      roles: initialRoles
+      roles: initialRoles,
+      ...(extendInitialValues && organization
+        ? extendInitialValues(organization)
+        : undefined)
     }),
-    [initialRoles, organization]
+    [initialRoles, organization, extendInitialValues]
   )
 
   const formState = useFormComposable({
-    //@ts-ignore
+    ...formComposableParams,
     onSubmit: onSubmitMemoized,
     formikConfig: {
-      initialValues: initialValues,
-      enableReinitialize: true
+      initialValues: initialValues
     }
   })
 

@@ -1,4 +1,4 @@
-import { useFormComposable } from '@smartb/g2-composable'
+import { FormikFormParams, useFormComposable } from '@smartb/g2-composable'
 import { i2Config, useAuth } from '@smartb/g2-providers'
 import { useCallback, useMemo } from 'react'
 import { useQueryClient } from 'react-query'
@@ -61,6 +61,14 @@ export interface UseUserFormStateProps<T extends User = User> {
    * The roles used by default in the form
    */
   defaultRoles?: string[]
+  /**
+   * use this param to access the formComposable config
+   */
+  formComposableParams?: Partial<FormikFormParams<any>>
+  /**
+   * provide this function to extend the initialValues passes to the formComposable
+   */
+  extendInitialValues?: (user: T) => any
 }
 
 export const useUserFormState = <T extends User = User>(
@@ -76,7 +84,9 @@ export const useUserFormState = <T extends User = User>(
     userUpdateEmailOptions,
     update = false,
     myProfile = false,
-    userId
+    userId,
+    formComposableParams,
+    extendInitialValues
   } = params ?? {}
 
   const { keycloak, service } = useAuth()
@@ -209,13 +219,14 @@ export const useUserFormState = <T extends User = User>(
         : // @ts-ignore
         user?.roles && user?.roles?.length > 0
         ? user?.roles[0]
-        : defaultRoles[0]
+        : defaultRoles[0],
+      ...(extendInitialValues && user ? extendInitialValues(user) : undefined)
     }),
-    [user, multipleRoles, defaultRoles]
+    [user, multipleRoles, defaultRoles, extendInitialValues]
   )
 
   const formState = useFormComposable({
-    //@ts-ignore
+    ...formComposableParams,
     onSubmit: onSubmitMemoized,
     formikConfig: {
       initialValues: initialValues
