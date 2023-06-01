@@ -30,30 +30,27 @@ export const useAdressFields = (params?: useAdressFieldsParams) => {
     () => ({
       street: mergeFields<FormComposableField<AdressFieldsName>>(
         {
-          key: 'street',
           name: 'street',
           type: 'textField',
-          label: 'Addresse (facultatif)',
+          label: t('g2.facultativeField', { label: t('g2.address') }),
           validator: validators.street(t)
         },
         fieldsOverride?.street
       ),
       postalCode: mergeFields<FormComposableField<AdressFieldsName>>(
         {
-          key: 'postalCode',
           name: 'postalCode',
           type: 'textField',
-          label: 'Code postal (facultatif)',
+          label: t('g2.facultativeField', { label: t('g2.postalCode') }),
           validator: validators.postalCode(t)
         },
         fieldsOverride?.postalCode
       ),
       city: mergeFields<FormComposableField<AdressFieldsName>>(
         {
-          key: 'city',
           name: 'city',
           type: 'textField',
-          label: 'Ville (facultatif)',
+          label: t('g2.facultativeField', { label: t('g2.city') }),
           validator: validators.city(t)
         },
         fieldsOverride?.city
