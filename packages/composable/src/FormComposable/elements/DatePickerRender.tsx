@@ -25,14 +25,20 @@ export const DatePickerRender: ElementRendererFunction<
 > = (props: DatePickerRenderProps) => {
   const { element, formState, basicProps } = props
   const { params } = element
+  const componentProps = { ...basicProps }
   const { value, setFieldValue } = useMemo(
-    () => getValueSetup(basicProps.name, formState, basicProps.sharedNameIndex),
-    [basicProps.name, formState, basicProps.sharedNameIndex]
+    () =>
+      getValueSetup(
+        componentProps.name,
+        formState,
+        componentProps.sharedNameIndex
+      ),
+    [componentProps.name, formState, componentProps.sharedNameIndex]
   )
   const date = new Date(value)
-  const onChange = basicProps.onChange
-  delete basicProps.onChange
-  delete basicProps.sharedNameIndex
+  const onChange = componentProps.onChange
+  delete componentProps.onChange
+  delete componentProps.sharedNameIndex
   return (
     <InputForm
       inputType='datePicker'
@@ -42,7 +48,7 @@ export const DatePickerRender: ElementRendererFunction<
         !!onChange && onChange(date)
       }}
       {...params}
-      {...basicProps}
+      {...componentProps}
     />
   )
 }

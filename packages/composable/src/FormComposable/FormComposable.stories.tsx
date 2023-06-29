@@ -361,7 +361,7 @@ const fullFields: AllFormComposableField[] = [
     key: 'storybook-form-field-reasons',
     name: 'reasons',
     label: 'what are you reason to sign in the website',
-    type: 'radioChoices',
+    type: 'multiChoices',
     sharedNameIndex: 0,
     params: {
       options: [

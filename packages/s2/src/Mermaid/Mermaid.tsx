@@ -14,7 +14,9 @@ export const Mermaid = (props: MermaidProps) => {
   const { chart, className, ...other } = props
   mermaid.initialize({
     startOnLoad: true,
+    //@ts-ignore
     theme: 'default',
+    //@ts-ignore
     securityLevel: 'loose'
   })
 

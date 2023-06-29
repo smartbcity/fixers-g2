@@ -25,19 +25,25 @@ export const RadioChoicesRender: ElementRendererFunction<
 > = (props: RadioChoicesRenderProps): ReactElement => {
   const { element, formState, basicProps } = props
   const { params } = element
+  const componentProps = { ...basicProps }
   const { value, setFieldValue } = useMemo(
-    () => getValueSetup(basicProps.name, formState, basicProps.sharedNameIndex),
-    [basicProps.name, formState, basicProps.sharedNameIndex]
+    () =>
+      getValueSetup(
+        componentProps.name,
+        formState,
+        componentProps.sharedNameIndex
+      ),
+    [componentProps.name, formState, componentProps.sharedNameIndex]
   )
-  const onChange = basicProps.onChange
-  delete basicProps.onChange
-  delete basicProps.sharedNameIndex
+  const onChange = componentProps.onChange
+  delete componentProps.onChange
+  delete componentProps.sharedNameIndex
   return (
     <InputForm
       inputType='radioChoices'
       value={value ?? ''}
       {...params}
-      {...basicProps}
+      {...componentProps}
       onChange={(value: string) => {
         setFieldValue(value)
         !!onChange && onChange(value)
