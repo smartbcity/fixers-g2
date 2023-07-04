@@ -11,11 +11,15 @@ import { Pagination } from '@smartb/g2-components'
 import { TableClasses, TableStyles } from '../Table/Table'
 import { LinkProps } from 'react-router-dom'
 
+export type TableState<Data extends {}> = Table<Data>
+
+export type G2Row<Data extends {}> = Row<Data>
+
 export interface TableV2BasicProps<Data extends {}> extends BasicProps {
   /**
    * The tableState returned by the useTable
    */
-  tableState: Table<Data>
+  tableState: TableState<Data>
   /**
    * The variants of the style of the table
    * @default grounded
@@ -44,19 +48,19 @@ export interface TableV2BasicProps<Data extends {}> extends BasicProps {
   /**
    * The event triggered when a row is clicked
    */
-  onRowClicked?: (row: Row<Data>) => void
+  onRowClicked?: (row: G2Row<Data>) => void
   /**
    * use this prop to make every rows a clickable link
    */
-  getRowLink?: (row: Row<Data>) => LinkProps
+  getRowLink?: (row: G2Row<Data>) => LinkProps
   /**
    * Provide this function if you want to have a subcomponent for the rows
    */
-  renderSubComponent?: (row: Row<Data>) => JSX.Element
+  renderSubComponent?: (row: G2Row<Data>) => JSX.Element
   /**
    * Provide this function if you want to have a component appearing over the rows on hover
    */
-  renderRowHoveredComponent?: (row: Row<Data>) => JSX.Element
+  renderRowHoveredComponent?: (row: G2Row<Data>) => JSX.Element
   /**
    * Indicates if the data is currently loading
    */
@@ -76,11 +80,6 @@ export interface TableV2BasicProps<Data extends {}> extends BasicProps {
    * @default false
    */
   withFooter?: boolean
-  /**
-   * Only used if you have a paginated table with a persistant select
-   * @default false
-   */
-  getRowId?: (row: Data) => string
   /**
    * You can pass additional props to some rows by giving the id of the row as the key in the object or to all
    * the rows by giving the key "all" to your props
@@ -127,7 +126,6 @@ export const TableV2 = <Data extends {}>(props: TableV2Props<Data>) => {
     onRowClicked,
     renderRowHoveredComponent,
     header,
-    getRowId,
     expectedSize = 10,
     expandInElevatedRow = false,
     toggleExpandOnRowClicked = false,
@@ -195,7 +193,6 @@ export const TableV2 = <Data extends {}>(props: TableV2Props<Data>) => {
             styles={styles}
             expandInRow={expandInElevatedRow}
             toggleExpandOnRowClicked={toggleExpandOnRowClicked}
-            getRowId={getRowId}
             additionalRowsProps={additionalRowsProps}
           />
         )}
