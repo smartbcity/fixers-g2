@@ -189,11 +189,11 @@ function useAuth<AdditionalServices = undefined, Roles extends string = string>(
       if (Array.isArray(role)) {
         if (role.length === 0) return true
         for (let it in role) {
-          if (tokenParsed.realm_access?.roles.includes(role[it])) return true
+          if (tokenParsed?.realm_access?.roles.includes(role[it])) return true
         }
         return false
       } else {
-        return tokenParsed.realm_access?.roles.includes(role) ?? false
+        return tokenParsed?.realm_access?.roles.includes(role) ?? false
       }
     },
     [tokenParsed]
