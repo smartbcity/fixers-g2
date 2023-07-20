@@ -27,13 +27,19 @@ export const SelectRender: ElementRendererFunction<SelectRenderProps> = (
 ): ReactElement => {
   const { element, formState, basicProps } = props
   const { params } = element
+  const componentProps = { ...basicProps }
   const { value, setFieldValue } = useMemo(
-    () => getValueSetup(basicProps.name, formState, basicProps.sharedNameIndex),
-    [basicProps.name, formState, basicProps.sharedNameIndex]
+    () =>
+      getValueSetup(
+        componentProps.name,
+        formState,
+        componentProps.sharedNameIndex
+      ),
+    [componentProps.name, formState, componentProps.sharedNameIndex]
   )
-  const onChange = basicProps.onChange
-  delete basicProps.onChange
-  delete basicProps.sharedNameIndex
+  const onChange = componentProps.onChange
+  delete componentProps.onChange
+  delete componentProps.sharedNameIndex
   return params?.multiple === true ? (
     <InputForm
       inputType='select'
@@ -43,18 +49,18 @@ export const SelectRender: ElementRendererFunction<SelectRenderProps> = (
         !!onChange && onChange(values)
       }}
       {...params}
-      {...basicProps}
+      {...componentProps}
     />
   ) : (
     <InputForm
       inputType='select'
       value={value ?? ''}
       onChangeValue={(value: string) => {
-        formState.setFieldValue(basicProps.name, value, false)
+        formState.setFieldValue(componentProps.name, value, false)
         !!onChange && onChange(value)
       }}
       {...params}
-      {...basicProps}
+      {...componentProps}
     />
   )
 }

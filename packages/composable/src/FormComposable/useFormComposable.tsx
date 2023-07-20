@@ -52,12 +52,12 @@ export const useFormComposable = <T extends {}>(
   const validators = useRef<Record<string, ValidatorFnc>>({})
   const validate = useCallback(async (values) => {
     let errors = {}
-    for (const fieldName in validators.current) {
-      if (validators.current[fieldName]) {
-        const error = await validators.current[fieldName](
-          getIn(values, fieldName),
-          values
-        )
+    const entries = Object.entries(validators.current)
+    for (let i = 0; i < entries.length; i++) {
+      const fieldName = entries[i][0]
+      const validator = entries[i][1]
+      if (validator) {
+        const error = await validator(getIn(values, fieldName), values)
         if (error) {
           errors = setIn(errors, fieldName, error)
         }

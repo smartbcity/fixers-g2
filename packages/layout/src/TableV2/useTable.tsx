@@ -107,10 +107,9 @@ export const useTable = <Data extends {}>(
                   <div />
                 ) : (
                   <CheckBox
-                    onChange={(_, value) => {
-                      table.toggleAllPageRowsSelected(value)
-                    }}
+                    onChange={table.getToggleAllRowsSelectedHandler()}
                     checked={table.getIsAllRowsSelected()}
+                    indeterminate={table.getIsSomeRowsSelected()}
                   />
                 )
               },

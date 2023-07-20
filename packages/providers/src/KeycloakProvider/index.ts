@@ -1,5 +1,3 @@
 export * from './useAuth'
 export * from './KeycloakProvider'
-export * from './KeycloakAuth'
-export * from './KeycloakConfig'
-export { useKeycloak } from '@react-keycloak/web'
+export { OidcSecure, withOidcSecure } from '@axa-fr/react-oidc'

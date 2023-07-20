@@ -1,49 +1,27 @@
-import React, { useMemo } from 'react'
-import { KeycloakConfig, KeycloakInitOptions } from 'keycloak-js'
-import { ReactKeycloakProvider } from '@react-keycloak/web'
-import { KeycloakAuth, KeycloakAuthFactory } from './KeycloakAuth'
+import React, { useState } from 'react'
+import { OidcProvider, OidcConfiguration } from '@axa-fr/react-oidc'
+import { OidcProviderProps } from '@axa-fr/react-oidc/src/oidc/OidcProvider'
+import { g2Config } from '../G2ConfigBuilder'
 
-export interface KeycloakProviderProps {
-  /**
-   * The keycloack connection configuration
-   */
-  children?: React.ReactNode
-  /**
-   * The keycloack connection configuration or a string url to a json containing the keycloak config
-   */
-  config?: KeycloakConfig | string
-  /**
-   * The keycloack options
-   * **See the reference below** ⬇️
-   *
-   * @default { checkLoginIframe: false }
-   */
-  initOptions?: KeycloakInitOptions
-  /**
-   * The keycloack instance, if set config and initOptions will not be used
-   *
-   */
-  instance?: KeycloakAuth
-  /**
-   * The component that will be displayed when keycloack is initializing
-   */
-  loadingComponent: JSX.Element
-}
+export type KeycloakProviderProps = Partial<OidcProviderProps>
 
 export const KeycloakProvider = (props: KeycloakProviderProps) => {
-  const { config, initOptions, loadingComponent, children, instance } = props
+  const { children, configuration } = props
 
-  const instanceMemo = useMemo(() => {
-    return instance || KeycloakAuthFactory(config!!, initOptions)
-  }, [config])
+  const [defaultConfiguration] = useState<OidcConfiguration>({
+    client_id: g2Config().keycloak.clientId,
+    redirect_uri: window.location.origin + '/authentication/callback',
+    silent_redirect_uri:
+      window.location.origin + '/authentication/silent-callback',
+    scope: 'openid',
+    authority: g2Config().keycloak.url + '/realms/' + g2Config().keycloak.realm
+    // service_worker_relative_url:'/OidcServiceWorker.js',
+    // service_worker_only:true,
+  })
 
   return (
-    <ReactKeycloakProvider
-      authClient={instanceMemo.instance}
-      LoadingComponent={loadingComponent}
-      initOptions={instanceMemo.initOptions}
-    >
+    <OidcProvider configuration={configuration ?? defaultConfiguration}>
       {children}
-    </ReactKeycloakProvider>
+    </OidcProvider>
   )
 }

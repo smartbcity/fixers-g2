@@ -25,15 +25,21 @@ export const TextFieldRender: ElementRendererFunction<TextFieldRenderProps> = (
 ) => {
   const { element, formState, basicProps } = props
   const { params } = element
-  const onChange = basicProps.onChange
+  const componentProps = { ...basicProps }
+  const onChange = componentProps.onChange
 
   const { value, setFieldValue } = useMemo(
-    () => getValueSetup(basicProps.name, formState, basicProps.sharedNameIndex),
-    [basicProps.name, formState, basicProps.sharedNameIndex]
+    () =>
+      getValueSetup(
+        componentProps.name,
+        formState,
+        componentProps.sharedNameIndex
+      ),
+    [componentProps.name, formState, componentProps.sharedNameIndex]
   )
 
-  delete basicProps.onChange
-  delete basicProps.sharedNameIndex
+  delete componentProps.onChange
+  delete componentProps.sharedNameIndex
 
   return (
     <InputForm
@@ -44,7 +50,7 @@ export const TextFieldRender: ElementRendererFunction<TextFieldRenderProps> = (
         !!onChange && onChange(value)
       }}
       {...params}
-      {...basicProps}
+      {...componentProps}
     />
   )
 }

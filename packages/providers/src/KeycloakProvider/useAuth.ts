@@ -1,6 +1,6 @@
-import { useKeycloak } from '@react-keycloak/web'
 import { useCallback, useMemo } from 'react'
-import Keycloak, { KeycloakTokenParsed } from 'keycloak-js'
+import { KeycloakTokenParsed } from 'keycloak-js'
+import { useOidc, useOidcIdToken } from '@axa-fr/react-oidc'
 
 export type AuthedUser = {
   id: string
@@ -94,7 +94,7 @@ type KeycloackInjector<
   T = undefined,
   R = any
 > = (
-  keycloak: KeycloakWithRoles<Roles>,
+  keycloak: Keycloak<Roles>,
   services: AuthService<{}, Roles>,
   params?: T
 ) => R
@@ -123,10 +123,10 @@ interface KeycloakTokenParsedWithRoles<Roles extends string = string>
   }
 }
 
-export interface KeycloakWithRoles<Roles extends string = string>
-  extends Keycloak {
+export interface Keycloak<Roles extends string = string>
+  extends ReturnType<typeof useOidc> {
   tokenParsed?: KeycloakTokenParsedWithRoles<Roles>
-  hasRealmRole: (role: Roles) => boolean
+  token?: any
 }
 
 export interface Auth<
@@ -134,7 +134,7 @@ export interface Auth<
   Roles extends string = string
 > {
   service: AuthService<Additionals, Roles>
-  keycloak: KeycloakWithRoles<Roles>
+  keycloak: Keycloak<Roles>
 }
 
 function useAuth<AdditionalServices, Roles extends string = string>(
@@ -151,11 +151,19 @@ function useAuth<AdditionalServices = undefined, Roles extends string = string>(
   roles: Roles[] = [],
   additionalServices?: KeycloackService<AdditionalServices, Roles>
 ): Auth<AuthServiceAdditional<AdditionalServices>, Roles> {
-  const { keycloak } = useKeycloak()
+  const oidc = useOidc()
+  const { isAuthenticated } = oidc
+  const { idToken, idTokenPayload } = useOidcIdToken()
 
-  const keycloakWithRoles: KeycloakWithRoles<Roles> = useMemo(
-    () => keycloak as KeycloakWithRoles<Roles>,
-    [keycloak]
+  const tokenParsed: KeycloakTokenParsedWithRoles<Roles> = idTokenPayload
+
+  const keycloak = useMemo(
+    (): Keycloak<Roles> => ({
+      ...oidc,
+      token: idToken,
+      tokenParsed: idTokenPayload
+    }),
+    [oidc, idToken, idTokenPayload]
   )
 
   const getPrincipalRole = useCallback(
@@ -172,24 +180,23 @@ function useAuth<AdditionalServices = undefined, Roles extends string = string>(
 
   const getUserPrincipalRole = useCallback((): Roles | undefined => {
     //@ts-ignore
-    const userRoles: Roles[] =
-      keycloakWithRoles.tokenParsed?.realm_access?.roles ?? []
+    const userRoles: Roles[] = tokenParsed?.realm_access?.roles ?? []
     return getPrincipalRole(userRoles)
-  }, [keycloakWithRoles, getPrincipalRole])
+  }, [tokenParsed, getPrincipalRole])
 
   const hasRole = useCallback(
     (role: Roles | Roles[]): boolean => {
       if (Array.isArray(role)) {
         if (role.length === 0) return true
         for (let it in role) {
-          if (keycloakWithRoles.hasRealmRole(role[it])) return true
+          if (tokenParsed.realm_access?.roles.includes(role[it])) return true
         }
         return false
       } else {
-        return keycloakWithRoles.hasRealmRole(role)
+        return tokenParsed.realm_access?.roles.includes(role) ?? false
       }
     },
-    [keycloakWithRoles]
+    [tokenParsed]
   )
 
   const hasAllRoles = useCallback(
@@ -202,43 +209,42 @@ function useAuth<AdditionalServices = undefined, Roles extends string = string>(
       })
       return hasAll
     },
-    [keycloakWithRoles, hasRole]
+    [hasRole]
   )
 
   const getUserId = useCallback(
     // @ts-ignore
-    (): string | undefined => keycloakWithRoles.tokenParsed?.sub,
-    [keycloakWithRoles]
+    (): string | undefined => tokenParsed?.sub,
+    [tokenParsed]
   )
 
   const getUserRoles = useCallback(
     // @ts-ignore
-    (): Roles[] | undefined =>
-      keycloakWithRoles.tokenParsed?.realm_access?.roles,
-    [keycloakWithRoles]
+    (): Roles[] | undefined => tokenParsed?.realm_access?.roles,
+    [tokenParsed]
   )
 
   const getUser = useCallback(
     // @ts-ignore
     (): CommonUser | undefined => {
-      if (!keycloakWithRoles.authenticated) return
+      if (isAuthenticated) return
       return {
-        id: keycloakWithRoles.tokenParsed?.sub,
-        email: keycloakWithRoles.tokenParsed?.email,
-        memberOf: keycloakWithRoles.tokenParsed?.memberOf,
-        firstName: keycloakWithRoles.tokenParsed?.given_name,
-        lastName: keycloakWithRoles.tokenParsed?.family_name,
-        roles: keycloakWithRoles.tokenParsed?.realm_access?.roles,
-        fullName: keycloakWithRoles.tokenParsed?.name
+        id: tokenParsed?.sub,
+        email: tokenParsed?.email,
+        memberOf: tokenParsed?.memberOf,
+        firstName: tokenParsed?.given_name,
+        lastName: tokenParsed?.family_name,
+        roles: tokenParsed?.realm_access?.roles,
+        fullName: tokenParsed?.name
       }
     },
-    [keycloakWithRoles]
+    [isAuthenticated, tokenParsed]
   )
 
   const isMemberOf = useCallback(
     (organizationId: string): boolean =>
-      keycloakWithRoles.tokenParsed?.memberOf === organizationId,
-    [keycloakWithRoles]
+      tokenParsed?.memberOf === organizationId,
+    [tokenParsed]
   )
 
   const executeAuthFunction = useCallback(
@@ -291,19 +297,15 @@ function useAuth<AdditionalServices = undefined, Roles extends string = string>(
       {} as AuthServiceAdditional<AdditionalServices>
     for (let serviceName in additionalServices) {
       const fn: AuthFnc = (params) =>
-        additionalServices[serviceName.toString()](
-          keycloakWithRoles,
-          service,
-          params
-        )
+        additionalServices[serviceName.toString()](keycloak, service, params)
       object[serviceName.toString()] = fn
     }
     return object
-  }, [additionalServices, keycloakWithRoles, hasRole, roles, service])
+  }, [additionalServices, keycloak, hasRole, roles, service])
 
   return {
     service: Object.assign(service, additionals),
-    keycloak: keycloakWithRoles
+    keycloak
   }
 }
 
