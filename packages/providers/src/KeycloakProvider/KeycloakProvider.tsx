@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { OidcProvider, OidcConfiguration } from '@axa-fr/react-oidc'
-import { OidcProviderProps } from '@axa-fr/react-oidc/src/oidc/OidcProvider'
+import { OidcProviderProps } from '@axa-fr/react-oidc/dist/OidcProvider'
 import { g2Config } from '../G2ConfigBuilder'
 
 export type KeycloakProviderProps = Partial<OidcProviderProps>
