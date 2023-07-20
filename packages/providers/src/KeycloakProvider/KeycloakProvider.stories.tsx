@@ -90,15 +90,7 @@ export default {
 
 export const KeycloakProvider: Story = () => {
   return (
-    <AruiKeycloakProvider
-      config={{
-        clientId: 'admin-cli',
-        realm: 'test',
-        url: 'https://auth.smart-b.io/auth'
-      }}
-      initOptions={{ onLoad: 'check-sso' }}
-      loadingComponent={<Typography>Loading ...</Typography>}
-    >
+    <AruiKeycloakProvider>
       <ConnectButton />
     </AruiKeycloakProvider>
   )
@@ -124,7 +116,7 @@ const useExtendedAuth = () => {
 
 const ConnectButton = () => {
   const { keycloak } = useExtendedAuth()
-  if (keycloak.authenticated) {
+  if (keycloak.isAuthenticated) {
     return (
       <>
         <Typography>

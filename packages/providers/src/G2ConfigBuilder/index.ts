@@ -1,5 +1,3 @@
-import { KeycloakConfig } from '../KeycloakProvider'
-
 export interface I2Config {
   orgUrl: string
   userUrl: string
@@ -20,7 +18,11 @@ export const fsConfig: () => FsConfig = () => {
 }
 
 export interface G2Config {
-  keycloak: KeycloakConfig
+  keycloak: {
+    realm: string
+    clientId: string
+    url: string
+  }
   i2: I2Config
   fs: FsConfig
 }
