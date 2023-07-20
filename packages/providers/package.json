@@ -46,7 +46,7 @@
     "@smartb/g2-utils": "1.0.0-alpha.158",
     "i18next": "^22.4.11",
     "i18next-browser-languagedetector": "^7.0.1",
-    "i18next-xhr-backend": "^3.2.2",
+    "i18next-http-backend": "^2.2.1",
     "keycloak-js": "^22.0.1",
     "react-i18next": "^12.2.0",
     "react-redux": "^7.2.4",
