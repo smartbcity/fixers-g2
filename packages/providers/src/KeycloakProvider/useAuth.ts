@@ -227,7 +227,7 @@ function useAuth<AdditionalServices = undefined, Roles extends string = string>(
   const getUser = useCallback(
     // @ts-ignore
     (): CommonUser | undefined => {
-      if (isAuthenticated) return
+      if (!isAuthenticated) return
       return {
         id: tokenParsed?.sub,
         email: tokenParsed?.email,
