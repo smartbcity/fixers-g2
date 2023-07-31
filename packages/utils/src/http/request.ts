@@ -3,6 +3,7 @@ export type HttpContentType =
   | "application/json"
   | "text/plain"
   | "application/octet-stream"
+  | "application/x-www-form-urlencoded"
   | "none";
 
 export interface HttpOptions {
