@@ -8,7 +8,7 @@ export type HttpContentType =
 export interface HttpOptions {
   url: string;
   method: "GET" | "PUT" | "POST" | "DELETE";
-  body?: string;
+  body?: BodyInit;
   formData?: FormData;
   jwt?: string;
   contentType?: HttpContentType;
