@@ -8,7 +8,6 @@ import {
 } from '@smartb/g2-forms'
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 import React, { useMemo } from 'react'
-import { OrganizationTableBlockedFilters } from './index'
 
 export type OrganizationFilters = {
   search?: string
@@ -18,7 +17,7 @@ export type OrganizationFilters = {
 export interface OrganizationFiltersBasicProps extends BasicProps {
   onSubmit: (values: OrganizationFilters) => void
   initialFiltersValues?: OrganizationFilters
-  blockedFilters?: OrganizationTableBlockedFilters
+  blockedFilters?: Record<keyof OrganizationFilters, boolean>
   rolesOptions?: Option[]
   tableActions?: React.ReactNode
 }

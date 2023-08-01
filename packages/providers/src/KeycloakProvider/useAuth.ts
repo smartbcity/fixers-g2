@@ -1,6 +1,6 @@
 import { useCallback, useMemo } from 'react'
 import { KeycloakTokenParsed } from 'keycloak-js'
-import { useOidc, useOidcIdToken } from '@axa-fr/react-oidc'
+import { useOidc, useOidcAccessToken } from '@axa-fr/react-oidc'
 
 export type AuthedUser = {
   id: string
@@ -153,17 +153,17 @@ function useAuth<AdditionalServices = undefined, Roles extends string = string>(
 ): Auth<AuthServiceAdditional<AdditionalServices>, Roles> {
   const oidc = useOidc()
   const { isAuthenticated } = oidc
-  const { idToken, idTokenPayload } = useOidcIdToken()
+  const { accessToken, accessTokenPayload } = useOidcAccessToken()
 
-  const tokenParsed: KeycloakTokenParsedWithRoles<Roles> = idTokenPayload
+  const tokenParsed: KeycloakTokenParsedWithRoles<Roles> = accessTokenPayload
 
   const keycloak = useMemo(
     (): Keycloak<Roles> => ({
       ...oidc,
-      token: idToken,
-      tokenParsed: idTokenPayload
+      token: accessToken,
+      tokenParsed: accessTokenPayload
     }),
-    [oidc, idToken, idTokenPayload]
+    [oidc, accessToken, accessTokenPayload]
   )
 
   const getPrincipalRole = useCallback(
