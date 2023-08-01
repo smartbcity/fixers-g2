@@ -6,6 +6,7 @@ import initI18next from './i18n'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { DeepPartial } from '@smartb/g2-utils'
 import { G2Translations } from './G2Translations'
+import { LoadingProviders } from '../LoadingProviders'
 
 export interface AppProviderProps<
   Languages extends { [K in keyof Languages]: string } = {}
@@ -31,7 +32,7 @@ export interface AppProviderProps<
   /**
    * The component that will be displayed when the providers are initializing
    */
-  loadingComponent: JSX.Element
+  loadingComponent?: JSX.Element
 }
 
 export const AppProvider = <
@@ -55,12 +56,12 @@ export const AppProvider = <
     [i18nOverride, languages, i18nTranslationsOverrides, i18nOptions]
   )
   return (
-    <QueryClientProvider client={queryClient}>
-      <I18nextProvider i18n={i18n}>
-        <Suspense fallback={loadingComponent}>
+    <Suspense fallback={loadingComponent ?? <LoadingProviders />}>
+      <QueryClientProvider client={queryClient}>
+        <I18nextProvider i18n={i18n}>
           <BrowserRouter>{children}</BrowserRouter>
-        </Suspense>
-      </I18nextProvider>
-    </QueryClientProvider>
+        </I18nextProvider>
+      </QueryClientProvider>
+    </Suspense>
   )
 }

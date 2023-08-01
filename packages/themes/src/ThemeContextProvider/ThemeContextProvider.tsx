@@ -12,6 +12,7 @@ import { CacheProvider } from '@emotion/react'
 import createCache from '@emotion/cache'
 import { TssCacheProvider } from 'tss-react'
 import { mergeDeepRight } from 'ramda'
+import { DeepPartial } from '@smartb/g2-utils'
 
 //@ts-ignore
 declare module '@mui/styles/defaultTheme' {
@@ -35,7 +36,7 @@ export const ThemeContext = createContext<ThemeContextProps>({
 
 export interface ThemeContextProviderProps {
   children: React.ReactNode
-  theme?: Theme
+  theme?: DeepPartial<Theme>
   customMuiTheme?: Partial<ThemeOptions>
 }
 

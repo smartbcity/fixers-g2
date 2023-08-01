@@ -18,6 +18,10 @@ export interface Theme {
    * It will be place in a container of the width `drawerWidth`
    */
   permanentHeader?: React.ElementType<any>
+  /**
+   * the url of the logo of the platform
+   */
+  logoUrl?: string
   shadows: string[]
 }
 
