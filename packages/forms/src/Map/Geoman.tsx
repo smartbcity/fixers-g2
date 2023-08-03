@@ -33,8 +33,8 @@ export const Geoman = (props: GeomanProps) => {
 
   useEffect(() => {
     const { map } = context
-    // @ts-ignore
     map.pm.setGlobalOptions({
+      // @ts-ignore
       measurements: { measurement: true, displayFormat: 'metric' }
     })
     map.pm.addControls({
