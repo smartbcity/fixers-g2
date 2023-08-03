@@ -57,7 +57,7 @@ export const useUserTableState = <T extends User = User>(
   const columns = useMemo(
     (): G2ColumnDef<T>[] => [
       {
-        header: t('g2.user'),
+        header: t('g2.name'),
         id: 'givenName',
         cell: ({ row }) => (
           <TableCellProfile
