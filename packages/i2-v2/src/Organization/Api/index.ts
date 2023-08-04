@@ -87,9 +87,9 @@ export const useGetOrganizations = <T extends Organization = Organization>(
 export type GetOrganizationOptions<T extends Organization = Organization> =
   Omit<
     UseQueryOptions<
-      OrganizationGetResult<T> | undefined,
+      OrganizationGetResult<T> | null,
       unknown,
-      OrganizationGetResult<T> | undefined,
+      OrganizationGetResult<T> | null,
       (string | undefined)[]
     >,
     'queryKey' | 'queryFn'
@@ -131,7 +131,7 @@ export const useGetOrganization = <T extends Organization = Organization>(
       if (res) {
         return res[0]
       } else {
-        return undefined
+        return null
       }
     },
     [apiUrl, jwt]
@@ -161,7 +161,7 @@ export const getInseeOrganization = async <
   if (res) {
     return res[0].item
   } else {
-    return undefined
+    return null
   }
 }
 

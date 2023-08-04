@@ -18,9 +18,10 @@ import {
 import { OrganizationId, OrganizationRef } from '../../Organization'
 import { UserPageResult } from '../Domain'
 
-type UserGetAllQueryResultOptional<T extends User = User> =
-  | { users: T[]; totalPages: number }
-  | undefined
+type UserGetAllQueryResultOptional<T extends User = User> = {
+  users: T[]
+  totalPages: number
+}
 
 export type GetUsersOptions<T extends User = User> = Omit<
   UseQueryOptions<
@@ -66,7 +67,10 @@ export const useGetUsers = <T extends User = User>(
           totalPages: Math.ceil(res[0]?.total / 10)
         }
       } else {
-        return undefined
+        return {
+          items: [],
+          total: 0
+        }
       }
     },
     [apiUrl, jwt]
@@ -76,12 +80,7 @@ export const useGetUsers = <T extends User = User>(
 }
 
 export type GetUserOptions<T extends User = User> = Omit<
-  UseQueryOptions<
-    T | undefined,
-    unknown,
-    T | undefined,
-    (string | undefined)[]
-  >,
+  UseQueryOptions<T | null, unknown, T | null, (string | undefined)[]>,
   'queryKey' | 'queryFn'
 >
 
@@ -110,7 +109,7 @@ export const useGetUser = <T extends User = User>(params: GetUserParams<T>) => {
   const getUser = useCallback(
     async ({
       queryKey
-    }: QueryFunctionContext<[string, string]>): Promise<T | undefined> => {
+    }: QueryFunctionContext<[string, string]>): Promise<T | null> => {
       const [_key, userId] = queryKey
       const res = await request<{ item: T }[]>({
         url: `${apiUrl}/userGet`,
@@ -129,7 +128,7 @@ export const useGetUser = <T extends User = User>(params: GetUserParams<T>) => {
             ({ id: organizationId, name: '' } as OrganizationRef)
         }
       } else {
-        return undefined
+        return null
       }
     },
     [apiUrl, jwt, userId, organizationId]
