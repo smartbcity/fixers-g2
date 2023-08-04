@@ -1,5 +1,5 @@
-import { WrapperVariantContext } from '@mui/x-date-pickers/internals'
-import { PickersActionBarProps } from '@mui/x-date-pickers/PickersActionBar'
+import { WrapperVariantContext } from '@mui/x-date-pickers/internals/index.js'
+import { PickersActionBarProps } from '@mui/x-date-pickers/PickersActionBar/index.js'
 import { Action, Actions } from '@smartb/g2-components'
 import React, { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
