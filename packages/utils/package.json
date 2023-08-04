@@ -3,7 +3,7 @@
   "repository": "https://gitlab.smartb.city/fixers/g2.git",
   "author": "SmartB",
   "license": "Apache-2.0",
-  "version": "1.0.0-alpha.162",
+  "version": "1.0.0-alpha.163",
   "description": "Utility package used in the g2 packages.",
   "private": false,
   "main": "dist/index.js",
@@ -38,8 +38,8 @@
   },
   "dependencies": {
     "@mantine/hooks": "^4.2.12",
-    "i18next": "^22.4.11",
-    "@tanstack/react-query": "^4.32.5"
+    "@tanstack/react-query": "^4.32.5",
+    "i18next": "^22.4.11"
   },
   "publishConfig": {
     "@smartb:registry": "https://gitlab.smartb.city/api/v4/projects/127/packages/npm/"
