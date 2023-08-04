@@ -19,7 +19,7 @@ import {
 } from '@mui/material'
 import { Calendar } from '../assets/icons'
 import { ClearRounded } from '@mui/icons-material'
-import { fr, enUS } from 'date-fns/locale'
+import { fr, enUS } from 'date-fns/locale/index.js'
 import { CustomActionBar } from '../DatePicker/CustomActionBar'
 import { useTranslation } from 'react-i18next'
 const dateFnsLocales = {
