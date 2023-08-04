@@ -1,4 +1,8 @@
-import { useQuery, useQueryClient, UseQueryOptions } from "react-query";
+import {
+  useQuery,
+  useQueryClient,
+  UseQueryOptions,
+} from "@tanstack/react-query";
 import { useCallback } from "react";
 import { HttpOptions, errorHandler, request } from "./index";
 import { RequestProps } from "./RequestProps";
@@ -24,7 +28,7 @@ export const useQueryRequest = <QUERY, RESULT>(
   const queryClient = useQueryClient();
 
   const invalidateQuery = useCallback(
-    () => queryClient.invalidateQueries(queryKey),
+    () => queryClient.invalidateQueries({ queryKey: [queryKey] }),
     [queryClient.invalidateQueries, queryKey]
   );
 

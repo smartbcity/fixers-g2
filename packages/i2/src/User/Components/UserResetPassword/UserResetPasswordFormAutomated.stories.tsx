@@ -7,7 +7,7 @@ import {
   UserResetPasswordFormAutomated,
   UserResetPasswordFormAutomatedProps
 } from './UserResetPasswordFormAutomated'
-import { QueryClient, QueryClientProvider } from 'react-query'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 export default {
   title: 'I2/UserResetPasswordForm',
@@ -16,20 +16,21 @@ export default {
 
 const queryClient = new QueryClient()
 
-export const UserResetPasswordFormAutomatedStory: Story<UserResetPasswordFormAutomatedProps> =
-  (args: UserResetPasswordFormAutomatedProps) => {
-    return (
-      <QueryClientProvider client={queryClient}>
-        <KeycloakProvider
-          config={g2Config().keycloak}
-          loadingComponent={<Typography>Loading...</Typography>}
-          initOptions={{ onLoad: 'login-required' }}
-        >
-          <Following {...args} />
-        </KeycloakProvider>
-      </QueryClientProvider>
-    )
-  }
+export const UserResetPasswordFormAutomatedStory: Story<
+  UserResetPasswordFormAutomatedProps
+> = (args: UserResetPasswordFormAutomatedProps) => {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <KeycloakProvider
+        config={g2Config().keycloak}
+        loadingComponent={<Typography>Loading...</Typography>}
+        initOptions={{ onLoad: 'login-required' }}
+      >
+        <Following {...args} />
+      </KeycloakProvider>
+    </QueryClientProvider>
+  )
+}
 
 const Following = (args: UserResetPasswordFormAutomatedProps) => {
   return <UserResetPasswordFormAutomated {...args} />

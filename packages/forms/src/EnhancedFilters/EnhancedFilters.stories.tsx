@@ -16,7 +16,7 @@ import {
   Router as AruiRouter,
   AppProvider as AruiAppProvider
 } from '@smartb/g2-providers'
-import { QueryClient } from 'react-query'
+import { QueryClient } from '@tanstack/react-query'
 import { Button } from '@smartb/g2-components'
 
 export default {

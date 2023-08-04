@@ -4,7 +4,7 @@ import {
   UseMutationOptions,
   useQuery,
   UseQueryOptions
-} from 'react-query'
+} from '@tanstack/react-query'
 import { request } from '@smartb/g2-utils'
 import {
   DirectoryPath,

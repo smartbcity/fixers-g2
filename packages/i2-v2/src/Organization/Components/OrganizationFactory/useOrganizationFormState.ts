@@ -6,7 +6,7 @@ import {
   Organization,
   organizationToFlatOrganization
 } from '../../Domain'
-import { useQueryClient } from 'react-query'
+import { useQueryClient } from '@tanstack/react-query'
 import {
   CreateOrganizationOptions,
   GetOrganizationOptions,
@@ -114,8 +114,8 @@ export const useOrganizationFormState = <T extends Organization = Organization>(
       ...updateOrganizationOptions,
       onSuccess: (data, variables, context) => {
         getOrganization.refetch()
-        queryClient.invalidateQueries('organizationRefs')
-        queryClient.invalidateQueries('organizations')
+        queryClient.invalidateQueries({ queryKey: ['organizationRefs'] })
+        queryClient.invalidateQueries({ queryKey: ['organizations'] })
         updateOrganizationOptions?.onSuccess &&
           updateOrganizationOptions.onSuccess(data, variables, context)
       }
@@ -127,8 +127,8 @@ export const useOrganizationFormState = <T extends Organization = Organization>(
     () => ({
       ...createOrganizationOptions,
       onSuccess: (data, variables, context) => {
-        queryClient.invalidateQueries('organizationRefs')
-        queryClient.invalidateQueries('organizations')
+        queryClient.invalidateQueries({ queryKey: ['organizationRefs'] })
+        queryClient.invalidateQueries({ queryKey: ['organizations'] })
         createOrganizationOptions?.onSuccess &&
           createOrganizationOptions.onSuccess(data, variables, context)
       }

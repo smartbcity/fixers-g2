@@ -5,7 +5,7 @@ import {
   RequestProps,
   useCommandRequest
 } from '@smartb/g2-utils'
-import { useMutation, UseMutationOptions } from 'react-query'
+import { useMutation, UseMutationOptions } from '@tanstack/react-query'
 import { useCallback } from 'react'
 
 export interface UserDisableCommand {

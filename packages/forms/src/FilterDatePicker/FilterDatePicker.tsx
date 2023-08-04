@@ -3,7 +3,7 @@ import {
   DatePickerProps as MuiDatePickerProps,
   LocalizationProvider
 } from '@mui/x-date-pickers'
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns/index.js'
 import React, { forwardRef, useCallback, useMemo, useState } from 'react'
 import { useFilterColorStyle, useFilterInputStyles } from '../style'
 import {

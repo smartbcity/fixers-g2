@@ -5,7 +5,7 @@ import {
   AutomatedGalleryFactoryProps
 } from './AutomatedGalleryFactory'
 import { Story } from '@storybook/react/types-6-0'
-import { QueryClient, QueryClientProvider } from 'react-query'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 export default {
   title: 'Fs/AutomatedGalleryFactory',

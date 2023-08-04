@@ -15,7 +15,7 @@ import {
   useUserUpdateEmail
 } from '../../Api'
 import { i2Config, useAuth } from '@smartb/g2-providers'
-import { useQueryClient } from 'react-query'
+import { useQueryClient } from '@tanstack/react-query'
 import {
   ChoicedResetPassword,
   ChoicedResetPasswordProps
@@ -114,7 +114,7 @@ export const AutomatedUserFactory = (props: AutomatedUserFactoryProps) => {
       ...updateUserOptions,
       onSuccess: (data, variables, context) => {
         getUser.refetch()
-        queryClient.invalidateQueries('users')
+        queryClient.invalidateQueries({ queryKey: ['users'] })
         updateUserOptions?.onSuccess &&
           updateUserOptions.onSuccess(data, variables, context)
       }
@@ -126,7 +126,7 @@ export const AutomatedUserFactory = (props: AutomatedUserFactoryProps) => {
     () => ({
       ...createUserOptions,
       onSuccess: (data, variables, context) => {
-        queryClient.invalidateQueries('users')
+        queryClient.invalidateQueries({ queryKey: ['users'] })
         createUserOptions?.onSuccess &&
           createUserOptions.onSuccess(data, variables, context)
       }

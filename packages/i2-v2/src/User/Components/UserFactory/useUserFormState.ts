@@ -1,7 +1,7 @@
 import { FormikFormParams, useFormComposable } from '@smartb/g2-composable'
 import { i2Config, useAuth } from '@smartb/g2-providers'
 import { useCallback, useMemo } from 'react'
-import { useQueryClient } from 'react-query'
+import { useQueryClient } from '@tanstack/react-query'
 import { OrganizationId } from '../../../Organization'
 import {
   CreateUserOptions,
@@ -111,7 +111,7 @@ export const useUserFormState = <T extends User = User>(
       ...updateUserOptions,
       onSuccess: (data, variables, context) => {
         getUser.refetch()
-        queryClient.invalidateQueries('users')
+        queryClient.invalidateQueries({ queryKey: ['users'] })
         updateUserOptions?.onSuccess &&
           updateUserOptions.onSuccess(data, variables, context)
       }
@@ -123,7 +123,7 @@ export const useUserFormState = <T extends User = User>(
     () => ({
       ...createUserOptions,
       onSuccess: (data, variables, context) => {
-        queryClient.invalidateQueries('users')
+        queryClient.invalidateQueries({ queryKey: ['users'] })
         createUserOptions?.onSuccess &&
           createUserOptions.onSuccess(data, variables, context)
       }

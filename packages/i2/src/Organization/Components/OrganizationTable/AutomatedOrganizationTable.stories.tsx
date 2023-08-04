@@ -7,7 +7,7 @@ import {
 import { Story } from '@storybook/react/types-6-0'
 import { g2Config, KeycloakProvider, useAuth } from '@smartb/g2-providers'
 import { Typography } from '@mui/material'
-import { QueryClient, QueryClientProvider } from 'react-query'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Organization } from '../OrganizationFactory'
 
 export default {
@@ -23,20 +23,21 @@ const queryClient = new QueryClient({
   }
 })
 
-export const AutomatedOrganizationTableStory: Story<AutomatedOrganizationTableProps<Organization>> =
-  (args: AutomatedOrganizationTableProps<Organization>) => {
-    return (
-      <QueryClientProvider client={queryClient}>
-        <KeycloakProvider
-          config={g2Config().keycloak}
-          loadingComponent={<Typography>Loading...</Typography>}
-          initOptions={{ onLoad: 'login-required' }}
-        >
-          <Following {...args} />
-        </KeycloakProvider>
-      </QueryClientProvider>
-    )
-  }
+export const AutomatedOrganizationTableStory: Story<
+  AutomatedOrganizationTableProps<Organization>
+> = (args: AutomatedOrganizationTableProps<Organization>) => {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <KeycloakProvider
+        config={g2Config().keycloak}
+        loadingComponent={<Typography>Loading...</Typography>}
+        initOptions={{ onLoad: 'login-required' }}
+      >
+        <Following {...args} />
+      </KeycloakProvider>
+    </QueryClientProvider>
+  )
+}
 
 const Following = (args: AutomatedOrganizationTableProps<Organization>) => {
   const { keycloak } = useAuth()

@@ -7,7 +7,7 @@ import {
   UserResetPasswordFormAutomated,
   UserResetPasswordFormAutomatedProps
 } from './UserResetPasswordFormAutomated'
-import { QueryClient, QueryClientProvider } from 'react-query'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 export default {
   title: 'I2V2/UserResetPasswordForm',

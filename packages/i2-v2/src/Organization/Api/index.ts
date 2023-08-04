@@ -15,7 +15,7 @@ import {
   useQuery,
   UseQueryOptions,
   QueryFunctionContext
-} from 'react-query'
+} from '@tanstack/react-query'
 export * from './GetOrganizationRefsQuery'
 
 export type GetOrganizationsOptions<T extends Organization> = Omit<

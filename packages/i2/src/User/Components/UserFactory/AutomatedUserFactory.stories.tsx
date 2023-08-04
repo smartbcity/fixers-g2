@@ -7,7 +7,7 @@ import {
 import { Story } from '@storybook/react/types-6-0'
 import { g2Config, KeycloakProvider } from '@smartb/g2-providers'
 import { Typography } from '@mui/material'
-import { QueryClient, QueryClientProvider } from 'react-query'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Button } from '@smartb/g2-components'
 
 export default {

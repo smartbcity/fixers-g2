@@ -6,7 +6,7 @@ import {
   useCommandRequest
 } from '@smartb/g2-utils'
 import { useCallback } from 'react'
-import { useMutation, UseMutationOptions } from 'react-query'
+import { useMutation, UseMutationOptions } from '@tanstack/react-query'
 
 export interface OrganizationDisableCommand {
   id: OrganizationId

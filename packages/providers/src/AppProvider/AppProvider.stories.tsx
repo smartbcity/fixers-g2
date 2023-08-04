@@ -11,7 +11,7 @@ import { ArgsTable, Title, Primary, Description } from '@storybook/addon-docs'
 import { CodeHighlighter } from '@smartb/g2-documentation'
 import { LinkProps, Link, Route, useNavigate } from 'react-router-dom'
 import { i18next, usei18next, reactQuery } from './docs'
-import { QueryClient } from 'react-query'
+import { QueryClient } from '@tanstack/react-query'
 import { G2Translations } from './G2Translations'
 
 export default {

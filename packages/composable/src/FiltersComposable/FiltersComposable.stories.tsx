@@ -20,7 +20,7 @@ import {
 } from '@smartb/g2-providers'
 import { Typography } from '@mui/material'
 import { Route } from 'react-router-dom'
-import { QueryClient } from 'react-query'
+import { QueryClient } from '@tanstack/react-query'
 import { ArrowRightAltRounded, SortByAlphaRounded } from '@mui/icons-material'
 
 export default {

@@ -14,7 +14,7 @@ import {
   UseMutationOptions,
   useQuery,
   UseQueryOptions
-} from 'react-query'
+} from '@tanstack/react-query'
 import { OrganizationId, OrganizationRef } from '../../Organization'
 import { UserPageResult } from '../Domain'
 
@@ -164,7 +164,7 @@ export const useUpdateUser = <T extends User = User>(
         method: 'POST',
         body: JSON.stringify({
           ...user,
-          memberOf: user.memberOf?.id,
+          memberOf: user.memberOf?.id
         }),
         jwt: jwt
       })

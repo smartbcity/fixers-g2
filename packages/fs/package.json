@@ -32,7 +32,7 @@
     "@mui/material": "^5.11.12",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-query": "^3.39.1"
+    "@tanstack/react-query": "^4.32.5"
   },
   "dependencies": {
     "@mantine/core": "^4.2.12",
@@ -46,7 +46,7 @@
     "@smartb/g2-utils": "1.0.0-alpha.162",
     "react-dropzone": "^11.3.2",
     "react-i18next": "^12.2.0",
-    "react-query": "^3.39.1",
+    "@tanstack/react-query": "^4.32.5",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
