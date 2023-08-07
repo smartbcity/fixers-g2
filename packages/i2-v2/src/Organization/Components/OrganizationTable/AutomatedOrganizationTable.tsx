@@ -27,6 +27,10 @@ export interface AutomatedOrganizationTableBasicProps<T extends Organization>
    * the event called when the page changes
    */
   setPage?: (newPage: number) => void
+  /**
+   * the table state params
+   */
+  tableStateParams?: Partial<useOrganizationTableStateParams<T>>
 }
 
 export type AutomatedOrganizationTableProps<
@@ -54,7 +58,7 @@ export const AutomatedOrganizationTable = <
     getOrganizationsOptions,
     page,
     setPage,
-    columnsExtander,
+    tableStateParams,
     ...other
   } = props
 
@@ -73,7 +77,7 @@ export const AutomatedOrganizationTable = <
 
   const tableState = useOrganizationTableState<T>({
     organizations: getOrganizations.data?.items ?? [],
-    columnsExtander: columnsExtander
+    ...tableStateParams
   })
 
   return (

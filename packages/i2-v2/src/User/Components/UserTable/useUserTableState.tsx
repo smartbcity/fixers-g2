@@ -1,41 +1,14 @@
-import React, { useMemo } from 'react'
-import { useTranslation } from 'react-i18next'
-import {
-  ExtandedColumnsParams,
-  useExtendedColumns
-} from '../../../Commons/useExtendedColumns'
-import {
-  G2ColumnDef,
-  TableCellLink,
-  TableCellProfile,
-  TableCellText,
-  UseTableOptions,
-  useTable
-} from '@smartb/g2-layout'
+import { G2ColumnDef, UseTableOptions, useTable } from '@smartb/g2-layout'
 import { User } from '../../Domain'
-import { OrganizationId } from '../../../Organization'
-
-export type userTableColumns = 'givenName' | 'address' | 'email' | 'memberOf'
+import { useUserColumns, useUserColumnsParams } from './useUserColumns'
 
 export interface useUserTableStateParams<T extends User>
-  extends Partial<UseTableOptions<T>> {
+  extends Partial<UseTableOptions<T>>,
+    useUserColumnsParams<T> {
   /**
-   * The column extander module
+   * The columns
    */
-  columnsExtander?: Omit<
-    ExtandedColumnsParams<T, userTableColumns>,
-    'initialColumns'
-  >
-  /**
-   * If you want the columns organization to contain links redirecting to the organization page provide this prop
-   */
-  getOrganizationUrl?: (organizationId: OrganizationId) => string
-  /**
-   * Force the display of the organization over the user list (if the first user of the list has no organization)
-   *
-   * @default false
-   */
-  hasOrganizations?: boolean
+  columns?: G2ColumnDef<T>[]
   /**
    * The user to pe parsed in the table
    */
@@ -46,76 +19,24 @@ export const useUserTableState = <T extends User = User>(
   params?: useUserTableStateParams<T>
 ) => {
   const {
-    columnsExtander,
+    columns,
     users = [],
     getOrganizationUrl,
     hasOrganizations = false,
+    getActions,
     ...other
   } = params ?? {}
 
-  const { t } = useTranslation()
-  const columns = useMemo(
-    (): G2ColumnDef<T>[] => [
-      {
-        header: t('g2.name'),
-        id: 'givenName',
-        cell: ({ row }) => (
-          <TableCellProfile
-            familyName={row.original.familyName}
-            givenName={row.original.givenName}
-          />
-        ),
-        className: 'givenNameColumn'
-      },
-      {
-        header: t('g2.address'),
-        id: 'address',
-        cell: ({ row }) =>
-          row.original.address ? (
-            <TableCellText
-              value={`${row.original.address.street} ${row.original.address.postalCode} ${row.original.address.city}`}
-            />
-          ) : undefined,
-        className: 'addressColumn'
-      },
-      {
-        header: t('g2.email'),
-        id: 'email',
-        cell: ({ row }) => <TableCellText value={row.original.email} />,
-        className: 'emailColumn'
-      },
-      ...((!!users[0] && !!users[0].memberOf) || hasOrganizations
-        ? [
-            {
-              header: t('g2.organization'),
-              id: 'memberOf',
-              cell: ({ row }) => {
-                if (!!getOrganizationUrl && row.original.memberOf?.id) {
-                  return (
-                    <TableCellLink
-                      href={getOrganizationUrl(row.original.memberOf?.id)}
-                      label={row.original.memberOf?.name}
-                    />
-                  )
-                }
-                return <TableCellText value={row.original.memberOf?.name} />
-              },
-              className: 'memberOfColumn'
-            } as G2ColumnDef<T>
-          ]
-        : [])
-    ],
-    [users, getOrganizationUrl, t, hasOrganizations]
-  )
-
-  const completeColumns = useExtendedColumns({
-    initialColumns: columns,
-    ...columnsExtander
+  const base = useUserColumns({
+    getOrganizationUrl,
+    hasOrganizations,
+    users,
+    getActions
   })
 
   return useTable({
     data: users,
-    columns: completeColumns,
+    columns: columns ?? base.columnsArray,
     getRowId: (row) => row.id,
     ...other
   })

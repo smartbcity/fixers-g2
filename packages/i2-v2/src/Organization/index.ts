@@ -19,7 +19,10 @@ export {
   AutomatedOrganizationTableProps,
   OrganizationTableProps,
   useOrganizationTableState,
-  useOrganizationTableStateParams
+  useOrganizationTableStateParams,
+  useOrganizationColumns,
+  useOrganizationColumnsParams,
+  OrganizationTableColumns
 } from './Components/OrganizationTable'
 
 export {

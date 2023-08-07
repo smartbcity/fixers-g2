@@ -28,6 +28,10 @@ export interface AutomatedUserTableBasicProps<T extends User = User>
    * the event called when the page changes
    */
   setPage?: (newPage: number) => void
+  /**
+   * the table state params
+   */
+  tableStateParams?: Partial<useUserTableStateParams<T>>
 }
 
 export type AutomatedUserTableProps<T extends User = User> =
@@ -52,7 +56,7 @@ export const AutomatedUserTable = <T extends User = User>(
     getUsersOptions,
     page,
     setPage,
-    columnsExtander,
+    tableStateParams,
     getOrganizationUrl,
     hasOrganizations,
     ...other
@@ -74,9 +78,9 @@ export const AutomatedUserTable = <T extends User = User>(
 
   const tableState = useUserTableState<T>({
     users: getUsers.data?.users ?? [],
-    columnsExtander,
     getOrganizationUrl,
-    hasOrganizations
+    hasOrganizations,
+    ...tableStateParams
   })
 
   return (
