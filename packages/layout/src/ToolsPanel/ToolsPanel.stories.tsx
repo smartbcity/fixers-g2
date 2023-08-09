@@ -1,7 +1,6 @@
 import React from 'react'
 import { ToolsPanel as AruiToolsPanel, ToolsPanelProps } from './ToolsPanel'
-import { Meta } from '@storybook/react'
-import { Story } from '@storybook/react/types-6-0'
+import { Meta, StoryFn } from '@storybook/react'
 import defaultLogo from '../assets/impactcity-logo-2.png'
 import { AccountCircle } from '@mui/icons-material'
 import { Menu } from './types'
@@ -22,7 +21,7 @@ export default {
   }
 } as Meta
 
-const Template: Story<ToolsPanelProps> = (args: ToolsPanelProps) => (
+const Template: StoryFn<ToolsPanelProps> = (args: ToolsPanelProps) => (
   <AruiToolsPanel {...args} />
 )
 

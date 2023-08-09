@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { Button as AruiButton, ButtonBasicProps } from './Button'
-import { Meta } from '@storybook/react'
-import { Story } from '@storybook/react/types-6-0'
+import { Meta, StoryFn } from '@storybook/react'
 import { Box } from '@mui/material'
 import { SwapHoriz } from '@mui/icons-material'
 import { EditButton } from './EditButton'
@@ -9,8 +8,6 @@ import { DeleteButton } from './DeleteButton'
 import { BackButton } from './BackButton'
 import { LinkButton } from './LinkButton'
 import { withDesign } from 'storybook-addon-designs'
-import { Router } from '@smartb/g2-providers'
-import { Route } from 'react-router-dom'
 import { BrowserRouter } from 'react-router-dom'
 
 export default {
@@ -25,7 +22,7 @@ export default {
   }
 } as Meta
 
-export const Button: Story<ButtonBasicProps> = (args: ButtonBasicProps) => (
+export const Button: StoryFn<ButtonBasicProps> = (args: ButtonBasicProps) => (
   <AruiButton {...args}>{args.children}</AruiButton>
 )
 
@@ -33,7 +30,7 @@ Button.args = {
   children: 'Mon Bouton'
 }
 
-export const ButtonVariant: Story = () => (
+export const ButtonVariant: StoryFn = () => (
   <Box display='flex' justifyContent='space-around'>
     <AruiButton variant='contained'>contained</AruiButton>
     <AruiButton variant='outlined'>outlined</AruiButton>
@@ -41,7 +38,7 @@ export const ButtonVariant: Story = () => (
   </Box>
 )
 
-export const ButtonVariantSeverity: Story = () => (
+export const ButtonVariantSeverity: StoryFn = () => (
   <Box display='flex' justifyContent='space-around'>
     <Box
       display='flex'
@@ -104,7 +101,7 @@ export const ButtonVariantSeverity: Story = () => (
   </Box>
 )
 
-export const ButtonVariantDisabled: Story = () => (
+export const ButtonVariantDisabled: StoryFn = () => (
   <Box display='flex' justifyContent='space-around'>
     <AruiButton variant='contained' disabled>
       contained disabled
@@ -118,7 +115,7 @@ export const ButtonVariantDisabled: Story = () => (
   </Box>
 )
 
-export const ButtonSizes: Story = () => (
+export const ButtonSizes: StoryFn = () => (
   <Box display='flex' justifyContent='space-around' alignItems='center'>
     <AruiButton variant='contained' size='large'>
       large
@@ -132,17 +129,17 @@ export const ButtonSizes: Story = () => (
   </Box>
 )
 
-export const CustomIcon: Story = () => (
+export const CustomIcon: StoryFn = () => (
   <AruiButton startIcon={<SwapHoriz />}>custom icon</AruiButton>
 )
 
-export const NoDefaultIcon: Story = () => (
+export const NoDefaultIcon: StoryFn = () => (
   <AruiButton success noDefaultIcon>
     no icon
   </AruiButton>
 )
 
-export const preConfigured: Story = () => (
+export const preConfigured: StoryFn = () => (
   <Box display='flex' justifyContent='space-around'>
     <BackButton>BackButton</BackButton>
     <EditButton>EditButton</EditButton>
@@ -150,7 +147,7 @@ export const preConfigured: Story = () => (
   </Box>
 )
 
-export const buttonExtend: Story = () => {
+export const buttonExtend: StoryFn = () => {
   type ComponentPropsType = React.ComponentPropsWithRef<'a'>
   const componentProps: ComponentPropsType = {
     href: '/?path=/docs/components-button--button-extend'
@@ -170,7 +167,7 @@ export const buttonExtend: Story = () => {
   )
 }
 
-export const asynchronousButton: Story = () => {
+export const asynchronousButton: StoryFn = () => {
   const [success, setSuccess] = useState(false)
   const asyncFucntion = async () => {
     return new Promise((resolve) => {

@@ -3,8 +3,7 @@ import {
   ReactRemoteComponent as AruiReactRemoteComponent,
   ReactRemoteComponentProps
 } from './ReactRemoteComponent'
-import { Meta } from '@storybook/react'
-import { Story } from '@storybook/react/types-6-0'
+import { Meta, StoryFn } from '@storybook/react'
 import { Title, Primary, Description } from '@storybook/addon-docs'
 
 export default {
@@ -29,7 +28,7 @@ export default {
   }
 } as Meta
 
-export const ReactRemoteComponent: Story<ReactRemoteComponentProps> = (
+export const ReactRemoteComponent: StoryFn<ReactRemoteComponentProps> = (
   args: ReactRemoteComponentProps
 ) => {
   return <AruiReactRemoteComponent {...args} />

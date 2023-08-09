@@ -1,7 +1,7 @@
-import { Meta } from '@storybook/react'
+import { Meta, StoryFn } from '@storybook/react'
 import React from 'react'
 import { UserFactory, UserFactoryProps } from './UserFactory'
-import { Story } from '@storybook/react/types-6-0'
+
 import { ArgsTable, PRIMARY_STORY, Subtitle } from '@storybook/addon-docs'
 import LinkTo from '@storybook/addon-links/react'
 import { Stack, Typography } from '@mui/material'
@@ -29,7 +29,7 @@ export default {
   }
 } as Meta
 
-export const UserFactoryStory: Story<UserFactoryProps> = (
+export const UserFactoryStory: StoryFn<UserFactoryProps> = (
   args: UserFactoryProps
 ) => {
   return <UserFactory {...args} />

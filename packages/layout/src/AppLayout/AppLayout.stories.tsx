@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { AppLayout as AruiAppLayout, AppLayoutProps } from './AppLayout'
-import { Meta } from '@storybook/react'
-import { Story } from '@storybook/react/types-6-0'
+import { Meta, StoryFn } from '@storybook/react'
 import { Box, Link, Typography } from '@mui/material'
 import { ArgsTable, PRIMARY_STORY, Subtitle } from '@storybook/addon-docs'
 import { styles, classes, StyleProps } from './types'
@@ -85,7 +84,7 @@ export default {
   }
 } as Meta
 
-const Template: Story<AppLayoutProps> = (args: AppLayoutProps) => {
+const Template: StoryFn<AppLayoutProps> = (args: AppLayoutProps) => {
   const [open, setOpen] = useState(true)
 
   return <AruiAppLayout {...args} open={open} onToggle={() => setOpen(!open)} />

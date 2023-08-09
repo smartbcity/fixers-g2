@@ -1,7 +1,6 @@
 import React from 'react'
 import { MenuBasicProps, Menu as AruiMenu } from './Menu'
-import { Meta } from '@storybook/react'
-import { Story } from '@storybook/react/types-6-0'
+import { Meta, StoryFn } from '@storybook/react'
 import { withDesign } from 'storybook-addon-designs'
 
 export default {
@@ -16,7 +15,7 @@ export default {
   component: AruiMenu
 } as Meta
 
-const Template: Story<MenuBasicProps> = (args: MenuBasicProps) => (
+const Template: StoryFn<MenuBasicProps> = (args: MenuBasicProps) => (
   <AruiMenu {...args} />
 )
 

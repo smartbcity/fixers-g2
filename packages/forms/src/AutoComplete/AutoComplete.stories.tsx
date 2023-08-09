@@ -3,8 +3,7 @@ import {
   AutoComplete as AruiAutoComplete,
   AutoCompleteBasicProps
 } from './AutoComplete'
-import { Meta } from '@storybook/react'
-import { Story } from '@storybook/react/types-6-0'
+import { Meta, StoryFn } from '@storybook/react'
 
 export default {
   title: 'Forms/AutoComplete',
@@ -30,7 +29,7 @@ const books: Book[] = [
   { title: 'Impactosorus', author: 'Greg beatcoyn', id: 'b5' }
 ]
 
-export const AutoComplete: Story<AutoCompleteBasicProps<Book>> = (
+export const AutoComplete: StoryFn<AutoCompleteBasicProps<Book>> = (
   args: AutoCompleteBasicProps<Book>
 ) => {
   return (

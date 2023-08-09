@@ -1,7 +1,6 @@
 import React from 'react'
 import { AppMenu as AruiAppMenu, AppLogoProps, AppMenuProps } from './AppMenu'
-import { Meta } from '@storybook/react'
-import { Story } from '@storybook/react/types-6-0'
+import { Meta, StoryFn } from '@storybook/react'
 import { Box, Typography } from '@mui/material'
 import {
   ArgsTable,
@@ -58,7 +57,7 @@ export default {
   }
 } as Meta
 
-const Template: Story<AppMenuProps> = (args: AppMenuProps) => {
+const Template: StoryFn<AppMenuProps> = (args: AppMenuProps) => {
   return (
     <div style={{ width: '200px' }}>
       <AruiAppMenu {...args} />

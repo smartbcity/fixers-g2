@@ -1,7 +1,6 @@
 import React from 'react'
 import { KeycloakProvider as AruiKeycloakProvider } from './KeycloakProvider'
-import { Meta } from '@storybook/react'
-import { Story } from '@storybook/react/types-6-0'
+import { Meta, StoryFn } from '@storybook/react'
 import { useAuth, KeycloackService } from './useAuth'
 import { Button } from '@smartb/g2-components'
 import { Link, Typography } from '@mui/material'
@@ -88,7 +87,7 @@ export default {
   }
 } as Meta
 
-export const KeycloakProvider: Story = () => {
+export const KeycloakProvider: StoryFn = () => {
   return (
     <AruiKeycloakProvider>
       <ConnectButton />

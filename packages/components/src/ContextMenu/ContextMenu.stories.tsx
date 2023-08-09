@@ -3,8 +3,7 @@ import {
   ContextMenu as AruiContextMenu,
   ContextMenuBasicProps
 } from './ContextMenu'
-import { Meta } from '@storybook/react'
-import { Story } from '@storybook/react/types-6-0'
+import { Meta, StoryFn } from '@storybook/react'
 import { styles, classes } from './docs'
 import { MenuItems } from '../Menu'
 import { Box, Typography } from '@mui/material'
@@ -33,7 +32,7 @@ export default {
   }
 } as Meta
 
-export const ContextMenu: Story<ContextMenuBasicProps> = (
+export const ContextMenu: StoryFn<ContextMenuBasicProps> = (
   args: ContextMenuBasicProps
 ) => {
   const [anchorEl, setAnchorEl] = React.useState(null)
@@ -127,7 +126,7 @@ const menu: MenuItems[] = [
   }
 ]
 
-export const RightClickContextMenu: Story<ContextMenuBasicProps> = (
+export const RightClickContextMenu: StoryFn<ContextMenuBasicProps> = (
   args: ContextMenuBasicProps
 ) => {
   const [anchorEl, setAnchorEl] = React.useState<VirtualElement | null>(null)

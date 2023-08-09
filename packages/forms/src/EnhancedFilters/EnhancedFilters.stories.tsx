@@ -5,8 +5,7 @@ import {
   FiltersField,
   FiltersAction
 } from '../Filters'
-import { Meta } from '@storybook/react'
-import { Story } from '@storybook/react/types-6-0'
+import { Meta, StoryFn } from '@storybook/react'
 
 import { Typography } from '@mui/material'
 import { useEnhancedFilters } from './useEnhancedFilters'
@@ -33,7 +32,7 @@ export default {
 
 const queryClient = new QueryClient()
 
-export const EnhancedFiltersStory: Story<FiltersBasicProps> = (
+export const EnhancedFiltersStory: StoryFn<FiltersBasicProps> = (
   args: FiltersBasicProps
 ) => {
   interface Languages {

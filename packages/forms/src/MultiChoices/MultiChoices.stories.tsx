@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { MultiChoices, MultiChoicesBasicProps } from './MultiChoices'
-import { Meta } from '@storybook/react'
-import { Story } from '@storybook/react/types-6-0'
+import { Meta, StoryFn } from '@storybook/react'
 import { MultiChoicesClasses, MultiChoicesStyles } from './docs'
 import { withDesign } from 'storybook-addon-designs'
 import { Option } from '../Select'
@@ -36,7 +35,7 @@ export default {
   }
 } as Meta
 
-export const MultiChoicesStory: Story<MultiChoicesBasicProps> = (
+export const MultiChoicesStory: StoryFn<MultiChoicesBasicProps> = (
   args: MultiChoicesBasicProps
 ) => {
   const [values, setvalues] = useState<any[]>([])

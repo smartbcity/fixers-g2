@@ -1,13 +1,12 @@
-import { Loading, LoadingProps } from '@smartb/g2-components'
+import { Loading } from '@smartb/g2-components'
 import { useTheme } from '@smartb/g2-themes'
 import { Box } from '@mui/material'
 import React from 'react'
 
-export const LoadingProviders = (props: Omit<LoadingProps, 'icon'>) => {
+export const LoadingProviders = () => {
   const theme = useTheme()
   return (
     <Loading
-      {...props}
       icon={
         theme.logoUrl ? (
           <img

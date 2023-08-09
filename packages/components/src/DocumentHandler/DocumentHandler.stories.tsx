@@ -3,8 +3,7 @@ import {
   DocumentHandler as AruiDocumentHandler,
   DocumentHandlerBasicProps
 } from './DocumentHandler'
-import { Meta } from '@storybook/react'
-import { Story } from '@storybook/react/types-6-0'
+import { Meta, StoryFn } from '@storybook/react'
 import { Box, Stack } from '@mui/material'
 import { useLocalDocumentHandler } from './useLocalDocumentHandler'
 import { useLocalStorageDocumentHandler } from './useLocalStorageDocumentHandler'
@@ -21,7 +20,7 @@ export default {
   argTypes: {}
 } as Meta
 
-export const DocumentHandler: Story<DocumentHandlerBasicProps> = (
+export const DocumentHandler: StoryFn<DocumentHandlerBasicProps> = (
   args: DocumentHandlerBasicProps
 ) => (
   <Box
@@ -34,7 +33,7 @@ export const DocumentHandler: Story<DocumentHandlerBasicProps> = (
   </Box>
 )
 
-export const DocumentHandlerVariant: Story = () => (
+export const DocumentHandlerVariant: StoryFn = () => (
   <Stack
     sx={{
       alignItems: 'center',
@@ -56,7 +55,7 @@ export const DocumentHandlerVariant: Story = () => (
   </Stack>
 )
 
-export const useLocalDocumentHandlerExample: Story = () => {
+export const useLocalDocumentHandlerExample: StoryFn = () => {
   const { file, documentHandlerProps } = useLocalDocumentHandler()
   console.log(file)
   return (
@@ -76,7 +75,7 @@ export const useLocalDocumentHandlerExample: Story = () => {
   )
 }
 
-export const useLocalStorageDocumentHandlerExample: Story = () => {
+export const useLocalStorageDocumentHandlerExample: StoryFn = () => {
   const { fileName, documentHandlerProps } =
     useLocalStorageDocumentHandler('fileExample')
   return (

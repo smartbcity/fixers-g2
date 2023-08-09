@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { Timeline as AruiTimeline, TimelineBasicProps } from './Timeline'
-import { Meta } from '@storybook/react'
-import { Story } from '@storybook/react/types-6-0'
+import { Meta, StoryFn } from '@storybook/react'
 import { Paper, Typography } from '@mui/material'
 import { Fastfood } from '@mui/icons-material'
 import { styles, classes, TimeLineCell } from './types'
@@ -117,7 +116,7 @@ const lines = [
   }
 ]
 
-const Template: Story<TimelineBasicProps> = (args: TimelineBasicProps) => {
+const Template: StoryFn<TimelineBasicProps> = (args: TimelineBasicProps) => {
   const [cell, setcell] = useState(undefined)
   return (
     <AruiTimeline
@@ -130,7 +129,7 @@ const Template: Story<TimelineBasicProps> = (args: TimelineBasicProps) => {
   )
 }
 
-const Template2: Story = () => {
+const Template2: StoryFn = () => {
   return <AruiTimeline lines={lines} passedTimeLine></AruiTimeline>
 }
 

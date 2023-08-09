@@ -1,7 +1,7 @@
-import { Meta } from '@storybook/react'
+import { Meta, StoryFn } from '@storybook/react'
 import React from 'react'
 import { OrganizationTable, OrganizationTableProps } from './OrganizationTable'
-import { Story } from '@storybook/react/types-6-0'
+
 import { ArgsTable, PRIMARY_STORY, Subtitle } from '@storybook/addon-docs'
 import LinkTo from '@storybook/addon-links/react'
 import { Stack, Typography } from '@mui/material'
@@ -37,7 +37,7 @@ export default {
   }
 } as Meta
 
-export const OrganizationTableStory: Story<OrganizationTableProps> = (
+export const OrganizationTableStory: StoryFn<OrganizationTableProps> = (
   args: OrganizationTableProps
 ) => {
   const organizations: Organization[] = [

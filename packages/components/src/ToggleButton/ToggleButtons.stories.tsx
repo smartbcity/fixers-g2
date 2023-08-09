@@ -3,8 +3,7 @@ import {
   ToggleButtons as AruiToggleButtons,
   ToggleButtonsBasicProps
 } from './ToggleButtons'
-import { Meta } from '@storybook/react'
-import { Story } from '@storybook/react/types-6-0'
+import { Meta, StoryFn } from '@storybook/react'
 import { classes, styles } from './types'
 
 export default {
@@ -30,7 +29,7 @@ export default {
   }
 } as Meta
 
-export const ToggleButtons: Story<ToggleButtonsBasicProps> = (
+export const ToggleButtons: StoryFn<ToggleButtonsBasicProps> = (
   args: ToggleButtonsBasicProps
 ) => {
   const [value, setvalue] = useState<

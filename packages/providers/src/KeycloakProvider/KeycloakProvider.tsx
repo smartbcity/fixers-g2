@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { OidcProvider, OidcConfiguration } from '@axa-fr/react-oidc'
-import { OidcProviderProps } from '@axa-fr/react-oidc/dist/OidcProvider'
+import type { OidcProviderProps } from '@axa-fr/react-oidc/dist/OidcProvider'
 import { g2Config } from '../G2ConfigBuilder'
 import { LoadingProviders } from '../LoadingProviders'
 

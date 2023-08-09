@@ -44,7 +44,7 @@ const getGlobal = (localPackageJson) => {
       json(),
       svgr(),
       postcss(),
-      // analyze()
+      analyze(),
     ],
   };
 };

@@ -1,10 +1,9 @@
 import React, { useState } from 'react'
-import { Meta } from '@storybook/react'
+import { Meta, StoryFn } from '@storybook/react'
 import {
   AutomatedOrganizationFactory,
   AutomatedOrganizationFactoryBasicProps as AutomatedOrganizationFactoryProps
 } from './AutomatedOrganizationFactory'
-import { Story } from '@storybook/react/types-6-0'
 import { g2Config, KeycloakProvider } from '@smartb/g2-providers'
 import { Typography } from '@mui/material'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
@@ -16,7 +15,7 @@ export default {
 
 const queryClient = new QueryClient()
 
-export const AutomatedOrganizationFactoryStory: Story<
+export const AutomatedOrganizationFactoryStory: StoryFn<
   AutomatedOrganizationFactoryProps
 > = (args: AutomatedOrganizationFactoryProps) => {
   return (

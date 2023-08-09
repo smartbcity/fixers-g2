@@ -1,7 +1,6 @@
 import React from 'react'
 import { Alert as AruiAlert, AlertBasicProps } from './Alert'
-import { Meta } from '@storybook/react'
-import { Story } from '@storybook/react/types-6-0'
+import { Meta, StoryFn } from '@storybook/react'
 import { withDesign } from 'storybook-addon-designs'
 import { Box } from '@mui/material'
 import { classes, styles } from './types'
@@ -36,7 +35,7 @@ export default {
   }
 } as Meta
 
-export const Alert: Story<AlertBasicProps> = (args: AlertBasicProps) => {
+export const Alert: StoryFn<AlertBasicProps> = (args: AlertBasicProps) => {
   return (
     <>
       <AruiAlert isRelative {...args} />
@@ -44,7 +43,7 @@ export const Alert: Story<AlertBasicProps> = (args: AlertBasicProps) => {
   )
 }
 
-export const AlertSeverity: Story<AlertBasicProps> = () => {
+export const AlertSeverity: StoryFn<AlertBasicProps> = () => {
   return (
     <Box display='flex' justifyContent='center' flexDirection='column'>
       <AruiAlert
@@ -83,7 +82,7 @@ export const AlertSeverity: Story<AlertBasicProps> = () => {
   )
 }
 
-export const AlertColorBase: Story<AlertBasicProps> = () => {
+export const AlertColorBase: StoryFn<AlertBasicProps> = () => {
   return (
     <Box display='flex' justifyContent='center' flexDirection='column'>
       <AruiAlert

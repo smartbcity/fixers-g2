@@ -1,6 +1,5 @@
 import React from 'react'
-import { Meta } from '@storybook/react'
-import { Story } from '@storybook/react/types-6-0'
+import { Meta, StoryFn } from '@storybook/react'
 import { g2Config, KeycloakProvider } from '@smartb/g2-providers'
 import { Typography } from '@mui/material'
 import {
@@ -16,7 +15,7 @@ export default {
 
 const queryClient = new QueryClient()
 
-export const UserResetPasswordFormAutomatedStory: Story<
+export const UserResetPasswordFormAutomatedStory: StoryFn<
   UserResetPasswordFormAutomatedProps
 > = (args: UserResetPasswordFormAutomatedProps) => {
   return (

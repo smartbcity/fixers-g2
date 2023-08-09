@@ -1,7 +1,6 @@
 import React from 'react'
 import { ActionsWrapper, ActionsWrapperProps } from './ActionsWrapper'
-import { Meta } from '@storybook/react'
-import { Story } from '@storybook/react/types-6-0'
+import { Meta, StoryFn } from '@storybook/react'
 import { withDesign } from 'storybook-addon-designs'
 
 export default {
@@ -11,7 +10,7 @@ export default {
   parameters: {}
 } as Meta
 
-const Template: Story<ActionsWrapperProps> = (args: ActionsWrapperProps) => (
+const Template: StoryFn<ActionsWrapperProps> = (args: ActionsWrapperProps) => (
   <ActionsWrapper {...args}>
     <p>wefuiwehfuiwef fiweofjewofiwf wnfoiewfnweoif</p>
   </ActionsWrapper>

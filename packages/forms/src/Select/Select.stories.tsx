@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { Select, Option, SelectBasicProps } from './Select'
-import { Meta } from '@storybook/react'
-import { Story } from '@storybook/react/types-6-0'
+import { Meta, StoryFn } from '@storybook/react'
 import { Box } from '@mui/material'
 import { SelectClasses, SelectStyles } from './docs'
 import { withDesign } from 'storybook-addon-designs'
@@ -42,7 +41,7 @@ export default {
   }
 } as Meta
 
-export const SelectStory: Story<SelectBasicProps> = (
+export const SelectStory: StoryFn<SelectBasicProps> = (
   args: SelectBasicProps
 ) => {
   const [value, setvalue] = useState('')
@@ -66,7 +65,7 @@ export const SelectStory: Story<SelectBasicProps> = (
   )
 }
 
-export const SelectSizes: Story<SelectBasicProps> = () => {
+export const SelectSizes: StoryFn<SelectBasicProps> = () => {
   return (
     <Box display='flex' flexDirection='column' alignItems='center'>
       <Select
@@ -95,7 +94,7 @@ export const SelectSizes: Story<SelectBasicProps> = () => {
   )
 }
 
-export const SelectStates: Story<SelectBasicProps> = () => {
+export const SelectStates: StoryFn<SelectBasicProps> = () => {
   return (
     <Box display='flex' flexDirection='column' alignItems='center'>
       <Select
@@ -117,7 +116,7 @@ export const SelectStates: Story<SelectBasicProps> = () => {
   )
 }
 
-export const MultipleSelect: Story<SelectBasicProps> = () => {
+export const MultipleSelect: StoryFn<SelectBasicProps> = () => {
   const [values, setvalues] = useState([])
 
   return (

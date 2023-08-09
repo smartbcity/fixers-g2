@@ -5,8 +5,7 @@ import {
   FiltersField,
   FiltersAction
 } from './Filters'
-import { Meta } from '@storybook/react'
-import { Story } from '@storybook/react/types-6-0'
+import { Meta, StoryFn } from '@storybook/react'
 import {
   ArgsTable,
   PRIMARY_STORY,
@@ -128,7 +127,7 @@ export default {
   }
 } as Meta
 
-export const FiltersStory: Story<FiltersBasicProps> = (
+export const FiltersStory: StoryFn<FiltersBasicProps> = (
   args: FiltersBasicProps
 ) => {
   const formState = useFilters({

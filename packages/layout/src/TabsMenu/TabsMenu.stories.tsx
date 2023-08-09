@@ -1,7 +1,6 @@
 import React from 'react'
 import { TabsMenu as AruiTabsMenu, TabsMenuProps } from './TabsMenu'
-import { Meta } from '@storybook/react'
-import { Story } from '@storybook/react/types-6-0'
+import { Meta, StoryFn } from '@storybook/react'
 import { styles, classes, Tab } from './types'
 
 export default {
@@ -35,7 +34,7 @@ export default {
   }
 } as Meta
 
-const Template: Story<TabsMenuProps> = (args: TabsMenuProps) => (
+const Template: StoryFn<TabsMenuProps> = (args: TabsMenuProps) => (
   <AruiTabsMenu {...args} />
 )
 

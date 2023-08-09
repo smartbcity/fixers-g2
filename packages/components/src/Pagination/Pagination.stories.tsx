@@ -3,8 +3,7 @@ import {
   Pagination as AruiPagination,
   PaginationBasicProps
 } from './Pagination'
-import { Meta } from '@storybook/react'
-import { Story } from '@storybook/react/types-6-0'
+import { Meta, StoryFn } from '@storybook/react'
 import { styles, classes } from './docs'
 import { withDesign } from 'storybook-addon-designs'
 
@@ -38,7 +37,7 @@ export default {
   }
 } as Meta
 
-export const Pagination: Story<PaginationBasicProps> = (
+export const Pagination: StoryFn<PaginationBasicProps> = (
   args: PaginationBasicProps
 ) => {
   const [page, setpage] = useState(1)

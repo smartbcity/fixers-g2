@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { Header as AruiHeader, HeaderProps } from './Header'
-import { Meta } from '@storybook/react'
-import { Story } from '@storybook/react/types-6-0'
+import { Meta, StoryFn } from '@storybook/react'
 import { IconButton, Stack, Typography } from '@mui/material'
 import { Edit, Delete } from '@mui/icons-material'
 import { styles, classes } from './docs'
@@ -31,7 +30,7 @@ export default {
   }
 } as Meta
 
-export const Header: Story<HeaderProps> = (args: HeaderProps) => {
+export const Header: StoryFn<HeaderProps> = (args: HeaderProps) => {
   const [tab, settab] = useState('1')
   return (
     <AruiHeader
@@ -42,7 +41,7 @@ export const Header: Story<HeaderProps> = (args: HeaderProps) => {
   )
 }
 
-export const HeaderWithGoBack: Story = () => {
+export const HeaderWithGoBack: StoryFn = () => {
   return (
     <AruiHeader
       content={[
@@ -59,7 +58,7 @@ export const HeaderWithGoBack: Story = () => {
             </IconButton>,
             <IconButton key='header-delete'>
               <Delete />
-            </IconButton>,
+            </IconButton>
           ]
         }
       ]}
@@ -67,25 +66,22 @@ export const HeaderWithGoBack: Story = () => {
   )
 }
 
-export const HeaderFreeContent: Story = () => {
+export const HeaderFreeContent: StoryFn = () => {
   return (
     <AruiHeader
-      freeContent={(
+      freeContent={
         <Stack
-          direction="row"
-          justifyContent="space-between"
-          alignItems="center"
+          direction='row'
+          justifyContent='space-between'
+          alignItems='center'
         >
           <Typography key='header-title' variant='h4'>
             My propject
           </Typography>
           <StatusTag label='Refused' variant='error' />
-          <Button >
-            Correct
-          </Button>
+          <Button>Correct</Button>
         </Stack>
-      )}
-
+      }
     />
   )
 }
@@ -119,12 +115,10 @@ Header.args = {
   ],
   content: [
     {
-      leftPart: [
-        <BackButton key='header-goback'>Go back</BackButton>,
-      ],
-      rightPart: [
-      ]
-    },  {
+      leftPart: [<BackButton key='header-goback'>Go back</BackButton>],
+      rightPart: []
+    },
+    {
       leftPart: [
         <Typography key='header-title' variant='h4'>
           Title
@@ -134,7 +128,7 @@ Header.args = {
         <Button key='header-cancelButton' variant='text'>
           Cancel
         </Button>,
-        <Button >Send A report</Button>
+        <Button>Send A report</Button>
       ]
     }
   ]

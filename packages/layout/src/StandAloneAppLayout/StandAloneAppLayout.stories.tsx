@@ -3,8 +3,7 @@ import {
   StandAloneAppLayout as AruiStandAloneAppLayout,
   StandAloneAppLayoutProps
 } from './StandAloneAppLayout'
-import { Meta } from '@storybook/react'
-import { Story } from '@storybook/react/types-6-0'
+import { Meta, StoryFn } from '@storybook/react'
 import { Box, Link, Paper, Stack, Typography } from '@mui/material'
 import { ArgsTable, PRIMARY_STORY, Subtitle } from '@storybook/addon-docs'
 import LinkTo from '@storybook/addon-links/react'
@@ -70,7 +69,7 @@ export default {
   }
 } as Meta
 
-export const StandAloneAppLayout: Story<StandAloneAppLayoutProps> = (
+export const StandAloneAppLayout: StoryFn<StandAloneAppLayoutProps> = (
   args: StandAloneAppLayoutProps
 ) => {
   return <AruiStandAloneAppLayout {...args} />

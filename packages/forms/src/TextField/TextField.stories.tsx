@@ -1,7 +1,6 @@
-import { Meta } from '@storybook/react'
+import { Meta, StoryFn } from '@storybook/react'
 import React, { useState } from 'react'
 import { TextField, TextFieldProps } from './TextField'
-import { Story } from '@storybook/react/types-6-0'
 import { TextFieldClasses, TextFieldStyles } from './docs'
 import { Box, Typography } from '@mui/material'
 import { CreditCard } from '@mui/icons-material'
@@ -37,7 +36,9 @@ export default {
   }
 } as Meta
 
-export const TextFieldStory: Story<TextFieldProps> = (args: TextFieldProps) => {
+export const TextFieldStory: StoryFn<TextFieldProps> = (
+  args: TextFieldProps
+) => {
   const [value, setValue] = useState('')
   return (
     <TextField
@@ -49,7 +50,7 @@ export const TextFieldStory: Story<TextFieldProps> = (args: TextFieldProps) => {
   )
 }
 
-export const TextFieldSizes: Story<TextFieldProps> = () => {
+export const TextFieldSizes: StoryFn<TextFieldProps> = () => {
   return (
     <Box display='flex' flexDirection='column' alignItems='center'>
       <TextField
@@ -74,7 +75,7 @@ export const TextFieldSizes: Story<TextFieldProps> = () => {
   )
 }
 
-export const TextFieldStates: Story<TextFieldProps> = () => {
+export const TextFieldStates: StoryFn<TextFieldProps> = () => {
   return (
     <Box display='flex' flexDirection='column' alignItems='center'>
       <TextField
@@ -106,7 +107,7 @@ export const TextFieldStates: Story<TextFieldProps> = () => {
   )
 }
 
-export const SerchTextField: Story<TextFieldProps> = () => {
+export const SerchTextField: StoryFn<TextFieldProps> = () => {
   const [value, setValue] = useState('')
   const [search, setSearch] = useState(undefined)
   const asyncFucntion = async () => {
@@ -123,7 +124,10 @@ export const SerchTextField: Story<TextFieldProps> = () => {
         placeholder='search something here'
         value={value}
         onChange={(value) => setValue(value)}
-        onSearch={async () => {await asyncFucntion(); setSearch(value)}}
+        onSearch={async () => {
+          await asyncFucntion()
+          setSearch(value)
+        }}
         onRemove={() => setValue('')}
         id='searchTextField'
         textFieldType='search'
@@ -134,7 +138,7 @@ export const SerchTextField: Story<TextFieldProps> = () => {
   )
 }
 
-export const CustomIcon: Story<TextFieldProps> = () => {
+export const CustomIcon: StoryFn<TextFieldProps> = () => {
   return (
     <Box display='flex' flexDirection='column' alignItems='center'>
       <TextField

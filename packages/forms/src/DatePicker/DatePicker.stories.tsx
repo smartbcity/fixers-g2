@@ -1,7 +1,6 @@
 import React from 'react'
 import { DatePicker as AruiDatePicker, DatePickerProps } from './DatePicker'
-import { Meta } from '@storybook/react'
-import { Story } from '@storybook/react/types-6-0'
+import { Meta, StoryFn } from '@storybook/react'
 import addDays from 'date-fns/addDays'
 import { Box } from '@mui/material'
 
@@ -12,7 +11,7 @@ export default {
 
 const today = new Date()
 
-export const DatePicker: Story<DatePickerProps> = (args: DatePickerProps) => {
+export const DatePicker: StoryFn<DatePickerProps> = (args: DatePickerProps) => {
   const [date, setSelectedDate] = React.useState<Date | undefined>(today)
   const handleDateChange = (date?: Date) => {
     setSelectedDate(date)
@@ -37,7 +36,7 @@ DatePicker.args = {
 
 DatePicker.storyName = 'DatePicker'
 
-export const DatePickerStatus: Story<DatePickerProps> = () => {
+export const DatePickerStatus: StoryFn<DatePickerProps> = () => {
   const [date, setSelectedDate] = React.useState<Date | undefined>(undefined)
   return (
     <Box display='flex' flexDirection='column'>
@@ -77,7 +76,7 @@ export const DatePickerStatus: Story<DatePickerProps> = () => {
   )
 }
 
-export const DatePickerSizes: Story<DatePickerProps> = () => {
+export const DatePickerSizes: StoryFn<DatePickerProps> = () => {
   const [date, setSelectedDate] = React.useState<Date | undefined>(undefined)
   return (
     <Box display='flex' flexDirection='column'>

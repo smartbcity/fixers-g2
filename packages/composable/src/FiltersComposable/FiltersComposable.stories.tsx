@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useMemo } from 'react'
-import { Meta } from '@storybook/react'
-import { Story } from '@storybook/react/types-6-0'
+import { Meta, StoryFn } from '@storybook/react'
 import {
   ArgsTable,
   PRIMARY_STORY,
@@ -45,7 +44,7 @@ export default {
 
 const queryClient = new QueryClient()
 
-export const FiltersStory: Story<FiltersComposableBasicProps<any>> = (
+export const FiltersStory: StoryFn<FiltersComposableBasicProps<any>> = (
   args: FiltersComposableBasicProps<any>
 ) => {
   interface Languages {

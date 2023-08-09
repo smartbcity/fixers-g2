@@ -1,7 +1,6 @@
-import { Meta } from '@storybook/react'
+import { Meta, StoryFn } from '@storybook/react'
 import React from 'react'
 import { Gallery, GalleryProps } from './Gallery'
-import { Story } from '@storybook/react/types-6-0'
 import { Box } from '@mui/material'
 import horizontalSrc from './horizontal.jpg'
 import verticalSrc from './vertical.jpg'
@@ -12,7 +11,7 @@ export default {
   component: Gallery
 } as Meta
 
-export const GalleryStory: Story<GalleryProps> = (args: GalleryProps) => {
+export const GalleryStory: StoryFn<GalleryProps> = (args: GalleryProps) => {
   return (
     <Box
       sx={{

@@ -1,6 +1,5 @@
 import React, { ReactNode } from 'react'
-import { Meta } from '@storybook/react'
-import { Story } from '@storybook/react/types-6-0'
+import { Meta, StoryFn } from '@storybook/react'
 import {
   ArgsTable,
   PRIMARY_STORY,
@@ -80,7 +79,7 @@ const CustomRenderer: ElementRenderersConfig<any> = {
 export type CustomFieldRenderType = ElementParams<'debug', DebugExtendProps>
 export type AllFormComposableField = FormComposableField | CustomFieldRenderType
 
-const FormComposableStory: Story<FormComposableProps> = (
+const FormComposableStory: StoryFn<FormComposableProps> = (
   args: FormComposableProps
 ) => {
   const formState = useFormComposable({

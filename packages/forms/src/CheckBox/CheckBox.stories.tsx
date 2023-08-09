@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { CheckBox, CheckBoxBasicProps } from './CheckBox'
-import { Meta } from '@storybook/react'
-import { Story } from '@storybook/react/types-6-0'
+import { Meta, StoryFn } from '@storybook/react'
 import { CheckBoxClasses, CheckBoxStyles } from './docs'
 import { Box } from '@mui/material'
 import { withDesign } from 'storybook-addon-designs'
@@ -36,13 +35,13 @@ export default {
   }
 } as Meta
 
-export const CheckBoxStory: Story<CheckBoxBasicProps> = (
+export const CheckBoxStory: StoryFn<CheckBoxBasicProps> = (
   args: CheckBoxBasicProps
 ) => {
   return <CheckBox {...args} />
 }
 
-export const CheckBoxStates: Story<CheckBoxBasicProps> = () => {
+export const CheckBoxStates: StoryFn<CheckBoxBasicProps> = () => {
   const [checked, setChecked] = useState(false)
 
   return (

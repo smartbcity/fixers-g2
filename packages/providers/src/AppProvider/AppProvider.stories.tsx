@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react'
 import { AppProvider as AruiAppProvider } from './AppProvider'
-import { Meta } from '@storybook/react'
-import { Story } from '@storybook/react/types-6-0'
+import { Meta, StoryFn } from '@storybook/react'
 import { Button } from '@smartb/g2-components'
 import { Router as AruiRouter } from './Router'
 import { PrivateRoute as AruiPrivateRoute } from './PrivateRoute'
@@ -99,7 +98,7 @@ export default {
 
 const queryClient = new QueryClient()
 
-const Template: Story = () => {
+const Template: StoryFn = () => {
   interface Languages {
     fr: string
     en: string

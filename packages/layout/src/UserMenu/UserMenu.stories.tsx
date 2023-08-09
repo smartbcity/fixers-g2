@@ -1,7 +1,6 @@
 import React from 'react'
 import { UserMenu as AruiUserMenu, UserMenuProps } from './UserMenu'
-import { Meta } from '@storybook/react'
-import { Story } from '@storybook/react/types-6-0'
+import { Meta, StoryFn } from '@storybook/react'
 import itemsLogo from '../assets/impactcity-logo-2.png'
 import {
   ArgsTable,
@@ -57,7 +56,7 @@ export default {
   }
 } as Meta
 
-export const UserMenu: Story<UserMenuProps> = (args: UserMenuProps) => {
+export const UserMenu: StoryFn<UserMenuProps> = (args: UserMenuProps) => {
   return (
     <div style={{ width: '200px' }}>
       <AruiUserMenu {...args} />

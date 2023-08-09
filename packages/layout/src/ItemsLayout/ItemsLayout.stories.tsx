@@ -3,8 +3,7 @@ import {
   ItemsLayout as AruiItemsLayout,
   ItemsLayoutBasicProps
 } from './ItemsLayout'
-import { Meta } from '@storybook/react'
-import { Story } from '@storybook/react/types-6-0'
+import { Meta, StoryFn } from '@storybook/react'
 import defaultLogo from '../assets/impactcity-logo-2.png'
 import { styles, classes, Menu } from './types'
 
@@ -40,7 +39,7 @@ export default {
   }
 } as Meta
 
-const Template: Story<ItemsLayoutBasicProps> = (
+const Template: StoryFn<ItemsLayoutBasicProps> = (
   args: ItemsLayoutBasicProps
 ) => <AruiItemsLayout {...args} />
 

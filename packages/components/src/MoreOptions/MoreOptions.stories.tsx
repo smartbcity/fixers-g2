@@ -1,7 +1,9 @@
 import React from 'react'
-import { MoreOptions as AruiMoreOptions, MoreOptionsBasicProps } from './MoreOptions'
-import { Meta } from '@storybook/react'
-import { Story } from '@storybook/react/types-6-0'
+import {
+  MoreOptions as AruiMoreOptions,
+  MoreOptionsBasicProps
+} from './MoreOptions'
+import { Meta, StoryFn } from '@storybook/react'
 import { styles, classes } from './docs'
 
 export default {
@@ -25,35 +27,34 @@ export default {
       }
     }
   }
-} as Meta;
-
+} as Meta
 
 const options = [
   {
     key: 'Option 1',
     label: 'Option 1',
-    goto: () => { }
+    goto: () => {}
   },
   {
     key: 'Option 2',
     label: 'Option 2',
-    goto: () => { }
+    goto: () => {}
   },
   {
     key: 'Option 3',
     label: 'Option 3',
-    goto: () => { }
+    goto: () => {}
   }
 ]
 
-export const MoreOptions: Story<MoreOptionsBasicProps> = (args: MoreOptionsBasicProps) => {
-  return (
-    <AruiMoreOptions {...args} />
-  )
+export const MoreOptions: StoryFn<MoreOptionsBasicProps> = (
+  args: MoreOptionsBasicProps
+) => {
+  return <AruiMoreOptions {...args} />
 }
 
 MoreOptions.args = {
   options: options
 }
 
-MoreOptions.storyName = "MoreOptions"
+MoreOptions.storyName = 'MoreOptions'

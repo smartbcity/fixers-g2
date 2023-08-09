@@ -1,7 +1,6 @@
 import React from 'react'
 import { StatusTag as AruiStatusTag, StatusTagBasicProps } from './StatusTag'
-import { Meta } from '@storybook/react'
-import { Story } from '@storybook/react/types-6-0'
+import { Meta, StoryFn } from '@storybook/react'
 import { withDesign } from 'storybook-addon-designs'
 import { Box } from '@mui/material'
 
@@ -17,7 +16,7 @@ export default {
   }
 } as Meta
 
-export const StatusTag: Story<StatusTagBasicProps> = (
+export const StatusTag: StoryFn<StatusTagBasicProps> = (
   args: StatusTagBasicProps
 ) => {
   return <AruiStatusTag {...args} />
@@ -29,7 +28,7 @@ StatusTag.args = {
 
 StatusTag.storyName = 'StatusTag'
 
-export const StatusVariant: Story<StatusTagBasicProps> = () => {
+export const StatusVariant: StoryFn<StatusTagBasicProps> = () => {
   return (
     <Box display='flex' justifyContent='space-around'>
       <AruiStatusTag label='info' variant='info' />

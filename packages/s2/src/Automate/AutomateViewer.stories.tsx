@@ -4,15 +4,14 @@ import {
   AutomateViewerBasicProps
 } from './AutomateViewer'
 import { SSM, SsmViewer as AruiSsmViewer } from '../SsmViewer'
-import { Meta } from '@storybook/react'
-import { Story } from '@storybook/react/types-6-0'
+import { Meta, StoryFn } from '@storybook/react'
 
 export default {
   title: 'S2/AutomateViewer',
   component: AruiAutomateViewer
 } as Meta
 
-const Template: Story<AutomateViewerBasicProps> = (
+const Template: StoryFn<AutomateViewerBasicProps> = (
   args: AutomateViewerBasicProps
 ) => {
   return <AruiAutomateViewer {...args}></AruiAutomateViewer>
@@ -48,7 +47,7 @@ AutomateViewer.args = {
 
 AutomateViewer.storyName = 'AutomateViewer'
 
-export const SsmViewer: Story = () => {
+export const SsmViewer: StoryFn = () => {
   const automate: SSM = {
     name: 'DidS2',
     version: undefined,

@@ -1,7 +1,6 @@
 import React from 'react'
 import { AlertHub as AruiAlertHub, AlertHubProps } from './AlertHub'
-import { Meta } from '@storybook/react'
-import { Story } from '@storybook/react/types-6-0'
+import { Meta, StoryFn } from '@storybook/react'
 import { withDesign } from 'storybook-addon-designs'
 import { useAlertHub } from './useAlertHub'
 import { Button } from '@smartb/g2-components'
@@ -37,7 +36,7 @@ function Example() {
   )
 }
 
-export const AlertHub: Story<AlertHubProps> = (args: AlertHubProps) => {
+export const AlertHub: StoryFn<AlertHubProps> = (args: AlertHubProps) => {
   return (
     <AruiAlertHub {...args}>
       <Example />

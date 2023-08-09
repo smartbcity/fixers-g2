@@ -2,8 +2,7 @@ import {
   Presentation as AruiPresentation,
   PresentationBasicProps
 } from './Presentation'
-import { Meta } from '@storybook/react'
-import { Story } from '@storybook/react/types-6-0'
+import { Meta, StoryFn } from '@storybook/react'
 import { withDesign } from 'storybook-addon-designs'
 import { Stack } from '@mui/material'
 import smartbLogo from '../assets/smartb.png'
@@ -20,7 +19,7 @@ export default {
   }
 } as Meta
 
-export const Presentation: Story<PresentationBasicProps> = (
+export const Presentation: StoryFn<PresentationBasicProps> = (
   args: PresentationBasicProps
 ) => {
   return (

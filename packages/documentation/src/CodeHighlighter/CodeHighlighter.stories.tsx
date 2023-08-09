@@ -3,8 +3,7 @@ import {
   CodeHighlighter as AruiCodeHighlighter,
   CodeHighlighterProps
 } from './CodeHighlighter'
-import { Meta } from '@storybook/react'
-import { Story } from '@storybook/react/types-6-0'
+import { Meta, StoryFn } from '@storybook/react'
 
 const style = `export type darkStyles =
 | 'atomOneDark'
@@ -32,7 +31,7 @@ export default {
   }
 } as Meta
 
-export const CodeHighlighter: Story<CodeHighlighterProps> = (
+export const CodeHighlighter: StoryFn<CodeHighlighterProps> = (
   args: CodeHighlighterProps
 ) => <AruiCodeHighlighter {...args} />
 
@@ -45,7 +44,7 @@ CodeHighlighter.args = {
 }
 CodeHighlighter.storyName = 'CodeHighlighter'
 
-export const objectHiglighter: Story = () => (
+export const objectHiglighter: StoryFn = () => (
   <AruiCodeHighlighter
     object={{
       name: 'test',
@@ -63,7 +62,7 @@ export const objectHiglighter: Story = () => (
 
 objectHiglighter.storyName = 'object highlighter'
 
-export const httpDefinition: Story<CodeHighlighterProps> = (
+export const httpDefinition: StoryFn<CodeHighlighterProps> = (
   args: CodeHighlighterProps
 ) => <AruiCodeHighlighter {...args} />
 
