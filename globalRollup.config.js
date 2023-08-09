@@ -5,7 +5,7 @@ import image from "@rollup/plugin-image";
 import json from "rollup-plugin-json";
 import svgr from "@svgr/rollup";
 import postcss from "rollup-plugin-postcss";
-import analyze from "rollup-plugin-analyzer";
+// import analyze from "rollup-plugin-analyzer";
 
 const getGlobal = (localPackageJson) => {
   const externalsDependencies = Object.keys(
@@ -44,7 +44,7 @@ const getGlobal = (localPackageJson) => {
       json(),
       svgr(),
       postcss(),
-      analyze(),
+      // analyze(),
     ],
   };
 };
