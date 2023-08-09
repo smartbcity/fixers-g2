@@ -1,12 +1,11 @@
 import React from 'react'
 import { Link as AruiLink, LinkProps } from './Link'
 import { Meta, StoryFn } from '@storybook/react'
-import { withDesign } from 'storybook-addon-designs'
 
 export default {
   title: 'Components/Link',
   component: AruiLink,
-  decorators: [withDesign],
+
   parameters: {
     design: {
       type: 'figma',

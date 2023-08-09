@@ -3,7 +3,7 @@ import { Select, Option, SelectBasicProps } from './Select'
 import { Meta, StoryFn } from '@storybook/react'
 import { Box } from '@mui/material'
 import { SelectClasses, SelectStyles } from './docs'
-import { withDesign } from 'storybook-addon-designs'
+
 import {
   ContentCopy,
   ContentCut,
@@ -14,7 +14,7 @@ import {
 export default {
   title: 'Forms/Select',
   component: Select,
-  decorators: [withDesign],
+
   parameters: {
     design: {
       type: 'figma',

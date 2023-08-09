@@ -9,7 +9,7 @@ import { Meta, StoryFn } from '@storybook/react'
 
 import { Typography } from '@mui/material'
 import { useEnhancedFilters } from './useEnhancedFilters'
-import { withDesign } from 'storybook-addon-designs'
+
 import { Route } from 'react-router-dom'
 import {
   Router as AruiRouter,
@@ -21,7 +21,7 @@ import { Button } from '@smartb/g2-components'
 export default {
   title: 'Forms/EnhancedFilters',
   component: Filters,
-  decorators: [withDesign],
+
   parameters: {
     design: {
       type: 'figma',

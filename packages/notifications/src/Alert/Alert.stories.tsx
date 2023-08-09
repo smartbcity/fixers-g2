@@ -1,14 +1,14 @@
 import React from 'react'
 import { Alert as AruiAlert, AlertBasicProps } from './Alert'
 import { Meta, StoryFn } from '@storybook/react'
-import { withDesign } from 'storybook-addon-designs'
+
 import { Box } from '@mui/material'
 import { classes, styles } from './types'
 
 export default {
   title: 'Notifications/Alert',
   component: AruiAlert,
-  decorators: [withDesign],
+
   parameters: {
     design: {
       type: 'figma',

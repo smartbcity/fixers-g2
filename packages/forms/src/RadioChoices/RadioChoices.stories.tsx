@@ -3,12 +3,11 @@ import { RadioChoices, Choice, RadioChoicesBasicProps } from './RadioChoices'
 import { Meta, StoryFn } from '@storybook/react'
 import { Box } from '@mui/material'
 import { RadioChoicesClasses, RadioChoicesStyles } from './docs'
-import { withDesign } from 'storybook-addon-designs'
 
 export default {
   title: 'Forms/RadioChoices',
   component: RadioChoices,
-  decorators: [withDesign],
+
   parameters: {
     design: {
       type: 'figma',

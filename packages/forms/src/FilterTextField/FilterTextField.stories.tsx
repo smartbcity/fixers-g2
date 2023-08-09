@@ -4,12 +4,11 @@ import { FilterTextField, FilterTextFieldProps } from './FilterTextField'
 import { FilterTextFieldClasses, FilterTextFieldStyles } from './docs'
 import { Box, Typography } from '@mui/material'
 import { CreditCard } from '@mui/icons-material'
-import { withDesign } from 'storybook-addon-designs'
 
 export default {
   title: 'Forms/FilterTextField',
   component: FilterTextField,
-  decorators: [withDesign],
+
   parameters: {
     design: {
       type: 'figma',

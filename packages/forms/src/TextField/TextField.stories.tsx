@@ -4,12 +4,11 @@ import { TextField, TextFieldProps } from './TextField'
 import { TextFieldClasses, TextFieldStyles } from './docs'
 import { Box, Typography } from '@mui/material'
 import { CreditCard } from '@mui/icons-material'
-import { withDesign } from 'storybook-addon-designs'
 
 export default {
   title: 'Forms/TextField',
   component: TextField,
-  decorators: [withDesign],
+
   parameters: {
     design: {
       type: 'figma',

@@ -2,12 +2,11 @@ import React from 'react'
 import { Tooltip as AruiTooltip, TooltipBasicProps } from './Tooltip'
 import { Meta, StoryFn } from '@storybook/react'
 import { Typography } from '@mui/material'
-import { withDesign } from 'storybook-addon-designs'
 
 export default {
   title: 'Notifications/Tooltip',
   component: AruiTooltip,
-  decorators: [withDesign],
+
   parameters: {
     design: {
       type: 'figma',

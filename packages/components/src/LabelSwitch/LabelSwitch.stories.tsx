@@ -5,13 +5,13 @@ import {
   Label
 } from './LabelSwitch'
 import { Meta, StoryFn } from '@storybook/react'
-import { withDesign } from 'storybook-addon-designs'
+
 import { styles, classes } from './docs'
 
 export default {
   title: 'Components/LabelSwitch',
   component: AruiLabelSwitch,
-  decorators: [withDesign],
+
   parameters: {
     design: {
       type: 'figma',

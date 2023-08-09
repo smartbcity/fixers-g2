@@ -3,12 +3,11 @@ import { CheckBox, CheckBoxBasicProps } from './CheckBox'
 import { Meta, StoryFn } from '@storybook/react'
 import { CheckBoxClasses, CheckBoxStyles } from './docs'
 import { Box } from '@mui/material'
-import { withDesign } from 'storybook-addon-designs'
 
 export default {
   title: 'Forms/CheckBox',
   component: CheckBox,
-  decorators: [withDesign],
+
   parameters: {
     design: {
       type: 'figma',

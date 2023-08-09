@@ -1,13 +1,13 @@
 import React from 'react'
 import { FilterButton, FilterButtonBasicProps } from './FilterButton'
 import { Meta, StoryFn } from '@storybook/react'
-import { withDesign } from 'storybook-addon-designs'
+
 import { Box } from '@mui/material'
 
 export default {
   title: 'Forms/FilterButton',
   component: FilterButton,
-  decorators: [withDesign],
+
   parameters: {
     design: {
       type: 'figma',

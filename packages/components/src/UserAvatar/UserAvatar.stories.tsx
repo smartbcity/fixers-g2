@@ -3,12 +3,11 @@ import {
   UserAvatarBasicProps
 } from './UserAvatar'
 import { Meta, StoryFn } from '@storybook/react'
-import { withDesign } from 'storybook-addon-designs'
 
 export default {
   title: 'Components/UserAvatar',
   component: AruiUserAvatar,
-  decorators: [withDesign],
+
   parameters: {
     design: {
       type: 'figma',

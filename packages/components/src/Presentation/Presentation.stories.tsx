@@ -3,14 +3,14 @@ import {
   PresentationBasicProps
 } from './Presentation'
 import { Meta, StoryFn } from '@storybook/react'
-import { withDesign } from 'storybook-addon-designs'
+
 import { Stack } from '@mui/material'
 import smartbLogo from '../assets/smartb.png'
 
 export default {
   title: 'Components/Presentation',
   component: AruiPresentation,
-  decorators: [withDesign],
+
   parameters: {
     design: {
       type: 'figma',

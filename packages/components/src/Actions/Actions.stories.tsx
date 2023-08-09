@@ -1,18 +1,10 @@
 import React, { useState } from 'react'
 import { Actions as AruiActions, ActionsBasicProps } from './Actions'
 import { Meta, StoryFn } from '@storybook/react'
-import { withDesign } from 'storybook-addon-designs'
 
 export default {
   title: 'Components/Actions',
-  component: AruiActions,
-  decorators: [withDesign],
-  parameters: {
-    design: {
-      type: 'figma',
-      url: 'https://www.figma.com/file/kgphqh0uVhoXt8TK3LlkGj/G2-%2F-Design-System?node-id=1014%3A871'
-    }
-  }
+  component: AruiActions
 } as Meta
 
 const Template: StoryFn<ActionsBasicProps> = (args: ActionsBasicProps) => (

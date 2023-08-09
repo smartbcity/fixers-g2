@@ -4,12 +4,11 @@ import { Meta, StoryFn } from '@storybook/react'
 import { Paper, Typography } from '@mui/material'
 import { Fastfood } from '@mui/icons-material'
 import { styles, classes, TimeLineCell } from './types'
-import { withDesign } from 'storybook-addon-designs'
 
 export default {
   title: 'Components/Timeline',
   component: AruiTimeline,
-  decorators: [withDesign],
+
   parameters: {
     design: {
       type: 'figma',

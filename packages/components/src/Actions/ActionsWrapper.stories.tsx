@@ -1,13 +1,10 @@
 import React from 'react'
 import { ActionsWrapper, ActionsWrapperProps } from './ActionsWrapper'
 import { Meta, StoryFn } from '@storybook/react'
-import { withDesign } from 'storybook-addon-designs'
 
 export default {
   title: 'Components/ActionsWrapper',
-  component: ActionsWrapper,
-  decorators: [withDesign],
-  parameters: {}
+  component: ActionsWrapper
 } as Meta
 
 const Template: StoryFn<ActionsWrapperProps> = (args: ActionsWrapperProps) => (

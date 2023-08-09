@@ -1,13 +1,13 @@
 import React from 'react'
 import { StatusTag as AruiStatusTag, StatusTagBasicProps } from './StatusTag'
 import { Meta, StoryFn } from '@storybook/react'
-import { withDesign } from 'storybook-addon-designs'
+
 import { Box } from '@mui/material'
 
 export default {
   title: 'Notifications/StatusTag',
   component: AruiStatusTag,
-  decorators: [withDesign],
+
   parameters: {
     design: {
       type: 'figma',

@@ -24,12 +24,11 @@ import {
   FiltersState
 } from './docs'
 import { useFilters } from './useFilters'
-import { withDesign } from 'storybook-addon-designs'
 
 export default {
   title: 'Forms/Filters',
   component: Filters,
-  decorators: [withDesign],
+
   parameters: {
     design: {
       type: 'figma',

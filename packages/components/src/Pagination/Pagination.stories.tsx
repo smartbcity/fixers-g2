@@ -5,12 +5,11 @@ import {
 } from './Pagination'
 import { Meta, StoryFn } from '@storybook/react'
 import { styles, classes } from './docs'
-import { withDesign } from 'storybook-addon-designs'
 
 export default {
   title: 'Components/Pagination',
   component: AruiPagination,
-  decorators: [withDesign],
+
   parameters: {
     design: {
       type: 'figma',

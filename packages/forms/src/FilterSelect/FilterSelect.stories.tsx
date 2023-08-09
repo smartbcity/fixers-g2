@@ -3,13 +3,13 @@ import { FilterSelect, Option, FilterSelectBasicProps } from './FilterSelect'
 import { Meta, StoryFn } from '@storybook/react'
 import { Box } from '@mui/material'
 import { FilterSelectClasses, FilterSelectStyles } from './docs'
-import { withDesign } from 'storybook-addon-designs'
+
 import { ArrowRightAltRounded, SortByAlphaRounded } from '@mui/icons-material'
 
 export default {
   title: 'Forms/FilterSelect',
   component: FilterSelect,
-  decorators: [withDesign],
+
   parameters: {
     design: {
       type: 'figma',

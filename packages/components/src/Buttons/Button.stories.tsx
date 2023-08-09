@@ -7,19 +7,12 @@ import { EditButton } from './EditButton'
 import { DeleteButton } from './DeleteButton'
 import { BackButton } from './BackButton'
 import { LinkButton } from './LinkButton'
-import { withDesign } from 'storybook-addon-designs'
+
 import { BrowserRouter } from 'react-router-dom'
 
 export default {
   title: 'Components/Button',
-  component: AruiButton,
-  decorators: [withDesign],
-  parameters: {
-    design: {
-      type: 'figma',
-      url: 'https://www.figma.com/file/kgphqh0uVhoXt8TK3LlkGj/G2-%2F-Design-System?node-id=1014%3A871'
-    }
-  }
+  component: AruiButton
 } as Meta
 
 export const Button: StoryFn<ButtonBasicProps> = (args: ButtonBasicProps) => (

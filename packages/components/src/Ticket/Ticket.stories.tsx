@@ -1,7 +1,7 @@
 import React from 'react'
 import { Ticket as AruiTicket, TicketBasicProps } from './Ticket'
 import { Meta, StoryFn } from '@storybook/react'
-import { withDesign } from 'storybook-addon-designs'
+
 import { Flight } from '@mui/icons-material'
 import { styles, classes } from './docs'
 import { Box } from '@mui/material'
@@ -9,7 +9,7 @@ import { Box } from '@mui/material'
 export default {
   title: 'Components/Ticket',
   component: AruiTicket,
-  decorators: [withDesign],
+
   parameters: {
     design: {
       type: 'figma',

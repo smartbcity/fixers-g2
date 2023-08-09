@@ -1,4 +1,5 @@
 import { dirname, join } from "path";
+import remarkGfm from "remark-gfm";
 module.exports = {
   stories: [
     "../docs/**/*.stories.mdx",
@@ -23,11 +24,14 @@ module.exports = {
       options: {
         configureJSX: true,
         transcludeMarkdown: true,
+        mdxPluginOptions: {
+          mdxCompileOptions: {
+            remarkPlugins: [remarkGfm],
+          },
+        },
       },
     },
     getAbsolutePath("@storybook/addon-controls"),
-    getAbsolutePath("storybook-addon-designs"),
-    getAbsolutePath("@storybook/addon-mdx-gfm"),
   ],
   typescript: {
     reactDocgen: "react-docgen-typescript",

@@ -1,14 +1,14 @@
 import React from 'react'
 import { AlertHub as AruiAlertHub, AlertHubProps } from './AlertHub'
 import { Meta, StoryFn } from '@storybook/react'
-import { withDesign } from 'storybook-addon-designs'
+
 import { useAlertHub } from './useAlertHub'
 import { Button } from '@smartb/g2-components'
 
 export default {
   title: 'Notifications/AlertHub',
   component: AruiAlertHub,
-  decorators: [withDesign],
+
   parameters: {
     design: {
       type: 'figma',

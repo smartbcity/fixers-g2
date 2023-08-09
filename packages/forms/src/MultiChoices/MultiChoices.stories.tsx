@@ -2,13 +2,13 @@ import React, { useState } from 'react'
 import { MultiChoices, MultiChoicesBasicProps } from './MultiChoices'
 import { Meta, StoryFn } from '@storybook/react'
 import { MultiChoicesClasses, MultiChoicesStyles } from './docs'
-import { withDesign } from 'storybook-addon-designs'
+
 import { Option } from '../Select'
 
 export default {
   title: 'Forms/MultiChoices',
   component: MultiChoices,
-  decorators: [withDesign],
+
   parameters: {
     design: {
       type: 'figma',

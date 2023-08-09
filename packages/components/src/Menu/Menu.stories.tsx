@@ -1,11 +1,10 @@
 import React from 'react'
 import { MenuBasicProps, Menu as AruiMenu } from './Menu'
 import { Meta, StoryFn } from '@storybook/react'
-import { withDesign } from 'storybook-addon-designs'
 
 export default {
   title: 'Components/Menu',
-  decorators: [withDesign],
+
   parameters: {
     design: {
       type: 'figma',
