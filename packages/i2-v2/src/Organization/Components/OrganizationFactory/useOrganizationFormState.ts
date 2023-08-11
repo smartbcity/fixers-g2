@@ -233,7 +233,7 @@ export const useOrganizationFormState = <T extends Organization = Organization>(
   return {
     formState,
     organization: organization,
-    isLoading: getOrganization.isLoading,
+    isLoading: getOrganization.isInitialLoading,
     getOrganization: getOrganization,
     getInseeOrganization: getInseeOrganizationMemoized
   }
