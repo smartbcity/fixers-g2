@@ -16,6 +16,7 @@ export interface HttpOptions {
   returnType?: "json" | "text" | "objectUrl";
   errorHandler?: (error: Error, responseCode?: number) => void;
   withAccessControl?: boolean;
+  redirect?: RequestRedirect;
 }
 
 export const request = <T>(options: HttpOptions): Promise<Nullable<T>> => {
@@ -29,9 +30,11 @@ export const request = <T>(options: HttpOptions): Promise<Nullable<T>> => {
     errorHandler = () => {},
     returnType = "json",
     withAccessControl = true,
+    redirect,
   } = options;
   return fetch(url, {
     method: method,
+    redirect: redirect,
     headers: {
       ...(jwt !== undefined && jwt !== ""
         ? {
