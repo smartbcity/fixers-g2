@@ -1,13 +1,41 @@
-import { Box, BoxProps, useTheme } from '@mui/material'
+import { Box, BoxProps, useTheme, useMediaQuery } from '@mui/material'
 import { Actions, ActionsProps } from '@smartb/g2-components'
-import React, { useContext, useMemo } from 'react'
+import React, { useContext, useMemo, useState } from 'react'
 import {
   BasicProps,
   MergeMuiElementProps,
   ThemeContext
 } from '@smartb/g2-themes'
-import { Header, HeaderProps } from '../Header'
+import { Header, HeaderContent, HeaderProps } from '../Header'
 import { cx } from '@emotion/css'
+import {
+  PageContext,
+  PageContextProps,
+  pageDefaultContext,
+  usePage
+} from './PageContextProvider'
+import { mergeDeepWith, mergeDeepWithKey, concat } from 'ramda'
+
+const mergeHeaderContent = (key: string, l: any, r: any) => {
+  if (key === 'content') {
+    if (r.lentgh > l.length) {
+      return l.map((el: HeaderContent, index) => ({
+        //@ts-ignore
+        leftPart: concat(el.leftPart ?? [], r[index].leftPart ?? []),
+        //@ts-ignore
+        rightPart: concat(el.rightPart ?? [], r[index].rightPart ?? [])
+      }))
+    } else {
+      return r.map((el: HeaderContent, index) => ({
+        //@ts-ignore
+        leftPart: concat(el.leftPart ?? [], l[index].leftPart ?? []),
+        //@ts-ignore
+        rightPart: concat(el.rightPart ?? [], l[index].rightPart ?? [])
+      }))
+    }
+  }
+  return r
+}
 
 export interface PageBasicProps extends BasicProps {
   /**
@@ -42,31 +70,62 @@ export const Page = (props: PageProps) => {
     ...other
   } = props
 
+  const [pageDescendantContext, setPageDescendantContext] =
+    useState<PageContextProps>(pageDefaultContext)
+  const pageAscendantContext = usePage()
+
   const theme = useTheme()
   const { theme: g2Theme, openDrawer } = useContext(ThemeContext)
+  const isMobile =
+    g2Theme.drawerAbsolutePositionBreakpoint === 'always'
+      ? true
+      : useMediaQuery(
+          theme.breakpoints.down(g2Theme.drawerAbsolutePositionBreakpoint!)
+        )
 
   const actionsDisplay = useMemo(() => {
     if (!bottomActionsProps) return undefined
     return (
       <Actions
-        {...bottomActionsProps}
+        {...mergeDeepWith(
+          concat,
+          pageAscendantContext.bottomActionsProps,
+          mergeDeepWith(
+            concat,
+            pageDescendantContext.bottomActionsProps,
+            bottomActionsProps
+          )
+        )}
         sx={{
           marginTop: !flexContent ? (theme) => theme.spacing(4) : ''
         }}
       />
     )
-  }, [bottomActionsProps, flexContent])
+  }, [
+    bottomActionsProps,
+    flexContent,
+    pageDescendantContext,
+    pageAscendantContext
+  ])
 
   const headerDisplay = useMemo(() => {
     if (!headerProps) return undefined
     return (
       <Header
         strongPadding
-        {...headerProps}
+        {...mergeDeepWithKey(
+          mergeHeaderContent,
+          pageAscendantContext.headerProps,
+          mergeDeepWithKey(
+            mergeHeaderContent,
+            pageDescendantContext.headerProps,
+            headerProps
+          )
+        )}
         sx={{
           paddingLeft:
-            g2Theme.permanentHeader && !openDrawer
-              ? `${g2Theme.drawerWidth + 40}px`
+            g2Theme.permanentHeader && (!openDrawer || isMobile)
+              ? `${g2Theme.drawerWidth + (isMobile ? 5 : 40)}px`
               : undefined,
           transition: g2Theme.permanentHeader
             ? !openDrawer
@@ -83,7 +142,14 @@ export const Page = (props: PageProps) => {
         }}
       />
     )
-  }, [headerProps, g2Theme, openDrawer])
+  }, [
+    headerProps,
+    pageDescendantContext,
+    pageAscendantContext,
+    g2Theme,
+    openDrawer,
+    isMobile
+  ])
 
   return (
     <>
@@ -114,8 +180,15 @@ export const Page = (props: PageProps) => {
           }}
           {...other}
         >
-          {children}
-          {actionsDisplay}
+          <PageContext.Provider
+            value={{
+              ...pageDescendantContext,
+              setPageContext: setPageDescendantContext
+            }}
+          >
+            {children}
+            {actionsDisplay}
+          </PageContext.Provider>
         </Box>
       </Box>
     </>

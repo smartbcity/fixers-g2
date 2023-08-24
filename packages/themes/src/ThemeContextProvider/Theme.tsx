@@ -1,7 +1,8 @@
 import {
   createTheme as createMuiTheme,
   ThemeOptions,
-  Theme as MuiTheme
+  Theme as MuiTheme,
+  Breakpoint
 } from '@mui/material'
 import tinycolor from 'tinycolor2'
 import { mergeDeepRight } from 'ramda'
@@ -18,6 +19,11 @@ export interface Theme {
    * It will be place in a container of the width `drawerWidth`
    */
   permanentHeader?: React.ElementType<any>
+  /**
+   * The breakpoint where the drawer becom absolute above the main content when opened
+   * @default "md"
+   */
+  drawerAbsolutePositionBreakpoint?: number | Breakpoint | 'always'
   /**
    * the url of the logo of the platform
    */
@@ -68,7 +74,8 @@ export const defaultTheme: Theme = {
     '0px 13px 44px rgba(0, 0, 0, 0.29)',
     '0px 14px 48px rgba(0, 0, 0, 0.3)',
     '0px 15px 52px rgba(0, 0, 0, 0.31)'
-  ]
+  ],
+  drawerAbsolutePositionBreakpoint: 'md'
 } // the archetypes theme (maybe not the final version)
 
 export const defaultMaterialUiTheme = (

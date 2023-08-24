@@ -5,6 +5,7 @@ import { Filters, useFilters, FiltersField } from '@smartb/g2-forms'
 import { Action, Button } from '@smartb/g2-components'
 import { Box, Typography } from '@mui/material'
 import { Header, HeaderProps } from '../Header'
+import { PageContextProvider } from './PageContextProvider'
 
 export default {
   title: 'Layout/Page',
@@ -99,7 +100,6 @@ export const Page: StoryFn<PageBasicProps> = (args: PageBasicProps) => {
   )
 
   const headerProps = useMemo((): HeaderProps => {
-    console.log('re-render')
     return {
       content: [
         {
@@ -121,14 +121,26 @@ export const Page: StoryFn<PageBasicProps> = (args: PageBasicProps) => {
     }
   }, [formState, filtersActions, fields])
 
+  const globalHeaderProps = useMemo((): HeaderProps => {
+    return {
+      content: [
+        {
+          rightPart: [<Button key='page-global'>Global Action</Button>]
+        }
+      ]
+    }
+  }, [formState, filtersActions, fields])
+
   return (
-    <AruiPage
-      headerProps={headerProps}
-      bottomActionsProps={{
-        actions: actions
-      }}
-      {...args}
-    />
+    <PageContextProvider headerProps={globalHeaderProps}>
+      <AruiPage
+        headerProps={headerProps}
+        bottomActionsProps={{
+          actions: actions
+        }}
+        {...args}
+      />
+    </PageContextProvider>
   )
 }
 

@@ -113,12 +113,18 @@ export const StandAloneAppLayout = (props: StandAloneAppLayoutProps) => {
     styles
   } = props
   const theme = useTheme()
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'))
+
   const {
     theme: g2Theme,
     openDrawer,
     toggleOpenDrawer
   } = useContext(ThemeContext)
+  const isMobile =
+    g2Theme.drawerAbsolutePositionBreakpoint === 'always'
+      ? true
+      : useMediaQuery(
+          theme.breakpoints.down(g2Theme.drawerAbsolutePositionBreakpoint!)
+        )
 
   const currentOpen = open !== undefined ? open : openDrawer
 
