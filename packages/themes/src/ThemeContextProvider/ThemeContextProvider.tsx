@@ -2,7 +2,6 @@ import React, {
   createContext,
   useCallback,
   useContext,
-  useEffect,
   useMemo,
   useState
 } from 'react'
@@ -13,6 +12,7 @@ import createCache from '@emotion/cache'
 import { TssCacheProvider } from 'tss-react'
 import { mergeDeepRight } from 'ramda'
 import { DeepPartial } from '@smartb/g2-utils'
+import { useDidUpdate } from '@mantine/hooks'
 
 //@ts-ignore
 declare module '@mui/styles/defaultTheme' {
@@ -38,6 +38,7 @@ export interface ThemeContextProviderProps {
   children: React.ReactNode
   theme?: DeepPartial<Theme>
   customMuiTheme?: Partial<ThemeOptions>
+  defaultOpenDrawer?: boolean
 }
 
 export const muiCache = createCache({
@@ -51,7 +52,7 @@ export const tssCache = createCache({
 })
 
 export const ThemeContextProvider = (props: ThemeContextProviderProps) => {
-  const { children, customMuiTheme, theme } = props
+  const { children, customMuiTheme, theme, defaultOpenDrawer } = props
   const [localTheme, setLocalTheme] = React.useState<Theme>(
     theme ? mergeDeepRight(defaultTheme, theme as any) : defaultTheme
   )
@@ -66,11 +67,18 @@ export const ThemeContextProvider = (props: ThemeContextProviderProps) => {
     [customMuiTheme, localTheme]
   )
 
-  const isMobile = useMediaQuery(defaultMuiTheme.breakpoints.down('md'))
+  const isMobile =
+    localTheme.drawerAbsolutePositionBreakpoint === 'always'
+      ? true
+      : useMediaQuery(
+          defaultMuiTheme.breakpoints.down(
+            localTheme.drawerAbsolutePositionBreakpoint!
+          )
+        )
 
-  const [openDrawer, setOpenDrawer] = useState(!isMobile)
+  const [openDrawer, setOpenDrawer] = useState(defaultOpenDrawer ?? !isMobile)
 
-  useEffect(() => {
+  useDidUpdate(() => {
     if (isMobile) {
       setOpenDrawer(false)
     } else {

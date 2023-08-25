@@ -41,6 +41,7 @@
   },
   "dependencies": {
     "@emotion/cache": "^11.10.5",
+    "@mantine/hooks": "^4.2.12",
     "ramda": "^0.28.0",
     "tinycolor2": "^1.6.0",
     "tss-react": "^3.7.0"
