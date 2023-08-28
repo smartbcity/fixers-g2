@@ -1,6 +1,6 @@
 {
   "name": "@smartb/g2-components",
-  "version": "1.0.0-alpha.170",
+  "version": "1.0.0-alpha.171",
   "repository": "https://gitlab.smartb.city/fixers/g2.git",
   "author": "Adrien Poupard <adrien@smartb.city>",
   "license": "Apache-2.0",
@@ -28,7 +28,7 @@
     "dist"
   ],
   "devDependencies": {
-    "@smartb/g2-forms": "1.0.0-alpha.170",
+    "@smartb/g2-forms": "1.0.0-alpha.171",
     "@types/react": "^18.0.28",
     "@types/react-dropzone": "^5.1.0"
   },
@@ -44,9 +44,9 @@
     "@mantine/hooks": "^4.2.12",
     "@mui/icons-material": "^5.11.11",
     "@mui/lab": "5.0.0-alpha.122",
-    "@smartb/g2-notifications": "1.0.0-alpha.170",
-    "@smartb/g2-themes": "1.0.0-alpha.170",
-    "@smartb/g2-utils": "1.0.0-alpha.170",
+    "@smartb/g2-notifications": "1.0.0-alpha.171",
+    "@smartb/g2-themes": "1.0.0-alpha.171",
+    "@smartb/g2-utils": "1.0.0-alpha.171",
     "react-dropzone": "^11.3.2",
     "react-i18next": "^12.2.0",
     "react-router-dom": "^6.8.2"

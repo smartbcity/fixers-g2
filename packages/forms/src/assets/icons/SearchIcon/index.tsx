@@ -1,16 +1,18 @@
 import React from 'react'
 import { ReactComponent } from './search-icon.svg'
-import { MergeReactElementProps } from '@smartb/g2-utils'
+import { SvgIcon, SvgIconProps } from '@mui/material'
 
-interface SearchIconProps {
-  color?: string
+export const SearchIcon = (props: SvgIconProps) => {
+  const { sx, ...other } = props
+  return (
+    <SvgIcon
+      sx={{
+        color: '#FFFFFF',
+        ...sx
+      }}
+      component={ReactComponent}
+      inheritViewBox
+      {...other}
+    />
+  )
 }
-
-type Props = MergeReactElementProps<'svg', SearchIconProps>
-
-export const SearchIcon = React.forwardRef(
-  (props: Props, ref: React.Ref<SVGSVGElement>) => {
-    const { color = '#FFFFFF' } = props
-    return <ReactComponent fill={color} ref={ref} {...props} />
-  }
-)

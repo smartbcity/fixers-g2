@@ -104,7 +104,6 @@ export const FormComposable = <RENDERER extends ElementRenderersConfig>(
     actionsProps,
     fields,
     customFactories,
-    onSubmit,
     className,
     onChange,
     classes,

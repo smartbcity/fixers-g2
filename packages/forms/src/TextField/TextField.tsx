@@ -277,7 +277,9 @@ export const TextField = React.forwardRef(
         ) {
           return (
             <SearchIcon
-              color='#323338'
+              sx={{
+                color: '#323338'
+              }}
               onClick={!disabled ? onSearchMemoisied : undefined}
               className={defaultStyles.cx(
                 localStyles.classes.searchIcon,
