@@ -115,6 +115,7 @@ export const FormComposable = <RENDERER extends ElementRenderersConfig>(
     display = 'flex',
     gridColumnNumber = 2,
     sx,
+    children,
     ...other
   } = props
 
@@ -167,6 +168,7 @@ export const FormComposable = <RENDERER extends ElementRenderersConfig>(
               elements={fieldElement}
             />
           </Stack>
+          {children}
         </ActionsWrapper>
       </Form>
     </FormikProvider>
