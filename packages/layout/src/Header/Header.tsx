@@ -124,8 +124,6 @@ export const Header = (props: HeaderProps) => {
     ...rest
   } = props
 
-  console.log(content)
-
   const theme = useTheme()
 
   const contentDisplay = useMemo(
