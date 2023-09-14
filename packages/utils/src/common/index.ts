@@ -1,3 +1,5 @@
+import { t } from "i18next";
+
 export const objToArray = <T>(obj: {
   [key: string]: T;
 }): (T & { key: string })[] => {
@@ -151,4 +153,14 @@ export const insertObjectIdsInsideRoutes = <Routes extends string = string>(
       return str;
     })
     .join("/");
+};
+
+export const getTranslatedMessageOrUndefined = (
+  key: string
+): string | undefined => {
+  const message = t(key);
+  if (message === key) {
+    return undefined;
+  }
+  return message;
 };

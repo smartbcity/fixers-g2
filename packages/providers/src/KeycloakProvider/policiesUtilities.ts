@@ -15,8 +15,8 @@ type RemoveFirstParameter<T extends any[]> = T extends [any, ...infer U]
 
 export type ModifiedPolicies<T> = {
   [K in keyof T]: {
-    //@ts-ignore
     [P in keyof T[K]]: (
+      //@ts-ignore
       ...args: RemoveFirstParameter<Parameters<T[K][P]>>
     ) => boolean
   }

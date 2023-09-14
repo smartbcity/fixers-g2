@@ -103,7 +103,7 @@ export const ChoicedResetPassword = (props: ChoicedResetPasswordProps) => {
   )
 
   const userResetPassword = useUserResetPassword({
-    apiUrl: i2Config().userUrl,
+    apiUrl: i2Config().url,
     jwt: keycloak.token,
     options: {
       ...userUpdatePasswordOptions,

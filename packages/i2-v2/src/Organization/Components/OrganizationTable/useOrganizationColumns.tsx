@@ -65,7 +65,7 @@ export const useOrganizationColumns = <T extends Organization = Organization>(
         ? {
             actions: {
               id: 'moreoptions',
-              Cell: ({ row }) => (
+              cell: ({ row }) => (
                 <MoreOptions
                   options={getActions(row.original)}
                   onClick={(e) => e.stopPropagation()}

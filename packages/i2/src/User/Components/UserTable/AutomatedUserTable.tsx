@@ -48,7 +48,7 @@ export const AutomatedUserTable = <T extends User = User>(
   const { keycloak } = useAuth()
 
   const getUsers = useGetUsers({
-    apiUrl: i2Config().userUrl,
+    apiUrl: i2Config().url,
     jwt: keycloak.token,
     queryParams: {
       page: localPage - 1,
