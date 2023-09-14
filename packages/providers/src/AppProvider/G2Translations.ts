@@ -77,6 +77,44 @@ export const G2Translations = {
       required: 'Obligatoire',
       noData: 'Aucune donnée trouvé',
       noOrganization: "Vous n'êtes pas inclut dans une organisation"
+    },
+    http: {
+      '600': "{{errorMessage}} à cause d'un problème de connexion",
+      '401':
+        "Vous essayez d'accéder à une ressource à laquelle vous n'êtes pas autorisé",
+      '500':
+        "{{errorMessage}} à cause d'un problème technique, si ce problème persiste contactez un administrateur",
+      errors: {
+        organizationPage:
+          "La liste des organisations n'a pas pu être récupérée",
+        organizationGet: "Le détail de l'organisation n'a pas pu être répuré",
+        organizationUpdate: "L'organisation n'a pas pu être mise à jour",
+        organizationCreate: "L'organisation n'a pas pu être créée",
+        organizationUploadLogo: "Le logo de l'organisation n'a pu être envoyé",
+        organizationDisable: "L'organisation n'a pas pu être supprimée",
+        userPage: "La liste des utilisateurs n'a pas pu être récupérée",
+        userGet: "le détail de l'utlisateur n'a pas pu être répuré",
+        userUpdate: "L'utilisateur n'a pas pu être mis à jour",
+        userCreate: "L'utilisateur n'a pas pu être créé",
+        userUpdatePassword:
+          "Le mot de passe de l'utlisateur n'a pas pu être mis à jour",
+        userResetPassword:
+          "La demande de renouvellement de mot de passe de l'utlisateur n'a pas pu être envoyée",
+        userUpdateEmail: "L'email de l'utilisateur n'a pas pu être mis à jour",
+        userDisable: "L'utilisateur n'a pas pu être supprimé"
+      },
+      success: {
+        organizationUpdate: "L'organisation a bien été mise à jour",
+        organizationCreate: "L'organisation a bien été créée",
+        organizationDisable: "L'organisation a bien été supprimée",
+        userUpdate: "L'utilisateur a bien été mis à jour",
+        userCreate: "L'utilisateur a bien été créé",
+        userUpdatePassword:
+          "Le mot de passe de l'utlisateur a bien été mis à jour",
+        userResetPassword:
+          "La demande de renouvellement de mot de passe de l'utlisateur a bien été envoyée",
+        userDisable: "L'utilisateur a bien été supprimé"
+      }
     }
   },
   en: {
@@ -153,6 +191,41 @@ export const G2Translations = {
       required: 'Required',
       noData: 'No data found',
       noOrganization: 'You are not included in an organization'
+    },
+    http: {
+      '600': '{{errorMessage}} due to a network issue',
+      '401': 'You are trying to access a ressource you are not authorized to',
+      '500':
+        '{{errorMessage}} due to a technical issue, if this error occurs again please contact an administrator',
+      backendErrors: {},
+      errors: {
+        organizationPage: 'The list of organizations could not be retrieved',
+        organizationGet: 'The organization details could not be retrieved',
+        organizationUpdate: 'The organization could not be updated',
+        organizationCreate: 'The organization could not be created',
+        organizationUploadLogo: "The organization's logo could not be uploaded",
+        organizationDisable: 'The organization could not be deleted',
+        userPage: 'The list of users could not be retrieved',
+        userGet: 'User details could not be retrieved',
+        userUpdate: 'The user could not be updated',
+        userCreate: 'The user could not be created',
+        userUpdatePassword: "The user's password could not be updated",
+        userResetPassword:
+          "The request to reset the user's password could not be sent",
+        userUpdateEmail: "The user's email could not be updated",
+        userDisable: 'The user could not be deleted'
+      },
+      success: {
+        organizationUpdate: 'The organization has been updated successfully',
+        organizationCreate: 'The organization has been created successfully',
+        organizationDisable: 'The organization has been deleted successfully',
+        userUpdate: 'The user has been updated successfully',
+        userCreate: 'The user has been created successfully',
+        userUpdatePassword: "The user's password has been updated successfully",
+        userResetPassword:
+          "The request to reset the user's password has been sent successfully",
+        userDisable: 'The user has been deleted successfully'
+      }
     }
   }
 }
