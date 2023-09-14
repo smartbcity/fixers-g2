@@ -56,6 +56,8 @@ export const initI18next = <T extends { [key: string]: string } = {}>(
         'fr',
         'g2',
         {
+          ...G2Translations.fr,
+          ...translationsOverrides?.fr,
           g2: {
             ...G2Translations.fr.g2,
             ...translationsOverrides?.fr?.g2
@@ -68,6 +70,8 @@ export const initI18next = <T extends { [key: string]: string } = {}>(
         'en',
         'g2',
         {
+          ...G2Translations.en,
+          ...translationsOverrides?.en,
           g2: {
             ...G2Translations.en.g2,
             ...translationsOverrides?.en?.g2
