@@ -1,6 +1,6 @@
 {
   "name": "@smartb/g2-storybook-documentation",
-  "version": "1.0.0-alpha.172",
+  "version": "1.0.0-alpha.173",
   "description": "Components for storybook documentation",
   "author": "SmartB",
   "license": "Apache-2.0",
@@ -36,8 +36,8 @@
     "react-dom": "^18.2.0"
   },
   "dependencies": {
-    "@smartb/g2-themes": "1.0.0-alpha.172",
-    "@smartb/g2-utils": "1.0.0-alpha.172",
+    "@smartb/g2-themes": "1.0.0-alpha.173",
+    "@smartb/g2-utils": "1.0.0-alpha.173",
     "@storybook/addon-docs": "^7.2.1"
   },
   "publishConfig": {

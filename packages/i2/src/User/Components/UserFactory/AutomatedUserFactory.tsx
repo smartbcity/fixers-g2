@@ -103,7 +103,7 @@ export const AutomatedUserFactory = (props: AutomatedUserFactoryProps) => {
   const queryClient = useQueryClient()
 
   const getUser = useGetUser({
-    apiUrl: i2Config().userUrl,
+    apiUrl: i2Config().url,
     jwt: keycloak.token,
     userId: userId,
     options: getUserOptions
@@ -135,20 +135,20 @@ export const AutomatedUserFactory = (props: AutomatedUserFactoryProps) => {
   )
 
   const updateUser = useUpdateUser({
-    apiUrl: i2Config().userUrl,
+    apiUrl: i2Config().url,
     jwt: keycloak.token,
     options: updateUserOptionsMemo
   })
 
   const createUser = useCreateUser({
-    apiUrl: i2Config().userUrl,
+    apiUrl: i2Config().url,
     jwt: keycloak.token,
     options: createUserOptionsMemo,
     organizationId: organizationId
   })
 
   const updateEmail = useUserUpdateEmail({
-    apiUrl: i2Config().userUrl,
+    apiUrl: i2Config().url,
     jwt: keycloak.token,
     options: userUpdateEmailOptions
   })
@@ -194,7 +194,7 @@ export const AutomatedUserFactory = (props: AutomatedUserFactoryProps) => {
 
   const checkEmailValidity = useCallback(
     async (email: string) => {
-      return userExistsByEmail(email, i2Config().userUrl, keycloak.token)
+      return userExistsByEmail(email, i2Config().url, keycloak.token)
     },
     [keycloak.token]
   )

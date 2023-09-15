@@ -3,7 +3,7 @@
   "repository": "https://gitlab.smartb.city/fixers/g2.git",
   "author": "SmartB",
   "license": "Apache-2.0",
-  "version": "1.0.0-alpha.172",
+  "version": "1.0.0-alpha.173",
   "description": "Utility package used in the g2 packages.",
   "private": false,
   "main": "dist/index.js",
@@ -33,6 +33,7 @@
   "peerDependencies": {
     "@emotion/css": "^11.10.6",
     "@mui/material": "^5.11.12",
+    "notistack": "3.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },

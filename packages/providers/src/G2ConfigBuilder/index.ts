@@ -1,6 +1,10 @@
+export * from './RequestProps'
 export interface I2Config {
-  orgUrl: string
-  userUrl: string
+  url: string
+}
+
+export interface PlatformConfig {
+  url: string
 }
 
 export const i2Config: () => I2Config = () => {
@@ -17,12 +21,18 @@ export const fsConfig: () => FsConfig = () => {
   return window._env_?.config?.fs
 }
 
+export const platFormConfig: () => FsConfig = () => {
+  // @ts-ignore
+  return window._env_?.config?.platform
+}
+
 export interface G2Config {
   keycloak: {
     realm: string
     clientId: string
     url: string
   }
+  platform: PlatformConfig
   i2: I2Config
   fs: FsConfig
 }

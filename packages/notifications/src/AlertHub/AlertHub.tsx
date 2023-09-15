@@ -1,7 +1,12 @@
 import React, { forwardRef, useCallback } from 'react'
-import { SnackbarProvider, useSnackbar, SnackbarProviderProps, SharedProps } from 'notistack'
+import {
+  SnackbarProvider,
+  useSnackbar,
+  SnackbarProviderProps,
+  SharedProps
+} from 'notistack'
 import { Alert, AlertProps } from '../Alert/Alert'
-// import { Grow } from '@mui/material'
+import { Grow } from '@mui/material'
 import { makeG2STyles } from '@smartb/g2-themes'
 
 const useSytles = makeG2STyles()({
@@ -21,10 +26,9 @@ export interface AlertHubProps extends SnackbarProviderProps {
   children: React.ReactNode
 }
 
-
-declare module "notistack" {
+declare module 'notistack' {
   interface VariantOverrides {
-    G2Alert: true;
+    G2Alert: true
   }
 }
 
@@ -40,8 +44,7 @@ export const AlertHub = (props: AlertHubProps) => {
         G2Alert: ClosableAlert
       }}
       maxSnack={3}
-      //@ts-ignore
-      // TransitionComponent={Grow} transition component is bugged in notistack 3.0.0-alpha.7
+      TransitionComponent={Grow}
       {...other}
     >
       {children}
@@ -49,21 +52,34 @@ export const AlertHub = (props: AlertHubProps) => {
   )
 }
 
-const ClosableAlert = forwardRef<HTMLElement, Omit<AlertProps & SharedProps & {persist: boolean, iconVariant: any}, 'onClose'>>(
-  (props, ref) => {
-    const { key, id = key, className, persist, autoHideDuration, hideIconVariant, iconVariant, ...other } = props
-    const { classes, cx } = useSytles()
-    const { closeSnackbar } = useSnackbar()
-    const handleClose = useCallback(() => closeSnackbar(id), [id])
-    return (
-      <Alert
-        key={key}
-        id={id}
-        className={cx(classes.alert, className)}
-        onClose={handleClose}
-        ref={ref}
-        {...other}
-      />
-    )
-  }
-)
+const ClosableAlert = forwardRef<
+  HTMLElement,
+  Omit<
+    AlertProps & SharedProps & { persist: boolean; iconVariant: any },
+    'onClose'
+  >
+>((props, ref) => {
+  const {
+    key,
+    id = key,
+    className,
+    persist,
+    autoHideDuration,
+    hideIconVariant,
+    iconVariant,
+    ...other
+  } = props
+  const { classes, cx } = useSytles()
+  const { closeSnackbar } = useSnackbar()
+  const handleClose = useCallback(() => closeSnackbar(id), [id])
+  return (
+    <Alert
+      key={key}
+      id={id}
+      className={cx(classes.alert, className)}
+      onClose={handleClose}
+      ref={ref}
+      {...other}
+    />
+  )
+})

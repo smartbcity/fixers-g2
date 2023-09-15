@@ -93,7 +93,7 @@ export const useUserColumns = <T extends User = User>(
         ? {
             actions: {
               id: 'moreoptions',
-              Cell: ({ row }) => (
+              cell: ({ row }) => (
                 <MoreOptions
                   options={getActions(row.original)}
                   onClick={(e) => e.stopPropagation()}

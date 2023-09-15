@@ -46,7 +46,7 @@ export const AutomatedOrganizationTable = <
   const { keycloak } = useAuth()
 
   const getOrganizations = useGetOrganizations<T>({
-    apiUrl: i2Config().orgUrl,
+    apiUrl: i2Config().url,
     jwt: keycloak.token,
     queryParams: {
       page: localPage - 1,
