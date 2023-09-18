@@ -67,6 +67,11 @@ export const TableContainer = styled(BasicTableContainer)((props) => {
       ? {
           pointerEvents: 'auto'
         }
+      : undefined,
+    '& .AruiTable-tableCell .MuiTypography-root': !!getRowLink
+      ? {
+          fontSize: '14px'
+        }
       : undefined
   }
   if (variant === 'grounded') {
