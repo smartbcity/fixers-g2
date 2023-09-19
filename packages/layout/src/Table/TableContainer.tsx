@@ -60,19 +60,20 @@ export const TableContainer = styled(BasicTableContainer)((props) => {
       ? {
           zIndex: 2,
           position: 'relative',
-          pointerEvents: 'none'
+          pointerEvents: 'none',
+          fontSize: '0.875rem'
         }
-      : undefined,
+      : {
+          fontSize: '0.875rem'
+        },
     '& .AruiTable-tableCell :is(button, a, label)': !!getRowLink
       ? {
           pointerEvents: 'auto'
         }
       : undefined,
-    '& .AruiTable-tableCell .MuiTypography-root': !!getRowLink
-      ? {
-          fontSize: '14px'
-        }
-      : undefined
+    '& .AruiTable-tableCell p': {
+      fontSize: '0.875rem'
+    }
   }
   if (variant === 'grounded') {
     return {
