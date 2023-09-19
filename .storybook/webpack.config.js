@@ -12,7 +12,8 @@ module.exports = ({ config }) => {
   }
   config.module.rules.push({
     test: /\.svg$/,
-    use: ["@svgr/webpack"],
+    use: ["@svgr/webpack", "url-loader"],
+    type: "javascript/auto",
   });
   // //unable to load react-leaflet optionnal chaining
   // config.module.rules.push({

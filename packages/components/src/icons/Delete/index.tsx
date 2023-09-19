@@ -1,5 +1,5 @@
 import React from 'react'
-import ReactComponent from './delete.svg'
+import { ReactComponent } from './delete.svg'
 import { MergeReactElementProps } from '@smartb/g2-utils'
 
 interface DeleteProps {

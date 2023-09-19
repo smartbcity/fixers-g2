@@ -1,5 +1,5 @@
 import React from 'react'
-import ReactComponent from './select.svg'
+import { ReactComponent } from './select.svg'
 import { SvgIcon, SvgIconProps } from '@mui/material'
 
 export const SelectIcon = (props: SvgIconProps) => {

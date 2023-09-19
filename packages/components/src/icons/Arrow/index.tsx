@@ -1,5 +1,6 @@
 import React from 'react'
-import ReactComponent from './arrow-left.svg'
+import url, { ReactComponent } from './arrow-left.svg'
+console.log(url, ReactComponent)
 import { MergeReactElementProps } from '@smartb/g2-utils'
 
 interface ArrowProps {

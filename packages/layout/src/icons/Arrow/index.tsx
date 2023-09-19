@@ -1,5 +1,5 @@
 import React from 'react'
-import ReactComponent from './arrow-left.svg'
+import { ReactComponent } from './arrow-left.svg'
 import { MergeReactElementProps } from '@smartb/g2-utils'
 
 interface ArrowProps {

@@ -1,5 +1,5 @@
 import React from 'react'
-import ReactComponent from './clipboard-icon.svg'
+import { ReactComponent } from './clipboard-icon.svg'
 import { MergeReactElementProps } from '@smartb/g2-utils'
 import { useTheme } from '@smartb/g2-themes'
 
