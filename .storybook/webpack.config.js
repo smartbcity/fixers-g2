@@ -4,15 +4,40 @@ module.exports = ({ config }) => {
   // Add SVGR Loader to load svg
   // ========================================================
   // Remove svg rules from existing webpack rule
-  // const assetRule = config.module.rules.find(({ test }) => test.test(".svg"));
-  // const assetLoader = {
-  //   loader: assetRule.loader,
-  //   options: assetRule.options || assetRule.query,
-  // };
-  // config.module.rules.unshift({
-  //   test: /\.svg$/,
-  //   use: ["@svgr/webpack", assetLoader],
-  // });
+  const assetRule = config.module.rules.find((rule) =>
+    rule?.test?.test(".svg")
+  );
+  if (assetRule) {
+    assetRule.exclude = /\.svg$/;
+  }
+  // config.module.rules
+  //     .filter(rule => rule?.test?.test('.svg'))
+  //     .forEach(rule => rule.exclude = /\.svg$/i);
+
+  //   // add SVGR instead
+  //   config.module.rules.push({
+  //     test: /\.svg$/,
+  //     use: [
+  //       {
+  //         loader: '@svgr/webpack'
+  //       },
+  //       {
+  //         loader: 'file-loader',
+  //         options: {
+  //           name: 'static/media/[path][name].[ext]'
+  //         }
+  //       }
+  //     ],
+  //     type: 'javascript/auto',
+  //     issuer: {
+  //       and: [/\.(ts|tsx|js|jsx|md|mdx)$/]
+  //     }
+  //   });
+  config.module.rules.push({
+    test: /\.svg$/,
+    use: ["@svgr/webpack"],
+  });
+  console.log(config.module.rules);
   // //unable to load react-leaflet optionnal chaining
   // config.module.rules.push({
   //   test: /\.(js|jsx)$/,
