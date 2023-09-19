@@ -1,5 +1,5 @@
 import React from 'react'
-import { ReactComponent } from './RoundedArrow.svg'
+import ReactComponent from './RoundedArrow.svg'
 import { MergeReactElementProps } from '@smartb/g2-utils'
 
 interface RoundedArrowProps {

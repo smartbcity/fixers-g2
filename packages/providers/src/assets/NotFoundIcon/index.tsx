@@ -1,5 +1,5 @@
 import React from 'react'
-import { ReactComponent } from './404.svg'
+import ReactComponent from './404.svg'
 
 export const NotFoundIcon = React.forwardRef(
   (
