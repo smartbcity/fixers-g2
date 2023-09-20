@@ -71,7 +71,7 @@ export const TableContainer = styled(BasicTableContainer)((props) => {
           pointerEvents: 'auto'
         }
       : undefined,
-    '& .AruiTable-tableCell p': {
+    '& .AruiTable-tableCell p,a': {
       fontSize: '0.875rem'
     }
   }
