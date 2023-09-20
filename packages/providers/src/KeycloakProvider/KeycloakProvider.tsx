@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { OidcProvider, OidcConfiguration } from '@axa-fr/react-oidc'
 import type { OidcProviderProps } from '@axa-fr/react-oidc/dist/OidcProvider'
+import { VanillaOidc } from '@axa-fr/oidc-client'
 import { g2Config } from '../G2ConfigBuilder'
 import { LoadingProviders } from '../LoadingProviders'
 
@@ -26,6 +27,13 @@ export const KeycloakProvider = (props: KeycloakProviderProps) => {
       loadingComponent={LoadingProviders}
       authenticatingComponent={LoadingProviders}
       callbackSuccessComponent={LoadingProviders}
+      sessionLostComponent={() => {
+        useEffect(() => {
+          VanillaOidc.get('default')?.loginAsync()
+        }, [])
+
+        return <></>
+      }}
       {...others}
     >
       {children}
