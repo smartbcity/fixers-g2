@@ -71,7 +71,7 @@ export interface useOrganizationFormStateProps<
   /**
    * provide this function to extend the initialValues passes to the formComposable
    */
-  extendInitialValues?: (organization: T) => any
+  extendInitialValues?: (organization?: T) => any
 }
 
 export const useOrganizationFormState = <T extends Organization = Organization>(
@@ -206,9 +206,7 @@ export const useOrganizationFormState = <T extends Organization = Organization>(
         : undefined),
       //@ts-ignore
       roles: initialRoles,
-      ...(extendInitialValues && organization
-        ? extendInitialValues(organization)
-        : undefined)
+      ...(extendInitialValues ? extendInitialValues(organization) : undefined)
     }),
     [initialRoles, organization, extendInitialValues]
   )
