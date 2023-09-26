@@ -1,6 +1,6 @@
 {
   "name": "@smartb/g2-s2",
-  "version": "1.0.0-alpha.176",
+  "version": "1.0.0-alpha.177",
   "repository": "https://gitlab.smartb.city/fixers/g2.git",
   "author": "Adrien Poupard <adrien@smartb.city>",
   "license": "Apache-2.0",
@@ -38,8 +38,8 @@
     "@types/react": "^18.0.28"
   },
   "dependencies": {
-    "@smartb/g2-themes": "1.0.0-alpha.176",
-    "@smartb/g2-utils": "1.0.0-alpha.176",
+    "@smartb/g2-themes": "1.0.0-alpha.177",
+    "@smartb/g2-utils": "1.0.0-alpha.177",
     "mermaid": "^8.9.2",
     "vis-data": "^7.1.2",
     "vis-network": "^9.0.0"
