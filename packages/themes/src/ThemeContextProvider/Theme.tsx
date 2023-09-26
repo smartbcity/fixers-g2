@@ -201,7 +201,10 @@ export const defaultMaterialUiTheme = (
       MuiTableCell: {
         styleOverrides: {
           root: {
-            padding: '12px'
+            padding: '12px',
+            '& p,a': {
+              fontSize: '0.875rem'
+            }
           }
         }
       }

@@ -70,10 +70,7 @@ export const TableContainer = styled(BasicTableContainer)((props) => {
       ? {
           pointerEvents: 'auto'
         }
-      : undefined,
-    '& .AruiTable-tableCell p,a': {
-      fontSize: '0.875rem'
-    }
+      : undefined
   }
   if (variant === 'grounded') {
     return {
@@ -109,7 +106,6 @@ export const TableContainer = styled(BasicTableContainer)((props) => {
           alignSelf: 'center'
         },
       '& .AruiTable-table': {
-        display: 'inline-block',
         width: '100%'
       }
     }
