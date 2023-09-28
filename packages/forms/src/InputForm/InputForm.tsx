@@ -212,7 +212,6 @@ export const InputForm: InputFormComponent = React.forwardRef(
         <InputLabel
           htmlFor={id}
           className={defaultStyles.cx(
-            defaultStyles.classes.label,
             size === 'small' && defaultStyles.classes.labelSmall,
             classes?.label,
             'AruiInputForm-label'

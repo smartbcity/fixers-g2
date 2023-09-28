@@ -207,6 +207,17 @@ export const defaultMaterialUiTheme = (
             }
           }
         }
+      },
+      MuiInputLabel: {
+        styleOverrides: {
+          root: {
+            fontSize: '0.875rem',
+            marginBottom: `${theme.spacing}px`,
+            fontWeight: 600,
+            color: '#000000',
+            flexShrink: 0
+          }
+        }
       }
     },
     palette: {

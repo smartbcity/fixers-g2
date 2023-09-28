@@ -60,12 +60,9 @@ export const TableContainer = styled(BasicTableContainer)((props) => {
       ? {
           zIndex: 2,
           position: 'relative',
-          pointerEvents: 'none',
-          fontSize: '0.875rem'
+          pointerEvents: 'none'
         }
-      : {
-          fontSize: '0.875rem'
-        },
+      : undefined,
     '& .AruiTable-tableCell :is(button, a, label)': !!getRowLink
       ? {
           pointerEvents: 'auto'

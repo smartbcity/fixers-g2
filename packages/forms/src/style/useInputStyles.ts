@@ -8,13 +8,6 @@ export const useInputStyles = makeG2STyles()((theme) => ({
   root: {
     position: 'relative'
   },
-  label: {
-    marginBottom: theme.spacing,
-    fontSize: '0.875rem',
-    fontWeight: 600,
-    color: '#000000',
-    flexShrink: 0
-  },
   labelSmall: {
     fontSize: '0.813rem'
   },

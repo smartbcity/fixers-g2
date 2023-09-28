@@ -50,15 +50,10 @@ export const initI18next = <T extends { [key: string]: string } = {}>(
       ...options
     })
     .then(() => {
-      console.log('i18n initiated')
-      console.log(JSON.stringify(i18n))
-      console.log('fetching local static translations files')
       // Fetch translations from the backend
       return i18n.reloadResources()
     })
     .then(() => {
-      console.log(JSON.stringify(i18n))
-      console.log('loading g2 translation file')
       // Merge translations from the backend with the initial translations
       i18n.addResourceBundle(
         'fr',
@@ -88,7 +83,6 @@ export const initI18next = <T extends { [key: string]: string } = {}>(
         true,
         false
       )
-      console.log(JSON.stringify(i18n))
     })
   return i18n
 }

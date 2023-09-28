@@ -241,20 +241,7 @@ export const DocumentHandler = (props: DocumentHandlerProps) => {
   if (uploaded) {
     return (
       <>
-        {outterLabel && (
-          <InputLabel
-            htmlFor={id}
-            sx={{
-              marginBottom: (theme) => theme.spacing(1),
-              fontSize: '0.875rem',
-              fontWeight: 600,
-              color: '#000000',
-              flexShrink: 0
-            }}
-          >
-            {outterLabel}
-          </InputLabel>
-        )}
+        {outterLabel && <InputLabel htmlFor={id}>{outterLabel}</InputLabel>}
         {/* @ts-ignore */}
         <Stack
           {...otherProps}
@@ -279,20 +266,7 @@ export const DocumentHandler = (props: DocumentHandlerProps) => {
   }
   return (
     <>
-      {outterLabel && (
-        <InputLabel
-          htmlFor={id}
-          sx={{
-            marginBottom: (theme) => theme.spacing(1),
-            fontSize: '0.875rem',
-            fontWeight: 600,
-            color: '#000000',
-            flexShrink: 0
-          }}
-        >
-          {outterLabel}
-        </InputLabel>
-      )}
+      {outterLabel && <InputLabel htmlFor={id}>{outterLabel}</InputLabel>}
       <Dropzone
         className={cx('AruiDocumentHandler-root', className)}
         style={style}
