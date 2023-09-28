@@ -122,8 +122,8 @@ export const errorHandler =
     const sendAlert = (errorType: string) => {
       const message = getTranslatedMessageOrUndefined("http.errors." + key);
       if (message) {
-        //@ts-ignore
         enqueueSnackbar(t("http." + errorType, { errorMessage: message }), {
+          //@ts-ignore
           variant: "G2Alert",
           severity: "error",
         });
@@ -155,8 +155,8 @@ export const backendErrorHandler = (
 export const successHandler = (key: string) => {
   const message = getTranslatedMessageOrUndefined("http.success." + key);
   if (message) {
-    //@ts-ignore
     enqueueSnackbar(message, {
+      //@ts-ignore
       variant: "G2Alert",
       severity: "success",
       persist: false,

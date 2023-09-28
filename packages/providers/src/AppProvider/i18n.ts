@@ -44,6 +44,9 @@ export const initI18next = <T extends { [key: string]: string } = {}>(
 
       // fallback to g2 translation to make g2 translations overridable
       fallbackNS: 'g2',
+      react: {
+        bindI18nStore: 'added'
+      },
       ...options
     })
     .then(() => {

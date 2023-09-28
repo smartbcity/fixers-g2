@@ -13,6 +13,7 @@ export interface Theme {
   borderRadius: number
   spacing: number
   drawerWidth: number
+  fontSize: FontSizes
   /**
    * Here you can pass the header put to the right in the page component and above the drawer menu.
    * It should use the prop openDrawer and toggleOpenDrawer to update the drawer state.
@@ -45,6 +46,12 @@ export interface ThemeColors {
   info: string
 }
 
+export interface FontSizes {
+  table: string
+  label: string
+  button: string
+}
+
 export const defaultTheme: Theme = {
   name: 'default',
   borderRadius: 8,
@@ -59,6 +66,11 @@ export const defaultTheme: Theme = {
     success: '#159D50',
     warning: '#FF9900',
     info: '#3C78D8'
+  },
+  fontSize: {
+    table: '0.875rem',
+    label: '0.875rem',
+    button: '0.875rem'
   },
   shadows: [
     'none',
@@ -201,7 +213,21 @@ export const defaultMaterialUiTheme = (
       MuiTableCell: {
         styleOverrides: {
           root: {
-            padding: '12px'
+            padding: '12px',
+            '& p,a': {
+              fontSize: `${theme.fontSize.table}`
+            }
+          }
+        }
+      },
+      MuiInputLabel: {
+        styleOverrides: {
+          root: {
+            fontSize: `${theme.fontSize.label}`,
+            marginBottom: `${theme.spacing}px`,
+            fontWeight: 600,
+            color: '#000000',
+            flexShrink: 0
           }
         }
       }
@@ -238,7 +264,7 @@ export const defaultMaterialUiTheme = (
       button: {
         fontWeight: 600,
         textTransform: 'none',
-        fontSize: '0.875rem',
+        fontSize: `${theme.fontSize.button}`,
         lineHeight: 'unset'
       },
       subtitle2: {

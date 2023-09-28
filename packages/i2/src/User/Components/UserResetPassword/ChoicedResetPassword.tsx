@@ -140,14 +140,7 @@ export const ChoicedResetPassword = (props: ChoicedResetPasswordProps) => {
 
   return (
     <Box>
-      <InputLabel
-        sx={{
-          marginBottom: (theme) => theme.spacing(1),
-          fontSize: '0.875rem',
-          fontWeight: 600,
-          color: '#000000'
-        }}
-      >
+      <InputLabel>
         {choicedResetPasswordstrings?.passwordLabel ?? 'Mot de passe'}
       </InputLabel>
       <Link onClick={onToggle} sx={{ color: '#1E88E5', cursor: 'pointer' }}>

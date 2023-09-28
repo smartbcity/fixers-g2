@@ -103,7 +103,6 @@ export const TableContainer = styled(BasicTableContainer)((props) => {
           alignSelf: 'center'
         },
       '& .AruiTable-table': {
-        display: 'inline-block',
         width: '100%'
       }
     }

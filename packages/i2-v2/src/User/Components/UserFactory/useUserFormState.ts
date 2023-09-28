@@ -75,7 +75,7 @@ export interface UseUserFormStateProps<T extends User = User> {
   /**
    * provide this function to extend the initialValues passes to the formComposable
    */
-  extendInitialValues?: (user: T) => any
+  extendInitialValues?: (user?: T) => any
 }
 
 export const useUserFormState = <T extends User = User>(
@@ -229,7 +229,7 @@ export const useUserFormState = <T extends User = User>(
         user?.roles && user?.roles?.length > 0
         ? user?.roles[0]
         : defaultRoles[0],
-      ...(extendInitialValues && user ? extendInitialValues(user) : undefined)
+      ...(extendInitialValues ? extendInitialValues(user) : undefined)
     }),
     [user, multipleRoles, defaultRoles, extendInitialValues]
   )

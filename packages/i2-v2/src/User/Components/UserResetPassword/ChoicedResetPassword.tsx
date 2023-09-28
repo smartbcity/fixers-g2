@@ -108,7 +108,6 @@ export const ChoicedResetPassword = (props: ChoicedResetPasswordProps) => {
       <InputLabel
         sx={{
           marginBottom: (theme) => theme.spacing(1),
-          fontSize: '0.875rem',
           fontWeight: 600,
           color: '#000000'
         }}
