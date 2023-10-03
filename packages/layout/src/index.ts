@@ -63,3 +63,5 @@ export {
   useTable,
   UseTableOptions
 } from './TableV2'
+
+export { LimitedList, LimitedListProps } from './LimitedList'
