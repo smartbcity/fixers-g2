@@ -7,10 +7,17 @@ export type RequestProps = {
   jwt?: string
 }
 
-export const useNoAuthenticatedRequest = (): RequestProps => {
+export const useNoAuthenticatedRequest = (
+  endpoint: 'plateform' | 'im' | 'fs' = 'plateform'
+): RequestProps => {
   return useMemo(
     () => ({
-      url: i2Config().url
+      url:
+        endpoint === 'fs'
+          ? fsConfig().url
+          : endpoint === 'im'
+          ? i2Config().url
+          : platFormConfig().url
     }),
     []
   )

@@ -1,5 +1,8 @@
 import { Stack, StackProps } from '@mui/material'
-import { Chip, MergeMuiElementProps, Option, Tooltip } from '@smartb/g2'
+import { Chip } from '@smartb/g2-components'
+import { Option } from '@smartb/g2-forms'
+import { Tooltip } from '@smartb/g2-notifications'
+import { MergeMuiElementProps } from '@smartb/g2-themes'
 import React, { useMemo } from 'react'
 
 export interface LimitedListBasicProps<T extends {}> extends StackProps {
@@ -26,22 +29,27 @@ export const LimitedList = <T extends {} = {}>(props: LimitedListProps<T>) => {
   }, [values, limit, listedComponent])
 
   const textRest = useMemo(() => {
-    const rest = values.slice(limit, values.length - 1).map((el) => el.label)
-    return rest.join(', ')
+    if (limit < values.length - 1) {
+      const rest = values.slice(limit, values.length - 1).map((el) => el.label)
+      return rest.join(', ')
+    }
+    return undefined
   }, [values, limit, listedComponent])
 
   return (
     <Stack direction='row' gap={0.5} flexWrap='wrap' {...other}>
       {tagsDisplay}
-      <Tooltip helperText={textRest}>
-        <Chip
-          label={`${values.length - limit} +`}
-          sx={{
-            bgcolor: 'primary.main',
-            color: 'white'
-          }}
-        />
-      </Tooltip>
+      {textRest && (
+        <Tooltip helperText={textRest}>
+          <Chip
+            label={`${values.length - limit} +`}
+            sx={{
+              bgcolor: 'primary.main',
+              color: 'white'
+            }}
+          />
+        </Tooltip>
+      )}
     </Stack>
   )
 }
