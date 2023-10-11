@@ -4,7 +4,7 @@ import React from 'react'
 import { Typography } from '@mui/material'
 
 export interface TableCellLinkProps {
-  href?: string
+  value?: string
   target?: React.HTMLAttributeAnchorTarget
   label?: string
 }
@@ -12,12 +12,12 @@ export interface TableCellLinkProps {
 export const stopPropagation = (e: any) => e.stopPropagation()
 
 export const TableCellLink = (props: TableCellLinkProps) => {
-  const { href, label, target = '_blank' } = props
+  const { value, label, target = '_blank' } = props
   if (!label) return <Typography>-</Typography>
   return (
     <G2Link
       component={Link}
-      componentProps={{ to: href }}
+      componentProps={{ to: value }}
       onClick={stopPropagation}
       rel='noopener'
       target={target}
