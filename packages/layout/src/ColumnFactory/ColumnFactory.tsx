@@ -15,6 +15,14 @@ import {
   TableCellTextProps
 } from './.'
 import { Column } from '../Table'
+import {
+  TableCellStatus,
+  TableCellStatusProps
+} from './TableCellStatus/TableCellStatus'
+import {
+  TableCellChip,
+  TableCellChipProps
+} from './TableCellChip/TableCellChip'
 
 type ColumnGeneratorParams<CellProps, Data, ColumnType> = Omit<
   ColumnType,
@@ -51,6 +59,8 @@ export type ColumnGenerators<Data, ColumnType> = {
   number: ColumnGenerator<TableCellNumberProps, Data, ColumnType>
   profile: ColumnGenerator<TableCellProfileProps, Data, ColumnType>
   text: ColumnGenerator<TableCellTextProps, Data, ColumnType>
+  chip: ColumnGenerator<TableCellChipProps, Data, ColumnType>
+  status: ColumnGenerator<TableCellStatusProps, Data, ColumnType>
 }
 
 export const columnsGenerators = {
@@ -59,7 +69,9 @@ export const columnsGenerators = {
   link: getColumnGenerator<TableCellLinkProps>(TableCellLink),
   number: getColumnGenerator<TableCellNumberProps>(TableCellNumber),
   profile: getColumnGenerator<TableCellProfileProps>(TableCellProfile),
-  text: getColumnGenerator<TableCellTextProps>(TableCellText)
+  text: getColumnGenerator<TableCellTextProps>(TableCellText),
+  chip: getColumnGenerator<TableCellChipProps>(TableCellChip),
+  status: getColumnGenerator<TableCellStatusProps>(TableCellStatus)
 }
 
 export interface ColumnFactoryParams<Data extends {}> {
@@ -68,7 +80,7 @@ export interface ColumnFactoryParams<Data extends {}> {
    */
   generateColumns: (
     generators: ColumnGenerators<Data, G2ColumnDef<Data>>
-  ) => Record<string, G2ColumnDef<Data>>
+  ) => G2ColumnDef<Data>[]
 }
 
 export const ColumnFactory = <Data extends {} = {}>(
@@ -76,17 +88,7 @@ export const ColumnFactory = <Data extends {} = {}>(
 ): G2ColumnDef<Data>[] => {
   const { generateColumns } = params
 
-  //@ts-ignore
-  const columnsObject = generateColumns(columnsGenerators)
-  let columns: G2ColumnDef<Data>[] = []
-
-  for (const key in columnsObject) {
-    const column = columnsObject[key]
-    column.id = column.id ?? key
-    columns.push(column)
-  }
-
-  return columns
+  return generateColumns(columnsGenerators)
 }
 
 export interface ColumnFactoryV1Params<Data extends {}> {
@@ -95,7 +97,7 @@ export interface ColumnFactoryV1Params<Data extends {}> {
    */
   generateColumns: (
     generators: ColumnGenerators<Data, Column<Data>>
-  ) => Record<string, Column<Data>>
+  ) => G2ColumnDef<Data>[]
 }
 
 export const ColumnFactoryV1 = <Data extends {} = {}>(
@@ -109,11 +111,12 @@ export const ColumnFactoryV1 = <Data extends {} = {}>(
 
   for (const key in columnsObject) {
     const column = columnsObject[key]
-    column.id = column.id ?? key
+    column.id = column.id
     //@ts-ignore
     column.Cell = column.cell
     //@ts-ignore
     delete column.cell
+    //@ts-ignore
     columns.push(column)
   }
 
