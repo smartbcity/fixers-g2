@@ -26,7 +26,7 @@ const data: any[] = [
       label: 'Home page',
       url: 'https://example.com/'
     },
-    type: 'construction',
+    type: ['construction'],
     status: 'inProgress'
   },
   {
@@ -40,7 +40,7 @@ const data: any[] = [
       label: 'Home page',
       url: 'https://example.com/'
     },
-    type: 'installation',
+    type: ['installation'],
     status: 'notStarted'
   },
   {
@@ -54,7 +54,7 @@ const data: any[] = [
       label: 'Home page',
       url: 'https://example.com/'
     },
-    type: 'preparation',
+    type: ['installation', 'preparation'],
     status: 'finish'
   }
 ]
@@ -120,6 +120,7 @@ export const TableComposable: StoryFn<TableV2BasicProps> = (
         type: 'chip',
         identifier: 'type',
         properties: {
+          multiple: true,
           options: [
             {
               key: 'construction',
