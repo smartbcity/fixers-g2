@@ -13,7 +13,6 @@ export interface TableComposable {
 }
 
 export interface Column<T extends ColumnType = ColumnType> {
-  id?: string
   name?: NameLocalized
   identifier: string
   type: T
@@ -29,6 +28,7 @@ export const composableToColumns = <Data extends {}>(
     generateColumns: (generators) =>
       table.columns.map((el): G2ColumnDef<Data> => {
         return generators[el.type]({
+          id: el.identifier,
           header: el.name ? el.name[lng] : '',
           getCellProps: (data) => {
             return {

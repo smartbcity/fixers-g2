@@ -12,7 +12,7 @@ export default {
 } as Meta
 
 const loremIpsum =
-  'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim identifier est laborum.'
 
 const data: any[] = [
   {
@@ -70,55 +70,50 @@ export const TableComposable: StoryFn<TableV2BasicProps> = (
     },
     columns: [
       {
-        id: 'name',
+        identifier: 'name',
         name: {
           en: 'Project name',
           fr: 'Nom du projet'
         },
-        type: 'text',
-        identifier: 'name'
+        type: 'text'
       },
       {
-        id: 'description',
+        identifier: 'description',
         name: {
           en: 'Project description',
           fr: 'Description du projet'
         },
-        type: 'text',
-        identifier: 'description'
+        type: 'text'
       },
       {
-        id: 'contact',
+        identifier: 'contact',
         name: {
           en: 'Contacts',
           fr: 'Contacts'
         },
         type: 'contact',
-        identifier: 'contact',
         style: {
           width: 150
         }
       },
       {
-        id: 'homepage',
+        identifier: 'homepage',
         name: {
           en: 'Home Page',
           fr: "Page d'acceuil"
         },
         type: 'link',
-        identifier: 'homePage',
         style: {
           width: 150
         }
       },
       {
-        id: 'type',
+        identifier: 'type',
         name: {
           en: 'Type',
           fr: 'Type'
         },
         type: 'chip',
-        identifier: 'type',
         properties: {
           multiple: true,
           options: [
@@ -141,13 +136,12 @@ export const TableComposable: StoryFn<TableV2BasicProps> = (
         }
       },
       {
-        id: 'status',
+        identifier: 'status',
         name: {
           en: 'Status',
           fr: 'Status'
         },
         type: 'status',
-        identifier: 'status',
         properties: {
           options: [
             {
@@ -181,3 +175,126 @@ export const TableComposable: StoryFn<TableV2BasicProps> = (
     </BrowserRouter>
   )
 }
+
+// const table: TableComposableType = {
+//   id: 'projectsTable',
+//   columns: [
+//     {
+//       identifier: 'identifier',
+//       name: {
+//         en: 'ID',
+//         fr: 'ID'
+//       },
+//       type: 'text',
+//       style: {
+//        width: 100
+//       }
+//     },
+//     {
+//       identifier: 'name',
+//       name: {
+//         en: 'Name',
+//         fr: 'Nom'
+//       },
+//       type: 'text',
+//     },
+//     {
+//       identifier: 'registry',
+//       name: {
+//         en: 'Registry',
+//         fr: 'Registry'
+//       },
+//       type: 'text',
+//     },
+//     {
+//       identifier: 'proponent',
+//       name: {
+//         en: 'Proponent',
+//         fr: "Proponent"
+//       },
+//       type: 'text',
+//     },
+//     {
+//       identifier: 'scope',
+//       name: {
+//         en: 'Sectoral scope',
+//         fr: "Secteur d'impact"
+//       },
+//       type: 'IconTag',
+//       properties: {
+//         options: [
+//           {
+//             key: 'transport',
+//             prefLabels: {
+//               en: 'Transport',
+//               fr: 'Transport',
+//             },
+//             icon: "https://example.com/",
+//             color: '#18159D'
+//           },
+//           {
+//             key: 'transport',
+//             prefLabels: {
+//               en: 'Transport',
+//               fr: 'Transport',
+//             },
+//             icon: "https://example.com/",
+//             color: '#18159D'
+//           },
+//         ]
+//       }
+//     },
+//     {
+//       identifier: 'area',
+//       name: {
+//         en: 'Area',
+//         fr: "Zone"
+//       },
+//       type: 'location',
+//     },
+//     {
+//       identifier: 'refYear',
+//       name: {
+//         en: 'Ref.Year',
+//         fr: "Année de référence"
+//       },
+//       type: 'text',
+//     },
+//     {
+//       identifier: 'endDate',
+//       name: {
+//         en: 'End date',
+//         fr: "Date de fin"
+//       },
+//       type: 'date',
+//     },
+//     {
+//       identifier: 'status',
+//       name: {
+//         en: 'Status',
+//         fr: 'Status'
+//       },
+//       type: 'status',
+//       properties: {
+//         options: [
+//           {
+//             key: 'notStarted',
+//             prefLabels: {
+//               en: 'Registration and Verification Approval Requested',
+//               fr: 'Approbation d’enregistrement et de vérification demandée',
+//             },
+//             color: '#3C78D8'
+//           },
+//           {
+//             key: 'inProgress',
+//             prefLabels: {
+//               en: 'Crediting Period Renewal and Verification Approval Requested',
+//               fr: 'Renouvellement de la période de crédit et approbation de la vérification demandée',
+//             },
+//             color: '#FF9900'
+//           },
+//         ]
+//       }
+//     }
+//   ]
+// }
