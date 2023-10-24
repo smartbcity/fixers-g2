@@ -97,7 +97,7 @@ export const ReadOnlyRenderer = (props: Partial<InputFormProps>) => {
             label={`${label}`}
             color={
               option?.color ??
-              (getReadOnlyChipColor && getReadOnlyChipColor(option?.label))
+              (getReadOnlyChipColor && getReadOnlyChipColor(option?.key))
             }
           />
         )

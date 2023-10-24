@@ -1,6 +1,12 @@
 import { Box, InputLabel, SxProps, Theme } from '@mui/material'
 import React, { useMemo } from 'react'
-import { Select, SelectProps, SelectClasses, SelectStyles } from '../Select'
+import {
+  Select,
+  SelectProps,
+  SelectClasses,
+  SelectStyles,
+  SmartKey
+} from '../Select'
 import {
   TextField,
   TextFieldProps,
@@ -76,11 +82,11 @@ export interface InputFormBasicProps<T extends InputFormTypes = 'textField'>
   /**
    * This function is used to attribute a chip color to the value to be displayed (if not provided the default color will be used)
    */
-  getReadOnlyChipColor?: (value: string | number) => string | undefined
+  getReadOnlyChipColor?: (value: SmartKey) => string | undefined
   /**
    * attribute a link to a readOnly text
    */
-  getReadOnlyTextUrl?: (value: string | number) => string | undefined
+  getReadOnlyTextUrl?: (value: SmartKey) => string | undefined
   /**
    * The element rendered in readOnly if the `readOnlyType` is `"customElement" | "customContainer"` your element need to use the prop
    * `value: string` and `valueKey?: SmartKey` if `readOnlyType="customElement"` and also `values: Option[]` if `readOnlyType="customContainer"`

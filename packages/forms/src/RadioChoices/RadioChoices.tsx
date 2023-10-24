@@ -107,7 +107,7 @@ export const RadioChoices = React.forwardRef(
 
     const [editableLabel, setEditableLabel] = useState<{
       key?: SmartKey
-      label: string | number
+      label?: string | number
     }>({
       label: ''
     })

@@ -24,9 +24,15 @@ import { extractNumberOrBooleanFromString } from '@smartb/g2-utils'
 
 export type SmartKey = string | number | boolean
 
+type language = string
+
 export type Option = {
   key: SmartKey
-  label: string | number
+  label?: string | number
+  /**
+   * Usefull when recieving options from the back that are not known in advance
+   */
+  locale?: Record<language, string | number>
   /**
    * The icon of the option only used for Select component.
    * If the option is selected and the select is not multiple the icon is displayed in the Select Component.
