@@ -5,6 +5,8 @@ import {
   TableCellContactProps,
   TableCellDate,
   TableCellDateProps,
+  TableCellIconTag,
+  TableCellIconTagProps,
   TableCellLink,
   TableCellLinkProps,
   TableCellNumber,
@@ -61,6 +63,7 @@ export type ColumnGenerators<Data, ColumnType> = {
   text: ColumnGenerator<TableCellTextProps, Data, ColumnType>
   chip: ColumnGenerator<TableCellChipProps, Data, ColumnType>
   status: ColumnGenerator<TableCellStatusProps, Data, ColumnType>
+  iconTag: ColumnGenerator<TableCellIconTagProps, Data, ColumnType>
 }
 
 export const columnsGenerators = {
@@ -71,7 +74,8 @@ export const columnsGenerators = {
   profile: getColumnGenerator<TableCellProfileProps>(TableCellProfile),
   text: getColumnGenerator<TableCellTextProps>(TableCellText),
   chip: getColumnGenerator<TableCellChipProps>(TableCellChip),
-  status: getColumnGenerator<TableCellStatusProps>(TableCellStatus)
+  status: getColumnGenerator<TableCellStatusProps>(TableCellStatus),
+  iconTag: getColumnGenerator<TableCellIconTagProps>(TableCellIconTag)
 }
 
 export interface ColumnFactoryParams<Data extends {}> {
