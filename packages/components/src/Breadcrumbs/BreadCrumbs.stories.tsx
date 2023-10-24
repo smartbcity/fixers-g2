@@ -1,6 +1,7 @@
 import React from 'react'
 import { Breadcrumbs as AruiBreadcrumbs, BreadcrumbsProps } from './Breadcrumbs'
 import { Meta, StoryFn } from '@storybook/react'
+import { BrowserRouter } from 'react-router-dom'
 export default {
   title: 'Components/Breadcrumbs',
   component: AruiBreadcrumbs
@@ -9,7 +10,11 @@ export default {
 export const Breadcrumbs: StoryFn<BreadcrumbsProps> = (
   args: BreadcrumbsProps
 ) => {
-  return <AruiBreadcrumbs {...args} />
+  return (
+    <BrowserRouter>
+      <AruiBreadcrumbs {...args} />
+    </BrowserRouter>
+  )
 }
 
 Breadcrumbs.args = {
