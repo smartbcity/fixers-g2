@@ -220,12 +220,12 @@ export const TableComposable: StoryFn<TableV2BasicProps> = (
 //         en: 'Sectoral scope',
 //         fr: "Secteur d'impact"
 //       },
-//       type: 'IconTag',
+//       type: 'iconTag',
 //       properties: {
 //         options: [
 //           {
 //             key: 'transport',
-//             prefLabels: {
+//             locale: {
 //               en: 'Transport',
 //               fr: 'Transport',
 //             },
@@ -234,7 +234,7 @@ export const TableComposable: StoryFn<TableV2BasicProps> = (
 //           },
 //           {
 //             key: 'transport',
-//             prefLabels: {
+//             locale: {
 //               en: 'Transport',
 //               fr: 'Transport',
 //             },
@@ -279,7 +279,7 @@ export const TableComposable: StoryFn<TableV2BasicProps> = (
 //         options: [
 //           {
 //             key: 'notStarted',
-//             prefLabels: {
+//             locale: {
 //               en: 'Registration and Verification Approval Requested',
 //               fr: 'Approbation d’enregistrement et de vérification demandée',
 //             },
@@ -287,7 +287,7 @@ export const TableComposable: StoryFn<TableV2BasicProps> = (
 //           },
 //           {
 //             key: 'inProgress',
-//             prefLabels: {
+//             locale: {
 //               en: 'Crediting Period Renewal and Verification Approval Requested',
 //               fr: 'Renouvellement de la période de crédit et approbation de la vérification demandée',
 //             },

@@ -1,6 +1,7 @@
 import { getIn } from '@smartb/g2-utils'
 import { ColumnFactory, ColumnGenerators } from '../ColumnFactory'
 import { G2ColumnDef } from '../TableV2'
+import { ColumnProperties } from './columns'
 
 export type NameLocalized = Record<string, string>
 
@@ -12,13 +13,13 @@ export interface TableComposable {
   columns: Column[]
 }
 
-export interface Column<T extends ColumnType = ColumnType> {
+export interface ColumnBase {
   name?: NameLocalized
   identifier: string
-  type: T
-  properties?: any
   style?: React.CSSProperties
 }
+
+export type Column = ColumnBase & ColumnProperties
 
 export const composableToColumns = <Data extends {}>(
   table: TableComposable,
@@ -30,6 +31,7 @@ export const composableToColumns = <Data extends {}>(
         return generators[el.type]({
           id: el.identifier,
           header: el.name ? el.name[lng] : '',
+          //@ts-ignore
           getCellProps: (data) => {
             return {
               ...el.properties,
