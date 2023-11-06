@@ -91,11 +91,6 @@ export interface TableV2BasicProps<Data extends {}> extends BasicProps {
    */
   expandInElevatedRow?: boolean
   /**
-   * Pass this props to true if you want to expand the row when it's clicked (and not only on the expand icon)
-   * @default false
-   */
-  toggleExpandOnRowClicked?: boolean
-  /**
    * The classes applied to the different part of the component
    */
   classes?: TableClasses
@@ -128,7 +123,6 @@ export const TableV2 = <Data extends {}>(props: TableV2Props<Data>) => {
     header,
     expectedSize = 10,
     expandInElevatedRow = false,
-    toggleExpandOnRowClicked = false,
     additionalRowsProps,
     tableState,
     getRowLink,
@@ -192,7 +186,6 @@ export const TableV2 = <Data extends {}>(props: TableV2Props<Data>) => {
             renderRowHoveredComponent={renderRowHoveredComponent}
             styles={styles}
             expandInRow={expandInElevatedRow}
-            toggleExpandOnRowClicked={toggleExpandOnRowClicked}
             additionalRowsProps={additionalRowsProps}
           />
         )}

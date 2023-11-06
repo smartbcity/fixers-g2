@@ -29,6 +29,11 @@ export interface UseTableOptions<Data extends {}>
    */
   expandIconPosition?: 'start' | 'end'
   /**
+   * The poistion in the row of the expand icon
+   * @default 'start'
+   */
+  RowSelectionPosition?: 'start' | 'end'
+  /**
    * You optionnal custom icon used to indicate the expand status of a row
    */
   expandIcon?: JSX.Element
@@ -48,6 +53,7 @@ export const useTable = <Data extends {}>(
     enableExpanding = false,
     enableRowSelection = false,
     expandIconPosition = 'start',
+    RowSelectionPosition = 'start',
     expandIcon,
     noToggleAllPageRowsSelected = false,
     ...other
@@ -93,41 +99,44 @@ export const useTable = <Data extends {}>(
       },
       className: 'AruiTable-actionColumn'
     }
+
+    const rowSelection: G2ColumnDef<Data> = {
+      id: 'selection',
+      header: ({ table }) => {
+        return noToggleAllPageRowsSelected ? (
+          <div />
+        ) : (
+          <CheckBox
+            onChange={table.getToggleAllRowsSelectedHandler()}
+            checked={table.getIsAllRowsSelected()}
+            indeterminate={table.getIsSomeRowsSelected()}
+          />
+        )
+      },
+      cell: ({ row }) => {
+        if (!row.getCanSelect()) return undefined
+        return (
+          <CheckBox
+            onChange={(_, value) => row.toggleSelected(value)}
+            checked={row.getIsSelected()}
+            onClick={(event) => event.stopPropagation()}
+          />
+        )
+      },
+      className: 'AruiTable-actionColumn'
+    }
+
     return [
       ...(enableExpanding && expandIconPosition === 'start'
         ? [expanderRow]
         : []),
-      ...(enableRowSelection
-        ? [
-            {
-              id: 'selection',
-              accessor: 'selection',
-              header: ({ table }) => {
-                return noToggleAllPageRowsSelected ? (
-                  <div />
-                ) : (
-                  <CheckBox
-                    onChange={table.getToggleAllRowsSelectedHandler()}
-                    checked={table.getIsAllRowsSelected()}
-                    indeterminate={table.getIsSomeRowsSelected()}
-                  />
-                )
-              },
-              cell: ({ row }) => {
-                if (!row.getCanSelect()) return undefined
-                return (
-                  <CheckBox
-                    onChange={(_, value) => row.toggleSelected(value)}
-                    checked={row.getIsSelected()}
-                    onClick={(event) => event.stopPropagation()}
-                  />
-                )
-              },
-              className: 'AruiTable-actionColumn'
-            } as G2ColumnDef<Data>
-          ]
+      ...(enableRowSelection && RowSelectionPosition === 'start'
+        ? [rowSelection]
         : []),
       ...columns,
+      ...(enableRowSelection && RowSelectionPosition === 'end'
+        ? [rowSelection]
+        : []),
       ...(enableExpanding && expandIconPosition === 'end' ? [expanderRow] : [])
     ]
   }, [
