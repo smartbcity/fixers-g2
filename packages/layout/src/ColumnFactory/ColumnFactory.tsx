@@ -96,7 +96,7 @@ export const ColumnFactory = <Data extends {} = {}>(
 
   if (Array.isArray(columns)) return columns
   let finalColumns: G2ColumnDef<Data>[] = []
-  Object.keys((key) => {
+  Object.keys(columns).forEach((key) => {
     const column = columns[key]
     column.id = column.id ?? key
     finalColumns.push(column)
