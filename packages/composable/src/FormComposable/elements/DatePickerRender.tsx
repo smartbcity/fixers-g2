@@ -27,18 +27,13 @@ export const DatePickerRender: ElementRendererFunction<
   const { params } = element
   const componentProps = { ...basicProps }
   const { value, setFieldValue } = useMemo(
-    () =>
-      getValueSetup(
-        componentProps.name,
-        formState,
-        componentProps.sharedNameIndex
-      ),
-    [componentProps.name, formState, componentProps.sharedNameIndex]
+    () => getValueSetup(componentProps.name, formState),
+    [componentProps.name, formState]
   )
   const date = new Date(value)
   const onChange = componentProps.onChange
   delete componentProps.onChange
-  delete componentProps.sharedNameIndex
+
   return (
     <InputForm
       inputType='datePicker'

@@ -42,11 +42,6 @@ export type FormComposableField<
    */
   fullRow?: boolean
   /**
-   * this prop tells the component that it has a name shared with another. It will store his value in an array at the given index.
-   * You should also pass a different index to all the other component with the name name if you don't want theme to share the same value
-   */
-  sharedNameIndex?: number
-  /**
    * the event called when the value of the input change
    */
   onChange?: (value: any) => void

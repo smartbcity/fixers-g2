@@ -1,22 +1,12 @@
 import { getIn } from 'formik'
 import { FormComposableState } from './FormComposableState'
 
-export const getValueSetup = (
-  name: string,
-  formState: FormComposableState,
-  sharedNameIndex?: number
-) => {
+export const getValueSetup = (name: string, formState: FormComposableState) => {
   const value = getIn(formState.values, name)
   return {
-    value: sharedNameIndex != null ? (value ?? [])[sharedNameIndex] : value,
+    value: value,
     setFieldValue: (newValue) => {
-      if (sharedNameIndex != null) {
-        const setupValue = [...(value ?? [])]
-        setupValue[sharedNameIndex] = newValue
-        formState.setFieldValue(name, setupValue, false)
-      } else {
-        formState.setFieldValue(name, newValue, false)
-      }
+      formState.setFieldValue(name, newValue, false)
     }
   }
 }

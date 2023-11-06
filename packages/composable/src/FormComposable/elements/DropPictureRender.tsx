@@ -25,7 +25,7 @@ export const DropPictureRender: ElementRendererFunction<
   const { errorMessage, onChange, sx, label, id, ...basicPropsRest } =
     basicProps
   delete basicProps.emptyValueInReadOnly
-  delete basicProps.sharedNameIndex
+
   const localFile: File | undefined = getIn(formState.values, basicProps.name)
   const uploadedGetUrl: string | undefined = getIn(
     formState.values,

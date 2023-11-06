@@ -16,17 +16,11 @@ export const HiddenRender: ElementRendererFunction<HiddenRenderProps> = (
   const componentProps = { ...basicProps }
 
   const { value } = useMemo(
-    () =>
-      getValueSetup(
-        componentProps.name,
-        formState,
-        componentProps.sharedNameIndex
-      ),
-    [componentProps.name, formState, componentProps.sharedNameIndex]
+    () => getValueSetup(componentProps.name, formState),
+    [componentProps.name, formState]
   )
 
   delete componentProps.onChange
-  delete componentProps.sharedNameIndex
 
   return <input value={value ?? ''} type='hidden' {...params} />
 }
