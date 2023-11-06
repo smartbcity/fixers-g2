@@ -3,6 +3,7 @@ import { Link as G2Link, Chip } from '@smartb/g2-components'
 import React, { useMemo } from 'react'
 import { InputFormProps } from './InputForm'
 import { Link, LinkProps } from 'react-router-dom'
+import { Option } from '../Select'
 
 const getLabelOfOption = (
   option: any,
@@ -96,7 +97,7 @@ export const ReadOnlyRenderer = (props: Partial<InputFormProps>) => {
             label={`${label}`}
             color={
               option?.color ??
-              (getReadOnlyChipColor && getReadOnlyChipColor(option?.label))
+              (getReadOnlyChipColor && getReadOnlyChipColor(option?.key))
             }
           />
         )
@@ -129,14 +130,12 @@ export const ReadOnlyRenderer = (props: Partial<InputFormProps>) => {
         )
       })
     } else if (hoptions && values && readOnlyType === 'customContainer') {
-      return (
-        <Element
-          values={values.map((value) => {
-            const option = hoptions.find((o) => o.key === value)
-            return option
-          })}
-        />
-      )
+      const completeValues: Option[] = []
+      values.forEach((value) => {
+        const option = hoptions.find((o) => o.key === value)
+        if (option) completeValues.push(option)
+      })
+      return <Element values={completeValues} />
     }
     return
   }, [readOnlyType, textToDisplay, value, values, hoptions, readOnlyElement])

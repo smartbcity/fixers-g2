@@ -1,4 +1,5 @@
 import { t } from "i18next";
+export * from "./getSetIn";
 
 export const objToArray = <T>(obj: {
   [key: string]: T;

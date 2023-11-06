@@ -44,3 +44,4 @@ export {
   LocalDocumentHandler,
   LocalStorageDocumentHandler
 } from './DocumentHandler'
+export { Breadcrumbs, BreadcrumbsProps, Crumb } from './Breadcrumbs'

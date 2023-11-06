@@ -5,13 +5,15 @@ import React from 'react'
 import { stopPropagation } from '../TableCellLink/TableCellLink'
 
 export interface TableCellContactProps {
-  phone?: string
-  email?: string
+  value?: {
+    phone?: string
+    email?: string
+  }
 }
 
 export const TableCellContact = (props: TableCellContactProps) => {
-  const { email, phone } = props
-  if (!email && !phone) return <Typography>-</Typography>
+  const { value } = props
+  if (!value?.email && !value?.phone) return <Typography>-</Typography>
   return (
     <Stack
       direction='row'
@@ -19,16 +21,16 @@ export const TableCellContact = (props: TableCellContactProps) => {
         gap: '5px'
       }}
     >
-      {email && (
-        <Tooltip helperText={email}>
-          <IconButton onClick={stopPropagation} href={'mailto:' + email}>
+      {value?.email && (
+        <Tooltip helperText={value?.email}>
+          <IconButton onClick={stopPropagation} href={'mailto:' + value?.email}>
             <MailRounded />
           </IconButton>
         </Tooltip>
       )}
-      {phone && (
-        <Tooltip helperText={phone}>
-          <IconButton onClick={stopPropagation} href={'tel:' + phone}>
+      {value?.phone && (
+        <Tooltip helperText={value?.phone}>
+          <IconButton onClick={stopPropagation} href={'tel:' + value?.phone}>
             <LocalPhoneRounded />
           </IconButton>
         </Tooltip>

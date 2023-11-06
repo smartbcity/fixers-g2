@@ -55,7 +55,6 @@ export interface TableBaseProps<Data extends {}> {
   withFooter: boolean
   expandInRow: boolean
   renderRowHoveredComponent?: (row: Row<Data>) => JSX.Element
-  toggleExpandOnRowClicked: boolean
   additionalRowsProps?: Record<string, any>
 }
 
@@ -69,7 +68,6 @@ export const TableBase = <Data extends {}>(props: TableBaseProps<Data>) => {
     withFooter,
     renderRowHoveredComponent,
     expandInRow,
-    toggleExpandOnRowClicked,
     additionalRowsProps = {},
     variant,
     getRowLink
@@ -152,7 +150,6 @@ export const TableBase = <Data extends {}>(props: TableBaseProps<Data>) => {
           {...extProps}
           onClick={() => {
             onRowClicked && onRowClicked(row)
-            toggleExpandOnRowClicked && row.toggleExpanded()
           }}
           className={cx(
             extProps?.className,

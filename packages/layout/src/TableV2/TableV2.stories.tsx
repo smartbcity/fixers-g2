@@ -520,8 +520,9 @@ export const ColumnFactoryExample: StoryFn = () => {
   ]
 
   const columns = ColumnFactory<Person>({
-    generateColumns: (generators) => ({
-      profile: generators.profile({
+    generateColumns: (generators) => [
+      generators.profile({
+        id: 'profile',
         header: 'Profile',
         getCellProps: (person) => ({
           givenName: person.firstName,
@@ -529,28 +530,31 @@ export const ColumnFactoryExample: StoryFn = () => {
         })
       }),
 
-      birthDate: generators.date({
+      generators.date({
+        id: 'birthDate',
         header: 'Birth date',
         getCellProps: (person) => ({
           date: person.birthDate
         })
       }),
 
-      city: generators.text({
+      generators.text({
+        id: 'city',
         header: 'City',
         getCellProps: (person) => ({
           value: person.city
         })
       }),
 
-      contact: generators.contact({
+      generators.contact({
+        id: 'contact',
         header: 'Contact',
         getCellProps: (person) => ({
           email: person.email,
           phone: person.phone
         })
       })
-    })
+    ]
   })
   const tableState = useTable({
     data: persons,
