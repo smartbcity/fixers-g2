@@ -84,7 +84,7 @@ export interface ColumnFactoryParams<Data extends {}> {
    */
   generateColumns: (
     generators: ColumnGenerators<Data, G2ColumnDef<Data>>
-  ) => G2ColumnDef<Data>[]
+  ) => G2ColumnDef<Data>[] | Record<string, G2ColumnDef<Data>>
 }
 
 export const ColumnFactory = <Data extends {} = {}>(
@@ -92,7 +92,16 @@ export const ColumnFactory = <Data extends {} = {}>(
 ): G2ColumnDef<Data>[] => {
   const { generateColumns } = params
 
-  return generateColumns(columnsGenerators)
+  const columns = generateColumns(columnsGenerators)
+
+  if (Array.isArray(columns)) return columns
+  let finalColumns: G2ColumnDef<Data>[] = []
+  Object.keys((key) => {
+    const column = columns[key]
+    column.id = column.id ?? key
+    finalColumns.push(column)
+  })
+  return finalColumns
 }
 
 export interface ColumnFactoryV1Params<Data extends {}> {
@@ -101,7 +110,7 @@ export interface ColumnFactoryV1Params<Data extends {}> {
    */
   generateColumns: (
     generators: ColumnGenerators<Data, Column<Data>>
-  ) => G2ColumnDef<Data>[]
+  ) => G2ColumnDef<Data>[] | Record<string, G2ColumnDef<Data>>
 }
 
 export const ColumnFactoryV1 = <Data extends {} = {}>(
@@ -115,7 +124,7 @@ export const ColumnFactoryV1 = <Data extends {} = {}>(
 
   for (const key in columnsObject) {
     const column = columnsObject[key]
-    column.id = column.id
+    column.id = Array.isArray(columnsObject) ? column.id : column.id ?? key
     //@ts-ignore
     column.Cell = column.cell
     //@ts-ignore
