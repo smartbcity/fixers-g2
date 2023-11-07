@@ -5,6 +5,7 @@ import {
 } from '../../ComposableRender'
 import { ReactNode } from 'react'
 import { PotentialError } from '@smartb/g2-forms'
+import { Condition } from './conditionResolver'
 
 export type FieldValidatorFnc = (value?: any, values?: any) => PotentialError
 
@@ -32,6 +33,11 @@ export type FormComposableField<
    * the validator that takes the value of the input and return an error or undefined/nothing if the value is valid
    */
   validator?: FieldValidatorFnc
+  /**
+   * You can conditionate the display or the validation of the field with it.
+   * The conditions of the component will replace the prop `validator` if used.
+   */
+  conditions?: Condition[]
   /**
    * if you want to add other nodes around the input use this function
    */

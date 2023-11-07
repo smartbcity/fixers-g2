@@ -475,3 +475,57 @@ GridDisplayForm.args = {
   display: 'grid',
   gridColumnNumber: 2
 }
+
+const conditionsFormField: AllFormComposableField[] = [
+  {
+    name: 'name',
+    label: 'Name',
+    type: 'textField',
+    conditions: [
+      {
+        type: 'validator',
+        expression: '#value == null',
+        error: 'The field is required'
+      }
+    ]
+  },
+  {
+    name: 'gender.value',
+    label: 'Gender',
+    type: 'select',
+    conditions: [
+      {
+        type: 'display',
+        expression: '#values.name != null'
+      },
+      {
+        type: 'validator',
+        expression: '#value.name == male',
+        error: 'We are sorry but only females are allowed to create an account'
+      }
+    ],
+    params: {
+      options: [
+        { key: 'male', label: 'male' },
+        { key: 'female', label: 'female' }
+      ]
+    }
+  },
+  {
+    name: 'birthdate',
+    label: 'Birthdate',
+    type: 'datePicker',
+    conditions: [
+      {
+        type: 'validator',
+        expression: '#value > 1099765436',
+        error: 'You should be 18 or more'
+      }
+    ]
+  }
+] as AllFormComposableField[]
+
+export const ConditionsForm = FormComposableStory.bind({})
+ConditionsForm.args = {
+  fields: conditionsFormField
+}

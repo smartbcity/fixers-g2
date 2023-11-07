@@ -13,6 +13,8 @@ import { ActionsWrapper, ActionsWrapperProps } from '@smartb/g2-components'
 import { FormAction } from '@smartb/g2-forms'
 import { DefaultRenderer } from './factories/FormElementsRenderer'
 import { MUIStyledCommonProps } from '@mui/system'
+import { evalDisplayConditions } from './type/conditionResolver'
+import { getIn } from '@smartb/g2-utils'
 
 const Form = styled('form')({})
 
@@ -119,7 +121,22 @@ export const FormComposable = <RENDERER extends ElementRenderersConfig>(
     ...other
   } = props
 
-  const fieldElement = useFieldRenderProps(props)
+  const filteredFields = useMemo(
+    () =>
+      fields.filter((field) =>
+        evalDisplayConditions(
+          field.conditions,
+          getIn(formState.values, field.name),
+          formState.values
+        )
+      ),
+    [fields, formState.values]
+  )
+  //@ts-ignore
+  const fieldElement = useFieldRenderProps({
+    ...actionsProps,
+    fields: filteredFields
+  })
   const fieldContainerSx = useMemo(
     (): SxProps<Theme> =>
       display === 'grid'
