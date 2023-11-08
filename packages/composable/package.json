@@ -40,7 +40,7 @@
     "@smartb/g2-forms": "1.0.0-alpha.181",
     "@smartb/g2-themes": "1.0.0-alpha.181",
     "@smartb/g2-utils": "1.0.0-alpha.181",
-    "formik": "^2.2.9",
+    "formik": "2.2.9",
     "qs": "^6.11.1",
     "ramda": "^0.28.0",
     "react-router-dom": "^6.8.2",

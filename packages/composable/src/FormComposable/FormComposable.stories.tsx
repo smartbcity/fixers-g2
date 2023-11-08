@@ -476,7 +476,7 @@ GridDisplayForm.args = {
   gridColumnNumber: 2
 }
 
-const conditionsFormField: AllFormComposableField[] = [
+const conditionsFormField: FormComposableField[] = [
   {
     name: 'name',
     label: 'Name',
@@ -500,7 +500,7 @@ const conditionsFormField: AllFormComposableField[] = [
       },
       {
         type: 'validator',
-        expression: '#value.name == male',
+        expression: "#value == 'male'",
         error: 'We are sorry but only females are allowed to create an account'
       }
     ],
@@ -523,7 +523,7 @@ const conditionsFormField: AllFormComposableField[] = [
       }
     ]
   }
-] as AllFormComposableField[]
+]
 
 export const ConditionsForm = FormComposableStory.bind({})
 ConditionsForm.args = {
