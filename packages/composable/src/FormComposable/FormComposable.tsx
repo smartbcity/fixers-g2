@@ -132,11 +132,14 @@ export const FormComposable = <RENDERER extends ElementRenderersConfig>(
       ),
     [fields, formState.values]
   )
-  //@ts-ignore
+
+  console.log(filteredFields)
+
   const fieldElement = useFieldRenderProps({
-    ...actionsProps,
+    ...props,
     fields: filteredFields
   })
+
   const fieldContainerSx = useMemo(
     (): SxProps<Theme> =>
       display === 'grid'

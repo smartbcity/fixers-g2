@@ -39,7 +39,9 @@ export const DatePickerRender: ElementRendererFunction<
       inputType='datePicker'
       value={!isNaN(date.getTime()) ? date : value ?? ''}
       onChangeDate={(date) => {
-        setFieldValue(date && !isNaN(date.getTime()) ? date : date?.toString())
+        setFieldValue(
+          date && !isNaN(date.getTime()) ? date.getTime() : date?.toString()
+        )
         !!onChange && onChange(date)
       }}
       {...params}

@@ -496,11 +496,11 @@ const conditionsFormField: FormComposableField[] = [
     conditions: [
       {
         type: 'display',
-        expression: '#values.name != null'
+        expression: "#values?.name != null && #values?.name != ''"
       },
       {
         type: 'validator',
-        expression: "#value == 'male'",
+        expression: "#value != 'female'",
         error: 'We are sorry but only females are allowed to create an account'
       }
     ],
@@ -518,7 +518,12 @@ const conditionsFormField: FormComposableField[] = [
     conditions: [
       {
         type: 'validator',
-        expression: '#value > 1099765436',
+        expression: '#value == null',
+        error: 'Please select a date'
+      },
+      {
+        type: 'validator',
+        expression: '#value > 1099765436000',
         error: 'You should be 18 or more'
       }
     ]

@@ -6,6 +6,7 @@ import { FormComposableField } from './FormComposableField'
 import { cx } from '@emotion/css'
 import { getIn } from 'formik'
 import { SxProps, Theme } from '@mui/material'
+import { validateConditions } from './conditionResolver'
 
 export interface FieldRenderProps<TYPE extends string, PROPS>
   extends WithElementParams<TYPE, PROPS> {
@@ -97,8 +98,10 @@ export const useFieldRenderProps = (
   useEffect(() => {
     const { registerField, unregisterField } = formState
     fields.forEach((field) => {
-      if (!field.readOnly && field.validator) {
-        const validator = field.validator
+      if (!field.readOnly && (field.validator || field.conditions)) {
+        const validator = field.conditions
+          ? validateConditions(field.conditions)
+          : field.validator
         registerField(field.name, validator)
       } else {
         unregisterField(field.name)
