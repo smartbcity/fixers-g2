@@ -5,9 +5,9 @@ import {
   BreadcrumbsProps as MuiBreadcrumbsProps,
   Typography
 } from '@mui/material'
-import { Link } from '@smartb/g2'
 import React, { useMemo } from 'react'
 import { Link as RouterLink } from 'react-router-dom'
+import { Link } from '../Link'
 
 interface BreadcrumbsClasses {
   link?: string
