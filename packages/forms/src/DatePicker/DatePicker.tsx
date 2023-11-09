@@ -88,6 +88,10 @@ export interface DatePickerBasicProps extends BasicProps {
    */
   errorMessage?: string
   /**
+   * The helper message below the field
+   */
+  helperText?: string
+  /**
    * The size of the input
    *
    * @default 'medium'
@@ -138,6 +142,7 @@ const DatePickerBase = (
     name,
     error,
     errorMessage,
+    helperText,
     classes,
     styles,
     ...other
@@ -162,13 +167,15 @@ const DatePickerBase = (
   const formHelperProps = useMemo(() => {
     return {
       className: defaultStyles.cx(
-        defaultStyles.classes.helperText,
+        errorMessage !== '' && error
+          ? defaultStyles.classes.errorHelperText
+          : defaultStyles.classes.helperText,
         'AruiTextfield-helperText',
         classes?.helperText
       ),
       style: styles?.helperText
     }
-  }, [classes?.helperText, styles?.helperText])
+  }, [classes?.helperText, styles?.helperText, errorMessage, error])
 
   const renderInput = useCallback(
     (props) => {
@@ -194,7 +201,7 @@ const DatePickerBase = (
             className
           )}
           style={style}
-          helperText={error ? errorMessage : ''}
+          helperText={error ? errorMessage ?? helperText : helperText}
           color='primary'
           InputProps={{
             disableUnderline: true,
@@ -218,7 +225,8 @@ const DatePickerBase = (
       classes?.input,
       styles?.input,
       textFieldProps,
-      formHelperProps
+      formHelperProps,
+      helperText
     ]
   )
   return (

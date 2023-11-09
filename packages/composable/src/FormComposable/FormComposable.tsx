@@ -34,7 +34,7 @@ export interface FormComposableStyles {
 
 export type FormComposableActionsProps = Omit<ActionsWrapperProps, 'actions'>
 
-interface FormComposableBasicProps<
+export interface FormComposableBasicProps<
   ELEMENT_PARAMS extends ElementRenderersConfig
 > {
   customFactories?: ELEMENT_PARAMS

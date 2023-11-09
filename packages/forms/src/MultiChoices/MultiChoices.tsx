@@ -51,6 +51,12 @@ export interface MultiChoicesBasicProps extends BasicProps {
    * The message displayed when `error` is true
    */
   errorMessage?: string
+
+  /**
+   * The helper message below the field
+   */
+  helperText?: string
+
   /**
    * The classes applied to the different part of the component
    */
@@ -79,6 +85,7 @@ export const MultiChoices = React.forwardRef(
       errorMessage = '',
       classes,
       styles,
+      helperText,
       ...other
     } = props
 
@@ -117,21 +124,23 @@ export const MultiChoices = React.forwardRef(
 
     const errorText = useMemo(
       () =>
-        errorMessage !== '' && error ? (
+        (errorMessage !== '' && error) || helperText ? (
           <FormHelperText
             className={defaultStyles.cx(
-              defaultStyles.classes.helperText,
-              classes?.helperText,
-              'AruiMultiChoices-helperText'
+              errorMessage !== '' && error
+                ? defaultStyles.classes.errorHelperText
+                : defaultStyles.classes.helperText,
+              'AruiMultiChoices-helperText',
+              classes?.helperText
             )}
-            style={{ ...styles?.helperText, marginTop: 0 }}
+            style={styles?.helperText}
           >
-            {errorMessage}
+            {error ? errorMessage ?? helperText : helperText}
           </FormHelperText>
         ) : (
           <></>
         ),
-      [errorMessage, error]
+      [errorMessage, error, helperText]
     )
     return (
       <FormControl

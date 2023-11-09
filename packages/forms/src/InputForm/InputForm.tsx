@@ -1,4 +1,11 @@
-import { Box, InputLabel, SxProps, Theme } from '@mui/material'
+import {
+  Box,
+  InputLabel,
+  Stack,
+  SxProps,
+  Theme,
+  Typography
+} from '@mui/material'
 import React, { useMemo } from 'react'
 import {
   Select,
@@ -62,6 +69,10 @@ export interface InputFormBasicProps<T extends InputFormTypes = 'textField'>
    * The label of the input
    */
   label?: React.ReactNode
+  /**
+   * The description of the input
+   */
+  description?: React.ReactNode
   /**
    * If true the input will be disabled and forced on type 'textfield'
    * @default false
@@ -194,6 +205,7 @@ export const InputForm: InputFormComponent = React.forwardRef(
       className,
       style,
       label,
+      description,
       id,
       classes,
       styles,
@@ -214,20 +226,38 @@ export const InputForm: InputFormComponent = React.forwardRef(
     const defaultStyles = useInputStyles()
 
     const labelUi = useMemo(() => {
-      return label ? (
-        <InputLabel
-          htmlFor={id}
-          className={defaultStyles.cx(
-            size === 'small' && defaultStyles.classes.labelSmall,
-            classes?.label,
-            'AruiInputForm-label'
-          )}
-          style={styles?.label}
+      return (
+        <Stack
+          gap={1}
+          className={'AruiInputForm-labelContainer'}
+          sx={{
+            marginBottom: '8px'
+          }}
         >
-          {label}
-        </InputLabel>
-      ) : null
-    }, [label, classes?.label, id, styles?.label, size])
+          {label && (
+            <InputLabel
+              htmlFor={id}
+              className={defaultStyles.cx(
+                size === 'small' && defaultStyles.classes.labelSmall,
+                classes?.label,
+                'AruiInputForm-label'
+              )}
+              style={styles?.label}
+              sx={{
+                margin: 'unset'
+              }}
+            >
+              {label}
+            </InputLabel>
+          )}
+          {description && (
+            <Typography className={'AruiInputForm-description'} variant='body2'>
+              {description}
+            </Typography>
+          )}
+        </Stack>
+      )
+    }, [label, classes?.label, id, styles?.label, size, description])
 
     const inputUi = useMemo(() => {
       const commonProps = {
@@ -296,7 +326,7 @@ export const InputForm: InputFormComponent = React.forwardRef(
                 alignItems: 'center',
                 justifyContent: 'space-between',
                 gap: (theme) => theme.spacing(2),
-                '& .MuiFormLabel-root': {
+                '& .AruiInputForm-labelContainer': {
                   margin: 'unset'
                 },
                 '& .AruiInputForm-input': {

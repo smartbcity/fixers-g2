@@ -175,13 +175,20 @@ export const useInputStyles = makeG2STyles()((theme) => ({
       padding: '0px 15px 0px 10px'
     }
   },
-  helperText: {
+  errorHelperText: {
     position: 'absolute',
     top: '100%',
     color: `${theme.colors.error}`,
     whiteSpace: 'nowrap',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
+    lineHeight: 1.667,
+    width: '100%',
+    margin: '0',
+    marginTop: '3px'
+  },
+  helperText: {
+    color: `#676879`,
     lineHeight: 1.667,
     width: '100%',
     margin: '0',

@@ -73,6 +73,10 @@ export interface RadioChoicesBasicProps extends BasicProps {
    */
   errorMessage?: string
   /**
+   * The helper message below the field
+   */
+  helperText?: string
+  /**
    * The classes applied to the different part of the component
    */
   classes?: RadioChoicesClasses
@@ -102,6 +106,7 @@ export const RadioChoices = React.forwardRef(
       errorMessage = '',
       classes,
       styles,
+      helperText,
       ...other
     } = props
 
@@ -194,21 +199,23 @@ export const RadioChoices = React.forwardRef(
 
     const errorText = useMemo(
       () =>
-        errorMessage !== '' && error ? (
+        (errorMessage !== '' && error) || helperText ? (
           <FormHelperText
             className={defaultStyles.cx(
-              defaultStyles.classes.helperText,
-              classes?.helperText,
-              'AruiRadioChoices-helperText'
+              errorMessage !== '' && error
+                ? defaultStyles.classes.errorHelperText
+                : defaultStyles.classes.helperText,
+              'AruiRadioChoices-helperText',
+              classes?.helperText
             )}
-            style={{ ...styles?.helperText, marginTop: -3 }}
+            style={styles?.helperText}
           >
-            {errorMessage}
+            {error ? errorMessage ?? helperText : helperText}
           </FormHelperText>
         ) : (
           <></>
         ),
-      [errorMessage, error]
+      [errorMessage, error, helperText]
     )
     return (
       <div
