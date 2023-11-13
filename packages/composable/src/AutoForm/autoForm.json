@@ -1,0 +1,77 @@
+{
+  "dataCollectionStep": {
+    "sections": [
+      {
+        "id": "section_0",
+        "label": "Section 1",
+        "description": "Very cool section for very cool people",
+        "fields": [
+          {
+            "name": "field_0",
+            "type": "select",
+            "label": "How are you?",
+            "description": "TBD",
+            "options": [
+              {
+                "key": "well",
+                "label": "Fine"
+              },
+              {
+                "key": "unwell",
+                "label": "Not good"
+              },
+              {
+                "key": "unknown",
+                "label": "I don't want to answer"
+              }
+            ],
+            "conditions": [
+              {
+                "id": "req_2",
+                "type": "validator",
+                "expression": "#field_0 != 'unknown'",
+                "dependsOn": ["field_0"],
+                "error": "You have to answer the question"
+              },
+              {
+                "id": "req_3",
+                "type": "validator",
+                "expression": "#field_0 == 'well' || #field_1?.size > 0",
+                "dependsOn": ["field_0", "field_1"],
+                "error": "You can't be unwell without a reason"
+              }
+            ]
+          },
+          {
+            "name": "field_1",
+            "type": "textField",
+            "label": "Why are you unwell?",
+            "description": "TBD",
+            "conditions": [
+              {
+                "id": "req_1",
+                "type": "display",
+                "expression": "#field_0 == 'unwell'",
+                "dependsOn": ["field_0"]
+              },
+              {
+                "id": "req_3",
+                "type": "validator",
+                "expression": "#field_0 == 'well' || #field_1?.size > 0",
+                "dependsOn": ["field_0", "field_1"],
+                "error": "You can't be unwell without a reason"
+              }
+            ]
+          }
+        ],
+        "properties": {
+          "display": "grid",
+          "gridColumnNumber": "2"
+        }
+      }
+    ],
+    "properties": {
+      "sectionsType": "stepper"
+    }
+  }
+}

@@ -1,55 +1,58 @@
 import { SpelExpressionEvaluator } from 'spel2js'
-import { FieldValidatorFnc } from './FormComposableField'
+import { FieldValidatorFnc } from '../FormComposable/type/FormComposableField'
 
-export interface DisplayCondition {
-  type: 'display'
+export interface ConditionBase {
+  type: string
   expression: string
 }
 
-export interface ValidatorCondition {
+export interface DisplayCondition extends ConditionBase {
+  type: 'display'
+}
+
+export interface ValidatorCondition extends ConditionBase {
   type: 'validator'
-  expression: string
   error: string
 }
 
 export type Condition = DisplayCondition | ValidatorCondition
 
-export const evalCondition = (condition: Condition, locals: any): boolean => {
+export interface SectionCondition extends ConditionBase {
+  type: 'info' | 'error' | 'warning'
+  message: string
+}
+
+export const evalCondition = (
+  condition: ConditionBase,
+  locals: any
+): boolean => {
   console.log(
     condition.expression,
-    SpelExpressionEvaluator.eval(condition.expression, null, locals)
+    SpelExpressionEvaluator.eval(condition.expression, null, locals),
+    locals
   )
   return SpelExpressionEvaluator.eval(condition.expression, null, locals)
 }
 
 export const evalDisplayConditions = (
   conditions?: Condition[],
-  value?: any,
   values?: any
 ): boolean => {
   if (!conditions) return true
-  const locals = {
-    values: values,
-    value: value ?? null
-  }
   const displayConditions = conditions.filter((cond) => cond.type === 'display')
   if (displayConditions.length === 0) return true
-  return displayConditions.every((cond) => evalCondition(cond, locals))
+  return displayConditions.every((cond) => evalCondition(cond, values))
 }
 
 export const validateConditions =
   (conditions: Condition[]): FieldValidatorFnc =>
-  (value?: any, values?: any) => {
-    const locals = {
-      values: values,
-      value: value ?? null
-    }
+  (values?: any) => {
     //@ts-ignore
     const validatorConditions: ValidatorCondition[] = conditions.filter(
       (cond) => cond.type === 'validator'
     )
     for (let cond of validatorConditions) {
-      if (evalCondition(cond, locals)) return cond.error
+      if (evalCondition(cond, values)) return cond.error
     }
     return
   }

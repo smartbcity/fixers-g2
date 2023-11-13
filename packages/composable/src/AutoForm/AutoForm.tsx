@@ -1,4 +1,4 @@
-import { Stack, StackProps } from '@mui/material'
+import { Stack, StackProps, Typography } from '@mui/material'
 import React from 'react'
 import {
   FormComposable,
@@ -7,6 +7,7 @@ import {
   FormikFormParams,
   useFormComposable
 } from '../FormComposable'
+import { SectionCondition, evalCondition } from '../Conditions'
 
 export type FormSection = {
   /**
@@ -21,6 +22,10 @@ export type FormSection = {
    * the fields of the section
    */
   fields: FormComposableField<string, {}>[]
+  /**
+   * The section conditions
+   */
+  conditions?: SectionCondition[]
 } & Pick<FormComposableBasicProps<{}>, 'display' | 'gridColumnNumber'>
 
 export type AutoFormData = {
@@ -63,15 +68,32 @@ export const AutoForm = (props: AutoFormProps) => {
 
   return (
     <Stack gap={3} {...other}>
-      {formData?.sections.map((section) => (
-        <FormComposable
-          key={section.id}
-          formState={formState}
-          fields={section.fields}
-          display={section.display}
-          gridColumnNumber={section.gridColumnNumber}
-        />
-      ))}
+      {formData?.sections.map((section) => {
+        const message = section.conditions?.find((cond) =>
+          evalCondition(cond, formState.values)
+        )
+        return (
+          <>
+            <FormComposable
+              key={section.id}
+              formState={formState}
+              fields={section.fields}
+              display={section.display}
+              gridColumnNumber={section.gridColumnNumber}
+            />
+            {message && (
+              <Typography
+                sx={{
+                  alignSelf: 'center',
+                  color: (theme) => theme.palette[message.type].main
+                }}
+              >
+                {message.message}
+              </Typography>
+            )}
+          </>
+        )
+      })}
     </Stack>
   )
 }

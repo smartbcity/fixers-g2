@@ -13,7 +13,7 @@ import { ActionsWrapper, ActionsWrapperProps } from '@smartb/g2-components'
 import { FormAction } from '@smartb/g2-forms'
 import { DefaultRenderer } from './factories/FormElementsRenderer'
 import { MUIStyledCommonProps } from '@mui/system'
-import { evalDisplayConditions } from './type/conditionResolver'
+import { evalDisplayConditions } from '../Conditions'
 import { getIn } from '@smartb/g2-utils'
 
 const Form = styled('form')({})
@@ -132,8 +132,6 @@ export const FormComposable = <RENDERER extends ElementRenderersConfig>(
       ),
     [fields, formState.values]
   )
-
-  console.log(filteredFields)
 
   const fieldElement = useFieldRenderProps({
     ...props,

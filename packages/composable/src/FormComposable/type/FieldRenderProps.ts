@@ -6,7 +6,7 @@ import { FormComposableField } from './FormComposableField'
 import { cx } from '@emotion/css'
 import { getIn } from 'formik'
 import { SxProps, Theme } from '@mui/material'
-import { validateConditions } from './conditionResolver'
+import { validateConditions } from '../../Conditions'
 
 export interface FieldRenderProps<TYPE extends string, PROPS>
   extends WithElementParams<TYPE, PROPS> {
