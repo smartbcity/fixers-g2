@@ -93,7 +93,15 @@ const useFormProps = (
 export const useFieldRenderProps = (
   props: FormComposableProps<any>
 ): FieldRenderProps<string, any>[] => {
-  const { fields, formState, classes, styles, isLoading, readOnly } = props
+  const {
+    fields,
+    formState,
+    classes,
+    styles,
+    isLoading,
+    readOnly,
+    orientation
+  } = props
 
   useEffect(() => {
     const { registerField, unregisterField } = formState
@@ -126,7 +134,10 @@ export const useFieldRenderProps = (
         formState: formState,
         key: field.key ?? field.name,
         element: {
-          params: field.params,
+          params: {
+            orientation,
+            ...field.params
+          },
           type: field.type,
           customDisplay: field.customDisplay
         }
@@ -143,7 +154,8 @@ export const useFieldRenderProps = (
     isLoading,
     formState.readOnly,
     formState.isLoading,
-    formState.emptyValueInReadOnly
+    formState.emptyValueInReadOnly,
+    orientation
   ])
   const { setFieldValue } = formState
 

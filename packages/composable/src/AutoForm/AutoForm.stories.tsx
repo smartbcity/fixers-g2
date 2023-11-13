@@ -21,5 +21,5 @@ export const AutoFormStory: StoryFn<AutoFormProps> = (args: AutoFormProps) => {
 
 AutoFormStory.args = {
   //@ts-ignore
-  formData: autoFormFormatter(json.dataCollectionStep)
+  formData: autoFormFormatter(json)
 }

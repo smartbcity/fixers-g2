@@ -14,7 +14,6 @@ import { FormAction } from '@smartb/g2-forms'
 import { DefaultRenderer } from './factories/FormElementsRenderer'
 import { MUIStyledCommonProps } from '@mui/system'
 import { evalDisplayConditions } from '../Conditions'
-import { getIn } from '@smartb/g2-utils'
 
 const Form = styled('form')({})
 
@@ -67,6 +66,11 @@ export interface FormComposableBasicProps<
    */
   gridColumnNumber?: number
   /**
+   * The orientation of each field
+   * @default "vertical"
+   */
+  orientation?: 'horizontal' | 'vertical'
+  /**
    * the props given to the fields stack container
    */
   fieldsStackProps?: StackProps
@@ -116,6 +120,7 @@ export const FormComposable = <RENDERER extends ElementRenderersConfig>(
     readOnly = false,
     display = 'flex',
     gridColumnNumber = 2,
+    orientation = 'vertical',
     sx,
     children,
     ...other
@@ -124,11 +129,7 @@ export const FormComposable = <RENDERER extends ElementRenderersConfig>(
   const filteredFields = useMemo(
     () =>
       fields.filter((field) =>
-        evalDisplayConditions(
-          field.conditions,
-          getIn(formState.values, field.name),
-          formState.values
-        )
+        evalDisplayConditions(field.conditions, formState.values)
       ),
     [fields, formState.values]
   )
@@ -165,6 +166,13 @@ export const FormComposable = <RENDERER extends ElementRenderersConfig>(
           gap: (theme) => theme.spacing(3),
           display: 'flex',
           flexDirection: 'column',
+          '& .AruiForm-field > *':
+            orientation === 'horizontal'
+              ? {
+                  flexGrow: 1,
+                  flexBasis: 0
+                }
+              : undefined,
           ...sx
         }}
         {...other}

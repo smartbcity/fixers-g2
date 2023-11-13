@@ -1,4 +1,4 @@
-import { Stack, StackProps, Typography } from '@mui/material'
+import { Stack, StackProps, Typography, Divider } from '@mui/material'
 import React from 'react'
 import {
   FormComposable,
@@ -8,6 +8,7 @@ import {
   useFormComposable
 } from '../FormComposable'
 import { SectionCondition, evalCondition } from '../Conditions'
+import { Button } from '@smartb/g2-components'
 
 export type FormSection = {
   /**
@@ -26,7 +27,10 @@ export type FormSection = {
    * The section conditions
    */
   conditions?: SectionCondition[]
-} & Pick<FormComposableBasicProps<{}>, 'display' | 'gridColumnNumber'>
+} & Pick<
+  FormComposableBasicProps<{}>,
+  'display' | 'gridColumnNumber' | 'orientation'
+>
 
 export type AutoFormData = {
   /**
@@ -74,17 +78,20 @@ export const AutoForm = (props: AutoFormProps) => {
         )
         return (
           <>
+            {formData?.sections.length > 1 && (
+              <TitleDivider title={section.label} />
+            )}
             <FormComposable
               key={section.id}
               formState={formState}
               fields={section.fields}
               display={section.display}
               gridColumnNumber={section.gridColumnNumber}
+              orientation={section.orientation}
             />
             {message && (
               <Typography
                 sx={{
-                  alignSelf: 'center',
                   color: (theme) => theme.palette[message.type].main
                 }}
               >
@@ -94,6 +101,23 @@ export const AutoForm = (props: AutoFormProps) => {
           </>
         )
       })}
+      <Button sx={{ alignSelf: 'flex-end' }} onClick={formState.submitForm}>
+        Submit
+      </Button>
+    </Stack>
+  )
+}
+
+export interface TitleDividerProps {
+  title?: string
+}
+
+export const TitleDivider = (props: TitleDividerProps) => {
+  const { title } = props
+  return (
+    <Stack gap={2}>
+      <Typography variant='h6'>{title}</Typography>
+      <Divider />
     </Stack>
   )
 }

@@ -26,11 +26,11 @@ export const evalCondition = (
   condition: ConditionBase,
   locals: any
 ): boolean => {
-  console.log(
-    condition.expression,
-    SpelExpressionEvaluator.eval(condition.expression, null, locals),
-    locals
-  )
+  // console.log(
+  //   condition.expression,
+  //   SpelExpressionEvaluator.eval(condition.expression, null, locals),
+  //   locals
+  // )
   return SpelExpressionEvaluator.eval(condition.expression, null, locals)
 }
 
@@ -46,7 +46,7 @@ export const evalDisplayConditions = (
 
 export const validateConditions =
   (conditions: Condition[]): FieldValidatorFnc =>
-  (values?: any) => {
+  (_?: any, values?: any) => {
     //@ts-ignore
     const validatorConditions: ValidatorCondition[] = conditions.filter(
       (cond) => cond.type === 'validator'

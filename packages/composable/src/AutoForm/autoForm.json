@@ -1,77 +1,92 @@
 {
-  "dataCollectionStep": {
-    "sections": [
-      {
-        "id": "section_0",
-        "label": "Section 1",
-        "description": "Very cool section for very cool people",
-        "fields": [
-          {
-            "name": "field_0",
-            "type": "select",
-            "label": "How are you?",
-            "description": "TBD",
-            "options": [
-              {
-                "key": "well",
-                "label": "Fine"
-              },
-              {
-                "key": "unwell",
-                "label": "Not good"
-              },
-              {
-                "key": "unknown",
-                "label": "I don't want to answer"
-              }
-            ],
-            "conditions": [
-              {
-                "id": "req_2",
-                "type": "validator",
-                "expression": "#field_0 != 'unknown'",
-                "dependsOn": ["field_0"],
-                "error": "You have to answer the question"
-              },
-              {
-                "id": "req_3",
-                "type": "validator",
-                "expression": "#field_0 == 'well' || #field_1?.size > 0",
-                "dependsOn": ["field_0", "field_1"],
-                "error": "You can't be unwell without a reason"
-              }
-            ]
-          },
-          {
-            "name": "field_1",
-            "type": "textField",
-            "label": "Why are you unwell?",
-            "description": "TBD",
-            "conditions": [
-              {
-                "id": "req_1",
-                "type": "display",
-                "expression": "#field_0 == 'unwell'",
-                "dependsOn": ["field_0"]
-              },
-              {
-                "id": "req_3",
-                "type": "validator",
-                "expression": "#field_0 == 'well' || #field_1?.size > 0",
-                "dependsOn": ["field_0", "field_1"],
-                "error": "You can't be unwell without a reason"
-              }
-            ]
+  "sections": [
+    {
+      "id": "section_0",
+      "label": "Evidence list",
+      "fields": [
+        {
+          "name": "evidence_0",
+          "type": "documentHandler",
+          "label": "Document X :",
+          "properties": {
+            "isRequired": true,
+            "fileTypesAllowed": ["pdf", "jpg", "png"]
           }
-        ],
-        "properties": {
-          "display": "grid",
-          "gridColumnNumber": "2"
         }
-      }
-    ],
-    "properties": {
-      "sectionsType": "stepper"
+      ]
+    },
+    {
+      "id": "section_1",
+      "label": "Requirements",
+      "fields": [
+        {
+          "name": "name",
+          "type": "textField",
+          "label": "Project Name",
+          "properties": {
+            "readOnly": true
+          }
+        },
+        {
+          "name": "cardNumber",
+          "type": "textField",
+          "label": "Card number",
+          "conditions": [
+            {
+              "expression": "#cardNumber?.size < 6",
+              "type": "validator",
+              "error": "Your card number must have 6 digits minimum"
+            }
+          ]
+        },
+        {
+          "name": "cfcNumber",
+          "type": "textField",
+          "label": "Cfc number",
+          "properties": {
+            "textFieldType": "number"
+          }
+        },
+        {
+          "name": "cccNumber",
+          "type": "textField",
+          "label": "Ccc number",
+          "properties": {
+            "textFieldType": "number"
+          },
+          "conditions": [
+            {
+              "expression": "!!#cfcNumber",
+              "type": "display"
+            }
+          ]
+        },
+        {
+          "name": "country",
+          "type": "select",
+          "label": "Province",
+          "options": [
+            {
+              "key": "TAN",
+              "label": "Tanzania"
+            },
+            {
+              "key": "FRA",
+              "label": "France"
+            }
+          ]
+        }
+      ],
+      "properties": {
+        "orientation": "horizontal"
+      },
+      "conditions": [
+        {
+          "expression": "#country == 'TAN'",
+          "type": "info",
+          "message": "If your project is based in Tanzania you will need a local authorization proof"
+        }
+      ]
     }
-  }
+  ]
 }
