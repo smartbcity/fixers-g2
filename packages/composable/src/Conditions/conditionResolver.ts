@@ -26,12 +26,13 @@ export const evalCondition = (
   condition: ConditionBase,
   locals: any
 ): boolean => {
-  // console.log(
-  //   condition.expression,
-  //   SpelExpressionEvaluator.eval(condition.expression, null, locals),
-  //   locals
-  // )
-  return SpelExpressionEvaluator.eval(condition.expression, null, locals)
+  const properLocals = localsUndefinedToNull(condition.expression, locals)
+  console.log(
+    condition.expression,
+    SpelExpressionEvaluator.eval(condition.expression, null, properLocals),
+    properLocals
+  )
+  return SpelExpressionEvaluator.eval(condition.expression, null, properLocals)
 }
 
 export const evalDisplayConditions = (
@@ -56,3 +57,28 @@ export const validateConditions =
     }
     return
   }
+
+export const requiredFieldConditions = (
+  t: (key: string) => string,
+  fieldName: string
+): Condition => {
+  return {
+    type: 'validator',
+    expression: `#${fieldName} == null || #${fieldName}?.length == 0 || #${fieldName} == '' `,
+    error: t('g2.fieldRequired')
+  }
+}
+
+const localsUndefinedToNull = (expression: string, locals: any) => {
+  const copy = {
+    ...locals
+  }
+  const values = expression
+    .split(' ')
+    .filter((str) => str.includes('#') && !str.includes('.'))
+    .map((value) => value.replace('#', ''))
+  values.forEach((value) => {
+    copy[value] = copy[value] ?? null
+  })
+  return copy
+}

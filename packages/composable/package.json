@@ -44,6 +44,7 @@
     "qs": "^6.11.1",
     "ramda": "^0.28.0",
     "react-router-dom": "^6.8.2",
+    "react-i18next": "^12.2.0",
     "spel2js": "^0.2.8"
   },
   "devDependencies": {
