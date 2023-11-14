@@ -1,14 +1,14 @@
 import { Stack, StackProps, Typography, Divider } from '@mui/material'
-import React from 'react'
+import React, { useMemo } from 'react'
 import {
   FormComposable,
   FormComposableBasicProps,
   FormComposableField,
+  FormComposableState,
   FormikFormParams,
   useFormComposable
 } from '../FormComposable'
 import { SectionCondition, evalCondition } from '../Conditions'
-import { Button } from '@smartb/g2-components'
 
 export type FormSection = {
   /**
@@ -54,11 +54,19 @@ export interface AutoFormProps
       'readOnly' | 'isLoading' | 'onSubmit' | 'formikConfig'
     > {
   formData?: AutoFormData
+  getFormActions?: (formState: FormComposableState) => React.ReactNode
 }
 
 export const AutoForm = (props: AutoFormProps) => {
-  const { formData, isLoading, readOnly, onSubmit, formikConfig, ...other } =
-    props
+  const {
+    formData,
+    isLoading,
+    readOnly,
+    onSubmit,
+    formikConfig,
+    getFormActions,
+    ...other
+  } = props
 
   const formState = useFormComposable({
     onSubmit,
@@ -69,6 +77,11 @@ export const AutoForm = (props: AutoFormProps) => {
       ...formData?.formikConfig
     }
   })
+
+  const actions = useMemo(
+    () => getFormActions && getFormActions(formState),
+    [formState]
+  )
 
   return (
     <Stack gap={3} {...other}>
@@ -101,9 +114,7 @@ export const AutoForm = (props: AutoFormProps) => {
           </>
         )
       })}
-      <Button sx={{ alignSelf: 'flex-end' }} onClick={formState.submitForm}>
-        Submit
-      </Button>
+      {actions}
     </Stack>
   )
 }

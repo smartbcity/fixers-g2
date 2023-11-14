@@ -5,6 +5,7 @@ import { AutoForm, AutoFormProps } from './AutoForm'
 import { BrowserRouter } from 'react-router-dom'
 import json from './autoForm.json'
 import { autoFormFormatter } from './autoFormFormatter'
+import { Button } from '@smartb/g2-components'
 
 export default {
   title: 'Composable/AutoForm',
@@ -14,7 +15,12 @@ export default {
 export const AutoFormStory: StoryFn<AutoFormProps> = (args: AutoFormProps) => {
   return (
     <BrowserRouter>
-      <AutoForm {...args} />
+      <AutoForm
+        {...args}
+        getFormActions={(formState) => (
+          <Button onClick={formState.submitForm}>Submit</Button>
+        )}
+      />
     </BrowserRouter>
   )
 }
