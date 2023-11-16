@@ -58,6 +58,7 @@
           "name": "country",
           "type": "select",
           "label": "Province",
+          "required": true,
           "options": [
             {
               "key": "TAN",
