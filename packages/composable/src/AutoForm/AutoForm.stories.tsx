@@ -17,6 +17,7 @@ export const AutoFormStory: StoryFn<AutoFormProps> = (args: AutoFormProps) => {
     <BrowserRouter>
       <AutoForm
         {...args}
+        onSubmit={(command, values) => console.log(command, values)}
         getFormActions={(formState) => (
           <Button onClick={formState.submitForm}>Submit</Button>
         )}

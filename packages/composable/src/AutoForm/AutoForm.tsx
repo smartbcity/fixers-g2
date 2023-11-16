@@ -1,5 +1,5 @@
 import { Stack, StackProps, Typography, Divider } from '@mui/material'
-import React, { useMemo } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import {
   FormComposable,
   FormComposableBasicProps,
@@ -9,6 +9,8 @@ import {
   useFormComposable
 } from '../FormComposable'
 import { SectionCondition, evalCondition } from '../Conditions'
+import { FormikHelpers } from 'formik'
+import { CommandWithFile } from '@smartb/g2-utils'
 
 export type FormSection = {
   /**
@@ -49,12 +51,16 @@ export type AutoFormData = {
 
 export interface AutoFormProps
   extends Omit<StackProps, 'onSubmit'>,
-    Pick<
-      FormikFormParams<{}>,
-      'readOnly' | 'isLoading' | 'onSubmit' | 'formikConfig'
-    > {
+    Pick<FormikFormParams<{}>, 'readOnly' | 'isLoading' | 'formikConfig'> {
+  onSubmit?: (
+    command: CommandWithFile<any>,
+    values: any,
+    formikHelpers: FormikHelpers<any>
+  ) => boolean | void | Promise<any> | Promise<boolean>
   formData?: AutoFormData
   getFormActions?: (formState: FormComposableState) => React.ReactNode
+  initialValues?: any
+  downloadDocument?: (fieldName: string) => Promise<string | undefined>
 }
 
 export const AutoForm = (props: AutoFormProps) => {
@@ -65,16 +71,62 @@ export const AutoForm = (props: AutoFormProps) => {
     onSubmit,
     formikConfig,
     getFormActions,
+    initialValues,
+    downloadDocument,
     ...other
   } = props
 
+  const initial = useMemo(() => {
+    const initialValuesCopy = { ...initialValues }
+    formData?.sections.forEach((section) =>
+      section.fields.forEach((field) => {
+        if (field.type === 'documentHandler') {
+          if (initialValuesCopy[field.name] && downloadDocument) {
+            initialValuesCopy[`${field.name}Uploaded`] = () =>
+              downloadDocument(field.name)
+            initialValuesCopy[field.name] = undefined
+          }
+        }
+      })
+    )
+    return initialValuesCopy
+  }, [initialValues, formData, downloadDocument])
+
+  const onSubmitCommand = useCallback(
+    (values: any, formikHelpers: FormikHelpers<any>) => {
+      if (onSubmit) {
+        const command: CommandWithFile<any> = {
+          command: {},
+          files: []
+        }
+        formData?.sections.forEach((section) =>
+          section.fields.forEach((field) => {
+            if (values[field.name] != undefined) {
+              if (field.type === 'documentHandler') {
+                command.files.push({
+                  file: values[field.name],
+                  atrKey: field.name
+                })
+              } else {
+                command.command[field.name] = values[field.name]
+              }
+            }
+          })
+        )
+        onSubmit(command, values, formikHelpers)
+      }
+    },
+    [onSubmit, formData]
+  )
+
   const formState = useFormComposable({
-    onSubmit,
+    onSubmit: onSubmitCommand,
     isLoading,
     readOnly: formData?.readOnly ?? readOnly,
     formikConfig: {
       ...formikConfig,
-      ...formData?.formikConfig
+      ...formData?.formikConfig,
+      initialValues: initial
     }
   })
 

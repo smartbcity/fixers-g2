@@ -349,21 +349,22 @@ export const DropzoneChildren = (props: DropzoneChildrenProps) => {
       )
     }
 
+    if (fileTypesAllowed && !uploaded) {
+      labels.push(
+        <Typography
+          key='fileType'
+          sx={{ color: '#676879', textTransform: 'uppercase' }}
+          variant='subtitle2'
+        >
+          {fileTypesAllowed.join(', ')}
+        </Typography>
+      )
+    }
     if (label) {
       const labelParts = label.split('.')
       const labelName = labelParts[0]
       const labelType = labelParts[1]
-      if (fileTypesAllowed && !uploaded) {
-        labels.push(
-          <Typography
-            key='fileType'
-            sx={{ color: '#676879', textTransform: 'uppercase' }}
-            variant='subtitle2'
-          >
-            {fileTypesAllowed.join(', ')}
-          </Typography>
-        )
-      } else if (labelType) {
+      if (labelType) {
         labels.push(
           <Typography
             key='fileType'

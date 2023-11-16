@@ -30,14 +30,7 @@
         {
           "name": "cardNumber",
           "type": "textField",
-          "label": "Card number",
-          "conditions": [
-            {
-              "expression": "#cardNumber?.size < 6",
-              "type": "validator",
-              "error": "Your card number must have 6 digits minimum"
-            }
-          ]
+          "label": "Card number"
         },
         {
           "name": "cfcNumber",

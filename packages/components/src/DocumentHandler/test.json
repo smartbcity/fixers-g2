@@ -1,0 +1,83 @@
+{
+  "user": {
+    "givenName": "ANAIS",
+    "familyName": "ADIDA",
+    "job": "GESTIONNAIRE",
+    "phone": "0651644242",
+    "email": "copro2@advisoringimmobilier.fr"
+  },
+  "organization": {
+    "nafCode": "68.32A",
+    "rnc": "AB2439313",
+    "legalCategory3Code": "9110",
+    "phone": "0651644242",
+    "street": "17-25 BOULEVARD DE BRANDEBOURG ",
+    "postalCode": "94200",
+    "city": "IVRY SUR SEINE ",
+    "address": {
+      "street": "17-25 BOULEVARD DE BRANDEBOURG ",
+      "city": "IVRY SUR SEINE ",
+      "postalCode": "94200"
+    },
+    "roles": [[null]],
+    "type": {
+      "name": "CONDOMINIUM"
+    },
+    "syndicOrganization": {
+      "id": "",
+      "friendlyId": "",
+      "siret": "52804856400033",
+      "rna": null,
+      "rnc": null,
+      "name": "ADVISORING IMMOBILIER",
+      "displayName": "ADVISORING IMMOBILIER",
+      "type": {
+        "name": "ENTERPRISE"
+      },
+      "roles": [[[]]],
+      "rolesComposites": {
+        "assignedRoles": [],
+        "effectiveRoles": []
+      },
+      "supervisor": null,
+      "legalCategory3Code": "5499",
+      "nafCode": "68.32A",
+      "description": null,
+      "phone": "0651644242",
+      "website": null,
+      "billing": null,
+      "hasBilling": false,
+      "logo": null,
+      "kbis": null,
+      "joafe": null,
+      "rncProof": null,
+      "charter": null,
+      "catalogGallery": null,
+      "moreThan20000Collectivity": null,
+      "providerServices": null,
+      "departments": null,
+      "syndicOrganization": null,
+      "syndicPerson": null,
+      "creationDate": 1698742562058,
+      "enabled": true,
+      "disabledBy": null,
+      "disabledDate": null,
+      "attributes": {},
+      "street": "277 RUE DU FBG ST ANTOINE",
+      "city": "PARIS 11",
+      "postalCode": "75011",
+      "address": {
+        "street": "277 RUE DU FBG ST ANTOINE",
+        "city": "PARIS 11",
+        "postalCode": "75011"
+      }
+    },
+    "syndicPerson": null
+  },
+  "consent": {
+    "acceptTermsOfUse": true,
+    "certifyInformation": true,
+    "newsletter": true
+  },
+  "debug": "\n                submit organization form at 31/10/2023 10:00:37:\n                \"isOrganizationEligibleQuery\" : true\n                organization: {\"nafCode\":\"68.32A\",\"rnc\":\"AB2439313\",\"legalCategory3Code\":\"9110\",\"phone\":\"0651644242\",\"street\":\"17-25 BOULEVARD DE BRANDEBOURG \",\"postalCode\":\"94200\",\"city\":\"IVRY SUR SEINE \",\"address\":{\"street\":\"17-25 BOULEVARD DE BRANDEBOURG \",\"city\":\"IVRY SUR SEINE \",\"postalCode\":\"94200\"},\"roles\":[[null]],\"type\":{\"name\":\"CONDOMINIUM\"},\"syndicOrganization\":{\"id\":\"\",\"friendlyId\":\"\",\"siret\":\"52804856400033\",\"rna\":null,\"rnc\":null,\"name\":\"ADVISORING IMMOBILIER\",\"displayName\":\"ADVISORING IMMOBILIER\",\"type\":{\"name\":\"ENTERPRISE\"},\"roles\":[[[]]],\"rolesComposites\":{\"assignedRoles\":[],\"effectiveRoles\":[]},\"supervisor\":null,\"legalCategory3Code\":\"5499\",\"nafCode\":\"68.32A\",\"description\":null,\"phone\":\"0651644242\",\"website\":null,\"billing\":null,\"hasBilling\":false,\"logo\":null,\"kbis\":null,\"joafe\":null,\"rncProof\":null,\"charter\":null,\"catalogGallery\":null,\"moreThan20000Collectivity\":null,\"providerServices\":null,\"departments\":null,\"syndicOrganization\":null,\"syndicPerson\":null,\"creationDate\":1698742562058,\"enabled\":true,\"disabledBy\":null,\"disabledDate\":null,\"attributes\":{},\"street\":\"277 RUE DU FBG ST ANTOINE\",\"city\":\"PARIS 11\",\"postalCode\":\"75011\",\"address\":{\"street\":\"277 RUE DU FBG ST ANTOINE\",\"city\":\"PARIS 11\",\"postalCode\":\"75011\"}},\"syndicPerson\":null}\n            \n                submit rib form:\n                rib: {}\n            \n                submit user form at 31/10/2023 10:00:42:\n                user: {\"job\":\"GESTIONNAIRE\",\"givenName\":\"ANAIS\",\"familyName\":\"ADIDA\",\"phone\":\"0651644242\",\"address\":{\"street\":\"\",\"city\":\"\",\"postalCode\":\"\"},\"memberOf\":{\"id\":{\"id\":\"\",\"name\":\"\",\"roles\":[]},\"name\":\"\",\"roles\":[]},\"roles\":[[null]]}\n            \n                submit account form at 31/10/2023 10:01:04:\n                account: {\"email\":\"copro2@advisoringimmobilier.fr\",\"certifyInformation\":true,\"acceptTermsOfUse\":true,\"newsletter\":true}\n            \n                submit account form at 31/10/2023 18:16:12:\n                account: {\"email\":\"copro2@advisoringimmobilier.fr\",\"certifyInformation\":true,\"acceptTermsOfUse\":true,\"newsletter\":true}\n            "
+}
