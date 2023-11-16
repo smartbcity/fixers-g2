@@ -27,11 +27,11 @@ export const evalCondition = (
   locals: any
 ): boolean => {
   const properLocals = localsUndefinedToNull(condition.expression, locals)
-  console.log(
-    condition.expression,
-    SpelExpressionEvaluator.eval(condition.expression, null, properLocals),
-    properLocals
-  )
+  // console.log(
+  //   condition.expression,
+  //   SpelExpressionEvaluator.eval(condition.expression, null, properLocals),
+  //   properLocals
+  // )
   return SpelExpressionEvaluator.eval(condition.expression, null, properLocals)
 }
 
