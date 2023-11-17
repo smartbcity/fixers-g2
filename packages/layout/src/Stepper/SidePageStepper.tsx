@@ -38,7 +38,13 @@ export const SidePageStepper = (props: SidePageStepperProps) => {
       {...other}
     >
       {headerComponent}
-      <Stepper {...stepperProps} />
+      <Stepper
+        {...stepperProps}
+        sx={{
+          marginTop: '120px',
+          ...stepperProps.sx
+        }}
+      />
     </Drawer>
   )
 }

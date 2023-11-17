@@ -1,84 +1,71 @@
 {
   "sections": [
     {
-      "id": "section_0",
-      "label": "Evidence list",
-      "fields": [
-        {
-          "name": "evidence_0",
-          "type": "documentHandler",
-          "label": "Document X :",
-          "properties": {
-            "isRequired": true,
-            "fileTypesAllowed": ["pdf", "jpg", "png"]
-          }
-        }
-      ]
-    },
-    {
-      "id": "section_1",
-      "label": "Requirements",
+      "id": "summary",
+      "label": "Summary",
+      "description": "Provide a concise but informative name and description of your project. The name should clearly represent the project's purpose, while the description should offer more details, including its environmental goals and expected outcomes. Make sure the summary effectively conveys the essence of your project to users.",
       "fields": [
         {
           "name": "name",
           "type": "textField",
           "label": "Project Name",
-          "properties": {
-            "readOnly": true
-          }
+          "required": true
         },
         {
-          "name": "cardNumber",
+          "name": "description",
           "type": "textField",
-          "label": "Card number"
-        },
-        {
-          "name": "cfcNumber",
-          "type": "textField",
-          "label": "Cfc number",
-          "properties": {
-            "textFieldType": "number"
-          }
-        },
-        {
-          "name": "cccNumber",
-          "type": "textField",
-          "label": "Ccc number",
-          "properties": {
-            "textFieldType": "number"
-          },
-          "conditions": [
-            {
-              "expression": "!!#cfcNumber",
-              "type": "display"
-            }
-          ]
-        },
-        {
-          "name": "country",
-          "type": "select",
-          "label": "Province",
+          "label": "Project Name",
           "required": true,
-          "options": [
-            {
-              "key": "TAN",
-              "label": "Tanzania"
-            },
-            {
-              "key": "FRA",
-              "label": "France"
-            }
-          ]
+          "properties": {
+            "multiline": true,
+            "rows": 4
+          }
+        },
+        {
+          "name": "presentation",
+          "type": "documentHandler",
+          "label": "Add a presentation document to your project",
+          "properties": {
+            "fileTypesAllowed": ["pdf"],
+            "outterLabel": "Presentation document (optional)"
+          }
+        }
+      ]
+    },
+    {
+      "id": "schedule",
+      "label": "Schedule",
+      "description": "Specify the start date and estimated end date of your project. The start date marks the commencement of project activities, while the estimated end date should reflect when you anticipate the project will conclude.",
+      "fields": [
+        {
+          "name": "startDate",
+          "type": "datePicker",
+          "label": "Start date",
+          "required": true
+        },
+        {
+          "name": "endDate",
+          "type": "datePicker",
+          "label": "Estimated end date",
+          "required": true
         }
       ],
       "properties": {
-        "orientation": "horizontal"
-      },
-      "conditions": [
+        "display": "grid"
+      }
+    },
+    {
+      "id": "program",
+      "label": "Program",
+      "fields": [
         {
-          "expression": "#country == 'TAN'",
-          "type": "info",
-          "message": "If your project is based in Tanzania you will need a local authorization proof"
+          "name": "program",
+          "type": "autoComplete",
+          "required": true,
+          "properties": {
+            "placeholder": "Choose a program",
+            "options": []
+          }
         }
       ]
     }

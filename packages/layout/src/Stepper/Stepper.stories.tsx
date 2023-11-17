@@ -17,6 +17,7 @@ export const Stepper: StoryFn<StepperProps> = (args: StepperProps) => {
 }
 
 Stepper.args = {
+  activeStep: 1,
   steps: [
     {
       key: 'step1',

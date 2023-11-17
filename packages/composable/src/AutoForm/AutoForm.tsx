@@ -22,6 +22,10 @@ export type FormSection = {
    */
   label?: string
   /**
+   * the description of the section
+   */
+  description?: string
+  /**
    * the fields of the section
    */
   fields: FormComposableField<string, {}>[]
@@ -39,7 +43,7 @@ export type AutoFormData = {
    * describe the type of display for the sections
    * @default "default"
    */
-  sectionsType?: 'default'
+  sectionsType?: 'default' | 'divided'
   /**
    * The different sections of the form
    */
@@ -75,6 +79,8 @@ export const AutoForm = (props: AutoFormProps) => {
     downloadDocument,
     ...other
   } = props
+
+  const sectionsType = formData?.sectionsType ?? 'default'
 
   const initial = useMemo(() => {
     const initialValuesCopy = { ...initialValues }
@@ -138,13 +144,20 @@ export const AutoForm = (props: AutoFormProps) => {
   return (
     <Stack gap={3} {...other}>
       {formData?.sections.map((section) => {
+        console.log(section)
         const message = section.conditions?.find((cond) =>
           evalCondition(cond, formState.values)
         )
         return (
           <>
             {formData?.sections.length > 1 && (
-              <TitleDivider title={section.label} />
+              <TitleDivider
+                withDivider={sectionsType === 'divided'}
+                title={section.label}
+              />
+            )}
+            {section.description && (
+              <Typography variant='body2'>{section.description}</Typography>
             )}
             <FormComposable
               key={section.id}
@@ -173,14 +186,15 @@ export const AutoForm = (props: AutoFormProps) => {
 
 export interface TitleDividerProps {
   title?: string
+  withDivider?: boolean
 }
 
 export const TitleDivider = (props: TitleDividerProps) => {
-  const { title } = props
+  const { title, withDivider = true } = props
   return (
     <Stack gap={2}>
       <Typography variant='h6'>{title}</Typography>
-      <Divider />
+      {withDivider && <Divider />}
     </Stack>
   )
 }

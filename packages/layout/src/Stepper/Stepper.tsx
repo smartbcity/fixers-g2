@@ -114,7 +114,6 @@ export const Stepper = (props: StepperProps) => {
     (): SxProps<Theme> =>
       orientation === 'vertical'
         ? {
-            marginTop: '120px',
             display: 'block',
             '& .MuiStepLabel-labelContainer': {
               width: 'unset'

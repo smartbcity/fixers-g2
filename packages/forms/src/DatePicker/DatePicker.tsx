@@ -24,6 +24,9 @@ const dateFnsLocales = {
 }
 
 const useStyles = makeG2STyles()((theme) => ({
+  input: {
+    width: '100%'
+  },
   dialog: {
     '& .MuiButton-root': {
       background: theme.colors.primary,
@@ -191,6 +194,7 @@ const DatePickerBase = (
           variant='filled'
           error={error}
           className={defaultStyles.cx(
+            localStyles.classes.input,
             defaultStyles.classes.input,
             size === 'large' && defaultStyles.classes.inputLarge,
             size === 'medium' && defaultStyles.classes.inputMedium,
