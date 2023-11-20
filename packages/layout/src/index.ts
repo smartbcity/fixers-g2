@@ -65,3 +65,10 @@ export {
 } from './TableV2'
 
 export { LimitedList, LimitedListProps } from './LimitedList'
+export {
+  SidePageStepper,
+  SidePageStepperProps,
+  StepItem,
+  Stepper,
+  StepperProps
+} from './Stepper'
