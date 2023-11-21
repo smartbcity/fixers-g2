@@ -216,26 +216,6 @@ const Mydiv = styled('div')({})
 function AvStepIcon(props: StepIconProps & { activeColor: ColorPalette }) {
   const { active, completed, className, style, icon, activeColor } = props
 
-  const sxObj = useMemo((): SxProps<Theme> => {
-    return active
-      ? {
-          background: (theme) => theme.palette[activeColor].main,
-          border: (theme) => `2px ${theme.palette[activeColor].main} solid`,
-          color: 'white'
-        }
-      : completed
-      ? {
-          background: (theme) => theme.palette.success.main,
-          border: (theme) => `2px ${theme.palette.success.main} solid`,
-          color: 'white'
-        }
-      : {
-          background: 'none',
-          border: `2px #9E9E9E solid`,
-          color: '#9E9E9E'
-        }
-  }, [active, completed, activeColor])
-
   return (
     <Mydiv
       className={className}
@@ -247,7 +227,23 @@ function AvStepIcon(props: StepIconProps & { activeColor: ColorPalette }) {
         justifyContent: 'center',
         width: '32px',
         height: '32px',
-        ...sxObj
+        ...(active
+          ? {
+              background: (theme) => theme.palette[activeColor].main,
+              border: (theme) => `2px ${theme.palette[activeColor].main} solid`,
+              color: 'white'
+            }
+          : completed
+          ? {
+              background: (theme) => theme.palette.success.main,
+              border: (theme) => `2px ${theme.palette.success.main} solid`,
+              color: 'white'
+            }
+          : {
+              background: 'none',
+              border: `2px #9E9E9E solid`,
+              color: '#9E9E9E'
+            })
       }}
     >
       {completed ? (

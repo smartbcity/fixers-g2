@@ -27,6 +27,7 @@ export const evalCondition = (
   locals: any
 ): boolean => {
   const properLocals = localsUndefinedToNull(condition.expression, locals)
+  properLocals.now = Date.now()
   // console.log(
   //   condition.expression,
   //   SpelExpressionEvaluator.eval(condition.expression, null, properLocals),

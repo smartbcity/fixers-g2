@@ -144,7 +144,6 @@ export const AutoForm = (props: AutoFormProps) => {
   return (
     <Stack gap={3} {...other}>
       {formData?.sections.map((section) => {
-        console.log(section)
         const message = section.conditions?.find((cond) =>
           evalCondition(cond, formState.values)
         )
