@@ -8,13 +8,13 @@
         {
           "name": "name",
           "type": "textField",
-          "label": "Project Name",
+          "label": "Project name",
           "required": true
         },
         {
           "name": "description",
           "type": "textField",
-          "label": "Project Name",
+          "label": "Project description",
           "required": true,
           "properties": {
             "multiline": true,
@@ -41,12 +41,31 @@
           "name": "startDate",
           "type": "datePicker",
           "label": "Start date",
+          "conditions": [
+            {
+              "type": "validator",
+              "expression": "#startDate <= #now",
+              "error": "The start date should be further than today"
+            }
+          ],
           "required": true
         },
         {
           "name": "endDate",
           "type": "datePicker",
           "label": "Estimated end date",
+          "conditions": [
+            {
+              "type": "validator",
+              "expression": "#endDate <= #now",
+              "error": "The end date should be further than today"
+            },
+            {
+              "type": "validator",
+              "expression": "#endDate <= #startDate",
+              "error": "The end date should be further than the start date"
+            }
+          ],
           "required": true
         }
       ],
@@ -64,7 +83,12 @@
           "required": true,
           "properties": {
             "placeholder": "Choose a program",
-            "options": []
+            "options": [
+              {
+                "key": "1",
+                "label": "Program 1"
+              }
+            ]
           }
         }
       ]

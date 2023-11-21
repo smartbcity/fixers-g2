@@ -28,8 +28,8 @@ Stepper.args = {
       label: 'Step 2'
     },
     {
-      key: 'step2',
-      label: 'Step 2'
+      key: 'step 3',
+      label: 'Step 3'
     }
   ]
 }
@@ -69,8 +69,8 @@ SidePageStepper.args = {
         label: 'Step 2'
       },
       {
-        key: 'step2',
-        label: 'Step 2'
+        key: 'step 3',
+        label: 'Step 3'
       }
     ]
   }

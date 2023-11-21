@@ -1,5 +1,5 @@
 import { Stack, StackProps, Typography, Divider } from '@mui/material'
-import React, { useCallback, useMemo } from 'react'
+import React, { useCallback, useMemo, Fragment } from 'react'
 import {
   FormComposable,
   FormComposableBasicProps,
@@ -148,8 +148,8 @@ export const AutoForm = (props: AutoFormProps) => {
           evalCondition(cond, formState.values)
         )
         return (
-          <>
-            {formData?.sections.length > 1 && (
+          <Fragment key={section.id}>
+            {formData?.sections.length > 1 && section.label && (
               <TitleDivider
                 withDivider={sectionsType === 'divided'}
                 title={section.label}
@@ -159,7 +159,6 @@ export const AutoForm = (props: AutoFormProps) => {
               <Typography variant='body2'>{section.description}</Typography>
             )}
             <FormComposable
-              key={section.id}
               formState={formState}
               fields={section.fields}
               display={section.display}
@@ -175,7 +174,7 @@ export const AutoForm = (props: AutoFormProps) => {
                 {message.message}
               </Typography>
             )}
-          </>
+          </Fragment>
         )
       })}
       {actions}
