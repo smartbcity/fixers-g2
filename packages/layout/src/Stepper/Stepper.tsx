@@ -9,9 +9,9 @@ import {
   SxProps,
   Theme,
   Typography,
-  StepConnector
+  StepConnector,
+  styled
 } from '@mui/material'
-import { styled } from '@mui/material/styles'
 import { MergeMuiElementProps } from '@smartb/g2'
 import React, { useMemo } from 'react'
 
@@ -188,10 +188,7 @@ export const Stepper = (props: StepperProps) => {
               borderColor: (theme) => theme.palette.success.main
             },
             '& .MuiStepLabel-label.Mui-active': {
-              color: (theme) => {
-                console.log(activeColor, theme.palette[activeColor].main)
-                return theme.palette[activeColor].main
-              }
+              color: (theme) => theme.palette[activeColor].main
             },
             '& .MuiStepLabel-label.Mui-completed': {
               color: '#353945'
@@ -218,7 +215,6 @@ const Mydiv = styled('div')({})
 
 function AvStepIcon(props: StepIconProps & { activeColor: ColorPalette }) {
   const { active, completed, className, style, icon, activeColor } = props
-  console.log(activeColor)
   return (
     <Mydiv
       className={className}
@@ -232,10 +228,7 @@ function AvStepIcon(props: StepIconProps & { activeColor: ColorPalette }) {
         height: '32px',
         ...(active
           ? {
-              background: (theme) => {
-                console.log(activeColor, theme.palette[activeColor].main)
-                return theme.palette[activeColor].main
-              },
+              background: (theme) => theme.palette[activeColor].main,
               border: (theme) => `2px ${theme.palette[activeColor].main} solid`,
               color: 'white'
             }
