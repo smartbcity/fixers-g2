@@ -115,6 +115,10 @@ export interface AutoCompleteBasicProps<T> extends BasicProps {
    * The message displayed when the input value is wrong
    */
   errorMessage?: string
+  /**
+   * The helper message below the field
+   */
+  helperText?: string
 }
 
 export type AutoCompleteProps<T = any> = MergeMuiElementProps<
@@ -160,6 +164,7 @@ const AutoCompleteBase = function <T>(
     withCheckbox = true,
     returnFullObject = false,
     chipProps,
+    helperText,
     ...other
   } = props
 
@@ -224,10 +229,11 @@ const AutoCompleteBase = function <T>(
           error={error}
           errorMessage={errorMessage}
           noCheckOrClearIcon
+          helperText={helperText}
         />
       )
     },
-    [textFieldProps, error, errorMessage]
+    [textFieldProps, error, errorMessage, helperText]
   )
 
   const renderOption = useCallback(

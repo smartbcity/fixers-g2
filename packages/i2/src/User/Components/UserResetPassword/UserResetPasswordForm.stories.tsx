@@ -1,10 +1,10 @@
-import { Meta } from '@storybook/react'
+import { Meta, StoryFn } from '@storybook/react'
 import React from 'react'
 import {
   UserResetPasswordForm,
   UserResetPasswordFormProps
 } from './UserResetPasswordForm'
-import { Story } from '@storybook/react/types-6-0'
+
 import { styles, classes } from '../../Domain'
 
 export default {
@@ -30,7 +30,7 @@ export default {
   }
 } as Meta
 
-export const UserResetPasswordFormStory: Story<UserResetPasswordFormProps> = (
+export const UserResetPasswordFormStory: StoryFn<UserResetPasswordFormProps> = (
   args: UserResetPasswordFormProps
 ) => {
   return <UserResetPasswordForm {...args} />

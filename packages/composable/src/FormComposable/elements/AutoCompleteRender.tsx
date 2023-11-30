@@ -35,16 +35,11 @@ export const AutoCompleteRender: ElementRendererFunction<
   const onChange = componentProps.onChange
 
   const { value, setFieldValue } = useMemo(
-    () =>
-      getValueSetup(
-        componentProps.name,
-        formState,
-        componentProps.sharedNameIndex
-      ),
-    [componentProps.name, formState, componentProps.sharedNameIndex]
+    () => getValueSetup(componentProps.name, formState),
+    [componentProps.name, formState]
   )
   delete componentProps.onChange
-  delete componentProps.sharedNameIndex
+
   return params?.multiple === true ? (
     // @ts-ignore
     <InputForm

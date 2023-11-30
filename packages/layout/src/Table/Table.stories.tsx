@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import { Meta } from '@storybook/react'
+import { Meta, StoryFn } from '@storybook/react'
 import { Table as AruiTable, TableBasicProps } from './Table'
-import { Story } from '@storybook/react/types-6-0'
+
 import { Box, Button, Divider, Stack, Typography } from '@mui/material'
 import {
   ArgsTable,
@@ -124,7 +124,7 @@ const data2: Data[] = [
   }
 ]
 
-export const Table: Story<TableBasicProps<Data>> = (
+export const Table: StoryFn<TableBasicProps<Data>> = (
   args: TableBasicProps<Data>
 ) => {
   const [page, setPage] = useState<number>(1)
@@ -180,7 +180,7 @@ Table.args = {
   onRowClicked: (row) => console.log('cliked', row)
 }
 
-export const theVariants: Story = () => {
+export const theVariants: StoryFn = () => {
   interface DataExample {
     id: string
     name: string
@@ -267,7 +267,7 @@ export const theVariants: Story = () => {
   )
 }
 
-export const LoadingStates: Story = () => {
+export const LoadingStates: StoryFn = () => {
   return (
     <Stack spacing={5}>
       <AruiTable columns={[]} data={[]} isLoading variant='grounded' />
@@ -276,7 +276,7 @@ export const LoadingStates: Story = () => {
   )
 }
 
-export const NotificationList: Story = () => {
+export const NotificationList: StoryFn = () => {
   interface Notification {
     id: string
     message: string
@@ -353,7 +353,7 @@ export const NotificationList: Story = () => {
   )
 }
 
-export const AxessExample: Story = () => {
+export const AxessExample: StoryFn = () => {
   interface AxessData {
     id: string
     protocol: string
@@ -543,7 +543,7 @@ export const AxessExample: Story = () => {
   )
 }
 
-export const ColumnFactoryExample: Story = () => {
+export const ColumnFactoryExample: StoryFn = () => {
   interface Person {
     id: string
     firstName: string

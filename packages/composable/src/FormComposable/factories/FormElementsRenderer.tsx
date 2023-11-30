@@ -9,6 +9,7 @@ import { DropPictureRender } from '../elements/DropPictureRender'
 import { DocumentHandlerRender } from '../elements/DocumentHandlerRender'
 import { MapComposableRenderer } from '../elements/MapComposableRenderer'
 import { MultiChoicesRender } from '../elements/MultiChoicesRender'
+import { HiddenRender } from '../elements/HiddenRender'
 
 export const DefaultRenderer = {
   textField: TextFieldRender,
@@ -20,7 +21,8 @@ export const DefaultRenderer = {
   multiChoices: MultiChoicesRender,
   dropPicture: DropPictureRender,
   documentHandler: DocumentHandlerRender,
-  map: MapComposableRenderer
+  map: MapComposableRenderer,
+  hidden: HiddenRender
 } as const
 
 export type FieldRenderType = ComposableElementRendererProps<

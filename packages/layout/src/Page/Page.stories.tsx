@@ -1,11 +1,11 @@
 import React, { useMemo } from 'react'
 import { Page as AruiPage, PageBasicProps } from './Page'
-import { Meta } from '@storybook/react'
-import { Story } from '@storybook/react/types-6-0'
+import { Meta, StoryFn } from '@storybook/react'
 import { Filters, useFilters, FiltersField } from '@smartb/g2-forms'
 import { Action, Button } from '@smartb/g2-components'
 import { Box, Typography } from '@mui/material'
 import { Header, HeaderProps } from '../Header'
+import { PageContextProvider } from './PageContextProvider'
 
 export default {
   title: 'Layout/Page',
@@ -24,7 +24,7 @@ export default {
   }
 } as Meta
 
-export const Page: Story<PageBasicProps> = (args: PageBasicProps) => {
+export const Page: StoryFn<PageBasicProps> = (args: PageBasicProps) => {
   const fields = useMemo(
     (): FiltersField[] => [
       {
@@ -100,7 +100,6 @@ export const Page: Story<PageBasicProps> = (args: PageBasicProps) => {
   )
 
   const headerProps = useMemo((): HeaderProps => {
-    console.log('re-render')
     return {
       content: [
         {
@@ -122,14 +121,26 @@ export const Page: Story<PageBasicProps> = (args: PageBasicProps) => {
     }
   }, [formState, filtersActions, fields])
 
+  const globalHeaderProps = useMemo((): HeaderProps => {
+    return {
+      content: [
+        {
+          rightPart: [<Button key='page-global'>Global Action</Button>]
+        }
+      ]
+    }
+  }, [formState, filtersActions, fields])
+
   return (
-    <AruiPage
-      headerProps={headerProps}
-      bottomActionsProps={{
-        actions: actions
-      }}
-      {...args}
-    />
+    <PageContextProvider headerProps={globalHeaderProps}>
+      <AruiPage
+        headerProps={headerProps}
+        bottomActionsProps={{
+          actions: actions
+        }}
+        {...args}
+      />
+    </PageContextProvider>
   )
 }
 

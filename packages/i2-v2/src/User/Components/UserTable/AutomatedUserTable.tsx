@@ -1,9 +1,10 @@
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 import React, { useState } from 'react'
 import { UserTable, UserTableProps } from './UserTable'
-import { GetUsersOptions, useGetUsers } from '../../Api'
-import { i2Config, useAuth } from '@smartb/g2-providers'
+import { useGetUsers } from '../../Api'
 import { User } from '../../Domain'
+import { useUserTableState, useUserTableStateParams } from './useUserTableState'
+import { QueryOptions } from '@smartb/g2-utils'
 
 // TODO Automated should be without getUsers and organizationsRefs
 // we could use a parameter to disable organizationsRefs if needed
@@ -14,7 +15,7 @@ export interface AutomatedUserTableBasicProps<T extends User = User>
   /**
    * The getUsers hook options
    */
-  getUsersOptions?: GetUsersOptions<T>
+  getUsersOptions?: QueryOptions<{ id: string }, { items: T[]; total: number }>
   /**
    * Pass the current state of the filters
    */
@@ -27,13 +28,22 @@ export interface AutomatedUserTableBasicProps<T extends User = User>
    * the event called when the page changes
    */
   setPage?: (newPage: number) => void
+  /**
+   * the table state params
+   */
+  tableStateParams?: Partial<useUserTableStateParams<T>>
 }
 
 export type AutomatedUserTableProps<T extends User = User> =
   MergeMuiElementProps<
     Omit<
-      UserTableProps<T>,
-      'users' | 'onFiltersChanged' | 'totalPages' | 'page' | 'setPage'
+      UserTableProps<T> & useUserTableStateParams<T>,
+      | 'users'
+      | 'onFiltersChanged'
+      | 'totalPages'
+      | 'page'
+      | 'setPage'
+      | 'tableState'
     >,
     AutomatedUserTableBasicProps<T>
   >
@@ -41,20 +51,34 @@ export type AutomatedUserTableProps<T extends User = User> =
 export const AutomatedUserTable = <T extends User = User>(
   props: AutomatedUserTableProps<T>
 ) => {
-  const { filters, getUsersOptions, page, setPage, ...other } = props
+  const {
+    filters,
+    getUsersOptions,
+    page,
+    setPage,
+    tableStateParams,
+    getOrganizationUrl,
+    hasOrganizations,
+    ...other
+  } = props
 
   const [localPage, localSetPage] = useState<number>(1)
 
-  const { keycloak } = useAuth()
-
-  const getUsers = useGetUsers({
-    apiUrl: i2Config().userUrl,
-    jwt: keycloak.token,
-    queryParams: {
+  const getUsers = useGetUsers<T>({
+    query: {
       page: localPage - 1,
       ...filters
     },
     options: getUsersOptions
+  })
+
+  const total = Math.ceil((getUsers.data?.total ?? 0) / 10)
+
+  const tableState = useUserTableState<T>({
+    users: getUsers.data?.items ?? [],
+    getOrganizationUrl,
+    hasOrganizations,
+    ...tableStateParams
   })
 
   return (
@@ -62,12 +86,8 @@ export const AutomatedUserTable = <T extends User = User>(
       page={page ?? localPage}
       setPage={setPage ?? localSetPage}
       isLoading={!getUsers.isSuccess}
-      users={getUsers.data?.users ?? []}
-      totalPages={
-        getUsers.data?.totalPages && getUsers.data?.totalPages > 1
-          ? getUsers.data?.totalPages
-          : undefined
-      }
+      tableState={tableState}
+      totalPages={total && total > 1 ? total : undefined}
       {...other}
     />
   )

@@ -4,7 +4,7 @@ import {
   useQuery,
   useQueryClient,
   UseQueryOptions
-} from 'react-query'
+} from '@tanstack/react-query'
 import { OrganizationRef } from '../Domain'
 import { request } from '@smartb/g2-utils'
 import { i2Config } from '@smartb/g2-providers'
@@ -56,18 +56,18 @@ export const useGetOrganizationRefs = (params?: OrganizationRefsAllParams) => {
 }
 
 export const usePrefetchOrganizationRefs = async (
-  params?: OrganizationRefsAllParams<string>
+  params?: OrganizationRefsAllParams<[string]>
 ) => {
   const { jwt, options, queryKey = 'organizationRefs' } = params ?? {}
   const getOrganizationRefs = useCallback(fetchOrganizationRefs(jwt), [jwt])
   const queryClient = useQueryClient()
-  queryClient.prefetchQuery(queryKey, getOrganizationRefs, options)
+  queryClient.prefetchQuery([queryKey], getOrganizationRefs, options)
 }
 
 const fetchOrganizationRefs =
   (jwt?: string) => async (): Promise<OrganizationRefsAllResult> => {
     const res = await request<OrganizationRefsAllResult[]>({
-      url: `${i2Config().orgUrl}/organizationRefList`,
+      url: `${i2Config().url}/organizationRefList`,
       method: 'POST',
       body: '[{}]',
       jwt: jwt

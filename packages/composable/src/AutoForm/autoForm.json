@@ -1,0 +1,97 @@
+{
+  "sections": [
+    {
+      "id": "summary",
+      "label": "Summary",
+      "description": "Provide a concise but informative name and description of your project. The name should clearly represent the project's purpose, while the description should offer more details, including its environmental goals and expected outcomes. Make sure the summary effectively conveys the essence of your project to users.",
+      "fields": [
+        {
+          "name": "name",
+          "type": "textField",
+          "label": "Project name",
+          "required": true
+        },
+        {
+          "name": "description",
+          "type": "textField",
+          "label": "Project description",
+          "required": true,
+          "properties": {
+            "multiline": true,
+            "rows": 4
+          }
+        },
+        {
+          "name": "presentation",
+          "type": "documentHandler",
+          "label": "Add a presentation document to your project",
+          "properties": {
+            "fileTypesAllowed": ["pdf"],
+            "outterLabel": "Presentation document (optional)"
+          }
+        }
+      ]
+    },
+    {
+      "id": "schedule",
+      "label": "Schedule",
+      "description": "Specify the start date and estimated end date of your project. The start date marks the commencement of project activities, while the estimated end date should reflect when you anticipate the project will conclude.",
+      "fields": [
+        {
+          "name": "startDate",
+          "type": "datePicker",
+          "label": "Start date",
+          "conditions": [
+            {
+              "type": "validator",
+              "expression": "#startDate <= #now",
+              "error": "The start date should be further than today"
+            }
+          ],
+          "required": true
+        },
+        {
+          "name": "endDate",
+          "type": "datePicker",
+          "label": "Estimated end date",
+          "conditions": [
+            {
+              "type": "validator",
+              "expression": "#endDate <= #now",
+              "error": "The end date should be further than today"
+            },
+            {
+              "type": "validator",
+              "expression": "#endDate <= #startDate",
+              "error": "The end date should be further than the start date"
+            }
+          ],
+          "required": true
+        }
+      ],
+      "properties": {
+        "display": "grid"
+      }
+    },
+    {
+      "id": "program",
+      "label": "Program",
+      "fields": [
+        {
+          "name": "program",
+          "type": "autoComplete",
+          "required": true,
+          "properties": {
+            "placeholder": "Choose a program",
+            "options": [
+              {
+                "key": "1",
+                "label": "Program 1"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

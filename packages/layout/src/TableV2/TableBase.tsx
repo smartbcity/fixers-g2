@@ -5,6 +5,7 @@ import {
   Collapse,
   TableBody,
   TableCell,
+  TableCellBaseProps,
   TableFooter,
   TableHead,
   TableRow,
@@ -54,7 +55,6 @@ export interface TableBaseProps<Data extends {}> {
   withFooter: boolean
   expandInRow: boolean
   renderRowHoveredComponent?: (row: Row<Data>) => JSX.Element
-  toggleExpandOnRowClicked: boolean
   additionalRowsProps?: Record<string, any>
 }
 
@@ -68,24 +68,29 @@ export const TableBase = <Data extends {}>(props: TableBaseProps<Data>) => {
     withFooter,
     renderRowHoveredComponent,
     expandInRow,
-    toggleExpandOnRowClicked,
     additionalRowsProps = {},
     variant,
     getRowLink
   } = props
 
+  //@ts-ignore
   const TableComponent: React.ElementType =
-    variant === 'elevated' ? Box : MuiTable
+    variant === 'elevated' ? 'div' : undefined
+  //@ts-ignore
   const TableHeadComponent: React.ElementType =
-    variant === 'elevated' ? Box : TableHead
+    variant === 'elevated' ? 'div' : undefined
+  //@ts-ignore
   const TableBodyComponent: React.ElementType =
-    variant === 'elevated' ? Box : TableBody
+    variant === 'elevated' ? 'div' : undefined
+  //@ts-ignore
   const TableFooterComponent: React.ElementType =
-    variant === 'elevated' ? Box : TableFooter
+    variant === 'elevated' ? 'div' : undefined
+  //@ts-ignore
   const TableRowComponent: React.ElementType =
-    variant === 'elevated' ? Box : TableRow
-  const TableCellComponent: React.ElementType =
-    variant === 'elevated' ? Box : TableCell
+    variant === 'elevated' ? 'div' : undefined
+  //@ts-ignore
+  const TableCellComponent: React.ElementType<TableCellBaseProps> =
+    variant === 'elevated' ? 'div' : undefined
 
   const rowsDisplay = tableState.getRowModel().rows.map((row) => {
     const cell = (
@@ -93,7 +98,8 @@ export const TableBase = <Data extends {}>(props: TableBaseProps<Data>) => {
         {row.getVisibleCells().map((cell) => {
           const column = cell.column.columnDef as G2ColumnDef<Data>
           return (
-            <TableCellComponent
+            <TableCell
+              component={TableCellComponent}
               key={cell.id}
               className={cx(
                 column.className,
@@ -111,11 +117,12 @@ export const TableBase = <Data extends {}>(props: TableBaseProps<Data>) => {
               }
             >
               {flexRender(column.cell, cell.getContext())}
-            </TableCellComponent>
+            </TableCell>
           )
         })}
         {!!renderRowHoveredComponent && (
-          <TableCellComponent
+          <TableCell
+            component={TableCellComponent}
             sx={{
               padding: 0,
               position: 'absolute',
@@ -129,7 +136,7 @@ export const TableBase = <Data extends {}>(props: TableBaseProps<Data>) => {
             style={styles?.rowHoveredComponentContainer}
           >
             {renderRowHoveredComponent(row)}
-          </TableCellComponent>
+          </TableCell>
         )}
       </>
     )
@@ -138,11 +145,11 @@ export const TableBase = <Data extends {}>(props: TableBaseProps<Data>) => {
       additionalRowsProps?.all
     return (
       <Fragment key={row.id}>
-        <TableRowComponent
+        <TableRow
+          component={TableRowComponent}
           {...extProps}
           onClick={() => {
             onRowClicked && onRowClicked(row)
-            toggleExpandOnRowClicked && row.toggleExpanded()
           }}
           className={cx(
             extProps?.className,
@@ -177,7 +184,8 @@ export const TableBase = <Data extends {}>(props: TableBaseProps<Data>) => {
             </Collapse>
           )}
           {getRowLink && (
-            <TableCellComponent
+            <TableCell
+              component={TableCellComponent}
               sx={{
                 padding: 0,
                 position: 'absolute',
@@ -197,15 +205,17 @@ export const TableBase = <Data extends {}>(props: TableBaseProps<Data>) => {
                   height: '100%'
                 }}
               />
-            </TableCellComponent>
+            </TableCell>
           )}
-        </TableRowComponent>
+        </TableRow>
         {(!expandInRow || variant === 'grounded') && (
-          <TableRowComponent
+          <TableRow
+            component={TableRowComponent}
             className={cx('AruiTable-tableRow', classes?.tableRow)}
             style={styles?.tableRow}
           >
-            <TableCellComponent
+            <TableCell
+              component={TableCellComponent}
               className={cx('AruiTable-tableCell', classes?.tableCell)}
               style={styles?.tableCell}
               sx={{ paddingBottom: 0, paddingTop: 0 }}
@@ -214,15 +224,16 @@ export const TableBase = <Data extends {}>(props: TableBaseProps<Data>) => {
               <Collapse in={row.getIsExpanded()} timeout='auto' unmountOnExit>
                 {renderSubComponent && renderSubComponent(row)}
               </Collapse>
-            </TableCellComponent>
-          </TableRowComponent>
+            </TableCell>
+          </TableRow>
         )}
       </Fragment>
     )
   })
 
   const headerDisplay = tableState.getHeaderGroups().map((headerGroup) => (
-    <TableRowComponent
+    <TableRow
+      component={TableRowComponent}
       className={cx('AruiTable-tableHeaderRow', classes?.tableHeaderRow)}
       style={styles?.tableHeaderRow}
       key={headerGroup.id}
@@ -237,7 +248,8 @@ export const TableBase = <Data extends {}>(props: TableBaseProps<Data>) => {
       {headerGroup.headers.map((header) => {
         const column = header.column.columnDef as G2ColumnDef<Data>
         return (
-          <TableCellComponent
+          <TableCell
+            component={TableCellComponent}
             key={header.id}
             className={cx(
               column.className,
@@ -262,16 +274,17 @@ export const TableBase = <Data extends {}>(props: TableBaseProps<Data>) => {
             ) : (
               flexRender(column.header, header.getContext())
             )}
-          </TableCellComponent>
+          </TableCell>
         )
       })}
-    </TableRowComponent>
+    </TableRow>
   ))
 
   const footerDisplay = !withFooter
     ? undefined
     : tableState.getFooterGroups().map((footerGroup) => (
-        <TableRowComponent
+        <TableRow
+          component={TableRowComponent}
           key={footerGroup.id}
           className={cx('AruiTable-tableFooterRow', classes?.tableFooterRow)}
           style={styles?.tableFooterRow}
@@ -286,7 +299,8 @@ export const TableBase = <Data extends {}>(props: TableBaseProps<Data>) => {
           {footerGroup.headers.map((header) => {
             const column = header.column.columnDef as G2ColumnDef<Data>
             return (
-              <TableCellComponent
+              <TableCell
+                component={TableCellComponent}
                 key={header.id}
                 className={cx(
                   column.className,
@@ -305,37 +319,41 @@ export const TableBase = <Data extends {}>(props: TableBaseProps<Data>) => {
                 variant={variant === 'grounded' ? 'body' : undefined}
               >
                 {flexRender(column.footer, header.getContext())}
-              </TableCellComponent>
+              </TableCell>
             )
           })}
-        </TableRowComponent>
+        </TableRow>
       ))
 
   return (
-    <TableComponent
+    <MuiTable
+      component={TableComponent}
       className={cx('AruiTable-table', classes?.table)}
       style={styles?.table}
     >
-      <TableHeadComponent
+      <TableHead
+        component={TableHeadComponent}
         className={cx('AruiTable-tableHead', classes?.tableHead)}
         style={styles?.tableHead}
       >
         {headerDisplay}
-      </TableHeadComponent>
-      <TableBodyComponent
+      </TableHead>
+      <TableBody
+        component={TableBodyComponent}
         className={cx('AruiTable-tableBody', classes?.tableBody)}
         style={styles?.tableBody}
       >
         {rowsDisplay}
-      </TableBodyComponent>
+      </TableBody>
       {footerDisplay && (
-        <TableFooterComponent
+        <TableFooter
+          component={TableFooterComponent}
           className={cx('AruiTable-tableFooter', classes?.tableFooter)}
           style={styles?.tableFooter}
         >
           {footerDisplay}
-        </TableFooterComponent>
+        </TableFooter>
       )}
-    </TableComponent>
+    </MuiTable>
   )
 }

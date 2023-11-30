@@ -29,10 +29,6 @@ yarn add @smartb/g2-providers
 yarn add @smartb/g2-s2
 ```
 
-## 📁 The ready-to-go empty application based on our ecosystem with g2 integrated
-
-[get the zip here !](app-full.zip) (open it in a new window)
-
 ## 🧰 The contents
 
 Almost every components are based on [Material-ui](https://material-ui.com/).

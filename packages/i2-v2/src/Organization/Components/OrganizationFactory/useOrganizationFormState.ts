@@ -4,20 +4,19 @@ import {
   FlatOrganization,
   flatOrganizationToOrganization,
   Organization,
+  OrganizationId,
   organizationToFlatOrganization
 } from '../../Domain'
-import { useQueryClient } from 'react-query'
+import { useQueryClient } from '@tanstack/react-query'
 import {
-  CreateOrganizationOptions,
-  GetOrganizationOptions,
-  OrganizationUploadLogoOptions,
-  UpdateOrganizationOptions,
+  getInseeOrganization,
   useCreateOrganization,
   useGetOrganization,
   useOrganizationUploadLogo,
   useUpdateOrganization
 } from '../../Api'
-import { useFormComposable } from '@smartb/g2-composable'
+import { FormikFormParams, useFormComposable } from '@smartb/g2-composable'
+import { CommandOptions, CommandWithFile, QueryOptions } from '@smartb/g2-utils'
 
 export interface useOrganizationFormStateProps<
   T extends Organization = Organization
@@ -29,20 +28,23 @@ export interface useOrganizationFormStateProps<
   /**
    * The getOrganization hook options
    */
-  getOrganizationOptions?: GetOrganizationOptions<T>
+  getOrganizationOptions?: QueryOptions<{ id: OrganizationId }, { item: T }>
   /**
    * The updateOrganization hook options
    */
-  updateOrganizationOptions?: UpdateOrganizationOptions<T>
+  updateOrganizationOptions?: CommandOptions<T, { id: OrganizationId }>
   /**
    * The uploadLogo hook options
    */
-  uploadLogoOptions?: OrganizationUploadLogoOptions
+  uploadLogoOptions?: CommandOptions<
+    CommandWithFile<{ id: OrganizationId }>,
+    { id: OrganizationId }
+  >
   /**
    * The createOrganization hook options
    */
-  createOrganizationOptions?: CreateOrganizationOptions<T>
-  /**
+  createOrganizationOptions?: CommandOptions<T, { id: OrganizationId }>
+  /**a
    * Define whether the object is updated or created
    * @default false
    */
@@ -62,6 +64,14 @@ export interface useOrganizationFormStateProps<
    * @default true
    */
   multipleRoles?: boolean
+  /**
+   * use this param to access the formComposable config
+   */
+  formComposableParams?: Partial<FormikFormParams<any>>
+  /**
+   * provide this function to extend the initialValues passes to the formComposable
+   */
+  extendInitialValues?: (organization?: T) => any
 }
 
 export const useOrganizationFormState = <T extends Organization = Organization>(
@@ -76,7 +86,9 @@ export const useOrganizationFormState = <T extends Organization = Organization>(
     defaultRoles,
     multipleRoles = true,
     myOrganization = false,
-    uploadLogoOptions
+    uploadLogoOptions,
+    formComposableParams,
+    extendInitialValues
   } = params ?? {}
 
   const { keycloak, service } = useAuth()
@@ -87,10 +99,13 @@ export const useOrganizationFormState = <T extends Organization = Organization>(
   }, [service.getUser])
 
   const getOrganization = useGetOrganization<T>({
-    apiUrl: i2Config().orgUrl,
-    organizationId: myOrganization ? user?.memberOf : organizationId,
-    jwt: keycloak.token,
-    options: getOrganizationOptions
+    query: {
+      id: (myOrganization ? user?.memberOf : organizationId) ?? ''
+    },
+    options: {
+      ...getOrganizationOptions,
+      enabled: !!organizationId
+    }
   })
 
   const organization = useMemo(
@@ -103,8 +118,8 @@ export const useOrganizationFormState = <T extends Organization = Organization>(
       ...updateOrganizationOptions,
       onSuccess: (data, variables, context) => {
         getOrganization.refetch()
-        queryClient.invalidateQueries('organizationRefs')
-        queryClient.invalidateQueries('organizations')
+        queryClient.invalidateQueries({ queryKey: ['organizationRefs'] })
+        queryClient.invalidateQueries({ queryKey: ['organizations'] })
         updateOrganizationOptions?.onSuccess &&
           updateOrganizationOptions.onSuccess(data, variables, context)
       }
@@ -116,8 +131,8 @@ export const useOrganizationFormState = <T extends Organization = Organization>(
     () => ({
       ...createOrganizationOptions,
       onSuccess: (data, variables, context) => {
-        queryClient.invalidateQueries('organizationRefs')
-        queryClient.invalidateQueries('organizations')
+        queryClient.invalidateQueries({ queryKey: ['organizationRefs'] })
+        queryClient.invalidateQueries({ queryKey: ['organizations'] })
         createOrganizationOptions?.onSuccess &&
           createOrganizationOptions.onSuccess(data, variables, context)
       }
@@ -126,20 +141,14 @@ export const useOrganizationFormState = <T extends Organization = Organization>(
   )
 
   const updateOrganization = useUpdateOrganization({
-    apiUrl: i2Config().orgUrl,
-    jwt: keycloak.token,
     options: updateOrganizationOptionsMemo
   })
 
   const uploadLogo = useOrganizationUploadLogo({
-    apiUrl: i2Config().orgUrl,
-    jwt: keycloak.token,
     options: uploadLogoOptions
   })
 
   const createOrganization = useCreateOrganization({
-    apiUrl: i2Config().orgUrl,
-    jwt: keycloak.token,
     options: createOrganizationOptionsMemo
   })
 
@@ -196,24 +205,32 @@ export const useOrganizationFormState = <T extends Organization = Organization>(
           organizationToFlatOrganization(organization)
         : undefined),
       //@ts-ignore
-      roles: initialRoles
+      roles: initialRoles,
+      ...(extendInitialValues ? extendInitialValues(organization) : undefined)
     }),
-    [initialRoles, organization]
+    [initialRoles, organization, extendInitialValues]
   )
 
   const formState = useFormComposable({
-    //@ts-ignore
+    ...formComposableParams,
     onSubmit: onSubmitMemoized,
     formikConfig: {
-      initialValues: initialValues,
-      enableReinitialize: true
+      initialValues: initialValues
     }
   })
+
+  const getInseeOrganizationMemoized = useCallback(
+    async (siret: string) => {
+      return getInseeOrganization(siret, i2Config().url, keycloak.token)
+    },
+    [keycloak.token]
+  )
 
   return {
     formState,
     organization: organization,
-    isLoading: getOrganization.isLoading,
-    getOrganization: getOrganization
+    isLoading: getOrganization.isInitialLoading,
+    getOrganization: getOrganization,
+    getInseeOrganization: getInseeOrganizationMemoized
   }
 }

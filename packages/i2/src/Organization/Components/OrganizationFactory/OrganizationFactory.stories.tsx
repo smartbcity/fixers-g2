@@ -1,10 +1,10 @@
-import { Meta } from '@storybook/react'
-import React, { useRef, useState } from 'react'
+import { Meta, StoryFn } from '@storybook/react'
+import React, { useRef } from 'react'
 import {
   OrganizationFactory,
   OrganizationFactoryProps
 } from './OrganizationFactory'
-import { Story } from '@storybook/react/types-6-0'
+
 import { ArgsTable, PRIMARY_STORY, Subtitle } from '@storybook/addon-docs'
 import LinkTo from '@storybook/addon-links/react'
 import { Stack, Typography } from '@mui/material'
@@ -58,7 +58,7 @@ export default {
   }
 } as Meta
 
-export const OrganizationFactoryStory: Story<OrganizationFactoryProps> = (
+export const OrganizationFactoryStory: StoryFn<OrganizationFactoryProps> = (
   args: OrganizationFactoryProps
 ) => {
   const ref = useRef<HTMLButtonElement>(null)

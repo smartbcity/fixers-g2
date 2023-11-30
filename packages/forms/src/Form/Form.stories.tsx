@@ -1,7 +1,6 @@
 import React from 'react'
 import { Form, FormAction, FormBasicProps, FormField } from './Form'
-import { Meta } from '@storybook/react'
-import { Story } from '@storybook/react/types-6-0'
+import { Meta, StoryFn } from '@storybook/react'
 import {
   ArgsTable,
   PRIMARY_STORY,
@@ -124,7 +123,7 @@ export default {
   }
 } as Meta
 
-export const FormStory: Story<FormBasicProps> = (args: FormBasicProps) => {
+export const FormStory: StoryFn<FormBasicProps> = (args: FormBasicProps) => {
   const formState = useForm({
     fields: args.fields,
     onSubmit: (values) => console.log(values)
@@ -152,7 +151,7 @@ export const FormStory: Story<FormBasicProps> = (args: FormBasicProps) => {
   )
 }
 
-export const FormCollumnButtonStory: Story<FormBasicProps> = (
+export const FormCollumnButtonStory: StoryFn<FormBasicProps> = (
   args: FormBasicProps
 ) => {
   const formState = useForm({

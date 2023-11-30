@@ -1,7 +1,6 @@
 export * from './Api'
 
 export {
-  AutomatedOrganizationFactory,
   OrganizationFactoryFieldsOverride,
   OrganizationFactoryClasses,
   OrganizationFactoryStyles,
@@ -11,7 +10,6 @@ export {
   OrganizationFactory,
   OrganizationFactoryProps,
   useOrganizationFormState,
-  OrganizationFactoryStrings,
   organizationFieldsName
 } from './Components/OrganizationFactory'
 
@@ -19,7 +17,12 @@ export {
   AutomatedOrganizationTable,
   OrganizationTable,
   AutomatedOrganizationTableProps,
-  OrganizationTableProps
+  OrganizationTableProps,
+  useOrganizationTableState,
+  useOrganizationTableStateParams,
+  useOrganizationColumns,
+  useOrganizationColumnsParams,
+  OrganizationTableColumns
 } from './Components/OrganizationTable'
 
 export {
@@ -36,7 +39,5 @@ export {
   OrganizationPageResult,
   OrganizationUpdateCommand
 } from './Domain'
-
-export { MyOrganization } from './Components/MyOrganization'
 
 export { siretValidation } from './Validation/siret'

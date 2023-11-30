@@ -18,21 +18,24 @@ export * from './Api'
 export {
   UserFactory,
   UserFactoryProps,
-  AutomatedUserFactory,
-  AutomatedUserFactoryProps,
+  userFieldsName,
   UseUserFormStateProps,
   UseUserFormFieldsProps,
   UserFactoryFieldsOverride,
   useUserFormFields,
-  useUserFormState,
-  UserFactoryStrings
+  useUserFormState
 } from './Components/UserFactory'
 
 export {
   AutomatedUserTable,
   AutomatedUserTableProps,
   UserTable,
-  UserTableProps
+  UserTableProps,
+  useUserTableState,
+  useUserTableStateParams,
+  userTableColumns,
+  useUserColumns,
+  useUserColumnsParams
 } from './Components/UserTable'
 
 export {
@@ -43,7 +46,5 @@ export {
   UserResetPasswordFormClasses,
   UserResetPasswordFormStyles
 } from './Components/UserResetPassword'
-
-export { MyProfile } from './Components/MyProfile'
 
 export { UserSummary, UserSummaryProps } from './Components/UserSummary'

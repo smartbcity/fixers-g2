@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { App as AruiApp, AppProps } from './App'
-import { Meta } from '@storybook/react'
-import { Story } from '@storybook/react/types-6-0'
+import { Meta, StoryFn } from '@storybook/react'
 import { action } from '@storybook/addon-actions'
 import {
   AccountCircle,
@@ -88,7 +87,7 @@ export default {
   }
 } as Meta
 
-const Template: Story<AppProps> = (args: AppProps) => {
+const Template: StoryFn<AppProps> = (args: AppProps) => {
   const [open, setOpen] = useState(true)
 
   return <AruiApp {...args} open={open} onToggle={() => setOpen(!open)} />
@@ -185,7 +184,7 @@ App.args = {
   title: 'SmartB',
   logo: {
     src: defaultLogo,
-    onClick: () => window.alert('Going somewhere')
+    onClick: () => window.alert('g2.Going somewhere')
   } as AppLogoProps,
   navBarContent: (
     <div>

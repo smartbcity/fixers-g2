@@ -4,15 +4,14 @@ import {
   LabelSwitchBasicProps,
   Label
 } from './LabelSwitch'
-import { Meta } from '@storybook/react'
-import { Story } from '@storybook/react/types-6-0'
-import { withDesign } from 'storybook-addon-designs'
+import { Meta, StoryFn } from '@storybook/react'
+
 import { styles, classes } from './docs'
 
 export default {
   title: 'Components/LabelSwitch',
   component: AruiLabelSwitch,
-  decorators: [withDesign],
+
   parameters: {
     design: {
       type: 'figma',
@@ -39,7 +38,7 @@ export default {
   }
 } as Meta
 
-export const LabelSwitch: Story<LabelSwitchBasicProps> = (
+export const LabelSwitch: StoryFn<LabelSwitchBasicProps> = (
   args: LabelSwitchBasicProps
 ) => {
   const [labelValue, setlabelValue] = useState('3Month')

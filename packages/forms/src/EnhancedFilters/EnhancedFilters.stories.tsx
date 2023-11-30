@@ -5,24 +5,23 @@ import {
   FiltersField,
   FiltersAction
 } from '../Filters'
-import { Meta } from '@storybook/react'
-import { Story } from '@storybook/react/types-6-0'
+import { Meta, StoryFn } from '@storybook/react'
 
 import { Typography } from '@mui/material'
 import { useEnhancedFilters } from './useEnhancedFilters'
-import { withDesign } from 'storybook-addon-designs'
+
 import { Route } from 'react-router-dom'
 import {
   Router as AruiRouter,
   AppProvider as AruiAppProvider
 } from '@smartb/g2-providers'
-import { QueryClient } from 'react-query'
+import { QueryClient } from '@tanstack/react-query'
 import { Button } from '@smartb/g2-components'
 
 export default {
   title: 'Forms/EnhancedFilters',
   component: Filters,
-  decorators: [withDesign],
+
   parameters: {
     design: {
       type: 'figma',
@@ -33,7 +32,7 @@ export default {
 
 const queryClient = new QueryClient()
 
-export const EnhancedFiltersStory: Story<FiltersBasicProps> = (
+export const EnhancedFiltersStory: StoryFn<FiltersBasicProps> = (
   args: FiltersBasicProps
 ) => {
   interface Languages {

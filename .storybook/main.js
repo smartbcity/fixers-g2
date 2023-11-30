@@ -1,3 +1,5 @@
+import { dirname, join } from "path";
+import remarkGfm from "remark-gfm";
 module.exports = {
   stories: [
     "../docs/**/*.stories.mdx",
@@ -15,17 +17,21 @@ module.exports = {
     "../packages/fs/src/**/*.stories.@(ts|tsx|mdx)",
   ],
   addons: [
-    "@storybook/addon-links",
-    "@storybook/addon-essentials",
+    getAbsolutePath("@storybook/addon-links"),
+    getAbsolutePath("@storybook/addon-essentials"),
     {
       name: "@storybook/addon-docs",
       options: {
         configureJSX: true,
         transcludeMarkdown: true,
+        mdxPluginOptions: {
+          mdxCompileOptions: {
+            remarkPlugins: [remarkGfm],
+          },
+        },
       },
     },
-    "@storybook/addon-controls",
-    "storybook-addon-designs",
+    getAbsolutePath("@storybook/addon-controls"),
   ],
   typescript: {
     reactDocgen: "react-docgen-typescript",
@@ -48,4 +54,18 @@ module.exports = {
     emotionAlias: false,
     buildStoriesJson: true,
   },
+  framework: {
+    name: getAbsolutePath("@storybook/react-webpack5"),
+    options: {},
+  },
+  docs: {
+    autodocs: true,
+  },
 };
+/**
+ * This function is used to resolve the absolute path of a package.
+ * It is needed in projects that use Yarn PnP or are set up within a monorepo.
+ */
+function getAbsolutePath(value) {
+  return dirname(require.resolve(join(value, "package.json")));
+}

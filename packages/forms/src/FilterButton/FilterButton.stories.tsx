@@ -1,14 +1,13 @@
 import React from 'react'
 import { FilterButton, FilterButtonBasicProps } from './FilterButton'
-import { Meta } from '@storybook/react'
-import { Story } from '@storybook/react/types-6-0'
-import { withDesign } from 'storybook-addon-designs'
+import { Meta, StoryFn } from '@storybook/react'
+
 import { Box } from '@mui/material'
 
 export default {
   title: 'Forms/FilterButton',
   component: FilterButton,
-  decorators: [withDesign],
+
   parameters: {
     design: {
       type: 'figma',
@@ -17,13 +16,13 @@ export default {
   }
 } as Meta
 
-export const FilterButtonStory: Story<FilterButtonBasicProps> = (
+export const FilterButtonStory: StoryFn<FilterButtonBasicProps> = (
   args: FilterButtonBasicProps
 ) => {
   return <FilterButton {...args}>Filtrer</FilterButton>
 }
 
-export const FilterButtonVariants: Story = () => {
+export const FilterButtonVariants: StoryFn = () => {
   return (
     <Box display='flex' justifyContent='space-around' alignItems='center'>
       <Box display='flex' flexDirection='column' gap={5} alignItems='center'>

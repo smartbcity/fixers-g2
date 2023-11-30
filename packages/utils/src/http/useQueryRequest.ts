@@ -1,10 +1,14 @@
-import { useQuery, useQueryClient, UseQueryOptions } from "react-query";
+import {
+  useQuery,
+  useQueryClient,
+  UseQueryOptions,
+} from "@tanstack/react-query";
 import { useCallback } from "react";
 import { HttpOptions, errorHandler, request } from "./index";
 import { RequestProps } from "./RequestProps";
 
 export type QueryOptions<QUERY, RESULT> = Omit<
-  UseQueryOptions<RESULT | undefined, unknown, RESULT, [string, QUERY]>,
+  UseQueryOptions<RESULT | null, unknown, RESULT, [string, QUERY]>,
   "queryKey" | "queryFn"
 >;
 
@@ -24,12 +28,12 @@ export const useQueryRequest = <QUERY, RESULT>(
   const queryClient = useQueryClient();
 
   const invalidateQuery = useCallback(
-    () => queryClient.invalidateQueries(queryKey),
+    () => queryClient.invalidateQueries({ queryKey: [queryKey] }),
     [queryClient.invalidateQueries, queryKey]
   );
 
   return {
-    ...useQuery<RESULT | undefined, unknown, RESULT, [string, QUERY]>(
+    ...useQuery<RESULT | null, unknown, RESULT, [string, QUERY]>(
       [queryKey, params.query],
       () => queryFn(params.query),
       {
@@ -44,11 +48,14 @@ export const useQueryRequest = <QUERY, RESULT>(
 export const useFetchQueryRequest = <QUERY, RESULT>(
   path: string,
   props: RequestProps
-): ((query?: QUERY) => Promise<RESULT | undefined>) => {
+): ((query?: QUERY) => Promise<RESULT | null>) => {
   return useCallback(
     async (query?: QUERY) =>
-      query &&
-      (await fetchQueryRequest<QUERY, RESULT[]>(path, query, props))?.pop(),
+      query
+        ? (
+            await fetchQueryRequest<QUERY, RESULT[]>(path, query, props)
+          )?.pop() ?? null
+        : null,
     [props]
   );
 };

@@ -3,7 +3,6 @@ import { Option } from '@smartb/g2-forms'
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 import React, { useMemo } from 'react'
 import { User } from '../../Domain'
-import { AdressValidationStrings } from '../../../Commons'
 import { Stack, StackProps } from '@mui/material'
 import { useElementSize } from '@mantine/hooks'
 import { UserSummary } from '../UserSummary'
@@ -18,31 +17,12 @@ import {
   useUserFormFields,
   UseUserFormFieldsProps
 } from './useUserFormFields'
+import {
+  ChoicedResetPassword,
+  ChoicedResetPasswordProps
+} from '../UserResetPassword'
 
 export type Validated = boolean
-
-export interface UserFactoryStrings extends AdressValidationStrings {
-  /**
-   * @default "le champ est obligatoire"
-   */
-  requiredField?: string
-  /**
-   * @default "Vous devez renseigner le mail"
-   */
-  completeTheEmail?: string
-  /**
-   * @default "L'email renseigné n'est pas correct"
-   */
-  enterAValidEmail?: string
-  /**
-   * @default "Le numéro de téléphone doit contenir dix chiffres"
-   */
-  enterAValidPhone?: string
-  /**
-   * @default 'Cette addresse email est déjà utilisée'
-   */
-  emailAlreadyUsed?: string
-}
 
 export interface UserFactoryBasicProps
   extends BasicProps,
@@ -78,9 +58,17 @@ export interface UserFactoryBasicProps
    */
   formExtension?: React.ReactNode
   /**
-   * The prop to use to add custom translation to the component
+   * The user id to provide if it's an updation
    */
-  strings?: UserFactoryStrings
+  userId?: string
+  /**
+   * The props passed to the component ChoicedResetPassword
+   */
+  choicedResetPasswordProps?: ChoicedResetPasswordProps
+  /**
+   * The type of the reset password. If not provided the component will not be rendered
+   */
+  resetPasswordType?: 'email' | 'forced'
 }
 
 export type UserFactoryProps = MergeMuiElementProps<
@@ -98,14 +86,16 @@ export const UserFactory = (props: UserFactoryProps) => {
     additionalFields,
     organizationId,
     isLoading = false,
-    strings,
     blockedFields = [],
     readOnlyRolesOptions,
     multipleRoles = true,
     checkEmailValidity,
     formExtension,
     fieldsOverride,
-    isUpdate = false,
+    update = false,
+    userId,
+    resetPasswordType,
+    choicedResetPasswordProps,
     ...other
   } = props
 
@@ -121,16 +111,12 @@ export const UserFactory = (props: UserFactoryProps) => {
         ? (['memberOf'] as userFieldsName[])
         : []),
       //@ts-ignore
-      ...(!fieldsOverride?.roles?.params?.options
-        ? (['roles'] as userFieldsName[])
-        : []),
-      //@ts-ignore
-      ...(isUpdate || readOnly
+      ...(update || readOnly
         ? (['sendResetPassword', 'sendVerifyEmail'] as userFieldsName[])
         : []),
       ...blockedFields
     ],
-    [blockedFields, fieldsOverride, organizationId, isUpdate, readOnly]
+    [blockedFields, fieldsOverride, organizationId, update, readOnly]
   )
 
   const finalFields = useDeletableForm<FormComposableField<string, {}>>({
@@ -179,7 +165,16 @@ export const UserFactory = (props: UserFactoryProps) => {
             maxWidth: '450px'
           }}
         />
-        {formExtension}
+        <>
+          {formExtension}
+          {userId && resetPasswordType && (
+            <ChoicedResetPassword
+              resetPasswordType={resetPasswordType}
+              userId={userId}
+              {...choicedResetPasswordProps}
+            />
+          )}
+        </>
       </Stack>
     </Stack>
   )

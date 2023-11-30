@@ -3,14 +3,11 @@ import {
   StandAloneAppLayout as AruiStandAloneAppLayout,
   StandAloneAppLayoutProps
 } from './StandAloneAppLayout'
-import { Meta } from '@storybook/react'
-import { Story } from '@storybook/react/types-6-0'
+import { Meta, StoryFn } from '@storybook/react'
 import { Box, Link, Paper, Stack, Typography } from '@mui/material'
 import { ArgsTable, PRIMARY_STORY, Subtitle } from '@storybook/addon-docs'
 import LinkTo from '@storybook/addon-links/react'
-import defaultLogo from '../assets/smartb.png'
 import itemsLogo from '../assets/impactcity-logo-2.png'
-import { AppLogoProps } from '../AppMenu'
 import { styles, classes } from './docs'
 import { Button } from '@smartb/g2-components'
 import { Page } from '../Page'
@@ -72,16 +69,13 @@ export default {
   }
 } as Meta
 
-export const StandAloneAppLayout: Story<StandAloneAppLayoutProps> = (
+export const StandAloneAppLayout: StoryFn<StandAloneAppLayoutProps> = (
   args: StandAloneAppLayoutProps
 ) => {
   return <AruiStandAloneAppLayout {...args} />
 }
 
 StandAloneAppLayout.args = {
-  logo: {
-    src: defaultLogo
-  } as AppLogoProps,
   userMenuProps: {
     defaultOpen: true,
     currentUser: {
@@ -138,28 +132,6 @@ StandAloneAppLayout.args = {
               </Typography>
             ],
             rightPart: [<Button key='page-action'>An action</Button>]
-          }
-        ],
-        tabs: [
-          {
-            key: 'tab-1',
-            label: 'Tab 1'
-          },
-          {
-            key: 'tab-2',
-            label: 'Tab 2'
-          },
-          {
-            key: 'tab-3',
-            label: 'Tab 3'
-          },
-          {
-            key: 'tab-4',
-            label: 'Tab 4'
-          },
-          {
-            key: 'tab-5',
-            label: 'Tab 5'
           }
         ],
         currentTab: 'tab-1'

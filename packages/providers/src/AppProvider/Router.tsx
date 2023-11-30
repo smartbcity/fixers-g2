@@ -2,6 +2,7 @@ import { MergeMuiElementProps } from '@smartb/g2-themes'
 import React from 'react'
 import { Route, Routes, RoutesProps } from 'react-router-dom'
 import { NoMatchPage, NoMatchPageProps } from './NoMatchPage'
+import { Impersonate } from './Impersonate'
 
 interface RouterBasicProps {
   /**
@@ -27,6 +28,7 @@ export const Router = (props: RouterProps) => {
   return (
     <Routes {...other}>
       {children}
+      <Route path='/impersonate' element={<Impersonate />} />
       <Route
         path='*'
         element={noMatchComponent || <NoMatchPage {...noMatchPageProps} />}

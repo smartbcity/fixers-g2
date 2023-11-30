@@ -1,16 +1,14 @@
-import { Meta } from '@storybook/react'
+import { Meta, StoryFn } from '@storybook/react'
 import React, { useState } from 'react'
 import { FilterTextField, FilterTextFieldProps } from './FilterTextField'
-import { Story } from '@storybook/react/types-6-0'
 import { FilterTextFieldClasses, FilterTextFieldStyles } from './docs'
 import { Box, Typography } from '@mui/material'
 import { CreditCard } from '@mui/icons-material'
-import { withDesign } from 'storybook-addon-designs'
 
 export default {
   title: 'Forms/FilterTextField',
   component: FilterTextField,
-  decorators: [withDesign],
+
   parameters: {
     design: {
       type: 'figma',
@@ -37,7 +35,7 @@ export default {
   }
 } as Meta
 
-export const FilterTextFieldStory: Story<FilterTextFieldProps> = (
+export const FilterTextFieldStory: StoryFn<FilterTextFieldProps> = (
   args: FilterTextFieldProps
 ) => {
   const [value, setValue] = useState('')
@@ -52,7 +50,7 @@ export const FilterTextFieldStory: Story<FilterTextFieldProps> = (
   )
 }
 
-export const FilterTextFieldVariants: Story<FilterTextFieldProps> = () => {
+export const FilterTextFieldVariants: StoryFn<FilterTextFieldProps> = () => {
   return (
     <Box display='flex' justifyContent='space-around' alignItems='center'>
       <Box display='flex' flexDirection='column' alignItems='center'>
@@ -99,7 +97,7 @@ export const FilterTextFieldVariants: Story<FilterTextFieldProps> = () => {
   )
 }
 
-export const FilterTextFieldStates: Story<FilterTextFieldProps> = () => {
+export const FilterTextFieldStates: StoryFn<FilterTextFieldProps> = () => {
   return (
     <Box display='flex' flexDirection='column' alignItems='center'>
       <FilterTextField
@@ -118,7 +116,7 @@ export const FilterTextFieldStates: Story<FilterTextFieldProps> = () => {
   )
 }
 
-export const SerchFilterTextField: Story<FilterTextFieldProps> = () => {
+export const SerchFilterTextField: StoryFn<FilterTextFieldProps> = () => {
   const [value, setValue] = useState('')
   const [search, setSearch] = useState(undefined)
 
@@ -151,7 +149,7 @@ export const SerchFilterTextField: Story<FilterTextFieldProps> = () => {
   )
 }
 
-export const CustomIcon: Story<FilterTextFieldProps> = () => {
+export const CustomIcon: StoryFn<FilterTextFieldProps> = () => {
   return (
     <Box display='flex' flexDirection='column' alignItems='center'>
       <FilterTextField

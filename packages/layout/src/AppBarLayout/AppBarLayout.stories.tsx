@@ -3,8 +3,7 @@ import {
   AppBarLayout as AruiAppBarLayout,
   AppBarLayoutBasicProps
 } from './AppBarLayout'
-import { Meta } from '@storybook/react'
-import { Story } from '@storybook/react/types-6-0'
+import { Meta, StoryFn } from '@storybook/react'
 import { styles, classes } from './types'
 import { ArgsTable, PRIMARY_STORY } from '@storybook/addon-docs'
 
@@ -40,7 +39,7 @@ export default {
   }
 } as Meta
 
-const Template: Story<AppBarLayoutBasicProps> = (
+const Template: StoryFn<AppBarLayoutBasicProps> = (
   args: AppBarLayoutBasicProps
 ) => <AruiAppBarLayout {...args}></AruiAppBarLayout>
 

@@ -1,11 +1,9 @@
 import { cx } from '@emotion/css'
-import { Menu } from '@mui/icons-material'
 import {
   Box,
   CssBaseline,
   Drawer,
   DrawerProps,
-  IconButton,
   styled,
   SxProps,
   Theme,
@@ -13,22 +11,33 @@ import {
   useTheme
 } from '@mui/material'
 import { MenuItem } from '@smartb/g2-components'
-import React, { useCallback, useEffect, useState } from 'react'
+import { ThemeContext } from '@smartb/g2-themes'
+import React, { useContext, useMemo } from 'react'
 import { AppLogoProps, AppMenu } from '../AppMenu'
 import { UserMenu, UserMenuProps } from '../UserMenu'
 
-const drawerWidth = 234
-
 const Main = styled('main', {
-  shouldForwardProp: (prop) => prop !== 'isMobile'
+  shouldForwardProp: (prop) =>
+    prop !== 'isMobile' && prop !== 'drawerWidth' && prop !== 'openDrawer'
 })<{
   isMobile?: boolean
-}>(({ isMobile }) => ({
+  drawerWidth: number
+  openDrawer: boolean
+}>(({ isMobile, drawerWidth, openDrawer, theme }) => ({
   flexGrow: 1,
-  marginLeft: isMobile ? '' : `${drawerWidth}px`,
-  width: isMobile ? '100vw' : `calc(100vw - ${drawerWidth}px)`,
+  marginLeft: isMobile || !openDrawer ? '' : `${drawerWidth}px`,
+  width: isMobile || !openDrawer ? '100vw' : `calc(100vw - ${drawerWidth}px)`,
   height: '100vh',
-  overflow: 'auto'
+  overflow: 'auto',
+  transition: !openDrawer
+    ? theme.transitions.create(['margin', 'width'], {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.leavingScreen
+      })
+    : theme.transitions.create(['margin', 'width'], {
+        easing: theme.transitions.easing.easeOut,
+        duration: theme.transitions.duration.enteringScreen
+      })
 }))
 
 interface StandAloneAppLayoutClasses {
@@ -65,10 +74,6 @@ export interface StandAloneAppLayoutProps {
    */
   open?: boolean
   /**
-   * The function that is called when the hamburger button is clicked on mobile
-   */
-  onToggle?: () => void
-  /**
    * Use these props to add a user menu to the drawer menu
    */
   userMenuProps?: UserMenuProps
@@ -100,7 +105,6 @@ export const StandAloneAppLayout = (props: StandAloneAppLayoutProps) => {
     menu,
     logo,
     open,
-    onToggle,
     userMenuProps,
     drawerProps,
     mainProps,
@@ -109,40 +113,59 @@ export const StandAloneAppLayout = (props: StandAloneAppLayoutProps) => {
     styles
   } = props
   const theme = useTheme()
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'))
-  const [openLocal, setOpen] = useState(!isMobile)
 
-  useEffect(() => {
-    if (isMobile) {
-      setOpen(false)
-    } else {
-      setOpen(true)
-    }
-  }, [isMobile])
+  const {
+    theme: g2Theme,
+    openDrawer,
+    toggleOpenDrawer
+  } = useContext(ThemeContext)
+  const isMobile =
+    g2Theme.drawerAbsolutePositionBreakpoint === 'always'
+      ? true
+      : useMediaQuery(
+          theme.breakpoints.down(g2Theme.drawerAbsolutePositionBreakpoint!)
+        )
 
-  const currentOpen = open !== undefined ? open : openLocal
+  const currentOpen = open !== undefined ? open : openDrawer
 
-  const onToggleLocal = useCallback(() => {
-    setOpen((prevOpen) => !prevOpen)
-    onToggle && onToggle()
-  }, [onToggle])
+  const PerManentHeader = useMemo(
+    () => g2Theme.permanentHeader,
+    [g2Theme.permanentHeader]
+  )
 
   return (
     <>
+      {PerManentHeader && (
+        <Box
+          sx={{
+            position: 'fixed',
+            zIndex: 2000,
+            top: 0,
+            left: 0,
+            width: g2Theme.drawerWidth
+          }}
+        >
+          <PerManentHeader
+            toggleOpenDrawer={toggleOpenDrawer}
+            openDrawer={currentOpen}
+          />
+        </Box>
+      )}
       <Drawer
         {...drawerProps}
         className={cx('AruiStandAloneAppLayout-drawer', classes?.drawer)}
         style={styles?.drawer}
         sx={{
-          width: drawerWidth,
+          width: g2Theme.drawerWidth,
           flexShrink: 0,
           '& .MuiDrawer-paper': {
-            width: drawerWidth,
+            width: g2Theme.drawerWidth,
             boxSizing: 'border-box',
             border: 'unset',
             height: `100%`,
             overflow: 'visible',
-            visibility: 'visible !important' as 'visible'
+            visibility: 'visible !important' as 'visible',
+            paddingTop: g2Theme.permanentHeader ? '90px' : undefined
           },
           ...drawerProps?.sx
         }}
@@ -150,7 +173,7 @@ export const StandAloneAppLayout = (props: StandAloneAppLayoutProps) => {
         ModalProps={{
           keepMounted: true
         }}
-        onClose={onToggleLocal}
+        onClose={toggleOpenDrawer}
         anchor='left'
         open={currentOpen}
       >
@@ -169,36 +192,6 @@ export const StandAloneAppLayout = (props: StandAloneAppLayoutProps) => {
           <AppMenu menu={menu ?? []} logo={logo} />
           {drawerContent}
         </Box>
-        {isMobile && (
-          <Box
-            className={cx(
-              'AruiStandAloneAppLayout-burgerButtonContainer',
-              classes?.burgerButtonContainer
-            )}
-            style={styles?.burgerButtonContainer}
-            sx={{
-              position: 'absolute',
-              borderRadius: (theme) =>
-                `0px ${theme.shape.borderRadius}px ${theme.shape.borderRadius}px 0px`,
-              backgroundColor: '#FFFFFF',
-              top: '8px',
-              left: drawerWidth - 1,
-              display: 'flex',
-              padding: (theme) => `${theme.spacing(0.5)} ${theme.spacing(1)}`,
-              justifyContent: 'center',
-              alignItems: 'center'
-            }}
-          >
-            <IconButton onClick={onToggleLocal}>
-              <Menu
-                sx={{
-                  width: '30px',
-                  height: '30px'
-                }}
-              />
-            </IconButton>
-          </Box>
-        )}
         {userMenuProps && (
           <UserMenu
             defaultOpen={!isMobile}
@@ -220,6 +213,8 @@ export const StandAloneAppLayout = (props: StandAloneAppLayoutProps) => {
       <CssBaseline />
       <Main
         {...mainProps}
+        openDrawer={currentOpen}
+        drawerWidth={g2Theme.drawerWidth}
         className={cx('AruiStandAloneAppLayout-main', classes?.main)}
         style={styles?.main}
         isMobile={isMobile}

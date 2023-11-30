@@ -1,6 +1,19 @@
-import { Box, InputLabel, SxProps, Theme } from '@mui/material'
+import {
+  Box,
+  InputLabel,
+  Stack,
+  SxProps,
+  Theme,
+  Typography
+} from '@mui/material'
 import React, { useMemo } from 'react'
-import { Select, SelectProps, SelectClasses, SelectStyles } from '../Select'
+import {
+  Select,
+  SelectProps,
+  SelectClasses,
+  SelectStyles,
+  SmartKey
+} from '../Select'
 import {
   TextField,
   TextFieldProps,
@@ -57,6 +70,10 @@ export interface InputFormBasicProps<T extends InputFormTypes = 'textField'>
    */
   label?: React.ReactNode
   /**
+   * The description of the input
+   */
+  description?: React.ReactNode
+  /**
    * If true the input will be disabled and forced on type 'textfield'
    * @default false
    */
@@ -76,11 +93,11 @@ export interface InputFormBasicProps<T extends InputFormTypes = 'textField'>
   /**
    * This function is used to attribute a chip color to the value to be displayed (if not provided the default color will be used)
    */
-  getReadOnlyChipColor?: (value: string | number) => string | undefined
+  getReadOnlyChipColor?: (value: SmartKey) => string | undefined
   /**
    * attribute a link to a readOnly text
    */
-  getReadOnlyTextUrl?: (value: string | number) => string | undefined
+  getReadOnlyTextUrl?: (value: SmartKey) => string | undefined
   /**
    * The element rendered in readOnly if the `readOnlyType` is `"customElement" | "customContainer"` your element need to use the prop
    * `value: string` and `valueKey?: SmartKey` if `readOnlyType="customElement"` and also `values: Option[]` if `readOnlyType="customContainer"`
@@ -188,6 +205,7 @@ export const InputForm: InputFormComponent = React.forwardRef(
       className,
       style,
       label,
+      description,
       id,
       classes,
       styles,
@@ -208,21 +226,38 @@ export const InputForm: InputFormComponent = React.forwardRef(
     const defaultStyles = useInputStyles()
 
     const labelUi = useMemo(() => {
-      return label ? (
-        <InputLabel
-          htmlFor={id}
-          className={defaultStyles.cx(
-            defaultStyles.classes.label,
-            size === 'small' && defaultStyles.classes.labelSmall,
-            classes?.label,
-            'AruiInputForm-label'
-          )}
-          style={styles?.label}
+      return (
+        <Stack
+          gap={1}
+          className={'AruiInputForm-labelContainer'}
+          sx={{
+            marginBottom: '8px'
+          }}
         >
-          {label}
-        </InputLabel>
-      ) : null
-    }, [label, classes?.label, id, styles?.label, size])
+          {label && (
+            <InputLabel
+              htmlFor={id}
+              className={defaultStyles.cx(
+                size === 'small' && defaultStyles.classes.labelSmall,
+                classes?.label,
+                'AruiInputForm-label'
+              )}
+              style={styles?.label}
+              sx={{
+                margin: 'unset'
+              }}
+            >
+              {label}
+            </InputLabel>
+          )}
+          {description && (
+            <Typography className={'AruiInputForm-description'} variant='body2'>
+              {description}
+            </Typography>
+          )}
+        </Stack>
+      )
+    }, [label, classes?.label, id, styles?.label, size, description])
 
     const inputUi = useMemo(() => {
       const commonProps = {
@@ -291,7 +326,7 @@ export const InputForm: InputFormComponent = React.forwardRef(
                 alignItems: 'center',
                 justifyContent: 'space-between',
                 gap: (theme) => theme.spacing(2),
-                '& .MuiFormLabel-root': {
+                '& .AruiInputForm-labelContainer': {
                   margin: 'unset'
                 },
                 '& .AruiInputForm-input': {

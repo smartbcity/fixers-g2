@@ -2,14 +2,12 @@ import {
   UserAvatar as AruiUserAvatar,
   UserAvatarBasicProps
 } from './UserAvatar'
-import { Meta } from '@storybook/react'
-import { Story } from '@storybook/react/types-6-0'
-import { withDesign } from 'storybook-addon-designs'
+import { Meta, StoryFn } from '@storybook/react'
 
 export default {
   title: 'Components/UserAvatar',
   component: AruiUserAvatar,
-  decorators: [withDesign],
+
   parameters: {
     design: {
       type: 'figma',
@@ -18,7 +16,7 @@ export default {
   }
 } as Meta
 
-export const UserAvatar: Story<UserAvatarBasicProps> = (
+export const UserAvatar: StoryFn<UserAvatarBasicProps> = (
   args: UserAvatarBasicProps
 ) => {
   return <AruiUserAvatar {...args} />

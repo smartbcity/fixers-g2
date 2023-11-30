@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { Map, MapBasicProps } from './Map'
-import { Meta } from '@storybook/react'
-import { Story } from '@storybook/react/types-6-0'
+import { Meta, StoryFn } from '@storybook/react'
 import { MapClasses, MapStyles } from './docs'
 import { Geoman } from './Geoman'
 import { BrowserRouter } from 'react-router-dom'
@@ -72,7 +71,7 @@ export default {
   }
 } as Meta
 
-export const MapStory: Story<MapBasicProps> = (args: MapBasicProps) => {
+export const MapStory: StoryFn<MapBasicProps> = (args: MapBasicProps) => {
   const [geoman, setGeoman] = useState<any>(undefined)
   const [position, setPosition] = useState<any>(undefined)
   console.log(geoman)

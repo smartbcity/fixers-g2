@@ -1,7 +1,8 @@
 import {
   createTheme as createMuiTheme,
   ThemeOptions,
-  Theme as MuiTheme
+  Theme as MuiTheme,
+  Breakpoint
 } from '@mui/material'
 import tinycolor from 'tinycolor2'
 import { mergeDeepRight } from 'ramda'
@@ -11,6 +12,23 @@ export interface Theme {
   colors: ThemeColors
   borderRadius: number
   spacing: number
+  drawerWidth: number
+  fontSize: FontSizes
+  /**
+   * Here you can pass the header put to the right in the page component and above the drawer menu.
+   * It should use the prop openDrawer and toggleOpenDrawer to update the drawer state.
+   * It will be place in a container of the width `drawerWidth`
+   */
+  permanentHeader?: React.ElementType<any>
+  /**
+   * The breakpoint where the drawer becom absolute above the main content when opened
+   * @default "md"
+   */
+  drawerAbsolutePositionBreakpoint?: number | Breakpoint | 'always'
+  /**
+   * the url of the logo of the platform
+   */
+  logoUrl?: string
   shadows: string[]
 }
 
@@ -28,10 +46,17 @@ export interface ThemeColors {
   info: string
 }
 
+export interface FontSizes {
+  table: string
+  label: string
+  button: string
+}
+
 export const defaultTheme: Theme = {
   name: 'default',
   borderRadius: 8,
   spacing: 8,
+  drawerWidth: 234,
   colors: {
     primary: '#EDBA27',
     secondary: '#353945',
@@ -41,6 +66,11 @@ export const defaultTheme: Theme = {
     success: '#159D50',
     warning: '#FF9900',
     info: '#3C78D8'
+  },
+  fontSize: {
+    table: '0.875rem',
+    label: '0.875rem',
+    button: '0.875rem'
   },
   shadows: [
     'none',
@@ -56,7 +86,8 @@ export const defaultTheme: Theme = {
     '0px 13px 44px rgba(0, 0, 0, 0.29)',
     '0px 14px 48px rgba(0, 0, 0, 0.3)',
     '0px 15px 52px rgba(0, 0, 0, 0.31)'
-  ]
+  ],
+  drawerAbsolutePositionBreakpoint: 'md'
 } // the archetypes theme (maybe not the final version)
 
 export const defaultMaterialUiTheme = (
@@ -182,7 +213,21 @@ export const defaultMaterialUiTheme = (
       MuiTableCell: {
         styleOverrides: {
           root: {
-            padding: '12px'
+            padding: '12px',
+            '& p,a': {
+              fontSize: `${theme.fontSize.table}`
+            }
+          }
+        }
+      },
+      MuiInputLabel: {
+        styleOverrides: {
+          root: {
+            fontSize: `${theme.fontSize.label}`,
+            marginBottom: `${theme.spacing}px`,
+            fontWeight: 600,
+            color: '#000000',
+            flexShrink: 0
           }
         }
       }
@@ -219,7 +264,7 @@ export const defaultMaterialUiTheme = (
       button: {
         fontWeight: 600,
         textTransform: 'none',
-        fontSize: '0.875rem',
+        fontSize: `${theme.fontSize.button}`,
         lineHeight: 'unset'
       },
       subtitle2: {

@@ -21,17 +21,12 @@ export const CheckBoxRender: ElementRendererFunction<CheckBoxRenderProps> = (
   const componentProps = { ...basicProps }
   delete componentProps.emptyValueInReadOnly
   const { value, setFieldValue } = useMemo(
-    () =>
-      getValueSetup(
-        componentProps.name,
-        formState,
-        componentProps.sharedNameIndex
-      ),
-    [componentProps.name, formState, componentProps.sharedNameIndex]
+    () => getValueSetup(componentProps.name, formState),
+    [componentProps.name, formState]
   )
   const onChange = componentProps.onChange
   delete componentProps.onChange
-  delete componentProps.sharedNameIndex
+
   return (
     <CheckBox
       checked={value}

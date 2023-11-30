@@ -4,20 +4,18 @@ import {
   ConfirmationPopUp as AruiConfirmationPopUp,
   ConfirmationPopUpBasicProps
 } from './ConfirmationPopUp'
-import { Meta } from '@storybook/react'
-import { Story } from '@storybook/react/types-6-0'
+import { Meta, StoryFn } from '@storybook/react'
 import { action } from '@storybook/addon-actions'
 import { ArgsTable, Title, Primary, Stories } from '@storybook/addon-docs'
 import { styles, classes, Action } from './types'
 import { Box, Typography } from '@mui/material'
 import imageHolder from '../assets/imageHolder.jpg'
 import { Action as PopUpAtion, Button } from '@smartb/g2-components'
-import { withDesign } from 'storybook-addon-designs'
 
 export default {
   title: 'Layout/PopUp',
   component: AruiPopUp,
-  decorators: [withDesign],
+
   subcomponents: { ConfirmationPopUp: AruiConfirmationPopUp },
   parameters: {
     docs: {
@@ -40,7 +38,7 @@ export default {
   }
 } as Meta
 
-export const PopUp: Story<PopUpBasicProps> = (args: PopUpBasicProps) => {
+export const PopUp: StoryFn<PopUpBasicProps> = (args: PopUpBasicProps) => {
   const [open, setOpen] = useState(false)
   return (
     <>
@@ -50,7 +48,7 @@ export const PopUp: Story<PopUpBasicProps> = (args: PopUpBasicProps) => {
   )
 }
 
-export const alternativePopUp: Story = () => {
+export const alternativePopUp: StoryFn = () => {
   const [open, setOpen] = useState(false)
   const actions: PopUpAtion[] = [
     {
@@ -97,7 +95,7 @@ export const alternativePopUp: Story = () => {
   )
 }
 
-export const ConfirmationPopUp: Story<ConfirmationPopUpBasicProps> = (
+export const ConfirmationPopUp: StoryFn<ConfirmationPopUpBasicProps> = (
   args: ConfirmationPopUpBasicProps
 ) => {
   const [open, setOpen] = useState(false)
@@ -113,7 +111,7 @@ export const ConfirmationPopUp: Story<ConfirmationPopUpBasicProps> = (
   )
 }
 
-export const ConfirmationDeletionPopUp: Story<ConfirmationPopUpBasicProps> = (
+export const ConfirmationDeletionPopUp: StoryFn<ConfirmationPopUpBasicProps> = (
   args: ConfirmationPopUpBasicProps
 ) => {
   const [open, setOpen] = useState(false)

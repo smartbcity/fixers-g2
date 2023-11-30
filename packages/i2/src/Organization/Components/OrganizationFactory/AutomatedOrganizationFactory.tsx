@@ -16,7 +16,7 @@ import {
   useUpdateOrganization
 } from '../../Api'
 import { useAuth, i2Config } from '@smartb/g2-providers'
-import { useQueryClient } from 'react-query'
+import { useQueryClient } from '@tanstack/react-query'
 
 export type ReadOnlyOrgFieldsPerState = {
   create?: ReadOnlyFields
@@ -82,13 +82,13 @@ export const AutomatedOrganizationFactory = (
 
   const getInseeOrganizationMemoized = useCallback(
     async (siret: string) => {
-      return getInseeOrganization(siret, i2Config().orgUrl, keycloak.token)
+      return getInseeOrganization(siret, i2Config().url, keycloak.token)
     },
     [keycloak.token]
   )
 
   const getOrganization = useGetOrganization({
-    apiUrl: i2Config().orgUrl,
+    apiUrl: i2Config().url,
     organizationId: organizationId,
     jwt: keycloak.token,
     options: getOrganizationOptions
@@ -99,8 +99,8 @@ export const AutomatedOrganizationFactory = (
       ...updateOrganizationOptions,
       onSuccess: (data, variables, context) => {
         getOrganization.refetch()
-        queryClient.invalidateQueries('organizationRefs')
-        queryClient.invalidateQueries('organizations')
+        queryClient.invalidateQueries({ queryKey: ['organizationRefs'] })
+        queryClient.invalidateQueries({ queryKey: ['organizations'] })
         updateOrganizationOptions?.onSuccess &&
           updateOrganizationOptions.onSuccess(data, variables, context)
       }
@@ -112,8 +112,8 @@ export const AutomatedOrganizationFactory = (
     () => ({
       ...createOrganizationOptions,
       onSuccess: (data, variables, context) => {
-        queryClient.invalidateQueries('organizationRefs')
-        queryClient.invalidateQueries('organizations')
+        queryClient.invalidateQueries({ queryKey: ['organizationRefs'] })
+        queryClient.invalidateQueries({ queryKey: ['organizations'] })
         createOrganizationOptions?.onSuccess &&
           createOrganizationOptions.onSuccess(data, variables, context)
       }
@@ -122,13 +122,13 @@ export const AutomatedOrganizationFactory = (
   )
 
   const updateOrganization = useUpdateOrganization({
-    apiUrl: i2Config().orgUrl,
+    apiUrl: i2Config().url,
     jwt: keycloak.token,
     options: updateOrganizationOptionsMemo
   })
 
   const createOrganization = useCreateOrganization({
-    apiUrl: i2Config().orgUrl,
+    apiUrl: i2Config().url,
     jwt: keycloak.token,
     options: createOrganizationOptionsMemo
   })

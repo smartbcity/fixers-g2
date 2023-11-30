@@ -143,6 +143,11 @@ export interface TextFieldBasicProps extends BasicProps {
   errorMessage?: string
 
   /**
+   * The helper message below the field
+   */
+  helperText?: string
+
+  /**
    * The default value displayed. Usefull if the input is uncontrolled
    */
   defaultValue?: string | number
@@ -220,6 +225,7 @@ export const TextField = React.forwardRef(
       defaultValue,
       value,
       disabled = false,
+      helperText,
       inputIcon,
       onRemove,
       classes,
@@ -277,7 +283,9 @@ export const TextField = React.forwardRef(
         ) {
           return (
             <SearchIcon
-              color='#323338'
+              sx={{
+                color: '#323338'
+              }}
               onClick={!disabled ? onSearchMemoisied : undefined}
               className={defaultStyles.cx(
                 localStyles.classes.searchIcon,
@@ -468,16 +476,18 @@ export const TextField = React.forwardRef(
           />
           {rightIcon}
         </Box>
-        {errorMessage !== '' && error && (
+        {((errorMessage !== '' && error) || helperText) && (
           <FormHelperText
             className={defaultStyles.cx(
-              defaultStyles.classes.helperText,
-              'AruiTextfield-helperText',
+              errorMessage !== '' && error
+                ? defaultStyles.classes.errorHelperText
+                : defaultStyles.classes.helperText,
+              'AruiSelect-helperText',
               classes?.helperText
             )}
             style={styles?.helperText}
           >
-            {errorMessage}
+            {error ? errorMessage ?? helperText : helperText}
           </FormHelperText>
         )}
       </div>

@@ -1,7 +1,7 @@
-import { Meta } from "@storybook/addon-docs";
 import ColorOverview from "../../packages/storybook-documentation/src/ColorOverview";
-import { Typography } from  '@mui/material';
+import { Typography } from "@mui/material";
 import { ThemeContextProvider } from "@smartb/g2-themes";
+import { Meta } from "@storybook/blocks";
 
 <Meta title="Overview/Cheatsheet/Foundation" />
 
@@ -12,72 +12,73 @@ import { ThemeContextProvider } from "@smartb/g2-themes";
 These are the color from https://smartb.city/
 
 # Typography
-<ThemeContextProvider >
-<Typography
-  variant="h1"
-  component="h2"
-  style={{ margin: "10px 0" }}
-  gutterBottom
->
-  h1. Heading
-</Typography>
-<Typography variant="h2" style={{ margin: "10px 0" }} gutterBottom>
-  h2. Heading
-</Typography>
-<Typography variant="h3" style={{ margin: "10px 0" }} gutterBottom>
-  h3. Heading
-</Typography>
-<Typography variant="h4" style={{ margin: "10px 0" }} gutterBottom>
-  h4. Heading
-</Typography>
-<Typography variant="h5" style={{ margin: "10px 0" }} gutterBottom>
-  h5. Heading
-</Typography>
-<Typography variant="h6" style={{ margin: "10px 0" }} gutterBottom>
-  h6. Heading
-</Typography>
-<Typography variant="subtitle1" style={{ margin: "10px 0" }} gutterBottom>
-  subtitle1. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos
-  blanditiis tenetur
-</Typography>
-<Typography variant="subtitle2" style={{ margin: "10px 0" }} gutterBottom>
-  subtitle2. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos
-  blanditiis tenetur
-</Typography>
-<Typography variant="body1" style={{ margin: "10px 0" }} gutterBottom>
-  body1. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos
-  blanditiis tenetur unde suscipit, quam beatae rerum inventore consectetur,
-  neque doloribus, cupiditate numquam dignissimos laborum fugiat deleniti? Eum
-  quasi quidem quibusdam.
-</Typography>
-<Typography variant="body2" style={{ margin: "10px 0" }} gutterBottom>
-  body2. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos
-  blanditiis tenetur unde suscipit, quam beatae rerum inventore consectetur,
-  neque doloribus, cupiditate numquam dignissimos laborum fugiat deleniti? Eum
-  quasi quidem quibusdam.
-</Typography>
-<Typography
-  variant="button"
-  display="block"
-  style={{ margin: "10px 0" }}
-  gutterBottom
->
-  button text
-</Typography>
-<Typography
-  variant="caption"
-  display="block"
-  style={{ margin: "10px 0" }}
-  gutterBottom
->
-  caption text
-</Typography>
-<Typography
-  variant="overline"
-  display="block"
-  style={{ margin: "10px 0" }}
-  gutterBottom
->
-  overline text
-</Typography>
-</ThemeContextProvider >
+
+<ThemeContextProvider>
+  <Typography
+    variant="h1"
+    component="h2"
+    style={{ margin: "10px 0" }}
+    gutterBottom
+  >
+    h1. Heading
+  </Typography>
+  <Typography variant="h2" style={{ margin: "10px 0" }} gutterBottom>
+    h2. Heading
+  </Typography>
+  <Typography variant="h3" style={{ margin: "10px 0" }} gutterBottom>
+    h3. Heading
+  </Typography>
+  <Typography variant="h4" style={{ margin: "10px 0" }} gutterBottom>
+    h4. Heading
+  </Typography>
+  <Typography variant="h5" style={{ margin: "10px 0" }} gutterBottom>
+    h5. Heading
+  </Typography>
+  <Typography variant="h6" style={{ margin: "10px 0" }} gutterBottom>
+    h6. Heading
+  </Typography>
+  <Typography variant="subtitle1" style={{ margin: "10px 0" }} gutterBottom>
+    subtitle1. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos
+    blanditiis tenetur
+  </Typography>
+  <Typography variant="subtitle2" style={{ margin: "10px 0" }} gutterBottom>
+    subtitle2. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos
+    blanditiis tenetur
+  </Typography>
+  <Typography variant="body1" style={{ margin: "10px 0" }} gutterBottom>
+    body1. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos
+    blanditiis tenetur unde suscipit, quam beatae rerum inventore consectetur,
+    neque doloribus, cupiditate numquam dignissimos laborum fugiat deleniti? Eum
+    quasi quidem quibusdam.
+  </Typography>
+  <Typography variant="body2" style={{ margin: "10px 0" }} gutterBottom>
+    body2. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos
+    blanditiis tenetur unde suscipit, quam beatae rerum inventore consectetur,
+    neque doloribus, cupiditate numquam dignissimos laborum fugiat deleniti? Eum
+    quasi quidem quibusdam.
+  </Typography>
+  <Typography
+    variant="button"
+    display="block"
+    style={{ margin: "10px 0" }}
+    gutterBottom
+  >
+    button text
+  </Typography>
+  <Typography
+    variant="caption"
+    display="block"
+    style={{ margin: "10px 0" }}
+    gutterBottom
+  >
+    caption text
+  </Typography>
+  <Typography
+    variant="overline"
+    display="block"
+    style={{ margin: "10px 0" }}
+    gutterBottom
+  >
+    overline text
+  </Typography>
+</ThemeContextProvider>

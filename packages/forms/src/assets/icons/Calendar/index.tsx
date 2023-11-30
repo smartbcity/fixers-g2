@@ -1,16 +1,18 @@
 import React from 'react'
 import { ReactComponent } from './calendar.svg'
-import { MergeReactElementProps } from '@smartb/g2-utils'
+import { SvgIcon, SvgIconProps } from '@mui/material'
 
-interface CalendarProps {
-  color?: string
+export const Calendar = (props: SvgIconProps) => {
+  const { sx, ...other } = props
+  return (
+    <SvgIcon
+      sx={{
+        color: '#353945',
+        ...sx
+      }}
+      component={ReactComponent}
+      inheritViewBox
+      {...other}
+    />
+  )
 }
-
-type Props = MergeReactElementProps<'svg', CalendarProps>
-
-export const Calendar = React.forwardRef(
-  (props: Props, ref: React.Ref<SVGSVGElement>) => {
-    const { color = '#353945' } = props
-    return <ReactComponent stroke={color} ref={ref} {...props} />
-  }
-)

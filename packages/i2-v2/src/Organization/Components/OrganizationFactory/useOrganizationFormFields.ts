@@ -3,12 +3,12 @@ import { useMemo, useCallback, useState } from 'react'
 import {
   AdressFieldsName,
   mergeFields,
-  requiredString,
   useAdressFields
 } from '../../../Commons'
 import { Organization, organizationToFlatOrganization } from '../../Domain'
 import { siretValidation } from '../../Validation/siret'
-import { OrganizationFactoryStrings } from './OrganizationFactory'
+import { validators } from '@smartb/g2-utils'
+import { useTranslation } from 'react-i18next'
 
 export type organizationFieldsName =
   | 'logo'
@@ -41,10 +41,6 @@ export interface useOrganizationFormFieldsProps {
    */
   formState?: FormComposableState
   /**
-   * The prop to use to add custom translation to the component
-   */
-  strings?: OrganizationFactoryStrings
-  /**
    * use This prop to override the fields
    */
   fieldsOverride?: OrganizationFactoryFieldsOverride
@@ -63,13 +59,13 @@ export const useOrganizationFormFields = (
     formState,
     getInseeOrganization,
     setInseeOrganization,
-    strings,
     multipleRoles = true,
     fieldsOverride
   } = params ?? {}
 
   const [siretValid, setSiretValid] = useState(false)
   const [siretRef, setSiretRef] = useState(null)
+  const { t } = useTranslation()
 
   const fetchOrganization = useCallback(async () => {
     if (getInseeOrganization && formState?.values.siret) {
@@ -89,11 +85,7 @@ export const useOrganizationFormFields = (
           setSiretValid(true)
           setInseeOrganization && setInseeOrganization(values)
         } else {
-          formState.setFieldError(
-            'siret',
-            strings?.siretNotFound ??
-              'Aucune information trouvé. Saisissez les informations ci-dessous manuellement'
-          )
+          formState.setFieldError('siret', t('g2.siretNotFound'))
         }
       })
     }
@@ -102,12 +94,11 @@ export const useOrganizationFormFields = (
     formState?.setValues,
     formState?.setFieldError,
     getInseeOrganization,
-    strings?.siretNotFound,
+    t,
     setInseeOrganization
   ])
 
   const { addressFields } = useAdressFields({
-    strings,
     //@ts-ignore
     fieldsOverride
   })
@@ -120,18 +111,10 @@ export const useOrganizationFormFields = (
       logo: mergeFields<FormComposableField<organizationFieldsName>>(
         {
           name: 'logo',
-          label: "Logo de l'entreprise (faculatif)",
+          label: t('g2.facultativeField', { label: t('g2.logo') }),
           type: 'dropPicture',
           params: {
-            addPictureHelperText: 'Ajouter un logo (de préférence carré)',
             alt: "Le logo de l'entreprise",
-            removePictureHelperText: 'Supprimer le logo',
-            errorMessages: {
-              'file-invalid-type': "L'image devrait être au format jpeg ou png",
-              'file-too-large':
-                'Votre image est trop lourde et ne devrait pas dépassé 10 Mo',
-              'too-many-files': "Vous ne pouvez insérez q'une seule image"
-            },
             height: '200px'
           }
         },
@@ -139,9 +122,8 @@ export const useOrganizationFormFields = (
       ),
       siret: mergeFields<FormComposableField<organizationFieldsName>>(
         {
-          key: 'siret',
           name: 'siret',
-          label: 'Numéro de siret',
+          label: t('g2.siret'),
           type: 'textField',
           params: {
             textFieldType: 'search',
@@ -164,44 +146,40 @@ export const useOrganizationFormFields = (
       ),
       name: mergeFields<FormComposableField<organizationFieldsName>>(
         {
-          key: 'name',
           name: 'name',
           type: 'textField',
-          label: 'Nom',
-          validator: (value?: string) =>
-            requiredString(strings?.requiredField, value)
+          label: t('g2.name'),
+          validator: validators.requiredField(t)
         },
         fieldsOverride?.name
       ),
       roles: mergeFields<FormComposableField<organizationFieldsName>>(
         {
-          key: 'roles',
           name: 'roles',
-          label: 'Rôle',
+          label: t('g2.roles'),
           type: 'select',
           params: {
             readOnlyType: 'chip',
             multiple: multipleRoles
-          }
+          },
+          validator: validators.requiredField(t)
         },
         fieldsOverride?.roles
       ),
       ...addressFields,
       website: mergeFields<FormComposableField<organizationFieldsName>>(
         {
-          key: 'website',
           name: 'website',
           type: 'textField',
-          label: 'Site web (facultatif)'
+          label: t('g2.facultativeField', { label: t('g2.website') })
         },
         fieldsOverride?.website
       ),
       description: mergeFields<FormComposableField<organizationFieldsName>>(
         {
-          key: 'description',
           name: 'description',
           type: 'textField',
-          label: 'Description (facultatif)',
+          label: t('g2.facultativeField', { label: t('g2.description') }),
           params: {
             multiline: true,
             rows: 6
@@ -211,8 +189,9 @@ export const useOrganizationFormFields = (
       )
     }),
     [
+      t,
       addressFields,
-      strings?.requiredField,
+      t,
       siretValid,
       fetchOrganization,
       formState?.validateField,

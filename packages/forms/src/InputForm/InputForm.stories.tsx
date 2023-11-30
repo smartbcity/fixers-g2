@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { InputForm, InputFormBasicProps } from './InputForm'
-import { Meta } from '@storybook/react'
-import { Story } from '@storybook/react/types-6-0'
+import { Meta, StoryFn } from '@storybook/react'
 import {
   ArgsTable,
   PRIMARY_STORY,
@@ -99,13 +98,13 @@ export default {
   }
 } as Meta
 
-export const InputFormStory: Story<InputFormBasicProps> = (
+export const InputFormStory: StoryFn<InputFormBasicProps> = (
   args: InputFormBasicProps
 ) => {
   return <InputForm {...args} style={{ width: '500px' }} />
 }
 
-export const InputFormReadOnly: Story<InputFormBasicProps> = (
+export const InputFormReadOnly: StoryFn<InputFormBasicProps> = (
   args: InputFormBasicProps
 ) => {
   return (
@@ -120,7 +119,7 @@ export const InputFormReadOnly: Story<InputFormBasicProps> = (
   )
 }
 
-export const InputFormReadOnlyChip: Story<InputFormBasicProps> = (
+export const InputFormReadOnlyChip: StoryFn<InputFormBasicProps> = (
   args: InputFormBasicProps
 ) => {
   return (
@@ -146,7 +145,7 @@ const CustomStatusTag = ({ values }) => {
   )
 }
 
-export const InputFormReadOnlyCustom: Story<InputFormBasicProps> = (
+export const InputFormReadOnlyCustom: StoryFn<InputFormBasicProps> = (
   args: InputFormBasicProps
 ) => {
   return (
@@ -174,7 +173,7 @@ export const InputFormReadOnlyCustom: Story<InputFormBasicProps> = (
   )
 }
 
-export const InputFormLoading: Story<InputFormBasicProps> = (
+export const InputFormLoading: StoryFn<InputFormBasicProps> = (
   args: InputFormBasicProps
 ) => {
   return (
@@ -188,7 +187,7 @@ export const InputFormLoading: Story<InputFormBasicProps> = (
   )
 }
 
-export const FormExample: Story<InputFormBasicProps> = () => {
+export const FormExample: StoryFn<InputFormBasicProps> = () => {
   const [form, setform] = useState({
     email: '',
     password: '',

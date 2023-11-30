@@ -30,6 +30,7 @@ export const TableContainer = styled(BasicTableContainer)((props) => {
   const { variant, theme, expandInElevatedRow, getRowLink } = props
   const comunStyles = {
     '& .AruiTable-actionColumn': {
+      width: '65px',
       maxWidth: '65px'
     },
     '& .AruiTable-pagination': {
@@ -47,10 +48,10 @@ export const TableContainer = styled(BasicTableContainer)((props) => {
       }
     },
     '& .AruiTable-tableHead': {
-      backgroundColor: '#ffffff99',
+      // backgroundColor: '#ffffff99',
       position: 'sticky',
-      top: '0px',
-      backdropFilter: 'blur(15px)',
+      // top: '0px',
+      // backdropFilter: 'blur(15px)',
       zIndex: 5
     },
     '& .AruiTable-table': {
@@ -103,7 +104,6 @@ export const TableContainer = styled(BasicTableContainer)((props) => {
           alignSelf: 'center'
         },
       '& .AruiTable-table': {
-        display: 'inline-block',
         width: '100%'
       }
     }

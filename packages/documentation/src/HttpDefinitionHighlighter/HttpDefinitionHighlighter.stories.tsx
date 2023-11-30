@@ -3,15 +3,14 @@ import {
   HttpDefinitionHighlighter,
   HttpDefinitionHighlighterProps
 } from './HttpDefinitionHighlighter'
-import { Meta } from '@storybook/react'
-import { Story } from '@storybook/react/types-6-0'
+import { Meta, StoryFn } from '@storybook/react'
 
 export default {
   title: 'Documentation/HttpDefinitionHighlighter',
   component: HttpDefinitionHighlighter
 } as Meta
 
-export const httpDefinitionHighlighter: Story<
+export const httpDefinitionHighlighter: StoryFn<
   HttpDefinitionHighlighterProps
 > = (args: HttpDefinitionHighlighterProps) => (
   <HttpDefinitionHighlighter {...args} />

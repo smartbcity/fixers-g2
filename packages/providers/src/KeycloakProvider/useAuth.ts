@@ -1,6 +1,13 @@
 import { useCallback, useMemo } from 'react'
 import { KeycloakTokenParsed } from 'keycloak-js'
-import { useOidc, useOidcIdToken } from '@axa-fr/react-oidc'
+import { useOidc, useOidcAccessToken } from '@axa-fr/react-oidc'
+import {
+  AuthFunction,
+  ModifiedPolicies,
+  Policies,
+  isAuthorized,
+  reBindPolicieValues
+} from './policiesUtilities'
 
 export type AuthedUser = {
   id: string
@@ -11,13 +18,6 @@ export type AuthedUser = {
   lastName: string
   roles: string[]
 }
-
-export type isAuthorized = boolean
-
-export type AuthFunction = <U extends AuthedUser>(
-  authedUser: U,
-  ...args
-) => isAuthorized
 
 type ComputeRolesServicesNames<Roles extends string> = {
   [key in Roles]: `is_${key}`
@@ -131,39 +131,49 @@ export interface Keycloak<Roles extends string = string>
 
 export interface Auth<
   Additionals extends AuthServiceAdditional = {},
-  Roles extends string = string
+  Roles extends string = string,
+  PlatFormPolicies extends Policies = Policies
 > {
   service: AuthService<Additionals, Roles>
   keycloak: Keycloak<Roles>
+  policies: ModifiedPolicies<PlatFormPolicies>
 }
 
-function useAuth<AdditionalServices, Roles extends string = string>(
+function useAuth<
+  AdditionalServices,
+  Roles extends string = string,
+  PlatFormPolicies extends Policies = Policies
+>(
   roles: Roles[],
-  additionalServices: KeycloackService<AdditionalServices, Roles>
-): Auth<AuthServiceAdditional<AdditionalServices>, Roles>
-
+  additionalServices: KeycloackService<AdditionalServices, Roles>,
+  policies: PlatFormPolicies
+): Auth<AuthServiceAdditional<AdditionalServices>, Roles, PlatFormPolicies>
 function useAuth<Roles extends string = string>(): Auth<{}, Roles>
 function useAuth<Roles extends string = string>(
   roles?: Roles[]
 ): Auth<{}, Roles>
-
-function useAuth<AdditionalServices = undefined, Roles extends string = string>(
+function useAuth<
+  AdditionalServices = undefined,
+  Roles extends string = string,
+  PlatFormPolicies extends Policies = Policies
+>(
   roles: Roles[] = [],
-  additionalServices?: KeycloackService<AdditionalServices, Roles>
-): Auth<AuthServiceAdditional<AdditionalServices>, Roles> {
+  additionalServices?: KeycloackService<AdditionalServices, Roles>,
+  policies?: PlatFormPolicies
+): Auth<AuthServiceAdditional<AdditionalServices>, Roles, PlatFormPolicies> {
   const oidc = useOidc()
   const { isAuthenticated } = oidc
-  const { idToken, idTokenPayload } = useOidcIdToken()
+  const { accessToken, accessTokenPayload } = useOidcAccessToken()
 
-  const tokenParsed: KeycloakTokenParsedWithRoles<Roles> = idTokenPayload
+  const tokenParsed: KeycloakTokenParsedWithRoles<Roles> = accessTokenPayload
 
   const keycloak = useMemo(
     (): Keycloak<Roles> => ({
       ...oidc,
-      token: idToken,
-      tokenParsed: idTokenPayload
+      token: accessToken,
+      tokenParsed: accessTokenPayload
     }),
-    [oidc, idToken, idTokenPayload]
+    [oidc, accessToken, accessTokenPayload]
   )
 
   const getPrincipalRole = useCallback(
@@ -189,11 +199,11 @@ function useAuth<AdditionalServices = undefined, Roles extends string = string>(
       if (Array.isArray(role)) {
         if (role.length === 0) return true
         for (let it in role) {
-          if (tokenParsed.realm_access?.roles.includes(role[it])) return true
+          if (tokenParsed?.realm_access?.roles.includes(role[it])) return true
         }
         return false
       } else {
-        return tokenParsed.realm_access?.roles.includes(role) ?? false
+        return tokenParsed?.realm_access?.roles.includes(role) ?? false
       }
     },
     [tokenParsed]
@@ -227,7 +237,7 @@ function useAuth<AdditionalServices = undefined, Roles extends string = string>(
   const getUser = useCallback(
     // @ts-ignore
     (): CommonUser | undefined => {
-      if (isAuthenticated) return
+      if (!isAuthenticated) return
       return {
         id: tokenParsed?.sub,
         email: tokenParsed?.email,
@@ -264,6 +274,24 @@ function useAuth<AdditionalServices = undefined, Roles extends string = string>(
     }
     return object
   }, [hasRole, roles])
+
+  const definitivePolicies = useMemo(() => {
+    if (!policies) return {}
+    //@ts-ignore
+    const res: ModifiedPolicies<PlatFormPolicies> = {}
+
+    Object.keys(policies).forEach((key) => {
+      const reBinded = reBindPolicieValues(policies[key])
+      Object.keys(reBinded).forEach((policyKey) => {
+        //@ts-ignore
+        if (!res[key]) res[key] = {}
+        //@ts-ignore
+        res[key][policyKey] = (...args) =>
+          executeAuthFunction(reBinded[policyKey], ...args)
+      })
+    })
+    return res
+  }, [policies, executeAuthFunction])
 
   const service: AuthService<{}, Roles> = useMemo(
     () => ({
@@ -305,7 +333,9 @@ function useAuth<AdditionalServices = undefined, Roles extends string = string>(
 
   return {
     service: Object.assign(service, additionals),
-    keycloak
+    keycloak,
+    //@ts-ignore
+    policies: definitivePolicies
   }
 }
 

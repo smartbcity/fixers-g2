@@ -3,7 +3,7 @@ import {
   DatePickerProps as MuiDatePickerProps,
   LocalizationProvider
 } from '@mui/x-date-pickers'
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns/index.js'
 import React, { forwardRef, useCallback, useMemo, useState } from 'react'
 import { useFilterColorStyle, useFilterInputStyles } from '../style'
 import {
@@ -19,8 +19,9 @@ import {
 } from '@mui/material'
 import { Calendar } from '../assets/icons'
 import { ClearRounded } from '@mui/icons-material'
-import { fr, enUS } from 'date-fns/locale'
+import { fr, enUS } from 'date-fns/locale/index.js'
 import { CustomActionBar } from '../DatePicker/CustomActionBar'
+import { useTranslation } from 'react-i18next'
 const dateFnsLocales = {
   fr,
   enUS
@@ -112,13 +113,6 @@ export interface FilterDatePickerBasicProps extends BasicProps {
   disabled?: boolean
 
   /**
-   * The locale language use in the date picker
-   *
-   * @default 'fr'
-   */
-  locale?: keyof typeof dateFnsLocales
-
-  /**
    * The color of the input
    *
    * @default 'primary'
@@ -177,7 +171,6 @@ const FilterDatePickerBase = (
     label = '',
     color = 'primary',
     variant = 'filled',
-    locale = 'fr',
     textFieldProps,
     name,
     classes,
@@ -190,6 +183,7 @@ const FilterDatePickerBase = (
   const defaultStyles = useFilterInputStyles()
   const localStyles = useStyles()
   const [open, setOpen] = useState(false)
+  const { i18n } = useTranslation()
 
   const colorStyle = useFilterColorStyle({
     color,
@@ -207,9 +201,10 @@ const FilterDatePickerBase = (
   }, [onClose])
 
   const format = useMemo(() => {
-    if (locale === 'fr') return { format: 'dd/MM/yyyy', mask: '__/__/____' }
+    if (i18n.language === 'fr')
+      return { format: 'dd/MM/yyyy', mask: '__/__/____' }
     return { format: 'yyyy/MM/dd', mask: '____/__/__' }
-  }, [locale])
+  }, [i18n.language])
 
   const onChange = useCallback(
     (date: Date | null) => {
@@ -342,7 +337,7 @@ const FilterDatePickerBase = (
   return (
     <LocalizationProvider
       dateAdapter={AdapterDateFns}
-      adapterLocale={dateFnsLocales[locale]}
+      adapterLocale={dateFnsLocales[i18n.language === 'en' ? 'enUS' : 'fr']}
     >
       <div
         className={defaultStyles.cx(
@@ -364,9 +359,7 @@ const FilterDatePickerBase = (
           maxDate={maxDate}
           componentsProps={{
             actionBar: {
-              actions: ['cancel', 'clear', 'accept'],
-              //@ts-ignore
-              locale: locale
+              actions: ['cancel', 'clear', 'accept']
             }
           }}
           components={{

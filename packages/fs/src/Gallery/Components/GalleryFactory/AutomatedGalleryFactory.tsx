@@ -3,7 +3,7 @@ import { Button } from '@smartb/g2-components'
 import { fsConfig } from '@smartb/g2-providers'
 import { MergeMuiElementProps } from '@smartb/g2-themes'
 import React, { useCallback, useState } from 'react'
-import { useQueryClient } from 'react-query'
+import { useQueryClient } from '@tanstack/react-query'
 import {
   DeleteFilesOptions,
   GetGalleryOptions,
@@ -15,6 +15,7 @@ import {
 import { DirectoryPath, FileDeleteCommand } from '../../Domain'
 import { GalleryFactory, GalleryFactoryProps } from './GalleryFactory'
 import { useLocalGalleryState } from './useLocalGalleryState'
+import { useTranslation } from 'react-i18next'
 
 export interface AutomatedGalleryFactoryBasicProps {
   /**
@@ -37,27 +38,6 @@ export interface AutomatedGalleryFactoryBasicProps {
    * The uploadFiles hook options
    */
   uploadFilesOptions?: UploadFilesOptions
-  /**
-   * the strings in the component to do translations
-   */
-  strings?: {
-    /**
-     * @default 'Galerie'
-     */
-    gallery?: string
-    /**
-     * @default 'Annuler'
-     */
-    cancel?: string
-    /**
-     * @default 'Eregistrer'
-     */
-    save?: string
-    /**
-     * @default 'Ajouter une ou plusieurs images'
-     */
-    addImages?: string
-  }
 }
 
 export type AutomatedGalleryFactoryProps = MergeMuiElementProps<
@@ -70,7 +50,6 @@ export const AutomatedGalleryFactory = (
 ) => {
   const {
     directoryPath,
-    strings,
     getGalleryOptions,
     deleteFilesOptions,
     uploadFilesOptions,
@@ -79,6 +58,7 @@ export const AutomatedGalleryFactory = (
   } = props
   const [isSaving, setIsSaving] = useState<boolean>(false)
   const queryClient = useQueryClient()
+  const { t } = useTranslation()
 
   const gallery = useGetGallery({
     apiUrl: fsConfig().url,
@@ -181,15 +161,13 @@ export const AutomatedGalleryFactory = (
           marginBottom: (theme) => theme.spacing(2)
         }}
       >
-        <Typography variant='h6'>{strings?.gallery ?? 'Galerie'}</Typography>
+        <Typography variant='h6'>{t('g2.gallery')}</Typography>
         {hasChanges && (
           <>
             <Button onClick={onSave} isLoading={isSaving}>
-              {strings?.save ?? 'Enregistrer'}
+              {t('g2.save')}
             </Button>
-            {!isSaving && (
-              <Button onClick={onCancel}>{strings?.cancel ?? 'Annuler'}</Button>
-            )}
+            {!isSaving && <Button onClick={onCancel}>{t('g2.cancel')}</Button>}
           </>
         )}
       </Stack>
@@ -199,7 +177,6 @@ export const AutomatedGalleryFactory = (
         onAdd={onAdd}
         onDelete={onDelete}
         isLoading={isLoading}
-        strings={strings}
       />
     </>
   )

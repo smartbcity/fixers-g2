@@ -191,6 +191,7 @@ const Item = (props: ItemProps) => {
       onClick={onItemClick}
       href={href}
       style={styles?.item?.root}
+      selected={isSelected}
       {...componentProps}
       {...other}
       className={defaultStyles.cx(

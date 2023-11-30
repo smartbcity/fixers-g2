@@ -1,4 +1,4 @@
-import { useMutation, UseMutationOptions } from "react-query";
+import { useMutation, UseMutationOptions } from "@tanstack/react-query";
 import { useCallback } from "react";
 import { RequestProps } from "./RequestProps";
 import { errorHandler, request, successHandler } from "./request";

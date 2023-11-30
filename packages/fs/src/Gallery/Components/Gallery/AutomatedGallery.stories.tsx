@@ -1,7 +1,6 @@
-import { Meta } from '@storybook/react'
+import { Meta, StoryFn } from '@storybook/react'
 import { AutomatedGallery, AutomatedGalleryProps } from './AutomatedGallery'
-import { Story } from '@storybook/react/types-6-0'
-import { QueryClient, QueryClientProvider } from 'react-query'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Box } from '@mui/material'
 import React from 'react'
 
@@ -12,7 +11,7 @@ export default {
 
 const queryClient = new QueryClient()
 
-export const AutomatedGalleryStory: Story<AutomatedGalleryProps> = (
+export const AutomatedGalleryStory: StoryFn<AutomatedGalleryProps> = (
   args: AutomatedGalleryProps
 ) => {
   return (

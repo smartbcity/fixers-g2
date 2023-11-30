@@ -3,15 +3,14 @@ import {
   VegaTest as AruiVegaTest,
   VegaTestProps
 } from './VegaTest'
-import { Meta } from '@storybook/react'
-import { Story } from '@storybook/react/types-6-0'
+import { Meta, StoryFn } from '@storybook/react'
 
 export default {
   title: 'Components/VegaTest',
   component: AruiVegaTest,
 } as Meta
 
-export const VegaTest: Story<VegaTestProps> = (
+export const VegaTest: StoryFn<VegaTestProps> = (
   args: VegaTestProps
 ) => {
   return (

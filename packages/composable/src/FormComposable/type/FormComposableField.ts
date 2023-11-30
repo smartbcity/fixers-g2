@@ -5,6 +5,7 @@ import {
 } from '../../ComposableRender'
 import { ReactNode } from 'react'
 import { PotentialError } from '@smartb/g2-forms'
+import { Condition } from '../../Conditions'
 
 export type FieldValidatorFnc = (value?: any, values?: any) => PotentialError
 
@@ -33,6 +34,11 @@ export type FormComposableField<
    */
   validator?: FieldValidatorFnc
   /**
+   * You can conditionate the display or the validation of the field with it.
+   * The conditions of the component will replace the prop `validator` if used.
+   */
+  conditions?: Condition[]
+  /**
    * if you want to add other nodes around the input use this function
    */
   customDisplay?: (input: ReactNode) => ReactNode
@@ -41,11 +47,6 @@ export type FormComposableField<
    * @default false
    */
   fullRow?: boolean
-  /**
-   * this prop tells the component that it has a name shared with another. It will store his value in an array at the given index.
-   * You should also pass a different index to all the other component with the name name if you don't want theme to share the same value
-   */
-  sharedNameIndex?: number
   /**
    * the event called when the value of the input change
    */
@@ -56,4 +57,11 @@ export type FormComposableField<
    * @default false
    */
   readOnly?: boolean
+  /**
+   * Only works with the conditions not with the validator ⚠️.
+   * if true it will add a validator condition to indicate that the field is required in the form.
+   *
+   * @default false
+   */
+  required?: boolean
 } & (FieldRenderType | ComposableElementRendererProps<ELEMENT_PARAMS>)

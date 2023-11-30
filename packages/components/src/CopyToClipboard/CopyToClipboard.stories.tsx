@@ -3,8 +3,7 @@ import {
   CopyToClipboard as AruiCopyToClipboard,
   CopyToClipboardBasicProps
 } from './CopyToClipboard'
-import { Meta } from '@storybook/react'
-import { Story } from '@storybook/react/types-6-0'
+import { Meta, StoryFn } from '@storybook/react'
 import { styles, classes } from './docs'
 
 export default {
@@ -30,14 +29,14 @@ export default {
   }
 } as Meta
 
-export const CopyToClipboard: Story<CopyToClipboardBasicProps> = (args: CopyToClipboardBasicProps) => {
-  return (
-      <AruiCopyToClipboard {...args}/>
-  )
+export const CopyToClipboard: StoryFn<CopyToClipboardBasicProps> = (
+  args: CopyToClipboardBasicProps
+) => {
+  return <AruiCopyToClipboard {...args} />
 }
 
 CopyToClipboard.args = {
-  value: "example"
+  value: 'example'
 }
 
 CopyToClipboard.storyName = 'CopyToClipboard'

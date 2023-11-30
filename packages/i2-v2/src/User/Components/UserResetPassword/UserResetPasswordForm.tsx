@@ -10,11 +10,8 @@ import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 import React, { useCallback, useEffect, useMemo } from 'react'
 import { UserId, UserUpdatePasswordCommand } from '../../Domain'
 import { FormikHelpers } from 'formik'
-import {
-  passwordCheckValidation,
-  passwordValidation,
-  PasswordValidationStrings
-} from '../../Validation/password'
+import { validators } from '@smartb/g2-utils'
+import { useTranslation } from 'react-i18next'
 
 export type Validated = boolean
 
@@ -24,17 +21,6 @@ export interface UserResetPasswordFormClasses {
 
 export interface UserResetPasswordFormStyles {
   form: React.CSSProperties
-}
-
-export interface UserResetPasswordStrings extends PasswordValidationStrings {
-  /**
-   * @default 'Nouveau mot de passe'
-   */
-  newPassword?: string
-  /**
-   * @default 'Vérification du mot de passe'
-   */
-  passwordCheck?: string
 }
 
 export interface UserResetPasswordFormBasicProps extends BasicProps {
@@ -60,10 +46,6 @@ export interface UserResetPasswordFormBasicProps extends BasicProps {
    * The styles applied to the different part of the component
    */
   styles?: UserResetPasswordFormStyles
-  /**
-   * The prop to use to add custom translation to the component
-   */
-  strings?: UserResetPasswordStrings
 }
 
 export type UserResetPasswordFormProps = MergeMuiElementProps<
@@ -78,24 +60,24 @@ export const UserResetPasswordForm = (props: UserResetPasswordFormProps) => {
     classes,
     styles,
     className,
-    strings,
     SubmitButtonRef,
     ...other
   } = props
+
+  const { t } = useTranslation()
 
   const partialFields = useMemo(
     (): FormPartialField[] => [
       {
         name: 'password',
-        validator: (value) => passwordValidation(value, strings)
+        validator: validators.password(t)
       },
       {
         name: 'passwordCheck',
-        validator: (value, values) =>
-          passwordCheckValidation(value, values, strings)
+        validator: validators.passwordCheck(t)
       }
     ],
-    [strings]
+    [t]
   )
 
   const onSubmitMemoized = useCallback(
@@ -137,7 +119,7 @@ export const UserResetPasswordForm = (props: UserResetPasswordFormProps) => {
         key: 'password',
         name: 'password',
         type: 'textfield',
-        label: strings?.newPassword ?? 'Nouveau mot de passe',
+        label: t('g2.newPassword'),
         textFieldProps: {
           textFieldType: 'password'
         }
@@ -146,13 +128,13 @@ export const UserResetPasswordForm = (props: UserResetPasswordFormProps) => {
         key: 'passwordCheck',
         name: 'passwordCheck',
         type: 'textfield',
-        label: strings?.passwordCheck ?? 'Vérification du mot de passe',
+        label: t('g2.passwordCheck'),
         textFieldProps: {
           textFieldType: 'password'
         }
       }
     ],
-    []
+    [t]
   )
 
   return (

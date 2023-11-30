@@ -1,8 +1,12 @@
-import getGlobal from '../../globalRollup.config'
+import getGlobal from '../../globalRollup.config.js'
 
-const packageJson = require('./package.json')
+import packageJson from './package.json' assert { type: 'json' }
 
 export default {
   input: 'src/index.ts',
-  ...getGlobal(packageJson)
+  ...getGlobal(packageJson),
+  external: [
+    ...getGlobal(packageJson).external,
+    '@axa-fr/react-oidc/dist/OidcProvider'
+  ]
 }

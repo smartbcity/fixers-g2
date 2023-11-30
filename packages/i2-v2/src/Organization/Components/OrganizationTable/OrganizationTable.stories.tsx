@@ -1,11 +1,12 @@
-import { Meta } from '@storybook/react'
+import { Meta, StoryFn } from '@storybook/react'
 import React from 'react'
 import { OrganizationTable, OrganizationTableProps } from './OrganizationTable'
-import { Story } from '@storybook/react/types-6-0'
+
 import { ArgsTable, PRIMARY_STORY, Subtitle } from '@storybook/addon-docs'
 import LinkTo from '@storybook/addon-links/react'
 import { Stack, Typography } from '@mui/material'
-import { Organization } from '../OrganizationFactory'
+import { useOrganizationTableState } from './useOrganizationTableState'
+import { Organization } from '../../Domain'
 
 export default {
   title: 'I2V2/OrganizationTable',
@@ -36,53 +37,55 @@ export default {
   }
 } as Meta
 
-export const OrganizationTableStory: Story<OrganizationTableProps> = (
+export const OrganizationTableStory: StoryFn<OrganizationTableProps> = (
   args: OrganizationTableProps
 ) => {
-  return <OrganizationTable {...args} />
+  const organizations: Organization[] = [
+    {
+      id: '1',
+      roles: ['Manager'],
+      name: 'Smartb',
+      address: {
+        street: '2 Rue du Pavillon',
+        postalCode: '34000',
+        city: 'Montpellier'
+      },
+      siret: '12345678912345',
+      website: 'https://smartb.city'
+    },
+    {
+      id: '2',
+      roles: ['Manager'],
+      name: 'Smartb',
+      address: {
+        street: '2 Rue du Pavillon',
+        postalCode: '34000',
+        city: 'Montpellier'
+      },
+      siret: '12345678912345',
+      website: 'https://smartb.city'
+    },
+    {
+      id: '3',
+      roles: ['Manager'],
+      name: 'Smartb',
+      address: {
+        street: '2 Rue du Pavillon',
+        postalCode: '34000',
+        city: 'Montpellier'
+      },
+      siret: '12345678912345',
+      website: 'https://smartb.city'
+    }
+  ]
+
+  const tableState = useOrganizationTableState({
+    organizations: organizations
+  })
+  return <OrganizationTable {...args} tableState={tableState} />
 }
 
-const organizations: Organization[] = [
-  {
-    id: '1',
-    roles: ['Manager'],
-    name: 'Smartb',
-    address: {
-      street: '2 Rue du Pavillon',
-      postalCode: '34000',
-      city: 'Montpellier'
-    },
-    siret: '12345678912345',
-    website: 'https://smartb.city'
-  },
-  {
-    id: '2',
-    roles: ['Manager'],
-    name: 'Smartb',
-    address: {
-      street: '2 Rue du Pavillon',
-      postalCode: '34000',
-      city: 'Montpellier'
-    },
-    siret: '12345678912345',
-    website: 'https://smartb.city'
-  },
-  {
-    id: '3',
-    roles: ['Manager'],
-    name: 'Smartb',
-    address: {
-      street: '2 Rue du Pavillon',
-      postalCode: '34000',
-      city: 'Montpellier'
-    },
-    siret: '12345678912345',
-    website: 'https://smartb.city'
-  }
-]
-
 OrganizationTableStory.args = {
-  organizations: organizations,
   totalPages: 10,
   page: 1
 }

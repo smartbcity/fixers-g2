@@ -3,13 +3,11 @@ import { Marker } from 'react-leaflet'
 import { LatLngLiteral, Marker as LeafletMarker, Map } from 'leaflet'
 import { Button } from '@smartb/g2-components'
 import GeoJSON, { Feature, Point } from 'geojson'
+import { useTranslation } from 'react-i18next'
 
 export interface DraggableMarkerNeeds {
   position?: LatLngLiteral
   onPositionChange?: (position: LatLngLiteral, geojson: Feature<Point>) => void
-  addMarkerString?: string
-  useMyPositionString?: string
-  canDragString?: string
 }
 
 export interface DraggableMarkerProps extends DraggableMarkerNeeds {
@@ -18,16 +16,11 @@ export interface DraggableMarkerProps extends DraggableMarkerNeeds {
 }
 
 export const DraggableMarker = (props: DraggableMarkerProps) => {
-  const {
-    draggable = false,
-    onPositionChange,
-    position,
-    canDragString,
-    map
-  } = props
+  const { draggable = false, onPositionChange, position, map } = props
   const [diplayInfo, setDiplayInfo] = useState(draggable)
   const [markerRef, setmarkerRef] = useState<LeafletMarker<any> | null>(null)
   const hasPositionChanged = useRef(false)
+  const { t } = useTranslation()
 
   useEffect(() => {
     setDiplayInfo(draggable)
@@ -63,9 +56,7 @@ export const DraggableMarker = (props: DraggableMarkerProps) => {
 
   useEffect(() => {
     if (diplayInfo && !!markerRef) {
-      markerRef
-        .bindPopup(canDragString ?? 'Vous pouvez déplacer ce point')
-        .openPopup()
+      markerRef.bindPopup(t('g2.canDrag')).openPopup()
     } else {
       markerRef?.closePopup()
       markerRef?.unbindPopup()
@@ -91,16 +82,10 @@ export const DraggableMarkerControl = (
     readOnly?: boolean
   }
 ) => {
-  const {
-    onPositionChange,
-    position,
-    map,
-    isSm,
-    isFullScreen,
-    addMarkerString,
-    useMyPositionString,
-    readOnly
-  } = props
+  const { onPositionChange, position, map, isSm, isFullScreen, readOnly } =
+    props
+
+  const { t } = useTranslation()
 
   const onAddMarker = useCallback(() => {
     !!map &&
@@ -150,12 +135,12 @@ export const DraggableMarkerControl = (
           }}
           onClick={onAddMarker}
         >
-          {addMarkerString ?? 'Ajouter un marker'}
+          {t('g2.addMarker')}
         </Button>
       )}
       {isSm && (
         <Button sx={{ marginTop: '24px' }} onClick={onUseMyLocation}>
-          {useMyPositionString ?? 'Utiliser ma position'}
+          {t('g2.useMyPosition')}
         </Button>
       )}
     </>

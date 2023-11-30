@@ -1,7 +1,6 @@
 import React from 'react'
 import { Loading as AruiLoading, LoadingBasicProps } from './Loading'
-import { Meta } from '@storybook/react'
-import { Story } from '@storybook/react/types-6-0'
+import { Meta, StoryFn } from '@storybook/react'
 import smartb from '../assets/smartb.png'
 import { styles, classes } from './types'
 
@@ -28,7 +27,7 @@ export default {
   }
 } as Meta
 
-const Template: Story<LoadingBasicProps> = (args: LoadingBasicProps) => (
+const Template: StoryFn<LoadingBasicProps> = (args: LoadingBasicProps) => (
   <AruiLoading {...args} />
 )
 

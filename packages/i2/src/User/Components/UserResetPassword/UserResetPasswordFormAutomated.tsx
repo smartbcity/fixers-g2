@@ -32,7 +32,7 @@ export const UserResetPasswordFormAutomated = (
   const { keycloak } = useAuth()
 
   const userUpdatePassword = useUserUpdatePassword({
-    apiUrl: i2Config().userUrl,
+    apiUrl: i2Config().url,
     jwt: keycloak.token,
     options: userUpdatePasswordOptions
   })

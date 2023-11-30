@@ -3,15 +3,14 @@ import {
   ProgressIndicator as AruiProgressIndicator,
   ProgressIndicatorProps
 } from './ProgressIndicator'
-import { Meta } from '@storybook/react'
-import { Story } from '@storybook/react/types-6-0'
-import { withDesign } from 'storybook-addon-designs'
+import { Meta, StoryFn } from '@storybook/react'
+
 import { classes, styles } from './docs'
 
 export default {
   title: 'Notifications/ProgressIndicator',
   component: AruiProgressIndicator,
-  decorators: [withDesign],
+
   parameters: {
     design: {
       type: 'figma',
@@ -38,7 +37,7 @@ export default {
   }
 } as Meta
 
-export const ProgressIndicator: Story<ProgressIndicatorProps> = (
+export const ProgressIndicator: StoryFn<ProgressIndicatorProps> = (
   args: ProgressIndicatorProps
 ) => <AruiProgressIndicator {...args} />
 

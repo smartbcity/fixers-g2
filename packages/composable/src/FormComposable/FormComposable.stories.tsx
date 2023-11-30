@@ -1,6 +1,5 @@
 import React, { ReactNode } from 'react'
-import { Meta } from '@storybook/react'
-import { Story } from '@storybook/react/types-6-0'
+import { Meta, StoryFn } from '@storybook/react'
 import {
   ArgsTable,
   PRIMARY_STORY,
@@ -80,7 +79,7 @@ const CustomRenderer: ElementRenderersConfig<any> = {
 export type CustomFieldRenderType = ElementParams<'debug', DebugExtendProps>
 export type AllFormComposableField = FormComposableField | CustomFieldRenderType
 
-const FormComposableStory: Story<FormComposableProps> = (
+const FormComposableStory: StoryFn<FormComposableProps> = (
   args: FormComposableProps
 ) => {
   const formState = useFormComposable({
@@ -358,38 +357,6 @@ const fullFields: AllFormComposableField[] = [
     }
   },
   {
-    key: 'storybook-form-field-reasons',
-    name: 'reasons',
-    label: 'what are you reason to sign in the website',
-    type: 'multiChoices',
-    sharedNameIndex: 0,
-    params: {
-      options: [
-        { key: 'a', label: 'I love to have data stolen' },
-        {
-          key: 'b',
-          label: "I don't really know to be honest"
-        },
-        { key: 'c', label: 'other (explain)' }
-      ]
-    }
-  },
-  {
-    key: 'storybook-form-field-otherReason',
-    name: 'reasons',
-    type: 'textField',
-    sharedNameIndex: 1,
-    params: {
-      rows: '4',
-      multiline: true,
-      placeholder: 'Explain here if it is an other reason'
-    },
-    validator: (value) => {
-      const array = value ?? []
-      if (!array[0] || !array[1]) return 'Answer the question'
-    }
-  },
-  {
     name: 'document',
     type: 'documentHandler',
     fullRow: true,
@@ -507,4 +474,63 @@ GridDisplayForm.args = {
   fields: fullFields,
   display: 'grid',
   gridColumnNumber: 2
+}
+
+const conditionsFormField: FormComposableField[] = [
+  {
+    name: 'name',
+    label: 'Name',
+    type: 'textField',
+    conditions: [
+      {
+        type: 'validator',
+        expression: '#value == null',
+        error: 'The field is required'
+      }
+    ]
+  },
+  {
+    name: 'gender.value',
+    label: 'Gender',
+    type: 'select',
+    conditions: [
+      {
+        type: 'display',
+        expression: "#values?.name != null && #values?.name != ''"
+      },
+      {
+        type: 'validator',
+        expression: "#value != 'female'",
+        error: 'We are sorry but only females are allowed to create an account'
+      }
+    ],
+    params: {
+      options: [
+        { key: 'male', label: 'male' },
+        { key: 'female', label: 'female' }
+      ]
+    }
+  },
+  {
+    name: 'birthdate',
+    label: 'Birthdate',
+    type: 'datePicker',
+    conditions: [
+      {
+        type: 'validator',
+        expression: '#value == null',
+        error: 'Please select a date'
+      },
+      {
+        type: 'validator',
+        expression: '#value > 1099765436000',
+        error: 'You should be 18 or more'
+      }
+    ]
+  }
+]
+
+export const ConditionsForm = FormComposableStory.bind({})
+ConditionsForm.args = {
+  fields: conditionsFormField
 }

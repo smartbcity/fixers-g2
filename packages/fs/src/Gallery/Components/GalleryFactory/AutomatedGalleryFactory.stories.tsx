@@ -1,11 +1,10 @@
-import { Meta } from '@storybook/react'
+import { Meta, StoryFn } from '@storybook/react'
 import React, { useCallback } from 'react'
 import {
   AutomatedGalleryFactory,
   AutomatedGalleryFactoryProps
 } from './AutomatedGalleryFactory'
-import { Story } from '@storybook/react/types-6-0'
-import { QueryClient, QueryClientProvider } from 'react-query'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 export default {
   title: 'Fs/AutomatedGalleryFactory',
@@ -14,7 +13,7 @@ export default {
 
 const queryClient = new QueryClient()
 
-export const AutomatedGalleryFactoryStory: Story<
+export const AutomatedGalleryFactoryStory: StoryFn<
   AutomatedGalleryFactoryProps
 > = (args: AutomatedGalleryFactoryProps) => {
   return (

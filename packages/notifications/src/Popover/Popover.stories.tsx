@@ -1,17 +1,16 @@
 import { useMemo, useRef, useState } from 'react'
 import { Popover as AruiPopover, PopoverBasicProps } from './Popover'
-import { Meta } from '@storybook/react'
-import { Story } from '@storybook/react/types-6-0'
+import { Meta, StoryFn } from '@storybook/react'
 import { Box, Typography } from '@mui/material'
 import { Button } from '@smartb/g2-components'
-import { withDesign } from 'storybook-addon-designs'
+
 import { classes, styles } from './docs'
 import { InputForm } from '@smartb/g2-forms'
 
 export default {
   title: 'Notifications/Popover',
   component: AruiPopover,
-  decorators: [withDesign],
+
   parameters: {
     design: {
       type: 'figma',
@@ -38,7 +37,9 @@ export default {
   }
 } as Meta
 
-export const Popover: Story<PopoverBasicProps> = (args: PopoverBasicProps) => {
+export const Popover: StoryFn<PopoverBasicProps> = (
+  args: PopoverBasicProps
+) => {
   const [open, setOpen] = useState(false)
   const anchor = useRef<HTMLButtonElement>(null)
   return (
@@ -76,7 +77,7 @@ export const Popover: Story<PopoverBasicProps> = (args: PopoverBasicProps) => {
 
 Popover.storyName = 'Popover'
 
-export const PopoverScenario: Story<PopoverBasicProps> = () => {
+export const PopoverScenario: StoryFn<PopoverBasicProps> = () => {
   const [emailopen, setemailopen] = useState(false)
   const [genderopen, setgenderopen] = useState(false)
   const [start, setStart] = useState(false)

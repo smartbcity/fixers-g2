@@ -1,9 +1,8 @@
-import { Meta } from '@storybook/react'
+import { Meta, StoryFn } from '@storybook/react'
 import { MyOrganization, MyOrganizationProps } from './MyOrganization'
-import { Story } from '@storybook/react/types-6-0'
 import { g2Config, KeycloakProvider } from '@smartb/g2-providers'
 import { Typography } from '@mui/material'
-import { QueryClient, QueryClientProvider } from 'react-query'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 export default {
   title: 'I2/MyOrganization',
@@ -12,7 +11,7 @@ export default {
 
 const queryClient = new QueryClient()
 
-export const MyOrganizationStory: Story<MyOrganizationProps> = (
+export const MyOrganizationStory: StoryFn<MyOrganizationProps> = (
   args: MyOrganizationProps
 ) => {
   return (

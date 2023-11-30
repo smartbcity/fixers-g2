@@ -1,13 +1,7 @@
 import React from 'react'
 import { ReactComponent } from './IndeterminateIcon.svg'
-import { MergeReactElementProps } from '@smartb/g2-utils'
+import { SvgIcon, SvgIconProps } from '@mui/material'
 
-interface IndeterminateIconProps {}
-
-type Props = MergeReactElementProps<'svg', IndeterminateIconProps>
-
-export const IndeterminateIcon = React.forwardRef(
-  (props: Props, ref: React.Ref<SVGSVGElement>) => {
-    return <ReactComponent ref={ref} {...props} />
-  }
-)
+export const IndeterminateIcon = (props: SvgIconProps) => {
+  return <SvgIcon component={ReactComponent} inheritViewBox {...props} />
+}

@@ -3,13 +3,12 @@ import { useCallback, useMemo, useState } from 'react'
 import {
   AdressFieldsName,
   mergeFields,
-  requiredString,
-  useAdressFields,
-  validatePhone
+  useAdressFields
 } from '../../../Commons'
 import { OrganizationId } from '../../../Organization'
 import { User } from '../../Domain'
-import { UserFactoryStrings } from './UserFactory'
+import { validators } from '@smartb/g2-utils'
+import { useTranslation } from 'react-i18next'
 
 const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}/i
 
@@ -29,10 +28,6 @@ export type UserFactoryFieldsOverride = Partial<
 >
 
 export interface UseUserFormFieldsProps<T extends User> {
-  /**
-   * The prop to use to add custom translation to the component
-   */
-  strings?: UserFactoryStrings
   /**
    * use This prop to override the fields
    */
@@ -55,7 +50,7 @@ export interface UseUserFormFieldsProps<T extends User> {
    * Indicates if it's an update
    * @default false
    */
-  isUpdate?: boolean
+  update?: boolean
   /**
    * The initial user object
    */
@@ -75,10 +70,9 @@ export const useUserFormFields = <T extends User = User>(
   params?: UseUserFormFieldsProps<T>
 ) => {
   const {
-    strings,
     fieldsOverride,
     checkEmailValidity,
-    isUpdate = false,
+    update = false,
     readOnly = false,
     organizationId,
     user,
@@ -88,6 +82,7 @@ export const useUserFormFields = <T extends User = User>(
 
   const [emailValid, setEmailValid] = useState(false)
   const [emailLoading, setEmailLoading] = useState(false)
+  const { t } = useTranslation()
 
   const onCheckEmail = useCallback(
     async (email: string): Promise<string | undefined> => {
@@ -97,18 +92,17 @@ export const useUserFormFields = <T extends User = User>(
         setEmailLoading(false)
         if (isTaken === true) {
           setEmailValid(false)
-          return strings?.emailAlreadyUsed ?? 'Cet email est déjà utilisé'
+          return t('g2.emailAlreadyUsed')
         } else if (isTaken === false) {
           setEmailValid(true)
         }
       }
       return undefined
     },
-    [user?.email, checkEmailValidity, strings?.emailAlreadyUsed]
+    [user?.email, checkEmailValidity, t]
   )
 
   const { addressFields } = useAdressFields({
-    strings,
     //@ts-ignore
     fieldsOverride
   })
@@ -117,31 +111,26 @@ export const useUserFormFields = <T extends User = User>(
     (): Record<userFieldsName, FormComposableField<userFieldsName>> => ({
       givenName: mergeFields<FormComposableField<userFieldsName>>(
         {
-          key: 'givenName',
           name: 'givenName',
           type: 'textField',
-          label: 'Prénom',
-          validator: (value?: string) =>
-            requiredString(strings?.requiredField, value)
+          label: t('g2.givenName'),
+          validator: validators.requiredField(t)
         },
         fieldsOverride?.givenName
       ),
       familyName: mergeFields<FormComposableField<userFieldsName>>(
         {
-          key: 'familyName',
           name: 'familyName',
           type: 'textField',
-          label: 'Nom de famille',
-          validator: (value?: string) =>
-            requiredString(strings?.requiredField, value)
+          label: t('g2.familyName'),
+          validator: validators.requiredField(t)
         },
         fieldsOverride?.familyName
       ),
       memberOf: mergeFields<FormComposableField<userFieldsName>>(
         {
-          key: 'memberOf',
           name: 'memberOf',
-          label: 'Organisation',
+          label: t('g2.memberOf'),
           type: 'select',
           params: {
             getReadOnlyTextUrl: getOrganizationUrl
@@ -151,24 +140,23 @@ export const useUserFormFields = <T extends User = User>(
       ),
       roles: mergeFields<FormComposableField<userFieldsName>>(
         {
-          key: 'roles',
           name: 'roles',
-          label: 'Rôle',
+          label: t('g2.roles'),
           type: 'select',
           params: {
             readOnlyType: 'chip',
             multiple: multipleRoles
-          }
+          },
+          validator: validators.requiredField(t)
         },
         fieldsOverride?.roles
       ),
       ...addressFields,
       email: mergeFields<FormComposableField<userFieldsName>>(
         {
-          key: 'email',
           name: 'email',
           type: 'textField',
-          label: 'Adresse mail',
+          label: t('g2.email'),
           params: {
             textFieldType: 'email',
             searchLoading: emailLoading,
@@ -177,16 +165,8 @@ export const useUserFormFields = <T extends User = User>(
           validator: async (value?: string) => {
             if (fieldsOverride?.email?.readOnly) return undefined
             const trimmed = (value ?? '').trim()
-            if (!trimmed)
-              return (
-                strings?.completeTheEmail ??
-                ('Vous devez renseigner le mail' as string)
-              )
-            if (!emailRegex.test(trimmed))
-              return (
-                strings?.enterAValidEmail ??
-                "L'email renseigné n'est pas correct"
-              )
+            if (!trimmed) return t('g2.completeTheEmail')
+            if (!emailRegex.test(trimmed)) return t('g2.enterAValidEmail')
             return await onCheckEmail(trimmed)
           }
         },
@@ -194,11 +174,9 @@ export const useUserFormFields = <T extends User = User>(
       ),
       phone: mergeFields<FormComposableField<userFieldsName>>(
         {
-          key: 'phone',
           name: 'phone',
           type: 'textField',
-          label: 'Numéro de téléphone (facultatif)',
-          validator: (value) => validatePhone(value, strings?.enterAValidPhone)
+          label: t('g2.facultativeField', { label: t('g2.phone') })
         },
         fieldsOverride?.phone
       ),
@@ -206,7 +184,7 @@ export const useUserFormFields = <T extends User = User>(
         {
           name: 'sendVerifyEmail',
           type: 'checkBox',
-          label: "Envoyer le mail de vérification de l'adresse email",
+          label: t('g2.sendVerifyEmail'),
           params: {
             disabled: fieldsOverride?.sendVerifyEmail?.readOnly
           }
@@ -217,8 +195,7 @@ export const useUserFormFields = <T extends User = User>(
         {
           name: 'sendResetPassword',
           type: 'checkBox',
-          label:
-            "Envoyer le mail de création de son mot de passe à l'utilisateur",
+          label: t('g2.sendResetPassword'),
           params: {
             disabled: fieldsOverride?.sendResetPassword?.readOnly
           }
@@ -227,14 +204,14 @@ export const useUserFormFields = <T extends User = User>(
       )
     }),
     [
-      strings,
+      t,
       fieldsOverride,
       organizationId,
       multipleRoles,
       addressFields,
       emailLoading,
       onCheckEmail,
-      isUpdate,
+      update,
       readOnly
     ]
   )

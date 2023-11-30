@@ -5,6 +5,7 @@ import { makeG2STyles } from '@smartb/g2-themes'
 import React, { forwardRef, useCallback, useState } from 'react'
 import { Clipboard } from '../icons'
 import { Tooltip } from '@smartb/g2-notifications'
+import { useTranslation } from 'react-i18next'
 
 const useStyles = makeG2STyles()((theme) => ({
   clipboardIcon: {
@@ -36,18 +37,6 @@ export interface CopyToClipboardBasicProps extends BasicProps {
    */
   value: string
   /**
-   * The text displayed in the tootltip
-   *
-   * @default "copy to clipboard"
-   */
-  helperText?: string
-  /**
-   * The text displayed in the tootltip
-   *
-   * @default "Already copied, click here to re-copy it"
-   */
-  successHelperText?: string
-  /**
    * The classes applied to the different part of the component
    */
   classes?: CopyToClipboardClasses
@@ -66,17 +55,10 @@ const CopyToClipboardBase = (
   props: CopyToClipboardProps,
   ref: React.ForwardedRef<HTMLButtonElement>
 ) => {
-  const {
-    value,
-    helperText = 'copy to clipboard',
-    successHelperText = 'Already copied, click here to re-copy it',
-    className,
-    classes,
-    styles,
-    ...other
-  } = props
+  const { value, className, classes, styles, ...other } = props
   const [done, setDone] = useState(false)
   const defaultStyles = useStyles()
+  const { t } = useTranslation()
 
   const onCopy = useCallback(() => {
     if (window.isSecureContext) {
@@ -94,7 +76,7 @@ const CopyToClipboardBase = (
         classes?.tooltip
       )}
       style={styles?.tooltip}
-      helperText={done ? successHelperText : helperText}
+      helperText={done ? t('g2.copySuccess') : t('g2.copyToClipboard')}
     >
       <IconButton
         {...other}

@@ -47,6 +47,7 @@ export const FsDocumentHandler = (props: FsDocumentHandlerProps) => {
         <DocumentHandler
           key={file.path.name}
           label={name}
+          //@ts-ignore
           fileUrl={file.url}
           onDelete={() => onDeleteFile && onDeleteFile(file)}
         />
@@ -64,6 +65,7 @@ export const FsDocumentHandler = (props: FsDocumentHandlerProps) => {
     })
     if (acceptAdditionalDocuments) {
       documentList.push(
+        //@ts-ignore
         <DocumentHandler
           key='additionalDocumentsDropzone'
           label={addDocumentsString ?? 'Ajouter des documents'}

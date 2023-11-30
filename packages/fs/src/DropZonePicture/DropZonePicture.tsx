@@ -26,12 +26,7 @@ export const DropZonePicture = (drop: Partial<DropPictureProps>) => {
       >
         Image
       </InputLabel>
-      <DropPicture
-        {...drop}
-        addPictureHelperText='Ajouter une image'
-        removePictureHelperText="Retirer l'image"
-        styles={{ image: { objectFit: 'contain' } }}
-      />
+      <DropPicture {...drop} styles={{ image: { objectFit: 'contain' } }} />
     </Box>
   )
 }

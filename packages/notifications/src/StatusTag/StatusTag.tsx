@@ -16,8 +16,13 @@ export interface StatusTagBasicProps extends BasicProps {
   variant?: 'info' | 'success' | 'error' | 'warning'
   /**
    * The hexadecimal color you want to style the status tag
+   * @deprecated use `color` instead
    */
   customColor?: string
+  /**
+   * The hexadecimal color you want to style the status tag
+   */
+  color?: string
 }
 
 export type StatusTagProps = MergeMuiElementProps<
@@ -29,13 +34,20 @@ export const StatusTagBase = (
   props: StatusTagProps,
   ref: React.ForwardedRef<HTMLDivElement>
 ) => {
-  const { label, variant = 'info', customColor, className, ...other } = props
+  const {
+    label,
+    variant = 'info',
+    customColor,
+    color,
+    className,
+    ...other
+  } = props
 
   const theme = useTheme()
-  const color = useMemo(() => {
-    if (customColor) return customColor
+  const colorSelection = useMemo(() => {
+    if (customColor || color) return color ?? customColor
     return theme.colors[variant]
-  }, [variant, customColor, theme])
+  }, [variant, customColor, color, theme])
   return (
     <Chip
       ref={ref}
@@ -44,7 +56,7 @@ export const StatusTagBase = (
       sx={{
         width: 'fit-content',
         '& .MuiChip-label': {
-          color: color,
+          color: colorSelection,
           WebkitLineClamp: 2,
           lineClamp: '2',
           display: 'box',
@@ -54,8 +66,8 @@ export const StatusTagBase = (
           textOverflow: 'ellipsis',
           overflow: 'hidden'
         },
-        background: `${color}26`,
-        border: `1.5px solid ${color}`,
+        background: `${colorSelection}26`,
+        border: `1.5px solid ${colorSelection}`,
         height: 'unset',
         padding: '5px',
         borderRadius: '200px'

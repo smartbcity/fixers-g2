@@ -71,7 +71,7 @@ export type LabelSwitchProps = MergeMuiElementProps<
 
 const LabelSwitchBase = (
   props: LabelSwitchProps,
-  ref: React.ForwardedRef<HTMLButtonElement>
+  ref: React.ForwardedRef<HTMLDivElement>
 ) => {
   const {
     labels,

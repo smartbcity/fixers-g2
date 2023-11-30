@@ -1,10 +1,12 @@
 import React from "react";
 import { ThemeContextProvider } from "@smartb/g2-themes";
 import { StorybookCanvas } from "@smartb/g2-storybook-documentation";
-import { G2ConfigBuilder } from "../packages/providers/src";
+import { G2ConfigBuilder, initI18next } from "../packages/providers/src";
+import { I18nextProvider } from "react-i18next";
 
 import "./default.css";
-import { CssBaseline } from "@mui/material";
+import { Box, CssBaseline, IconButton } from "@mui/material";
+import { Menu } from "@mui/icons-material";
 
 export const parameters = {
   docs: {
@@ -42,12 +44,43 @@ G2ConfigBuilder({
   },
 });
 
+const i18n = initI18next({ en: "en-US", fr: "fr-FR" });
+
+const permanentHeader = ({ toggleOpenDrawer }) => {
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "flex-end",
+        width: "100%",
+        padding: "16px",
+        gap: "16px",
+        alignItems: "center",
+      }}
+    >
+      <Box
+        sx={{
+          flexGrow: 1,
+          display: "flex",
+        }}
+      >
+        <img src="/smartb.png" style={{ width: "100%" }} />
+      </Box>
+      <IconButton onClick={toggleOpenDrawer}>
+        <Menu />
+      </IconButton>
+    </Box>
+  );
+};
+
 export const withThemeProvider = (Story) => {
   return (
-    <ThemeContextProvider>
-      <CssBaseline />
-      <Story />
-    </ThemeContextProvider>
+    <I18nextProvider i18n={i18n}>
+      <ThemeContextProvider theme={{ permanentHeader }}>
+        <CssBaseline />
+        <Story />
+      </ThemeContextProvider>
+    </I18nextProvider>
   );
 };
 

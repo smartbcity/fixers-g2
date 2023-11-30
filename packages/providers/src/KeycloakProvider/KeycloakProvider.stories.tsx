@@ -1,8 +1,7 @@
 import React from 'react'
 import { KeycloakProvider as AruiKeycloakProvider } from './KeycloakProvider'
-import { Meta } from '@storybook/react'
-import { Story } from '@storybook/react/types-6-0'
-import { useAuth, KeycloackService } from './useAuth'
+import { Meta, StoryFn } from '@storybook/react'
+import { useAuth, KeycloackService, AuthedUser } from './useAuth'
 import { Button } from '@smartb/g2-components'
 import { Link, Typography } from '@mui/material'
 import {
@@ -88,7 +87,7 @@ export default {
   }
 } as Meta
 
-export const KeycloakProvider: Story = () => {
+export const KeycloakProvider: StoryFn = () => {
   return (
     <AruiKeycloakProvider>
       <ConnectButton />
@@ -110,12 +109,36 @@ const staticServices: KeycloackService<StaticServices, Roles> = {
   }
 }
 
+function MyObject() {
+  // Initialize properties specific to each instance here
+}
+
+MyObject.prototype.canUploadInvoice = (
+  authedUser: AuthedUser,
+  str: string,
+  arr: any[]
+) => true
+MyObject.prototype.canCancelOrder = (authedUser: AuthedUser, str: string) =>
+  true
+//We creating an object with oy a prototype to imitate the policie coming from the back
+const orderPolicies = new MyObject()
+
+const policies = {
+  orderPolicies
+}
+
 const useExtendedAuth = () => {
-  return useAuth<StaticServices, Roles>(roles, staticServices)
+  return useAuth<StaticServices, Roles, typeof policies>(
+    roles,
+    staticServices,
+    policies
+  )
 }
 
 const ConnectButton = () => {
-  const { keycloak } = useExtendedAuth()
+  const { keycloak, policies } = useExtendedAuth()
+
+  console.log(policies)
   if (keycloak.isAuthenticated) {
     return (
       <>

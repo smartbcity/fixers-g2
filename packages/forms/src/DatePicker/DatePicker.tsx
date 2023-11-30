@@ -3,7 +3,7 @@ import {
   DatePickerProps as MuiDatePickerProps,
   LocalizationProvider
 } from '@mui/x-date-pickers'
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns/index.js'
 import React, { forwardRef, useCallback, useMemo } from 'react'
 import { useInputStyles } from '../style'
 import {
@@ -15,14 +15,18 @@ import {
   makeG2STyles,
   MergeMuiElementProps
 } from '@smartb/g2-themes'
-import { fr, enUS } from 'date-fns/locale'
+import { fr, enUS } from 'date-fns/locale/index.js'
 import { CustomActionBar } from './CustomActionBar'
+import { useTranslation } from 'react-i18next'
 const dateFnsLocales = {
   fr,
   enUS
 }
 
 const useStyles = makeG2STyles()((theme) => ({
+  input: {
+    width: '100%'
+  },
   dialog: {
     '& .MuiButton-root': {
       background: theme.colors.primary,
@@ -87,11 +91,9 @@ export interface DatePickerBasicProps extends BasicProps {
    */
   errorMessage?: string
   /**
-   * The locale language use in the date picker
-   *
-   * @default 'fr'
+   * The helper message below the field
    */
-  locale?: keyof typeof dateFnsLocales
+  helperText?: string
   /**
    * The size of the input
    *
@@ -138,12 +140,12 @@ const DatePickerBase = (
     disabled = false,
     placeholder = 'jj/MM/yyyy',
     size = 'medium',
-    locale = 'fr',
     onRemove,
     textFieldProps,
     name,
     error,
     errorMessage,
+    helperText,
     classes,
     styles,
     ...other
@@ -151,11 +153,12 @@ const DatePickerBase = (
 
   const defaultStyles = useInputStyles()
   const localStyles = useStyles()
-
+  const { i18n } = useTranslation()
   const format = useMemo(() => {
-    if (locale === 'fr') return { format: 'dd/MM/yyyy', mask: '__/__/____' }
+    if (i18n.language === 'fr')
+      return { format: 'dd/MM/yyyy', mask: '__/__/____' }
     return { format: 'yyyy/MM/dd', mask: '____/__/__' }
-  }, [locale])
+  }, [i18n.language])
 
   const onChange = useCallback(
     (date: Date | null) => {
@@ -167,13 +170,15 @@ const DatePickerBase = (
   const formHelperProps = useMemo(() => {
     return {
       className: defaultStyles.cx(
-        defaultStyles.classes.helperText,
+        errorMessage !== '' && error
+          ? defaultStyles.classes.errorHelperText
+          : defaultStyles.classes.helperText,
         'AruiTextfield-helperText',
         classes?.helperText
       ),
       style: styles?.helperText
     }
-  }, [classes?.helperText, styles?.helperText])
+  }, [classes?.helperText, styles?.helperText, errorMessage, error])
 
   const renderInput = useCallback(
     (props) => {
@@ -189,6 +194,7 @@ const DatePickerBase = (
           variant='filled'
           error={error}
           className={defaultStyles.cx(
+            localStyles.classes.input,
             defaultStyles.classes.input,
             size === 'large' && defaultStyles.classes.inputLarge,
             size === 'medium' && defaultStyles.classes.inputMedium,
@@ -199,7 +205,7 @@ const DatePickerBase = (
             className
           )}
           style={style}
-          helperText={error ? errorMessage : ''}
+          helperText={error ? errorMessage ?? helperText : helperText}
           color='primary'
           InputProps={{
             disableUnderline: true,
@@ -223,13 +229,14 @@ const DatePickerBase = (
       classes?.input,
       styles?.input,
       textFieldProps,
-      formHelperProps
+      formHelperProps,
+      helperText
     ]
   )
   return (
     <LocalizationProvider
       dateAdapter={AdapterDateFns}
-      adapterLocale={dateFnsLocales[locale]}
+      adapterLocale={dateFnsLocales[i18n.language === 'en' ? 'enUS' : 'fr']}
     >
       <MuiDatePicker
         ref={ref}
@@ -239,9 +246,7 @@ const DatePickerBase = (
         maxDate={maxDate}
         componentsProps={{
           actionBar: {
-            actions: ['cancel', 'clear'],
-            //@ts-ignore
-            locale: locale
+            actions: ['cancel', 'clear']
           }
         }}
         components={{

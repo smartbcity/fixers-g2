@@ -1,15 +1,13 @@
 import React, { useState } from 'react'
 import { RadioChoices, Choice, RadioChoicesBasicProps } from './RadioChoices'
-import { Meta } from '@storybook/react'
-import { Story } from '@storybook/react/types-6-0'
+import { Meta, StoryFn } from '@storybook/react'
 import { Box } from '@mui/material'
 import { RadioChoicesClasses, RadioChoicesStyles } from './docs'
-import { withDesign } from 'storybook-addon-designs'
 
 export default {
   title: 'Forms/RadioChoices',
   component: RadioChoices,
-  decorators: [withDesign],
+
   parameters: {
     design: {
       type: 'figma',
@@ -36,7 +34,7 @@ export default {
   }
 } as Meta
 
-export const RadioChoicesStory: Story<RadioChoicesBasicProps> = (
+export const RadioChoicesStory: StoryFn<RadioChoicesBasicProps> = (
   args: RadioChoicesBasicProps
 ) => {
   const [value, setvalue] = useState('')
@@ -87,7 +85,7 @@ RadioChoicesStory.args = {
 
 RadioChoicesStory.storyName = 'RadioChoices'
 
-export const withEditableLabel: Story = () => {
+export const withEditableLabel: StoryFn = () => {
   const [value, setvalue] = useState('')
   console.log(value)
   const options: Choice[] = [

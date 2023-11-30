@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
-import { Meta } from '@storybook/react'
+import { Meta, StoryFn } from '@storybook/react'
 import { MyProfile } from './MyProfile'
-import { Story } from '@storybook/react/types-6-0'
+
 import { g2Config, KeycloakProvider } from '@smartb/g2-providers'
 import { Typography } from '@mui/material'
-import { QueryClient, QueryClientProvider } from 'react-query'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { AutomatedUserFactoryProps } from '../UserFactory'
 
 export default {
@@ -14,7 +14,7 @@ export default {
 
 const queryClient = new QueryClient()
 
-export const MyProfileStory: Story<AutomatedUserFactoryProps> = (
+export const MyProfileStory: StoryFn<AutomatedUserFactoryProps> = (
   args: AutomatedUserFactoryProps
 ) => {
   return (

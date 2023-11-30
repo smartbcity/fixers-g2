@@ -4,8 +4,9 @@ const darkGrey = '#BDBDBD'
 
 export const useFilterInputStyles = makeG2STyles()((theme) => ({
   label: {
-    fontSize: '0.875rem',
-    color: '#323338'
+    color: '#323338',
+    marginBottom: 0,
+    fontWeight: 500
   },
   input: {
     '& .MuiInputBase-input': {

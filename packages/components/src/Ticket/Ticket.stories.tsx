@@ -1,8 +1,7 @@
 import React from 'react'
 import { Ticket as AruiTicket, TicketBasicProps } from './Ticket'
-import { Meta } from '@storybook/react'
-import { Story } from '@storybook/react/types-6-0'
-import { withDesign } from 'storybook-addon-designs'
+import { Meta, StoryFn } from '@storybook/react'
+
 import { Flight } from '@mui/icons-material'
 import { styles, classes } from './docs'
 import { Box } from '@mui/material'
@@ -10,7 +9,7 @@ import { Box } from '@mui/material'
 export default {
   title: 'Components/Ticket',
   component: AruiTicket,
-  decorators: [withDesign],
+
   parameters: {
     design: {
       type: 'figma',
@@ -46,7 +45,7 @@ const defaultArgs = {
   icon: <Flight style={{ color: '#EDBA27', width: '50px', height: '50px' }} />
 }
 
-export const Ticket: Story<TicketBasicProps> = (args: TicketBasicProps) => {
+export const Ticket: StoryFn<TicketBasicProps> = (args: TicketBasicProps) => {
   return (
     <Box
       display='flex'
@@ -61,7 +60,7 @@ export const Ticket: Story<TicketBasicProps> = (args: TicketBasicProps) => {
   )
 }
 
-export const TicketVariants: Story = () => {
+export const TicketVariants: StoryFn = () => {
   return (
     <Box
       display='flex'
@@ -79,7 +78,7 @@ export const TicketVariants: Story = () => {
   )
 }
 
-export const TicketOptions: Story = () => {
+export const TicketOptions: StoryFn = () => {
   return (
     <Box
       display='flex'

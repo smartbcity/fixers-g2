@@ -1,17 +1,16 @@
-import { Meta } from '@storybook/react'
+import { Meta, StoryFn } from '@storybook/react'
 import React from 'react'
 import { GalleryFactory, GalleryFactoryProps } from './GalleryFactory'
-import { Story } from '@storybook/react/types-6-0'
 import { useState } from '@storybook/addons'
-import { FsFile } from '../Gallery/types'
 import { fileToBase64 } from '@smartb/g2-utils'
+import { FsFile } from '../../Domain'
 
 export default {
   title: 'Fs/GalleryFactory',
   component: GalleryFactory
 } as Meta
 
-export const GalleryFactoryStory: Story<GalleryFactoryProps> = (
+export const GalleryFactoryStory: StoryFn<GalleryFactoryProps> = (
   args: GalleryFactoryProps
 ) => {
   const [gallery, setgallery] = useState<FsFile[]>([])

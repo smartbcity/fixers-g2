@@ -1,6 +1,5 @@
 import { ReduxProvider as AruiReduxProvider } from './ReduxProvider'
-import { Meta } from '@storybook/react'
-import { Story } from '@storybook/react/types-6-0'
+import { Meta, StoryFn } from '@storybook/react'
 import { ArgsTable, Title, Primary, Description } from '@storybook/addon-docs'
 import { CodeHighlighter } from '@smartb/g2-documentation'
 import initRedux from './store'
@@ -28,7 +27,7 @@ export default {
   }
 } as Meta
 
-export const ReduxProvider: Story = () => {
+export const ReduxProvider: StoryFn = () => {
   const { store } = initRedux()
   return <AruiReduxProvider reduxStore={store}></AruiReduxProvider>
 }

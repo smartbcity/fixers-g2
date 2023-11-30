@@ -1,13 +1,7 @@
 import React from 'react'
 import { ReactComponent } from './checkIcon.svg'
-import { MergeReactElementProps } from '@smartb/g2-utils'
+import { SvgIcon, SvgIconProps } from '@mui/material'
 
-interface CheckIconProps {}
-
-type Props = MergeReactElementProps<'svg', CheckIconProps>
-
-export const CheckIcon = React.forwardRef(
-  (props: Props, ref: React.Ref<SVGSVGElement>) => {
-    return <ReactComponent ref={ref} {...props} />
-  }
-)
+export const CheckIcon = (props: SvgIconProps) => {
+  return <SvgIcon component={ReactComponent} inheritViewBox {...props} />
+}

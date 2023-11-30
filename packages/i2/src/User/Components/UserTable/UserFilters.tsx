@@ -8,7 +8,6 @@ import {
 } from '@smartb/g2-forms'
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
 import React, { useMemo } from 'react'
-import { UserTableBlockedFilters } from './index'
 import { OrganizationId, OrganizationRef } from '../../../Organization'
 
 export type UserFilters = {
@@ -37,7 +36,7 @@ export interface UserFiltersBasicProps extends BasicProps {
   initialFiltersValues?: UserFilters
   organizationsRefs?: OrganizationRef[]
   rolesOptions?: Option[]
-  blockedFilters?: UserTableBlockedFilters
+  blockedFilters?: Record<keyof UserFilters, boolean>
   tableActions?: React.ReactNode
   strings?: UserFiltersStrings
 }

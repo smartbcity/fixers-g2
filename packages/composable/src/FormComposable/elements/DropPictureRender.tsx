@@ -25,7 +25,7 @@ export const DropPictureRender: ElementRendererFunction<
   const { errorMessage, onChange, sx, label, id, ...basicPropsRest } =
     basicProps
   delete basicProps.emptyValueInReadOnly
-  delete basicProps.sharedNameIndex
+
   const localFile: File | undefined = getIn(formState.values, basicProps.name)
   const uploadedGetUrl: string | undefined = getIn(
     formState.values,
@@ -34,20 +34,7 @@ export const DropPictureRender: ElementRendererFunction<
   if (basicProps.readOnly && !uploadedGetUrl && !localFile) return <></>
   return (
     <Box sx={sx}>
-      {label && (
-        <InputLabel
-          htmlFor={id}
-          sx={{
-            marginBottom: (theme) => theme.spacing(1),
-            fontSize: '0.875rem',
-            fontWeight: 600,
-            color: '#000000',
-            flexShrink: 0
-          }}
-        >
-          {label}
-        </InputLabel>
-      )}
+      {label && <InputLabel htmlFor={id}>{label}</InputLabel>}
       <DropPicture
         id={id}
         pictureUrl={localFile ? URL.createObjectURL(localFile) : uploadedGetUrl}

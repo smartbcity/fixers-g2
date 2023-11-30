@@ -6,6 +6,12 @@ import { FormComposableField } from './FormComposableField'
 import { cx } from '@emotion/css'
 import { getIn } from 'formik'
 import { SxProps, Theme } from '@mui/material'
+import {
+  Condition,
+  requiredFieldConditions,
+  validateConditions
+} from '../../Conditions'
+import { useTranslation } from 'react-i18next'
 
 export interface FieldRenderProps<TYPE extends string, PROPS>
   extends WithElementParams<TYPE, PROPS> {
@@ -22,7 +28,6 @@ export interface FieldRender {
   errorMessage: string
   className: any
   style: any
-  sharedNameIndex?: number
   /**
    * Indicates if the data is currently loading
    *
@@ -60,13 +65,9 @@ const useFormProps = (
     label: field.label,
     name: field.name,
     error: !!error,
-    errorMessage:
-      field.sharedNameIndex && field.sharedNameIndex !== 0
-        ? ''
-        : (error as string),
+    errorMessage: error as string,
     isLoading: isLoading === true ? isLoading : formState.isLoading,
     className: cx(classes?.field, 'AruiForm-field', field.params?.className),
-    sharedNameIndex: field.sharedNameIndex,
     style: {
       width: '100%',
       ...styles?.field,
@@ -97,13 +98,36 @@ const useFormProps = (
 export const useFieldRenderProps = (
   props: FormComposableProps<any>
 ): FieldRenderProps<string, any>[] => {
-  const { fields, formState, classes, styles, isLoading, readOnly } = props
+  const {
+    fields,
+    formState,
+    classes,
+    styles,
+    isLoading,
+    readOnly,
+    orientation
+  } = props
+
+  const { t } = useTranslation()
 
   useEffect(() => {
     const { registerField, unregisterField } = formState
     fields.forEach((field) => {
-      if (!field.readOnly && field.validator) {
-        const validator = field.validator
+      if (
+        !field.readOnly &&
+        (field.validator || field.conditions || field.required)
+      ) {
+        const validator =
+          !!field.conditions || field.required
+            ? validateConditions(
+                (field.required
+                  ? [
+                      requiredFieldConditions(t, field.name),
+                      ...(field.conditions ?? [])
+                    ]
+                  : field.conditions) as Condition[]
+              )
+            : field.validator
         registerField(field.name, validator)
       } else {
         unregisterField(field.name)
@@ -128,7 +152,10 @@ export const useFieldRenderProps = (
         formState: formState,
         key: field.key ?? field.name,
         element: {
-          params: field.params,
+          params: {
+            orientation,
+            ...field.params
+          },
           type: field.type,
           customDisplay: field.customDisplay
         }
@@ -145,7 +172,8 @@ export const useFieldRenderProps = (
     isLoading,
     formState.readOnly,
     formState.isLoading,
-    formState.emptyValueInReadOnly
+    formState.emptyValueInReadOnly,
+    orientation
   ])
   const { setFieldValue } = formState
 

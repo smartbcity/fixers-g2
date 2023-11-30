@@ -3,8 +3,7 @@ import {
   SegmentedContainer as AruiSegmentedContainer,
   SegmentedContainerProps
 } from './SegmentedContainer'
-import { Meta } from '@storybook/react'
-import { Story } from '@storybook/react/types-6-0'
+import { Meta, StoryFn } from '@storybook/react'
 import { MarkdownHighlighter } from '../MarkdownHighlighter'
 //@ts-ignore
 import md from '!raw-loader!./exampleMarkdown.md'
@@ -15,7 +14,7 @@ export default {
   component: AruiSegmentedContainer
 } as Meta
 
-export const SegmentedContainer: Story<SegmentedContainerProps> = (
+export const SegmentedContainer: StoryFn<SegmentedContainerProps> = (
   args: SegmentedContainerProps
 ) => (
   <>

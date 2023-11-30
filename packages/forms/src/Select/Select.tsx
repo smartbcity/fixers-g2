@@ -24,9 +24,15 @@ import { extractNumberOrBooleanFromString } from '@smartb/g2-utils'
 
 export type SmartKey = string | number | boolean
 
+type language = string
+
 export type Option = {
   key: SmartKey
-  label: string | number
+  label?: string | number
+  /**
+   * Usefull when recieving options from the back that are not known in advance
+   */
+  locale?: Record<language, string | number>
   /**
    * The icon of the option only used for Select component.
    * If the option is selected and the select is not multiple the icon is displayed in the Select Component.
@@ -165,6 +171,11 @@ export interface SelectBasicProps extends BasicProps {
   errorMessage?: string
 
   /**
+   * The helper message below the field
+   */
+  helperText?: string
+
+  /**
    * The event called when the value or the values of the input are removed
    */
   onRemove?: () => void
@@ -209,6 +220,7 @@ export const Select = React.forwardRef(
       multiple = false,
       startAdornment,
       onClose,
+      helperText,
       ...other
     } = props
 
@@ -409,16 +421,18 @@ export const Select = React.forwardRef(
             />
           )}
         </Box>
-        {errorMessage !== '' && error && (
+        {((errorMessage !== '' && error) || helperText) && (
           <FormHelperText
             className={defaultStyles.cx(
-              defaultStyles.classes.helperText,
+              errorMessage !== '' && error
+                ? defaultStyles.classes.errorHelperText
+                : defaultStyles.classes.helperText,
               'AruiSelect-helperText',
               classes?.helperText
             )}
             style={styles?.helperText}
           >
-            {errorMessage}
+            {error ? errorMessage ?? helperText : helperText}
           </FormHelperText>
         )}
       </FormControl>

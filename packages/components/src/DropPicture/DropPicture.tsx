@@ -8,6 +8,7 @@ import {
   makeG2STyles
 } from '@smartb/g2-themes'
 import { Tooltip } from '@smartb/g2-notifications'
+import { useTranslation } from 'react-i18next'
 
 const useStyles = makeG2STyles<{ height: string }>()((theme, { height }) => ({
   root: {
@@ -81,12 +82,6 @@ export type DropPictureError =
   | 'too-many-files'
   | 'file-invalid-type'
 
-const defaultErrorMessages: { [key in DropPictureError]?: string } = {
-  'file-invalid-type': 'Your picture should be a png or a jpeg',
-  'file-too-large': 'Your picture should not exceed 10Mo',
-  'too-many-files': 'You can only drop one picture here'
-}
-
 interface DropPictureClasses {
   image?: string
   tooltip?: string
@@ -115,10 +110,6 @@ export interface DropPictureBasicProps extends BasicProps {
    */
   onRemovePicture?: () => void
   /**
-   * error messages displayed if the files uploaded doesn't match the required constraints
-   */
-  errorMessages?: { [key in DropPictureError]?: string }
-  /**
    * The custom error message
    */
   customErrorMessage?: string
@@ -137,21 +128,9 @@ export interface DropPictureBasicProps extends BasicProps {
   /**
    * The maximum size in bytes the picture can be
    *
-   * @default 1000000
+   * @default 10 * 1024 * 1024
    */
   maxSize?: number
-  /**
-   * The text in the tooltip when a picture is dropable
-   *
-   * @default "'Add an image"
-   */
-  addPictureHelperText?: string
-  /**
-   * The text in the tooltip when a picture is removable
-   *
-   * @default "Delete this image"
-   */
-  removePictureHelperText?: string
   /**
    * The description of the picture
    *
@@ -196,11 +175,8 @@ const DropPictureBase = (
     pictureUrl,
     defaultPicture = '',
     maxSize = 10 * 1024 * 1024,
-    errorMessages,
     customErrorMessage,
     id,
-    addPictureHelperText = 'Add an image',
-    removePictureHelperText = 'Delete this image',
     alt = 'A picture',
     classes,
     styles,
@@ -211,6 +187,7 @@ const DropPictureBase = (
   const [error, setError] = useState(customErrorMessage)
   const [unFound, setUnFound] = useState(false)
   const defaultStyles = useStyles({ height })
+  const { t } = useTranslation()
 
   useEffect(() => {
     setError(customErrorMessage)
@@ -231,12 +208,13 @@ const DropPictureBase = (
     (fileRejections: FileRejection[]) => {
       const code = fileRejections[0].errors[0].code as DropPictureError
       setError(
-        !!errorMessages && !!errorMessages[code]
-          ? errorMessages[code]
-          : defaultErrorMessages[code]
+        t('g2.' + code, {
+          formats: ['png', 'jpeg'].join(` ${t('g2.or')} `),
+          sizeLimit: maxSize / 1024 / 1024
+        })
       )
     },
-    [errorMessages]
+    [maxSize]
   )
 
   const { getRootProps, getInputProps } = useDropzone({
@@ -290,7 +268,7 @@ const DropPictureBase = (
         style={style}
       >
         <Tooltip
-          helperText={addPictureHelperText}
+          helperText={t('g2.addPicture')}
           className={classes?.tooltip}
           style={styles?.tooltip}
         >
@@ -332,7 +310,7 @@ const DropPictureBase = (
     )
   return (
     <Tooltip
-      helperText={removePictureHelperText}
+      helperText={t('g2.removePicture')}
       className={classes?.tooltip}
       style={styles?.tooltip}
     >

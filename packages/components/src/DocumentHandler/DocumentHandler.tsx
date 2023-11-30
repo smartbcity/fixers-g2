@@ -20,18 +20,12 @@ import {
   UploadRounded,
   VisibilityRounded
 } from '@mui/icons-material'
+import { useTranslation } from 'react-i18next'
 
 export type DropError =
   | 'file-too-large'
   | 'too-many-files'
   | 'file-invalid-type'
-
-const defaultErrorMessages: { [key in DropError]?: string } = {
-  'file-invalid-type': 'One type of your files is not accepted',
-  'file-too-large':
-    'One or a few of your files are too big: they should not exceed 50Mo',
-  'too-many-files': 'You can only drop one file'
-}
 
 export interface DocumentHandlerBasicProps extends BasicProps {
   /**
@@ -58,19 +52,9 @@ export interface DocumentHandlerBasicProps extends BasicProps {
    */
   isRequired?: boolean
   /**
-   * The label used to tell the user that the file is mandatory
-   *
-   * @default 'Required'
-   */
-  isRequiredLabel?: string
-  /**
    * Determine the type of file accepted. By default all the types are allowed
    */
   fileTypesAllowed?: (keyof typeof MIME_TYPES)[]
-  /**
-   * error messages displayed if the files uploaded doesn't match the required constraints
-   */
-  errorMessages?: { [key in DropError]?: string }
   /**
    * The custom error message
    */
@@ -121,9 +105,7 @@ export const DocumentHandler = (props: DocumentHandlerProps) => {
     label,
     getFileUrl,
     isRequired = false,
-    isRequiredLabel,
     fileTypesAllowed,
-    errorMessages,
     customErrorMessage,
     multiple = false,
     onAdd,
@@ -144,6 +126,7 @@ export const DocumentHandler = (props: DocumentHandlerProps) => {
   const [loading, setLoading] = useState(false)
   const theme = useTheme()
   const dropzoneRef = useRef<HTMLDivElement | null>(null)
+  const { t } = useTranslation()
 
   const downHandler = useCallback(
     (event: React.KeyboardEvent<HTMLDivElement>) => {
@@ -196,12 +179,15 @@ export const DocumentHandler = (props: DocumentHandlerProps) => {
     (fileRejections: FileRejection[]) => {
       const code = fileRejections[0].errors[0].code as DropError
       setError(
-        !!errorMessages && !!errorMessages[code]
-          ? errorMessages[code]
-          : defaultErrorMessages[code]
+        t('g2.' + code, {
+          formats: ['png', 'jpeg'].join(', '),
+          sizeLimit: dropzoneProps?.maxSize
+            ? dropzoneProps?.maxSize / 1024 / 1024
+            : 50
+        })
       )
     },
-    [errorMessages]
+    [t, dropzoneProps?.maxSize]
   )
 
   const onDrop = useCallback(
@@ -225,7 +211,6 @@ export const DocumentHandler = (props: DocumentHandlerProps) => {
       error,
       label,
       isRequired,
-      isRequiredLabel,
       onDelete,
       onEditFileName,
       onDownload: onDownloadMemoized,
@@ -237,7 +222,6 @@ export const DocumentHandler = (props: DocumentHandlerProps) => {
   }, [
     label,
     isRequired,
-    isRequiredLabel,
     onDelete,
     onEditFileName,
     onDownload,
@@ -257,20 +241,7 @@ export const DocumentHandler = (props: DocumentHandlerProps) => {
   if (uploaded) {
     return (
       <>
-        {outterLabel && (
-          <InputLabel
-            htmlFor={id}
-            sx={{
-              marginBottom: (theme) => theme.spacing(1),
-              fontSize: '0.875rem',
-              fontWeight: 600,
-              color: '#000000',
-              flexShrink: 0
-            }}
-          >
-            {outterLabel}
-          </InputLabel>
-        )}
+        {outterLabel && <InputLabel htmlFor={id}>{outterLabel}</InputLabel>}
         {/* @ts-ignore */}
         <Stack
           {...otherProps}
@@ -295,20 +266,7 @@ export const DocumentHandler = (props: DocumentHandlerProps) => {
   }
   return (
     <>
-      {outterLabel && (
-        <InputLabel
-          htmlFor={id}
-          sx={{
-            marginBottom: (theme) => theme.spacing(1),
-            fontSize: '0.875rem',
-            fontWeight: 600,
-            color: '#000000',
-            flexShrink: 0
-          }}
-        >
-          {outterLabel}
-        </InputLabel>
-      )}
+      {outterLabel && <InputLabel htmlFor={id}>{outterLabel}</InputLabel>}
       <Dropzone
         className={cx('AruiDocumentHandler-root', className)}
         style={style}
@@ -357,7 +315,6 @@ export const DropzoneChildren = (props: DropzoneChildrenProps) => {
     uploaded,
     error,
     isRequired,
-    isRequiredLabel,
     label,
     onDelete,
     onDownload,
@@ -366,6 +323,8 @@ export const DropzoneChildren = (props: DropzoneChildrenProps) => {
     fileTypesAllowed,
     isLoading
   } = props
+
+  const { t } = useTranslation()
   const generatedLabel = useMemo(() => {
     if (error)
       return (
@@ -385,26 +344,27 @@ export const DropzoneChildren = (props: DropzoneChildrenProps) => {
           sx={{ color: (theme) => theme.palette.warning.main, fontWeight: 700 }}
           variant='subtitle2'
         >
-          {isRequiredLabel || 'Required'}
+          {t('g2.required')}
         </Typography>
       )
     }
 
+    if (fileTypesAllowed && !uploaded) {
+      labels.push(
+        <Typography
+          key='fileType'
+          sx={{ color: '#676879', textTransform: 'uppercase' }}
+          variant='subtitle2'
+        >
+          {fileTypesAllowed.join(', ')}
+        </Typography>
+      )
+    }
     if (label) {
       const labelParts = label.split('.')
       const labelName = labelParts[0]
       const labelType = labelParts[1]
-      if (fileTypesAllowed && !uploaded) {
-        labels.push(
-          <Typography
-            key='fileType'
-            sx={{ color: '#676879', textTransform: 'uppercase' }}
-            variant='subtitle2'
-          >
-            {fileTypesAllowed.join(', ')}
-          </Typography>
-        )
-      } else if (labelType) {
+      if (labelType) {
         labels.push(
           <Typography
             key='fileType'

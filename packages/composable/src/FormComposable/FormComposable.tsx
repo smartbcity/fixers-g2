@@ -13,6 +13,7 @@ import { ActionsWrapper, ActionsWrapperProps } from '@smartb/g2-components'
 import { FormAction } from '@smartb/g2-forms'
 import { DefaultRenderer } from './factories/FormElementsRenderer'
 import { MUIStyledCommonProps } from '@mui/system'
+import { evalDisplayConditions } from '../Conditions'
 
 const Form = styled('form')({})
 
@@ -32,7 +33,7 @@ export interface FormComposableStyles {
 
 export type FormComposableActionsProps = Omit<ActionsWrapperProps, 'actions'>
 
-interface FormComposableBasicProps<
+export interface FormComposableBasicProps<
   ELEMENT_PARAMS extends ElementRenderersConfig
 > {
   customFactories?: ELEMENT_PARAMS
@@ -64,6 +65,11 @@ interface FormComposableBasicProps<
    * @default 2
    */
   gridColumnNumber?: number
+  /**
+   * The orientation of each field
+   * @default "vertical"
+   */
+  orientation?: 'horizontal' | 'vertical'
   /**
    * the props given to the fields stack container
    */
@@ -104,7 +110,6 @@ export const FormComposable = <RENDERER extends ElementRenderersConfig>(
     actionsProps,
     fields,
     customFactories,
-    onSubmit,
     className,
     onChange,
     classes,
@@ -115,11 +120,25 @@ export const FormComposable = <RENDERER extends ElementRenderersConfig>(
     readOnly = false,
     display = 'flex',
     gridColumnNumber = 2,
+    orientation = 'vertical',
     sx,
+    children,
     ...other
   } = props
 
-  const fieldElement = useFieldRenderProps(props)
+  const filteredFields = useMemo(
+    () =>
+      fields.filter((field) =>
+        evalDisplayConditions(field.conditions, formState.values)
+      ),
+    [fields, formState.values]
+  )
+
+  const fieldElement = useFieldRenderProps({
+    ...props,
+    fields: filteredFields
+  })
+
   const fieldContainerSx = useMemo(
     (): SxProps<Theme> =>
       display === 'grid'
@@ -147,6 +166,13 @@ export const FormComposable = <RENDERER extends ElementRenderersConfig>(
           gap: (theme) => theme.spacing(3),
           display: 'flex',
           flexDirection: 'column',
+          '& .AruiForm-field > *':
+            orientation === 'horizontal'
+              ? {
+                  flexGrow: 1,
+                  flexBasis: 0
+                }
+              : undefined,
           ...sx
         }}
         {...other}
@@ -168,6 +194,7 @@ export const FormComposable = <RENDERER extends ElementRenderersConfig>(
               elements={fieldElement}
             />
           </Stack>
+          {children}
         </ActionsWrapper>
       </Form>
     </FormikProvider>

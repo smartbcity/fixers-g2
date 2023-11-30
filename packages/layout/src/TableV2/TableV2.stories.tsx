@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
-import { Meta } from '@storybook/react'
+import { Meta, StoryFn } from '@storybook/react'
 import { TableV2 as AruiTableV2, TableV2BasicProps } from './TableV2'
 import { G2ColumnDef, useTable } from './useTable'
-import { Story } from '@storybook/react/types-6-0'
+
 import { Box, Button, Divider, Stack, Typography } from '@mui/material'
 import { Info } from '@mui/icons-material'
 import { ColumnDef } from '@tanstack/react-table'
@@ -76,7 +76,7 @@ const columns: ColumnDef<Data>[] = [
   }
 ]
 
-export const TableV2: Story<TableV2BasicProps<Data>> = (
+export const TableV2: StoryFn<TableV2BasicProps<Data>> = (
   args: TableV2BasicProps<Data>
 ) => {
   const [page, setPage] = useState<number>(1)
@@ -112,7 +112,7 @@ TableV2.args = {
   onRowClicked: (row) => console.log('cliked', row)
 }
 
-export const theVariants: Story = () => {
+export const theVariants: StoryFn = () => {
   interface DataExample {
     id: string
     name: string
@@ -193,7 +193,7 @@ export const theVariants: Story = () => {
   )
 }
 
-export const LoadingStates: Story = () => {
+export const LoadingStates: StoryFn = () => {
   const tableState = useTable({
     data: [],
     columns: []
@@ -206,7 +206,7 @@ export const LoadingStates: Story = () => {
   )
 }
 
-export const NotificationList: Story = () => {
+export const NotificationList: StoryFn = () => {
   interface Notification {
     id: string
     message: string
@@ -286,7 +286,7 @@ export const NotificationList: Story = () => {
   )
 }
 
-export const AxessExample: Story = () => {
+export const AxessExample: StoryFn = () => {
   interface AxessData {
     id: string
     protocol: string
@@ -478,7 +478,7 @@ export const AxessExample: Story = () => {
   )
 }
 
-export const ColumnFactoryExample: Story = () => {
+export const ColumnFactoryExample: StoryFn = () => {
   interface Person {
     id: string
     firstName: string
@@ -524,15 +524,17 @@ export const ColumnFactoryExample: Story = () => {
       profile: generators.profile({
         header: 'Profile',
         getCellProps: (person) => ({
-          givenName: person.firstName,
-          familyName: person.lastName
+          value: {
+            givenName: person.firstName,
+            familyName: person.lastName
+          }
         })
       }),
 
       birthDate: generators.date({
         header: 'Birth date',
         getCellProps: (person) => ({
-          date: person.birthDate
+          value: person.birthDate
         })
       }),
 
@@ -546,8 +548,10 @@ export const ColumnFactoryExample: Story = () => {
       contact: generators.contact({
         header: 'Contact',
         getCellProps: (person) => ({
-          email: person.email,
-          phone: person.phone
+          value: {
+            email: person.email,
+            phone: person.phone
+          }
         })
       })
     })

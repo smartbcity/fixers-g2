@@ -14,7 +14,7 @@ import {
   UseMutationOptions,
   useQuery,
   UseQueryOptions
-} from 'react-query'
+} from '@tanstack/react-query'
 import { OrganizationId, OrganizationRef } from '../../Organization'
 import { UserPageResult } from '../Domain'
 

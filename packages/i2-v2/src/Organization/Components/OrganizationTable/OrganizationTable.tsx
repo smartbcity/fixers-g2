@@ -1,35 +1,18 @@
 import { Typography } from '@mui/material'
-import { Link, MenuItem, Presentation } from '@smartb/g2-components'
-import { Column, Table, TableProps, CellProps } from '@smartb/g2-layout'
+import { MenuItem } from '@smartb/g2-components'
+import { TableV2Props, TableV2 } from '@smartb/g2-layout'
+import { Table as TableState } from '@tanstack/react-table'
 import { BasicProps, MergeMuiElementProps } from '@smartb/g2-themes'
-import React, { useMemo } from 'react'
-import {
-  ExtandedColumnsParams,
-  useExtendedColumns
-} from '../../../Commons/useExtendedColumns'
+import React from 'react'
 import { Organization } from '../../Domain'
-
-export interface OrganizationTableStrings {
-  /**
-   * @default "Oganisation"
-   */
-  organization?: string
-  /**
-   * @default "Adresse"
-   */
-  adress?: string
-  /**
-   * @default "Site web"
-   */
-  website?: string
-}
+import { useTranslation } from 'react-i18next'
 
 export interface OrganizationTableBasicProps<T extends Organization>
   extends BasicProps {
   /**
-   * The organizations to pe parsed in the table
+   * The state of the table
    */
-  organizations: T[]
+  tableState: TableState<T>
   /**
    * The current page
    */
@@ -46,27 +29,20 @@ export interface OrganizationTableBasicProps<T extends Organization>
    * Used for the pagination
    */
   totalPages?: number
-  /**
-   * The column extander module
-   */
-  columnsExtander?: Omit<ExtandedColumnsParams<T>, 'initialColumns'>
+
   /**
    * The actions available on a organization
    */
-  getActions?: (org: Organization) => MenuItem<{}>[]
+  getActions?: (org: T) => MenuItem<{}>[]
   /**
    * The component to displauy if no user is found
    */
   noDataComponent?: JSX.Element
-  /**
-   * The prop to use to add custom translation to the component
-   */
-  strings?: OrganizationTableStrings
 }
 
 export type OrganizationTableProps<T extends Organization = Organization> =
   MergeMuiElementProps<
-    Omit<TableProps<T>, 'columns' | 'data' | 'page' | 'onChangePage'>,
+    Omit<TableV2Props<T>, 'columns' | 'data' | 'page' | 'onChangePage'>,
     OrganizationTableBasicProps<T>
   >
 
@@ -74,71 +50,29 @@ export const OrganizationTable = <T extends Organization = Organization>(
   props: OrganizationTableProps<T>
 ) => {
   const {
-    organizations,
+    tableState,
     getActions,
     page,
     setPage,
     tableActions,
     totalPages,
-    columnsExtander,
     noDataComponent,
     isLoading,
-    strings,
     ...other
   } = props
+  const { t } = useTranslation()
 
-  const columns = useMemo(
-    (): Column<T>[] => [
-      {
-        Header: strings?.organization ?? 'Organisation',
-        accessor: 'name',
-        Cell: ({ row }: CellProps<T>) => (
-          <Presentation
-            displayAvatar={false}
-            label={row.original.name}
-            imgSrc={row.original.logo}
-          />
-        )
-      } as Column<T>,
-      {
-        Header: strings?.adress ?? 'Adresse',
-        accessor: 'address',
-        Cell: ({ row }: CellProps<T>) =>
-          row.original.address ? (
-            <Typography>
-              {`${row.original.address.street} ${row.original.address.postalCode} ${row.original.address.city}`}
-            </Typography>
-          ) : undefined
-      } as Column<T>,
-      {
-        Header: strings?.website ?? 'Site web',
-        accessor: 'website',
-        Cell: ({ row }: CellProps<T>) => (
-          <Link
-            href={row.original.website}
-            onClick={(e) => e.stopPropagation()}
-          >
-            {row.original.website}
-          </Link>
-        )
-      } as Column<T>
-    ],
-    [strings]
-  )
-
-  const completeColumns = useExtendedColumns({
-    initialColumns: columns,
-    ...columnsExtander
-  })
-
-  if (organizations.length === 0 && noDataComponent && !isLoading)
-    return noDataComponent
+  if (tableState.getTotalSize() === 0 && !isLoading)
+    return (
+      noDataComponent ?? (
+        <Typography align='center'>{t('g2.noData')}</Typography>
+      )
+    )
   return (
-    <Table<T>
+    <TableV2<T>
       page={page}
       handlePageChange={setPage}
-      data={organizations}
-      columns={completeColumns}
+      tableState={tableState}
       totalPages={totalPages}
       variant='grounded'
       isLoading={isLoading}

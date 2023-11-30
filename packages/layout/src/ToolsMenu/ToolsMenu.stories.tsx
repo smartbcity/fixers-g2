@@ -1,14 +1,13 @@
 import React from 'react'
 import { ToolsMenu as AruiToolsMenu, ToolsMenuProps } from './ToolsMenu'
-import { Meta } from '@storybook/react'
-import { Story } from '@storybook/react/types-6-0'
+import { Meta, StoryFn } from '@storybook/react'
 import {
   AccountCircle,
   ContactPhone,
   Payment,
   Settings
 } from '@mui/icons-material'
-import { Box, Typography } from  '@mui/material'
+import { Box, Typography } from '@mui/material'
 import { ArgsTable, PRIMARY_STORY, Subtitle } from '@storybook/addon-docs'
 import { styles, classes, Menu } from './types'
 import LinkTo from '@storybook/addon-links/react'
@@ -80,7 +79,7 @@ export default {
   }
 } as Meta
 
-const Template: Story<ToolsMenuProps> = (args: ToolsMenuProps) => (
+const Template: StoryFn<ToolsMenuProps> = (args: ToolsMenuProps) => (
   <AruiToolsMenu {...args}></AruiToolsMenu>
 )
 

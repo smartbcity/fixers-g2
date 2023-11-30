@@ -1,22 +1,13 @@
 import React, { useState } from 'react'
 import { Actions as AruiActions, ActionsBasicProps } from './Actions'
-import { Meta } from '@storybook/react'
-import { Story } from '@storybook/react/types-6-0'
-import { withDesign } from 'storybook-addon-designs'
+import { Meta, StoryFn } from '@storybook/react'
 
 export default {
   title: 'Components/Actions',
-  component: AruiActions,
-  decorators: [withDesign],
-  parameters: {
-    design: {
-      type: 'figma',
-      url: 'https://www.figma.com/file/kgphqh0uVhoXt8TK3LlkGj/G2-%2F-Design-System?node-id=1014%3A871'
-    }
-  }
+  component: AruiActions
 } as Meta
 
-const Template: Story<ActionsBasicProps> = (args: ActionsBasicProps) => (
+const Template: StoryFn<ActionsBasicProps> = (args: ActionsBasicProps) => (
   <AruiActions {...args} />
 )
 
@@ -41,7 +32,7 @@ Actions.args = {
 }
 Actions.storyName = 'Actions'
 
-export const ActionsDisable: Story<ActionsBasicProps> = () => {
+export const ActionsDisable: StoryFn<ActionsBasicProps> = () => {
   const [enable, setEnable] = useState(false)
   const word = enable ? 'disable' : 'enable'
   return (

@@ -1,14 +1,12 @@
 import React from 'react'
 import { Tooltip as AruiTooltip, TooltipBasicProps } from './Tooltip'
-import { Meta } from '@storybook/react'
-import { Story } from '@storybook/react/types-6-0'
+import { Meta, StoryFn } from '@storybook/react'
 import { Typography } from '@mui/material'
-import { withDesign } from 'storybook-addon-designs'
 
 export default {
   title: 'Notifications/Tooltip',
   component: AruiTooltip,
-  decorators: [withDesign],
+
   parameters: {
     design: {
       type: 'figma',
@@ -17,7 +15,7 @@ export default {
   }
 } as Meta
 
-const Template: Story<TooltipBasicProps> = (args: TooltipBasicProps) => {
+const Template: StoryFn<TooltipBasicProps> = (args: TooltipBasicProps) => {
   return (
     <AruiTooltip {...args} open={args.open ? true : undefined}>
       <Typography align='center'>The element to tooltiped</Typography>
@@ -25,7 +23,7 @@ const Template: Story<TooltipBasicProps> = (args: TooltipBasicProps) => {
   )
 }
 
-const Template2: Story = () => {
+const Template2: StoryFn = () => {
   return (
     <AruiTooltip helperText='A helper message' open>
       <Typography align='center'>The element to tooltiped</Typography>

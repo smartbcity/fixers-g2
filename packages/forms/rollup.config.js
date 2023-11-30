@@ -1,16 +1,16 @@
-import getGlobal from '../../globalRollup.config'
+import getGlobal from '../../globalRollup.config.js'
 
-const packageJson = require('./package.json')
+import packageJson from './package.json' assert { type: 'json' }
 
 export default {
   input: 'src/index.ts',
   ...getGlobal(packageJson),
   external: [
     ...getGlobal(packageJson).external,
-    '@mui/x-date-pickers/internals',
-    '@mui/x-date-pickers/PickersActionBar',
-    '@mui/x-date-pickers/AdapterDateFns',
+    '@mui/x-date-pickers/internals/index.js',
+    '@mui/x-date-pickers/PickersActionBar/index.js',
+    '@mui/x-date-pickers/AdapterDateFns/index.js',
     'leaflet/dist/leaflet.css',
-    'date-fns/locale'
+    'date-fns/locale/index.js'
   ]
 }

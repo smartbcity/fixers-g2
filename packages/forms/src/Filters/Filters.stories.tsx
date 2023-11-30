@@ -5,8 +5,7 @@ import {
   FiltersField,
   FiltersAction
 } from './Filters'
-import { Meta } from '@storybook/react'
-import { Story } from '@storybook/react/types-6-0'
+import { Meta, StoryFn } from '@storybook/react'
 import {
   ArgsTable,
   PRIMARY_STORY,
@@ -25,12 +24,11 @@ import {
   FiltersState
 } from './docs'
 import { useFilters } from './useFilters'
-import { withDesign } from 'storybook-addon-designs'
 
 export default {
   title: 'Forms/Filters',
   component: Filters,
-  decorators: [withDesign],
+
   parameters: {
     design: {
       type: 'figma',
@@ -128,7 +126,7 @@ export default {
   }
 } as Meta
 
-export const FiltersStory: Story<FiltersBasicProps> = (
+export const FiltersStory: StoryFn<FiltersBasicProps> = (
   args: FiltersBasicProps
 ) => {
   const formState = useFilters({

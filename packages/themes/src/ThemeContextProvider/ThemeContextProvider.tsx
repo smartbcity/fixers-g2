@@ -1,10 +1,18 @@
-import React, { createContext, useCallback, useContext, useMemo } from 'react'
-import { ThemeProvider, ThemeOptions } from '@mui/material'
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useMemo,
+  useState
+} from 'react'
+import { ThemeProvider, ThemeOptions, useMediaQuery } from '@mui/material'
 import { defaultMaterialUiTheme, defaultTheme, Theme } from './Theme'
 import { CacheProvider } from '@emotion/react'
 import createCache from '@emotion/cache'
 import { TssCacheProvider } from 'tss-react'
 import { mergeDeepRight } from 'ramda'
+import { DeepPartial } from '@smartb/g2-utils'
+import { useDidUpdate } from '@mantine/hooks'
 
 //@ts-ignore
 declare module '@mui/styles/defaultTheme' {
@@ -15,17 +23,22 @@ declare module '@mui/styles/defaultTheme' {
 export interface ThemeContextProps {
   theme: Theme
   changeTheme: (theme: Partial<Theme>) => void
+  openDrawer: boolean
+  toggleOpenDrawer: () => void
 }
 
 export const ThemeContext = createContext<ThemeContextProps>({
   theme: defaultTheme,
-  changeTheme: () => {}
+  changeTheme: () => {},
+  openDrawer: false,
+  toggleOpenDrawer: () => {}
 })
 
 export interface ThemeContextProviderProps {
   children: React.ReactNode
-  theme?: Theme | any
+  theme?: DeepPartial<Theme>
   customMuiTheme?: Partial<ThemeOptions>
+  defaultOpenDrawer?: boolean
 }
 
 export const muiCache = createCache({
@@ -39,22 +52,52 @@ export const tssCache = createCache({
 })
 
 export const ThemeContextProvider = (props: ThemeContextProviderProps) => {
-  const { children, customMuiTheme, theme } = props
+  const { children, customMuiTheme, theme, defaultOpenDrawer } = props
   const [localTheme, setLocalTheme] = React.useState<Theme>(
-    theme ? mergeDeepRight(defaultTheme, theme) : defaultTheme
+    theme ? mergeDeepRight(defaultTheme, theme as any) : defaultTheme
   )
-  const setPartialTheme = useCallback((partialTheme: Theme | any) => {
+
+  const setPartialTheme = useCallback((partialTheme: Theme) => {
     setLocalTheme((oldLocalTheme) =>
-      mergeDeepRight(oldLocalTheme, partialTheme)
+      mergeDeepRight(oldLocalTheme, partialTheme as any)
     )
   }, [])
   const defaultMuiTheme = useMemo(
     () => defaultMaterialUiTheme(localTheme, customMuiTheme),
     [customMuiTheme, localTheme]
   )
+
+  const isMobile =
+    localTheme.drawerAbsolutePositionBreakpoint === 'always'
+      ? true
+      : useMediaQuery(
+          defaultMuiTheme.breakpoints.down(
+            localTheme.drawerAbsolutePositionBreakpoint!
+          )
+        )
+
+  const [openDrawer, setOpenDrawer] = useState(defaultOpenDrawer ?? !isMobile)
+
+  useDidUpdate(() => {
+    if (isMobile) {
+      setOpenDrawer(false)
+    } else {
+      setOpenDrawer(true)
+    }
+  }, [isMobile])
+
+  const toggleOpenDrawer = useCallback(() => {
+    setOpenDrawer((prevOpen) => !prevOpen)
+  }, [])
+
   return (
     <ThemeContext.Provider
-      value={{ theme: localTheme, changeTheme: setPartialTheme }}
+      value={{
+        theme: localTheme,
+        changeTheme: setPartialTheme,
+        openDrawer,
+        toggleOpenDrawer
+      }}
     >
       <TssCacheProvider value={tssCache}>
         <CacheProvider value={muiCache}>

@@ -1,16 +1,15 @@
 import React, { useState } from 'react'
 import { FilterSelect, Option, FilterSelectBasicProps } from './FilterSelect'
-import { Meta } from '@storybook/react'
-import { Story } from '@storybook/react/types-6-0'
+import { Meta, StoryFn } from '@storybook/react'
 import { Box } from '@mui/material'
 import { FilterSelectClasses, FilterSelectStyles } from './docs'
-import { withDesign } from 'storybook-addon-designs'
+
 import { ArrowRightAltRounded, SortByAlphaRounded } from '@mui/icons-material'
 
 export default {
   title: 'Forms/FilterSelect',
   component: FilterSelect,
-  decorators: [withDesign],
+
   parameters: {
     design: {
       type: 'figma',
@@ -37,7 +36,7 @@ export default {
   }
 } as Meta
 
-export const FilterSelectStory: Story<FilterSelectBasicProps> = (
+export const FilterSelectStory: StoryFn<FilterSelectBasicProps> = (
   args: FilterSelectBasicProps
 ) => {
   const [value, setvalue] = useState('')
@@ -60,7 +59,7 @@ export const FilterSelectStory: Story<FilterSelectBasicProps> = (
   )
 }
 
-export const FilterSelectSizes: Story<FilterSelectBasicProps> = () => {
+export const FilterSelectSizes: StoryFn<FilterSelectBasicProps> = () => {
   const [value, setvalue] = useState('')
   return (
     <Box display='flex' justifyContent='space-around' alignItems='center'>
@@ -156,7 +155,7 @@ export const FilterSelectSizes: Story<FilterSelectBasicProps> = () => {
   )
 }
 
-export const FilterSelectStates: Story<FilterSelectBasicProps> = () => {
+export const FilterSelectStates: StoryFn<FilterSelectBasicProps> = () => {
   return (
     <Box display='flex' flexDirection='column' alignItems='center'>
       <FilterSelect
@@ -177,7 +176,7 @@ export const FilterSelectStates: Story<FilterSelectBasicProps> = () => {
   )
 }
 
-export const MultipleFilterSelect: Story<FilterSelectBasicProps> = () => {
+export const MultipleFilterSelect: StoryFn<FilterSelectBasicProps> = () => {
   const [values, setvalues] = useState<string[]>([])
 
   return (
@@ -196,7 +195,7 @@ export const MultipleFilterSelect: Story<FilterSelectBasicProps> = () => {
   )
 }
 
-export const SortSelect: Story<FilterSelectBasicProps> = () => {
+export const SortSelect: StoryFn<FilterSelectBasicProps> = () => {
   const [value, setvalue] = useState('')
 
   const options: Option[] = [

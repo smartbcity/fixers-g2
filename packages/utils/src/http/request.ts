@@ -1,4 +1,6 @@
 import { t } from "i18next";
+import { getTranslatedMessageOrUndefined } from "../common";
+import { enqueueSnackbar } from "notistack";
 export type HttpContentType =
   | "application/json"
   | "text/plain"
@@ -14,8 +16,13 @@ export interface HttpOptions {
   jwt?: string;
   contentType?: HttpContentType;
   returnType?: "json" | "text" | "objectUrl";
-  errorHandler?: (error: Error, responseCode?: number) => void;
+  errorHandler?: (
+    error: Error,
+    responseCode?: number,
+    backendError?: BackendError
+  ) => void;
   withAccessControl?: boolean;
+  redirect?: RequestRedirect;
 }
 
 export const request = <T>(options: HttpOptions): Promise<Nullable<T>> => {
@@ -29,9 +36,11 @@ export const request = <T>(options: HttpOptions): Promise<Nullable<T>> => {
     errorHandler = () => {},
     returnType = "json",
     withAccessControl = true,
+    redirect,
   } = options;
   return fetch(url, {
     method: method,
+    redirect: redirect,
     headers: {
       ...(jwt !== undefined && jwt !== ""
         ? {
@@ -53,15 +62,27 @@ export const request = <T>(options: HttpOptions): Promise<Nullable<T>> => {
   })
     .then((response) => {
       if (!response.ok) {
-        response
-          .text()
-          .then((error) => {
-            throw new Error(error);
-          })
-          .catch((error) => {
-            errorHandler(error, response.status);
-            throw error;
+        const contentType = response.headers.get("content-type");
+        if (contentType === "application/json") {
+          response.json().then((backendError: BackendError) => {
+            errorHandler(
+              new Error("backend error"),
+              response.status,
+              backendError
+            );
           });
+        } else {
+          response
+            .text()
+            .then((error) => {
+              throw new Error(error);
+            })
+            .catch((error) => {
+              errorHandler(error, response.status);
+              throw error;
+            });
+        }
+
         return;
       } else {
         if (returnType === "json") {
@@ -82,17 +103,30 @@ export const request = <T>(options: HttpOptions): Promise<Nullable<T>> => {
     });
 };
 
+export interface BackendError {
+  timestamp: string;
+  path: string;
+  status: number;
+  error: string;
+  message: string;
+  requestId: string;
+  code: number;
+}
+
 export const errorHandler =
-  (key: string) => (_: Error, responseCode?: number) => {
+  (key: string) =>
+  (_: Error, responseCode?: number, backendError?: BackendError) => {
+    const res = backendErrorHandler(backendError);
+    if (res) return;
     const c = responseCode;
     const sendAlert = (errorType: string) => {
-      const message = geTranslatedMessageOrUndefined("http.errors." + key);
+      const message = getTranslatedMessageOrUndefined("http.errors." + key);
       if (message) {
-        console.log(t("http." + errorType, { errorMessage: message }));
-        // pushAlert({
-        //   message: t("http." + errorType, { errorMessage: message }) as string,
-        //   severity: "error",
-        // });
+        enqueueSnackbar(t("http." + errorType, { errorMessage: message }), {
+          //@ts-ignore
+          variant: "G2Alert",
+          severity: "error",
+        });
       }
     };
     if (c === 401 || c === 403) {
@@ -104,18 +138,28 @@ export const errorHandler =
     }
   };
 
-export const successHandler = (key: string) => {
-  const message = geTranslatedMessageOrUndefined("http.success." + key);
+export const backendErrorHandler = (
+  backendError?: BackendError
+): string | undefined => {
+  if (!backendError) return;
+  const message = getTranslatedMessageOrUndefined(
+    "http.backendErrors." + backendError.code
+  );
   if (message) {
-    console.log(message);
-    // pushAlert({ message: message, severity: "success", persist: false });
-  }
-};
-
-const geTranslatedMessageOrUndefined = (key: string): string | undefined => {
-  const message = t(key);
-  if (message === key) {
-    return undefined;
+    //@ts-ignore
+    enqueueSnackbar(message, { variant: "G2Alert", severity: "error" });
   }
   return message;
+};
+
+export const successHandler = (key: string) => {
+  const message = getTranslatedMessageOrUndefined("http.success." + key);
+  if (message) {
+    enqueueSnackbar(message, {
+      //@ts-ignore
+      variant: "G2Alert",
+      severity: "success",
+      persist: false,
+    });
+  }
 };
